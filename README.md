@@ -1,3 +1,5 @@
+[![Travis build status](https://travis-ci.org/robwschlegel/heatwaveR.svg?branch=master)](https://travis-ci.org/robwschlegel/heatwaveR)
+
 # heatwaveR
 
 The goal of heatwaveR is to ...
