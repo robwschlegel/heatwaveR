@@ -18,7 +18,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-vignette">
+    <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -27,8 +27,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">heatwaveR</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">heatwaveR</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.0.9000</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
@@ -52,6 +56,9 @@
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
 </div>
@@ -63,17 +70,20 @@
 
       
       </header><div class="row">
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Extreme event detection in gridded data</h1>
                         <h4 class="author">AJ Smit</h4>
             
             <h4 class="date">2018-04-24</h4>
-          </div>
+      
+      
+      <div class="hidden name"><code>gridded_event_detection.Rmd</code></div>
+
+    </div>
 
     
     
-<div class="contents">
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
@@ -198,11 +208,10 @@ OISST_nTrend<span class="op">$</span>pval &lt;-<span class="st"> </span><span cl
 <!-- knitr::include_graphics("README-grid-example2.png") -->
 <!-- ``` -->
 <div class="figure">
-<img src="/home/rws/heatwaveR/vignettes/README-grid-example1.png" style="width:100.0%">
+<img src="README-grid-example1.png" style="width:100.0%">
 </div>
 <div class="figure">
-<img src="/home/rws/heatwaveR/vignettes/README-grid-example2.png" style="width:100.0%">
-</div>
+<img src="README-grid-example2.png" style="width:100.0%">
 </div>
 </div>
   </div>
@@ -224,7 +233,7 @@ OISST_nTrend<span class="op">$</span>pval &lt;-<span class="st"> </span><span cl
 
 
       <footer><div class="copyright">
-  <p>Developed by First Last.</p>
+  <p>Developed by Robert W. Schlegel, Eric C. J. Oliver, Albertus J. Smit.</p>
 </div>
 
 <div class="pkgdown">
@@ -233,6 +242,8 @@ OISST_nTrend<span class="op">$</span>pval &lt;-<span class="st"> </span><span cl
 
       </footer>
 </div>
+
+  
 
   </body>
 </html>

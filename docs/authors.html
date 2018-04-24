@@ -25,7 +25,12 @@
 <link href="pkgdown.css" rel="stylesheet">
 <script src="jquery.sticky-kit.min.js"></script>
 <script src="pkgdown.js"></script>
+
+
+
 <meta property="og:title" content="Authors" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -48,8 +53,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">heatwaveR</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="index.html">heatwaveR</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.0.9000</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -73,11 +82,15 @@
     </li>
   </ul>
 </li>
+<li>
+  <a href="news/index.html">News</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -85,16 +98,24 @@
       
       </header>
 
-      <div class="row">
-  <div class="contents col-md-12">
+<div class="row">
+  <div class="contents col-md-9">
     <div class="page-header">
       <h1>Authors</h1>
     </div>
 
     <ul class="list-unstyled">
       <li>
-        <p><strong>First Last</strong>. Author, maintainer. 
-        </p>
+        <p><strong>Robert W. Schlegel</strong>. Author, maintainer, contributor. 
+        <br /><small>Graphical and data summaries.</small></p>
+      </li>
+      <li>
+        <p><strong>Eric C. J. Oliver</strong>. Author. 
+        <br /><small>The brain behind the Python implementation.</small></p>
+      </li>
+      <li>
+        <p><strong>Albertus J. Smit</strong>. Author, contributor. 
+        <br /><small>R implementation.</small></p>
       </li>
     </ul>
 
@@ -105,7 +126,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by First Last.</p>
+  <p>Developed by Robert W. Schlegel, Eric C. J. Oliver, Albertus J. Smit.</p>
 </div>
 
 <div class="pkgdown">
@@ -114,6 +135,8 @@
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

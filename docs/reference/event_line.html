@@ -25,11 +25,16 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
 <meta property="og:title" content="Create a Line Plot of Marine Heat Waves or Cold Spells. — event_line" />
 
 <meta property="og:description" content="Creates a graph of warm or cold events as per the second row of Figure 3 in
 Hobday et al. (2016)." />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -52,8 +57,12 @@ Hobday et al. (2016)." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">heatwaveR</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">heatwaveR</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.0.9000</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -77,11 +86,15 @@ Hobday et al. (2016)." />
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -89,21 +102,25 @@ Hobday et al. (2016)." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create a Line Plot of Marine Heat Waves or Cold Spells.</h1>
+    
+    <div class="hidden name"><code>event_line.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Creates a graph of warm or cold events as per the second row of Figure 3 in
 Hobday et al. (2016).</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>event_line</span>(<span class='no'>data</span>, <span class='kw'>min_duration</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>spread</span> <span class='kw'>=</span> <span class='fl'>150</span>, <span class='kw'>metric</span> <span class='kw'>=</span> <span class='st'>"int_cum"</span>,
   <span class='kw'>start_date</span> <span class='kw'>=</span> <span class='st'>"1999-06-30"</span>, <span class='kw'>end_date</span> <span class='kw'>=</span> <span class='st'>"2000-05-30"</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -193,7 +210,7 @@ Robert W. Schlegel
 
       <footer>
       <div class="copyright">
-  <p>Developed by First Last.</p>
+  <p>Developed by Robert W. Schlegel, Eric C. J. Oliver, Albertus J. Smit.</p>
 </div>
 
 <div class="pkgdown">
@@ -202,6 +219,8 @@ Robert W. Schlegel
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

@@ -16,7 +16,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Robert William Schlegel \email{robwschlegel@gmail.com} (Graphical and data summaries.)
+\strong{Maintainer}: Robert W. Schlegel \email{robwschlegel@gmail.com} (Graphical and data summaries.) [contributor]
 
 Authors:
 \itemize{

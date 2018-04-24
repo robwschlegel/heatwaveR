@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>heatwaveR: What the Package Does (One Line, Title Case) — heatwaveR-package • heatwaveR</title>
+<title>heatwaveR: Detect heatwaves and cold-spells — heatwaveR-package • heatwaveR</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,10 +25,15 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-<meta property="og:title" content="heatwaveR: What the Package Does (One Line, Title Case) — heatwaveR-package" />
 
-<meta property="og:description" content="What the package does (one paragraph)." />
+
+
+<meta property="og:title" content="heatwaveR: Detect heatwaves and cold-spells — heatwaveR-package" />
+
+<meta property="og:description" content="This package is designed to include and encompass the different methods of defining and detecting extreme events, known as heatwaves or cold-spells in both air and water temperature data. These detection algorithms may be used on non-temperature data as well however, this is not catered for explicitly here as no use of this technique in the literature currently exists." />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -51,8 +56,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">heatwaveR</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">heatwaveR</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.0.9000</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -76,11 +85,15 @@
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -88,27 +101,45 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>heatwaveR: What the Package Does (One Line, Title Case)</h1>
+    <h1>heatwaveR: Detect heatwaves and cold-spells</h1>
+    
+    <div class="hidden name"><code>heatwaveR-package.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
-    <p>What the package does (one paragraph).</p>
+    <p>This package is designed to include and encompass the different methods of defining and detecting extreme events, known as heatwaves or cold-spells in both air and water temperature data. These detection algorithms may be used on non-temperature data as well however, this is not catered for explicitly here as no use of this technique in the literature currently exists.</p>
     
+    </div>
 
         
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Useful links:</p><ul>
+<li><p><a href='https://robwschlegel.github.io/heatwaveR/'>https://robwschlegel.github.io/heatwaveR/</a></p></li>
+</ul></div>
+    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-                </ul>
+      
+      <li><a href="#see-also">See also</a></li>
+          </ul>
 
     <h2>Author</h2>
     
-<strong>Maintainer</strong>: First Last <a href='mailto:first.last@example.com'>first.last@example.com</a>
+<strong>Maintainer</strong>: Robert W. Schlegel <a href='mailto:robwschlegel@gmail.com'>robwschlegel@gmail.com</a> (Graphical and data summaries.) [contributor]
+
+Authors:
+<ul>
+<li><p>Eric C. J. Oliver (The brain behind the Python implementation.)</p></li>
+<li><p>Albertus J. Smit (R implementation.) [contributor]</p></li>
+</ul>
 
 
   </div>
@@ -116,7 +147,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by First Last.</p>
+  <p>Developed by Robert W. Schlegel, Eric C. J. Oliver, Albertus J. Smit.</p>
 </div>
 
 <div class="pkgdown">
@@ -125,6 +156,8 @@
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

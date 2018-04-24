@@ -25,11 +25,16 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
 <meta property="og:title" content="Detect Marine Heat Waves and Marine Cold Spells. — detect" />
 
 <meta property="og:description" content="Applies the Hobday et al. (2016) marine heat wave definition to an input time
 series of temperature along with a daily date vector." />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -52,8 +57,12 @@ series of temperature along with a daily date vector." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">heatwaveR</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">heatwaveR</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.0.9000</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -77,11 +86,15 @@ series of temperature along with a daily date vector." />
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -89,16 +102,20 @@ series of temperature along with a daily date vector." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Detect Marine Heat Waves and Marine Cold Spells.</h1>
+    
+    <div class="hidden name"><code>detect.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Applies the Hobday et al. (2016) marine heat wave definition to an input time
 series of temperature along with a daily date vector.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>detect</span>(<span class='no'>data</span>, <span class='kw'>doy</span> <span class='kw'>=</span> <span class='no'>doy</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='kw'>climatology_start</span> <span class='kw'>=</span> <span class='fl'>1983</span>,
   <span class='kw'>climatology_end</span> <span class='kw'>=</span> <span class='fl'>2012</span>, <span class='kw'>pctile</span> <span class='kw'>=</span> <span class='fl'>90</span>, <span class='kw'>window_half_width</span> <span class='kw'>=</span> <span class='fl'>5</span>,
@@ -106,7 +123,7 @@ series of temperature along with a daily date vector.</p>
   <span class='kw'>clim_only</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>min_duration</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>join_across_gaps</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>max_gap</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>max_pad_length</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>cold_spells</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -407,7 +424,7 @@ Albertus J. Smit, Robert W. Schlegel, Eric C. J. Oliver
 
       <footer>
       <div class="copyright">
-  <p>Developed by First Last.</p>
+  <p>Developed by Robert W. Schlegel, Eric C. J. Oliver, Albertus J. Smit.</p>
 </div>
 
 <div class="pkgdown">
@@ -416,6 +433,8 @@ Albertus J. Smit, Robert W. Schlegel, Eric C. J. Oliver
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

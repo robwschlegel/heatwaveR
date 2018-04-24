@@ -25,6 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
 <meta property="og:title" content="Visualise a Timeline of Several Event Metrics as 'Lollipops'. — geom_lolli" />
 
 <meta property="og:description" content="The function will return a graph of the intensity of the selected
@@ -36,6 +39,8 @@ in that it must be created as a ggplot2 'geom' object. The benefit of this being
 that one may add additional information layer by layer to the figure as
 geoms as necessary." />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -58,8 +63,12 @@ geoms as necessary." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">heatwaveR</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">heatwaveR</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.0.9000</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -83,11 +92,15 @@ geoms as necessary." />
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -95,12 +108,15 @@ geoms as necessary." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Visualise a Timeline of Several Event Metrics as 'Lollipops'.</h1>
+    
+    <div class="hidden name"><code>geom_lolli.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>The function will return a graph of the intensity of the selected
 metric along the *y*-axis versus a time variable along the *x*-axis.
@@ -111,11 +127,12 @@ in that it must be created as a ggplot2 'geom' object. The benefit of this being
 that one may add additional information layer by layer to the figure as
 geoms as necessary.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>geom_lolli</span>(<span class='kw'>mapping</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>show.legend</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>inherit.aes</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -195,7 +212,7 @@ discrete. ggplot2 will attempt to do this automatically.</p></li>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p><code><a href='lolli_plot.html'>lolli_plot</a></code> for a non-geom based lolliplot function.</p>
+    <div class='dont-index'><p><code><a href='lolli_plot.html'>lolli_plot</a></code> for a non-geom based lolliplot function.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -240,7 +257,7 @@ Robert W. Schlegel
 
       <footer>
       <div class="copyright">
-  <p>Developed by First Last.</p>
+  <p>Developed by Robert W. Schlegel, Eric C. J. Oliver, Albertus J. Smit.</p>
 </div>
 
 <div class="pkgdown">
@@ -249,6 +266,8 @@ Robert W. Schlegel
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>
