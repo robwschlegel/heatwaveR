@@ -27,3 +27,4 @@ Imports:
     raster,
     grid,
     lazyeval
+VignetteBuilder: knitr
