@@ -1,0 +1,30 @@
+navbar:
+  title: heatwaveR
+  type: default
+  left:
+  - icon: fa-home fa-lg
+    href: index.html
+  - text: Reference
+    href: reference/index.html
+  - text: Articles
+    menu:
+    - text: Extreme event detection in gridded data
+      href: articles/gridded_event_detection.html
+  right: []
+
+reference:
+- title: All functions
+  desc: ~
+  contents:
+  - '`block_average`'
+  - '`detect`'
+  - '`event_line`'
+  - '`exceedance`'
+  - '`geom_flame`'
+  - '`geom_lolli`'
+  - '`lolli_plot`'
+  - '`make_whole`'
+  - '`sst_Med`'
+  - '`sst_NW_Atl`'
+  - '`sst_WA`'
+

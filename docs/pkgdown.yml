@@ -1,0 +1,6 @@
+pandoc: 1.19.2.1
+pkgdown: 0.1.0.9000
+pkgdown_sha: 79d78248dc50a0c845039db6331574fafb1f86de
+articles:
+  gridded_event_detection: gridded_event_detection.html
+
