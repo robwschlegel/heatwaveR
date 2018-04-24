@@ -4,12 +4,25 @@
 \name{heatwaveR-package}
 \alias{heatwaveR}
 \alias{heatwaveR-package}
-\title{heatwaveR: What the Package Does (One Line, Title Case)}
+\title{heatwaveR: Detect heatwaves and cold-spells}
 \description{
-What the package does (one paragraph).
+This package is designed to include and encompass the different methods of defining and detecting extreme events, known as heatwaves or cold-spells in both air and water temperature data. These detection algorithms may be used on non-temperature data as well however, this is not catered for explicitly here as no use of this technique in the literature currently exists.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://robwschlegel.github.io/heatwaveR/}
+}
+
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com}
+\strong{Maintainer}: Robert William Schlegel \email{robwschlegel@gmail.com} (Graphical and data summaries.)
+
+Authors:
+\itemize{
+  \item Eric C. J. Oliver (The brain behind the Python implementation.)
+  \item Albertus J. Smit (R implementation.) [contributor]
+}
 
 }
 \keyword{internal}
