@@ -1,8 +1,14 @@
 Package: heatwaveR
-Version: 0.0.1.9000
-Title: What the Package Does (One Line, Title Case)
-Description: What the package does (one paragraph).
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
+Version: 0.1.0.9000
+Date: 2018-04-24
+Title: Detect heatwaves and cold-spells
+Description: This package is designed to include and encompass the different methods of defining and detecting extreme events, known as heatwaves or cold-spells in both air and water temperature data. These detection algorithms may be used on non-temperature data as well however, this is not catered for explicitly here as no use of this technique in the literature currently exists.
+Type: Package
+Authors@R: c(person("Robert William", "Schlegel", role = c("aut", "cre", "ctb),
+    email = "robwschlegel@gmail.com", comment = "Graphical and data summaries."),
+    person("Eric C. J.", "Oliver", role = "aut", comment = "The brain behind the Python implementation."),
+    person("Albertus J.", "Smit", role = c("aut", "cre", "ctb"), comment = "R implementation."))
+Maintainer: Robert William Schlegel <robwschlegel@gmail.com>
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -28,3 +34,4 @@ Imports:
     grid,
     lazyeval
 VignetteBuilder: knitr
+URL: https://robwschlegel.github.io/heatwaveR/
