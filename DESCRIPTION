@@ -8,9 +8,21 @@ Encoding: UTF-8
 LazyData: true
 ByteCompile: true
 RoxygenNote: 6.0.1
+Depends: R (>= 3.00)
 Suggests: 
-    testthat
-Imports: 
+    testthat,
+    knitr,
+    rmarkdown
+Imports:
+    tibble,
     ggplot2,
+    lubridate,
+    dplyr,
+    stats,
+    utils,
+    zoo,
+    tidyr,
     plyr,
-    tidyr
+    raster,
+    grid,
+    lazyeval
