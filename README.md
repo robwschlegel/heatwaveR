@@ -1,4 +1,4 @@
-[![Travis build status](https://travis-ci.org/robwschlegel/heatwaveR.svg?branch=master)](https://travis-ci.org/robwschlegel/heatwaveR)
+[![Travis build status](https://travis-ci.org/robwschlegel/heatwaveR.svg?branch=master)](https://travis-ci.org/robwschlegel/heatwaveR) [![Coverage status](https://codecov.io/gh/robwschlegel/heatwaveR/branch/master/graph/badge.svg)](https://codecov.io/github/robwschlegel/heatwaveR?branch=master)
 
 # heatwaveR
 
@@ -26,4 +26,5 @@ This is a basic example which shows you how to solve a common problem:
 ``` r
 ## basic example code
 ```
-
+Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md).
+  By participating in this project you agree to abide by its terms.

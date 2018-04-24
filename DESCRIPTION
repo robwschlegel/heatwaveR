@@ -12,7 +12,8 @@ Depends: R (>= 3.00)
 Suggests: 
     testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    covr
 Imports:
     tibble,
     ggplot2,
