@@ -291,3 +291,5 @@ Robert W. Schlegel
 Department for Biodiversity & Conservation Biology, University of the Western Cape,
 Private Bag X17,  Bellville 7535, South Africa,  E-mail: robwschlegel@gmail.com,
 <!-- Work tel.: +27 (0)21 959 3783 -->
+
+<!-- ![](team_kelp.png) -->

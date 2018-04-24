@@ -111,11 +111,6 @@ mhw2 <- mhw$clim %>%
 ggplot(mhw2, aes(x = t, y = temp, y2 = thresh_clim_year)) +
   geom_flame() +
   geom_text(aes(x = as.Date("2011-02-26"), y = 25.8, label = "the Destroyer\nof Kelps"))
-```
-
-![](tools/fig-example3-1.png)
-
-``` r
 
 ggplot(mhw$event, aes(x = date_start, y = int_max)) +
   geom_lolli(colour = "salmon", colour.n = "red", n = 3) +
@@ -123,7 +118,7 @@ ggplot(mhw$event, aes(x = date_start, y = int_max)) +
                 label = "The marine heatwaves\nTend to be left skewed in a\nGiven time series"))
 ```
 
-![](tools/fig-example3-2.png) ![](tools/fig-example3-1.png) ![](tools/fig-example3-2.png)
+![](tools/fig-example3-1.png) ![](tools/fig-example3-2.png)
 
 The default output of these function may not be to your liking. If so, not to worry. As **`ggplot2`** `geoms`, they are highly malleable. For example, if we were to choose to reproduce the format of the MHWs as seen in Hobday et al. (2016), the code would look something like this:
 
@@ -149,8 +144,6 @@ ggplot(data = mhw2, aes(x = t)) +
 
 ![](tools/fig-example4-1.png)
 
-![](tools/fig-example4-1.png)
-
 Should we not wish to highlight any events with `geom_lolli()`, it would look like this:
 
 ``` r
@@ -158,8 +151,6 @@ Should we not wish to highlight any events with `geom_lolli()`, it would look li
 ggplot(mhw$event, aes(x = date_start, y = int_cum)) +
   geom_lolli(colour = "salmon", n = 3, colour.n = NA)
 ```
-
-![](tools/fig-example5-1.png)
 
 ![](tools/fig-example5-1.png)
 
@@ -329,3 +320,5 @@ Contact
 =======
 
 Robert W. Schlegel Department for Biodiversity & Conservation Biology, University of the Western Cape, Private Bag X17, Bellville 7535, South Africa, E-mail: <robwschlegel@gmail.com>, <!-- Work tel.: +27 (0)21 959 3783 -->
+
+<!-- ![](team_kelp.png) -->
