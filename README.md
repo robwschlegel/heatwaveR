@@ -42,7 +42,7 @@ The functions
 </tr>
 <tr class="even">
 <td><code>event_line()</code></td>
-<td>Creates a line plot of marine heatwaves or cold spells.</td>
+<td>Creates a line plot of heatwaves or cold-spells.</td>
 </tr>
 <tr class="odd">
 <td><code>lolli_plot()</code></td>
@@ -54,7 +54,7 @@ The functions
 </tr>
 <tr class="odd">
 <td><code>geom_flame()</code></td>
-<td>Creates flame polygons of marine heatwaves or cold spells.</td>
+<td>Creates flame polygons of heatwaves or cold-spells.</td>
 </tr>
 <tr class="even">
 <td><code>geom_lolli()</code></td>
@@ -94,13 +94,13 @@ event_line(mhw, spread = 200, metric = "int_cum",
            start_date = "2010-10-01", end_date = "2011-08-30")
 ```
 
-![](tools/fig-example1-1.png)
+![](docs/fig-example1-1.png)
 
 ``` r
 lolli_plot(mhw)
 ```
 
-![](tools/fig-example2-1.png)
+![](docs/fig-example2-1.png)
 
 The `event_line()` and `lolli_plot()` functions were designed to work directly on one of the dataframes in the list returned by `detect()`. If more control over the figures is required, it may be useful to create them in **`ggplot2`** by stacking `geoms`. We specifically created two new **`ggplot2`** `geoms` to reproduce the functionality of `event_line()` and `lolli_plot()`. These functions are more general in their functionality and can be used outside of the **`heatwaveR`** package too. To apply them to MHWs and MCSs first requires that we access the `clim` or `event` dataframes within the list that is produced by `detect()`. Here is how:
 
@@ -118,7 +118,7 @@ ggplot(mhw$event, aes(x = date_start, y = int_max)) +
                 label = "The marine heatwaves\nTend to be left skewed in a\nGiven time series"))
 ```
 
-![](tools/fig-example3-1.png) ![](tools/fig-example3-2.png)
+![](docs/fig-example3-1.png) ![](docs/fig-example3-2.png)
 
 The default output of these function may not be to your liking. If so, not to worry. As **`ggplot2`** `geoms`, they are highly malleable. For example, if we were to choose to reproduce the format of the MHWs as seen in Hobday et al. (2016), the code would look something like this:
 
@@ -142,7 +142,7 @@ ggplot(data = mhw2, aes(x = t)) +
   ylab(expression(paste("Temperature [", degree, "C]")))
 ```
 
-![](tools/fig-example4-1.png)
+![](docs/fig-example4-1.png)
 
 Should we not wish to highlight any events with `geom_lolli()`, it would look like this:
 
@@ -152,9 +152,9 @@ ggplot(mhw$event, aes(x = date_start, y = int_cum)) +
   geom_lolli(colour = "salmon", n = 3, colour.n = NA)
 ```
 
-![](tools/fig-example5-1.png)
+![](docs/fig-example5-1.png)
 
-The calculation and visualisation of marine cold spells is also accommodated within this package. Here is a cold spell detected in the OISST data for Western Australia:
+The calculation and visualisation of cold-spells is also accommodated within this package. Here is a cold spell detected in the OISST data for Western Australia:
 
 ``` r
 mcs <- detect(ts, climatology_start = 1983, climatology_end = 2012, cold_spells = TRUE)
@@ -171,7 +171,7 @@ mcs$event %>%
 #> 5       51       32 2003-09-08 2003-09-16 -1.560817 -2.116583  -49.94613
 ```
 
-The plots showing the marine cold spells look like this:
+The plots showing the cold-spells look like this:
 
 ``` r
 # this function needs to be updated as it currently only works when 't' is the column name for date
@@ -181,7 +181,7 @@ event_line(mcs, spread = 200, metric = "int_cum",
 lolli_plot(mcs)
 ```
 
-![](tools/fig-example6-1.png) ![](tools/fig-example6-2.png)
+![](docs/fig-example6-1.png) ![](docs/fig-example6-2.png)
 
 Cold spell figures may be created as `geoms` in **`ggplot2`**, too:
 
@@ -208,7 +208,7 @@ ggplot(mcs$event, aes(x = date_start, y = int_cum)) +
   ylab(expression(paste("Cumulative intensity [days x ", degree, "C]")))
 ```
 
-![](tools/fig-example7-1.png) ![](tools/fig-example7-2.png)
+![](docs/fig-example7-1.png) ![](docs/fig-example7-2.png)
 
 The exceedance function
 -----------------------
@@ -250,7 +250,7 @@ ggplot(data = exc_25_thresh, aes(x = t)) +
   ylab(expression(paste("Temperature [", degree, "C]")))
 ```
 
-![](tools/fig-example8-1.png)
+![](docs/fig-example8-1.png)
 
 The same function may be used to calculate consecutive days below a threshold, too.
 
@@ -287,7 +287,7 @@ ggplot(data = exc_19_thresh, aes(x = t)) +
   ylab(expression(paste("Temperature [", degree, "C]")))
 ```
 
-![](tools/fig-example9-1.png)
+![](docs/fig-example9-1.png)
 
 Working with gridded SST data
 =============================

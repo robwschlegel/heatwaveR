@@ -2,7 +2,7 @@
 % Please edit documentation in R/graph_functions.R
 \name{event_line}
 \alias{event_line}
-\title{Create a Line Plot of Marine Heat Waves or Cold Spells.}
+\title{Create a line plot of heatwaves or cold-spells.}
 \usage{
 event_line(data, min_duration = 5, spread = 150, metric = "int_cum",
   start_date = "1999-06-30", end_date = "2000-05-30")

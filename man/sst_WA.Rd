@@ -3,7 +3,7 @@
 \docType{data}
 \name{sst_WA}
 \alias{sst_WA}
-\title{Optimally Interpolated 0.25 degree SST for the Western Australian region.}
+\title{Optimally interpolated 0.25 degree SST for the Western Australian region.}
 \format{A data frame with 12053 rows and 2 variables:
 \describe{
   \item{t}{date, as POSIXct}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/graph_functions.R
 \name{lolli_plot}
 \alias{lolli_plot}
-\title{Create a Timeline of Selected Event Metrics.}
+\title{Create a timeline of selected event metrics as 'lollipops'.}
 \usage{
 lolli_plot(data, metric = "int_max", event_count = 3,
   xaxis = "date_start")

@@ -11,12 +11,12 @@ This package is designed to include and encompass the different methods of defin
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://robwschlegel.github.io/heatwaveR/}
+  \item \url{https://robwschlegel.github.io/heatwaveR/index.html}
 }
 
 }
 \author{
-\strong{Maintainer}: Robert W. Schlegel \email{robwschlegel@gmail.com} (Graphical and data summaries.) [contributor]
+\strong{Maintainer}: Robert W. Schlegel \email{robwschlegel@gmail.com} (0000-0002-0705-1287) [contributor]
 
 Authors:
 \itemize{

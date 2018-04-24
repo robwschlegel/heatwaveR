@@ -1,4 +1,4 @@
-#' Create 'Flame' Ploygons.
+#' Create 'flame' ploygons.
 #'
 #' This function will create polygons between two lines. If given a
 #' temperature and theshold time series, like that produced by \code{\link{detect}},
@@ -172,7 +172,7 @@ GeomFlame <- ggplot2::ggproto("GeomFlame", ggplot2::Geom,
                               }
 )
 
-#' Visualise a Timeline of Several Event Metrics as 'Lollipops'.
+#' Visualise a timeline of several event metrics as 'lollipops'.
 #'
 #' The function will return a graph of the intensity of the selected
 #' metric along the *y*-axis versus a time variable along the *x*-axis.

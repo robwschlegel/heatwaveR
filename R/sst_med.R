@@ -1,4 +1,4 @@
-#' Optimally Interpolated 0.25 degree SST for the Mediterranean region.
+#' Optimally interpolated 0.25 degree SST for the Mediterranean region.
 #'
 #' A dataset containing the sea surface temperature (in degrees Celsius)
 #' and date for the Mediterranean region from 1982-01-01 to 2014-12-31.

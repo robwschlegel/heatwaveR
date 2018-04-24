@@ -3,7 +3,7 @@
 \docType{data}
 \name{sst_NW_Atl}
 \alias{sst_NW_Atl}
-\title{Optimally Interpolated 0.25 degree SST for the NW Atlantic region.}
+\title{Optimally interpolated 0.25 degree SST for the NW Atlantic region.}
 \format{A data frame with 12053 rows and 2 variables:
 \describe{
   \item{t}{date, as POSIXct}

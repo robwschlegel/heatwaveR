@@ -1,4 +1,4 @@
-#' Constructs a Continuous, Uninterrupted Time Series of Temperatures.
+#' Constructs a continuous, uninterrupted time series of temperatures.
 #'
 #' Takes a series of dates and temperatures, and if irregular (but ordered), inserts
 #' missing dates and fills correpsonding temperatures with NAs.

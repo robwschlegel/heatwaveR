@@ -6,11 +6,14 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Detect heatwaves and cold-spells • heatwaveR</title>
-<!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/spacelab/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><meta property="og:title" content="Detect heatwaves and cold-spells">
+<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><!-- docsearch --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css">
+<link href="docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Detect heatwaves and cold-spells">
 <meta property="og:description" content="This package is designed to include and encompass the different methods of defining and detecting extreme events, known as heatwaves or cold-spells in both air and water temperature data. These detection algorithms may be used on non-temperature data as well however, this is not catered for explicitly here as no use of this technique in the literature currently exists.">
+<meta property="og:image" content="https://robwschlegel.github.io/heatwaveR/index.html/logo.png">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -60,8 +63,21 @@
   <a href="news/index.html">News</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/robwschlegel/heatwaveR">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+<form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
+      </form>
+      
+    </div>
 <!--/.nav-collapse -->
   </div>
 <!--/.container -->
@@ -112,7 +128,7 @@
 </tr>
 <tr class="even">
 <td><code><a href="reference/event_line.html">event_line()</a></code></td>
-<td>Creates a line plot of marine heatwaves or cold spells.</td>
+<td>Creates a line plot of heatwaves or cold-spells.</td>
 </tr>
 <tr class="odd">
 <td><code><a href="reference/lolli_plot.html">lolli_plot()</a></code></td>
@@ -124,7 +140,7 @@
 </tr>
 <tr class="odd">
 <td><code><a href="reference/geom_flame.html">geom_flame()</a></code></td>
-<td>Creates flame polygons of marine heatwaves or cold spells.</td>
+<td>Creates flame polygons of heatwaves or cold-spells.</td>
 </tr>
 <tr class="even">
 <td><code><a href="reference/geom_lolli.html">geom_lolli()</a></code></td>
@@ -155,11 +171,11 @@ mhw<span class="op">$</span>event <span class="op">%&gt;%</span><span class="st"
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/event_line.html">event_line</a></span>(mhw, <span class="dt">spread =</span> <span class="dv">200</span>, <span class="dt">metric =</span> <span class="st">"int_cum"</span>,
            <span class="dt">start_date =</span> <span class="st">"2010-10-01"</span>, <span class="dt">end_date =</span> <span class="st">"2011-08-30"</span>)</code></pre></div>
 <div class="figure">
-<img src="tools/fig-example1-1.png">
+<img src="fig-example1-1.png">
 </div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/lolli_plot.html">lolli_plot</a></span>(mhw)</code></pre></div>
 <div class="figure">
-<img src="tools/fig-example2-1.png">
+<img src="fig-example2-1.png">
 </div>
 <p>The <code><a href="reference/event_line.html">event_line()</a></code> and <code><a href="reference/lolli_plot.html">lolli_plot()</a></code> functions were designed to work directly on one of the dataframes in the list returned by <code><a href="reference/detect.html">detect()</a></code>. If more control over the figures is required, it may be useful to create them in <strong><code>ggplot2</code></strong> by stacking <code>geoms</code>. We specifically created two new <strong><code>ggplot2</code></strong> <code>geoms</code> to reproduce the functionality of <code><a href="reference/event_line.html">event_line()</a></code> and <code><a href="reference/lolli_plot.html">lolli_plot()</a></code>. These functions are more general in their functionality and can be used outside of the <strong><code>heatwaveR</code></strong> package too. To apply them to MHWs and MCSs first requires that we access the <code>clim</code> or <code>event</code> dataframes within the list that is produced by <code><a href="reference/detect.html">detect()</a></code>. Here is how:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mhw2 &lt;-<span class="st"> </span>mhw<span class="op">$</span>clim <span class="op">%&gt;%</span><span class="st"> </span>
@@ -173,7 +189,7 @@ mhw<span class="op">$</span>event <span class="op">%&gt;%</span><span class="st"
 <span class="st">  </span><span class="kw"><a href="reference/geom_lolli.html">geom_lolli</a></span>(<span class="dt">colour =</span> <span class="st">"salmon"</span>, <span class="dt">colour.n =</span> <span class="st">"red"</span>, <span class="dt">n =</span> <span class="dv">3</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_text">geom_text</a></span>(<span class="dt">colour =</span> <span class="st">"black"</span>, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> <span class="kw">as.Date</span>(<span class="st">"2006-08-01"</span>), <span class="dt">y =</span> <span class="dv">5</span>,
                 <span class="dt">label =</span> <span class="st">"The marine heatwaves</span><span class="ch">\n</span><span class="st">Tend to be left skewed in a</span><span class="ch">\n</span><span class="st">Given time series"</span>))</code></pre></div>
-<p><img src="tools/fig-example3-1.png"><img src="tools/fig-example3-2.png"></p>
+<p><img src="fig-example3-1.png"><img src="fig-example3-2.png"></p>
 <p>The default output of these function may not be to your liking. If so, not to worry. As <strong><code>ggplot2</code></strong> <code>geoms</code>, they are highly malleable. For example, if we were to choose to reproduce the format of the MHWs as seen in Hobday et al. (2016), the code would look something like this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># It is necessary to give geom_flame() at least one row on either side of the event in order to calculate the polygon corners smoothly</span>
 mhw_top &lt;-<span class="st"> </span>mhw2 <span class="op">%&gt;%</span><span class="st"> </span>
@@ -193,16 +209,16 @@ mhw_top &lt;-<span class="st"> </span>mhw2 <span class="op">%&gt;%</span><span c
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">xlab</a></span>(<span class="st">"Date"</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">ylab</a></span>(<span class="kw">expression</span>(<span class="kw">paste</span>(<span class="st">"Temperature ["</span>, degree, <span class="st">"C]"</span>)))</code></pre></div>
 <div class="figure">
-<img src="tools/fig-example4-1.png">
+<img src="fig-example4-1.png">
 </div>
 <p>Should we not wish to highlight any events with <code><a href="reference/geom_lolli.html">geom_lolli()</a></code>, it would look like this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Note that this is accomplished by setting 'colour.n = NA', not by setting 'n = 0'.</span>
 <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(mhw<span class="op">$</span>event, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> date_start, <span class="dt">y =</span> int_cum)) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="reference/geom_lolli.html">geom_lolli</a></span>(<span class="dt">colour =</span> <span class="st">"salmon"</span>, <span class="dt">n =</span> <span class="dv">3</span>, <span class="dt">colour.n =</span> <span class="ot">NA</span>)</code></pre></div>
 <div class="figure">
-<img src="tools/fig-example5-1.png">
+<img src="fig-example5-1.png">
 </div>
-<p>The calculation and visualisation of marine cold spells is also accommodated within this package. Here is a cold spell detected in the OISST data for Western Australia:</p>
+<p>The calculation and visualisation of cold-spells is also accommodated within this package. Here is a cold spell detected in the OISST data for Western Australia:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mcs &lt;-<span class="st"> </span><span class="kw"><a href="reference/detect.html">detect</a></span>(ts, <span class="dt">climatology_start =</span> <span class="dv">1983</span>, <span class="dt">climatology_end =</span> <span class="dv">2012</span>, <span class="dt">cold_spells =</span> <span class="ot">TRUE</span>)
 mcs<span class="op">$</span>event <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span>() <span class="op">%&gt;%</span>
@@ -215,13 +231,13 @@ mcs<span class="op">$</span>event <span class="op">%&gt;%</span><span class="st"
 <span class="co">#&gt; 3       71       52 2014-04-14 2014-05-05 -1.818984 -2.565533  -94.58715</span>
 <span class="co">#&gt; 4        8       38 1986-06-24 1986-07-17 -2.009802 -2.950536  -76.37248</span>
 <span class="co">#&gt; 5       51       32 2003-09-08 2003-09-16 -1.560817 -2.116583  -49.94613</span></code></pre></div>
-<p>The plots showing the marine cold spells look like this:</p>
+<p>The plots showing the cold-spells look like this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># this function needs to be updated as it currently only works when 't' is the column name for date</span>
 <span class="kw"><a href="reference/event_line.html">event_line</a></span>(mcs, <span class="dt">spread =</span> <span class="dv">200</span>, <span class="dt">metric =</span> <span class="st">"int_cum"</span>,
            <span class="dt">start_date =</span> <span class="st">"1990-01-01"</span>, <span class="dt">end_date =</span> <span class="st">"1990-08-30"</span>)
 
 <span class="kw"><a href="reference/lolli_plot.html">lolli_plot</a></span>(mcs)</code></pre></div>
-<p><img src="tools/fig-example6-1.png"><img src="tools/fig-example6-2.png"></p>
+<p><img src="fig-example6-1.png"><img src="fig-example6-2.png"></p>
 <p>Cold spell figures may be created as <code>geoms</code> in <strong><code>ggplot2</code></strong>, too:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mcs2 &lt;-<span class="st"> </span>mcs<span class="op">$</span>clim <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">2990</span><span class="op">:</span><span class="dv">3190</span>)
@@ -243,7 +259,7 @@ mcs<span class="op">$</span>event <span class="op">%&gt;%</span><span class="st"
 <span class="st">  </span><span class="kw"><a href="reference/geom_lolli.html">geom_lolli</a></span>(<span class="dt">colour =</span> <span class="st">"steelblue3"</span>, <span class="dt">colour.n =</span> <span class="st">"navy"</span>, <span class="dt">n =</span> <span class="dv">7</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">xlab</a></span>(<span class="st">"Date"</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">ylab</a></span>(<span class="kw">expression</span>(<span class="kw">paste</span>(<span class="st">"Cumulative intensity [days x "</span>, degree, <span class="st">"C]"</span>)))</code></pre></div>
-<p><img src="tools/fig-example7-1.png"><img src="tools/fig-example7-2.png"></p>
+<p><img src="fig-example7-1.png"><img src="fig-example7-2.png"></p>
 </div>
 <div id="the-exceedance-function" class="section level2">
 <h2 class="hasAnchor">
@@ -278,7 +294,7 @@ exc_<span class="dv">25</span><span class="op">$</span>exceedance <span class="o
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">xlab</a></span>(<span class="st">"Date"</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">ylab</a></span>(<span class="kw">expression</span>(<span class="kw">paste</span>(<span class="st">"Temperature ["</span>, degree, <span class="st">"C]"</span>)))</code></pre></div>
 <div class="figure">
-<img src="tools/fig-example8-1.png">
+<img src="fig-example8-1.png">
 </div>
 <p>The same function may be used to calculate consecutive days below a threshold, too.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">exc_<span class="dv">19</span> &lt;-<span class="st"> </span><span class="kw"><a href="reference/exceedance.html">exceedance</a></span>(ts, <span class="dt">threshold =</span> <span class="dv">19</span>, <span class="dt">below =</span> <span class="ot">TRUE</span>)
@@ -308,7 +324,7 @@ exc_<span class="dv">19</span><span class="op">$</span>exceedance <span class="o
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">xlab</a></span>(<span class="st">"Date"</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">ylab</a></span>(<span class="kw">expression</span>(<span class="kw">paste</span>(<span class="st">"Temperature ["</span>, degree, <span class="st">"C]"</span>)))</code></pre></div>
 <div class="figure">
-<img src="tools/fig-example9-1.png">
+<img src="fig-example9-1.png">
 </div>
 </div>
 </div>
@@ -363,8 +379,7 @@ exc_<span class="dv">19</span><span class="op">$</span>exceedance <span class="o
 <div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Robert W. Schlegel <br><small class="roles"> Author, maintainer, contributor </small>  <br><small>(Graphical and data summaries.)</small>
-</li>
+<li>Robert W. Schlegel <br><small class="roles"> Author, maintainer, contributor </small> <a href="https://orcid.org/0000-0002-0705-1287" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" height="16"></a> </li>
 <li>Eric C. J. Oliver <br><small class="roles"> Author </small>  <br><small>(The brain behind the Python implementation.)</small>
 </li>
 <li>Albertus J. Smit <br><small class="roles"> Author, contributor </small>  <br><small>(R implementation.)</small>
@@ -396,6 +411,20 @@ exc_<span class="dv">19</span><span class="op">$</span>exceedance <span class="o
 </div>
 
   
-
-  </body>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script><script>
+  docsearch({
+    
+    
+    apiKey: 'API_KEY',
+    indexName: 'INDEX_NAME',
+    inputSelector: 'input#search-input.form-control',
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
+  });
+</script>
+</body>
 </html>

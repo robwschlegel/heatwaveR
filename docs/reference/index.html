@@ -11,8 +11,8 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/spacelab/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -27,8 +27,16 @@
 <script src="../pkgdown.js"></script>
 
 
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+
 
 <meta property="og:title" content="Function reference" />
+
+<meta property="og:image" content="https://robwschlegel.github.io/heatwaveR/index.html/logo.png" />
+<meta name="twitter:card" content="summary" />
 
 
 <!-- mathjax -->
@@ -88,8 +96,19 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/robwschlegel/heatwaveR">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
+      
+      <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
       
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -114,7 +133,7 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
+          <h2 id="section-functions" class="hasAnchor"><a href="#section-functions" class="anchor"></a>Functions</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -123,19 +142,19 @@
         <td>
           <p><code><a href="block_average.html">block_average()</a></code> </p>
         </td>
-        <td><p>Calculate Yearly Means for Event Metrics.</p></td>
+        <td><p>Calculate yearly means for event metrics.</p></td>
       </tr><tr>
         <!--  -->
         <td>
           <p><code><a href="detect.html">detect()</a></code> </p>
         </td>
-        <td><p>Detect Marine Heat Waves and Marine Cold Spells.</p></td>
+        <td><p>Detect heatwaves and cold-spells.</p></td>
       </tr><tr>
         <!--  -->
         <td>
           <p><code><a href="event_line.html">event_line()</a></code> </p>
         </td>
-        <td><p>Create a Line Plot of Marine Heat Waves or Cold Spells.</p></td>
+        <td><p>Create a line plot of heatwaves or cold-spells.</p></td>
       </tr><tr>
         <!--  -->
         <td>
@@ -147,43 +166,51 @@
         <td>
           <p><code><a href="geom_flame.html">geom_flame()</a></code> </p>
         </td>
-        <td><p>Create 'Flame' Ploygons.</p></td>
+        <td><p>Create 'flame' ploygons.</p></td>
       </tr><tr>
         <!--  -->
         <td>
           <p><code><a href="geom_lolli.html">geom_lolli()</a></code> </p>
         </td>
-        <td><p>Visualise a Timeline of Several Event Metrics as 'Lollipops'.</p></td>
+        <td><p>Visualise a timeline of several event metrics as 'lollipops'.</p></td>
       </tr><tr>
         <!--  -->
         <td>
           <p><code><a href="lolli_plot.html">lolli_plot()</a></code> </p>
         </td>
-        <td><p>Create a Timeline of Selected Event Metrics.</p></td>
+        <td><p>Create a timeline of selected event metrics as 'lollipops'.</p></td>
       </tr><tr>
         <!--  -->
         <td>
           <p><code><a href="make_whole.html">make_whole()</a></code> </p>
         </td>
-        <td><p>Constructs a Continuous, Uninterrupted Time Series of Temperatures.</p></td>
-      </tr><tr>
+        <td><p>Constructs a continuous, uninterrupted time series of temperatures.</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-data" class="hasAnchor"><a href="#section-data" class="anchor"></a>Data</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
         <!--  -->
         <td>
           <p><code><a href="sst_Med.html">sst_Med</a></code> </p>
         </td>
-        <td><p>Optimally Interpolated 0.25 degree SST for the Mediterranean region.</p></td>
+        <td><p>Optimally interpolated 0.25 degree SST for the Mediterranean region.</p></td>
       </tr><tr>
         <!--  -->
         <td>
           <p><code><a href="sst_NW_Atl.html">sst_NW_Atl</a></code> </p>
         </td>
-        <td><p>Optimally Interpolated 0.25 degree SST for the NW Atlantic region.</p></td>
+        <td><p>Optimally interpolated 0.25 degree SST for the NW Atlantic region.</p></td>
       </tr><tr>
         <!--  -->
         <td>
           <p><code><a href="sst_WA.html">sst_WA</a></code> </p>
         </td>
-        <td><p>Optimally Interpolated 0.25 degree SST for the Western Australian region.</p></td>
+        <td><p>Optimally interpolated 0.25 degree SST for the Western Australian region.</p></td>
       </tr>
     </tbody>
     </table>
@@ -192,7 +219,8 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#section-functions">Functions</a></li>
+      <li><a href="#section-data">Data</a></li>
     </ul>
   </div>
 </div>
@@ -210,6 +238,23 @@
    </div>
 
   
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script>
+  docsearch({
+    
+    
+    apiKey: 'API_KEY',
+    indexName: 'INDEX_NAME',
+    inputSelector: 'input#search-input.form-control',
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
+  });
+</script>
+
 
   </body>
 </html>

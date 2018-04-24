@@ -3,4 +3,7 @@ pkgdown: 0.1.0.9000
 pkgdown_sha: b524cc3bf952f00c11a6a1b342d681a4d59d00c3
 articles:
   gridded_event_detection: gridded_event_detection.html
+urls:
+  reference: https://robwschlegel.github.io/heatwaveR/index.html/reference
+  article: https://robwschlegel.github.io/heatwaveR/index.html/articles
 

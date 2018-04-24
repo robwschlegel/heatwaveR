@@ -1,3 +1,5 @@
+url: https://robwschlegel.github.io/heatwaveR/index.html
+
 navbar:
   title: heatwaveR
   type: default
@@ -12,10 +14,12 @@ navbar:
       href: articles/gridded_event_detection.html
   - text: News
     href: news/index.html
-  right: []
+  right:
+  - icon: fa-github fa-lg
+    href: https://github.com/robwschlegel/heatwaveR
 
 reference:
-- title: All functions
+- title: Functions
   desc: ~
   contents:
   - '`block_average`'
@@ -26,7 +30,16 @@ reference:
   - '`geom_lolli`'
   - '`lolli_plot`'
   - '`make_whole`'
+- title: Data
+  desc: ~
+  contents:
   - '`sst_Med`'
   - '`sst_NW_Atl`'
   - '`sst_WA`'
 
+template:
+  params:
+    bootswatch: spacelab
+    docsearch:
+      api_key: API_KEY
+      index_name: INDEX_NAME

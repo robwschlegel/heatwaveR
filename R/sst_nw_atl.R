@@ -1,4 +1,4 @@
-#' Optimally Interpolated 0.25 degree SST for the NW Atlantic region.
+#' Optimally interpolated 0.25 degree SST for the NW Atlantic region.
 #'
 #' A dataset containing the sea surface temperature (in degrees Celsius) and
 #' date for the Northwest Atlantic region from 1982-01-01 to 2014-12-31.

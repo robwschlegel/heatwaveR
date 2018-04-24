@@ -2,7 +2,7 @@
 % Please edit documentation in R/make_whole.R
 \name{make_whole}
 \alias{make_whole}
-\title{Constructs a Continuous, Uninterrupted Time Series of Temperatures.}
+\title{Constructs a continuous, uninterrupted time series of temperatures.}
 \usage{
 make_whole(data, x = t, y = temp)
 }

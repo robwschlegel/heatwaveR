@@ -1,4 +1,4 @@
-#' Calculate Yearly Means for Event Metrics.
+#' Calculate yearly means for event metrics.
 #'
 #' @param data Accepts the data returned by the \code{\link{detect}} function.
 #' @param report Specify either \code{full} or \code{partial}. Selecting \code{full} causes

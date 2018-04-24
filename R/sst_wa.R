@@ -1,4 +1,4 @@
-#' Optimally Interpolated 0.25 degree SST for the Western Australian region.
+#' Optimally interpolated 0.25 degree SST for the Western Australian region.
 #'
 #' A dataset containing the sea surface temperature temperature
 #' (in degrees Celsius) and date for the Western Australian region

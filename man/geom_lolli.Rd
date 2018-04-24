@@ -2,7 +2,7 @@
 % Please edit documentation in R/geoms.R
 \name{geom_lolli}
 \alias{geom_lolli}
-\title{Visualise a Timeline of Several Event Metrics as 'Lollipops'.}
+\title{Visualise a timeline of several event metrics as 'lollipops'.}
 \usage{
 geom_lolli(mapping = NULL, data = NULL, ..., n = 1, na.rm = FALSE,
   show.legend = NA, inherit.aes = TRUE)

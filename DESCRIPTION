@@ -5,10 +5,12 @@ Title: Detect heatwaves and cold-spells
 Description: This package is designed to include and encompass the different methods of defining and detecting extreme events, known as heatwaves or cold-spells in both air and water temperature data. These detection algorithms may be used on non-temperature data as well however, this is not catered for explicitly here as no use of this technique in the literature currently exists.
 Type: Package
 Authors@R: c(person("Robert W.", "Schlegel", role = c("aut", "cre", "ctb"),
-    email = "robwschlegel@gmail.com", comment = "Graphical and data summaries."),
+    email = "robwschlegel@gmail.com", 
+    comment = c(ORCID = "0000-0002-0705-1287")),
     person("Eric C. J.", "Oliver", role = "aut", 
     comment = "The brain behind the Python implementation."),
-    person("Albertus J.", "Smit", role = c("aut", "ctb"), comment = "R implementation."))
+    person("Albertus J.", "Smit", role = c("aut", "ctb"), 
+    comment = "R implementation."))
 Maintainer: Robert W. Schlegel <robwschlegel@gmail.com>
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -35,4 +37,4 @@ Imports:
     grid,
     lazyeval
 VignetteBuilder: knitr
-URL: https://robwschlegel.github.io/heatwaveR/
+URL: https://robwschlegel.github.io/heatwaveR/index.html

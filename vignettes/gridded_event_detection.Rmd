@@ -2,6 +2,7 @@
 title: "Extreme event detection in gridded data"
 author: "AJ Smit"
 date: "`r Sys.Date()`"
+description: "This vignette covers the steps one may take to load netCDF data and analyse each pixel as separate time series for the occurrence of extreme events."
 output: 
   rmarkdown::html_vignette:
     fig_caption: yes

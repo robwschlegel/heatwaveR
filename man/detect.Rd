@@ -2,7 +2,7 @@
 % Please edit documentation in R/detect.R
 \name{detect}
 \alias{detect}
-\title{Detect Marine Heat Waves and Marine Cold Spells.}
+\title{Detect heatwaves and cold-spells.}
 \usage{
 detect(data, doy = doy, x = t, y = temp, climatology_start = 1983,
   climatology_end = 2012, pctile = 90, window_half_width = 5,

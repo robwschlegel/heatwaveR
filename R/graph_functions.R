@@ -1,4 +1,4 @@
-#' Create a Line Plot of Marine Heat Waves or Cold Spells.
+#' Create a line plot of heatwaves or cold-spells.
 #'
 #' Creates a graph of warm or cold events as per the second row of Figure 3 in
 #' Hobday et al. (2016).
@@ -190,7 +190,7 @@ event_line <- function(data,
     )
 }
 
-#' Create a Timeline of Selected Event Metrics.
+#' Create a timeline of selected event metrics as 'lollipops'.
 #'
 #' Visualise a timeline of several event metrics as 'lollipop' graphs.
 #'
