@@ -270,10 +270,10 @@ time series, which statistically equate to values below the 10th percentile.</p>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The function will return a list of two components, <code>clim</code> and
-<code>event</code>, which are the climatology and MHW (or MCS) events, respectively.
-The climatology contains the full time series of daily temperatures, as well
-as the the seasonal climatology, the threshold and various aspects of the
+    <p>The function will return a list of two tibbles (see the <code>tidyverse</code>),
+<code>clim</code> and <code>event</code>, which are the climatology and events,
+respectively. The climatology contains the full time series of daily temperatures,
+as well as the the seasonal climatology, the threshold and various aspects of the
 events that were detected. The software was designed for detecting extreme
 thermal events, and the units specified below reflect that intended purpose.
 However, the various other kinds of extreme events may be detected according
@@ -417,18 +417,15 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
 #&gt; 10   10. 1982-01-10  21.4           21.8             23.3         0.991
 #&gt; # ... with 4 more variables: thresh_criterion &lt;lgl&gt;, duration_criterion &lt;lgl&gt;,
 #&gt; #   event &lt;lgl&gt;, event_no &lt;int&gt;</div><div class='input'><span class='co'># show some of the heat waves:</span>
-<span class='no'>res</span>$<span class='no'>event</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='fl'>1</span>:<span class='fl'>10</span>]</div><div class='output co'>#&gt;   index_start index_stop event_no duration date_start  date_stop  date_peak
-#&gt; 1         885        889        1        5 1984-06-03 1984-06-07 1984-06-05
-#&gt; 2         899        904        2        6 1984-06-17 1984-06-22 1984-06-19
-#&gt; 3         908        926        3       19 1984-06-26 1984-07-14 1984-07-10
-#&gt; 4        1023       1029        4        7 1984-10-19 1984-10-25 1984-10-23
-#&gt; 5        1033       1037        5        5 1984-10-29 1984-11-02 1984-10-30
-#&gt;   int_mean  int_max   int_var
-#&gt; 1 1.704155 1.921768 0.1503570
-#&gt; 2 1.985059 2.106284 0.1882413
-#&gt; 3 1.909413 2.216489 0.1867391
-#&gt; 4 1.462561 1.830392 0.2910420
-#&gt; 5 1.303361 1.488716 0.1554674</div></pre>
+<span class='no'>res</span>$<span class='no'>event</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='fl'>1</span>:<span class='fl'>10</span>]</div><div class='output co'>#&gt; # A tibble: 5 x 10
+#&gt;   index_start index_stop event_no duration date_start date_stop  date_peak 
+#&gt;         &lt;int&gt;      &lt;int&gt;    &lt;int&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;     &lt;date&gt;    
+#&gt; 1         885        889        1       5. 1984-06-03 1984-06-07 1984-06-05
+#&gt; 2         899        904        2       6. 1984-06-17 1984-06-22 1984-06-19
+#&gt; 3         908        926        3      19. 1984-06-26 1984-07-14 1984-07-10
+#&gt; 4        1023       1029        4       7. 1984-10-19 1984-10-25 1984-10-23
+#&gt; 5        1033       1037        5       5. 1984-10-29 1984-11-02 1984-10-30
+#&gt; # ... with 3 more variables: int_mean &lt;dbl&gt;, int_max &lt;dbl&gt;, int_var &lt;dbl&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

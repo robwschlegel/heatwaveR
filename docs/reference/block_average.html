@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate yearly means for event metrics. — block_average • heatwaveR</title>
+<title>Calculate Yearly Means for Event Metrics. — block_average • heatwaveR</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -33,9 +33,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Calculate yearly means for event metrics. — block_average" />
+<meta property="og:title" content="Calculate Yearly Means for Event Metrics. — block_average" />
 
-<meta property="og:description" content="Calculate yearly means for event metrics." />
+<meta property="og:description" content="Calculate Yearly Means for Event Metrics." />
 
 <meta property="og:image" content="https://robwschlegel.github.io/heatwaveR/index.html/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -133,18 +133,18 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate yearly means for event metrics.</h1>
+    <h1>Calculate Yearly Means for Event Metrics.</h1>
     
     <div class="hidden name"><code>block_average.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Calculate yearly means for event metrics.</p>
+    <p>Calculate Yearly Means for Event Metrics.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>block_average</span>(<span class='no'>data</span>, <span class='kw'>report</span> <span class='kw'>=</span> <span class='st'>"full"</span>)</pre>
+    <pre class="usage"><span class='fu'>block_average</span>(<span class='no'>data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='kw'>report</span> <span class='kw'>=</span> <span class='st'>"full"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -152,6 +152,18 @@
     <tr>
       <th>data</th>
       <td><p>Accepts the data returned by the <code><a href='detect.html'>detect</a></code> function.</p></td>
+    </tr>
+    <tr>
+      <th>x</th>
+      <td><p>This column is expected to contain a vector of dates as per the
+specification of <code>make_whole</code>. If a column headed <code>t</code> is present in
+the dataframe, this argument may be ommitted; otherwise, specify the name of
+the column with dates here.</p></td>
+    </tr>
+    <tr>
+      <th>y</th>
+      <td><p>This is a column containing the measurement variable. If the column
+name differs from the default (i.e. <code>temp</code>), specify the name here.</p></td>
     </tr>
     <tr>
       <th>report</th>
@@ -220,15 +232,37 @@ doi: 10.1016/j.pocean.2015.12.014</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'># t_dat <- make_whole(sst_Med)
-# res <- detect(t_dat, climatology_start = 1983, climatology_end = 2012) # using default values
-# out <- block_average(res)
-# summary(glm(count ~ year, out, family = "poisson"))
-
+    <pre class="examples"><div class='input'><span class='no'>t_dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_whole.html'>make_whole</a></span>(<span class='no'>sst_Med</span>)
+<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='detect.html'>detect</a></span>(<span class='no'>t_dat</span>, <span class='kw'>climatology_start</span> <span class='kw'>=</span> <span class='fl'>1983</span>, <span class='kw'>climatology_end</span> <span class='kw'>=</span> <span class='fl'>2012</span>) <span class='co'># using default values</span>
+<span class='no'>out</span> <span class='kw'>&lt;-</span> <span class='fu'>block_average</span>(<span class='no'>res</span>)
+<span class='fu'>summary</span>(<span class='fu'>glm</span>(<span class='no'>count</span> ~ <span class='no'>year</span>, <span class='no'>out</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"poisson"</span>))</div><div class='output co'>#&gt; 
+#&gt; Call:
+#&gt; glm(formula = count ~ year, family = "poisson", data = out)
+#&gt; 
+#&gt; Deviance Residuals: 
+#&gt;     Min       1Q   Median       3Q      Max  
+#&gt; -2.0580  -1.0345  -0.1116   0.4711   2.2930  
+#&gt; 
+#&gt; Coefficients:
+#&gt;              Estimate Std. Error z value Pr(&gt;|z|)    
+#&gt; (Intercept) -90.78973   26.55752  -3.419 0.000629 ***
+#&gt; year          0.04577    0.01327   3.450 0.000560 ***
+#&gt; ---
+#&gt; Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+#&gt; 
+#&gt; (Dispersion parameter for poisson family taken to be 1)
+#&gt; 
+#&gt;     Null deviance: 54.333  on 32  degrees of freedom
+#&gt; Residual deviance: 41.753  on 31  degrees of freedom
+#&gt; AIC: 118.37
+#&gt; 
+#&gt; Number of Fisher Scoring iterations: 5
+#&gt; </div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
-<span class='fu'>plot</span>(<span class='no'>out</span>$<span class='no'>year</span>, <span class='no'>out</span>$<span class='no'>count</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"salmon"</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>16</span>,
-     <span class='kw'>xlab</span> <span class='kw'>=</span> <span class='st'>"Year"</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"Number of events"</span>)
-<span class='fu'>lines</span>(<span class='no'>out</span>$<span class='no'>year</span>, <span class='no'>out</span>$<span class='no'>count</span>)
+<span class='fu'>ggplot</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>out</span>, <span class='fu'>aes</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>year</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>count</span>)) +
+ <span class='fu'>geom_point</span>(<span class='kw'>colour</span> <span class='kw'>=</span> <span class='st'>"salmon"</span>) +
+ <span class='fu'>geom_line</span>() +
+ <span class='fu'>labs</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Number of events"</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

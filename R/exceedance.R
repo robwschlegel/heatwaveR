@@ -1,6 +1,6 @@
 #' Detect consecutive days in exceedance of a given threshold.
 #'
-#' @importFrom tidyr %>%
+#' @importFrom dplyr %>%
 #'
 #' @param data A data frame with at least the two following columns:
 #' a \code{t} column which is a vector of dates of class \code{Date},

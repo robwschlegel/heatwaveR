@@ -1,6 +1,14 @@
-#' Calculate yearly means for event metrics.
+#' Calculate Yearly Means for Event Metrics.
+#'
+#' @importFrom dplyr %>%
 #'
 #' @param data Accepts the data returned by the \code{\link{detect}} function.
+#' @param x This column is expected to contain a vector of dates as per the
+#' specification of \code{make_whole}. If a column headed \code{t} is present in
+#' the dataframe, this argument may be ommitted; otherwise, specify the name of
+#' the column with dates here.
+#' @param y This is a column containing the measurement variable. If the column
+#' name differs from the default (i.e. \code{temp}), specify the name here.
 #' @param report Specify either \code{full} or \code{partial}. Selecting \code{full} causes
 #' the report to contain NAs for any years in which no events were detected
 #' (except for \code{count}, which will be zero in those years), while \code{partial}
@@ -62,23 +70,32 @@
 #' @export
 #'
 #' @examples
-#' # t_dat <- make_whole(sst_Med)
-#' # res <- detect(t_dat, climatology_start = 1983, climatology_end = 2012) # using default values
-#' # out <- block_average(res)
-#' # summary(glm(count ~ year, out, family = "poisson"))
+#' t_dat <- make_whole(sst_Med)
+#' res <- detect(t_dat, climatology_start = 1983, climatology_end = 2012) # using default values
+#' out <- block_average(res)
+#' summary(glm(count ~ year, out, family = "poisson"))
 #'
 #' \dontrun{
-#' plot(out$year, out$count, col = "salmon", pch = 16,
-#'      xlab = "Year", ylab = "Number of events")
-#' lines(out$year, out$count)
+#'ggplot(data = out, aes(x = year, y = count)) +
+#'  geom_point(colour = "salmon") +
+#'  geom_line() +
+#'  labs(x = NULL, y = "Number of events")
 #' }
-block_average <-
-  function(data,
-           report = "full") {
+block_average <- function(data,
+                          x = t,
+                          y = temp,
+                          report = "full") {
+
+    quo_x <- rlang::enquo(x)
+    quo_y <- rlang::enquo(y)
+
+    clim <- data$clim %>%
+      dplyr::rename(t = !!quo_x,
+                    temp = !!quo_y)
 
     year <- temp <- date_start <- temp_mean <- temp_min <- temp_max <- NULL ###
-    temp_yr <- data$clim %>%
-      dplyr::group_by(year = lubridate::year(date)) %>%
+    temp_yr <- clim %>%
+      dplyr::group_by(year = lubridate::year(t)) %>%
       dplyr::summarise(temp_mean = mean(temp, na.rm = TRUE),
                        temp_min = min(temp),
                        temp_max = max(temp))

@@ -67,8 +67,8 @@ event_line <- function(data,
                        min_duration = 5,
                        spread = 150,
                        metric = "int_cum",
-                       start_date = "1999-06-30",
-                       end_date = "2000-05-30") {
+                       start_date,
+                       end_date) {
 
   date_stop <- date_start <- duration <-  temp <-  NULL
 
