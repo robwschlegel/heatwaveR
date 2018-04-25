@@ -78,14 +78,14 @@ mhw$event %>%
 
 The corresponding `event_line()` and `lolli_plot()`, which represent the massive Western Australian heatwave of 2011, look like this:
 
-```{r fig-example1, eval=FALSE}
+```{r fig-example1}
 event_line(mhw, spread = 200, metric = "int_cum",
            start_date = "2010-10-01", end_date = "2011-08-30")
 ```
 
 ![](docs/fig-example1-1.png)
 
-```{r fig-example2, eval=FALSE}
+```{r fig-example2}
 lolli_plot(mhw)
 ```
 
@@ -93,7 +93,7 @@ lolli_plot(mhw)
 
 The `event_line()` and `lolli_plot()` functions were designed to work directly on one of the dataframes in the list returned by `detect()`. If more control over the figures is required, it may be useful to create them in **`ggplot2`** by stacking `geoms`. We specifically created two new **`ggplot2`** `geoms` to reproduce the functionality of `event_line()` and `lolli_plot()`. These functions are more general in their functionality and can be used outside of the **`heatwaveR`** package too. To apply them to MHWs and MCSs first requires that we access the `clim` or `event` dataframes within the list that is produced by `detect()`. Here is how:
 
-```{r fig-example3, eval=FALSE}
+```{r fig-example3}
 mhw2 <- mhw$clim %>% 
   slice(10580:10690) # select the region of the time series of interest
 
@@ -111,7 +111,7 @@ ggplot(mhw$event, aes(x = date_start, y = int_max)) +
 
 The default output of these function may not be to your liking. If so, not to worry. As **`ggplot2`** `geoms`, they are highly malleable. For example, if we were to choose to reproduce the format of the MHWs as seen in Hobday et al. (2016), the code would look something like this:
 
-```{r fig-example4, eval=FALSE}
+```{r fig-example4}
 # It is necessary to give geom_flame() at least one row on either side of the event in order to calculate the polygon corners smoothly
 mhw_top <- mhw2 %>% 
   slice(49:110)
@@ -125,17 +125,16 @@ ggplot(data = mhw2, aes(x = t)) +
   scale_colour_manual(name = "Line Colour",
                       values = c("temp" = "black", "thresh" =  "forestgreen", "seas" = "grey80")) +
   scale_fill_manual(name = "Event Colour", values = c("all" = "salmon", "top" = "red")) +
-  scale_x_date(date_labels = "%Y-%b") +
+  scale_x_date(date_labels = "%b %Y") +
   guides(colour = guide_legend(override.aes = list(fill = NA))) +
-  xlab("Date") +
-  ylab(expression(paste("Temperature [", degree, "C]")))
+  labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
 ```
 
 ![](docs/fig-example4-1.png)
 
 Should we not wish to highlight any events with `geom_lolli()`, it would look like this:
 
-```{r fig-example5, eval=FALSE}
+```{r fig-example5}
 # Note that this is accomplished by setting 'colour.n = NA', not by setting 'n = 0'.
 ggplot(mhw$event, aes(x = date_start, y = int_cum)) +
   geom_lolli(colour = "salmon", n = 3, colour.n = NA)
@@ -156,7 +155,7 @@ mcs$event %>%
 
 The plots showing the cold-spells look like this:
 
-```{r fig-example6, eval=FALSE}
+```{r fig-example6}
 # this function needs to be updated as it currently only works when 't' is the column name for date
 event_line(mcs, spread = 200, metric = "int_cum",
            start_date = "1990-01-01", end_date = "1990-08-30")
@@ -169,7 +168,7 @@ lolli_plot(mcs)
 
 Cold spell figures may be created as `geoms` in **`ggplot2`**, too:
 
-```{r fig-example7, eval=FALSE}
+```{r fig-example7}
 mcs2 <- mcs$clim %>% 
   slice(2990:3190)
 
@@ -182,9 +181,8 @@ ggplot(data = mcs2, aes(x = t)) +
   scale_colour_manual(name = "Line Colour",
                       values = c("temp" = "black", "thresh" =  "forestgreen", "seas" = "grey80")) +
   scale_y_continuous(limits = c(18, 23.5)) +
-  scale_x_date(date_labels = "%Y-%b") +
-  xlab("Date") +
-  ylab(expression(paste("Temperature [", degree, "C]")))
+  scale_x_date(date_labels = "%b %Y") +
+  labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
 
 ggplot(mcs$event, aes(x = date_start, y = int_cum)) +
   geom_lolli(colour = "steelblue3", colour.n = "navy", n = 7) +
@@ -210,7 +208,7 @@ exc_25$exceedance %>%
 
 Which, when plotted with __`ggplot2`__ code would look like this:
 
-```{r fig-example8, eval=FALSE}
+```{r fig-example8}
 exc_25_thresh <- exc_25$threshold %>% 
   slice(9500:9866)
 
@@ -222,10 +220,9 @@ ggplot(data = exc_25_thresh, aes(x = t)) +
   scale_colour_manual(name = "Line Colour",
                       values = c("temp" = "black", "thresh" =  "forestgreen")) +
   scale_fill_manual(name = "Event Colour", values = c("all" = "salmon")) +
-  scale_x_date(date_labels = "%Y-%b") +
   guides(colour = guide_legend(override.aes = list(fill = NA))) +
-  xlab("Date") +
-  ylab(expression(paste("Temperature [", degree, "C]")))
+  scale_x_date(date_labels = "%b %Y") +
+  labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
 ```
 
 ![](docs/fig-example8-1.png)
@@ -243,7 +240,7 @@ exc_19$exceedance %>%
 
 And were one to desire a visualisation of these data it could be produced with the following code:
 
-```{r fig-example9, eval=FALSE}
+```{r fig-example9}
 exc_19_thresh <- exc_19$threshold %>% 
   slice(1500:1866)
 
@@ -254,9 +251,8 @@ ggplot(data = exc_19_thresh, aes(x = t)) +
   scale_colour_manual(name = "Line Colour",
                       values = c("temp" = "black", "thresh" =  "forestgreen")) +
   scale_y_continuous(limits = c(18, 23.5)) +
-  scale_x_date(date_labels = "%Y-%b") +
-  xlab("Date") +
-  ylab(expression(paste("Temperature [", degree, "C]")))
+  scale_x_date(date_labels = "%b %Y") +
+  labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
 ```
 
 ![](docs/fig-example9-1.png)

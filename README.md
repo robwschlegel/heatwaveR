@@ -96,9 +96,13 @@ event_line(mhw, spread = 200, metric = "int_cum",
 
 ![](docs/fig-example1-1.png)
 
+![](docs/fig-example1-1.png)
+
 ``` r
 lolli_plot(mhw)
 ```
+
+![](docs/fig-example2-1.png)
 
 ![](docs/fig-example2-1.png)
 
@@ -111,6 +115,11 @@ mhw2 <- mhw$clim %>%
 ggplot(mhw2, aes(x = t, y = temp, y2 = thresh_clim_year)) +
   geom_flame() +
   geom_text(aes(x = as.Date("2011-02-26"), y = 25.8, label = "the Destroyer\nof Kelps"))
+```
+
+![](docs/fig-example3-1.png)
+
+``` r
 
 ggplot(mhw$event, aes(x = date_start, y = int_max)) +
   geom_lolli(colour = "salmon", colour.n = "red", n = 3) +
@@ -118,7 +127,7 @@ ggplot(mhw$event, aes(x = date_start, y = int_max)) +
                 label = "The marine heatwaves\nTend to be left skewed in a\nGiven time series"))
 ```
 
-![](docs/fig-example3-1.png) ![](docs/fig-example3-2.png)
+![](docs/fig-example3-2.png) ![](docs/fig-example3-1.png) ![](docs/fig-example3-2.png)
 
 The default output of these function may not be to your liking. If so, not to worry. As **`ggplot2`** `geoms`, they are highly malleable. For example, if we were to choose to reproduce the format of the MHWs as seen in Hobday et al. (2016), the code would look something like this:
 
@@ -136,11 +145,12 @@ ggplot(data = mhw2, aes(x = t)) +
   scale_colour_manual(name = "Line Colour",
                       values = c("temp" = "black", "thresh" =  "forestgreen", "seas" = "grey80")) +
   scale_fill_manual(name = "Event Colour", values = c("all" = "salmon", "top" = "red")) +
-  scale_x_date(date_labels = "%Y-%b") +
+  scale_x_date(date_labels = "%b %Y") +
   guides(colour = guide_legend(override.aes = list(fill = NA))) +
-  xlab("Date") +
-  ylab(expression(paste("Temperature [", degree, "C]")))
+  labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
 ```
+
+![](docs/fig-example4-1.png)
 
 ![](docs/fig-example4-1.png)
 
@@ -151,6 +161,8 @@ Should we not wish to highlight any events with `geom_lolli()`, it would look li
 ggplot(mhw$event, aes(x = date_start, y = int_cum)) +
   geom_lolli(colour = "salmon", n = 3, colour.n = NA)
 ```
+
+![](docs/fig-example5-1.png)
 
 ![](docs/fig-example5-1.png)
 
@@ -177,9 +189,16 @@ The plots showing the cold-spells look like this:
 # this function needs to be updated as it currently only works when 't' is the column name for date
 event_line(mcs, spread = 200, metric = "int_cum",
            start_date = "1990-01-01", end_date = "1990-08-30")
+```
+
+![](docs/fig-example6-1.png)
+
+``` r
 
 lolli_plot(mcs)
 ```
+
+![](docs/fig-example6-2.png)
 
 ![](docs/fig-example6-1.png) ![](docs/fig-example6-2.png)
 
@@ -198,15 +217,21 @@ ggplot(data = mcs2, aes(x = t)) +
   scale_colour_manual(name = "Line Colour",
                       values = c("temp" = "black", "thresh" =  "forestgreen", "seas" = "grey80")) +
   scale_y_continuous(limits = c(18, 23.5)) +
-  scale_x_date(date_labels = "%Y-%b") +
-  xlab("Date") +
-  ylab(expression(paste("Temperature [", degree, "C]")))
+  scale_x_date(date_labels = "%b %Y") +
+  labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
+```
+
+![](docs/fig-example7-1.png)
+
+``` r
 
 ggplot(mcs$event, aes(x = date_start, y = int_cum)) +
   geom_lolli(colour = "steelblue3", colour.n = "navy", n = 7) +
   xlab("Date") +
   ylab(expression(paste("Cumulative intensity [days x ", degree, "C]")))
 ```
+
+![](docs/fig-example7-2.png)
 
 ![](docs/fig-example7-1.png) ![](docs/fig-example7-2.png)
 
@@ -244,11 +269,12 @@ ggplot(data = exc_25_thresh, aes(x = t)) +
   scale_colour_manual(name = "Line Colour",
                       values = c("temp" = "black", "thresh" =  "forestgreen")) +
   scale_fill_manual(name = "Event Colour", values = c("all" = "salmon")) +
-  scale_x_date(date_labels = "%Y-%b") +
   guides(colour = guide_legend(override.aes = list(fill = NA))) +
-  xlab("Date") +
-  ylab(expression(paste("Temperature [", degree, "C]")))
+  scale_x_date(date_labels = "%b %Y") +
+  labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
 ```
+
+![](docs/fig-example8-1.png)
 
 ![](docs/fig-example8-1.png)
 
@@ -282,10 +308,11 @@ ggplot(data = exc_19_thresh, aes(x = t)) +
   scale_colour_manual(name = "Line Colour",
                       values = c("temp" = "black", "thresh" =  "forestgreen")) +
   scale_y_continuous(limits = c(18, 23.5)) +
-  scale_x_date(date_labels = "%Y-%b") +
-  xlab("Date") +
-  ylab(expression(paste("Temperature [", degree, "C]")))
+  scale_x_date(date_labels = "%b %Y") +
+  labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
 ```
+
+![](docs/fig-example9-1.png)
 
 ![](docs/fig-example9-1.png)
 

@@ -26,8 +26,8 @@
 #'   \item \code{linetype}
 #' }
 #'
-#' @param mapping Set of aesthetic mappings created by \code{aes()} or \code{aes_()}. If
-#' specified and inherit.aes = TRUE (the default), it is combined with the
+#' @param mapping Set of aesthetic mappings created by \code{aes()} or \code{aes_()}.
+#' If specified and inherit.aes = TRUE (the default), it is combined with the
 #' default mapping at the top level of the plot. You must supply mapping if
 #' there is no plot mapping.
 #' @param data The data to be displayed in this layer. There are three options:
@@ -75,7 +75,6 @@
 #' mhw <- mhw[10580:10690,]
 #'
 #' \dontrun{
-#' require(ggplot2)
 #' ggplot(mhw, aes(x = t, y = temp)) +
 #'   geom_flame(aes(y2 = thresh_clim_year)) +
 #'   geom_text(aes(x = as.Date("2011-02-01"), y = 28,
@@ -156,8 +155,9 @@ GeomFlame <- ggplot2::ggproto("GeomFlame", ggplot2::Geom,
                                 ids <- cumsum(missing_pos) + 1
                                 ids[missing_pos] <- NA
 
-                                positions <- plyr::summarise(data,
-                                                             x = c(x, rev(x)), y = c(y, rev(y2)), id = c(ids, rev(ids)))
+                                positions <- data.frame(x = c(data$x, rev(data$x)),
+                                                        y = c(data$y, rev(data$y2)),
+                                                        id = c(ids, rev(ids)))
                                 munched <- coord_munch(coord, positions, panel_scales)
 
                                 grid::polygonGrob(
@@ -251,7 +251,6 @@ GeomFlame <- ggplot2::ggproto("GeomFlame", ggplot2::Geom,
 #' mhw <- res$event
 #'
 #' \dontrun{
-#' require(lubridate)
 #' # Height of lollis represent event durations and their colours
 #' # are mapped to the events' cumulative intensity:
 #' ggplot(mhw, aes(x = mhw$date_peak, y = mhw$duration)) +

@@ -24,16 +24,16 @@ Suggests:
     rmarkdown,
     covr
 Imports:
+    plyr,
     tibble,
     ggplot2,
     lubridate,
     dplyr,
+    tidyr,
+    raster,
     stats,
     utils,
     zoo,
-    tidyr,
-    plyr,
-    raster,
     grid,
     lazyeval
 VignetteBuilder: knitr
