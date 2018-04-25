@@ -6,16 +6,17 @@ navbar:
   left:
   - icon: fa-home fa-lg
     href: index.html
-  - text: Reference
+  - text: "Reference"
     href: reference/index.html
-  - text: Articles
+  - text: "Articles"
     menu:
-    - text: Extreme event detection in gridded data
+    - text: "Extreme event detection in gridded data"
       href: articles/gridded_event_detection.html
   - text: News
     href: news/index.html
   right:
   - icon: fa-github fa-lg
+    text: "github"
     href: https://github.com/robwschlegel/heatwaveR
 
 reference:
