@@ -41,6 +41,7 @@ reference:
 template:
   params:
     bootswatch: spacelab
+    ganalytics: UA-118123016-1
     docsearch:
       api_key: API_KEY
       index_name: INDEX_NAME

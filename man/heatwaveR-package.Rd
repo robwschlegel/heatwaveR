@@ -20,8 +20,8 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Eric C. J. Oliver (The brain behind the Python implementation.)
-  \item Albertus J. Smit (R implementation.) [contributor]
+  \item Eric C. J. Oliver (0000-0002-4006-2826)
+  \item Albertus J. Smit (0000-0002-3799-6126) [contributor]
 }
 
 }
