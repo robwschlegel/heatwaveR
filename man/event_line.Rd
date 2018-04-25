@@ -4,16 +4,24 @@
 \alias{event_line}
 \title{Create a line plot of heatwaves or cold-spells.}
 \usage{
-event_line(data, min_duration = 5, spread = 150, metric = "int_cum",
-  start_date = "1999-06-30", end_date = "2000-05-30")
+event_line(data, x = t, y = temp, min_duration = 5, spread = 150,
+  metric = "int_cum", start_date = "1999-06-30", end_date = "2000-05-30")
 }
 \arguments{
-\item{data}{The function receives the output from the \code{\link{detect}} function.}
+\item{data}{The function receives the full (list) output from the \code{\link{detect}} function.}
 
-\item{min_duration}{The minimum duration that an event has to for it to
-qualify as a marine heat wave or marine cold spell.}
+\item{x}{This column is expected to contain a vector of dates as per the
+specification of \code{make_whole}. If a column headed \code{t} is present in
+the dataframe, this argument may be ommitted; otherwise, specify the name of
+the column with dates here.}
 
-\item{spread}{The the number of days leading and trailing the largest event
+\item{y}{This is a column containing the measurement variable. If the column
+name differs from the default (i.e. \code{temp}), specify the name here.}
+
+\item{min_duration}{The minimum duration (days) the event must be for it to
+qualify as a heatwave or cold-spell.}
+
+\item{spread}{The number of days leading and trailing the largest event
 (as per \code{metric}) detected within the time period specified by
 \code{start_date} and \code{end_date}. The default is 150 days.}
 

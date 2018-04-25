@@ -7,12 +7,17 @@
 #' scale_fill_manual scale_x_date xlab ylab theme theme_grey element_text
 #' element_blank element_rect element_line
 #' @importFrom grid unit
-#' @importFrom plyr .
 #'
-#' @param data The function receives the output from the \code{\link{detect}} function.
-#' @param min_duration The minimum duration that an event has to for it to
-#' qualify as a marine heat wave or marine cold spell.
-#' @param spread The the number of days leading and trailing the largest event
+#' @param data The function receives the full (list) output from the \code{\link{detect}} function.
+#' @param x This column is expected to contain a vector of dates as per the
+#' specification of \code{make_whole}. If a column headed \code{t} is present in
+#' the dataframe, this argument may be ommitted; otherwise, specify the name of
+#' the column with dates here.
+#' @param y This is a column containing the measurement variable. If the column
+#' name differs from the default (i.e. \code{temp}), specify the name here.
+#' @param min_duration The minimum duration (days) the event must be for it to
+#' qualify as a heatwave or cold-spell.
+#' @param spread The number of days leading and trailing the largest event
 #' (as per \code{metric}) detected within the time period specified by
 #' \code{start_date} and \code{end_date}. The default is 150 days.
 #' @param metric One of the following options: \code{int_mean}, \code{int_max}, \code{int_var},
@@ -57,87 +62,57 @@
 #' start_date = "2010-10-01", end_date = "2011-08-30")
 #' }
 event_line <- function(data,
+                       x = t,
+                       y = temp,
                        min_duration = 5,
                        spread = 150,
                        metric = "int_cum",
                        start_date = "1999-06-30",
                        end_date = "2000-05-30") {
-  date_stop <- date_start <- int_max <- int_mean <- int_cum <- duration <- NULL
+
+  date_stop <- date_start <- duration <-  temp <-  NULL
+
+  if (!(is.list(data))) stop("Please ensure you are running this function on the output of 'heatwaveR::detect()'")
+
+  ts.x <- eval(substitute(x), data$clim)
+  data$clim$ts.x <- ts.x
+  ts.y <- eval(substitute(y), data$clim)
+  data$clim$ts.y <- ts.y
 
   event <- data$event %>%
     dplyr::filter(date_stop >= start_date & date_start <= end_date)
+
   if (nrow(event) == 0) stop("No events detected!\nConsider changing the 'start_date' or 'end_date' values.")
+
+  if (!(metric %in% c("int_mean", "int_max", "int_var","int_cum", "int_mean_rel_thresh", "int_max_rel_thresh",
+                      "int_var_rel_thresh","int_cum_rel_thresh", "int_mean_abs", "int_max_abs", "int_var_abs",
+                      "int_cum_abs", "int_mean_norm", "int_max_norm", "rate_onset", "rate_decline"))) {
+    stop("Please ensure you have spelled the desired metric correctly.")
+  }
+
   event <- event[order(-abs(event[colnames(event) == metric])),]
+  event <- event %>%
+    dplyr::filter(duration >= min_duration)
+
+  event$index_start_fix <- event$index_start-1
+  event$index_stop_fix <- event$index_stop+1
+
   event_top <- event[1, ]
 
-  date_spread <- seq((event_top$date_start - spread), (event_top$date_stop + spread), by = 1)
+  date_spread <- seq((event_top$date_start - spread), (event_top$date_stop + spread), by = "day")
 
-  clim <- dplyr::filter(data$clim, t %in% date_spread)
+  clim_spread <- data$clim %>%
+    dplyr::filter(ts.x %in% date_spread)
 
-  temp <- event_no <- thresh_clim_year <- seas_clim_year <- NULL # avoids annoying notes during check...
-  dat3 <- data.frame()
-  for (i in min(clim$event_no, na.rm = TRUE):max(clim$event_no, na.rm = TRUE)) {
-    x <- clim[stats::complete.cases(clim$event_no) & clim$event_no == i,]
-    grid.df <-
-      data.frame(t = seq(x$t[1], x$t[nrow(x)], by = "day"))
-    x <- merge(x, grid.df, by = "t", all.y = TRUE)
-
-    if (nrow(x[x$thresh_criterion != FALSE,]) != nrow(x)) {
-      ex1 <- rle(x$thresh_criterion)
-      ind1 <- rep(seq_along(ex1$lengths), ex1$lengths)
-      s1 <- split(zoo::index(x$thresh_criterion), ind1)
-      proto_events <- s1[ex1$values == TRUE]
-      index_stop <- index_start <- NULL ###
-      proto_events_rng <-
-        lapply(proto_events, function(x)
-          data.frame(index_start = min(x), index_stop = max(x)))
-      duration <- NULL ###
-      # min_duration <- NULL ###
-      protoFunc <- function(proto_data) {
-        out <- proto_data %>%
-          dplyr::mutate(duration = index_stop - index_start + 1) %>%
-          dplyr::filter(duration >= min_duration) %>%
-          dplyr::mutate(date_start = x[index_start, "t"]) %>%
-          dplyr::mutate(date_stop = x[index_stop, "t"])
-      }
-      proto_events <- do.call(rbind, proto_events_rng) %>%
-        dplyr::mutate(event_no = cumsum(ex1$values[ex1$values == TRUE])) %>%
-        protoFunc()
-      sub.event <- function(proto_event){
-        df <-  x[proto_event$index_start:proto_event$index_stop,]
-        df$event_no_sub <- paste(df$event_no, proto_event$event_no, sep = ".")
-        return(df)
-      }
-      x <- plyr::ddply(proto_events, .(index_start), sub.event)
-      x$event_no_sub <- as.character(x$event_no_sub)
-    } else {
-      event_no_sub <- NULL
-      x$event_no_sub <- x$event_no
-    }
-
-    mirror <- function(x){
-      event_no_sub <- NULL
-      y <- data.frame(
-        temp = x$temp,
-        t = x$t,
-        event_no = x$event_no,
-        event_no_sub = x$event_no_sub
-      )
-      z <-
-        rbind(y, data.frame(
-          temp = rev(x$thresh_clim_year),
-          t = rev(x$t),
-          event_no = x$event_no,
-          event_no_sub = x$event_no_sub
-        ))
-      z$order <- rep(c(1, 2), each = nrow(x))
-      return(z)
-    }
-    z <- plyr::ddply(x, .(event_no_sub), mirror)
-    z$event_no_sub <- as.character(z$event_no_sub)
-    dat3 <- rbind(dat3, z)
-
+  clim_events <- data.frame()
+  for (i in 1:nrow(event)) {
+    clim_sub <- data$clim[(event$index_start_fix[i]):(event$index_stop_fix[i]),]
+    clim_events <- rbind(clim_events, clim_sub)
   }
+
+  clim_top <- data$clim[event_top$index_start_fix:event_top$index_stop_fix,]
+
+  thresh_clim_year <- seas_clim_year <- NULL # avoids annoying notes during check...
 
   lineCol <- c(
     "temperature" = "black",
@@ -151,27 +126,25 @@ event_line <- function(data,
     fillCol <- c("events" = "steelblue3", "peak event" = "navy")
   }
 
-  # yaxis = "int_max" yaxis = "int_mean" yaxis = "int_cum" yaxis = "duration"
   if (metric == "int_max") ylabel <- expression(paste("Maximum intensity [", degree, "C]"))
   if (metric == "int_mean") ylabel <- expression(paste("Mean intensity [", degree, "C]"))
   if (metric == "int_cum") ylabel <- expression(paste("Cumulative intensity [", degree, "C x days]"))
   if (metric == "duration") ylabel <- "Duration [days]"
   if (!exists("ylabel")) ylabel <- metric
 
-  ggplot(data = clim, aes(x = t, y = temp)) +
-    geom_polygon(data = dat3,
-                 aes(x = t, y = temp, group = event_no_sub, fill = "events"), size = 0.5) +
-    geom_polygon(data = dat3[dat3$event_no == event_top$event_no[1],],
-                 aes(x = t, y = temp, group = event_no_sub, fill = "peak event"),
-                 size = 0.5) +
+  ggplot(data = clim_spread, aes(x = ts.x, y = ts.y)) +
+    geom_flame(data = clim_events, size = 0.5,
+               aes(x = ts.x, y = ts.y, y2 = thresh_clim_year, fill = "events")) +
+    geom_flame(data = clim_top, size = 0.5,
+               aes(x = ts.x, y = ts.y, y2 = thresh_clim_year, fill = "peak event")) +
     geom_line(aes(y = seas_clim_year, col = "climatology"),
               size = 0.7, alpha = 1) +
     geom_line(aes(y = thresh_clim_year, col = "threshold"),
               size = 0.7, alpha = 1) +
-    geom_line(aes(y = temp, col = "temperature"), size = 0.6) +
+    geom_line(aes(y = ts.y, col = "temperature"), size = 0.6) +
     scale_colour_manual(name = NULL, values = lineCol) +
     scale_fill_manual(name = NULL, values = fillCol, guide = FALSE) +
-    scale_x_date(expand = c(0, 0), date_labels = "%b %Y") +
+    scale_x_date(expand = c(0, 0), date_labels = "%b %Y", name = NULL) +
     ylab(ylabel) +
     theme(plot.background = element_blank(),
           panel.background = element_rect(fill = "white"),

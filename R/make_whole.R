@@ -3,7 +3,7 @@
 #' Takes a series of dates and temperatures, and if irregular (but ordered), inserts
 #' missing dates and fills correpsonding temperatures with NAs.
 #'
-#' @importFrom tidyr %>%
+#' @importFrom dplyr %>%
 #'
 #' @param data A data frame with columns for date and temperature data.
 #' Ordered daily data are expected, and although missing values (NA) can be
