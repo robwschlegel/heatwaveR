@@ -20,14 +20,14 @@ Default is \code{date_start}.}
 }
 \value{
 The function will return a graph of the intensity of the selected
-metric along the y-axis versus either \code{t} or \code{event_no}.
+\code{metric} along the y-axis versus the choseb \code{xaxis}.
 The number of top events as per \code{event_count} will be highlighted
 in a brighter colour. This function differs in use from \code{\link{geom_lolli}}
 in that it creates a stand alone figure. The benefit of this being
-that one must not have any prior knowledge of ggplot2 to create the figure.
+that one must not have any prior knowledge of \code{ggplot2} to create the figure.
 }
 \description{
-Visualise a timeline of several event metrics as 'lollipop' graphs.
+Visualise a timeline of several possible event metrics as 'lollipop' graphs.
 }
 \examples{
 ts_dat <- make_whole(sst_NW_Atl)
