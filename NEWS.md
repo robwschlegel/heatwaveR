@@ -4,6 +4,7 @@
 * Synced ganalytics
 * Fixed `event_line()` to acknowledge column names other than `t` and `temp`
 * Fixed `lolli_plot()` to use underlying `geom_lolli()`
+* Search bar now live
 
 # heatwaveR 0.0.1.9000 (2018-04-24)
 

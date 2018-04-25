@@ -43,5 +43,5 @@ template:
     bootswatch: spacelab
     ganalytics: UA-118123016-1
     docsearch:
-      api_key: API_KEY
-      index_name: INDEX_NAME
+      api_key: '2edc7627dae0471f3d765c3355bebbf3'
+      index_name: 'heatwaver'

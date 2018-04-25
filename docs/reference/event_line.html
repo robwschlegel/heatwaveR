@@ -76,7 +76,7 @@ Hobday et al. (2016)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.0.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.2.9000</span>
       </span>
     </div>
 
@@ -146,24 +146,36 @@ Hobday et al. (2016).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>event_line</span>(<span class='no'>data</span>, <span class='kw'>min_duration</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>spread</span> <span class='kw'>=</span> <span class='fl'>150</span>, <span class='kw'>metric</span> <span class='kw'>=</span> <span class='st'>"int_cum"</span>,
-  <span class='kw'>start_date</span> <span class='kw'>=</span> <span class='st'>"1999-06-30"</span>, <span class='kw'>end_date</span> <span class='kw'>=</span> <span class='st'>"2000-05-30"</span>)</pre>
+    <pre class="usage"><span class='fu'>event_line</span>(<span class='no'>data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='kw'>min_duration</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>spread</span> <span class='kw'>=</span> <span class='fl'>150</span>,
+  <span class='kw'>metric</span> <span class='kw'>=</span> <span class='st'>"int_cum"</span>, <span class='kw'>start_date</span> <span class='kw'>=</span> <span class='st'>"1999-06-30"</span>, <span class='kw'>end_date</span> <span class='kw'>=</span> <span class='st'>"2000-05-30"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>The function receives the output from the <code><a href='detect.html'>detect</a></code> function.</p></td>
+      <td><p>The function receives the full (list) output from the <code><a href='detect.html'>detect</a></code> function.</p></td>
+    </tr>
+    <tr>
+      <th>x</th>
+      <td><p>This column is expected to contain a vector of dates as per the
+specification of <code>make_whole</code>. If a column headed <code>t</code> is present in
+the dataframe, this argument may be ommitted; otherwise, specify the name of
+the column with dates here.</p></td>
+    </tr>
+    <tr>
+      <th>y</th>
+      <td><p>This is a column containing the measurement variable. If the column
+name differs from the default (i.e. <code>temp</code>), specify the name here.</p></td>
     </tr>
     <tr>
       <th>min_duration</th>
-      <td><p>The minimum duration that an event has to for it to
-qualify as a marine heat wave or marine cold spell.</p></td>
+      <td><p>The minimum duration (days) the event must be for it to
+qualify as a heatwave or cold-spell.</p></td>
     </tr>
     <tr>
       <th>spread</th>
-      <td><p>The the number of days leading and trailing the largest event
+      <td><p>The number of days leading and trailing the largest event
 (as per <code>metric</code>) detected within the time period specified by
 <code>start_date</code> and <code>end_date</code>. The default is 150 days.</p></td>
     </tr>
@@ -255,8 +267,8 @@ Robert W. Schlegel
   docsearch({
     
     
-    apiKey: 'API_KEY',
-    indexName: 'INDEX_NAME',
+    apiKey: '2edc7627dae0471f3d765c3355bebbf3',
+    indexName: 'heatwaver',
     inputSelector: 'input#search-input.form-control',
     transformData: function(hits) {
       return hits.map(function (hit) {
