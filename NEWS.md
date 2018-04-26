@@ -1,3 +1,8 @@
+# heatwaveR 0.0.3.9000 (2018-04-26)
+
+* Removed rlang dependency
+* TOuch-up to `block_average()`
+
 # heatwaveR 0.0.2.9000 (2018-04-25)
 
 * Established theme for changelog
