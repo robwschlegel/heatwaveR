@@ -1,5 +1,11 @@
-context("test-detect.R")
+context("Test detect.R")
 
-test_that("multiplication works", {
-  expect_equal(2 * 2, 4)
+test_that("detect() returns the correct lists, tibbles, and columns", {
+  res <- detect(data = make_whole(sst_Med),
+                climatology_start = 1983, climatology_end = 2012)
+  expect_is(res, "list")
+  expect_is(res$clim, "tbl_df")
+  expect_is(res$event, "tbl_df")
+  expect_equal(ncol(res$clim), 10)
+  expect_equal(ncol(res$event), 23)
 })
