@@ -7,7 +7,6 @@ context("Test graph_functions.R")
 test_that("event_line() doesn't fall over", {
   res <- detect(data = make_whole(sst_Med),
                 climatology_start = 1983, climatology_end = 2012)
-    dplyr::slice(1300:1500)
   tp <- event_line(data = res, start_date = "2012-01-01", end_date = "2012-12-31")
   expect_is(tp, "ggplot")
 })

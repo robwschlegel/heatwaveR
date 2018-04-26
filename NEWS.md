@@ -3,6 +3,7 @@
 * Removed rlang dependency
 * Touch-up to `block_average()`
 * Tested `make_whole()`
+* Basic testing for other functions
 
 # heatwaveR 0.0.2.9000 (2018-04-25)
 
