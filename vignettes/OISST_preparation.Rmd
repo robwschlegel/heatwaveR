@@ -1,0 +1,58 @@
+---
+title: "Retrieval and processing of OISST data"
+author: "AJ Smit"
+date: "`r Sys.Date()`"
+description: "This vignette to download OISST netCDF files and prepare it for the detection of extreme events."
+output: 
+  rmarkdown::html_vignette:
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{OISST retrieval and processing}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r global_options, include = FALSE}
+knitr::opts_chunk$set(fig.width = 4, fig.align = 'center',
+                      echo = FALSE, warning = FALSE, 
+                      message = FALSE, tidy = FALSE)
+```
+
+```{r load-pkg, echo = FALSE, eval = FALSE}
+library(RmarineHeatWaves)
+library(ncdf4)
+library(plyr)
+library(dplyr)
+library(tibble)
+library(reshape2)
+library(lubridate)
+library(ggplot2)
+library(doMC); doMC::registerDoMC(cores = 4)
+```
+
+## Overview
+
+The Reynolds OISST v2 data can be retrieved from: https://podaac.jpl.nasa.gov/dataset/AVHRR_OI-NCEI-L4-GLOB-v2.0 These are daily files for the whole world, so the spatial extent is too big and the files therefore too large. We shall subset the data using a python script prior to downloading them.
+
+To do the subsetting and bring the data to your local computer/server, you will need access to python 2.7 with numpy. Make sure it is installed on your system and visible on the system PATH.
+
+Then, please create a folder on your server where all the data will be received, e.g. `Rita_MHW_events/netCDF`
+
+Into this directory, copy the python script that I attach here (it is called `subset_dataset.py`). I use MacOS X (or linux), so I'm not able to provide instructions if you use Windows. You'll have to use the command line on your operating system (I think it is called 'Command Prompt' in Windows; in a unix-like operating system it is the 'terminal'). In the terminal, change to the directory that will receive the netCDF files, where the python script now lives. If python is in your system's path, you should be able to execute the following command on the terminal/command line at the prompt `>`:
+
+> ./subset_dataset.py -s 19810901 -f 20180304 -b -20 0 15 40 -x AVHRR_OI-NCEI-L4-GLOB-v2.0
+
+The following parameters are included with this script:
+
+long.min=0
+long.max=-20
+lat.min=15
+lat.max=40
+start.date=1981-09-01
+end.date=2018-03-04
+short.name=AVHRR_OI-NCEI-L4-GLOB-v2.0
+
+You can change any of these parameters in your script to change the spatial extent and the time period.
+
+If everything works according to plan, a bunch of data will now be downloaded. This might take several hours. There will be one netCDF file for each day of the study period. In later steps in R we shall combine them into one .csv file, and then do some other processing steps on them to extract the heat waves.
+
