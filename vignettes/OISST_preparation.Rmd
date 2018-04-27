@@ -20,7 +20,7 @@ knitr::opts_chunk$set(fig.width = 4, fig.align = 'center',
 
 ## Overview
 
-In this vignette we shall look at retrieving and processing the [Reynolds optimally interpolated sea surface temperature](https://journals.ametsoc.org/doi/full/10.1175/2007JCLI1824.1) (OISST), which is global data set of Advanced Very High Resolution Radiometer (AVHRR) derived SSTs at a daily resolution, starting on 1 September 1981. The source of the data is the [Physical Oceanography Distributed Active Archive Centre (PODAAC)](https://podaac.jpl.nasa.gov/). 
+In this vignette we shall look at retrieving and processing the [Reynolds optimally interpolated sea surface temperature](https://journals.ametsoc.org/doi/full/10.1175/2007JCLI1824.1) (OISST), which is a global data set of Advanced Very High Resolution Radiometer (AVHRR) derived SSTs at a daily resolution, starting on 1 September 1981. The source of the data is the [Physical Oceanography Distributed Active Archive Centre (PODAAC)](https://podaac.jpl.nasa.gov/). 
 
 ![**Figure 1.** OISST data plotted on a Gnomic Cubic Sphere projection thanks to [Panoply](https://www.giss.nasa.gov/tools/panoply/).](avhrr-only-v2.19810901.png){width=100%}
 
@@ -32,9 +32,9 @@ To do the subsetting and bring the data to your local computer/server, you will 
 
 Create a folder on your server where all the data will be received, e.g. `~/project/netCDF`.
 
-Into this directory, copy the python script [`subset_dataset.py`](https://podaac.jpl.nasa.gov/forum/viewtopic.php?f=5&t=219). I use MacOS X (or linux), so I'm not able to provide instructions if you use Windows. In a terminal, change to the directory that will receive the netCDF files, where the python script now lives. If python is in your system's path, you should be able to execute the following command on the terminal/command line at the prompt `>`:
+Into this directory, copy the python script, [`subset_dataset.py`](https://podaac.jpl.nasa.gov/forum/viewtopic.php?f=5&t=219). I use MacOS X (or linux), so I'm not able to provide instructions if you use Windows. In a terminal, change to the directory that will receive the netCDF files, where the python script now lives. If python is in your system's path, you should be able to execute the following command on the terminal/command line at the prompt `>`:
 
-> `./subset_dataset.py -s 19810901 -f 20180304 -b -20 0 15 40 -x AVHRR_OI-NCEI-L4-GLOB-v2.0`
+`> ./subset_dataset.py -s 19810901 -f 20180304 -b -20 0 15 40 -x AVHRR_OI-NCEI-L4-GLOB-v2.0`
 
 Encapsulated by the above command are the following parameters:
 
@@ -43,12 +43,12 @@ Encapsulated by the above command are the following parameters:
 * lat.min = -45
 * lat.max = -20
 * start.date = 1981-09-01
-* end.date = 2018-03-04
+* end.date = 2017-10-194
 * short.name = AVHRR_OI-NCEI-L4-GLOB-v2.0
 
 The spatial extent is for the Agulhas Current region around South Africa; we select files starting in 1981-09-01 and going up to 2017-10-19. The short name is the name mentioned on the [Reynolds OISST data website](https://podaac.jpl.nasa.gov/dataset/AVHRR_OI-NCEI-L4-GLOB-v2.0)---substituting this name for any of the other SST datasets on that website *should* then permit the retrieval of other data sets (e.g. the [MUR data's](https://podaac.jpl.nasa.gov/dataset/MUR-JPL-L4-GLOB-v4.1) short name is MUR-JPL-L4-GLOB-v4.1).
 
-Adjust any of these parameters in your own script to define the spatial extent and the time period as required by your study.
+Adjust any of these parameters to taste in order to define the spatial extent and the time period as required by your study.
 
 If everything works according to plan, a bunch of data will now be downloaded. This might take several hours. There will be one netCDF file for each day of the study period. In later steps in R we shall combine them into one `.csv` file, and then do some other processing steps on them to extract the heat waves.
 
@@ -93,13 +93,13 @@ Here is a set of steps that does the job for me:
 # This function will append data to the end of an existing file that had been
 # previously produced by this script. This will result in duplicate data. If you
 # need to rerun the script for some reason, please make sure to delete the file
-# created as the result of the previous run.
+# created as the result of the previous run from the `csv.dir`.
 
 
 # LOAD LIBRARIES ----------------------------------------------------------
 
 library(ncdf4) # library for processing netCDFs
-library(data.table) # for fast csv write function, `fwrite()`
+library(data.table) # for fast .csv write function, `fwrite()`
 library(tidyverse) # misc. data processing conveniences
 library(reshape2) # for making a long data format
 library(plyr) # for `llply()`

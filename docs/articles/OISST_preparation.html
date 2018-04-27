@@ -113,7 +113,7 @@
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
-<p>In this vignette we shall look at retrieving and processing the <a href="https://journals.ametsoc.org/doi/full/10.1175/2007JCLI1824.1">Reynolds optimally interpolated sea surface temperature</a> (OISST), which is global data set of Advanced Very High Resolution Radiometer (AVHRR) derived SSTs at a daily resolution, starting on 1 September 1981. The source of the data is the <a href="https://podaac.jpl.nasa.gov/">Physical Oceanography Distributed Active Archive Centre (PODAAC)</a>.</p>
+<p>In this vignette we shall look at retrieving and processing the <a href="https://journals.ametsoc.org/doi/full/10.1175/2007JCLI1824.1">Reynolds optimally interpolated sea surface temperature</a> (OISST), which is a global data set of Advanced Very High Resolution Radiometer (AVHRR) derived SSTs at a daily resolution, starting on 1 September 1981. The source of the data is the <a href="https://podaac.jpl.nasa.gov/">Physical Oceanography Distributed Active Archive Centre (PODAAC)</a>.</p>
 <div class="figure">
 <img src="avhrr-only-v2.19810901.png" alt="Figure 1. OISST data plotted on a Gnomic Cubic Sphere projection thanks to Panoply." style="width:100.0%"><p class="caption"><strong>Figure 1.</strong> OISST data plotted on a Gnomic Cubic Sphere projection thanks to <a href="https://www.giss.nasa.gov/tools/panoply/">Panoply</a>.</p>
 </div>
@@ -124,10 +124,8 @@
 <a href="#subsetting-using-a-python-script" class="anchor"></a>Subsetting using a python script</h2>
 <p>To do the subsetting and bring the data to your local computer/server, you will need access to <strong>python 2.7</strong> with <strong>numpy</strong>. Make sure it is installed on your system and visible on the system PATH.</p>
 <p>Create a folder on your server where all the data will be received, e.g. <code>~/project/netCDF</code>.</p>
-<p>Into this directory, copy the python script <a href="https://podaac.jpl.nasa.gov/forum/viewtopic.php?f=5&amp;t=219"><code>subset_dataset.py</code></a>. I use MacOS X (or linux), so I’m not able to provide instructions if you use Windows. In a terminal, change to the directory that will receive the netCDF files, where the python script now lives. If python is in your system’s path, you should be able to execute the following command on the terminal/command line at the prompt <code>&gt;</code>:</p>
-<blockquote>
-<p><code>./subset_dataset.py -s 19810901 -f 20180304 -b -20 0 15 40 -x AVHRR_OI-NCEI-L4-GLOB-v2.0</code></p>
-</blockquote>
+<p>Into this directory, copy the python script, <a href="https://podaac.jpl.nasa.gov/forum/viewtopic.php?f=5&amp;t=219"><code>subset_dataset.py</code></a>. I use MacOS X (or linux), so I’m not able to provide instructions if you use Windows. In a terminal, change to the directory that will receive the netCDF files, where the python script now lives. If python is in your system’s path, you should be able to execute the following command on the terminal/command line at the prompt <code>&gt;</code>:</p>
+<p><code>&gt; ./subset_dataset.py -s 19810901 -f 20180304 -b -20 0 15 40 -x AVHRR_OI-NCEI-L4-GLOB-v2.0</code></p>
 <p>Encapsulated by the above command are the following parameters:</p>
 <ul>
 <li>long.min = 6.25</li>
@@ -135,11 +133,11 @@
 <li>lat.min = -45</li>
 <li>lat.max = -20</li>
 <li>start.date = 1981-09-01</li>
-<li>end.date = 2018-03-04</li>
+<li>end.date = 2017-10-194</li>
 <li>short.name = AVHRR_OI-NCEI-L4-GLOB-v2.0</li>
 </ul>
 <p>The spatial extent is for the Agulhas Current region around South Africa; we select files starting in 1981-09-01 and going up to 2017-10-19. The short name is the name mentioned on the <a href="https://podaac.jpl.nasa.gov/dataset/AVHRR_OI-NCEI-L4-GLOB-v2.0">Reynolds OISST data website</a>—substituting this name for any of the other SST datasets on that website <em>should</em> then permit the retrieval of other data sets (e.g. the <a href="https://podaac.jpl.nasa.gov/dataset/MUR-JPL-L4-GLOB-v4.1">MUR data’s</a> short name is MUR-JPL-L4-GLOB-v4.1).</p>
-<p>Adjust any of these parameters in your own script to define the spatial extent and the time period as required by your study.</p>
+<p>Adjust any of these parameters to taste in order to define the spatial extent and the time period as required by your study.</p>
 <p>If everything works according to plan, a bunch of data will now be downloaded. This might take several hours. There will be one netCDF file for each day of the study period. In later steps in R we shall combine them into one <code>.csv</code> file, and then do some other processing steps on them to extract the heat waves.</p>
 </div>
 <div id="extracting-the-sst-data" class="section level2">
@@ -181,13 +179,13 @@
 <a class="sourceLine" id="cb1-32" data-line-number="32"><span class="co"># This function will append data to the end of an existing file that had been</span></a>
 <a class="sourceLine" id="cb1-33" data-line-number="33"><span class="co"># previously produced by this script. This will result in duplicate data. If you</span></a>
 <a class="sourceLine" id="cb1-34" data-line-number="34"><span class="co"># need to rerun the script for some reason, please make sure to delete the file</span></a>
-<a class="sourceLine" id="cb1-35" data-line-number="35"><span class="co"># created as the result of the previous run.</span></a>
+<a class="sourceLine" id="cb1-35" data-line-number="35"><span class="co"># created as the result of the previous run from the `csv.dir`.</span></a>
 <a class="sourceLine" id="cb1-36" data-line-number="36"></a>
 <a class="sourceLine" id="cb1-37" data-line-number="37"></a>
 <a class="sourceLine" id="cb1-38" data-line-number="38"><span class="co"># LOAD LIBRARIES ----------------------------------------------------------</span></a>
 <a class="sourceLine" id="cb1-39" data-line-number="39"></a>
 <a class="sourceLine" id="cb1-40" data-line-number="40"><span class="kw">library</span>(ncdf4) <span class="co"># library for processing netCDFs</span></a>
-<a class="sourceLine" id="cb1-41" data-line-number="41"><span class="kw">library</span>(data.table) <span class="co"># for fast csv write function, `fwrite()`</span></a>
+<a class="sourceLine" id="cb1-41" data-line-number="41"><span class="kw">library</span>(data.table) <span class="co"># for fast .csv write function, `fwrite()`</span></a>
 <a class="sourceLine" id="cb1-42" data-line-number="42"><span class="kw">library</span>(tidyverse) <span class="co"># misc. data processing conveniences</span></a>
 <a class="sourceLine" id="cb1-43" data-line-number="43"><span class="kw">library</span>(reshape2) <span class="co"># for making a long data format</span></a>
 <a class="sourceLine" id="cb1-44" data-line-number="44"><span class="kw">library</span>(plyr) <span class="co"># for `llply()`</span></a>
