@@ -18,29 +18,17 @@ knitr::opts_chunk$set(fig.width = 4, fig.align = 'center',
                       message = FALSE, tidy = FALSE)
 ```
 
-```{r load-pkg, echo = FALSE, eval = FALSE}
-library(RmarineHeatWaves)
-library(ncdf4)
-library(plyr)
-library(dplyr)
-library(tibble)
-library(reshape2)
-library(lubridate)
-library(ggplot2)
-library(doMC); doMC::registerDoMC(cores = 4)
-```
-
 ## Overview
 
 In this vignette we shall look at retrieving and processing the [Reynolds optimally interpolated sea surface temperature](https://journals.ametsoc.org/doi/full/10.1175/2007JCLI1824.1) (OISST), which is global data set of Advanced Very High Resolution Radiometer (AVHRR) derived SSTs at a daily resolution, starting on 1 September 1981. The source of the data is the [Physical Oceanography Distributed Active Archive Centre (PODAAC)](https://podaac.jpl.nasa.gov/). 
 
-![](avhrr-only-v2.19810901.png){width=100%}
+![**Figure 1.** OISST data plotted on a Gnomic Cubic Sphere projection thanks to [Panoply](https://www.giss.nasa.gov/tools/panoply/).](avhrr-only-v2.19810901.png){width=100%}
 
 Each global, daily file is around 8.3Mb, so they add up to a large amount of data when a time series of at least 30 years duration is downloaded. A time series of at least 30 years is needed for heatwave detection. Currently I have 13,216 of these global files, and this amounts to ~108Gb of total disk space. Since not everyone will need all of this data, we shall subset the data using a python script prior to downloading them.
 
 ## Subsetting using a python script
 
-To do the subsetting and bring the data to your local computer/server, you will need access to python 2.7 with numpy. Make sure it is installed on your system and visible on the system PATH.
+To do the subsetting and bring the data to your local computer/server, you will need access to **python 2.7** with **numpy**. Make sure it is installed on your system and visible on the system PATH.
 
 Create a folder on your server where all the data will be received, e.g. `~/project/netCDF`.
 
@@ -58,7 +46,7 @@ Encapsulated by the above command are the following parameters:
 * end.date = 2018-03-04
 * short.name = AVHRR_OI-NCEI-L4-GLOB-v2.0
 
-The spatial extent is for the Agulhas Current region around South Africa; we select files starting in 1981-09-01 and going up to 2018-03-04. The short name is the name mentioned on the [Reynolds OISST data website](https://podaac.jpl.nasa.gov/dataset/AVHRR_OI-NCEI-L4-GLOB-v2.0)---substituting this name for any of the other SST datasets on that website *should* then permit the retrieval of other data sets (e.g. the [MUR data's](https://podaac.jpl.nasa.gov/dataset/MUR-JPL-L4-GLOB-v4.1) short name is MUR-JPL-L4-GLOB-v4.1).
+The spatial extent is for the Agulhas Current region around South Africa; we select files starting in 1981-09-01 and going up to 2017-10-19. The short name is the name mentioned on the [Reynolds OISST data website](https://podaac.jpl.nasa.gov/dataset/AVHRR_OI-NCEI-L4-GLOB-v2.0)---substituting this name for any of the other SST datasets on that website *should* then permit the retrieval of other data sets (e.g. the [MUR data's](https://podaac.jpl.nasa.gov/dataset/MUR-JPL-L4-GLOB-v4.1) short name is MUR-JPL-L4-GLOB-v4.1).
 
 Adjust any of these parameters in your own script to define the spatial extent and the time period as required by your study.
 
@@ -99,12 +87,14 @@ Here is a set of steps that does the job for me:
 # Date: 27 April 2018
 # e-mail: ajsmit@uwc.ac.za
 
+
 # CAUTION -----------------------------------------------------------------
 
 # This function will append data to the end of an existing file that had been
 # previously produced by this script. This will result in duplicate data. If you
 # need to rerun the script for some reason, please make sure to delete the file
 # created as the result of the previous run.
+
 
 # LOAD LIBRARIES ----------------------------------------------------------
 
@@ -121,18 +111,19 @@ library(doMC); doMC::registerDoMC(cores = 4) # for multicore spead-ups
 # SPECIFY FILE PATHS ------------------------------------------------------
 
 # Setup OISST netCDF data path and csv file output directory
-nc.dir <- "/Volumes/Benguela/OceanData/OISSTv2/Rita_Castilho/netCDF"
-csv.dir <- "/Volumes/Benguela/OceanData/OISSTv2/Rita_Castilho/csv"
+nc.dir <- "/Volumes/Benguela/OceanData/OISSTv2/daily/netCDF"
+csv.dir <- "/Volumes/Benguela/spatial/processed/OISSTv2/WBC/daily"
 
 
 # PARSE FILE INFO (not used directly) -------------------------------------
+
 # Use to determine the start/end points of the `name.stem` (see code below)
 #          1         2         3         4         5         6         7
 # 123456789012345678901234567890123456789012345678901234567890123456789012340
 # 20091231120000-NCEI-L4_GHRSST-SSTblend-AVHRR_OI-GLOB-v02.0-fv02.0_subset.nc
 
 
-# OISST READ FUNCTION -----------------------------------------------------
+# OISST netCDF READ FUNCTION ----------------------------------------------
 
 # Function to extract the dims and data from OISST netCDFs
 read_nc <- function(nc.dir = nc.dir, csv.dir = csv.dir) {
@@ -162,12 +153,85 @@ read_nc <- function(nc.dir = nc.dir, csv.dir = csv.dir) {
   }
   llply(nc.list, ncFun, csv.dir = csv.dir, .parallel = TRUE)
 }
+```
 
+Now I simply run this function:
 
-# RUN FUNCTION ------------------------------------------------------------
+```{r run-netCDF2csv, echo = TRUE, eval = FALSE}
+# RUN THE FUNCTION --------------------------------------------------------
 
 # If everything works according to plan, all that's required is to execute
 # this line as is after specifying `nc.dir` and `csv.dir` paths, above
 system.time(read_nc(nc.dir, csv.dir))
 ```
+
+## Event detection
+
+Now we shall detect the extreme heat events using the **RmarineHeaWaves** package (soon to be replaced with **heatwaveR**).
+
+```{r OISST_detect, echo = TRUE, eval = FALSE}
+# SET-UP SOME THINGS ------------------------------------------------------
+
+csv.dir <- "/Volumes/Benguela/spatial/processed/OISSTv2/WBC/daily"
+event.dir <- "/Volumes/Benguela/spatial/processed/OISSTv2/WBC/MHWs"
+sst.dat <- fread(paste0(csv.dir, "/", "AC-avhrr-only-v2.19810901-20171019_sans_titles.csv"))
+colnames(sst.dat) <- c("lon", "lat", "temp", "t")
+
+
+# A FAST DATE FUNCTION ----------------------------------------------------
+
+fastDate <- function(x, tz = NULL) {
+  require(fasttime)
+  as.Date(fastPOSIXct(x, tz = tz))
+}
+
+
+# APPLY FAST DATE FUNCTION ------------------------------------------------
+
+sst.dat$t <- fastDate(sst.dat$t)
+
+
+# DETECT FUNCTION FOR GRIDDED DATA ----------------------------------------
+
+# clim switch selects either climatology or events as output
+OISST_detect <- function(dat = data, doy = doy, x = t, y = temp,
+                         warm = TRUE, clim = FALSE,
+                         climatology_start = "1983-01-01",
+                         climatology_end = "2012-12-31") {
+  require(RmarineHeatWaves)
+  dat <- dat[,3:4] # hard-code cols with temp and date
+  whole <- make_whole(dat)
+  if (warm) {
+    out <- detect(whole, min_duration = 5, max_gap = 2, cold_spells = FALSE,
+                  climatology_start = climatology_start,
+                  climatology_end = climatology_end)
+  } else {
+    out <- detect(whole, min_duration = 5, max_gap = 2, cold_spells = TRUE,
+                  climatology_start = climatology_start,
+                  climatology_end = climatology_end)
+  }
+  if (clim) {
+    clim <- out$clim
+    return(clim)
+  } else {
+    event <- out$event
+    return(event)
+  }
+}
+
+
+# DETECT EVENTS! ----------------------------------------------------------
+
+events <- as.data.table(ddply(sst.dat, .(lon, lat), OISST_detect, 
+                              warm = TRUE, clim = FALSE,
+                              .parallel = FALSE, .progress = "text"))
+
+
+# SAVE AND CLEAN UP -------------------------------------------------------
+
+fwrite(events, file = paste0("event.dir", "/", "AC-avhrr-only-v2.19810901-20171019_events.csv"))
+remove(events); remove(sst.dat)
+```
+
+
 
