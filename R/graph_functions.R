@@ -67,8 +67,8 @@ event_line <- function(data,
                        min_duration = 5,
                        spread = 150,
                        metric = "int_cum",
-                       start_date = "1999-06-30",
-                       end_date = "2000-05-30") {
+                       start_date,
+                       end_date) {
 
   date_stop <- date_start <- duration <-  temp <-  NULL
 
@@ -84,7 +84,7 @@ event_line <- function(data,
 
   if (nrow(event) == 0) stop("No events detected!\nConsider changing the 'start_date' or 'end_date' values.")
 
-  if (!(metric %in% c("int_mean", "int_max", "int_var","int_cum", "int_mean_rel_thresh", "int_max_rel_thresh",
+  if (!(metric %in% c("int_mean", "int_max", "int_var", "int_cum", "int_mean_rel_thresh", "int_max_rel_thresh",
                       "int_var_rel_thresh","int_cum_rel_thresh", "int_mean_abs", "int_max_abs", "int_var_abs",
                       "int_cum_abs", "int_mean_norm", "int_max_norm", "rate_onset", "rate_decline"))) {
     stop("Please ensure you have spelled the desired metric correctly.")
@@ -165,10 +165,10 @@ event_line <- function(data,
 
 #' Create a timeline of selected event metrics as 'lollipops'.
 #'
-#' Visualise a timeline of several event metrics as 'lollipop' graphs.
+#' Visualise a timeline of several possible event metrics as 'lollipop' graphs.
 #'
 #' @importFrom ggplot2 aes_string geom_segment geom_point scale_x_continuous
-#' element_rect element_line
+#' element_rect element_line labs
 #'
 #' @param data Output from the \code{\link{detect}} function.
 #' @param metric One of \code{int_mean}, \code{int_max}, \code{int_cum} and \code{duration}.
@@ -178,11 +178,11 @@ event_line <- function(data,
 #' Default is \code{date_start}.
 #'
 #' @return The function will return a graph of the intensity of the selected
-#' metric along the y-axis versus either \code{t} or \code{event_no}.
+#' \code{metric} along the y-axis versus the choseb \code{xaxis}.
 #' The number of top events as per \code{event_count} will be highlighted
 #' in a brighter colour. This function differs in use from \code{\link{geom_lolli}}
 #' in that it creates a stand alone figure. The benefit of this being
-#' that one must not have any prior knowledge of ggplot2 to create the figure.
+#' that one must not have any prior knowledge of \code{ggplot2} to create the figure.
 #'
 #' @author Albertus J. Smit and Robert W. Schlegel
 #'
@@ -200,27 +200,27 @@ lolli_plot <- function(data,
                        event_count = 3,
                        xaxis = "date_start") {
 
-  event <- data$event
+  if (!(is.list(data))) stop("Please ensure you are running this function on the output of 'heatwaveR::detect()'")
+
+  if (!(metric %in% c("int_mean", "int_max", "int_cum", "duration"))) {
+    stop("Please ensure you have spelled the desired metric correctly.")
+  }
+
+  if (!(xaxis %in% c("event_no", "date_start", "date_peak"))) {
+    stop("Please ensure you have spelled the desired xaxis correctly.")
+  }
+
+  event <- data$event %>%
+    dplyr::select(metric, xaxis)
+
   if (nrow(event) == 0) stop("No events detected!")
 
-  peak_sort <- NULL
-  expr <- lazyeval::interp(~abs(x), x = as.name(metric))
-  event <- event %>%
-    dplyr::select_("event_no", "date_start", "date_peak", metric) %>%
-    dplyr::ungroup() %>%
-    dplyr::mutate_(.dots = stats::setNames(list(expr), "peak_sort")) %>%
-    dplyr::arrange(dplyr::desc(peak_sort))
-
-  event$col <- "event"
-  event[1:event_count, 6] <- "peak event"
-
-  if (event[1, 4] < 0) {
+  if (event[1, 1] < 0) {
     lolli_col <- c("steelblue3", "navy")
   } else {
     lolli_col <- c("salmon", "red")
   }
 
-  # Create y and x axis labels
   # xaxis = "event_no" xaxis = "date_start" xaxis = "date_peak"
   if (xaxis == "event_no") xlabel <- "Event number"
   if (xaxis == "date_start") xlabel <- "Start date"
@@ -232,16 +232,9 @@ lolli_plot <- function(data,
   if (metric == "duration") ylabel <- "Duration [days]"
   if (!exists("ylabel")) ylabel <- metric
 
-  # Create the figure
   lolli <- ggplot(data = event, aes_string(x = xaxis, y = metric)) +
-    geom_segment(aes_string(xend = xaxis, yend = 0, colour = "col"),
-                 size = 0.6, lineend = "butt", show.legend = F) +
-    geom_point(aes_string(colour = "col", fill = "col"), shape = 21, size = 2.2) +
-    # geom_text(data = event_top, aes_string(label = index, x = xaxis, y = yaxis), size = 2.0) +
-    scale_colour_manual(name = NULL, values = lolli_col, guide = FALSE) +
-    scale_fill_manual(name = NULL, values = c("ivory1", "grey40"), guide = FALSE) +
-    xlab(xlabel) +
-    ylab(ylabel) +
+    geom_lolli(colour = lolli_col[1], colour.n = lolli_col[2], fill = "grey70", n = event_count) +
+    labs(x = xlabel, y = ylabel) +
     theme(
       plot.background = element_blank(),
       panel.background = element_rect(fill = "white"),
@@ -253,11 +246,15 @@ lolli_plot <- function(data,
       axis.text.y = element_text(margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
       axis.ticks.length = unit(-0.25, "cm")
     )
+  if (event_count < 1) {
+    lolli <- lolli +
+      geom_lolli(colour = lolli_col[1], colour.n = NA, fill = "grey70")
+  }
   if (xaxis == "event_no") {
     lolli <- lolli +
       scale_x_continuous(breaks = seq(from = 0, to = nrow(data$event), by = 5))
   }
-  if (event[1, 4] < 0 & metric != "duration") {
+  if (event[1, 1] < 0 & metric != "duration") {
     lolli <- lolli +
       theme(legend.justification = c(0, 4.85))
   }

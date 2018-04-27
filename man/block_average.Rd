@@ -2,12 +2,20 @@
 % Please edit documentation in R/block_average.R
 \name{block_average}
 \alias{block_average}
-\title{Calculate yearly means for event metrics.}
+\title{Calculate Yearly Means for Event Metrics.}
 \usage{
-block_average(data, report = "full")
+block_average(data, x = t, y = temp, report = "full")
 }
 \arguments{
 \item{data}{Accepts the data returned by the \code{\link{detect}} function.}
+
+\item{x}{This column is expected to contain a vector of dates as per the
+specification of \code{make_whole}. If a column headed \code{t} is present in
+the dataframe, this argument may be ommitted; otherwise, specify the name of
+the column with dates here.}
+
+\item{y}{This is a column containing the measurement variable. If the column
+name differs from the default (i.e. \code{temp}), specify the name here.}
 
 \item{report}{Specify either \code{full} or \code{partial}. Selecting \code{full} causes
 the report to contain NAs for any years in which no events were detected
@@ -51,7 +59,7 @@ value of the threshold (relative to climatology,
 i.e., threshold - climatology.)
 }
 \description{
-Calculate yearly means for event metrics.
+Calculate Yearly Means for Event Metrics.
 }
 \details{
 This function needs to be provided with the full output from the \code{detect}
@@ -66,15 +74,16 @@ event metrics in 'blocks' of one year, while the python version allows
 arbitrary (integer) block sizes.
 }
 \examples{
-# t_dat <- make_whole(sst_Med)
-# res <- detect(t_dat, climatology_start = 1983, climatology_end = 2012) # using default values
-# out <- block_average(res)
-# summary(glm(count ~ year, out, family = "poisson"))
+t_dat <- make_whole(sst_Med)
+res <- detect(t_dat, climatology_start = 1983, climatology_end = 2012) # using default values
+out <- block_average(res)
+summary(glm(count ~ year, out, family = "poisson"))
 
 \dontrun{
-plot(out$year, out$count, col = "salmon", pch = 16,
-     xlab = "Year", ylab = "Number of events")
-lines(out$year, out$count)
+ggplot(data = out, aes(x = year, y = count)) +
+ geom_point(colour = "salmon") +
+ geom_line() +
+ labs(x = NULL, y = "Number of events")
 }
 }
 \references{

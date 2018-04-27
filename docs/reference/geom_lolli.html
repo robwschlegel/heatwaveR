@@ -82,7 +82,7 @@ geoms as necessary." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.0.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.2.9000</span>
       </span>
     </div>
 
@@ -249,7 +249,6 @@ discrete. ggplot2 will attempt to do this automatically.</p></li>
 <span class='co'># with defaults:</span>
 <span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='detect.html'>detect</a></span>(<span class='no'>ts_dat</span>, <span class='kw'>climatology_start</span> <span class='kw'>=</span> <span class='fl'>1983</span>, <span class='kw'>climatology_end</span> <span class='kw'>=</span> <span class='fl'>2012</span>)
 <span class='no'>mhw</span> <span class='kw'>&lt;-</span> <span class='no'>res</span>$<span class='no'>event</span></div><span class='co'># NOT RUN {</span>
-<span class='fu'>require</span>(<span class='no'>lubridate</span>)
 <span class='co'># Height of lollis represent event durations and their colours</span>
 <span class='co'># are mapped to the events' cumulative intensity:</span>
 <span class='fu'>ggplot</span>(<span class='no'>mhw</span>, <span class='fu'>aes</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>mhw</span>$<span class='no'>date_peak</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>mhw</span>$<span class='no'>duration</span>)) +
@@ -302,8 +301,8 @@ Robert W. Schlegel
   docsearch({
     
     
-    apiKey: 'API_KEY',
-    indexName: 'INDEX_NAME',
+    apiKey: '2edc7627dae0471f3d765c3355bebbf3',
+    indexName: 'heatwaver',
     inputSelector: 'input#search-input.form-control',
     transformData: function(hits) {
       return hits.map(function (hit) {

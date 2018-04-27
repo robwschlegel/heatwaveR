@@ -3,7 +3,7 @@
 #' Applies the Hobday et al. (2016) marine heat wave definition to an input time
 #' series of temperature along with a daily date vector.
 #'
-#' @importFrom tidyr %>%
+#' @importFrom dplyr %>%
 #'
 #' @param data A data frame with three columns. In the default setting (i.e. ommitting
 #' the arguments \code{doy}, \code{x} and \code{y}; see immediately below), the
@@ -117,10 +117,10 @@
 #' of our preparation of Schlegel et al. (submitted), wherein the cold events
 #' receive a brief overview.
 #'
-#' @return The function will return a list of two components, \code{clim} and
-#' \code{event}, which are the climatology and MHW (or MCS) events, respectively.
-#' The climatology contains the full time series of daily temperatures, as well
-#' as the the seasonal climatology, the threshold and various aspects of the
+#' @return The function will return a list of two tibbles (see the \code{tidyverse}),
+#' \code{clim} and \code{event}, which are the climatology and events,
+#' respectively. The climatology contains the full time series of daily temperatures,
+#' as well as the the seasonal climatology, the threshold and various aspects of the
 #' events that were detected. The software was designed for detecting extreme
 #' thermal events, and the units specified below reflect that intended purpose.
 #' However, the various other kinds of extreme events may be detected according
@@ -520,7 +520,7 @@ detect <-
       names(t_series)[2] <- paste(substitute(x))
       names(t_series)[3] <- paste(substitute(y))
 
-      list(clim = t_series,
-           event = events)
+      list(clim = tibble::as_tibble(t_series),
+           event = tibble::as_tibble(events))
     }
   }

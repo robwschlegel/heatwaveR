@@ -91,10 +91,10 @@ even though cold spells are in fact simply the coldest extreme events in a
 time series, which statistically equate to values below the 10th percentile.}
 }
 \value{
-The function will return a list of two components, \code{clim} and
-\code{event}, which are the climatology and MHW (or MCS) events, respectively.
-The climatology contains the full time series of daily temperatures, as well
-as the the seasonal climatology, the threshold and various aspects of the
+The function will return a list of two tibbles (see the \code{tidyverse}),
+\code{clim} and \code{event}, which are the climatology and events,
+respectively. The climatology contains the full time series of daily temperatures,
+as well as the the seasonal climatology, the threshold and various aspects of the
 events that were detected. The software was designed for detecting extreme
 thermal events, and the units specified below reflect that intended purpose.
 However, the various other kinds of extreme events may be detected according

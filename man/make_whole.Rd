@@ -63,7 +63,7 @@ It is recommended that a climatology period of at least 30 years is specified
 in order to capture any decadal thermal periodicities.
 }
 \examples{
-require(dplyr); require(tidyr); require(lubridate)
+library(dplyr); library(tidyr); library(lubridate)
 ts_dat <- make_whole(sst_WA) # default columns "t" and "temp", in that order
 clim_start <- "1983-01-01"
 clim_end <- "2012-12-31"

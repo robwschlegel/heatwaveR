@@ -5,7 +5,7 @@
 \title{Create a line plot of heatwaves or cold-spells.}
 \usage{
 event_line(data, x = t, y = temp, min_duration = 5, spread = 150,
-  metric = "int_cum", start_date = "1999-06-30", end_date = "2000-05-30")
+  metric = "int_cum", start_date, end_date)
 }
 \arguments{
 \item{data}{The function receives the full (list) output from the \code{\link{detect}} function.}

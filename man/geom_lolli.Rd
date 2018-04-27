@@ -88,7 +88,6 @@ res <- detect(ts_dat, climatology_start = 1983, climatology_end = 2012)
 mhw <- res$event
 
 \dontrun{
-require(lubridate)
 # Height of lollis represent event durations and their colours
 # are mapped to the events' cumulative intensity:
 ggplot(mhw, aes(x = mhw$date_peak, y = mhw$duration)) +
