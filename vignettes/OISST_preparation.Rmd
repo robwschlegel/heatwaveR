@@ -34,7 +34,7 @@ Create a folder on your server where all the data will be received, e.g. `~/proj
 
 Into this directory, copy the python script, [`subset_dataset.py`](https://podaac.jpl.nasa.gov/forum/viewtopic.php?f=5&t=219). I use MacOS X (or linux), so I'm not able to provide instructions if you use Windows. In a terminal, change to the directory that will receive the netCDF files, where the python script now lives. If python is in your system's path, you should be able to execute the following command on the terminal/command line at the prompt `>`:
 
-`> ./subset_dataset.py -s 19810901 -f 20180304 -b -20 0 15 40 -x AVHRR_OI-NCEI-L4-GLOB-v2.0`
+`> ./subset_dataset.py -s 19810901 -f 20171014 -b -20 0 15 40 -x AVHRR_OI-NCEI-L4-GLOB-v2.0`
 
 Encapsulated by the above command are the following parameters:
 
@@ -43,7 +43,7 @@ Encapsulated by the above command are the following parameters:
 * lat.min = -45
 * lat.max = -20
 * start.date = 1981-09-01
-* end.date = 2017-10-194
+* end.date = 2017-10-14
 * short.name = AVHRR_OI-NCEI-L4-GLOB-v2.0
 
 The spatial extent is for the Agulhas Current region around South Africa; we select files starting in 1981-09-01 and going up to 2017-10-19. The short name is the name mentioned on the [Reynolds OISST data website](https://podaac.jpl.nasa.gov/dataset/AVHRR_OI-NCEI-L4-GLOB-v2.0)---substituting this name for any of the other SST datasets on that website *should* then permit the retrieval of other data sets (e.g. the [MUR data's](https://podaac.jpl.nasa.gov/dataset/MUR-JPL-L4-GLOB-v4.1) short name is MUR-JPL-L4-GLOB-v4.1).
@@ -111,8 +111,8 @@ library(doMC); doMC::registerDoMC(cores = 4) # for multicore spead-ups
 # SPECIFY FILE PATHS ------------------------------------------------------
 
 # Setup OISST netCDF data path and csv file output directory
-nc.dir <- "/Volumes/Benguela/OceanData/OISSTv2/daily/netCDF"
-csv.dir <- "/Volumes/Benguela/spatial/processed/OISSTv2/WBC/daily"
+nc.dir <- "/Users/ajsmit/spatial/test/netCDF"
+csv.dir <- "/Users/ajsmit/spatial/test/csv"
 
 
 # PARSE FILE INFO (not used directly) -------------------------------------
@@ -126,17 +126,18 @@ csv.dir <- "/Volumes/Benguela/spatial/processed/OISSTv2/WBC/daily"
 # OISST netCDF READ FUNCTION ----------------------------------------------
 
 # Function to extract the dims and data from OISST netCDFs
-read_nc <- function(nc.dir = nc.dir, csv.dir = csv.dir) {
+ncRead <- function(nc.dir = nc.dir, csv.dir = csv.dir) {
   nc.list <- list.files(path = nc.dir, pattern = "*.nc", full.names = TRUE, include.dirs = TRUE)
   nc.first <- head(list.files(path = nc.dir, pattern = "*.nc", full.names = FALSE), 1)
   nc.last <- tail(list.files(path = nc.dir, pattern = "*.nc", full.names = FALSE), 1)
   strt.date <- str_sub(nc.first, start = 1, end = 8)
   end.date <- str_sub(nc.last, start = 1, end = 8)
+  
   ncFun <- function(nc.file = nc.file, csv.dir = csv.dir) {
     nc <- nc_open(nc.file)
     path.len <- nchar(nc.dir) + 1
     name.stem <- substr(nc.file, path.len + 16, path.len + 72)
-    fDate <- substr(nc.file, path.len + 1, path.len + 8)
+    date.stamp <- substr(nc.file, path.len + 1, path.len + 8)
     sst <- ncvar_get(nc, varid = "analysed_sst") %>%
       round(4)
     dimnames(sst) <- list(lon = nc$dim$lon$vals,
@@ -144,14 +145,15 @@ read_nc <- function(nc.dir = nc.dir, csv.dir = csv.dir) {
     nc_close(nc)
     sst <-
       as.data.frame(melt(sst, value.name = "temp"), row.names = NULL) %>%
-      mutate(t = ymd(fDate)) %>%
+      mutate(t = ymd(date.stamp)) %>%
       na.omit()
     fwrite(sst,
            file = paste0(csv.dir, "/", name.stem, "-", strt.date, "-", end.date, ".csv"),
            append = TRUE, col.names = FALSE)
     rm(sst)
   }
-  llply(nc.list, ncFun, csv.dir = csv.dir, .parallel = TRUE)
+  
+  llply(nc.list, ncFun, csv.dir = csv.dir, .parallel = FALSE)
 }
 ```
 
@@ -162,7 +164,7 @@ Now I simply run this function:
 
 # If everything works according to plan, all that's required is to execute
 # this line as is after specifying `nc.dir` and `csv.dir` paths, above
-system.time(read_nc(nc.dir, csv.dir))
+system.time(ncRead(nc.dir, csv.dir))
 ```
 
 ## Event detection
@@ -172,9 +174,14 @@ Now we shall detect the extreme heat events using the **RmarineHeaWaves** packag
 ```{r OISST_detect, echo = TRUE, eval = FALSE}
 # SET-UP SOME THINGS ------------------------------------------------------
 
-csv.dir <- "/Volumes/Benguela/spatial/processed/OISSTv2/WBC/daily"
-event.dir <- "/Volumes/Benguela/spatial/processed/OISSTv2/WBC/MHWs"
-sst.dat <- fread(paste0(csv.dir, "/", "AC-avhrr-only-v2.19810901-20171019_sans_titles.csv"))
+csv.dir <- "/Users/ajsmit/spatial/test/csv"
+
+# Specify the name of the file created by `system.time(ncRead(nc.dir, csv.dir))` in the
+# `csv.dir` that was named above
+csv.file <- "NCEI-L4_GHRSST-SSTblend-AVHRR_OI-GLOB-v02.0-fv02.0_subset-19810901-20171014.csv"
+
+# Read in the data in the combined .csv file and assign column names
+sst.dat <- fread(paste0(csv.dir, "/", csv.file))
 colnames(sst.dat) <- c("lon", "lat", "temp", "t")
 
 
@@ -228,10 +235,15 @@ events <- as.data.table(ddply(sst.dat, .(lon, lat), OISST_detect,
 
 
 # SAVE AND CLEAN UP -------------------------------------------------------
+event.dir <- "/Users/ajsmit/spatial/test/events"
 
-fwrite(events, file = paste0("event.dir", "/", "AC-avhrr-only-v2.19810901-20171019_events.csv"))
+# Reuse the existing name; this ensures traceability of the files back to
+# the input sources
+event.file <- gsub(pattern = "\\.csv$", "", csv.file)
+
+# Write the file out to disk
+fwrite(events, file = paste0("event.dir", "/", event.file, "-events.csv"))
 remove(events); remove(sst.dat)
 ```
 
-
-
+Please let me know if there are issues with the scripts, or if you have suggesations about how to improve them.
