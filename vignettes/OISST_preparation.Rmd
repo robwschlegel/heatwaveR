@@ -22,17 +22,17 @@ knitr::opts_chunk$set(fig.width = 4, fig.align = 'center',
 
 In this vignette we shall look at retrieving and processing the [Reynolds optimally interpolated sea surface temperature](https://journals.ametsoc.org/doi/full/10.1175/2007JCLI1824.1) (OISST), which is a global data set of Advanced Very High Resolution Radiometer (AVHRR) derived SSTs at a daily resolution, starting on 1 September 1981. The source of the data is the [Physical Oceanography Distributed Active Archive Centre (PODAAC)](https://podaac.jpl.nasa.gov/). 
 
-![**Figure 1.** OISST data plotted on a Gnomic Cubic Sphere projection thanks to [Panoply](https://www.giss.nasa.gov/tools/panoply/).](avhrr-only-v2.19810901.png){width=100%}
+![**Figure 1.** OISST data plotted on a Gnomic Cubic Sphere projection thanks to [Panoply](https://www.giss.nasa.gov/tools/panoply/)---the link to certain religious iconography is purely coincidental. The SST field is filled using the Parula colour scale.](avhrr-only-v2.19810901.png){width=100%}
 
-Each global, daily file is around 8.3Mb, so they add up to a large amount of data when a time series of at least 30 years duration is downloaded. A time series of at least 30 years is needed for heatwave detection. Currently I have 13,216 of these global files, and this amounts to ~108Gb of total disk space. Since not everyone will need all of this data, we shall subset the data using a python script prior to downloading them.
+Each global, daily file is around 8.3Mb, so they add up to a large amount of data when a time series of at least 30 years duration is downloaded. A time series of at least 30 years is needed for heatwave detection. Currently I have 13,216 of these global files, and this amounts to ~108Gb of total disk space. Since not everyone will need all of these data, we shall subset the data using a python script prior to downloading them.
 
 ## Subsetting using a python script
 
 To do the subsetting and bring the data to your local computer/server, you will need access to **python 2.7** with **numpy**. Make sure it is installed on your system and visible on the system PATH.
 
-Create a folder on your server where all the data will be received, e.g. `~/project/netCDF`.
+Create a folder on your server where all the data will be received, below, for example, I use `/Users/ajsmit/spatial/test/netCDF`.
 
-Into this directory, copy the python script, [`subset_dataset.py`](https://podaac.jpl.nasa.gov/forum/viewtopic.php?f=5&t=219). I use MacOS X (or linux), so I'm not able to provide instructions if you use Windows. In a terminal, change to the directory that will receive the netCDF files, where the python script now lives. If python is in your system's path, you should be able to execute the following command on the terminal/command line at the prompt `>`:
+Into this directory, copy the python script, `subset_dataset.py` ([link](https://podaac.jpl.nasa.gov/forum/viewtopic.php?f=5&t=219)). I use MacOS X (or linux), so I'm not able to provide instructions if you use Windows. In a terminal, change to the directory that will receive the netCDF files, where the python script now lives. If python is in your system's path, you should be able to execute the following command on the terminal/command line at the prompt `>`:
 
 `> ./subset_dataset.py -s 19810901 -f 20171014 -b -20 0 15 40 -x AVHRR_OI-NCEI-L4-GLOB-v2.0`
 
