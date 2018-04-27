@@ -32,27 +32,142 @@ library(doMC); doMC::registerDoMC(cores = 4)
 
 ## Overview
 
-The Reynolds OISST v2 data can be retrieved from: https://podaac.jpl.nasa.gov/dataset/AVHRR_OI-NCEI-L4-GLOB-v2.0 These are daily files for the whole world, so the spatial extent is too big and the files therefore too large. We shall subset the data using a python script prior to downloading them.
+In this vignette we shall look at retrieving and processing the [Reynolds optimally interpolated sea surface temperature](https://journals.ametsoc.org/doi/full/10.1175/2007JCLI1824.1) (OISST), which is global data set of Advanced Very High Resolution Radiometer (AVHRR) derived SSTs at a daily resolution, starting on 1 September 1981. The source of the data is the [Physical Oceanography Distributed Active Archive Centre (PODAAC)](https://podaac.jpl.nasa.gov/). 
+
+![](avhrr-only-v2.19810901.png){width=100%}
+
+Each global, daily file is around 8.3Mb, so they add up to a large amount of data when a time series of at least 30 years duration is downloaded. A time series of at least 30 years is needed for heatwave detection. Currently I have 13,216 of these global files, and this amounts to ~108Gb of total disk space. Since not everyone will need all of this data, we shall subset the data using a python script prior to downloading them.
+
+## Subsetting using a python script
 
 To do the subsetting and bring the data to your local computer/server, you will need access to python 2.7 with numpy. Make sure it is installed on your system and visible on the system PATH.
 
-Then, please create a folder on your server where all the data will be received, e.g. `Rita_MHW_events/netCDF`
+Create a folder on your server where all the data will be received, e.g. `~/project/netCDF`.
 
-Into this directory, copy the python script that I attach here (it is called `subset_dataset.py`). I use MacOS X (or linux), so I'm not able to provide instructions if you use Windows. You'll have to use the command line on your operating system (I think it is called 'Command Prompt' in Windows; in a unix-like operating system it is the 'terminal'). In the terminal, change to the directory that will receive the netCDF files, where the python script now lives. If python is in your system's path, you should be able to execute the following command on the terminal/command line at the prompt `>`:
+Into this directory, copy the python script [`subset_dataset.py`](https://podaac.jpl.nasa.gov/forum/viewtopic.php?f=5&t=219). I use MacOS X (or linux), so I'm not able to provide instructions if you use Windows. In a terminal, change to the directory that will receive the netCDF files, where the python script now lives. If python is in your system's path, you should be able to execute the following command on the terminal/command line at the prompt `>`:
 
-> ./subset_dataset.py -s 19810901 -f 20180304 -b -20 0 15 40 -x AVHRR_OI-NCEI-L4-GLOB-v2.0
+> `./subset_dataset.py -s 19810901 -f 20180304 -b -20 0 15 40 -x AVHRR_OI-NCEI-L4-GLOB-v2.0`
 
-The following parameters are included with this script:
+Encapsulated by the above command are the following parameters:
 
-long.min=0
-long.max=-20
-lat.min=15
-lat.max=40
-start.date=1981-09-01
-end.date=2018-03-04
-short.name=AVHRR_OI-NCEI-L4-GLOB-v2.0
+* long.min = 6.25
+* long.max = 45
+* lat.min = -45
+* lat.max = -20
+* start.date = 1981-09-01
+* end.date = 2018-03-04
+* short.name = AVHRR_OI-NCEI-L4-GLOB-v2.0
 
-You can change any of these parameters in your script to change the spatial extent and the time period.
+The spatial extent is for the Agulhas Current region around South Africa; we select files starting in 1981-09-01 and going up to 2018-03-04. The short name is the name mentioned on the [Reynolds OISST data website](https://podaac.jpl.nasa.gov/dataset/AVHRR_OI-NCEI-L4-GLOB-v2.0)---substituting this name for any of the other SST datasets on that website *should* then permit the retrieval of other data sets (e.g. the [MUR data's](https://podaac.jpl.nasa.gov/dataset/MUR-JPL-L4-GLOB-v4.1) short name is MUR-JPL-L4-GLOB-v4.1).
 
-If everything works according to plan, a bunch of data will now be downloaded. This might take several hours. There will be one netCDF file for each day of the study period. In later steps in R we shall combine them into one .csv file, and then do some other processing steps on them to extract the heat waves.
+Adjust any of these parameters in your own script to define the spatial extent and the time period as required by your study.
+
+If everything works according to plan, a bunch of data will now be downloaded. This might take several hours. There will be one netCDF file for each day of the study period. In later steps in R we shall combine them into one `.csv` file, and then do some other processing steps on them to extract the heat waves.
+
+## Extracting the SST data
+
+There are many ways to approach this problem, and the one I take here is to produce an intermediate `.csv` file that has all the data for the region/period of interest---all of it in one file. For the subregion/period defined by the python subsetting function, above, this combined file weighs in at 4.88Gb. This might not be the most efficient way to deal with the problem, but I like having this intermediate `.csv` file on hand as I subject these data to several other processing steps besides marine heat wave detection.
+
+Here is a set of steps that does the job for me:
+
+```{r netCDF2csv, echo = TRUE, eval = FALSE}
+# generic_netCDF2csv.R
+
+
+# NOTES ON USING THIS SCRIPT ----------------------------------------------
+
+# 1. The Reynolds OISST v2 data processed by this script can be retrieved from:
+# https://podaac.jpl.nasa.gov/dataset/AVHRR_OI-NCEI-L4-GLOB-v2.0
+# 2. Subsetting and the selection of the time steps to be done via the python
+# script `subset_dataset.py`.
+# 3. This R script requires the already subsetted netCDFs to reside inside a
+# directory whose path is specified by `nc.dir`, below.
+# 4. The .csv files produced will be placed inside of the directory named by
+# `csv.dir` (make sure this directory already exists).
+# 5. The dates that will be included with the final .csv file will be extracted
+# directly from the names of the daily netCDF files; please, therefore, make
+# sure to never change them by manually editing them.
+# 6. The base name of the new .csv file will be partly based on the name of the
+# input netCDF files, with the start and end dates appended at the end. These
+# things are hard coded into the script below.
+# 7. I am sure I have missed some things, or that some things may break somehow;
+# please let me know if this happens and I shall fix it.
+# 8. This file may take a while to run (10s of minutes to hours, depending on
+# the amount of data processed); please be patient while it does its thing.
+
+# Author: AJ Smit
+# Date: 27 April 2018
+# e-mail: ajsmit@uwc.ac.za
+
+# CAUTION -----------------------------------------------------------------
+
+# This function will append data to the end of an existing file that had been
+# previously produced by this script. This will result in duplicate data. If you
+# need to rerun the script for some reason, please make sure to delete the file
+# created as the result of the previous run.
+
+# LOAD LIBRARIES ----------------------------------------------------------
+
+library(ncdf4) # library for processing netCDFs
+library(data.table) # for fast csv write function, `fwrite()`
+library(tidyverse) # misc. data processing conveniences
+library(reshape2) # for making a long data format
+library(plyr) # for `llply()`
+library(lubridate) # for working with dates
+library(stringr) # for working with strings
+library(doMC); doMC::registerDoMC(cores = 4) # for multicore spead-ups
+
+
+# SPECIFY FILE PATHS ------------------------------------------------------
+
+# Setup OISST netCDF data path and csv file output directory
+nc.dir <- "/Volumes/Benguela/OceanData/OISSTv2/Rita_Castilho/netCDF"
+csv.dir <- "/Volumes/Benguela/OceanData/OISSTv2/Rita_Castilho/csv"
+
+
+# PARSE FILE INFO (not used directly) -------------------------------------
+# Use to determine the start/end points of the `name.stem` (see code below)
+#          1         2         3         4         5         6         7
+# 123456789012345678901234567890123456789012345678901234567890123456789012340
+# 20091231120000-NCEI-L4_GHRSST-SSTblend-AVHRR_OI-GLOB-v02.0-fv02.0_subset.nc
+
+
+# OISST READ FUNCTION -----------------------------------------------------
+
+# Function to extract the dims and data from OISST netCDFs
+read_nc <- function(nc.dir = nc.dir, csv.dir = csv.dir) {
+  nc.list <- list.files(path = nc.dir, pattern = "*.nc", full.names = TRUE, include.dirs = TRUE)
+  nc.first <- head(list.files(path = nc.dir, pattern = "*.nc", full.names = FALSE), 1)
+  nc.last <- tail(list.files(path = nc.dir, pattern = "*.nc", full.names = FALSE), 1)
+  strt.date <- str_sub(nc.first, start = 1, end = 8)
+  end.date <- str_sub(nc.last, start = 1, end = 8)
+  ncFun <- function(nc.file = nc.file, csv.dir = csv.dir) {
+    nc <- nc_open(nc.file)
+    path.len <- nchar(nc.dir) + 1
+    name.stem <- substr(nc.file, path.len + 16, path.len + 72)
+    fDate <- substr(nc.file, path.len + 1, path.len + 8)
+    sst <- ncvar_get(nc, varid = "analysed_sst") %>%
+      round(4)
+    dimnames(sst) <- list(lon = nc$dim$lon$vals,
+                          lat = nc$dim$lat$vals)
+    nc_close(nc)
+    sst <-
+      as.data.frame(melt(sst, value.name = "temp"), row.names = NULL) %>%
+      mutate(t = ymd(fDate)) %>%
+      na.omit()
+    fwrite(sst,
+           file = paste0(csv.dir, "/", name.stem, "-", strt.date, "-", end.date, ".csv"),
+           append = TRUE, col.names = FALSE)
+    rm(sst)
+  }
+  llply(nc.list, ncFun, csv.dir = csv.dir, .parallel = TRUE)
+}
+
+
+# RUN FUNCTION ------------------------------------------------------------
+
+# If everything works according to plan, all that's required is to execute
+# this line as is after specifying `nc.dir` and `csv.dir` paths, above
+system.time(read_nc(nc.dir, csv.dir))
+```
 

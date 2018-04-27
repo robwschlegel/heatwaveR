@@ -12,6 +12,8 @@ navbar:
     menu:
     - text: "Extreme event detection in gridded data"
       href: articles/gridded_event_detection.html
+    - text: "OISST preparation"
+      href: articles/OISST_preparation.html
   - text: News
     href: news/index.html
   right:

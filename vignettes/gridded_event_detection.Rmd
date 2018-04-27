@@ -36,6 +36,8 @@ Because of human-induced climate change, we anticipate that extreme events would
 
 ## Reading in the netCDF
 
+These instructions assume we start with a netCDF file that contains data for only the region of interest in our study, with all of the daily data in one file. If you start from scratch, it might make sense to rather do the subsetting elsewhere and process the daily netCDF files. If that is the case, see [this vignette].
+
 First, I read in the 0.25 degree [OISST netCDF file](https://www.ncei.noaa.gov/thredds/blended-global/oisst-catalog.html). I save the only variable, **sst**, as a multidimensional array (longitude, latitude and date). To do this, I use the **ncdf4** package. I then construct a list with names and values for each dimension of the SST array. The example data used here cover 93 longitude and 43 latitude steps (i.e. 3999 pixels), and cover 12797 days (1981 to 2016). The names for the three dimensions are simply a list of longitudes, latitudes and dates, which I get directly from the netCDF file. Note that not all netCDF files are created equally, and sometimes vectors of longitudes, latitudes and dates need to be created based on the start values for lat/lon/date in the netCDF, and the 'steps' between sequential lats/lons/dates. To determine out how to approach reading in the netCDF file, use the `print()` function to scrutinise the content of the netCDF.
 
 ```{r read-netcdf, echo = TRUE, eval = FALSE}
