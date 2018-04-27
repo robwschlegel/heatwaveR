@@ -119,7 +119,7 @@ csv.dir <- "/Volumes/Benguela/spatial/processed/OISSTv2/WBC/daily"
 
 # Use to determine the start/end points of the `name.stem` (see code below)
 #          1         2         3         4         5         6         7
-# 123456789012345678901234567890123456789012345678901234567890123456789012340
+# 123456789012345678901234567890123456789012345678901234567890123456789012345
 # 20091231120000-NCEI-L4_GHRSST-SSTblend-AVHRR_OI-GLOB-v02.0-fv02.0_subset.nc
 
 
