@@ -128,18 +128,14 @@ csv.dir <- "/Users/ajsmit/spatial/test/csv"
 # Function to extract the dims and data from OISST netCDFs
 ncRead <- function(nc.dir = nc.dir, csv.dir = csv.dir) {
   nc.list <- list.files(path = nc.dir, pattern = "*.nc", full.names = TRUE, include.dirs = TRUE)
-  nc.first <- head(list.files(path = nc.dir, pattern = "*.nc", full.names = FALSE), 1)
-  nc.last <- tail(list.files(path = nc.dir, pattern = "*.nc", full.names = FALSE), 1)
-  strt.date <- str_sub(nc.first, start = 1, end = 8)
-  end.date <- str_sub(nc.last, start = 1, end = 8)
-  
+  strt.date <- str_sub(basename(nc.list[1]), start = 1, end = 8)
+  end.date <- str_sub(basename(nc.list[length(nc.list)]), start = 1, end = 8)
+
   ncFun <- function(nc.file = nc.file, csv.dir = csv.dir) {
     nc <- nc_open(nc.file)
-    path.len <- nchar(nc.dir) + 1
-    name.stem <- substr(nc.file, path.len + 16, path.len + 72)
-    date.stamp <- substr(nc.file, path.len + 1, path.len + 8)
-    sst <- ncvar_get(nc, varid = "analysed_sst") %>%
-      round(4)
+    name.stem <- substr(basename(nc.file), 16, 72)
+    date.stamp <- substr(basename(nc.file), 1, 8)
+    sst <- round(ncvar_get(nc, varid = "analysed_sst"), 4)
     dimnames(sst) <- list(lon = nc$dim$lon$vals,
                           lat = nc$dim$lat$vals)
     nc_close(nc)
@@ -147,12 +143,15 @@ ncRead <- function(nc.dir = nc.dir, csv.dir = csv.dir) {
       as.data.frame(melt(sst, value.name = "temp"), row.names = NULL) %>%
       mutate(t = ymd(date.stamp)) %>%
       na.omit()
+    # Use data.table's `fwrite()` because it is much faster than anything else
+    # for large csv files
     fwrite(sst,
            file = paste0(csv.dir, "/", name.stem, "-", strt.date, "-", end.date, ".csv"),
            append = TRUE, col.names = FALSE)
     rm(sst)
   }
-  
+  # `parallel = FALSE` allows for better error checking should something go wrong;
+  # there's also a helpful progress bar that becomes available
   llply(nc.list, ncFun, csv.dir = csv.dir, .parallel = FALSE)
 }
 ```
@@ -180,13 +179,15 @@ csv.dir <- "/Users/ajsmit/spatial/test/csv"
 # `csv.dir` that was named above
 csv.file <- "NCEI-L4_GHRSST-SSTblend-AVHRR_OI-GLOB-v02.0-fv02.0_subset-19810901-20171014.csv"
 
-# Read in the data in the combined .csv file and assign column names
+# Read in the data in the combined .csv file and assign column names;
+# again using the data.table way (`fread()`), which is FAST...
 sst.dat <- fread(paste0(csv.dir, "/", csv.file))
 colnames(sst.dat) <- c("lon", "lat", "temp", "t")
 
 
 # A FAST DATE FUNCTION ----------------------------------------------------
 
+# This speeds the creation of the date vector up immensely
 fastDate <- function(x, tz = NULL) {
   require(fasttime)
   as.Date(fastPOSIXct(x, tz = tz))
@@ -200,7 +201,8 @@ sst.dat$t <- fastDate(sst.dat$t)
 
 # DETECT FUNCTION FOR GRIDDED DATA ----------------------------------------
 
-# clim switch selects either climatology or events as output
+# The `clim` switch selects either climatology or events as output;
+# please provide your own date range in here
 OISST_detect <- function(dat = data, doy = doy, x = t, y = temp,
                          warm = TRUE, clim = FALSE,
                          climatology_start = "1983-01-01",
@@ -229,9 +231,9 @@ OISST_detect <- function(dat = data, doy = doy, x = t, y = temp,
 
 # DETECT EVENTS! ----------------------------------------------------------
 
-events <- as.data.table(ddply(sst.dat, .(lon, lat), OISST_detect, 
-                              warm = TRUE, clim = FALSE,
-                              .parallel = FALSE, .progress = "text"))
+events <- as_tibble(ddply(sst.dat, .(lon, lat), OISST_detect,
+                          warm = TRUE, clim = FALSE,
+                          .parallel = FALSE, .progress = "text"))
 
 
 # SAVE AND CLEAN UP -------------------------------------------------------

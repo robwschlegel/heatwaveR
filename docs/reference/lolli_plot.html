@@ -75,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.3.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.4.9000</span>
       </span>
     </div>
 
@@ -98,10 +98,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/gridded_event_detection.html">Extreme event detection in gridded data</a>
+      <a href="../articles/OISST_preparation.html">OISST preparation</a>
     </li>
     <li>
-      <a href="../articles/OISST_preparation.html">OISST preparation</a>
+      <a href="../articles/gridded_event_detection.html">Extreme event detection in gridded data</a>
     </li>
   </ul>
 </li>
@@ -185,7 +185,8 @@ that one must not have any prior knowledge of <code>ggplot2</code> to create the
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>ts_dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_whole.html'>make_whole</a></span>(<span class='no'>sst_NW_Atl</span>)
-<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='detect.html'>detect</a></span>(<span class='no'>ts_dat</span>, <span class='kw'>climatology_start</span> <span class='kw'>=</span> <span class='fl'>1983</span>, <span class='kw'>climatology_end</span> <span class='kw'>=</span> <span class='fl'>2012</span>) <span class='co'># using default values</span></div><span class='co'># NOT RUN {</span>
+<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='detect.html'>detect</a></span>(<span class='no'>ts_dat</span>, <span class='kw'>climatology_start</span> <span class='kw'>=</span> <span class='st'>"1983-01-01"</span>,
+              <span class='kw'>climatology_end</span> <span class='kw'>=</span> <span class='st'>"2012-12-31"</span>)</div><span class='co'># NOT RUN {</span>
 <span class='fu'>lolli_plot</span>(<span class='no'>res</span>, <span class='kw'>metric</span> <span class='kw'>=</span> <span class='st'>"int_cum"</span>, <span class='kw'>event_count</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>xaxis</span> <span class='kw'>=</span> <span class='st'>"date_peak"</span>)
 <span class='co'># }</span></pre>
   </div>

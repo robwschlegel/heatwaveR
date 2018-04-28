@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.3.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.4.9000</span>
       </span>
     </div>
 
@@ -61,10 +61,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/gridded_event_detection.html">Extreme event detection in gridded data</a>
+      <a href="../articles/OISST_preparation.html">OISST preparation</a>
     </li>
     <li>
-      <a href="../articles/OISST_preparation.html">OISST preparation</a>
+      <a href="../articles/gridded_event_detection.html">Extreme event detection in gridded data</a>
     </li>
   </ul>
 </li>
@@ -101,7 +101,7 @@
       <h1>Retrieval and processing of OISST data</h1>
                         <h4 class="author">AJ Smit</h4>
             
-            <h4 class="date">2018-04-27</h4>
+            <h4 class="date">2018-04-28</h4>
       
       
       <div class="hidden name"><code>OISST_preparation.Rmd</code></div>
@@ -214,33 +214,32 @@
 <a class="sourceLine" id="cb1-67" data-line-number="67"><span class="co"># Function to extract the dims and data from OISST netCDFs</span></a>
 <a class="sourceLine" id="cb1-68" data-line-number="68">ncRead &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">nc.dir =</span> nc.dir, <span class="dt">csv.dir =</span> csv.dir) {</a>
 <a class="sourceLine" id="cb1-69" data-line-number="69">  nc.list &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">path =</span> nc.dir, <span class="dt">pattern =</span> <span class="st">"*.nc"</span>, <span class="dt">full.names =</span> <span class="ot">TRUE</span>, <span class="dt">include.dirs =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb1-70" data-line-number="70">  nc.first &lt;-<span class="st"> </span><span class="kw">head</span>(<span class="kw">list.files</span>(<span class="dt">path =</span> nc.dir, <span class="dt">pattern =</span> <span class="st">"*.nc"</span>, <span class="dt">full.names =</span> <span class="ot">FALSE</span>), <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb1-71" data-line-number="71">  nc.last &lt;-<span class="st"> </span><span class="kw">tail</span>(<span class="kw">list.files</span>(<span class="dt">path =</span> nc.dir, <span class="dt">pattern =</span> <span class="st">"*.nc"</span>, <span class="dt">full.names =</span> <span class="ot">FALSE</span>), <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb1-72" data-line-number="72">  strt.date &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_sub">str_sub</a></span>(nc.first, <span class="dt">start =</span> <span class="dv">1</span>, <span class="dt">end =</span> <span class="dv">8</span>)</a>
-<a class="sourceLine" id="cb1-73" data-line-number="73">  end.date &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_sub">str_sub</a></span>(nc.last, <span class="dt">start =</span> <span class="dv">1</span>, <span class="dt">end =</span> <span class="dv">8</span>)</a>
-<a class="sourceLine" id="cb1-74" data-line-number="74">  </a>
-<a class="sourceLine" id="cb1-75" data-line-number="75">  ncFun &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">nc.file =</span> nc.file, <span class="dt">csv.dir =</span> csv.dir) {</a>
-<a class="sourceLine" id="cb1-76" data-line-number="76">    nc &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ncdf4/topics/nc_open">nc_open</a></span>(nc.file)</a>
-<a class="sourceLine" id="cb1-77" data-line-number="77">    path.len &lt;-<span class="st"> </span><span class="kw">nchar</span>(nc.dir) <span class="op">+</span><span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb1-78" data-line-number="78">    name.stem &lt;-<span class="st"> </span><span class="kw">substr</span>(nc.file, path.len <span class="op">+</span><span class="st"> </span><span class="dv">16</span>, path.len <span class="op">+</span><span class="st"> </span><span class="dv">72</span>)</a>
-<a class="sourceLine" id="cb1-79" data-line-number="79">    date.stamp &lt;-<span class="st"> </span><span class="kw">substr</span>(nc.file, path.len <span class="op">+</span><span class="st"> </span><span class="dv">1</span>, path.len <span class="op">+</span><span class="st"> </span><span class="dv">8</span>)</a>
-<a class="sourceLine" id="cb1-80" data-line-number="80">    sst &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ncdf4/topics/ncvar_get">ncvar_get</a></span>(nc, <span class="dt">varid =</span> <span class="st">"analysed_sst"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-81" data-line-number="81"><span class="st">      </span><span class="kw">round</span>(<span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb1-82" data-line-number="82">    <span class="kw">dimnames</span>(sst) &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">lon =</span> nc<span class="op">$</span>dim<span class="op">$</span>lon<span class="op">$</span>vals,</a>
-<a class="sourceLine" id="cb1-83" data-line-number="83">                          <span class="dt">lat =</span> nc<span class="op">$</span>dim<span class="op">$</span>lat<span class="op">$</span>vals)</a>
-<a class="sourceLine" id="cb1-84" data-line-number="84">    <span class="kw"><a href="http://www.rdocumentation.org/packages/ncdf4/topics/nc_close">nc_close</a></span>(nc)</a>
-<a class="sourceLine" id="cb1-85" data-line-number="85">    sst &lt;-</a>
-<a class="sourceLine" id="cb1-86" data-line-number="86"><span class="st">      </span><span class="kw">as.data.frame</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/data.table/topics/melt.data.table">melt</a></span>(sst, <span class="dt">value.name =</span> <span class="st">"temp"</span>), <span class="dt">row.names =</span> <span class="ot">NULL</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-87" data-line-number="87"><span class="st">      </span><span class="kw"><a href="http://www.rdocumentation.org/packages/plyr/topics/mutate">mutate</a></span>(<span class="dt">t =</span> <span class="kw"><a href="http://lubridate.tidyverse.org/reference/ymd.html">ymd</a></span>(date.stamp)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-88" data-line-number="88"><span class="st">      </span><span class="kw"><a href="http://www.rdocumentation.org/packages/data.table/topics/na.omit.data.table">na.omit</a></span>()</a>
-<a class="sourceLine" id="cb1-89" data-line-number="89">    <span class="kw"><a href="http://www.rdocumentation.org/packages/data.table/topics/fwrite">fwrite</a></span>(sst,</a>
-<a class="sourceLine" id="cb1-90" data-line-number="90">           <span class="dt">file =</span> <span class="kw">paste0</span>(csv.dir, <span class="st">"/"</span>, name.stem, <span class="st">"-"</span>, strt.date, <span class="st">"-"</span>, end.date, <span class="st">".csv"</span>),</a>
-<a class="sourceLine" id="cb1-91" data-line-number="91">           <span class="dt">append =</span> <span class="ot">TRUE</span>, <span class="dt">col.names =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb1-92" data-line-number="92">    <span class="kw">rm</span>(sst)</a>
-<a class="sourceLine" id="cb1-93" data-line-number="93">  }</a>
-<a class="sourceLine" id="cb1-94" data-line-number="94">  </a>
-<a class="sourceLine" id="cb1-95" data-line-number="95">  <span class="kw"><a href="http://www.rdocumentation.org/packages/plyr/topics/llply">llply</a></span>(nc.list, ncFun, <span class="dt">csv.dir =</span> csv.dir, <span class="dt">.parallel =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb1-96" data-line-number="96">}</a></code></pre></div>
+<a class="sourceLine" id="cb1-70" data-line-number="70">  strt.date &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_sub">str_sub</a></span>(<span class="kw">basename</span>(nc.list[<span class="dv">1</span>]), <span class="dt">start =</span> <span class="dv">1</span>, <span class="dt">end =</span> <span class="dv">8</span>)</a>
+<a class="sourceLine" id="cb1-71" data-line-number="71">  end.date &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_sub">str_sub</a></span>(<span class="kw">basename</span>(nc.list[<span class="kw">length</span>(nc.list)]), <span class="dt">start =</span> <span class="dv">1</span>, <span class="dt">end =</span> <span class="dv">8</span>)</a>
+<a class="sourceLine" id="cb1-72" data-line-number="72"></a>
+<a class="sourceLine" id="cb1-73" data-line-number="73">  ncFun &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">nc.file =</span> nc.file, <span class="dt">csv.dir =</span> csv.dir) {</a>
+<a class="sourceLine" id="cb1-74" data-line-number="74">    nc &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ncdf4/topics/nc_open">nc_open</a></span>(nc.file)</a>
+<a class="sourceLine" id="cb1-75" data-line-number="75">    name.stem &lt;-<span class="st"> </span><span class="kw">substr</span>(<span class="kw">basename</span>(nc.file), <span class="dv">16</span>, <span class="dv">72</span>)</a>
+<a class="sourceLine" id="cb1-76" data-line-number="76">    date.stamp &lt;-<span class="st"> </span><span class="kw">substr</span>(<span class="kw">basename</span>(nc.file), <span class="dv">1</span>, <span class="dv">8</span>)</a>
+<a class="sourceLine" id="cb1-77" data-line-number="77">    sst &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ncdf4/topics/ncvar_get">ncvar_get</a></span>(nc, <span class="dt">varid =</span> <span class="st">"analysed_sst"</span>), <span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb1-78" data-line-number="78">    <span class="kw">dimnames</span>(sst) &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">lon =</span> nc<span class="op">$</span>dim<span class="op">$</span>lon<span class="op">$</span>vals,</a>
+<a class="sourceLine" id="cb1-79" data-line-number="79">                          <span class="dt">lat =</span> nc<span class="op">$</span>dim<span class="op">$</span>lat<span class="op">$</span>vals)</a>
+<a class="sourceLine" id="cb1-80" data-line-number="80">    <span class="kw"><a href="http://www.rdocumentation.org/packages/ncdf4/topics/nc_close">nc_close</a></span>(nc)</a>
+<a class="sourceLine" id="cb1-81" data-line-number="81">    sst &lt;-</a>
+<a class="sourceLine" id="cb1-82" data-line-number="82"><span class="st">      </span><span class="kw">as.data.frame</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/data.table/topics/melt.data.table">melt</a></span>(sst, <span class="dt">value.name =</span> <span class="st">"temp"</span>), <span class="dt">row.names =</span> <span class="ot">NULL</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-83" data-line-number="83"><span class="st">      </span><span class="kw"><a href="http://www.rdocumentation.org/packages/plyr/topics/mutate">mutate</a></span>(<span class="dt">t =</span> <span class="kw"><a href="http://lubridate.tidyverse.org/reference/ymd.html">ymd</a></span>(date.stamp)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-84" data-line-number="84"><span class="st">      </span><span class="kw"><a href="http://www.rdocumentation.org/packages/data.table/topics/na.omit.data.table">na.omit</a></span>()</a>
+<a class="sourceLine" id="cb1-85" data-line-number="85">    <span class="co"># Use data.table's `fwrite()` because it is much faster than anything else</span></a>
+<a class="sourceLine" id="cb1-86" data-line-number="86">    <span class="co"># for large csv files</span></a>
+<a class="sourceLine" id="cb1-87" data-line-number="87">    <span class="kw"><a href="http://www.rdocumentation.org/packages/data.table/topics/fwrite">fwrite</a></span>(sst,</a>
+<a class="sourceLine" id="cb1-88" data-line-number="88">           <span class="dt">file =</span> <span class="kw">paste0</span>(csv.dir, <span class="st">"/"</span>, name.stem, <span class="st">"-"</span>, strt.date, <span class="st">"-"</span>, end.date, <span class="st">".csv"</span>),</a>
+<a class="sourceLine" id="cb1-89" data-line-number="89">           <span class="dt">append =</span> <span class="ot">TRUE</span>, <span class="dt">col.names =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb1-90" data-line-number="90">    <span class="kw">rm</span>(sst)</a>
+<a class="sourceLine" id="cb1-91" data-line-number="91">  }</a>
+<a class="sourceLine" id="cb1-92" data-line-number="92">  <span class="co"># `parallel = FALSE` allows for better error checking should something go wrong;</span></a>
+<a class="sourceLine" id="cb1-93" data-line-number="93">  <span class="co"># there's also a helpful progress bar that becomes available</span></a>
+<a class="sourceLine" id="cb1-94" data-line-number="94">  <span class="kw"><a href="http://www.rdocumentation.org/packages/plyr/topics/llply">llply</a></span>(nc.list, ncFun, <span class="dt">csv.dir =</span> csv.dir, <span class="dt">.parallel =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb1-95" data-line-number="95">}</a></code></pre></div>
 <p>Now I simply run this function:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># RUN THE FUNCTION --------------------------------------------------------</span></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"></a>
@@ -260,70 +259,73 @@
 <a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co"># `csv.dir` that was named above</span></a>
 <a class="sourceLine" id="cb3-7" data-line-number="7">csv.file &lt;-<span class="st"> "NCEI-L4_GHRSST-SSTblend-AVHRR_OI-GLOB-v02.0-fv02.0_subset-19810901-20171014.csv"</span></a>
 <a class="sourceLine" id="cb3-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co"># Read in the data in the combined .csv file and assign column names</span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10">sst.dat &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/data.table/topics/fread">fread</a></span>(<span class="kw">paste0</span>(csv.dir, <span class="st">"/"</span>, csv.file))</a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="kw">colnames</span>(sst.dat) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>, <span class="st">"temp"</span>, <span class="st">"t"</span>)</a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co"># Read in the data in the combined .csv file and assign column names;</span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co"># again using the data.table way (`fread()`), which is FAST...</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11">sst.dat &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/data.table/topics/fread">fread</a></span>(<span class="kw">paste0</span>(csv.dir, <span class="st">"/"</span>, csv.file))</a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="kw">colnames</span>(sst.dat) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>, <span class="st">"temp"</span>, <span class="st">"t"</span>)</a>
 <a class="sourceLine" id="cb3-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co"># A FAST DATE FUNCTION ----------------------------------------------------</span></a>
-<a class="sourceLine" id="cb3-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb3-16" data-line-number="16">fastDate &lt;-<span class="st"> </span><span class="cf">function</span>(x, <span class="dt">tz =</span> <span class="ot">NULL</span>) {</a>
-<a class="sourceLine" id="cb3-17" data-line-number="17">  <span class="kw">require</span>(fasttime)</a>
-<a class="sourceLine" id="cb3-18" data-line-number="18">  <span class="kw">as.Date</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/fasttime/topics/fastPOSIXct">fastPOSIXct</a></span>(x, <span class="dt">tz =</span> tz))</a>
-<a class="sourceLine" id="cb3-19" data-line-number="19">}</a>
-<a class="sourceLine" id="cb3-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb3-21" data-line-number="21"></a>
-<a class="sourceLine" id="cb3-22" data-line-number="22"><span class="co"># APPLY FAST DATE FUNCTION ------------------------------------------------</span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co"># A FAST DATE FUNCTION ----------------------------------------------------</span></a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co"># This speeds the creation of the date vector up immensely</span></a>
+<a class="sourceLine" id="cb3-18" data-line-number="18">fastDate &lt;-<span class="st"> </span><span class="cf">function</span>(x, <span class="dt">tz =</span> <span class="ot">NULL</span>) {</a>
+<a class="sourceLine" id="cb3-19" data-line-number="19">  <span class="kw">require</span>(fasttime)</a>
+<a class="sourceLine" id="cb3-20" data-line-number="20">  <span class="kw">as.Date</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/fasttime/topics/fastPOSIXct">fastPOSIXct</a></span>(x, <span class="dt">tz =</span> tz))</a>
+<a class="sourceLine" id="cb3-21" data-line-number="21">}</a>
+<a class="sourceLine" id="cb3-22" data-line-number="22"></a>
 <a class="sourceLine" id="cb3-23" data-line-number="23"></a>
-<a class="sourceLine" id="cb3-24" data-line-number="24">sst.dat<span class="op">$</span>t &lt;-<span class="st"> </span><span class="kw">fastDate</span>(sst.dat<span class="op">$</span>t)</a>
+<a class="sourceLine" id="cb3-24" data-line-number="24"><span class="co"># APPLY FAST DATE FUNCTION ------------------------------------------------</span></a>
 <a class="sourceLine" id="cb3-25" data-line-number="25"></a>
-<a class="sourceLine" id="cb3-26" data-line-number="26"></a>
-<a class="sourceLine" id="cb3-27" data-line-number="27"><span class="co"># DETECT FUNCTION FOR GRIDDED DATA ----------------------------------------</span></a>
+<a class="sourceLine" id="cb3-26" data-line-number="26">sst.dat<span class="op">$</span>t &lt;-<span class="st"> </span><span class="kw">fastDate</span>(sst.dat<span class="op">$</span>t)</a>
+<a class="sourceLine" id="cb3-27" data-line-number="27"></a>
 <a class="sourceLine" id="cb3-28" data-line-number="28"></a>
-<a class="sourceLine" id="cb3-29" data-line-number="29"><span class="co"># clim switch selects either climatology or events as output</span></a>
-<a class="sourceLine" id="cb3-30" data-line-number="30">OISST_detect &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">dat =</span> data, <span class="dt">doy =</span> doy, <span class="dt">x =</span> t, <span class="dt">y =</span> temp,</a>
-<a class="sourceLine" id="cb3-31" data-line-number="31">                         <span class="dt">warm =</span> <span class="ot">TRUE</span>, <span class="dt">clim =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb3-32" data-line-number="32">                         <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,</a>
-<a class="sourceLine" id="cb3-33" data-line-number="33">                         <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>) {</a>
-<a class="sourceLine" id="cb3-34" data-line-number="34">  <span class="kw">require</span>(RmarineHeatWaves)</a>
-<a class="sourceLine" id="cb3-35" data-line-number="35">  dat &lt;-<span class="st"> </span>dat[,<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>] <span class="co"># hard-code cols with temp and date</span></a>
-<a class="sourceLine" id="cb3-36" data-line-number="36">  whole &lt;-<span class="st"> </span><span class="kw"><a href="../reference/make_whole.html">make_whole</a></span>(dat)</a>
-<a class="sourceLine" id="cb3-37" data-line-number="37">  <span class="cf">if</span> (warm) {</a>
-<a class="sourceLine" id="cb3-38" data-line-number="38">    out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/detect.html">detect</a></span>(whole, <span class="dt">min_duration =</span> <span class="dv">5</span>, <span class="dt">max_gap =</span> <span class="dv">2</span>, <span class="dt">cold_spells =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb3-39" data-line-number="39">                  <span class="dt">climatology_start =</span> climatology_start,</a>
-<a class="sourceLine" id="cb3-40" data-line-number="40">                  <span class="dt">climatology_end =</span> climatology_end)</a>
-<a class="sourceLine" id="cb3-41" data-line-number="41">  } <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb3-42" data-line-number="42">    out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/detect.html">detect</a></span>(whole, <span class="dt">min_duration =</span> <span class="dv">5</span>, <span class="dt">max_gap =</span> <span class="dv">2</span>, <span class="dt">cold_spells =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb3-43" data-line-number="43">                  <span class="dt">climatology_start =</span> climatology_start,</a>
-<a class="sourceLine" id="cb3-44" data-line-number="44">                  <span class="dt">climatology_end =</span> climatology_end)</a>
-<a class="sourceLine" id="cb3-45" data-line-number="45">  }</a>
-<a class="sourceLine" id="cb3-46" data-line-number="46">  <span class="cf">if</span> (clim) {</a>
-<a class="sourceLine" id="cb3-47" data-line-number="47">    clim &lt;-<span class="st"> </span>out<span class="op">$</span>clim</a>
-<a class="sourceLine" id="cb3-48" data-line-number="48">    <span class="kw">return</span>(clim)</a>
-<a class="sourceLine" id="cb3-49" data-line-number="49">  } <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb3-50" data-line-number="50">    event &lt;-<span class="st"> </span>out<span class="op">$</span>event</a>
-<a class="sourceLine" id="cb3-51" data-line-number="51">    <span class="kw">return</span>(event)</a>
-<a class="sourceLine" id="cb3-52" data-line-number="52">  }</a>
-<a class="sourceLine" id="cb3-53" data-line-number="53">}</a>
-<a class="sourceLine" id="cb3-54" data-line-number="54"></a>
-<a class="sourceLine" id="cb3-55" data-line-number="55"></a>
-<a class="sourceLine" id="cb3-56" data-line-number="56"><span class="co"># DETECT EVENTS! ----------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb3-29" data-line-number="29"><span class="co"># DETECT FUNCTION FOR GRIDDED DATA ----------------------------------------</span></a>
+<a class="sourceLine" id="cb3-30" data-line-number="30"></a>
+<a class="sourceLine" id="cb3-31" data-line-number="31"><span class="co"># The `clim` switch selects either climatology or events as output;</span></a>
+<a class="sourceLine" id="cb3-32" data-line-number="32"><span class="co"># please provide your own date range in here</span></a>
+<a class="sourceLine" id="cb3-33" data-line-number="33">OISST_detect &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">dat =</span> data, <span class="dt">doy =</span> doy, <span class="dt">x =</span> t, <span class="dt">y =</span> temp,</a>
+<a class="sourceLine" id="cb3-34" data-line-number="34">                         <span class="dt">warm =</span> <span class="ot">TRUE</span>, <span class="dt">clim =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb3-35" data-line-number="35">                         <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,</a>
+<a class="sourceLine" id="cb3-36" data-line-number="36">                         <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>) {</a>
+<a class="sourceLine" id="cb3-37" data-line-number="37">  <span class="kw">require</span>(RmarineHeatWaves)</a>
+<a class="sourceLine" id="cb3-38" data-line-number="38">  dat &lt;-<span class="st"> </span>dat[,<span class="dv">3</span><span class="op">:</span><span class="dv">4</span>] <span class="co"># hard-code cols with temp and date</span></a>
+<a class="sourceLine" id="cb3-39" data-line-number="39">  whole &lt;-<span class="st"> </span><span class="kw"><a href="../reference/make_whole.html">make_whole</a></span>(dat)</a>
+<a class="sourceLine" id="cb3-40" data-line-number="40">  <span class="cf">if</span> (warm) {</a>
+<a class="sourceLine" id="cb3-41" data-line-number="41">    out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/detect.html">detect</a></span>(whole, <span class="dt">min_duration =</span> <span class="dv">5</span>, <span class="dt">max_gap =</span> <span class="dv">2</span>, <span class="dt">cold_spells =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb3-42" data-line-number="42">                  <span class="dt">climatology_start =</span> climatology_start,</a>
+<a class="sourceLine" id="cb3-43" data-line-number="43">                  <span class="dt">climatology_end =</span> climatology_end)</a>
+<a class="sourceLine" id="cb3-44" data-line-number="44">  } <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb3-45" data-line-number="45">    out &lt;-<span class="st"> </span><span class="kw"><a href="../reference/detect.html">detect</a></span>(whole, <span class="dt">min_duration =</span> <span class="dv">5</span>, <span class="dt">max_gap =</span> <span class="dv">2</span>, <span class="dt">cold_spells =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb3-46" data-line-number="46">                  <span class="dt">climatology_start =</span> climatology_start,</a>
+<a class="sourceLine" id="cb3-47" data-line-number="47">                  <span class="dt">climatology_end =</span> climatology_end)</a>
+<a class="sourceLine" id="cb3-48" data-line-number="48">  }</a>
+<a class="sourceLine" id="cb3-49" data-line-number="49">  <span class="cf">if</span> (clim) {</a>
+<a class="sourceLine" id="cb3-50" data-line-number="50">    clim &lt;-<span class="st"> </span>out<span class="op">$</span>clim</a>
+<a class="sourceLine" id="cb3-51" data-line-number="51">    <span class="kw">return</span>(clim)</a>
+<a class="sourceLine" id="cb3-52" data-line-number="52">  } <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb3-53" data-line-number="53">    event &lt;-<span class="st"> </span>out<span class="op">$</span>event</a>
+<a class="sourceLine" id="cb3-54" data-line-number="54">    <span class="kw">return</span>(event)</a>
+<a class="sourceLine" id="cb3-55" data-line-number="55">  }</a>
+<a class="sourceLine" id="cb3-56" data-line-number="56">}</a>
 <a class="sourceLine" id="cb3-57" data-line-number="57"></a>
-<a class="sourceLine" id="cb3-58" data-line-number="58">events &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/data.table/topics/as.data.table">as.data.table</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/plyr/topics/ddply">ddply</a></span>(sst.dat, .(lon, lat), OISST_detect, </a>
-<a class="sourceLine" id="cb3-59" data-line-number="59">                              <span class="dt">warm =</span> <span class="ot">TRUE</span>, <span class="dt">clim =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb3-60" data-line-number="60">                              <span class="dt">.parallel =</span> <span class="ot">FALSE</span>, <span class="dt">.progress =</span> <span class="st">"text"</span>))</a>
-<a class="sourceLine" id="cb3-61" data-line-number="61"></a>
-<a class="sourceLine" id="cb3-62" data-line-number="62"></a>
-<a class="sourceLine" id="cb3-63" data-line-number="63"><span class="co"># SAVE AND CLEAN UP -------------------------------------------------------</span></a>
-<a class="sourceLine" id="cb3-64" data-line-number="64">event.dir &lt;-<span class="st"> "/Users/ajsmit/spatial/test/events"</span></a>
+<a class="sourceLine" id="cb3-58" data-line-number="58"></a>
+<a class="sourceLine" id="cb3-59" data-line-number="59"><span class="co"># DETECT EVENTS! ----------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb3-60" data-line-number="60"></a>
+<a class="sourceLine" id="cb3-61" data-line-number="61">events &lt;-<span class="st"> </span><span class="kw">as_tibble</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/plyr/topics/ddply">ddply</a></span>(sst.dat, .(lon, lat), OISST_detect,</a>
+<a class="sourceLine" id="cb3-62" data-line-number="62">                          <span class="dt">warm =</span> <span class="ot">TRUE</span>, <span class="dt">clim =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb3-63" data-line-number="63">                          <span class="dt">.parallel =</span> <span class="ot">FALSE</span>, <span class="dt">.progress =</span> <span class="st">"text"</span>))</a>
+<a class="sourceLine" id="cb3-64" data-line-number="64"></a>
 <a class="sourceLine" id="cb3-65" data-line-number="65"></a>
-<a class="sourceLine" id="cb3-66" data-line-number="66"><span class="co"># Reuse the existing name; this ensures traceability of the files back to</span></a>
-<a class="sourceLine" id="cb3-67" data-line-number="67"><span class="co"># the input sources</span></a>
-<a class="sourceLine" id="cb3-68" data-line-number="68">event.file &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="dt">pattern =</span> <span class="st">"</span><span class="ch">\\</span><span class="st">.csv$"</span>, <span class="st">""</span>, csv.file)</a>
-<a class="sourceLine" id="cb3-69" data-line-number="69"></a>
-<a class="sourceLine" id="cb3-70" data-line-number="70"><span class="co"># Write the file out to disk</span></a>
-<a class="sourceLine" id="cb3-71" data-line-number="71"><span class="kw"><a href="http://www.rdocumentation.org/packages/data.table/topics/fwrite">fwrite</a></span>(events, <span class="dt">file =</span> <span class="kw">paste0</span>(<span class="st">"event.dir"</span>, <span class="st">"/"</span>, event.file, <span class="st">"-events.csv"</span>))</a>
-<a class="sourceLine" id="cb3-72" data-line-number="72"><span class="kw">remove</span>(events); <span class="kw">remove</span>(sst.dat)</a></code></pre></div>
+<a class="sourceLine" id="cb3-66" data-line-number="66"><span class="co"># SAVE AND CLEAN UP -------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb3-67" data-line-number="67">event.dir &lt;-<span class="st"> "/Users/ajsmit/spatial/test/events"</span></a>
+<a class="sourceLine" id="cb3-68" data-line-number="68"></a>
+<a class="sourceLine" id="cb3-69" data-line-number="69"><span class="co"># Reuse the existing name; this ensures traceability of the files back to</span></a>
+<a class="sourceLine" id="cb3-70" data-line-number="70"><span class="co"># the input sources</span></a>
+<a class="sourceLine" id="cb3-71" data-line-number="71">event.file &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="dt">pattern =</span> <span class="st">"</span><span class="ch">\\</span><span class="st">.csv$"</span>, <span class="st">""</span>, csv.file)</a>
+<a class="sourceLine" id="cb3-72" data-line-number="72"></a>
+<a class="sourceLine" id="cb3-73" data-line-number="73"><span class="co"># Write the file out to disk</span></a>
+<a class="sourceLine" id="cb3-74" data-line-number="74"><span class="kw"><a href="http://www.rdocumentation.org/packages/data.table/topics/fwrite">fwrite</a></span>(events, <span class="dt">file =</span> <span class="kw">paste0</span>(<span class="st">"event.dir"</span>, <span class="st">"/"</span>, event.file, <span class="st">"-events.csv"</span>))</a>
+<a class="sourceLine" id="cb3-75" data-line-number="75"><span class="kw">remove</span>(events); <span class="kw">remove</span>(sst.dat)</a></code></pre></div>
 <p>Please let me know if there are issues with the scripts, or if you have suggesations about how to improve them.</p>
 </div>
   </div>

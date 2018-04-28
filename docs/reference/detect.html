@@ -76,7 +76,7 @@ series of temperature along with a daily date vector." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.3.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.4.9000</span>
       </span>
     </div>
 
@@ -99,10 +99,10 @@ series of temperature along with a daily date vector." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/gridded_event_detection.html">Extreme event detection in gridded data</a>
+      <a href="../articles/OISST_preparation.html">OISST preparation</a>
     </li>
     <li>
-      <a href="../articles/OISST_preparation.html">OISST preparation</a>
+      <a href="../articles/gridded_event_detection.html">Extreme event detection in gridded data</a>
     </li>
   </ul>
 </li>
@@ -149,8 +149,8 @@ series of temperature along with a daily date vector.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>detect</span>(<span class='no'>data</span>, <span class='kw'>doy</span> <span class='kw'>=</span> <span class='no'>doy</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='kw'>climatology_start</span> <span class='kw'>=</span> <span class='fl'>1983</span>,
-  <span class='kw'>climatology_end</span> <span class='kw'>=</span> <span class='fl'>2012</span>, <span class='kw'>pctile</span> <span class='kw'>=</span> <span class='fl'>90</span>, <span class='kw'>window_half_width</span> <span class='kw'>=</span> <span class='fl'>5</span>,
+    <pre class="usage"><span class='fu'>detect</span>(<span class='no'>data</span>, <span class='kw'>doy</span> <span class='kw'>=</span> <span class='no'>doy</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='no'>climatology_start</span>,
+  <span class='no'>climatology_end</span>, <span class='kw'>pctile</span> <span class='kw'>=</span> <span class='fl'>90</span>, <span class='kw'>window_half_width</span> <span class='kw'>=</span> <span class='fl'>5</span>,
   <span class='kw'>smooth_percentile</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>smooth_percentile_width</span> <span class='kw'>=</span> <span class='fl'>31</span>,
   <span class='kw'>clim_only</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>min_duration</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>join_across_gaps</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>max_gap</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>max_pad_length</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>cold_spells</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
@@ -191,16 +191,15 @@ name differs from the default (i.e. <code>temp</code>), specify the name here.</
     </tr>
     <tr>
       <th>climatology_start</th>
-      <td><p>The first full year from which the (varying by
-day-of-year) seasonal cycle and extremes threshold are calculated (full being
-366 days if leap year, else 365 days). Note that a default value is provided
-but that it may not be suitable for your own data. Default is <code>1983</code>.</p></td>
+      <td><p>Required. The start date for the period across which
+the (varying by day-of-year) seasonal cycle and extremes threshold are
+calculated.</p></td>
     </tr>
     <tr>
       <th>climatology_end</th>
-      <td><p>The last full year up to which the  seasonal cycle
-and extremes threshold are calculated. Default is <code>2012</code> (but see comment
-above).</p></td>
+      <td><p>Required. The end date for the period across which
+the (varying by day-of-year) seasonal cycle and extremes threshold are
+calculated.</p></td>
     </tr>
     <tr>
       <th>pctile</th>
@@ -354,13 +353,11 @@ suitable for use with <code>detect</code>, although this may also be accomplishe
 'by hand' as long as the criteria are met as discussed in the documentation
 to <code><a href='make_whole.html'>make_whole</a></code>.</p></li>
 <li><p>It is recommended that a climatology period of at least 30 years is
-specified in order to capture decadal thermal periodicities. Currently the
-function will only compute climatologies starting from 1 January of the
-specified <code>climatology_start</code> and ending on 31 December of the specified
-<code>climatology_end</code>. Even one day short of a full year (i.e. 365 day during
-non-leap years and 366 days during leap years) at the beginning/end of the
-climatology period will cause the function to fail. This may be changed in
-future versions of the function.</p></li>
+specified in order to capture decadal thermal periodicities. It is further
+advised that full the start and end dates for the climatology period result
+in full years, e.g. "1982-01-01" to "2011-12-31" or "1982-07-01" to
+"2012-06-30"; if not, this may result in an unequal weighting of data
+belonging with certain months within a time series.</p></li>
 <li><p>This function supports leap years. This is done by ignoring Feb 29s
 for the initial calculation of the climatology and threshold. The values for
 Feb 29 are then linearly interpolated from the values for Feb 28 and Mar 1.</p></li>
@@ -403,7 +400,8 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>ts_dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_whole.html'>make_whole</a></span>(<span class='no'>sst_WA</span>)
-<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>detect</span>(<span class='no'>ts_dat</span>, <span class='kw'>climatology_start</span> <span class='kw'>=</span> <span class='fl'>1983</span>, <span class='kw'>climatology_end</span> <span class='kw'>=</span> <span class='fl'>2012</span>)
+<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>detect</span>(<span class='no'>ts_dat</span>, <span class='kw'>climatology_start</span> <span class='kw'>=</span> <span class='st'>"1983-01-01"</span>,
+              <span class='kw'>climatology_end</span> <span class='kw'>=</span> <span class='st'>"2012-12-31"</span>)
 <span class='co'># show a portion of the climatology:</span>
 <span class='no'>res</span>$<span class='no'>clim</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt; # A tibble: 10 x 10
 #&gt;      doy t           temp seas_clim_year thresh_clim_year var_clim_year
