@@ -79,7 +79,8 @@ are in bold):
 
 \examples{
 ts_dat <- make_whole(sst_WA)
-res <- detect(ts_dat, climatology_start = 1983, climatology_end = 2012)
+res <- detect(ts_dat, climatology_start = "1983-01-01",
+              climatology_end = "2012-12-31")
 mhw <- res$clim
 mhw <- mhw[10580:10690,]
 

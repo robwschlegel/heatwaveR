@@ -59,7 +59,8 @@ Hobday et al. (2016).
 }
 \examples{
 ts_dat <- make_whole(sst_WA)
-res <- detect(ts_dat, climatology_start = 1983, climatology_end = 2012) # using default values
+res <- detect(ts_dat, climatology_start = "1983-01-01",
+              climatology_end = "2012-12-31")
 
 \dontrun{
 event_line(res, spread = 200, metric = "int_cum",

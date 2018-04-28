@@ -6,7 +6,7 @@ context("Test geoms.R")
 
 test_that("geom_flame() doesn't fall over", {
   res <- detect(data = make_whole(sst_Med),
-                climatology_start = 1983, climatology_end = 2012)$clim %>%
+                climatology_start = "1983-01-01", climatology_end = "2012-12-31")$clim %>%
     dplyr::slice(1300:1500)
   tp <- ggplot(data = res, aes(x = t, y = temp)) +
     geom_flame(aes(y2 = thresh_clim_year))
@@ -15,7 +15,7 @@ test_that("geom_flame() doesn't fall over", {
 
 test_that("geom_lolli() doesn't fall over", {
   res <- detect(data = make_whole(sst_Med),
-                climatology_start = 1983, climatology_end = 2012)$event
+                climatology_start = "1983-01-01", climatology_end = "2012-12-31")$event
   tp <- ggplot(data = res) +
     geom_lolli(aes(x = date_start, y = int_cum))
   expect_is(tp, "ggplot")
