@@ -55,7 +55,8 @@
 #'
 #' @examples
 #' ts_dat <- make_whole(sst_WA)
-#' res <- detect(ts_dat, climatology_start = 1983, climatology_end = 2012) # using default values
+#' res <- detect(ts_dat, climatology_start = "1983-01-01",
+#'               climatology_end = "2012-12-31")
 #'
 #' \dontrun{
 #' event_line(res, spread = 200, metric = "int_cum",
@@ -190,7 +191,8 @@ event_line <- function(data,
 #'
 #' @examples
 #' ts_dat <- make_whole(sst_NW_Atl)
-#' res <- detect(ts_dat, climatology_start = 1983, climatology_end = 2012) # using default values
+#' res <- detect(ts_dat, climatology_start = "1983-01-01",
+#'               climatology_end = "2012-12-31")
 #'
 #' \dontrun{
 #' lolli_plot(res, metric = "int_cum", event_count = 3, xaxis = "date_peak")

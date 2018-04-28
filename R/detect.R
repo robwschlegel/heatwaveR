@@ -24,13 +24,12 @@
 #' the column with dates here.
 #' @param y This is a column containing the measurement variable. If the column
 #' name differs from the default (i.e. \code{temp}), specify the name here.
-#' @param climatology_start The first full year from which the (varying by
-#' day-of-year) seasonal cycle and extremes threshold are calculated (full being
-#' 366 days if leap year, else 365 days). Note that a default value is provided
-#' but that it may not be suitable for your own data. Default is \code{1983}.
-#' @param climatology_end The last full year up to which the  seasonal cycle
-#' and extremes threshold are calculated. Default is \code{2012} (but see comment
-#' above).
+#' @param climatology_start Required. The start date for the period across which
+#' the (varying by day-of-year) seasonal cycle and extremes threshold are
+#' calculated.
+#' @param climatology_end Required. The end date for the period across which
+#' the (varying by day-of-year) seasonal cycle and extremes threshold are
+#' calculated.
 #' @param pctile Threshold percentile (\%) for detection of extreme values.
 #' Default is \code{90}th percentile. Please see \code{cold_spells} for more
 #' information about the calculation of marine cold spells.
@@ -79,13 +78,11 @@
 #' 'by hand' as long as the criteria are met as discussed in the documentation
 #' to \code{\link{make_whole}}.
 #' \item It is recommended that a climatology period of at least 30 years is
-#' specified in order to capture decadal thermal periodicities. Currently the
-#' function will only compute climatologies starting from 1 January of the
-#' specified \code{climatology_start} and ending on 31 December of the specified
-#' \code{climatology_end}. Even one day short of a full year (i.e. 365 day during
-#' non-leap years and 366 days during leap years) at the beginning/end of the
-#' climatology period will cause the function to fail. This may be changed in
-#' future versions of the function.
+#' specified in order to capture decadal thermal periodicities. It is further
+#' advised that full the start and end dates for the climatology period result
+#' in full years, e.g. "1982-01-01" to "2011-12-31" or "1982-07-01" to
+#' "2012-06-30"; if not, this may result in an unequal weighting of data
+#' belonging with certain months within a time series.
 #' \item This function supports leap years. This is done by ignoring Feb 29s
 #' for the initial calculation of the climatology and threshold. The values for
 #' Feb 29 are then linearly interpolated from the values for Feb 28 and Mar 1.
@@ -200,7 +197,8 @@
 #'
 #' @examples
 #' ts_dat <- make_whole(sst_WA)
-#' res <- detect(ts_dat, climatology_start = 1983, climatology_end = 2012)
+#' res <- detect(ts_dat, climatology_start = "1983-01-01",
+#'               climatology_end = "2012-12-31")
 #' # show a portion of the climatology:
 #' res$clim[1:10, ]
 #' # show some of the heat waves:
@@ -210,8 +208,8 @@ detect <-
            doy = doy,
            x = t,
            y = temp,
-           climatology_start = 1983,
-           climatology_end = 2012,
+           climatology_start,
+           climatology_end,
            pctile = 90,
            window_half_width = 5,
            smooth_percentile = TRUE,
@@ -237,17 +235,19 @@ detect <-
     t_series$ts.y <- zoo::na.approx(t_series$ts.y, maxgap = max_pad_length)
 
     if (missing(climatology_start))
-      stop("Oops! Please provide a complete year for the start of the climatology.")
+      stop("Oops! Please provide BOTH start and end dates for the climatology.")
 
     if (missing(climatology_end))
-      stop("Bummer! Please provide a complete year for the end of the climatology.")
+      stop("Bummer! Please provide BOTH start and end dates for the climatology.")
 
-    clim_start <- paste(climatology_start, "01", "01", sep = "-")
+    # clim_start <- paste(climatology_start, "01", "01", sep = "-")
+    clim_start <- climatology_start
     if (t_series$ts.x[1] > clim_start)
       stop(paste("The specified start date precedes the first day of series, which is",
                  t_series$ts.x[1]))
 
-    clim_end <- paste(climatology_end, "12", "31", sep = "-")
+    # clim_end <- paste(climatology_end, "12", "31", sep = "-")
+    clim_end <- climatology_end
     if (clim_end > t_series$ts.x[nrow(t_series)])
       stop(paste("The specified end date follows the last day of series, which is",
                  t_series$ts.x[nrow(t_series)]))

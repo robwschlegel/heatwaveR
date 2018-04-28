@@ -2,4 +2,5 @@
 .Rhistory
 .RData
 inst/doc
-_tests
+_testing
+heatwaveR.code-workspace
