@@ -56,9 +56,9 @@
 #' interpolate (pad) missing data (specified as \code{NA}) in the input
 #' temperature time series; i.e., any consecutive blocks of NAs with length
 #' greater than \code{max_pad_length} will be left as \code{NA}. Set as an
-#' integer. Default is \code{3} days.
+#' integer. The default is \code{3} days.
 #' @param cold_spells Boolean specifying if the code should detect cold events
-#' instead of heat events. Default is \code{FALSE}. Please note that the
+#' instead of heat events. The default is \code{FALSE}. Please note that the
 #' climatological thresholds for cold-spells are calculated the same as for
 #' heatwaves, meaning that \code{pctile} should be set the same regardless
 #' if one is calculating heatwaves or cold-spells. For example, if one wants
@@ -67,6 +67,19 @@
 #' identify the most intense cold-spells one must also set \code{pctile = 90},
 #' even though cold spells are in fact simply the coldest extreme events in a
 #' time series, which statistically equate to values below the 10th percentile.
+#' @param diff_baseline When this switch is set to \code{FALSE}, the default,
+#' the baseline climatology will be obtained from the time series provided to
+#' \code{data}. Enabling this option allows one to use baseline data different
+#' from the data where the extreme events will be detected in. The data used
+#' for the custom climatology must be exactly of the same structure as that
+#' provided to \code{data}; in other words, the column names must be the same,
+#' they must share at least the same duration as implied by
+#' \code{climatology_start} and \code{climatology_end}, and they must have
+#' previously been produced by \code{make_whole} or it must have been made by
+#' hand to conform with the data created by \code{make_whole}.
+#' @param baseline_data The name of the dataframe with data to use for the
+#' calculation of a custom baseline. See \code{data} and \code{diff_baseline}
+#' for more information about the data's structure.
 #'
 #' @details
 #' \enumerate{
@@ -219,7 +232,9 @@ detect <-
            join_across_gaps = TRUE,
            max_gap = 2,
            max_pad_length = 3,
-           cold_spells = FALSE
+           cold_spells = FALSE,
+           diff_baseline = FALSE,
+           baseline_data = NULL
            # verbose = TRUE, # to be implemented
   ) {
 
@@ -255,10 +270,17 @@ detect <-
     if (cold_spells)
       t_series$ts.y <- -t_series$ts.y
 
-    tDat <- t_series %>%
-      dplyr::filter(ts.x >= clim_start & ts.x <= clim_end) %>%
-      dplyr::mutate(ts.x = lubridate::year(ts.x)) %>%
-      tidyr::spread(ts.x, ts.y)
+    if (diff_baseline) {
+      tDat <- baseline_data %>%
+        dplyr::filter(ts.x >= clim_start & ts.x <= clim_end) %>%
+        dplyr::mutate(ts.x = lubridate::year(ts.x)) %>%
+        tidyr::spread(ts.x, ts.y)
+    } else {
+      tDat <- t_series %>%
+        dplyr::filter(ts.x >= clim_start & ts.x <= clim_end) %>%
+        dplyr::mutate(ts.x = lubridate::year(ts.x)) %>%
+        tidyr::spread(ts.x, ts.y)
+    }
 
     all_NA <- apply(tDat[59:61, ], 2, function(x) !all(is.na(x)))
     no_NA <- names(all_NA[all_NA > 0])

@@ -8,7 +8,8 @@ detect(data, doy = doy, x = t, y = temp, climatology_start,
   climatology_end, pctile = 90, window_half_width = 5,
   smooth_percentile = TRUE, smooth_percentile_width = 31,
   clim_only = FALSE, min_duration = 5, join_across_gaps = TRUE,
-  max_gap = 2, max_pad_length = 3, cold_spells = FALSE)
+  max_gap = 2, max_pad_length = 3, cold_spells = FALSE,
+  diff_baseline = FALSE, baseline_data = NULL)
 }
 \arguments{
 \item{data}{A data frame with three columns. In the default setting (i.e. ommitting
@@ -76,10 +77,10 @@ is \code{2} days.}
 interpolate (pad) missing data (specified as \code{NA}) in the input
 temperature time series; i.e., any consecutive blocks of NAs with length
 greater than \code{max_pad_length} will be left as \code{NA}. Set as an
-integer. Default is \code{3} days.}
+integer. The default is \code{3} days.}
 
 \item{cold_spells}{Boolean specifying if the code should detect cold events
-instead of heat events. Default is \code{FALSE}. Please note that the
+instead of heat events. The default is \code{FALSE}. Please note that the
 climatological thresholds for cold-spells are calculated the same as for
 heatwaves, meaning that \code{pctile} should be set the same regardless
 if one is calculating heatwaves or cold-spells. For example, if one wants
@@ -88,6 +89,21 @@ to calculate heatwaves above the 90th percentile threshold
 identify the most intense cold-spells one must also set \code{pctile = 90},
 even though cold spells are in fact simply the coldest extreme events in a
 time series, which statistically equate to values below the 10th percentile.}
+
+\item{diff_baseline}{When this switch is set to \code{FALSE}, the default,
+the baseline climatology will be obtained from the time series provided to
+\code{data}. Enabling this option allows one to use baseline data different
+from the data where the extreme events will be detected in. The data used
+for the custom climatology must be exactly of the same structure as that
+provided to \code{data}; in other words, the column names must be the same,
+they must share at least the same duration as implied by
+\code{climatology_start} and \code{climatology_end}, and they must have
+previously been produced by \code{make_whole} or it must have been made by
+hand to conform with the data created by \code{make_whole}.}
+
+\item{baseline_data}{The name of the dataframe with data to use for the
+calculation of a custom baseline. See \code{data} and \code{diff_baseline}
+for more information about the data's structure.}
 }
 \value{
 The function will return a list of two tibbles (see the \code{tidyverse}),

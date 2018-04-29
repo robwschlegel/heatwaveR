@@ -1,3 +1,9 @@
+# heatwaveR 0.0.5.9000 (2018-04-29)
+
+* Add option to use a custom baseline to `detect()` as requested by
+  Maxime Marin (), The University of Tasmania (IMAS) – CSIRO (O&A),
+  and which is present in the python version of the package
+
 # heatwaveR 0.0.4.9000 (2018-04-28)
 
 * Remove restriction to require full years for start/end points of
