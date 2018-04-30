@@ -68,17 +68,17 @@
 #' even though cold spells are in fact simply the coldest extreme events in a
 #' time series, which statistically equate to values below the 10th percentile.
 #' @param diff_baseline When this switch is set to \code{FALSE}, the default,
-#' the baseline climatology will be obtained from the time series provided to
-#' \code{data}. Enabling this option allows one to use baseline data different
-#' from the data where the extreme events will be detected in. The data used
-#' for the custom climatology must be exactly of the same structure as that
-#' provided to \code{data}; in other words, the column names must be the same,
-#' they must share at least the same duration as implied by
-#' \code{climatology_start} and \code{climatology_end}, and they must have
+#' the climatology will be obtained from the time series provided to
+#' \code{data}. Enabling this option allows one to use baseline or climatology
+#' data different from that within which the extreme events will be detected in.
+#' The data used for the custom baseline or climatology must be exactly of the
+#' same structure as that provided to \code{data}; in other words, the column
+#' names must be the same, they must share at least the same duration as implied
+#' by \code{climatology_start} and \code{climatology_end}, and they must have
 #' previously been produced by \code{make_whole} or it must have been made by
 #' hand to conform with the data created by \code{make_whole}.
-#' @param baseline_data The name of the dataframe with data to use for the
-#' calculation of a custom baseline. See \code{data} and \code{diff_baseline}
+#' @param baseline_data The name of the dataframe with data to use a the
+#' custom baseline or climatology. See \code{data} and \code{diff_baseline}
 #' for more information about the data's structure.
 #'
 #' @details
@@ -90,12 +90,18 @@
 #' suitable for use with \code{detect}, although this may also be accomplished
 #' 'by hand' as long as the criteria are met as discussed in the documentation
 #' to \code{\link{make_whole}}.
-#' \item It is recommended that a climatology period of at least 30 years is
-#' specified in order to capture decadal thermal periodicities. It is further
-#' advised that full the start and end dates for the climatology period result
-#' in full years, e.g. "1982-01-01" to "2011-12-31" or "1982-07-01" to
-#' "2012-06-30"; if not, this may result in an unequal weighting of data
-#' belonging with certain months within a time series.
+#' \item It is recommended that a period of at least 30 years is specified in
+#' order to produce a climatology that smooths out any decadal thermal
+#' periodicities that may be present. It is further advised that full the start
+#' and end dates for the climatology period result in full years, e.g.
+#' "1982-01-01" to "2011-12-31" or "1982-07-01" to "2012-06-30"; if not, this
+#' may result in an unequal weighting of data belonging with certain months
+#' within a time series.
+#' \item In this package we delibirately use the terms climatology and baseline,
+#' which do different things in as far as the event detection algorithm is
+#' concerned. The standard behaviour is to calculate a climatology is when
+#' \code{diff_baseline} is set as \code{FALSE} or when this argument is ommitted
+#' from `detect()`. A baseline on the other hand... <AJS to add more in here.>
 #' \item This function supports leap years. This is done by ignoring Feb 29s
 #' for the initial calculation of the climatology and threshold. The values for
 #' Feb 29 are then linearly interpolated from the values for Feb 28 and Mar 1.
@@ -130,8 +136,8 @@
 #' @return The function will return a list of two tibbles (see the \code{tidyverse}),
 #' \code{clim} and \code{event}, which are the climatology and events,
 #' respectively. The climatology contains the full time series of daily temperatures,
-#' as well as the the seasonal climatology, the threshold and various aspects of the
-#' events that were detected. The software was designed for detecting extreme
+#' as well as the the seasonal climatology, the threshold and various aspects of
+#' the events that were detected. The software was designed for detecting extreme
 #' thermal events, and the units specified below reflect that intended purpose.
 #' However, the various other kinds of extreme events may be detected according
 #' to the 'marine heat wave' specifications, and if that is the case, the appropriate
@@ -258,13 +264,13 @@ detect <-
     # clim_start <- paste(climatology_start, "01", "01", sep = "-")
     clim_start <- climatology_start
     if (t_series$ts.x[1] > clim_start)
-      stop(paste("The specified start date precedes the first day of series, which is",
+      stop(paste("The specified start date precedes the first day of series, which is ",
                  t_series$ts.x[1]))
 
     # clim_end <- paste(climatology_end, "12", "31", sep = "-")
     clim_end <- climatology_end
     if (clim_end > t_series$ts.x[nrow(t_series)])
-      stop(paste("The specified end date follows the last day of series, which is",
+      stop(paste("The specified end date follows the last day of series, which is ",
                  t_series$ts.x[nrow(t_series)]))
 
     if (cold_spells)

@@ -1,0 +1,80 @@
+---
+title: "Climatologies and baselines"
+author: "AJ Smit"
+date: "`r Sys.Date()`"
+description: "This vignettes is about climatologies and baselines."
+output: 
+  rmarkdown::html_vignette:
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{OISST retrieval and processing}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r global_options, include = FALSE}
+knitr::opts_chunk$set(fig.width = 4, fig.align = 'center',
+                      echo = FALSE, warning = FALSE, 
+                      message = FALSE, tidy = FALSE)
+```
+
+```{r setup, echo = TRUE}
+library(ncdf4) # library for processing netCDFs
+library(data.table) # for fast .csv write function, `fwrite()`
+library(tidyverse) # misc. data processing conveniences
+library(reshape2) # for making a long data format
+library(plyr) # for `llply()`
+library(lubridate) # for working with dates
+library(stringr) # for working with strings
+library(heatwaveR)
+library(ggpubr)
+library(doMC); doMC::registerDoMC(cores = 4) # for multicore spead-ups
+```
+
+## Overview
+
+## The default climatology and threshold
+
+```{r}
+# Using a built-in data set
+ts_dat <- make_whole(sst_WA)
+res.11 <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
+              climatology_end = "2012-12-31")
+res.31 <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
+              climatology_end = "2012-12-31",
+              window_half_width = 15)
+res.61 <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
+              climatology_end = "2012-12-31",
+              window_half_width = 30)
+```
+
+
+```{r}
+ggplot(data = dplyr::filter(res.11$clim, t <= "1982-12-31"),
+       aes(x = t, y = seas_clim_year)) +
+  geom_line(size = 0.6, linetype = "dotted", alpha = 0.9) +
+  geom_line(aes(y = thresh_clim_year),
+            colour = "red",
+            size = 0.6,
+            linetype = "dotted", alpha = 0.9) +
+  geom_line(data = dplyr::filter(res.31$clim, t <= "1982-12-31"),
+            aes(x = t, y = seas_clim_year),
+            linetype = "dashed",
+            size = 0.8, alpha = 0.6) +
+  geom_line(data = dplyr::filter(res.31$clim, t <= "1982-12-31"),
+            aes(x = t, y = thresh_clim_year),
+            linetype = "dashed",
+            colour = "red",
+            size = 0.8, alpha = 0.6) +
+  geom_line(data = dplyr::filter(res.61$clim, t <= "1982-12-31"),
+            aes(x = t, y = seas_clim_year),
+            size = 1.2, alpha = 0.4) +
+  geom_line(data = dplyr::filter(res.61$clim, t <= "1982-12-31"),
+            aes(x = t, y = thresh_clim_year),
+            colour = "red",
+            size = 1.2, alpha = 0.4) +
+  labs(x = "Date", y = "SST (°C)", title = "Annual cycle climatology and threshold",
+       subtitle = "1983-01-01 to 2012-12-31 reference period") +
+  theme_bw()
+```
+

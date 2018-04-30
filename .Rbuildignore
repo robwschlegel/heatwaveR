@@ -9,5 +9,6 @@
 ^docs$
 ^logo.png
 ^README.Rmd
+^TODO.txt
 ^_testing$
 ^heatwaveR.code-workspace

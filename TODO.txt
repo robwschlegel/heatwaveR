@@ -1,0 +1,6 @@
+TODO
+
+* weighted average smoother
+* smoother based on median (as an alternative to the default mean)
+* distinction between baselines and climatologies (currently a climatology is calculated by default, and there is now an option to add an independent baseline); there shoud be added an option to provide a 365-day (or 366...how to handle leap years?) long daily climatology, and it can then be used as a custom climatology. In order to understand how this works, I need to properly define what I mean by baseline and climatology...
+* more climatology and baseline options

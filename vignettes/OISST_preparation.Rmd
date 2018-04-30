@@ -2,7 +2,7 @@
 title: "Retrieval and processing of OISST data"
 author: "AJ Smit"
 date: "`r Sys.Date()`"
-description: "This vignette to download OISST netCDF files and prepare it for the detection of extreme events."
+description: "This vignette as about downloading OISST netCDF files and preparing them for the detection of extreme events."
 output: 
   rmarkdown::html_vignette:
     fig_caption: yes
