@@ -1,6 +1,10 @@
 TODO
 
-* weighted average smoother
-* smoother based on median (as an alternative to the default mean)
-* distinction between baselines and climatologies (currently a climatology is calculated by default, and there is now an option to add an independent baseline); there shoud be added an option to provide a 365-day (or 366...how to handle leap years?) long daily climatology, and it can then be used as a custom climatology. In order to understand how this works, I need to properly define what I mean by baseline and climatology...
+* add weighted average smoother
+* add smoother based on median (as an alternative to the default mean)
+* distinction between baselines and climatologies (currently a climatology is calculated by default, and there is now an option to add an independent baseline); there should be added an option to provide a 365-day (or 366...how to handle leap years?) long daily climatology that had been independently calculated as a custom climatology against which the events can be detected. In order to understand how this works, I need to properly define what I mean by baseline and climatology as they are different things in my mind...
 * more climatology and baseline options
+* output option: summary statistics of built-in climatology
+* output option: summary plot of built-in climatology
+* define events and climatologies as S3 classes
+* maybe change the names 'smooth_percentile_width' and 'smooth_percentile' as the actually have nothing to do with percentiles; in the documentation, make clear how the new names used relate back to the same (but differently named) arguments in the pythion code
