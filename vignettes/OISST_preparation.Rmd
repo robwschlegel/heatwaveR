@@ -34,7 +34,7 @@ Create a folder on your server where all the data will be received, below, for e
 
 Into this directory, copy the python script, `subset_dataset.py` ([link](https://podaac.jpl.nasa.gov/forum/viewtopic.php?f=5&t=219)). I use MacOS X (or linux), so I'm not able to provide instructions if you use Windows. In a terminal, change to the directory that will receive the netCDF files, where the python script now lives. If python is in your system's path, you should be able to execute the following command on the terminal/command line at the prompt `>`:
 
-`> ./subset_dataset.py -s 19810901 -f 20171014 -b -20 0 15 40 -x AVHRR_OI-NCEI-L4-GLOB-v2.0`
+`> ./subset_dataset.py -s 19810901 -f 20171014 -b 6.25 24 -45 -20 -x AVHRR_OI-NCEI-L4-GLOB-v2.0`
 
 Encapsulated by the above command are the following parameters:
 

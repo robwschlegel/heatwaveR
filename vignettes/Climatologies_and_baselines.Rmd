@@ -18,7 +18,7 @@ knitr::opts_chunk$set(fig.width = 4, fig.align = 'center',
                       message = FALSE, tidy = FALSE)
 ```
 
-```{r setup, echo = TRUE}
+```{r setup, echo = TRUE, eval = FALSE}
 library(ncdf4) # library for processing netCDFs
 library(data.table) # for fast .csv write function, `fwrite()`
 library(tidyverse) # misc. data processing conveniences
@@ -35,7 +35,7 @@ library(doMC); doMC::registerDoMC(cores = 4) # for multicore spead-ups
 
 ## The default climatology and threshold
 
-```{r}
+```{r detect, echo = TRUE, eval = FALSE}
 # Using a built-in data set
 ts_dat <- make_whole(sst_WA)
 res.11 <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
@@ -49,7 +49,7 @@ res.61 <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
 ```
 
 
-```{r}
+```{r plot-1, echo = TRUE, eval = FALSE}
 ggplot(data = dplyr::filter(res.11$clim, t <= "1982-12-31"),
        aes(x = t, y = seas_clim_year)) +
   geom_line(size = 0.6, linetype = "dotted", alpha = 0.9) +
