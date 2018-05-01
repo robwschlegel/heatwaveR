@@ -76,7 +76,7 @@ series of temperature along with a daily date vector." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.4.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.5.9000</span>
       </span>
     </div>
 
@@ -103,6 +103,9 @@ series of temperature along with a daily date vector." />
     </li>
     <li>
       <a href="../articles/gridded_event_detection.html">Extreme event detection in gridded data</a>
+    </li>
+    <li>
+      <a href="../articles/Climatologies_and_baselines.html">Climatologies and baselines</a>
     </li>
   </ul>
 </li>
@@ -153,7 +156,8 @@ series of temperature along with a daily date vector.</p>
   <span class='no'>climatology_end</span>, <span class='kw'>pctile</span> <span class='kw'>=</span> <span class='fl'>90</span>, <span class='kw'>window_half_width</span> <span class='kw'>=</span> <span class='fl'>5</span>,
   <span class='kw'>smooth_percentile</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>smooth_percentile_width</span> <span class='kw'>=</span> <span class='fl'>31</span>,
   <span class='kw'>clim_only</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>min_duration</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>join_across_gaps</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>max_gap</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>max_pad_length</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>cold_spells</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>max_gap</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>max_pad_length</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>cold_spells</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>diff_baseline</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>baseline_data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -253,12 +257,12 @@ is <code>2</code> days.</p></td>
 interpolate (pad) missing data (specified as <code>NA</code>) in the input
 temperature time series; i.e., any consecutive blocks of NAs with length
 greater than <code>max_pad_length</code> will be left as <code>NA</code>. Set as an
-integer. Default is <code>3</code> days.</p></td>
+integer. The default is <code>3</code> days.</p></td>
     </tr>
     <tr>
       <th>cold_spells</th>
       <td><p>Boolean specifying if the code should detect cold events
-instead of heat events. Default is <code>FALSE</code>. Please note that the
+instead of heat events. The default is <code>FALSE</code>. Please note that the
 climatological thresholds for cold-spells are calculated the same as for
 heatwaves, meaning that <code>pctile</code> should be set the same regardless
 if one is calculating heatwaves or cold-spells. For example, if one wants
@@ -268,6 +272,25 @@ identify the most intense cold-spells one must also set <code>pctile = 90</code>
 even though cold spells are in fact simply the coldest extreme events in a
 time series, which statistically equate to values below the 10th percentile.</p></td>
     </tr>
+    <tr>
+      <th>diff_baseline</th>
+      <td><p>When this switch is set to <code>FALSE</code>, the default,
+the climatology will be obtained from the time series provided to
+<code>data</code>. Enabling this option allows one to use baseline or climatology
+data different from that within which the extreme events will be detected in.
+The data used for the custom baseline or climatology must be exactly of the
+same structure as that provided to <code>data</code>; in other words, the column
+names must be the same, they must share at least the same duration as implied
+by <code>climatology_start</code> and <code>climatology_end</code>, and they must have
+previously been produced by <code>make_whole</code> or it must have been made by
+hand to conform with the data created by <code>make_whole</code>.</p></td>
+    </tr>
+    <tr>
+      <th>baseline_data</th>
+      <td><p>The name of the dataframe with data to use a the
+custom baseline or climatology. See <code>data</code> and <code>diff_baseline</code>
+for more information about the data's structure.</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -275,8 +298,8 @@ time series, which statistically equate to values below the 10th percentile.</p>
     <p>The function will return a list of two tibbles (see the <code>tidyverse</code>),
 <code>clim</code> and <code>event</code>, which are the climatology and events,
 respectively. The climatology contains the full time series of daily temperatures,
-as well as the the seasonal climatology, the threshold and various aspects of the
-events that were detected. The software was designed for detecting extreme
+as well as the the seasonal climatology, the threshold and various aspects of
+the events that were detected. The software was designed for detecting extreme
 thermal events, and the units specified below reflect that intended purpose.
 However, the various other kinds of extreme events may be detected according
 to the 'marine heat wave' specifications, and if that is the case, the appropriate
@@ -352,12 +375,18 @@ part-way through the calendar year are supported. The accompanying function
 suitable for use with <code>detect</code>, although this may also be accomplished
 'by hand' as long as the criteria are met as discussed in the documentation
 to <code><a href='make_whole.html'>make_whole</a></code>.</p></li>
-<li><p>It is recommended that a climatology period of at least 30 years is
-specified in order to capture decadal thermal periodicities. It is further
-advised that full the start and end dates for the climatology period result
-in full years, e.g. "1982-01-01" to "2011-12-31" or "1982-07-01" to
-"2012-06-30"; if not, this may result in an unequal weighting of data
-belonging with certain months within a time series.</p></li>
+<li><p>It is recommended that a period of at least 30 years is specified in
+order to produce a climatology that smooths out any decadal thermal
+periodicities that may be present. It is further advised that full the start
+and end dates for the climatology period result in full years, e.g.
+"1982-01-01" to "2011-12-31" or "1982-07-01" to "2012-06-30"; if not, this
+may result in an unequal weighting of data belonging with certain months
+within a time series.</p></li>
+<li><p>In this package we delibirately use the terms climatology and baseline,
+which do different things in as far as the event detection algorithm is
+concerned. The standard behaviour is to calculate a climatology is when
+<code>diff_baseline</code> is set as <code>FALSE</code> or when this argument is ommitted
+from `detect()`. A baseline on the other hand... &lt;AJS to add more in here.&gt;</p></li>
 <li><p>This function supports leap years. This is done by ignoring Feb 29s
 for the initial calculation of the climatology and threshold. The values for
 Feb 29 are then linearly interpolated from the values for Feb 28 and Mar 1.</p></li>
@@ -406,26 +435,26 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
 <span class='no'>res</span>$<span class='no'>clim</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt; # A tibble: 10 x 10
 #&gt;      doy t           temp seas_clim_year thresh_clim_year var_clim_year
 #&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;dbl&gt;          &lt;dbl&gt;            &lt;dbl&gt;         &lt;dbl&gt;
-#&gt;  1    1. 1982-01-01  20.9           21.6             23.0         0.959
-#&gt;  2    2. 1982-01-02  21.2           21.6             23.0         0.964
-#&gt;  3    3. 1982-01-03  21.4           21.7             23.0         0.968
-#&gt;  4    4. 1982-01-04  21.2           21.7             23.1         0.973
-#&gt;  5    5. 1982-01-05  21.3           21.7             23.1         0.976
-#&gt;  6    6. 1982-01-06  21.6           21.7             23.1         0.980
-#&gt;  7    7. 1982-01-07  21.7           21.8             23.2         0.983
-#&gt;  8    8. 1982-01-08  21.5           21.8             23.2         0.986
-#&gt;  9    9. 1982-01-09  21.4           21.8             23.2         0.988
-#&gt; 10   10. 1982-01-10  21.4           21.8             23.3         0.991
+#&gt;  1     1 1982-01-01  20.9           21.6             23.0         0.959
+#&gt;  2     2 1982-01-02  21.2           21.6             23.0         0.964
+#&gt;  3     3 1982-01-03  21.4           21.7             23.0         0.968
+#&gt;  4     4 1982-01-04  21.2           21.7             23.1         0.973
+#&gt;  5     5 1982-01-05  21.3           21.7             23.1         0.976
+#&gt;  6     6 1982-01-06  21.6           21.7             23.1         0.980
+#&gt;  7     7 1982-01-07  21.7           21.8             23.2         0.983
+#&gt;  8     8 1982-01-08  21.5           21.8             23.2         0.986
+#&gt;  9     9 1982-01-09  21.4           21.8             23.2         0.988
+#&gt; 10    10 1982-01-10  21.4           21.8             23.3         0.991
 #&gt; # ... with 4 more variables: thresh_criterion &lt;lgl&gt;, duration_criterion &lt;lgl&gt;,
 #&gt; #   event &lt;lgl&gt;, event_no &lt;int&gt;</div><div class='input'><span class='co'># show some of the heat waves:</span>
 <span class='no'>res</span>$<span class='no'>event</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='fl'>1</span>:<span class='fl'>10</span>]</div><div class='output co'>#&gt; # A tibble: 5 x 10
 #&gt;   index_start index_stop event_no duration date_start date_stop  date_peak 
 #&gt;         &lt;int&gt;      &lt;int&gt;    &lt;int&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;     &lt;date&gt;    
-#&gt; 1         885        889        1       5. 1984-06-03 1984-06-07 1984-06-05
-#&gt; 2         899        904        2       6. 1984-06-17 1984-06-22 1984-06-19
-#&gt; 3         908        926        3      19. 1984-06-26 1984-07-14 1984-07-10
-#&gt; 4        1023       1029        4       7. 1984-10-19 1984-10-25 1984-10-23
-#&gt; 5        1033       1037        5       5. 1984-10-29 1984-11-02 1984-10-30
+#&gt; 1         885        889        1        5 1984-06-03 1984-06-07 1984-06-05
+#&gt; 2         899        904        2        6 1984-06-17 1984-06-22 1984-06-19
+#&gt; 3         908        926        3       19 1984-06-26 1984-07-14 1984-07-10
+#&gt; 4        1023       1029        4        7 1984-10-19 1984-10-25 1984-10-23
+#&gt; 5        1033       1037        5        5 1984-10-29 1984-11-02 1984-10-30
 #&gt; # ... with 3 more variables: int_mean &lt;dbl&gt;, int_max &lt;dbl&gt;, int_var &lt;dbl&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

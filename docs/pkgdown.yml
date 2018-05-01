@@ -1,7 +1,8 @@
-pandoc: 2.1.3
+pandoc: 1.19.2.1
 pkgdown: 1.0.0
 pkgdown_sha: d43ca38c74827d1d6babc3a80d48cd3a8e8fad8c
 articles:
+  Climatologies_and_baselines: Climatologies_and_baselines.html
   OISST_preparation: OISST_preparation.html
   gridded_event_detection: gridded_event_detection.html
 urls:
