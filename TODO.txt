@@ -12,3 +12,12 @@ TODO
 * Add block_average metric() 'intensity_max_max'
 * Possibly create a mhw_block() function
 * If so, also give it a qualitative score as in the python version
+* Possible compound hw qualities from Baldwin et al. (in review)
+** 1) a minimum number of hot days occurring consecutively to start a heat wave
+** 2) a maximum number of cooler (below threshold) days that can occur consecutively for the heat wave to continue
+** 3) a minimum number of hot days occurring consecutively that can add onto a heat wave after a break
+** For quick reference, we denote a temporal structure definition with three numbers, for example 321 where 3 indicates a minimum initial event
+length of three hot days, 2 indicates a maximum break length of two cooler days, and 1 indicates a minimum length of a set of consecutive hot days that can compound on after a break.
+** The quantity of interest here is the cumulative annual compound days as a proportion of total heat wave days (hereafter “compound proportion”).
+** Once the mean signal in a time series begins to raise, this proportion will increase, to a point
+** It will then deminish down to zero as every day becomes greter than the 90th percentile threshold
