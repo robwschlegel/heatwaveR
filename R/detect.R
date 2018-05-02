@@ -276,6 +276,19 @@ detect <-
     if (cold_spells)
       t_series$ts.y <- -t_series$ts.y
 
+    ## 1. if a custom baseline is supplied it will be used to derive a climatology and threshold using the calculations below;
+    ## this custom baseline will share the same climatology_start and climatology_end as the main data
+    ## 2. i can also imagine a scenario where one might want to provide a precalculated custom baseline and threshold
+    ## relative to which the events will be detected--in this instance they will not be subject to the calcs below, and they
+    ## will cover the dull duration of the main data where the events will be detected in; this baseline and threshold might
+    ## be one (e.g.) from which the long-term trend had been removed beforehand, etc.; also, the interannual variation might
+    ## not necessarily be constant and the time series might be evolving throughout time, unlike a climatology (see below)
+    ## 3. lastly, i can also foresee the use of custom climatologies (of the mean or median, and threshold--i.e. a daily
+    ## climatology of 365 or 366 days; it will replicated for as many times as is necessary to fit between climatology_start
+    ## and climatology_end; a climatology is therefore a constant annual signal that will repeat year after year
+    ## ...we need to provide proper documentation of these options, and talk about the differences between baselines and
+    ## climatologies, and in the paper give example applications of the various use scenarios.
+
     if (diff_baseline) {
       tDat <- baseline_data %>%
         dplyr::filter(ts.x >= clim_start & ts.x <= clim_end) %>%
@@ -288,9 +301,7 @@ detect <-
         tidyr::spread(ts.x, ts.y)
     }
 
-    all_NA <- apply(tDat[59:61, ], 2, function(x) !all(is.na(x)))
-    no_NA <- names(all_NA[all_NA > 0])
-    tDat[59:61, no_NA] <- zoo::na.approx(tDat[59:61, no_NA], maxgap = 1, na.rm = TRUE)
+    tDat[59:61, ] <- zoo::na.approx(tDat[59:61, ], maxgap = 1, na.rm = TRUE)
     tDat <- rbind(utils::tail(tDat, window_half_width),
                   tDat, utils::head(tDat, window_half_width))
 
@@ -302,7 +313,7 @@ detect <-
           c(t(tDat[(i - (window_half_width)):(i + window_half_width), 2:ncol(tDat)])),
           na.rm = TRUE)
       thresh_clim_year[i] <-
-        raster::quantile(
+        stats::quantile(
           c(t(tDat[(i - (window_half_width)):(i + window_half_width), 2:ncol(tDat)])),
           probs = pctile/100,
           type = 7,
@@ -359,11 +370,12 @@ detect <-
         )
     }
 
+    ###
+
     if (clim_only) {
       t_series <- merge(data, clim, by = "doy")
       t_series <- t_series[order(t_series$ts.x),]
       return(t_series)
-
     } else {
       t_series <- t_series %>%
         dplyr::inner_join(clim, by = "doy")

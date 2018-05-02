@@ -2,7 +2,9 @@
 
 * Fix to `event_line()` not plotting MCSs correctly
 * Fix error with smooth_percentile and smooth_percentile_width descriptions
-  that were interchanged
+  that were interchanged in `detect()`
+* Simplify initial lines of leap year calculations (remove redundant code)
+* change from `raster::quantile()` to `stats::quantile()`
 
 # heatwaveR 0.0.5.9000 (2018-04-29)
 
