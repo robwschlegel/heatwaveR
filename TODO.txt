@@ -7,4 +7,8 @@ TODO
 * output option: summary statistics of built-in climatology
 * output option: summary plot of built-in climatology
 * define events and climatologies as S3 classes
-* maybe change the names 'smooth_percentile_width' and 'smooth_percentile' as the actually have nothing to do with percentiles; in the documentation, make clear how the new names used relate back to the same (but differently named) arguments in the pythion code
+* maybe change the names 'smooth_percentile_width' and 'smooth_percentile' as they actually have nothing to do with percentiles; in the documentation, make clear how the new names used relate back to the same (but differently named) arguments in the python code
+* Add category metric for 'size' of heatwave
+* Add block_average metric() 'intensity_max_max'
+* Possibly create a mhw_block() function
+* If so, also give it a qualitative score as in the python version

@@ -113,7 +113,7 @@ event_line <- function(data,
 
   clim_top <- data$clim[event_top$index_start_fix:event_top$index_stop_fix,]
 
-  thresh_clim_year <- seas_clim_year <- NULL # avoids annoying notes during check...
+  thresh_clim_year <- seas_clim_year <- y1 <- y2 <-  NULL # avoids annoying notes during check...
 
   lineCol <- c(
     "temperature" = "black",
@@ -123,8 +123,16 @@ event_line <- function(data,
 
   if (event_top$int_mean > 0) {
     fillCol <- c("events" = "salmon", "peak event" = "red")
+    clim_events$y1 <- clim_events$ts.y
+    clim_events$y2 <- clim_events$thresh_clim_year
+    clim_top$y1 <- clim_top$ts.y
+    clim_top$y2 <- clim_top$thresh_clim_year
   } else {
     fillCol <- c("events" = "steelblue3", "peak event" = "navy")
+    clim_events$y1 <- clim_events$thresh_clim_year
+    clim_events$y2 <- clim_events$ts.y
+    clim_top$y1 <- clim_top$thresh_clim_year
+    clim_top$y2 <- clim_top$ts.y
   }
 
   if (metric == "int_max") ylabel <- expression(paste("Maximum intensity [", degree, "C]"))
@@ -135,9 +143,9 @@ event_line <- function(data,
 
   ggplot(data = clim_spread, aes(x = ts.x, y = ts.y)) +
     geom_flame(data = clim_events, size = 0.5,
-               aes(x = ts.x, y = ts.y, y2 = thresh_clim_year, fill = "events")) +
+               aes(x = ts.x, y = y1, y2 = y2, fill = "events")) +
     geom_flame(data = clim_top, size = 0.5,
-               aes(x = ts.x, y = ts.y, y2 = thresh_clim_year, fill = "peak event")) +
+               aes(x = ts.x, y = y1, y2 = y2, fill = "peak event")) +
     geom_line(aes(y = seas_clim_year, col = "climatology"),
               size = 0.7, alpha = 1) +
     geom_line(aes(y = thresh_clim_year, col = "threshold"),

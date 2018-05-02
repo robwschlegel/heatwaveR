@@ -77,7 +77,7 @@
 #' by \code{climatology_start} and \code{climatology_end}, and they must have
 #' previously been produced by \code{make_whole} or it must have been made by
 #' hand to conform with the data created by \code{make_whole}.
-#' @param baseline_data The name of the dataframe with data to use a the
+#' @param baseline_data The name of the dataframe with data to use as the
 #' custom baseline or climatology. See \code{data} and \code{diff_baseline}
 #' for more information about the data's structure.
 #'
