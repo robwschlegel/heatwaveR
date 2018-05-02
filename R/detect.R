@@ -38,11 +38,11 @@
 #' calculation of climatology and threshold percentile. Default is \code{5}
 #' days, which gives a window width of 11 days centered on the 6th day of the
 #' series of 11 days.
-#' @param smooth_percentile Full width of moving average window for smoothing
-#' climatology and threshold. Default is \code{31} days.
-#' @param smooth_percentile_width Boolean switch selecting whether to smooth the
+#' @param smooth_percentile Boolean switch selecting whether to smooth the
 #' climatology and threshold percentile timeseries with a moving average of
 #' width \code{smooth_percentile}. Default is \code{TRUE}.
+#' @param smooth_percentile_width Full width of moving average window for smoothing
+#' climatology and threshold. Default is \code{31} days.
 #' @param clim_only Choose to calculate only the climatologies and not the
 #' events. Default is \code{FALSE}.
 #' @param min_duration Minimum duration for acceptance of detected MHWs.

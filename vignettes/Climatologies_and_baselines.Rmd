@@ -32,15 +32,26 @@ library(heatwaveR)
 
 ```{r detect, echo = TRUE}
 # Using a built-in data set
+#smooth_percentile = TRUE
 ts_dat <- heatwaveR::make_whole(sst_WA)
-res.11 <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
+res.11.T <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
               climatology_end = "2012-12-31")
-res.31 <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
+res.31.T <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
               climatology_end = "2012-12-31",
               window_half_width = 15)
-res.61 <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
+res.61.T <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
               climatology_end = "2012-12-31",
               window_half_width = 30)
+
+# smooth_percentile = FALSE
+res.11.F <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
+              climatology_end = "2012-12-31", smooth_percentile = F)
+res.31.F <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
+              climatology_end = "2012-12-31",
+              window_half_width = 15, smooth_percentile = F)
+res.61.F <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
+              climatology_end = "2012-12-31",
+              window_half_width = 30, smooth_percentile = F)
 ```
 
 ```{r theme_publ, echo = TRUE}
@@ -64,31 +75,60 @@ theme_publ <- function(...) {
 
 
 ```{r plot-1, echo = TRUE}
-ggplot(data = dplyr::filter(res.11$clim, t <= "1982-12-31"),
+ggplot(data = dplyr::filter(res.11.T$clim, t <= "1982-12-31"),
        aes(x = t, y = seas_clim_year)) +
   geom_line(size = 0.6, linetype = "dotted", alpha = 0.9) +
   geom_line(aes(y = thresh_clim_year),
             colour = "red",
             size = 0.6,
             linetype = "dotted", alpha = 0.9) +
-  geom_line(data = dplyr::filter(res.31$clim, t <= "1982-12-31"),
+  geom_line(data = dplyr::filter(res.31.T$clim, t <= "1982-12-31"),
             aes(x = t, y = seas_clim_year),
             linetype = "dashed",
             size = 0.8, alpha = 0.6) +
-  geom_line(data = dplyr::filter(res.31$clim, t <= "1982-12-31"),
+  geom_line(data = dplyr::filter(res.31.T$clim, t <= "1982-12-31"),
             aes(x = t, y = thresh_clim_year),
             linetype = "dashed",
             colour = "red",
             size = 0.8, alpha = 0.6) +
-  geom_line(data = dplyr::filter(res.61$clim, t <= "1982-12-31"),
+  geom_line(data = dplyr::filter(res.61.T$clim, t <= "1982-12-31"),
             aes(x = t, y = seas_clim_year),
             size = 1.2, alpha = 0.4) +
-  geom_line(data = dplyr::filter(res.61$clim, t <= "1982-12-31"),
+  geom_line(data = dplyr::filter(res.61.T$clim, t <= "1982-12-31"),
             aes(x = t, y = thresh_clim_year),
             colour = "red",
             size = 1.2, alpha = 0.4) +
   labs(x = "Date", y = "SST (°C)", title = "Annual cycle climatology and threshold",
-       subtitle = "1983-01-01 to 2012-12-31 reference period") +
+       subtitle = "1983-01-01 to 2012-12-31 reference period; smooth on") +
+  theme_publ()
+```
+
+```{r plot-2, echo = TRUE}
+ggplot(data = dplyr::filter(res.11.F$clim, t <= "1982-12-31"),
+       aes(x = t, y = seas_clim_year)) +
+  geom_line(size = 0.6, linetype = "dotted", alpha = 0.9) +
+  geom_line(aes(y = thresh_clim_year),
+            colour = "red",
+            size = 0.6,
+            linetype = "dotted", alpha = 0.9) +
+  geom_line(data = dplyr::filter(res.31.F$clim, t <= "1982-12-31"),
+            aes(x = t, y = seas_clim_year),
+            linetype = "dashed",
+            size = 0.8, alpha = 0.6) +
+  geom_line(data = dplyr::filter(res.31.F$clim, t <= "1982-12-31"),
+            aes(x = t, y = thresh_clim_year),
+            linetype = "dashed",
+            colour = "red",
+            size = 0.8, alpha = 0.6) +
+  geom_line(data = dplyr::filter(res.61.F$clim, t <= "1982-12-31"),
+            aes(x = t, y = seas_clim_year),
+            size = 1.2, alpha = 0.4) +
+  geom_line(data = dplyr::filter(res.61.F$clim, t <= "1982-12-31"),
+            aes(x = t, y = thresh_clim_year),
+            colour = "red",
+            size = 1.2, alpha = 0.4) +
+  labs(x = "Date", y = "SST (°C)", title = "Annual cycle climatology and threshold",
+       subtitle = "1983-01-01 to 2012-12-31 reference period; smooth off") +
   theme_publ()
 ```
 
