@@ -19,6 +19,7 @@ ByteCompile: true
 RoxygenNote: 6.0.1
 Depends: R (>= 3.00)
 Suggests: 
+    tidyverse,
     testthat,
     knitr,
     rmarkdown,
