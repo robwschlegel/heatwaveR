@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# heatwaveR
+# heatwaveR <img src="logo.png" width=200 align="right" />
 
 [![Travis build status](https://travis-ci.org/robwschlegel/heatwaveR.svg?branch=master)](https://travis-ci.org/robwschlegel/heatwaveR)
 [![Coverage status](https://codecov.io/gh/robwschlegel/heatwaveR/branch/master/graph/badge.svg)](https://codecov.io/github/robwschlegel/heatwaveR?branch=master)

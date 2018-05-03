@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.5.9001</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.6.9000</span>
       </span>
     </div>
 
@@ -106,7 +106,8 @@
     
 <div id="heatwaver" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#heatwaver" class="anchor"></a>heatwaveR</h1></div>
+<a href="#heatwaver" class="anchor"></a>heatwaveR <img src="logo.png" width="200" align="right">
+</h1></div>
 
 <p>The <strong><code>heatwaveR</code></strong> package is a project-wide update to the <a href="https://github.com/ajsmit/RmarineHeatWaves"><strong><code>RmarineHeatWaves</code></strong></a> package, which is itself a translation of the original <a href="https://github.com/ecjoliver/marineHeatWaves">Python code</a> written by Eric C. J. Oliver.</p>
 <p>The <strong><code>heatwaveR</code></strong> R package contains the original functions from the <strong><code>RmarineHeatWaves</code></strong> package that calculate and display marine heatwaves (MHWs) according to the definition of Hobday et al. (2016) as well as calculating and visualising marine cold-spells (MCSs) as first introduced in Schlegel et al. (2017).</p>
@@ -299,11 +300,11 @@ mhw<span class="op">$</span>event <span class="op">%&gt;%</span><span class="st"
 <span class="co">#&gt; # A tibble: 5 x 7</span>
 <span class="co">#&gt;   event_no duration date_start date_peak  int_mean int_max int_cum</span>
 <span class="co">#&gt;      &lt;int&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;        &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt; 1       22       95 1999-05-13 1999-05-22     2.50    3.60   237. </span>
-<span class="co">#&gt; 2       42       60 2011-02-06 2011-02-28     3.21    6.51   193. </span>
-<span class="co">#&gt; 3       49       47 2012-01-11 2012-01-27     2.23    3.30   105. </span>
-<span class="co">#&gt; 4       50       46 2012-03-01 2012-04-10     1.99    2.96    91.7</span>
-<span class="co">#&gt; 5       41       40 2010-12-24 2011-01-28     2.16    3.27    86.3</span></code></pre></div>
+<span class="co">#&gt; 1       22      95. 1999-05-13 1999-05-22     2.50    3.60   237. </span>
+<span class="co">#&gt; 2       42      60. 2011-02-06 2011-02-28     3.21    6.51   193. </span>
+<span class="co">#&gt; 3       49      47. 2012-01-11 2012-01-27     2.23    3.30   105. </span>
+<span class="co">#&gt; 4       50      46. 2012-03-01 2012-04-10     1.99    2.96    91.7</span>
+<span class="co">#&gt; 5       41      40. 2010-12-24 2011-01-28     2.16    3.27    86.3</span></code></pre></div>
 <p>The corresponding <code><a href="reference/event_line.html">event_line()</a></code> and <code><a href="reference/lolli_plot.html">lolli_plot()</a></code>, which represent the massive Western Australian heatwave of 2011, look like this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/event_line.html">event_line</a></span>(mhw, <span class="dt">spread =</span> <span class="dv">200</span>, <span class="dt">metric =</span> <span class="st">"int_cum"</span>,
            <span class="dt">start_date =</span> <span class="st">"2010-10-01"</span>, <span class="dt">end_date =</span> <span class="st">"2011-08-30"</span>)</code></pre></div>
@@ -366,11 +367,11 @@ mcs<span class="op">$</span>event <span class="op">%&gt;%</span><span class="st"
 <span class="co">#&gt; # A tibble: 5 x 7</span>
 <span class="co">#&gt;   event_no duration date_start date_peak  int_mean int_max int_cum</span>
 <span class="co">#&gt;      &lt;int&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;        &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt; 1       16       76 1990-04-13 1990-05-11    -2.54   -3.22  -193. </span>
-<span class="co">#&gt; 2       54       58 2003-12-19 2004-01-23    -1.80   -2.66  -104. </span>
-<span class="co">#&gt; 3       71       52 2014-04-14 2014-05-05    -1.82   -2.57   -94.6</span>
-<span class="co">#&gt; 4        8       38 1986-06-24 1986-07-17    -2.01   -2.95   -76.4</span>
-<span class="co">#&gt; 5       51       32 2003-09-08 2003-09-16    -1.56   -2.12   -49.9</span></code></pre></div>
+<span class="co">#&gt; 1       16      76. 1990-04-13 1990-05-11    -2.54   -3.22  -193. </span>
+<span class="co">#&gt; 2       54      58. 2003-12-19 2004-01-23    -1.80   -2.66  -104. </span>
+<span class="co">#&gt; 3       71      52. 2014-04-14 2014-05-05    -1.82   -2.57   -94.6</span>
+<span class="co">#&gt; 4        8      38. 1986-06-24 1986-07-17    -2.01   -2.95   -76.4</span>
+<span class="co">#&gt; 5       51      32. 2003-09-08 2003-09-16    -1.56   -2.12   -49.9</span></code></pre></div>
 <p>The plots showing the cold-spells look like this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/event_line.html">event_line</a></span>(mcs, <span class="dt">spread =</span> <span class="dv">200</span>, <span class="dt">metric =</span> <span class="st">"int_cum"</span>,
            <span class="dt">start_date =</span> <span class="st">"1990-01-01"</span>, <span class="dt">end_date =</span> <span class="st">"1990-08-30"</span>)

@@ -12,8 +12,6 @@
 #'
 #' @seealso \code{\link{event_line}} for a non-ggplot2 based flame function.
 #'
-#' @importFrom ggplot2 coord_munch
-#'
 #' @section Aesthetics:
 #' \code{geom_flame} understands the following aesthetics (required aesthetics
 #' are in bold):
@@ -78,6 +76,8 @@
 #' mhw <- mhw[10580:10690,]
 #'
 #' \dontrun{
+#' library(ggplot2)
+#'
 #' ggplot(mhw, aes(x = t, y = temp)) +
 #'   geom_flame(aes(y2 = thresh_clim_year)) +
 #'   geom_text(aes(x = as.Date("2011-02-01"), y = 28,
@@ -161,7 +161,7 @@ GeomFlame <- ggplot2::ggproto("GeomFlame", ggplot2::Geom,
                                 positions <- data.frame(x = c(data$x, rev(data$x)),
                                                         y = c(data$y, rev(data$y2)),
                                                         id = c(ids, rev(ids)))
-                                munched <- coord_munch(coord, positions, panel_scales)
+                                munched <- ggplot2::coord_munch(coord, positions, panel_scales)
 
                                 grid::polygonGrob(
                                   munched$x, munched$y, id = munched$id,
@@ -255,6 +255,8 @@ GeomFlame <- ggplot2::ggproto("GeomFlame", ggplot2::Geom,
 #' mhw <- res$event
 #'
 #' \dontrun{
+#' library(ggplot2)
+#'
 #' # Height of lollis represent event durations and their colours
 #' # are mapped to the events' cumulative intensity:
 #' ggplot(mhw, aes(x = mhw$date_peak, y = mhw$duration)) +

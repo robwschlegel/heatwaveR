@@ -33,12 +33,6 @@ gf
 
 # Place it on a sticker ---------------------------------------------------
 
-sticker(gf, package = "heatwaveR", p_size = 20, s_x = 1.07, s_y = 0.8, s_width = 1.4, s_height = 1.0,
-        h_fill = "steelblue3", h_color = "red", p_family = "OperatorMono-BookItalic", filename = "heatwaveR_hex.png")
+sticker(gf, package = "heatwaveR", p_size = 22, s_x = 1.07, s_y = 0.8, s_width = 1.4, s_height = 1.0,
+        h_fill = "steelblue3", h_color = "red", p_family = "OperatorMono-MediumItalic", filename = "logo.png")
 
-
-# Team Kelp ---------------------------------------------------------------
-
-# Just for fun
-sticker("logo.png", package = "", s_x = 1.0, s_y = 0.95, s_width = 1.3, s_height = 1.0,
-        h_fill = "gray90", h_color = "gray10", filename = "team_kelp_hex.png")

@@ -85,6 +85,8 @@ mhw <- res$clim
 mhw <- mhw[10580:10690,]
 
 \dontrun{
+library(ggplot2)
+
 ggplot(mhw, aes(x = t, y = temp)) +
   geom_flame(aes(y2 = thresh_clim_year)) +
   geom_text(aes(x = as.Date("2011-02-01"), y = 28,
