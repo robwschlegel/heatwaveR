@@ -5,7 +5,7 @@
 \title{Create a line plot of heatwaves or cold-spells.}
 \usage{
 event_line(data, x = t, y = temp, min_duration = 5, spread = 150,
-  metric = "int_cum", start_date, end_date)
+  metric = "int_cum", start_date, end_date, category = FALSE)
 }
 \arguments{
 \item{data}{The function receives the full (list) output from the \code{\link{detect}} function.}
@@ -25,12 +25,13 @@ qualify as a heatwave or cold-spell.}
 (as per \code{metric}) detected within the time period specified by
 \code{start_date} and \code{end_date}. The default is 150 days.}
 
-\item{metric}{One of the following options: \code{int_mean}, \code{int_max}, \code{int_var},
-\code{int_cum}, \code{int_mean_rel_thresh}, \code{int_max_rel_thresh}, \code{int_var_rel_thresh},
-\code{int_cum_rel_thresh}, \code{int_mean_abs}, \code{int_max_abs}, \code{int_var_abs},
-\code{int_cum_abs}, \code{int_mean_norm}, \code{int_max_norm}, \code{rate_onset}, \code{rate_decline}.
-Partial name matching is currently not supported so please specify the metric
-name precisely. The default is \code{int_cum}.}
+\item{metric}{This tells the function how to choose the event that should be highlighted as the
+'greatest' of the events in the chosen period. One may choose from the following options:
+\code{int_mean}, \code{int_max}, \code{int_var},\code{int_cum}, \code{int_mean_rel_thresh},
+\code{int_max_rel_thresh}, \code{int_var_rel_thresh},\code{int_cum_rel_thresh}, \code{int_mean_abs},
+\code{int_max_abs}, \code{int_var_abs}, \code{int_cum_abs}, \code{int_mean_norm}, \code{int_max_norm},
+\code{rate_onset}, \code{rate_decline}. Partial name matching is currently not supported so please
+specify the metric name precisely. The default is \code{int_cum}.}
 
 \item{start_date}{The start date of a period of time within which the largest
 event (as per \code{metric}) is retrieved and plotted. This may not necessarily
@@ -42,6 +43,12 @@ the start and end dates of the full time series given to \code{\link{detect}}.}
 \item{end_date}{The end date of a period of time within which the largest
 event (as per \code{metric}) is retrieved and plotted. See \code{start_date}
 for additional information.}
+
+\item{category}{A boolean choice of TRUE or FALSE. If set to FALSE (default) event_line() will
+produce a figure as per the second row of Figure 3 in Hobday et al. (2016). If set to TRUE a
+figure showing the different categories of the MHWs in the chosen period, highlighted as
+seen in Figure 3 of Hobday et al. (in review), will be produced. If \code{category} = TRUE,
+\code{metric} will be ignored as a different colouring scheme is used.}
 }
 \value{
 The function will return a line plot indicating the climatology,
@@ -63,8 +70,12 @@ res <- detect(ts_dat, climatology_start = "1983-01-01",
               climatology_end = "2012-12-31")
 
 \dontrun{
-event_line(res, spread = 200, metric = "int_cum",
-start_date = "2010-10-01", end_date = "2011-08-30")
+event_line(res, spread = 100, metric = "int_cum",
+start_date = "2010-12-01", end_date = "2011-06-30")
+
+event_line(res, spread = 100, start_date = "2010-12-01",
+end_date = "2011-06-30", category = TRUE)
+
 }
 }
 \references{

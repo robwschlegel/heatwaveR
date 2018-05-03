@@ -116,25 +116,16 @@
 <div id="background" class="section level1">
 <h1 class="hasAnchor">
 <a href="#background" class="anchor"></a>Background</h1>
-<p>AJS still actively working on this…</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2) <span class="co"># misc. data processing conveniences</span>
-<span class="kw">library</span>(lubridate) <span class="co"># for working with dates</span>
-<span class="kw">library</span>(heatwaveR)</code></pre></div>
+<p>A time series of temperatures taken at a specific locality is a sample of the thermal environment. Because it is a sample, which is used to approximate the true state of the environment, the representivity of the data is subject to certain limitations that have an influence on their accuracy and precision—in other words, on how well the data represent reality. Here we will not concern ourselves with matters of precision and accuracy; rather, we shall deal with ways to produce climatologies from a time series of daily thermal measurements.</p>
 <div id="the-default-climatology-and-threshold" class="section level2">
 <h2 class="hasAnchor">
 <a href="#the-default-climatology-and-threshold" class="anchor"></a>The default climatology and threshold</h2>
+<p>Central to the functioning of the <strong>heatwaveR</strong> detect algogorithm is a climatology, which is the reference against which the extremes are calculated. Sometimes it is also called a ‘climate normal.’ The climatology forms the basis against which observations in a time series can be compared. It also predicts the temperatures that will most likely be experienced at a particlar place and time. It has become standard practice to base a climatology on 30 years’ worth of data, and in the <strong>heatwaveR</strong> package we recommend the same. In a daily climatology, there will be one mean temperature for each day of the year (365 or 366 days, depending on how leap years are dealt with). How the daily mean is calculated can vary somewhat from application to application, but the <code><a href="../reference/detect.html">detect()</a></code> function applies a sliding window centered on a Julian day for the pooling of values that will form the basis for the calculation of climatology and threshold percentile. We use a default of 5 days, which gives a window width of 11 days centered on the 6th day of the series of 11 days. For example, the mean temperature for Julian day 6 will be comprised of all temperatures measured on Julian days 1 to 11, across 30 years, i.e. 330 temperature measurements form this climatological daily mean. A sliding window centered on Julian day 7 will comprise all temperatures measured on Julian days 2 to 12 over the 30 years; etc. Currently we do not provide the option to calculate a weighted mean; rather, each day receives the same weighting as any other day, irrespective of how far the day is from the one on which the sliding window is centered. Climatologies produced with sliding windows of width 11, 31, and 61 days are presented in Figure 1. We can see that the curves are a bit bumpy, particularly at the narrower window widths.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse) <span class="co"># misc. data processing conveniences</span>
+<span class="kw">library</span>(lubridate) <span class="co"># for working with dates</span>
+<span class="kw">library</span>(heatwaveR)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Using a built-in data set</span>
-<span class="co">#smooth_percentile = TRUE</span>
 ts_dat &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/make_whole">make_whole</a></span>(sst_WA)
-res.<span class="fl">11.</span>T &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/detect">detect</a></span>(ts_dat, <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,
-              <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>)
-res.<span class="fl">31.</span>T &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/detect">detect</a></span>(ts_dat, <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,
-              <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>,
-              <span class="dt">window_half_width =</span> <span class="dv">15</span>)
-res.<span class="fl">61.</span>T &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/detect">detect</a></span>(ts_dat, <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,
-              <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>,
-              <span class="dt">window_half_width =</span> <span class="dv">30</span>)
-
 <span class="co"># smooth_percentile = FALSE</span>
 res.<span class="fl">11.</span>F &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/detect">detect</a></span>(ts_dat, <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,
               <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>, <span class="dt">smooth_percentile =</span> F)
@@ -144,76 +135,26 @@ res.<span class="fl">31.</span>F &lt;-<span class="st"> </span>heatwaveR<span cl
 res.<span class="fl">61.</span>F &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/detect">detect</a></span>(ts_dat, <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,
               <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>,
               <span class="dt">window_half_width =</span> <span class="dv">30</span>, <span class="dt">smooth_percentile =</span> F)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">theme_publ &lt;-<span class="st"> </span><span class="cf">function</span>(...) {
-  <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggtheme">theme_bw</a></span>() <span class="op">+</span>
-<span class="st">    </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/theme">theme</a></span>(
-      <span class="dt">panel.grid.minor =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/element">element_blank</a></span>(),
-      <span class="dt">panel.grid.major.x =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/element">element_line</a></span>(<span class="dt">color =</span> <span class="st">"#cfcfcf"</span>,
-                                        <span class="dt">size =</span> <span class="fl">0.2</span>,
-                                        <span class="dt">linetype =</span> <span class="st">"dashed"</span>),
-      <span class="dt">panel.grid.major.y =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/element">element_line</a></span>(<span class="dt">color =</span> <span class="st">"#cfcfcf"</span>,
-                                        <span class="dt">size =</span> <span class="fl">0.2</span>,
-                                        <span class="dt">linetype =</span> <span class="st">"dashed"</span>),
-      <span class="dt">panel.background =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/element">element_rect</a></span>(<span class="dt">fill =</span> <span class="st">"#f5f5f2"</span>, <span class="dt">color =</span> <span class="ot">NA</span>),
-      <span class="dt">legend.background =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/element">element_rect</a></span>(<span class="dt">fill =</span> <span class="st">"white"</span>, <span class="dt">color =</span> <span class="ot">NA</span>),
-      <span class="dt">panel.border =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/element">element_blank</a></span>(),
-      ...
-    )
-}</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(res.<span class="fl">11.</span>T<span class="op">$</span>clim, t <span class="op">&lt;=</span><span class="st"> "1982-12-31"</span>),
-       <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> t, <span class="dt">y =</span> seas_clim_year)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="dt">size =</span> <span class="fl">0.6</span>, <span class="dt">linetype =</span> <span class="st">"dotted"</span>, <span class="dt">alpha =</span> <span class="fl">0.9</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> thresh_clim_year),
-            <span class="dt">colour =</span> <span class="st">"red"</span>,
-            <span class="dt">size =</span> <span class="fl">0.6</span>,
-            <span class="dt">linetype =</span> <span class="st">"dotted"</span>, <span class="dt">alpha =</span> <span class="fl">0.9</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="dt">data =</span> dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(res.<span class="fl">31.</span>T<span class="op">$</span>clim, t <span class="op">&lt;=</span><span class="st"> "1982-12-31"</span>),
-            <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> t, <span class="dt">y =</span> seas_clim_year),
-            <span class="dt">linetype =</span> <span class="st">"dashed"</span>,
-            <span class="dt">size =</span> <span class="fl">0.8</span>, <span class="dt">alpha =</span> <span class="fl">0.6</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="dt">data =</span> dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(res.<span class="fl">31.</span>T<span class="op">$</span>clim, t <span class="op">&lt;=</span><span class="st"> "1982-12-31"</span>),
-            <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> t, <span class="dt">y =</span> thresh_clim_year),
-            <span class="dt">linetype =</span> <span class="st">"dashed"</span>,
-            <span class="dt">colour =</span> <span class="st">"red"</span>,
-            <span class="dt">size =</span> <span class="fl">0.8</span>, <span class="dt">alpha =</span> <span class="fl">0.6</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="dt">data =</span> dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(res.<span class="fl">61.</span>T<span class="op">$</span>clim, t <span class="op">&lt;=</span><span class="st"> "1982-12-31"</span>),
-            <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> t, <span class="dt">y =</span> seas_clim_year),
-            <span class="dt">size =</span> <span class="fl">1.2</span>, <span class="dt">alpha =</span> <span class="fl">0.4</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="dt">data =</span> dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(res.<span class="fl">61.</span>T<span class="op">$</span>clim, t <span class="op">&lt;=</span><span class="st"> "1982-12-31"</span>),
-            <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> t, <span class="dt">y =</span> thresh_clim_year),
-            <span class="dt">colour =</span> <span class="st">"red"</span>,
-            <span class="dt">size =</span> <span class="fl">1.2</span>, <span class="dt">alpha =</span> <span class="fl">0.4</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">"Date"</span>, <span class="dt">y =</span> <span class="st">"SST (°C)"</span>, <span class="dt">title =</span> <span class="st">"Annual cycle climatology and threshold"</span>,
-       <span class="dt">subtitle =</span> <span class="st">"1983-01-01 to 2012-12-31 reference period; smooth on"</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">theme_publ</span>()</code></pre></div>
-<p><img src="Climatologies_and_baselines_files/figure-html/plot-1-1.png" width="768" style="display: block; margin: auto;"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(res.<span class="fl">11.</span>F<span class="op">$</span>clim, t <span class="op">&lt;=</span><span class="st"> "1982-12-31"</span>),
-       <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> t, <span class="dt">y =</span> seas_clim_year)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="dt">size =</span> <span class="fl">0.6</span>, <span class="dt">linetype =</span> <span class="st">"dotted"</span>, <span class="dt">alpha =</span> <span class="fl">0.9</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> thresh_clim_year),
-            <span class="dt">colour =</span> <span class="st">"red"</span>,
-            <span class="dt">size =</span> <span class="fl">0.6</span>,
-            <span class="dt">linetype =</span> <span class="st">"dotted"</span>, <span class="dt">alpha =</span> <span class="fl">0.9</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="dt">data =</span> dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(res.<span class="fl">31.</span>F<span class="op">$</span>clim, t <span class="op">&lt;=</span><span class="st"> "1982-12-31"</span>),
-            <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> t, <span class="dt">y =</span> seas_clim_year),
-            <span class="dt">linetype =</span> <span class="st">"dashed"</span>,
-            <span class="dt">size =</span> <span class="fl">0.8</span>, <span class="dt">alpha =</span> <span class="fl">0.6</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="dt">data =</span> dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(res.<span class="fl">31.</span>F<span class="op">$</span>clim, t <span class="op">&lt;=</span><span class="st"> "1982-12-31"</span>),
-            <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> t, <span class="dt">y =</span> thresh_clim_year),
-            <span class="dt">linetype =</span> <span class="st">"dashed"</span>,
-            <span class="dt">colour =</span> <span class="st">"red"</span>,
-            <span class="dt">size =</span> <span class="fl">0.8</span>, <span class="dt">alpha =</span> <span class="fl">0.6</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="dt">data =</span> dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(res.<span class="fl">61.</span>F<span class="op">$</span>clim, t <span class="op">&lt;=</span><span class="st"> "1982-12-31"</span>),
-            <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> t, <span class="dt">y =</span> seas_clim_year),
-            <span class="dt">size =</span> <span class="fl">1.2</span>, <span class="dt">alpha =</span> <span class="fl">0.4</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="dt">data =</span> dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(res.<span class="fl">61.</span>F<span class="op">$</span>clim, t <span class="op">&lt;=</span><span class="st"> "1982-12-31"</span>),
-            <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> t, <span class="dt">y =</span> thresh_clim_year),
-            <span class="dt">colour =</span> <span class="st">"red"</span>,
-            <span class="dt">size =</span> <span class="fl">1.2</span>, <span class="dt">alpha =</span> <span class="fl">0.4</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">x =</span> <span class="st">"Date"</span>, <span class="dt">y =</span> <span class="st">"SST (°C)"</span>, <span class="dt">title =</span> <span class="st">"Annual cycle climatology and threshold"</span>,
-       <span class="dt">subtitle =</span> <span class="st">"1983-01-01 to 2012-12-31 reference period; smooth off"</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">theme_publ</span>()</code></pre></div>
-<p><img src="Climatologies_and_baselines_files/figure-html/plot-2-1.png" width="768" style="display: block; margin: auto;"></p>
+<div class="figure" style="text-align: center">
+<img src="Climatologies_and_baselines_files/figure-html/plot-1-1.png" alt="**Figure 1.** Climatologies based on a sliding mean of window widths 11 (dotted), 31 (dashed), and 61 (solid) days (black lines). Matching thresholds are provided (red lines)." width="576"><p class="caption">
+<strong>Figure 1.</strong> Climatologies based on a sliding mean of window widths 11 (dotted), 31 (dashed), and 61 (solid) days (black lines). Matching thresholds are provided (red lines).
+</p>
+</div>
+<p>To produce smoother climatologies, we can additionally enable a moving average smoother. The result is shown in Figure 2.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#smooth_percentile = TRUE</span>
+res.<span class="fl">11.</span>T &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/detect">detect</a></span>(ts_dat, <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,
+              <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>)
+res.<span class="fl">31.</span>T &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/detect">detect</a></span>(ts_dat, <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,
+              <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>,
+              <span class="dt">window_half_width =</span> <span class="dv">15</span>)
+res.<span class="fl">61.</span>T &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/detect">detect</a></span>(ts_dat, <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,
+              <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>,
+              <span class="dt">window_half_width =</span> <span class="dv">30</span>)</code></pre></div>
+<div class="figure" style="text-align: center">
+<img src="Climatologies_and_baselines_files/figure-html/plot-2-1.png" alt="**Figure 2.** Climatologies based on a sliding mean of window widths 11 (dotted), 31 (dashed), and 61 (solid) days (black lines). Matching thresholds are provided (red lines). The moving average smoother with a window width of 31 days is enable here." width="576"><p class="caption">
+<strong>Figure 2.</strong> Climatologies based on a sliding mean of window widths 11 (dotted), 31 (dashed), and 61 (solid) days (black lines). Matching thresholds are provided (red lines). The moving average smoother with a window width of 31 days is enable here.
+</p>
+</div>
 </div>
 <div id="using-a-custom-climatology" class="section level2">
 <h2 class="hasAnchor">

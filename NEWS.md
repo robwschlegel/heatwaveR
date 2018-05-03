@@ -2,6 +2,7 @@
 
 * Minor touch up to examples in `geoms.R`
 * First draft of `heatwaveR` hex logo added to site
+* Added `category` option to `event_line()`
 
 # heatwaveR 0.0.5.9001 (2018-05-02)
 
