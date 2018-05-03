@@ -12,6 +12,8 @@
 #'
 #' @seealso \code{\link{event_line}} for a non-ggplot2 based flame function.
 #'
+#' @importFrom ggplot2 coord_munch
+#'
 #' @section Aesthetics:
 #' \code{geom_flame} understands the following aesthetics (required aesthetics
 #' are in bold):
