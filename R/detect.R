@@ -247,13 +247,11 @@ detect <-
     temp <- NULL
 
     doy <- eval(substitute(doy), data)
-    ts.x <- eval(substitute(x), data)
-    ts.y <- eval(substitute(y), data)
-    t_series <- tibble::tibble(doy,
-                               ts.x,
-                               ts.y)
-    rm(doy); rm(ts.x); rm(ts.y)
-    t_series$ts.y <- zoo::na.approx(t_series$ts.y, maxgap = max_pad_length)
+    ts_x <- eval(substitute(x), data)
+    ts_y <- eval(substitute(y), data)
+    ts_xy <- tibble::tibble(doy, ts_x, ts_y)
+    rm(doy); rm(ts_x); rm(ts_y)
+    ts_xy$ts_y <- zoo::na.approx(ts_xy$ts_y, maxgap = max_pad_length)
 
     if (missing(climatology_start))
       stop("Oops! Please provide BOTH start and end dates for the climatology.")
@@ -263,18 +261,18 @@ detect <-
 
     # clim_start <- paste(climatology_start, "01", "01", sep = "-")
     clim_start <- climatology_start
-    if (t_series$ts.x[1] > clim_start)
+    if (ts_xy$ts_x[1] > clim_start)
       stop(paste("The specified start date precedes the first day of series, which is ",
-                 t_series$ts.x[1]))
+                 ts_xy$ts_x[1]))
 
     # clim_end <- paste(climatology_end, "12", "31", sep = "-")
     clim_end <- climatology_end
-    if (clim_end > t_series$ts.x[nrow(t_series)])
+    if (clim_end > ts_xy$ts_x[nrow(ts_xy)])
       stop(paste("The specified end date follows the last day of series, which is ",
-                 t_series$ts.x[nrow(t_series)]))
+                 ts_xy$ts_x[nrow(ts_xy)]))
 
     if (cold_spells)
-      t_series$ts.y <- -t_series$ts.y
+      ts_xy$ts_y <- -ts_xy$ts_y
 
     ## 1. if a custom baseline is supplied it will be used to derive a climatology and threshold using the calculations below;
     ## this custom baseline will share the same climatology_start and climatology_end as the main data
@@ -283,38 +281,43 @@ detect <-
     ## will cover the dull duration of the main data where the events will be detected in; this baseline and threshold might
     ## be one (e.g.) from which the long-term trend had been removed beforehand, etc.; also, the interannual variation might
     ## not necessarily be constant and the time series might be evolving throughout time, unlike a climatology (see below)
-    ## 3. lastly, i can also foresee the use of custom climatologies (of the mean or median, and threshold--i.e. a daily
+    ## 3. lastly, i can also foresee the use of custom climatologies of the mean or median, and threshold--i.e. a daily
     ## climatology of 365 or 366 days; it will replicated for as many times as is necessary to fit between climatology_start
     ## and climatology_end; a climatology is therefore a constant annual signal that will repeat year after year
     ## ...we need to provide proper documentation of these options, and talk about the differences between baselines and
     ## climatologies, and in the paper give example applications of the various use scenarios.
 
+    ## both options will feed into climatology calc; this might not be desirable
+    ## in the case of the baseline... we need an option where the baseline is
+    ## not processed into a climatology relative to which the events are detected;
+    ## we might want to use the baseline *as is* for event detection
     if (diff_baseline) {
-      tDat <- baseline_data %>%
-        dplyr::filter(ts.x >= clim_start & ts.x <= clim_end) %>%
-        dplyr::mutate(ts.x = lubridate::year(ts.x)) %>%
-        tidyr::spread(ts.x, ts.y)
+      for_clim <- baseline_data
     } else {
-      tDat <- t_series %>%
-        dplyr::filter(ts.x >= clim_start & ts.x <= clim_end) %>%
-        dplyr::mutate(ts.x = lubridate::year(ts.x)) %>%
-        tidyr::spread(ts.x, ts.y)
+      for_clim <- ts_xy
     }
 
-    tDat[59:61, ] <- zoo::na.approx(tDat[59:61, ], maxgap = 1, na.rm = TRUE)
-    tDat <- rbind(utils::tail(tDat, window_half_width),
-                  tDat, utils::head(tDat, window_half_width))
+    t_dat <- for_clim %>%
+      dplyr::filter(ts_x >= clim_start & ts_x <= clim_end) %>%
+      dplyr::mutate(ts_x = lubridate::year(ts_x)) %>%
+      tidyr::spread(ts_x, ts_y)
 
-    seas_clim_year <- thresh_clim_year <- var_clim_year <- rep(NA, nrow(tDat))
+    t_dat[59:61, ] <- zoo::na.approx(t_dat[59:61, ], maxgap = 1, na.rm = TRUE)
+    t_dat <- rbind(utils::tail(t_dat, window_half_width),
+                  t_dat, utils::head(t_dat, window_half_width))
 
-    for (i in (window_half_width + 1):((nrow(tDat) - window_half_width))) {
+    seas_clim_year <- rep(NA, nrow(t_dat))
+    thresh_clim_year <- rep(NA, nrow(t_dat))
+    var_clim_year <- rep(NA, nrow(t_dat))
+
+    for (i in (window_half_width + 1):((nrow(t_dat) - window_half_width))) {
       seas_clim_year[i] <-
         mean(
-          c(t(tDat[(i - (window_half_width)):(i + window_half_width), 2:ncol(tDat)])),
+          c(t(t_dat[(i - (window_half_width)):(i + window_half_width), 2:ncol(t_dat)])),
           na.rm = TRUE)
       thresh_clim_year[i] <-
         stats::quantile(
-          c(t(tDat[(i - (window_half_width)):(i + window_half_width), 2:ncol(tDat)])),
+          c(t(t_dat[(i - (window_half_width)):(i + window_half_width), 2:ncol(t_dat)])),
           probs = pctile/100,
           type = 7,
           na.rm = TRUE,
@@ -322,7 +325,7 @@ detect <-
         )
       var_clim_year[i] <-
         stats::sd(
-          c(t(tDat[(i - (window_half_width)):(i + window_half_width), 2:ncol(tDat)])),
+          c(t(t_dat[(i - (window_half_width)):(i + window_half_width), 2:ncol(t_dat)])),
           na.rm = TRUE
         )
     }
@@ -330,7 +333,7 @@ detect <-
     len_clim_year <- 366
     clim <-
       data.frame(
-        doy = tDat[(window_half_width + 1):((window_half_width) + len_clim_year), 1],
+        doy = t_dat[(window_half_width + 1):((window_half_width) + len_clim_year), 1],
         seas_clim_year = seas_clim_year[(window_half_width + 1):((window_half_width) + len_clim_year)],
         thresh_clim_year = thresh_clim_year[(window_half_width + 1):((window_half_width) + len_clim_year)],
         var_clim_year = var_clim_year[(window_half_width + 1):((window_half_width) + len_clim_year)]
@@ -373,14 +376,15 @@ detect <-
     ###
 
     if (clim_only) {
-      t_series <- merge(data, clim, by = "doy")
-      t_series <- t_series[order(t_series$ts.x),]
+      t_series <- ts_xy %>%
+        merge(clim, by = "doy") %>%
+        dplyr::arrange(ts_x)
       return(t_series)
     } else {
-      t_series <- t_series %>%
+      t_series <- ts_xy %>%
         dplyr::inner_join(clim, by = "doy")
-      t_series$ts.y[is.na(t_series$ts.y)] <- t_series$seas_clim_year[is.na(t_series$ts.y)]
-      t_series$thresh_criterion <- t_series$ts.y > t_series$thresh_clim_year
+      t_series$ts_y[is.na(t_series$ts_y)] <- t_series$seas_clim_year[is.na(t_series$ts_y)]
+      t_series$thresh_criterion <- t_series$ts_y > t_series$thresh_clim_year
       ex1 <- rle(t_series$thresh_criterion)
       ind1 <- rep(seq_along(ex1$lengths), ex1$lengths)
       s1 <- split(zoo::index(t_series$thresh_criterion), ind1)
@@ -396,8 +400,8 @@ detect <-
         out <- proto_data %>%
           dplyr::mutate(duration = index_stop - index_start + 1) %>%
           dplyr::filter(duration >= min_duration) %>%
-          dplyr::mutate(date_start = t_series$ts.x[index_start]) %>%
-          dplyr::mutate(date_stop = t_series$ts.x[index_stop])
+          dplyr::mutate(date_start = t_series$ts_x[index_start]) %>%
+          dplyr::mutate(date_stop = t_series$ts_x[index_stop])
       }
 
       proto_events <- do.call(rbind, proto_events_rng) %>%
@@ -424,8 +428,8 @@ detect <-
 
       if (any(proto_gaps$duration >= 1 & proto_gaps$duration <= max_gap)) {
         proto_gaps <- proto_gaps %>%
-          dplyr::mutate(date_start = t_series$ts.x[index_start]) %>%
-          dplyr::mutate(date_stop = t_series$ts.x[index_stop]) %>%
+          dplyr::mutate(date_start = t_series$ts_x[index_start]) %>%
+          dplyr::mutate(date_stop = t_series$ts_x[index_stop]) %>%
           dplyr::filter(duration >= 1 & duration <= max_gap)
       } else {
         join_across_gaps <- FALSE
@@ -470,13 +474,13 @@ detect <-
         with(
           t_series,
           data.frame(
-            ts.x = c(ts.x[df$index_start:df$index_stop]),
-            ts.y = c(ts.y[df$index_start:df$index_stop]),
+            ts_x = c(ts_x[df$index_start:df$index_stop]),
+            ts_y = c(ts_y[df$index_start:df$index_stop]),
             seas_clim_year = c(seas_clim_year[df$index_start:df$index_stop]),
             thresh_clim_year = c(thresh_clim_year[df$index_start:df$index_stop]),
-            mhw_rel_seas = c(ts.y[df$index_start:df$index_stop]) - c(seas_clim_year[df$index_start:df$index_stop]),
-            mhw_rel_thresh = c(ts.y[df$index_start:df$index_stop]) - c(thresh_clim_year[df$index_start:df$index_stop]),
-            rel_thresh_norm = c(ts.y[df$index_start:df$index_stop]) - c(thresh_clim_year[df$index_start:df$index_stop]) /
+            mhw_rel_seas = c(ts_y[df$index_start:df$index_stop]) - c(seas_clim_year[df$index_start:df$index_stop]),
+            mhw_rel_thresh = c(ts_y[df$index_start:df$index_stop]) - c(thresh_clim_year[df$index_start:df$index_stop]),
+            rel_thresh_norm = c(ts_y[df$index_start:df$index_stop]) - c(thresh_clim_year[df$index_start:df$index_stop]) /
               c(thresh_clim_year[df$index_start:df$index_stop]) - c(seas_clim_year[df$index_start:df$index_stop])
           )
         )
@@ -486,7 +490,7 @@ detect <-
                       events_list %>%
                         dplyr::bind_rows(.id = "event_no") %>%
                         dplyr::group_by(event_no) %>%
-                        dplyr::summarise(date_peak = ts.x[mhw_rel_seas == max(mhw_rel_seas)][1],
+                        dplyr::summarise(date_peak = ts_x[mhw_rel_seas == max(mhw_rel_seas)][1],
                                          int_mean = mean(mhw_rel_seas),
                                          int_max = max(mhw_rel_seas),
                                          int_var = sqrt(stats::var(mhw_rel_seas)),
@@ -495,18 +499,18 @@ detect <-
                                          int_max_rel_thresh = max(mhw_rel_thresh),
                                          int_var_rel_thresh = sqrt(stats::var(mhw_rel_thresh)),
                                          int_cum_rel_thresh = max(cumsum(mhw_rel_thresh)),
-                                         int_mean_abs = mean(ts.y),
-                                         int_max_abs = max(ts.y),
-                                         int_var_abs = sqrt(stats::var(ts.y)),
-                                         int_cum_abs = max(cumsum(ts.y)),
+                                         int_mean_abs = mean(ts_y),
+                                         int_max_abs = max(ts_y),
+                                         int_var_abs = sqrt(stats::var(ts_y)),
+                                         int_cum_abs = max(cumsum(ts_y)),
                                          int_mean_norm = mean(rel_thresh_norm),
                                          int_max_norm = max(rel_thresh_norm)) %>%
                         dplyr::arrange(as.numeric(event_no)) %>%
                         dplyr::select(-event_no))
 
-      mhw_rel_seas <- t_series$ts.y - t_series$seas_clim_year
+      mhw_rel_seas <- t_series$ts_y - t_series$seas_clim_year
       A <- mhw_rel_seas[events$index_start]
-      B <- t_series$ts.y[events$index_start - 1]
+      B <- t_series$ts_y[events$index_start - 1]
       C <- t_series$seas_clim_year[events$index_start - 1]
       if (length(B) + 1 == length(A)) {
         B <- c(NA, B)
@@ -522,7 +526,7 @@ detect <-
       )
 
       D <- mhw_rel_seas[events$index_stop]
-      E <- t_series$ts.y[events$index_stop + 1]
+      E <- t_series$ts_y[events$index_stop + 1]
       F <- t_series$seas_clim_year[events$index_stop + 1]
       mhw_rel_seas_end <- 0.5 * (D + E - F)
 
@@ -550,7 +554,7 @@ detect <-
           rate_decline = -rate_decline
         )
         t_series <- t_series %>% dplyr::mutate(
-          ts.y = -ts.y,
+          ts_y = -ts_y,
           seas_clim_year = -seas_clim_year,
           thresh_clim_year = -thresh_clim_year
         )

@@ -1,3 +1,8 @@
+# heatwaveR 0.0.5.9002 (2018-05-03)
+
+* Simplifications and consistency checks to `detect()`
+* Some writing on Baselines and climatology vignette
+
 # heatwaveR 0.0.5.9001 (2018-05-02)
 
 * Fix to `event_line()` not plotting MCSs correctly
