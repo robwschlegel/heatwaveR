@@ -53,12 +53,12 @@ calculation of climatology and threshold percentile. Default is \code{5}
 days, which gives a window width of 11 days centered on the 6th day of the
 series of 11 days.}
 
-\item{smooth_percentile}{Full width of moving average window for smoothing
-climatology and threshold. Default is \code{31} days.}
-
-\item{smooth_percentile_width}{Boolean switch selecting whether to smooth the
+\item{smooth_percentile}{Boolean switch selecting whether to smooth the
 climatology and threshold percentile timeseries with a moving average of
 width \code{smooth_percentile}. Default is \code{TRUE}.}
+
+\item{smooth_percentile_width}{Full width of moving average window for smoothing
+climatology and threshold. Default is \code{31} days.}
 
 \item{clim_only}{Choose to calculate only the climatologies and not the
 events. Default is \code{FALSE}.}
