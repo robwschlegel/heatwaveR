@@ -38,7 +38,13 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">heatwaveR</a>
+<<<<<<< HEAD
         <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.5.9002</span>
+||||||| merged common ancestors
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.5.9001</span>
+=======
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.6.9000</span>
+>>>>>>> 629df372dea599b583f74caa24421ae98cac60c3
       </span>
     </div>
 
@@ -106,7 +112,8 @@
     
 <div id="heatwaver" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#heatwaver" class="anchor"></a>heatwaveR</h1></div>
+<a href="#heatwaver" class="anchor"></a>heatwaveR <img src="logo.png" width="200" align="right">
+</h1></div>
 
 <p>The <strong><code>heatwaveR</code></strong> package is a project-wide update to the <a href="https://github.com/ajsmit/RmarineHeatWaves"><strong><code>RmarineHeatWaves</code></strong></a> package, which is itself a translation of the original <a href="https://github.com/ecjoliver/marineHeatWaves">Python code</a> written by Eric C. J. Oliver.</p>
 <p>The <strong><code>heatwaveR</code></strong> R package contains the original functions from the <strong><code>RmarineHeatWaves</code></strong> package that calculate and display marine heatwaves (MHWs) according to the definition of Hobday et al. (2016) as well as calculating and visualising marine cold-spells (MCSs) as first introduced in Schlegel et al. (2017).</p>
@@ -214,7 +221,7 @@
 </tr>
 <tr class="even">
 <td><code>event_no</code></td>
-<td>A sequential number indicating the ID and order of occurence of the MHWs or MCSs.</td>
+<td>A sequential number indicating the ID and order of occurrence of the MHWs or MCSs.</td>
 </tr>
 </tbody>
 </table>
@@ -299,14 +306,13 @@ mhw<span class="op">$</span>event <span class="op">%&gt;%</span><span class="st"
 <span class="co">#&gt; # A tibble: 5 x 7</span>
 <span class="co">#&gt;   event_no duration date_start date_peak  int_mean int_max int_cum</span>
 <span class="co">#&gt;      &lt;int&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;        &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt; 1       22       95 1999-05-13 1999-05-22     2.50    3.60   237. </span>
-<span class="co">#&gt; 2       42       60 2011-02-06 2011-02-28     3.21    6.51   193. </span>
-<span class="co">#&gt; 3       49       47 2012-01-11 2012-01-27     2.23    3.30   105. </span>
-<span class="co">#&gt; 4       50       46 2012-03-01 2012-04-10     1.99    2.96    91.7</span>
-<span class="co">#&gt; 5       41       40 2010-12-24 2011-01-28     2.16    3.27    86.3</span></code></pre></div>
+<span class="co">#&gt; 1       22      95. 1999-05-13 1999-05-22     2.50    3.60   237. </span>
+<span class="co">#&gt; 2       42      60. 2011-02-06 2011-02-28     3.21    6.51   193. </span>
+<span class="co">#&gt; 3       49      47. 2012-01-11 2012-01-27     2.23    3.30   105. </span>
+<span class="co">#&gt; 4       50      46. 2012-03-01 2012-04-10     1.99    2.96    91.7</span>
+<span class="co">#&gt; 5       41      40. 2010-12-24 2011-01-28     2.16    3.27    86.3</span></code></pre></div>
 <p>The corresponding <code><a href="reference/event_line.html">event_line()</a></code> and <code><a href="reference/lolli_plot.html">lolli_plot()</a></code>, which represent the massive Western Australian heatwave of 2011, look like this:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/event_line.html">event_line</a></span>(mhw, <span class="dt">spread =</span> <span class="dv">200</span>, <span class="dt">metric =</span> <span class="st">"int_cum"</span>,
-           <span class="dt">start_date =</span> <span class="st">"2010-10-01"</span>, <span class="dt">end_date =</span> <span class="st">"2011-08-30"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/event_line.html">event_line</a></span>(mhw, <span class="dt">spread =</span> <span class="dv">100</span>, <span class="dt">metric =</span> <span class="st">"int_cum"</span>, <span class="dt">start_date =</span> <span class="st">"2010-11-01"</span>, <span class="dt">end_date =</span> <span class="st">"2011-06-30"</span>)</code></pre></div>
 <div class="figure">
 <img src="fig-example1-1.png">
 </div>
@@ -366,11 +372,11 @@ mcs<span class="op">$</span>event <span class="op">%&gt;%</span><span class="st"
 <span class="co">#&gt; # A tibble: 5 x 7</span>
 <span class="co">#&gt;   event_no duration date_start date_peak  int_mean int_max int_cum</span>
 <span class="co">#&gt;      &lt;int&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;        &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span>
-<span class="co">#&gt; 1       16       76 1990-04-13 1990-05-11    -2.54   -3.22  -193. </span>
-<span class="co">#&gt; 2       54       58 2003-12-19 2004-01-23    -1.80   -2.66  -104. </span>
-<span class="co">#&gt; 3       71       52 2014-04-14 2014-05-05    -1.82   -2.57   -94.6</span>
-<span class="co">#&gt; 4        8       38 1986-06-24 1986-07-17    -2.01   -2.95   -76.4</span>
-<span class="co">#&gt; 5       51       32 2003-09-08 2003-09-16    -1.56   -2.12   -49.9</span></code></pre></div>
+<span class="co">#&gt; 1       16      76. 1990-04-13 1990-05-11    -2.54   -3.22  -193. </span>
+<span class="co">#&gt; 2       54      58. 2003-12-19 2004-01-23    -1.80   -2.66  -104. </span>
+<span class="co">#&gt; 3       71      52. 2014-04-14 2014-05-05    -1.82   -2.57   -94.6</span>
+<span class="co">#&gt; 4        8      38. 1986-06-24 1986-07-17    -2.01   -2.95   -76.4</span>
+<span class="co">#&gt; 5       51      32. 2003-09-08 2003-09-16    -1.56   -2.12   -49.9</span></code></pre></div>
 <p>The plots showing the cold-spells look like this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/event_line.html">event_line</a></span>(mcs, <span class="dt">spread =</span> <span class="dv">200</span>, <span class="dt">metric =</span> <span class="st">"int_cum"</span>,
            <span class="dt">start_date =</span> <span class="st">"1990-01-01"</span>, <span class="dt">end_date =</span> <span class="st">"1990-08-30"</span>)
@@ -473,7 +479,68 @@ exc_<span class="dv">19</span><span class="op">$</span>exceedance <span class="o
 <div class="figure">
 <img src="README-grid-example2.png" alt="P-of-trend"><p class="caption">P-of-trend</p>
 </div>
-<p>Please read the package <a href="https://github.com/ajsmit/RmarineHeatWaves/blob/master/vignettes/gridded-event-detection.Rmd">vignette</a> to see how to load a netCDF file with the OISST data, apply the <code><a href="reference/detect.html">detect()</a></code> function to the whole 3D array of data, and then fit the GLM and plot the data.</p>
+<p>Please read the package <a href="https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html">vignette</a> to see how to load a netCDF file with the OISST data, apply the <code><a href="reference/detect.html">detect()</a></code> function to the whole 3D array of data, and then fit the GLM and plot the data.</p>
+</div>
+<div id="categories" class="section level2">
+<h2 class="hasAnchor">
+<a href="#categories" class="anchor"></a>Categories</h2>
+<p>The classification of MHWs under the naming scheme first proposed by Hobday et al. (in review) may also be calculated and visualised with the <strong><code>heatwaveR</code></strong> package using the <code>category()</code> function on the output of the <code><a href="reference/detect.html">detect()</a></code> function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Coming soon!</span></code></pre></div>
+<p>A quick and easy visualisation of the categories of a MHW may be accomplished with <code><a href="reference/event_line.html">event_line()</a></code> by setting the <code>category</code> argument to <code>TRUE</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/event_line.html">event_line</a></span>(mhw, <span class="dt">spread =</span> <span class="dv">100</span>, <span class="dt">start_date =</span> <span class="st">"2010-11-01"</span>, <span class="dt">end_date =</span> <span class="st">"2011-06-30"</span>, <span class="dt">category =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<div class="figure">
+<img src="docs/fig-example-10-1.png">
+</div>
+<p>Were one to want to visualise the categories of a MHW ‘by hand’, the following code will provide a good starting point.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create category breaks and select slice of data.frame</span>
+clim_cat &lt;-<span class="st"> </span>mhw<span class="op">$</span>clim <span class="op">%&gt;%</span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">diff =</span> thresh_clim_year <span class="op">-</span><span class="st"> </span>seas_clim_year,
+                <span class="dt">thresh_2x =</span> thresh_clim_year <span class="op">+</span><span class="st"> </span>diff,
+                <span class="dt">thresh_3x =</span> thresh_2x <span class="op">+</span><span class="st"> </span>diff,
+                <span class="dt">thresh_4x =</span> thresh_3x <span class="op">+</span><span class="st"> </span>diff) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">10580</span><span class="op">:</span><span class="dv">10690</span>)
+
+<span class="co"># Set line colours</span>
+lineColCat &lt;-<span class="st"> </span><span class="kw">c</span>(
+  <span class="st">"Temperature"</span> =<span class="st"> "black"</span>,
+  <span class="st">"Climatology"</span> =<span class="st"> "gray20"</span>,
+  <span class="st">"Threshold"</span> =<span class="st"> "darkgreen"</span>,
+  <span class="st">"2x Threshold"</span> =<span class="st"> "darkgreen"</span>,
+  <span class="st">"3x Threshold"</span> =<span class="st"> "darkgreen"</span>,
+  <span class="st">"4x Threshold"</span> =<span class="st"> "darkgreen"</span>
+  )
+
+<span class="co"># Set category fill colours</span>
+fillColCat &lt;-<span class="st"> </span><span class="kw">c</span>(
+  <span class="st">"Moderate"</span> =<span class="st"> "#ffc866"</span>,
+  <span class="st">"Strong"</span> =<span class="st"> "#ff6900"</span>,
+  <span class="st">"Severe"</span> =<span class="st"> "#9e0000"</span>,
+  <span class="st">"Extreme"</span> =<span class="st"> "#2d0000"</span>
+  )
+
+<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> clim_cat, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> t, <span class="dt">y =</span> temp)) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="reference/geom_flame.html">geom_flame</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y2 =</span> thresh_clim_year, <span class="dt">fill =</span> <span class="st">"Moderate"</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="reference/geom_flame.html">geom_flame</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y2 =</span> thresh_2x, <span class="dt">fill =</span> <span class="st">"Strong"</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="reference/geom_flame.html">geom_flame</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y2 =</span> thresh_3x, <span class="dt">fill =</span> <span class="st">"Severe"</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="reference/geom_flame.html">geom_flame</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y2 =</span> thresh_4x, <span class="dt">fill =</span> <span class="st">"Extreme"</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> thresh_2x, <span class="dt">col =</span> <span class="st">"2x Threshold"</span>), <span class="dt">size =</span> <span class="fl">0.7</span>, <span class="dt">linetype =</span> <span class="st">"dashed"</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> thresh_3x, <span class="dt">col =</span> <span class="st">"3x Threshold"</span>), <span class="dt">size =</span> <span class="fl">0.7</span>, <span class="dt">linetype =</span> <span class="st">"dotdash"</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> thresh_4x, <span class="dt">col =</span> <span class="st">"4x Threshold"</span>), <span class="dt">size =</span> <span class="fl">0.7</span>, <span class="dt">linetype =</span> <span class="st">"dotted"</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> seas_clim_year, <span class="dt">col =</span> <span class="st">"Climatology"</span>), <span class="dt">size =</span> <span class="fl">0.7</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> thresh_clim_year, <span class="dt">col =</span> <span class="st">"Threshold"</span>), <span class="dt">size =</span> <span class="fl">0.7</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> temp, <span class="dt">col =</span> <span class="st">"Temperature"</span>), <span class="dt">size =</span> <span class="fl">0.6</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_manual">scale_colour_manual</a></span>(<span class="dt">name =</span> <span class="ot">NULL</span>, <span class="dt">values =</span> lineColCat,
+                      <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="st">"Temperature"</span>, <span class="st">"Climatology"</span>, <span class="st">"Threshold"</span>,
+                                 <span class="st">"2x Threshold"</span>, <span class="st">"3x Threshold"</span>, <span class="st">"4x Threshold"</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_manual">scale_fill_manual</a></span>(<span class="dt">name =</span> <span class="ot">NULL</span>, <span class="dt">values =</span> fillColCat, <span class="dt">guide =</span> <span class="ot">FALSE</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_date">scale_x_date</a></span>(<span class="dt">date_labels =</span> <span class="st">"%b %Y"</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/guides">guides</a></span>(<span class="dt">colour =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/guide_legend">guide_legend</a></span>(<span class="dt">override.aes =</span> <span class="kw">list</span>(<span class="dt">linetype =</span> <span class="kw">c</span>(<span class="st">"solid"</span>, <span class="st">"solid"</span>, <span class="st">"solid"</span>,
+                                                                <span class="st">"dashed"</span>, <span class="st">"dotdash"</span>, <span class="st">"dotted"</span>)))) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">y =</span> <span class="kw">expression</span>(<span class="kw">paste</span>(<span class="st">"Temperature ["</span>, degree, <span class="st">"C]"</span>)), <span class="dt">x =</span> <span class="ot">NULL</span>)</code></pre></div>
+<div class="figure">
+<img src="docs/fig-example-11-1.png">
+</div>
+<p>Presently the functionality for the detection of categories for MCSs has not been introduced into <strong><code>heatwaveR</code></strong>, but it is inbound.</p>
 </div>
 <div id="references" class="section level2">
 <h2 class="hasAnchor">
@@ -481,6 +548,7 @@ exc_<span class="dv">19</span><span class="op">$</span>exceedance <span class="o
 <p>Hobday, A.J. et al. (2016). A hierarchical approach to defining marine heatwaves, Progress in Oceanography, 141, pp. 227-238.</p>
 <p>Schlegel, R. W., Oliver, E. C. J., Wernberg, T. W., Smit, A. J. (2017). Coastal and offshore co-occurrences of marine heatwaves and cold-spells. Progress in Oceanography, 151, pp. 189-205.</p>
 <p>Schlegel, R. W., Oliver, E. C., Perkins-Kirkpatrick, S., Kruger, A., Smit, A. J. (2017). Predominant atmospheric and oceanic patterns during coastal marine heatwaves. Frontiers in Marine Science, 4, 323.</p>
+<p>Hobday et al. (in review). Categorizing and Naming Marine Heatwaves. Oceanography.</p>
 </div>
 <div id="acknowledgements" class="section level2">
 <h2 class="hasAnchor">

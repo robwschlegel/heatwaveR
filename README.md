@@ -1,5 +1,5 @@
-heatwaveR
-=========
+heatwaveR <img src="logo.png" width=200 align="right" />
+========================================================
 
 [![Travis build status](https://travis-ci.org/robwschlegel/heatwaveR.svg?branch=master)](https://travis-ci.org/robwschlegel/heatwaveR) [![Coverage status](https://codecov.io/gh/robwschlegel/heatwaveR/branch/master/graph/badge.svg)](https://codecov.io/github/robwschlegel/heatwaveR?branch=master)
 
@@ -120,7 +120,7 @@ The function will return a list of two tibbles (see the ‘tidyverse’), `clim`
 </tr>
 <tr class="even">
 <td><code>event_no</code></td>
-<td>A sequential number indicating the ID and order of occurence of the MHWs or MCSs.</td>
+<td>A sequential number indicating the ID and order of occurrence of the MHWs or MCSs.</td>
 </tr>
 </tbody>
 </table>
@@ -178,8 +178,7 @@ mhw$event %>%
 The corresponding `event_line()` and `lolli_plot()`, which represent the massive Western Australian heatwave of 2011, look like this:
 
 ``` r
-event_line(mhw, spread = 200, metric = "int_cum",
-           start_date = "2010-10-01", end_date = "2011-08-30")
+event_line(mhw, spread = 100, metric = "int_cum", start_date = "2010-11-01", end_date = "2011-06-30")
 ```
 
 ![](docs/fig-example1-1.png)
@@ -385,7 +384,78 @@ We can also load the gridded 0.25 degree Reynolds [OISST data](https://www.ncei.
 
 ![P-of-trend](docs/README-grid-example2.png)
 
-Please read the package [vignette](https://github.com/ajsmit/RmarineHeatWaves/blob/master/vignettes/gridded-event-detection.Rmd) to see how to load a netCDF file with the OISST data, apply the `detect()` function to the whole 3D array of data, and then fit the GLM and plot the data.
+Please read the package [vignette](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html) to see how to load a netCDF file with the OISST data, apply the `detect()` function to the whole 3D array of data, and then fit the GLM and plot the data.
+
+Categories
+----------
+
+The classification of MHWs under the naming scheme first proposed by Hobday et al. (in review) may also be calculated and visualised with the **`heatwaveR`** package using the `category()` function on the output of the `detect()` function.
+
+``` r
+# Coming soon!
+```
+
+A quick and easy visualisation of the categories of a MHW may be accomplished with `event_line()` by setting the `category` argument to `TRUE`.
+
+``` r
+event_line(mhw, spread = 100, start_date = "2010-11-01", end_date = "2011-06-30", category = TRUE)
+```
+
+![](docs/docs/fig-example-10-1.png)
+
+Were one to want to visualise the categories of a MHW ‘by hand’, the following code will provide a good starting point.
+
+``` r
+# Create category breaks and select slice of data.frame
+clim_cat <- mhw$clim %>%
+  dplyr::mutate(diff = thresh_clim_year - seas_clim_year,
+                thresh_2x = thresh_clim_year + diff,
+                thresh_3x = thresh_2x + diff,
+                thresh_4x = thresh_3x + diff) %>% 
+  dplyr::slice(10580:10690)
+
+# Set line colours
+lineColCat <- c(
+  "Temperature" = "black",
+  "Climatology" = "gray20",
+  "Threshold" = "darkgreen",
+  "2x Threshold" = "darkgreen",
+  "3x Threshold" = "darkgreen",
+  "4x Threshold" = "darkgreen"
+  )
+
+# Set category fill colours
+fillColCat <- c(
+  "Moderate" = "#ffc866",
+  "Strong" = "#ff6900",
+  "Severe" = "#9e0000",
+  "Extreme" = "#2d0000"
+  )
+
+ggplot(data = clim_cat, aes(x = t, y = temp)) +
+  geom_flame(aes(y2 = thresh_clim_year, fill = "Moderate")) +
+  geom_flame(aes(y2 = thresh_2x, fill = "Strong")) +
+  geom_flame(aes(y2 = thresh_3x, fill = "Severe")) +
+  geom_flame(aes(y2 = thresh_4x, fill = "Extreme")) +
+  geom_line(aes(y = thresh_2x, col = "2x Threshold"), size = 0.7, linetype = "dashed") +
+  geom_line(aes(y = thresh_3x, col = "3x Threshold"), size = 0.7, linetype = "dotdash") +
+  geom_line(aes(y = thresh_4x, col = "4x Threshold"), size = 0.7, linetype = "dotted") +
+  geom_line(aes(y = seas_clim_year, col = "Climatology"), size = 0.7) +
+  geom_line(aes(y = thresh_clim_year, col = "Threshold"), size = 0.7) +
+  geom_line(aes(y = temp, col = "Temperature"), size = 0.6) +
+  scale_colour_manual(name = NULL, values = lineColCat,
+                      breaks = c("Temperature", "Climatology", "Threshold",
+                                 "2x Threshold", "3x Threshold", "4x Threshold")) +
+  scale_fill_manual(name = NULL, values = fillColCat, guide = FALSE) +
+  scale_x_date(date_labels = "%b %Y") +
+  guides(colour = guide_legend(override.aes = list(linetype = c("solid", "solid", "solid",
+                                                                "dashed", "dotdash", "dotted")))) + 
+  labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
+```
+
+![](docs/docs/fig-example-11-1.png)
+
+Presently the functionality for the detection of categories for MCSs has not been introduced into **`heatwaveR`**, but it is inbound.
 
 References
 ----------
@@ -395,6 +465,8 @@ Hobday, A.J. et al. (2016). A hierarchical approach to defining marine heatwaves
 Schlegel, R. W., Oliver, E. C. J., Wernberg, T. W., Smit, A. J. (2017). Coastal and offshore co-occurrences of marine heatwaves and cold-spells. Progress in Oceanography, 151, pp. 189-205.
 
 Schlegel, R. W., Oliver, E. C., Perkins-Kirkpatrick, S., Kruger, A., Smit, A. J. (2017). Predominant atmospheric and oceanic patterns during coastal marine heatwaves. Frontiers in Marine Science, 4, 323.
+
+Hobday et al. (in review). Categorizing and Naming Marine Heatwaves. Oceanography.
 
 Acknowledgements
 ----------------

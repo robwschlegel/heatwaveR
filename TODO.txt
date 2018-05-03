@@ -8,10 +8,30 @@ TODO
 * output option: summary plot of built-in climatology
 * define events and climatologies as S3 classes
 * maybe change the names 'smooth_percentile_width' and 'smooth_percentile' as they actually have nothing to do with percentiles; in the documentation, make clear how the new names used relate back to the same (but differently named) arguments in the python code
+
 * Add category metric for 'size' of heatwave
+* (from Hobday et al. in review) Multiples of this local difference [range from seasonal clim to 90th percentile] will describe different categories of MHWs. Descriptors of magnitude of scale, defined as 
+- moderate (1-2×, Category I)
+- strong (2-3×, Category II)
+- severe (3-4×, Category III) 
+- extreme (>4×, Category IV)
+* See table 2 in Hobday et al. in review for an example of how the categories may be tabulated
+* (from Hobday et al. in review) The Mediterranean Sea 2006 MHW was classified as strong for 21% of the 33-day duration, with an maximum intensity of 3.99°C 
+* The important bits in a written output would be:
+** EVENT_NAME CLASSIFCATION PERCENTAGE_AT_HIGHEST DURATION MAXIMUM_INTENSITY
+** The event name should be based on the area it occurered in, and the year during I-max
+*** e.g. Tasman Sea 2015
+
+* Perhaps a function for real time monitoring use
+* (from Hobday et al. in review) Based on this criterion, MHW duration, mean intensity, rate of onset and rate of decline are not suitable measures, as they are not known until the MHW has concluded.
+* (from Hobday et al. in review) Thus, MHW area is not a suitable measure, as it would apply singularly to all locations identified within the boundary of the MHW in question.
+* (from Hobday et al. in review) Thus, measures related to MHW intensity, such as ‘I’, ‘Icum’ and ‘Imax’ are all suitable candidates (see below for details).
+
+
 * Add block_average metric() 'intensity_max_max'
 * Possibly create a mhw_block() function
 * If so, also give it a qualitative score as in the python version
+
 * Possible compound hw qualities from Baldwin et al. (in review)
 ** 1) a minimum number of hot days occurring consecutively to start a heat wave
 ** 2) a maximum number of cooler (below threshold) days that can occur consecutively for the heat wave to continue
@@ -35,3 +55,4 @@ Text added to `detect()` and repeated here (to be deleted from the function late
 ## and climatology_end; a climatology is therefore a constant annual signal that will repeat year after year
 ## ...we need to provide proper documentation of these options, and talk about the differences between baselines and
 ## climatologies, and in the paper give example applications of the various use scenarios.
+

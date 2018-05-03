@@ -1,5 +1,8 @@
-# heatwaveR 0.0.5.9002 (2018-05-03)
+# heatwaveR 0.0.6.9000 (2018-05-03)
 
+* Minor touch up to examples in `geoms.R`
+* First draft of `heatwaveR` hex logo added to site
+* Added `category` option to `event_line()`
 * Simplifications and consistency checks to `detect()`
 * Some writing on Baselines and climatology vignette
 

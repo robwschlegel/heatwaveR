@@ -76,7 +76,13 @@ Hobday et al. (2016)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
+<<<<<<< HEAD
         <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.5.9002</span>
+||||||| merged common ancestors
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.5.9001</span>
+=======
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.6.9000</span>
+>>>>>>> 629df372dea599b583f74caa24421ae98cac60c3
       </span>
     </div>
 
@@ -153,7 +159,7 @@ Hobday et al. (2016).</p>
     </div>
 
     <pre class="usage"><span class='fu'>event_line</span>(<span class='no'>data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='kw'>min_duration</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>spread</span> <span class='kw'>=</span> <span class='fl'>150</span>,
-  <span class='kw'>metric</span> <span class='kw'>=</span> <span class='st'>"int_cum"</span>, <span class='no'>start_date</span>, <span class='no'>end_date</span>)</pre>
+  <span class='kw'>metric</span> <span class='kw'>=</span> <span class='st'>"int_cum"</span>, <span class='no'>start_date</span>, <span class='no'>end_date</span>, <span class='kw'>category</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -187,12 +193,13 @@ qualify as a heatwave or cold-spell.</p></td>
     </tr>
     <tr>
       <th>metric</th>
-      <td><p>One of the following options: <code>int_mean</code>, <code>int_max</code>, <code>int_var</code>,
-<code>int_cum</code>, <code>int_mean_rel_thresh</code>, <code>int_max_rel_thresh</code>, <code>int_var_rel_thresh</code>,
-<code>int_cum_rel_thresh</code>, <code>int_mean_abs</code>, <code>int_max_abs</code>, <code>int_var_abs</code>,
-<code>int_cum_abs</code>, <code>int_mean_norm</code>, <code>int_max_norm</code>, <code>rate_onset</code>, <code>rate_decline</code>.
-Partial name matching is currently not supported so please specify the metric
-name precisely. The default is <code>int_cum</code>.</p></td>
+      <td><p>This tells the function how to choose the event that should be highlighted as the
+'greatest' of the events in the chosen period. One may choose from the following options:
+<code>int_mean</code>, <code>int_max</code>, <code>int_var</code>,<code>int_cum</code>, <code>int_mean_rel_thresh</code>,
+<code>int_max_rel_thresh</code>, <code>int_var_rel_thresh</code>,<code>int_cum_rel_thresh</code>, <code>int_mean_abs</code>,
+<code>int_max_abs</code>, <code>int_var_abs</code>, <code>int_cum_abs</code>, <code>int_mean_norm</code>, <code>int_max_norm</code>,
+<code>rate_onset</code>, <code>rate_decline</code>. Partial name matching is currently not supported so please
+specify the metric name precisely. The default is <code>int_cum</code>.</p></td>
     </tr>
     <tr>
       <th>start_date</th>
@@ -208,6 +215,14 @@ the start and end dates of the full time series given to <code><a href='detect.h
       <td><p>The end date of a period of time within which the largest
 event (as per <code>metric</code>) is retrieved and plotted. See <code>start_date</code>
 for additional information.</p></td>
+    </tr>
+    <tr>
+      <th>category</th>
+      <td><p>A boolean choice of TRUE or FALSE. If set to FALSE (default) event_line() will
+produce a figure as per the second row of Figure 3 in Hobday et al. (2016). If set to TRUE a
+figure showing the different categories of the MHWs in the chosen period, highlighted as
+seen in Figure 3 of Hobday et al. (in review), will be produced. If <code>category</code> = TRUE,
+<code>metric</code> will be ignored as a different colouring scheme is used.</p></td>
     </tr>
     </table>
     
@@ -233,8 +248,12 @@ doi: 10.1016/j.pocean.2015.12.014</p>
     <pre class="examples"><div class='input'><span class='no'>ts_dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_whole.html'>make_whole</a></span>(<span class='no'>sst_WA</span>)
 <span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='detect.html'>detect</a></span>(<span class='no'>ts_dat</span>, <span class='kw'>climatology_start</span> <span class='kw'>=</span> <span class='st'>"1983-01-01"</span>,
               <span class='kw'>climatology_end</span> <span class='kw'>=</span> <span class='st'>"2012-12-31"</span>)</div><span class='co'># NOT RUN {</span>
-<span class='fu'>event_line</span>(<span class='no'>res</span>, <span class='kw'>spread</span> <span class='kw'>=</span> <span class='fl'>200</span>, <span class='kw'>metric</span> <span class='kw'>=</span> <span class='st'>"int_cum"</span>,
-<span class='kw'>start_date</span> <span class='kw'>=</span> <span class='st'>"2010-10-01"</span>, <span class='kw'>end_date</span> <span class='kw'>=</span> <span class='st'>"2011-08-30"</span>)
+<span class='fu'>event_line</span>(<span class='no'>res</span>, <span class='kw'>spread</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>metric</span> <span class='kw'>=</span> <span class='st'>"int_cum"</span>,
+<span class='kw'>start_date</span> <span class='kw'>=</span> <span class='st'>"2010-12-01"</span>, <span class='kw'>end_date</span> <span class='kw'>=</span> <span class='st'>"2011-06-30"</span>)
+
+<span class='fu'>event_line</span>(<span class='no'>res</span>, <span class='kw'>spread</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>start_date</span> <span class='kw'>=</span> <span class='st'>"2010-12-01"</span>,
+<span class='kw'>end_date</span> <span class='kw'>=</span> <span class='st'>"2011-06-30"</span>, <span class='kw'>category</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
