@@ -3,4 +3,5 @@
 .RData
 inst/doc
 _testing
+_private
 heatwaveR.code-workspace

@@ -11,4 +11,5 @@
 ^README.Rmd
 ^TODO.txt
 ^_testing$
+^_private$
 ^heatwaveR.code-workspace
