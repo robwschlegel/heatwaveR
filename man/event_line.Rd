@@ -75,7 +75,6 @@ start_date = "2010-12-01", end_date = "2011-06-30")
 
 event_line(res, spread = 100, start_date = "2010-12-01",
 end_date = "2011-06-30", category = TRUE)
-
 }
 }
 \references{

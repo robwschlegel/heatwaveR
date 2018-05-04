@@ -50,6 +50,7 @@ by issuing the following command:
 |`detect()`           |The main function which detects the events as per the definition of Hobday et al. (2016).|
 |`make_whole()`       |Constructs a continuous, uninterrupted time series of temperatures.|
 |`block_average()`    |Calculates annual means for event metrics.|
+|`category()`         |Applies event categories to the output of `detect()` based on Hobday et al. (in review). |
 |`event_line()`       |Creates a line plot of heatwaves or cold-spells.|
 |`lolli_plot()`       |Creates a timeline of selected event metrics.|
 |`exceedance()`       |A function similar to `detect()` but that detects consecutive days above/below a given static threshold.|
@@ -315,7 +316,7 @@ Please read the package [vignette](https://robwschlegel.github.io/heatwaveR/arti
 The classification of MHWs under the naming scheme first proposed by Hobday et al. (in review) may also be calculated and visualised with the __`heatwaveR`__ package using the `category()` function on the output of the `detect()` function.
 
 ```{r category-example1, echo = TRUE}
-# Coming soon!
+tail(category(mhw))
 ```
 
 A quick and easy visualisation of the categories of a MHW may be accomplished with `event_line()` by setting the `category` argument to `TRUE`.

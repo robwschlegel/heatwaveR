@@ -1,3 +1,8 @@
+# heatwaveR 0.0.7.9000 (2018-05-04)
+
+* New `category()` function returns the category results for events
+* Still requires testing and improved event naming scheme
+
 # heatwaveR 0.0.6.9000 (2018-05-03)
 
 * Minor touch up to examples in `geoms.R`

@@ -41,22 +41,26 @@ The functions
 <td>Calculates annual means for event metrics.</td>
 </tr>
 <tr class="even">
+<td><code>category()</code></td>
+<td>Applies event categories to the output of <code>detect()</code> based on Hobday et al. (in review).</td>
+</tr>
+<tr class="odd">
 <td><code>event_line()</code></td>
 <td>Creates a line plot of heatwaves or cold-spells.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>lolli_plot()</code></td>
 <td>Creates a timeline of selected event metrics.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>exceedance()</code></td>
 <td>A function similar to <code>detect()</code> but that detects consecutive days above/below a given static threshold.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>geom_flame()</code></td>
 <td>Creates flame polygons of heatwaves or cold-spells.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>geom_lolli()</code></td>
 <td>Creates a lolliplot timeline of selected event metric.</td>
 </tr>
@@ -168,11 +172,11 @@ mhw$event %>%
 #> # A tibble: 5 x 7
 #>   event_no duration date_start date_peak  int_mean int_max int_cum
 #>      <int>    <dbl> <date>     <date>        <dbl>   <dbl>   <dbl>
-#> 1       22      95. 1999-05-13 1999-05-22     2.50    3.60   237. 
-#> 2       42      60. 2011-02-06 2011-02-28     3.21    6.51   193. 
-#> 3       49      47. 2012-01-11 2012-01-27     2.23    3.30   105. 
-#> 4       50      46. 2012-03-01 2012-04-10     1.99    2.96    91.7
-#> 5       41      40. 2010-12-24 2011-01-28     2.16    3.27    86.3
+#> 1       22       95 1999-05-13 1999-05-22     2.50    3.60   237. 
+#> 2       42       60 2011-02-06 2011-02-28     3.21    6.51   193. 
+#> 3       49       47 2012-01-11 2012-01-27     2.23    3.30   105. 
+#> 4       50       46 2012-03-01 2012-04-10     1.99    2.96    91.7
+#> 5       41       40 2010-12-24 2011-01-28     2.16    3.27    86.3
 ```
 
 The corresponding `event_line()` and `lolli_plot()`, which represent the massive Western Australian heatwave of 2011, look like this:
@@ -254,11 +258,11 @@ mcs$event %>%
 #> # A tibble: 5 x 7
 #>   event_no duration date_start date_peak  int_mean int_max int_cum
 #>      <int>    <dbl> <date>     <date>        <dbl>   <dbl>   <dbl>
-#> 1       16      76. 1990-04-13 1990-05-11    -2.54   -3.22  -193. 
-#> 2       54      58. 2003-12-19 2004-01-23    -1.80   -2.66  -104. 
-#> 3       71      52. 2014-04-14 2014-05-05    -1.82   -2.57   -94.6
-#> 4        8      38. 1986-06-24 1986-07-17    -2.01   -2.95   -76.4
-#> 5       51      32. 2003-09-08 2003-09-16    -1.56   -2.12   -49.9
+#> 1       16       76 1990-04-13 1990-05-11    -2.54   -3.22  -193. 
+#> 2       54       58 2003-12-19 2004-01-23    -1.80   -2.66  -104. 
+#> 3       71       52 2014-04-14 2014-05-05    -1.82   -2.57   -94.6
+#> 4        8       38 1986-06-24 1986-07-17    -2.01   -2.95   -76.4
+#> 5       51       32 2003-09-08 2003-09-16    -1.56   -2.12   -49.9
 ```
 
 The plots showing the cold-spells look like this:
@@ -392,7 +396,18 @@ Categories
 The classification of MHWs under the naming scheme first proposed by Hobday et al. (in review) may also be calculated and visualised with the **`heatwaveR`** package using the `category()` function on the output of the `detect()` function.
 
 ``` r
-# Coming soon!
+tail(category(mhw))
+#> # A tibble: 6 x 11
+#>   event_no event_name peak_date  category   i_max duration p_moderate
+#>      <int> <fct>      <date>     <chr>      <dbl>    <dbl>      <dbl>
+#> 1       38 Event 2010 2010-09-29 II Strong   2.58       18         78
+#> 2       40 Event 2010 2010-12-02 II Strong   2.66       15         73
+#> 3       31 Event 2008 2008-04-14 III Severe  3.77       34         62
+#> 4       22 Event 1999 1999-05-22 II Strong   3.6        95         59
+#> 5       58 Event 2014 2014-08-31 II Strong   2.2        12         58
+#> 6       42 Event 2011 2011-02-28 IV Extreme  6.51       60         47
+#> # ... with 4 more variables: p_strong <dbl>, p_severe <dbl>,
+#> #   p_extreme <dbl>, season <chr>
 ```
 
 A quick and easy visualisation of the categories of a MHW may be accomplished with `event_line()` by setting the `category` argument to `TRUE`.

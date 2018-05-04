@@ -1,0 +1,222 @@
+#' Calculate the categories of events.
+#'
+#' Calculates the categories of a series of events as produced by \code{\link{detect}} in
+#' accordance with the naming scheme proposed in Hobday et al. (in review).
+#'
+#' @param data The function receives the full (list) output from the \code{\link{detect}} function.
+#' @param x This column is expected to contain a vector of dates as per the
+#' specification of \code{make_whole}. If a column headed \code{t} is present in
+#' the dataframe, this argument may be ommitted; otherwise, specify the name of
+#' the column with dates here.
+#' @param y This is a column containing the measurement variable. If the column
+#' name differs from the default (i.e. \code{temp}), specify the name here.
+#' @param name If a value is provide here it will be used to name the events in
+#' the \code{event_name} column (see below) of the output. Default is "Event".
+#' @param hemisphere This argument informs the function within which hemisphere the data were
+#' collected so that it may correctly output the \code{season} column (see below).
+#' The default is "South".
+#'
+#' @return The function will return a tibble with results similar to those seen in
+#' Table 2 of Hobday et al. (in review). This provides the information necessary to
+#' appraise the extent of the events in the output of \code{\link{detect}} based on the
+#' category ranking scale. The category thresholds are calculated based on the difference
+#' between the seasonal climatology and threshold climatology produced by \code{\link{detect}}.
+#' The four category levels are then the difference multiplied by the category level.
+#'
+#' The categories are:
+#'   \item{Moderate}{Events that have been detected, but with a maximum intensity that does not
+#'   double the distance between the seasonal climatology and the threshold value.}
+#'   \item{Strong}{Events with a maximum intensity that doubles the distance from the seasonal
+#'   climatology and the threshold, but do not triple it.}
+#'   \item{Severe}{Events that triple the aforementioned distance, but do not quadruple it.}
+#'   \item{Extreme}{Events with a maximum intensity that is four times or greater the
+#'   aforementioned distance. Scary stuff...}
+#'
+#' The definitions for the output columns are as follows:
+#'   \item{event_no}{The number of the event as determined by \code{\link{detect}}
+#'   for reference between the outputs.}
+#'   \item{event_name}{The name of the event. Generated from the \code{\link{name}}
+#'   value provided and the year of the \code{peak_date} (see following) of
+#'   the event. If no \code{\link{name}} value is provided the default ``Event'' is used.
+#'   As proposed in Hobday et al. (in review), \code{Moderate} events are not given a name
+#'   so as to prevent multiple repeat names within the same year. If two or more events
+#'   ranked greater than Moderate are reported withiin the same year, they will be
+#'   differentiated with the addition of a trailing letter
+#'   (e.g. Event 2001 a, Event 2001 b).}
+#'   \item{peak_date}{The date (day) on which the maximum intensity of the event
+#'   was recorded.}
+#'   \item{category}{The maximum category threshold reached/exceeded by the event.}
+#'   \item{i_max}{The maximum intensity of the event above the threshold value.}
+#'   \item{duration}{The total duration (days) of the event. Note that this includes
+#'   any possible days when the measurement value \code{\link{y}}) may have dropped below the
+#'   threshold value. Therefore, the proportion of the event duration (days) spent above
+#'   certain thresholds may not add up to 100\% (see following four items).}
+#'   \item{p_moderate}{The proportion of the total duration (days) spent above at or
+#'   the first threshold, but below any further thresholds.}
+#'   \item{p_strong}{The proportion of the total duration (days) spent at or above
+#'   the second threshold, but below any further thresholds.}
+#'   \item{p_severe}{The proportion of the total duration (days) spent at or above
+#'   the third threshold, but below the fourth threshold.}
+#'   \item{p_extreme}{The proportion of the total duration (days) spent at or above
+#'   the fourth and final threshold. There is currently no recorded event that has
+#'   exceeded a hypothetical fifth threshold so none is calculated... yet..}
+#'   \item{season}{The season(S) during which the event occurred. If the event
+#'   occurred across two seasons this will be displayed as ``Winter/Spring''.
+#'   Across three seasons as ``Winter-Summer''. Events lasting across four or more
+#'   seasons are listed as ``Year-round''. December (June) is used here as the start of
+#'   Austral (Boreal) summer.}
+#'
+#' @author Robert W. Schlegel
+#'
+#' @references Hobday et al. (in review). Categorizing and Naming
+#' Marine Heatwaves. Oceanography.
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' ts_dat <- heatwaveR::make_whole(sst_WA)
+#' res <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
+#'                          climatology_end = "2012-12-31")
+#' res_cat <- heatwaveR::category(res)
+#' head(res_cat)
+#' }
+category <-
+  function(data,
+           x = "t",
+           y = "temp",
+           name = "Event",
+           hemisphere = "South") {
+    # I don't like how the eval() method of swapping out columns makes it difficult to test the functions
+    # So I'm trying a different method here and if you're happy with it I'll change it in the other functions
+    colnames(data$clim)[colnames(data$clim) == as.character(x)] <- "t"
+    colnames(data$clim)[colnames(data$clim) == as.character(y)] <- "temp"
+    # event <- data$event
+    # clim <- data$clim
+
+    duration <- event_name <- event_no <- extreme <- moderate <-
+      p_extreme <- p_moderate <- p_severe <- p_strong <- seas_clim_year <-
+      season <- severe <- start_season <- stop_season <- strong <- temp <-
+      thresh_2x <- thresh_3x <- thresh_4x <- thresh_clim_year <- NULL
+
+    cat_frame <- data.frame(event_no = data$event$event_no,
+                            event_name = paste0(as.character(name), " ", lubridate::year(data$event$date_peak)),
+                            peak_date = data$event$date_peak,
+                            category = NA,
+                            i_max = round(data$event$int_max, 2),
+                            duration = data$event$duration)#,
+                            # p_moderate = NA,
+                            # p_strong = NA,
+                            # p_severe = NA,
+                            # p_extreme = NA)
+
+    seasons <- data.frame(event_no = data$event$event_no,
+                          date_start = data$event$date_start,
+                          date_stop = data$event$date_stop,
+                          duration = data$event$duration,
+                          season = NA)
+
+    ss <- as.POSIXlt(data$event$date_start)
+    ss$day <- 1
+    ss$mo <- ss$mo+1
+
+    se <- as.POSIXlt(data$event$date_stop)
+    se$day <- 1
+    se$mo <- se$mo+1
+
+    if(hemisphere == "South") {
+      seasons$start_season <- factor(quarters(ss), levels = c("Q1", "Q2", "Q3", "Q4"),
+                                     labels = c("Summer", "Fall", "Winter", "Spring"))
+      seasons$stop_season <- factor(quarters(se), levels = c("Q1", "Q2", "Q3", "Q4"),
+                                    labels = c("Summer", "Fall", "Winter", "Spring"))
+    } else if(hemisphere == "North") {
+      seasons$start_season <- factor(quarters(ss), levels = c("Q1", "Q2", "Q3", "Q4"),
+                                     labels = c("Winter", "Spring", "Summer", "Fall"))
+      seasons$stop_season <- factor(quarters(se), levels = c("Q1", "Q2", "Q3", "Q4"),
+                                    labels = c("Winter", "Spring", "Summer", "Fall"))
+      } else {
+      stop("Please ensure you have written either 'South' or 'North' for the hemisphere argument.")
+      }
+
+    seasons <- seasons %>%
+      dplyr::mutate(diff_season = as.integer(start_season) - as.integer(stop_season))
+
+    for(i in 1:nrow(seasons)){
+      if(seasons$diff_season[i] == 0 & seasons$duration[i] < 100){
+        seasons$season[i] <- paste0(seasons$start_season[i])
+      } else if(seasons$diff_season[i] %in% c(-1, 3) & seasons$duration[i] < 180){
+        seasons$season[i] <- paste0(seasons$start_season[i], "/", seasons$stop_season[i])
+      } else if(seasons$diff_season[i] %in% c(-1, 3) & seasons$duration[i] > 180){
+        seasons$season[i] <- paste0(seasons$start_season[i], "-", seasons$stop_season[i])
+      } else if(seasons$diff_season[i] %in% c(-2, 2)){
+        seasons$season[i] <- paste0(seasons$start_season[i], "-", seasons$stop_season[i])
+      } else if(seasons$duration[i] > 270){
+        seasons$season[i] <- "Year-round"
+      } else {
+        seasons$season[i] <- NA
+      }
+    }
+
+    clim_diff <- data$clim %>%
+      dplyr::filter(!is.na(event_no)) %>%
+      dplyr::mutate(diff = thresh_clim_year - seas_clim_year,
+                    thresh_2x = thresh_clim_year + diff,
+                    thresh_3x = thresh_2x + diff,
+                    thresh_4x = thresh_3x + diff)
+
+    moderate_n <- clim_diff %>%
+      dplyr::filter(temp >= thresh_clim_year) %>%
+      dplyr::group_by(event_no) %>%
+      dplyr::summarise(moderate = dplyr::n()) %>%
+      dplyr::ungroup()
+    strong_n <- clim_diff %>%
+      dplyr::filter(temp >= thresh_2x) %>%
+      dplyr::group_by(event_no) %>%
+      dplyr::summarise(strong = dplyr::n()) %>%
+      dplyr::ungroup()
+    severe_n <- clim_diff %>%
+      dplyr::filter(temp >= thresh_3x) %>%
+      dplyr::group_by(event_no) %>%
+      dplyr::summarise(severe = dplyr::n()) %>%
+      dplyr::ungroup()
+    extreme_n <- clim_diff %>%
+      dplyr::filter(temp >= thresh_4x) %>%
+      dplyr::group_by(event_no) %>%
+      dplyr::summarise(extreme = dplyr::n()) %>%
+      dplyr::ungroup()
+    cat_n <- dplyr::left_join(moderate_n, strong_n, by = "event_no") %>%
+      dplyr::left_join(severe_n, by = "event_no") %>%
+      dplyr::left_join(extreme_n, by = "event_no")
+    cat_n[is.na(cat_n)] <- 0
+
+    cat_join <- dplyr::left_join(cat_frame, cat_n, by = "event_no") %>%
+      # dplyr::mutate_at(.vars = vars(moderate:extreme), .funs = funs(ifelse(is.na(.), 0, .))) %>%
+      dplyr::mutate(p_moderate = round(((moderate - strong) / duration * 100), 0),
+             p_strong = round(((strong - severe) / duration * 100), 0),
+             p_severe = round(((severe - extreme) / duration * 100), 0),
+             p_extreme = round((extreme / duration * 100), 0),
+             category = ifelse(p_extreme > 0, "IV Extreme",
+                               ifelse(p_severe > 0, "III Severe",
+                                      ifelse(p_strong > 0, "II Strong", "I Moderate"))),
+             event_name = replace(event_name, which(category == "I Moderate"), NA)) %>%
+      dplyr::arrange(event_no) %>%
+      dplyr::left_join(seasons[, c(1,5)], by = "event_no") %>%
+      dplyr::select(event_no:duration, p_moderate:season) %>%
+      droplevels()
+
+    # RWS: Still need to polish this off
+    # Event column touch-ups
+    # remove cat 1 names
+    # search for duplicates
+    # add letter after for all duplicates
+    # for(i in 1:levels(unique(cat_res$event_name))){
+    #   if(length(levels(cat_res$event_name)[i]) > 1){
+    #     for(j in length())
+    #   }
+    #
+    # }
+
+    cat_res <- tibble::as.tibble(cat_join) %>%
+      dplyr::arrange(-p_moderate, -p_strong, -p_severe, -p_extreme)
+    return(cat_res)
+}

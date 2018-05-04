@@ -28,6 +28,7 @@ reference:
   desc: ~
   contents:
   - '`block_average`'
+  - '`category`'
   - '`detect`'
   - '`event_line`'
   - '`exceedance`'
