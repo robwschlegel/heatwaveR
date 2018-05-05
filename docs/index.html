@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.7.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.7.9001</span>
       </span>
     </div>
 
@@ -413,12 +413,14 @@ exc_<span class="dv">25</span><span class="op">$</span>exceedance <span class="o
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(exceedance_no, duration, date_start, date_peak, int_mean, int_cum) <span class="op">%&gt;%</span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(<span class="op">-</span>int_cum) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">head</span>(<span class="dv">5</span>)
-<span class="co">#&gt;   exceedance_no duration date_start  date_peak  int_mean   int_cum</span>
-<span class="co">#&gt; 1             7       52 2011-02-08 2011-02-28 1.6740379 87.049969</span>
-<span class="co">#&gt; 2             6       25 2008-04-03 2008-04-14 0.9799994 24.499985</span>
-<span class="co">#&gt; 3            10       41 2012-03-03 2012-04-10 0.4385360 17.979977</span>
-<span class="co">#&gt; 4             2       17 1999-05-13 1999-05-22 0.8558818 14.549990</span>
-<span class="co">#&gt; 5             5       10 2000-05-03 2000-05-04 0.6969994  6.969994</span></code></pre></div>
+<span class="co">#&gt; # A tibble: 5 x 6</span>
+<span class="co">#&gt;   exceedance_no duration date_start date_peak  int_mean int_cum</span>
+<span class="co">#&gt;           &lt;int&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;        &lt;dbl&gt;   &lt;dbl&gt;</span>
+<span class="co">#&gt; 1             7       52 2011-02-08 2011-02-28    1.67    87.0 </span>
+<span class="co">#&gt; 2             6       25 2008-04-03 2008-04-14    0.980   24.5 </span>
+<span class="co">#&gt; 3            10       41 2012-03-03 2012-04-10    0.439   18.0 </span>
+<span class="co">#&gt; 4             2       17 1999-05-13 1999-05-22    0.856   14.5 </span>
+<span class="co">#&gt; 5             5       10 2000-05-03 2000-05-04    0.697    6.97</span></code></pre></div>
 <p>Which, when plotted with <strong><code>ggplot2</code></strong> code would look like this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">exc_25_thresh &lt;-<span class="st"> </span>exc_<span class="dv">25</span><span class="op">$</span>threshold <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">9500</span><span class="op">:</span><span class="dv">9866</span>)
@@ -444,12 +446,14 @@ exc_<span class="dv">19</span><span class="op">$</span>exceedance <span class="o
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(exceedance_no, duration, date_start, date_peak, int_mean, int_cum) <span class="op">%&gt;%</span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(int_cum) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">head</span>(<span class="dv">5</span>)
-<span class="co">#&gt;   exceedance_no duration date_start  date_peak   int_mean   int_cum</span>
-<span class="co">#&gt; 1            17       46 2003-09-06 2003-09-16 -0.6008700 -27.64002</span>
-<span class="co">#&gt; 2            16       31 2002-09-08 2002-09-25 -0.8480649 -26.29001</span>
-<span class="co">#&gt; 3            13       24 1997-09-03 1997-09-15 -0.7691671 -18.46001</span>
-<span class="co">#&gt; 4            20       25 2005-09-26 2005-10-12 -0.5420004 -13.55001</span>
-<span class="co">#&gt; 5            12       18 1997-08-13 1997-08-22 -0.6944449 -12.50001</span></code></pre></div>
+<span class="co">#&gt; # A tibble: 5 x 6</span>
+<span class="co">#&gt;   exceedance_no duration date_start date_peak  int_mean int_cum</span>
+<span class="co">#&gt;           &lt;int&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;        &lt;dbl&gt;   &lt;dbl&gt;</span>
+<span class="co">#&gt; 1            17       46 2003-09-06 2003-09-16   -0.601   -27.6</span>
+<span class="co">#&gt; 2            16       31 2002-09-08 2002-09-25   -0.848   -26.3</span>
+<span class="co">#&gt; 3            13       24 1997-09-03 1997-09-15   -0.769   -18.5</span>
+<span class="co">#&gt; 4            20       25 2005-09-26 2005-10-12   -0.542   -13.6</span>
+<span class="co">#&gt; 5            12       18 1997-08-13 1997-08-22   -0.694   -12.5</span></code></pre></div>
 <p>And were one to desire a visualisation of these data it could be produced with the following code:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">exc_19_thresh &lt;-<span class="st"> </span>exc_<span class="dv">19</span><span class="op">$</span>threshold <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">1500</span><span class="op">:</span><span class="dv">1866</span>)
@@ -482,17 +486,31 @@ exc_<span class="dv">19</span><span class="op">$</span>exceedance <span class="o
 <div id="categories" class="section level2">
 <h2 class="hasAnchor">
 <a href="#categories" class="anchor"></a>Categories</h2>
-<p>The classification of MHWs under the naming scheme first proposed by Hobday et al. (in review) may also be calculated and visualised with the <strong><code>heatwaveR</code></strong> package using the <code><a href="reference/category.html">category()</a></code> function on the output of the <code><a href="reference/detect.html">detect()</a></code> function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tail</span>(<span class="kw"><a href="reference/category.html">category</a></span>(mhw))
+<p>The classification of MHWs under the naming scheme first proposed by Hobday et al. (in review) may also be calculated and visualised with the <strong><code>heatwaveR</code></strong> package using the <code><a href="reference/category.html">category()</a></code> function on the output of the <code><a href="reference/detect.html">detect()</a></code> function. Note that one may control the output for the names of the events by providing ones own character string for the <code>name</code> argument. Because we have calculated MHWs on the Western Australia data, we provide the name “WA” below.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tail</span>(<span class="kw"><a href="reference/category.html">category</a></span>(mhw, <span class="dt">S =</span> <span class="ot">TRUE</span>, <span class="dt">name =</span> <span class="st">"WA"</span>))
 <span class="co">#&gt; # A tibble: 6 x 11</span>
 <span class="co">#&gt;   event_no event_name peak_date  category   i_max duration p_moderate</span>
 <span class="co">#&gt;      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;</span>
-<span class="co">#&gt; 1       38 Event 2010 2010-09-29 II Strong   2.58       18         78</span>
-<span class="co">#&gt; 2       40 Event 2010 2010-12-02 II Strong   2.66       15         73</span>
-<span class="co">#&gt; 3       31 Event 2008 2008-04-14 III Severe  3.77       34         62</span>
-<span class="co">#&gt; 4       22 Event 1999 1999-05-22 II Strong   3.6        95         59</span>
-<span class="co">#&gt; 5       58 Event 2014 2014-08-31 II Strong   2.2        12         58</span>
-<span class="co">#&gt; 6       42 Event 2011 2011-02-28 IV Extreme  6.51       60         47</span>
+<span class="co">#&gt; 1       38 WA 2010    2010-09-29 II Strong   2.58       18         78</span>
+<span class="co">#&gt; 2       40 WA 2010    2010-12-02 II Strong   2.66       15         73</span>
+<span class="co">#&gt; 3       31 WA 2008    2008-04-14 III Severe  3.77       34         62</span>
+<span class="co">#&gt; 4       22 WA 1999    1999-05-22 II Strong   3.6        95         59</span>
+<span class="co">#&gt; 5       58 WA 2014    2014-08-31 II Strong   2.2        12         58</span>
+<span class="co">#&gt; 6       42 WA 2011    2011-02-28 IV Extreme  6.51       60         47</span>
+<span class="co">#&gt; # ... with 4 more variables: p_strong &lt;dbl&gt;, p_severe &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   p_extreme &lt;dbl&gt;, season &lt;chr&gt;</span></code></pre></div>
+<p>Note that this functions expects the data to have been collected in the southern hemisphere, hence the argument <code>S = TRUE</code>. If they were not, one must set <code>S = FALSE</code> as seen in the example below. This ensures that the correct seasons are attributed to the event.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">res_Med &lt;-<span class="st"> </span><span class="kw"><a href="reference/detect.html">detect</a></span>(<span class="kw"><a href="reference/make_whole.html">make_whole</a></span>(sst_Med), <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>, <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>)
+<span class="kw">tail</span>(<span class="kw"><a href="reference/category.html">category</a></span>(res_Med, <span class="dt">S =</span> <span class="ot">FALSE</span>, <span class="dt">name =</span> <span class="st">"Med"</span>))
+<span class="co">#&gt; # A tibble: 6 x 11</span>
+<span class="co">#&gt;   event_no event_name peak_date  category   i_max duration p_moderate</span>
+<span class="co">#&gt;      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;</span>
+<span class="co">#&gt; 1       55 Med 2011   2011-05-25 II Strong   4.05        8         62</span>
+<span class="co">#&gt; 2       23 Med 1999   1999-04-06 II Strong   1.88        5         60</span>
+<span class="co">#&gt; 3       28 Med 2003   2003-06-20 II Strong   5.02       30         57</span>
+<span class="co">#&gt; 4       62 Med 2012   2012-08-20 II Strong   4.22       18         56</span>
+<span class="co">#&gt; 5       44 Med 2007   2007-04-25 III Severe  4.02       19         42</span>
+<span class="co">#&gt; 6       70 Med 2014   2014-10-18 II Strong   3.31      110         35</span>
 <span class="co">#&gt; # ... with 4 more variables: p_strong &lt;dbl&gt;, p_severe &lt;dbl&gt;,</span>
 <span class="co">#&gt; #   p_extreme &lt;dbl&gt;, season &lt;chr&gt;</span></code></pre></div>
 <p>A quick and easy visualisation of the categories of a MHW may be accomplished with <code><a href="reference/event_line.html">event_line()</a></code> by setting the <code>category</code> argument to <code>TRUE</code>.</p>

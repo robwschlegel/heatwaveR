@@ -152,7 +152,7 @@ accordance with the naming scheme proposed in Hobday et al. (in review).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>category</span>(<span class='no'>data</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"temp"</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Event"</span>, <span class='kw'>hemisphere</span> <span class='kw'>=</span> <span class='st'>"South"</span>)</pre>
+    <pre class="usage"><span class='fu'>category</span>(<span class='no'>data</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='kw'>S</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Event"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -167,15 +167,16 @@ accordance with the naming scheme proposed in Hobday et al. (in review).</p>
 name differs from the default (i.e. <code>temp</code>), specify the name here.</p></td>
     </tr>
     <tr>
-      <th>name</th>
-      <td><p>If a value is provide here it will be used to name the events in
-the <code>event_name</code> column (see below) of the output. Default is "Event".</p></td>
+      <th>S</th>
+      <td><p>This argument informs the function if the data were collected in the
+southern hemisphere (TRUE, default) or the northern hemisphere (FALSE) so that it may correctly
+output the <code>season</code> column (see below).</p></td>
     </tr>
     <tr>
-      <th>hemisphere</th>
-      <td><p>This argument informs the function within which hemisphere
-("North" or "South") the data were collected so that it may correctly output the
-<code>season</code> column (see below). The default is "South".</p></td>
+      <th>name</th>
+      <td><p>If a character string (e.g. "Bohai Sea") is provide here it will be used
+to name the events in the <code>event_name</code> column (see below) of the output.
+If no value is provided the default output is "Event".</p></td>
     </tr>
     </table>
     
@@ -197,7 +198,7 @@ The four category levels are then the difference multiplied by the category leve
   so as to prevent multiple repeat names within the same year. If two or more events
   ranked greater than Moderate are reported withiin the same year, they will be
   differentiated with the addition of a trailing letter
-  (e.g. Event 2001 a, Event 2001 b).</p></dd>
+  (e.g. Event 2001 a, Event 2001 b). (still in development)</p></dd>
   <dt>peak_date</dt><dd><p>The date (day) on which the maximum intensity of the event
   was recorded.</p></dd>
   <dt>category</dt><dd><p>The maximum category threshold reached/exceeded by the event.</p></dd>
@@ -224,14 +225,15 @@ The four category levels are then the difference multiplied by the category leve
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>An explanation for the categories is as follows:
-  ModerateEvents that have been detected, but with a maximum intensity that does not
-  double the distance between the seasonal climatology and the threshold value.
-  StrongEvents with a maximum intensity that doubles the distance from the seasonal
-  climatology and the threshold, but do not triple it.
-  SevereEvents that triple the aforementioned distance, but do not quadruple it.
-  ExtremeEvents with a maximum intensity that is four times or greater the
-  aforementioned distance. Scary stuff...</p>
+    <p>An explanation for the categories is as follows:</p><ol>
+<li><p>ModerateEvents that have been detected, but with a maximum intensity that does not
+  double the distance between the seasonal climatology and the threshold value.</p></li>
+<li><p>StrongEvents with a maximum intensity that doubles the distance from the seasonal
+  climatology and the threshold, but do not triple it.</p></li>
+<li><p>SevereEvents that triple the aforementioned distance, but do not quadruple it.</p></li>
+<li><p>ExtremeEvents with a maximum intensity that is four times or greater the
+  aforementioned distance. Scary stuff...</p></li>
+</ol>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -240,19 +242,36 @@ Marine Heatwaves. Oceanography.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>ts_dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_whole.html'>make_whole</a></span>(<span class='no'>sst_WA</span>)
-<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='detect.html'>detect</a></span>(<span class='no'>ts_dat</span>, <span class='kw'>climatology_start</span> <span class='kw'>=</span> <span class='st'>"1983-01-01"</span>,
-                         <span class='kw'>climatology_end</span> <span class='kw'>=</span> <span class='st'>"2012-12-31"</span>)
-<span class='no'>res_cat</span> <span class='kw'>&lt;-</span> <span class='fu'>category</span>(<span class='no'>res</span>)
-<span class='fu'>head</span>(<span class='no'>res_cat</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 11
+    <pre class="examples"><div class='input'><span class='no'>res_WA</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='detect.html'>detect</a></span>(<span class='fu'><a href='make_whole.html'>make_whole</a></span>(<span class='no'>sst_WA</span>),
+                 <span class='kw'>climatology_start</span> <span class='kw'>=</span> <span class='st'>"1983-01-01"</span>,
+                 <span class='kw'>climatology_end</span> <span class='kw'>=</span> <span class='st'>"2012-12-31"</span>)
+<span class='co'># Note that the name argument expects a character vector</span>
+<span class='no'>cat_WA</span> <span class='kw'>&lt;-</span> <span class='fu'>category</span>(<span class='no'>res_WA</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"WA"</span>)
+<span class='fu'>tail</span>(<span class='no'>cat_WA</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 11
 #&gt;   event_no event_name peak_date  category   i_max duration p_moderate p_strong
 #&gt;      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
-#&gt; 1        1 Event 1984 1984-06-05 IV Extreme  1.92        5          0        0
-#&gt; 2        2 Event 1984 1984-06-19 IV Extreme  2.11        6          0        0
-#&gt; 3        3 Event 1984 1984-07-10 IV Extreme  2.22       19          0        0
-#&gt; 4        4 Event 1984 1984-10-23 IV Extreme  1.83        7          0        0
-#&gt; 5        5 Event 1984 1984-10-30 IV Extreme  1.49        5          0        0
-#&gt; 6        6 Event 1984 1984-11-14 IV Extreme  1.43        5          0        0
+#&gt; 1       38 WA 2010    2010-09-29 II Strong   2.58       18         78       22
+#&gt; 2       40 WA 2010    2010-12-02 II Strong   2.66       15         73       27
+#&gt; 3       31 WA 2008    2008-04-14 III Severe  3.77       34         62       29
+#&gt; 4       22 WA 1999    1999-05-22 II Strong   3.6        95         59       41
+#&gt; 5       58 WA 2014    2014-08-31 II Strong   2.2        12         58       42
+#&gt; 6       42 WA 2011    2011-02-28 IV Extreme  6.51       60         47       32
+#&gt; # ... with 3 more variables: p_severe &lt;dbl&gt;, p_extreme &lt;dbl&gt;, season &lt;chr&gt;</div><div class='input'>
+<span class='co'># If the data were collected in the northern hemisphere</span>
+<span class='co'># we must let the funciton know this as seen below</span>
+<span class='no'>res_Med</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='detect.html'>detect</a></span>(<span class='fu'><a href='make_whole.html'>make_whole</a></span>(<span class='no'>sst_Med</span>),
+                 <span class='kw'>climatology_start</span> <span class='kw'>=</span> <span class='st'>"1983-01-01"</span>,
+                 <span class='kw'>climatology_end</span> <span class='kw'>=</span> <span class='st'>"2012-12-31"</span>)
+<span class='no'>cat_Med</span> <span class='kw'>&lt;-</span> <span class='fu'>category</span>(<span class='no'>res_Med</span>, <span class='kw'>S</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Med"</span>)
+<span class='fu'>tail</span>(<span class='no'>cat_Med</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 11
+#&gt;   event_no event_name peak_date  category   i_max duration p_moderate p_strong
+#&gt;      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
+#&gt; 1       55 Med 2011   2011-05-25 II Strong   4.05        8         62       38
+#&gt; 2       23 Med 1999   1999-04-06 II Strong   1.88        5         60       40
+#&gt; 3       28 Med 2003   2003-06-20 II Strong   5.02       30         57       43
+#&gt; 4       62 Med 2012   2012-08-20 II Strong   4.22       18         56       44
+#&gt; 5       44 Med 2007   2007-04-25 III Severe  4.02       19         42       53
+#&gt; 6       70 Med 2014   2014-10-18 II Strong   3.31      110         35       65
 #&gt; # ... with 3 more variables: p_severe &lt;dbl&gt;, p_extreme &lt;dbl&gt;, season &lt;chr&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

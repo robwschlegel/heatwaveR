@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.7.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.7.9001</span>
       </span>
     </div>
 
@@ -104,7 +104,7 @@
       <h1>Climatologies and baselines</h1>
                         <h4 class="author">AJ Smit</h4>
             
-            <h4 class="date">2018-05-04</h4>
+            <h4 class="date">2018-05-05</h4>
       
       
       <div class="hidden name"><code>Climatologies_and_baselines.Rmd</code></div>
@@ -117,16 +117,22 @@
 <h1 class="hasAnchor">
 <a href="#background" class="anchor"></a>Background</h1>
 <p>A time series of temperatures taken at a specific locality is a sample of the thermal environment. Because it is a sample, which is used to approximate the true state of the environment, the representivity of the data is subject to certain limitations that have an influence on their accuracy and precision—in other words, on how well the data represent reality. Here we will not concern ourselves with matters of precision and accuracy; rather, we shall deal with ways to produce climatologies from a time series of daily thermal measurements.</p>
+<p>A climatological mean is a multiyear average over a base period of typically 30 years duration. Sometimes the climatology is also called a ‘climate normal.’ It predicts the temperatures over an annual cycle that will most likely be experienced at a particlar place and time.</p>
+<p>Another concept that we use here instead of a climatology is a baseline… <definition to follow>.</definition></p>
 <div id="the-default-climatology-and-threshold" class="section level2">
 <h2 class="hasAnchor">
 <a href="#the-default-climatology-and-threshold" class="anchor"></a>The default climatology and threshold</h2>
-<p>Central to the functioning of the <strong>heatwaveR</strong> detect algogorithm is a climatology, which is the reference against which the extremes are calculated. Sometimes it is also called a ‘climate normal.’ The climatology forms the basis against which observations in a time series can be compared. It also predicts the temperatures that will most likely be experienced at a particlar place and time. It has become standard practice to base a climatology on 30 years’ worth of data, and in the <strong>heatwaveR</strong> package we recommend the same. In a daily climatology, there will be one mean temperature for each day of the year (365 or 366 days, depending on how leap years are dealt with). How the daily mean is calculated can vary somewhat from application to application, but the <code><a href="../reference/detect.html">detect()</a></code> function applies a sliding window centered on a Julian day for the pooling of values that will form the basis for the calculation of climatology and threshold percentile. We use a default of 5 days, which gives a window width of 11 days centered on the 6th day of the series of 11 days. For example, the mean temperature for Julian day 6 will be comprised of all temperatures measured on Julian days 1 to 11, across 30 years, i.e. 330 temperature measurements form this climatological daily mean. A sliding window centered on Julian day 7 will comprise all temperatures measured on Julian days 2 to 12 over the 30 years; etc. Currently we do not provide the option to calculate a weighted mean; rather, each day receives the same weighting as any other day, irrespective of how far the day is from the one on which the sliding window is centered. Climatologies produced with sliding windows of width 11, 31, and 61 days are presented in Figure 1. We can see that the curves are a bit bumpy, particularly at the narrower window widths.</p>
+<p>Central to the functioning of the <strong>heatwaveR</strong> detect algogorithm is the climatology, which is the reference against which the extremes are calculated. For historical reasons—which also turn out to make good practical sense—it has become standard practice to base a climatology on 30 years’ worth of data, updated at the start of each new decade (the most recent being 1981-2010). For the <strong>heatwaveR</strong> package we recommend the same. Because heat wave detection is based on daily data, a daily climatology is required. That is, the mean value for each of the days in a 365 (non-leap) or 366 (leap) day long year. In the case of gridded data, we also require that the climatology is at the same spatial resolution as the SST time series within which the extreme events are sought. In the case of the dOISST v2. data, it is independently calculated at each of the 1/4° grid cells, and for station data it must be representative of that station and preferably also obtained with the same instrument that yielded the seawater temperature time series entering the event detection algorithm (in fact, the algorithm will by default use the daily time series to derive the climatology).</p>
+<p>In a daily climatology, there will be one mean temperature for each day of the year (365 or 366 days, depending on how leap years are dealt with). How the daily mean is calculated can vary somewhat from application to application. The <code><a href="../reference/detect.html">detect()</a></code> function applies a window centered on a sliding Julian day for the pooling of values that will form the basis for calculation of the climatology and threshold percentile. We use a default of 5 days, which gives a window width of 11 days centered on the 6th day of the series of 11 days. For example, the mean temperature for Julian day 6 will be comprised of all temperatures measured from Julian days 1 to 11, across 30 years, i.e. 330 temperature measurements are summarised in this climatological daily mean. A sliding window centered on Julian day 7 will comprise all temperatures measured on Julian days 2 to 12 over the 30 years; etc. Currently we do not provide the option to calculate a weighted mean; rather, each day receives the same weighting as any other day, irrespective of how far the day is from the one on which the sliding window is centered. Climatologies produced with sliding windows of width 1, 11, 31, and 61 days are presented in Figure 1. In the figure we see that the wider the sliding window becomes the less day-to-day noise is retained in the climatology.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse) <span class="co"># misc. data processing conveniences</span>
 <span class="kw">library</span>(lubridate) <span class="co"># for working with dates</span>
 <span class="kw">library</span>(heatwaveR)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Using a built-in data set</span>
 ts_dat &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/make_whole">make_whole</a></span>(sst_WA)
 <span class="co"># smooth_percentile = FALSE</span>
+res.<span class="fl">1.</span>F &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/detect">detect</a></span>(ts_dat, <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,
+              <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>,
+              <span class="dt">window_half_width =</span> <span class="dv">0</span>, <span class="dt">smooth_percentile =</span> F)
 res.<span class="fl">11.</span>F &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/detect">detect</a></span>(ts_dat, <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,
               <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>, <span class="dt">smooth_percentile =</span> F)
 res.<span class="fl">31.</span>F &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/detect">detect</a></span>(ts_dat, <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,
@@ -145,6 +151,10 @@ res.<span class="fl">31.</span>T &lt;-<span class="st"> </span>heatwaveR<span cl
 res.<span class="fl">61.</span>T &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/detect">detect</a></span>(ts_dat, <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,
               <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>,
               <span class="dt">window_half_width =</span> <span class="dv">30</span>)</code></pre></div>
+<div id="fourier-analysis-of-time-series-to-construct-a-smooth-climatology" class="section level3">
+<h3 class="hasAnchor">
+<a href="#fourier-analysis-of-time-series-to-construct-a-smooth-climatology" class="anchor"></a>Fourier analysis of time series to construct a smooth climatology</h3>
+</div>
 </div>
 <div id="using-a-custom-climatology" class="section level2">
 <h2 class="hasAnchor">

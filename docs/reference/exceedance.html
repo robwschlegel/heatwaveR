@@ -75,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.7.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.7.9001</span>
       </span>
     </div>
 
@@ -150,7 +150,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>exceedance</span>(<span class='no'>data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>below</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+    <pre class="usage"><span class='fu'>exceedance</span>(<span class='no'>data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='no'>threshold</span>, <span class='kw'>below</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>min_duration</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>join_across_gaps</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>max_gap</span> <span class='kw'>=</span> <span class='fl'>2</span>,
   <span class='kw'>max_pad_length</span> <span class='kw'>=</span> <span class='fl'>3</span>)</pre>
     
@@ -184,8 +184,7 @@ name differs from the default (i.e. <code>temp</code>), specify the name here.</
     <tr>
       <th>threshold</th>
       <td><p>The static threshold used to determine how many consecutive
-days are in exceedance of the temperature of interest. Default is
-<code>20</code> degrees.</p></td>
+days are in exceedance of the temperature of interest.</p></td>
     </tr>
     <tr>
       <th>below</th>
@@ -317,24 +316,17 @@ Feb 2015, and is documented by Hobday et al. (2016).</p>
 #&gt;  9 1982-01-09  21.4     25 FALSE            FALSE              FALSE     
 #&gt; 10 1982-01-10  21.4     25 FALSE            FALSE              FALSE     
 #&gt; # ... with 1 more variable: exceedance_no &lt;int&gt;</div><div class='input'><span class='co'># show first five exceedances:</span>
-<span class='no'>res</span>$<span class='no'>exceedance</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, ]</div><div class='output co'>#&gt;   index_start index_stop exceedance_no duration date_start  date_stop
+<span class='no'>res</span>$<span class='no'>exceedance</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, ]</div><div class='output co'>#&gt; # A tibble: 5 x 17
+#&gt;   index_start index_stop exceedance_no duration date_start date_stop 
+#&gt;         &lt;int&gt;      &lt;int&gt;         &lt;int&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;    
 #&gt; 1        2682       2686             1        5 1989-05-05 1989-05-09
 #&gt; 2        6342       6358             2       17 1999-05-13 1999-05-29
 #&gt; 3        6362       6368             3        7 1999-06-02 1999-06-08
 #&gt; 4        6686       6691             4        6 2000-04-21 2000-04-26
 #&gt; 5        6698       6707             5       10 2000-05-03 2000-05-12
-#&gt;    date_peak  int_mean   int_max    int_var    int_cum int_mean_abs int_max_abs
-#&gt; 1 1989-05-06 0.2859994 0.3599994 0.04615192  1.4299972     25.28600       25.36
-#&gt; 2 1999-05-22 0.8558818 1.3999994 0.38589277 14.5499902     25.85588       26.40
-#&gt; 3 1999-06-03 0.2071423 0.2699994 0.05122313  1.4499961     25.20714       25.27
-#&gt; 4 2000-04-23 0.1549994 0.4099994 0.18030529  0.9299966     25.15500       25.41
-#&gt; 5 2000-05-04 0.6969994 1.0099994 0.27471399  6.9699943     25.69700       26.01
-#&gt;   int_var_abs int_cum_abs rate_onset rate_decline
-#&gt; 1  0.04615192      126.43  0.1900000   0.11714285
-#&gt; 2  0.38589277      439.55  0.1826316   0.17866666
-#&gt; 3  0.05122313      176.45  0.1400000   0.05545454
-#&gt; 4  0.18030529      150.93  0.2540000   0.12142857
-#&gt; 5  0.27471399      256.97  0.5600000   0.13705882</div></pre>
+#&gt; # ... with 11 more variables: date_peak &lt;date&gt;, int_mean &lt;dbl&gt;, int_max &lt;dbl&gt;,
+#&gt; #   int_var &lt;dbl&gt;, int_cum &lt;dbl&gt;, int_mean_abs &lt;dbl&gt;, int_max_abs &lt;dbl&gt;,
+#&gt; #   int_var_abs &lt;dbl&gt;, int_cum_abs &lt;dbl&gt;, rate_onset &lt;dbl&gt;, rate_decline &lt;dbl&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
