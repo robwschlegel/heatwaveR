@@ -393,19 +393,37 @@ Please read the package [vignette](https://robwschlegel.github.io/heatwaveR/arti
 Categories
 ----------
 
-The classification of MHWs under the naming scheme first proposed by Hobday et al. (in review) may also be calculated and visualised with the **`heatwaveR`** package using the `category()` function on the output of the `detect()` function.
+The classification of MHWs under the naming scheme first proposed by Hobday et al. (in review) may also be calculated and visualised with the **`heatwaveR`** package using the `category()` function on the output of the `detect()` function. Note that one may control the output for the names of the events by providing ones own character string for the `name` argument. Because we have calculated MHWs on the Western Australia data, we provide the name “WA” below.
 
 ``` r
-tail(category(mhw))
+tail(category(mhw, S = TRUE, name = "WA"))
 #> # A tibble: 6 x 11
 #>   event_no event_name peak_date  category   i_max duration p_moderate
 #>      <int> <fct>      <date>     <chr>      <dbl>    <dbl>      <dbl>
-#> 1       38 Event 2010 2010-09-29 II Strong   2.58       18         78
-#> 2       40 Event 2010 2010-12-02 II Strong   2.66       15         73
-#> 3       31 Event 2008 2008-04-14 III Severe  3.77       34         62
-#> 4       22 Event 1999 1999-05-22 II Strong   3.6        95         59
-#> 5       58 Event 2014 2014-08-31 II Strong   2.2        12         58
-#> 6       42 Event 2011 2011-02-28 IV Extreme  6.51       60         47
+#> 1       38 WA 2010    2010-09-29 II Strong   2.58       18         78
+#> 2       40 WA 2010    2010-12-02 II Strong   2.66       15         73
+#> 3       31 WA 2008    2008-04-14 III Severe  3.77       34         62
+#> 4       22 WA 1999    1999-05-22 II Strong   3.6        95         59
+#> 5       58 WA 2014    2014-08-31 II Strong   2.2        12         58
+#> 6       42 WA 2011    2011-02-28 IV Extreme  6.51       60         47
+#> # ... with 4 more variables: p_strong <dbl>, p_severe <dbl>,
+#> #   p_extreme <dbl>, season <chr>
+```
+
+Note that this functions expects the data to have been collected in the southern hemisphere, hence the argument `S = TRUE`. If they were not, one must set `S = FALSE` as seen in the example below. This ensures that the correct seasons are attributed to the event.
+
+``` r
+res_med <- detect(make_whole(sst_Med), climatology_start = "1983-01-01", climatology_end = "2012-12-31")
+tail(category(res_med, S = FALSE, name = "Med"))
+#> # A tibble: 6 x 11
+#>   event_no event_name peak_date  category   i_max duration p_moderate
+#>      <int> <fct>      <date>     <chr>      <dbl>    <dbl>      <dbl>
+#> 1       55 Med 2011   2011-05-25 II Strong   4.05        8         62
+#> 2       23 Med 1999   1999-04-06 II Strong   1.88        5         60
+#> 3       28 Med 2003   2003-06-20 II Strong   5.02       30         57
+#> 4       62 Med 2012   2012-08-20 II Strong   4.22       18         56
+#> 5       44 Med 2007   2007-04-25 III Severe  4.02       19         42
+#> 6       70 Med 2014   2014-10-18 II Strong   3.31      110         35
 #> # ... with 4 more variables: p_strong <dbl>, p_severe <dbl>,
 #> #   p_extreme <dbl>, season <chr>
 ```

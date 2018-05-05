@@ -8,11 +8,12 @@
 #' @param data The function receives the full (list) output from the \code{\link{detect}} function.
 #' @param y This is a column containing the measurement variable. If the column
 #' name differs from the default (i.e. \code{temp}), specify the name here.
-#' @param name If a value is provide here it will be used to name the events in
-#' the \code{event_name} column (see below) of the output. Default is "Event".
-#' @param hemisphere This argument informs the function within which hemisphere
-#' ("North" or "South") the data were collected so that it may correctly output the
-#' \code{season} column (see below). The default is "South".
+#' @param S This argument informs the function if the data were collected in the
+#' southern hemisphere (TRUE, default) or the northern hemisphere (FALSE) so that it may correctly
+#' output the \code{season} column (see below).
+#' @param name If a character string (e.g. "Bohai Sea") is provide here it will be used
+#' to name the events in the \code{event_name} column (see below) of the output.
+#' If no value is provided the default output is "Event".
 #'
 #' @details An explanation for the categories is as follows:
 #' \enumerate{
@@ -42,7 +43,7 @@
 #'   so as to prevent multiple repeat names within the same year. If two or more events
 #'   ranked greater than Moderate are reported withiin the same year, they will be
 #'   differentiated with the addition of a trailing letter
-#'   (e.g. Event 2001 a, Event 2001 b).}
+#'   (e.g. Event 2001 a, Event 2001 b). (still in development)}
 #'   \item{peak_date}{The date (day) on which the maximum intensity of the event
 #'   was recorded.}
 #'   \item{category}{The maximum category threshold reached/exceeded by the event.}
@@ -74,16 +75,25 @@
 #' @export
 #'
 #' @examples
-#' ts_dat <- make_whole(sst_WA)
-#' res <- detect(ts_dat, climatology_start = "1983-01-01",
-#'                          climatology_end = "2012-12-31")
-#' res_cat <- category(res)
-#' head(res_cat)
+#' res_WA <- detect(make_whole(sst_WA),
+#'                  climatology_start = "1983-01-01",
+#'                  climatology_end = "2012-12-31")
+#' # Note that the name argument expects a character vector
+#' cat_WA <- category(res_WA, name = "WA")
+#' tail(cat_WA)
+#'
+#' # If the data were collected in the northern hemisphere
+#' # we must let the funciton know this as seen below
+#' res_Med <- detect(make_whole(sst_Med),
+#'                  climatology_start = "1983-01-01",
+#'                  climatology_end = "2012-12-31")
+#' cat_Med <- category(res_Med, S = FALSE, name = "Med")
+#' tail(cat_Med)
 category <-
   function(data,
            y = temp,
-           name = "Event",
-           hemisphere = "South") {
+           S = TRUE,
+           name = "Event") {
 
     temp <- NULL
 
@@ -116,18 +126,16 @@ category <-
 
     start_season <- stop_season <- NULL
 
-    if (hemisphere == "South") {
+    if (S) {
       seasons$start_season <- factor(quarters(ss, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
                                      labels = c("Summer", "Fall", "Winter", "Spring"))
       seasons$stop_season <- factor(quarters(se, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
                                     labels = c("Summer", "Fall", "Winter", "Spring"))
-    } else if (hemisphere == "North") {
+    } else {
       seasons$start_season <- factor(quarters(ss, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
                                      labels = c("Winter", "Spring", "Summer", "Fall"))
       seasons$stop_season <- factor(quarters(se, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
                                     labels = c("Winter", "Spring", "Summer", "Fall"))
-      } else {
-      stop("Please ensure you have written either 'South' or 'North' for the hemisphere argument.")
       }
 
     seasons <- seasons %>%

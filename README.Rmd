@@ -313,10 +313,17 @@ Please read the package [vignette](https://robwschlegel.github.io/heatwaveR/arti
 
 ## Categories
 
-The classification of MHWs under the naming scheme first proposed by Hobday et al. (in review) may also be calculated and visualised with the __`heatwaveR`__ package using the `category()` function on the output of the `detect()` function.
+The classification of MHWs under the naming scheme first proposed by Hobday et al. (in review) may also be calculated and visualised with the __`heatwaveR`__ package using the `category()` function on the output of the `detect()` function. Note that one may control the output for the names of the events by providing ones own character string for the `name` argument. Because we have calculated MHWs on the Western Australia data, we provide the name "WA" below.
 
 ```{r category-example1, echo = TRUE}
-tail(category(mhw))
+tail(category(mhw, S = TRUE, name = "WA"))
+```
+
+Note that this functions expects the data to have been collected in the southern hemisphere, hence the argument `S = TRUE`. If they were not, one must set `S = FALSE` as seen in the example below. This ensures that the correct seasons are attributed to the event.
+
+```{r category-example2, echo = TRUE}
+res_Med <- detect(make_whole(sst_Med), climatology_start = "1983-01-01", climatology_end = "2012-12-31")
+tail(category(res_Med, S = FALSE, name = "Med"))
 ```
 
 A quick and easy visualisation of the categories of a MHW may be accomplished with `event_line()` by setting the `category` argument to `TRUE`.

@@ -4,7 +4,7 @@
 \alias{category}
 \title{Calculate the categories of events.}
 \usage{
-category(data, y = temp, name = "Event", hemisphere = "South")
+category(data, y = temp, S = TRUE, name = "Event")
 }
 \arguments{
 \item{data}{The function receives the full (list) output from the \code{\link{detect}} function.}
@@ -12,12 +12,13 @@ category(data, y = temp, name = "Event", hemisphere = "South")
 \item{y}{This is a column containing the measurement variable. If the column
 name differs from the default (i.e. \code{temp}), specify the name here.}
 
-\item{name}{If a value is provide here it will be used to name the events in
-the \code{event_name} column (see below) of the output. Default is "Event".}
+\item{S}{This argument informs the function if the data were collected in the
+southern hemisphere (TRUE, default) or the northern hemisphere (FALSE) so that it may correctly
+output the \code{season} column (see below).}
 
-\item{hemisphere}{This argument informs the function within which hemisphere
-("North" or "South") the data were collected so that it may correctly output the
-\code{season} column (see below). The default is "South".}
+\item{name}{If a character string (e.g. "Bohai Sea") is provide here it will be used
+to name the events in the \code{event_name} column (see below) of the output.
+If no value is provided the default output is "Event".}
 }
 \value{
 The function will return a tibble with results similar to those seen in
@@ -37,7 +38,7 @@ The definitions for the output columns are as follows:
   so as to prevent multiple repeat names within the same year. If two or more events
   ranked greater than Moderate are reported withiin the same year, they will be
   differentiated with the addition of a trailing letter
-  (e.g. Event 2001 a, Event 2001 b).}
+  (e.g. Event 2001 a, Event 2001 b). (still in development)}
   \item{peak_date}{The date (day) on which the maximum intensity of the event
   was recorded.}
   \item{category}{The maximum category threshold reached/exceeded by the event.}
@@ -78,11 +79,20 @@ An explanation for the categories is as follows:
   }
 }
 \examples{
-ts_dat <- make_whole(sst_WA)
-res <- detect(ts_dat, climatology_start = "1983-01-01",
-                         climatology_end = "2012-12-31")
-res_cat <- category(res)
-head(res_cat)
+res_WA <- detect(make_whole(sst_WA),
+                 climatology_start = "1983-01-01",
+                 climatology_end = "2012-12-31")
+# Note that the name argument expects a character vector
+cat_WA <- category(res_WA, name = "WA")
+tail(cat_WA)
+
+# If the data were collected in the northern hemisphere
+# we must let the funciton know this as seen below
+res_Med <- detect(make_whole(sst_Med),
+                 climatology_start = "1983-01-01",
+                 climatology_end = "2012-12-31")
+cat_Med <- category(res_Med, S = FALSE, name = "Med")
+tail(cat_Med)
 }
 \references{
 Hobday et al. (in review). Categorizing and Naming
