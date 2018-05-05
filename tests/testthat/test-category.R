@@ -33,4 +33,15 @@ test_that("y = any existing column", {
   expect_is(category(res, y = pawpaw), "tbl_df")
 })
 
-## Test that season splits work under all circumstances
+test_that("season splits work under all circumstances", {
+  ts <- make_whole(sst_Med)
+  ts$temp[1000:1500] <- 24
+  ts$temp[2000:2200] <- 22
+  ts$temp[4000:4200] <- 22
+  res <- detect(data = ts, climatology_start = "1983-01-01", climatology_end = "2012-12-31")
+  cat_res <- category(res, S = F)
+  expect_equal(cat_res$season[36], "Summer-Winter")
+  expect_equal(cat_res$season[37], "Year-round")
+  expect_equal(cat_res$season[38], "Fall-Spring")
+})
+
