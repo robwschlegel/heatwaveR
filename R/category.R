@@ -3,7 +3,7 @@
 #' Calculates the categories of a series of events as produced by \code{\link{detect}} in
 #' accordance with the naming scheme proposed in Hobday et al. (in review).
 #'
-#' @importFrom dplyr n
+#' @importFrom dplyr n %>%
 #'
 #' @param data The function receives the full (list) output from the \code{\link{detect}} function.
 #' @param y This is a column containing the measurement variable. If the column
@@ -14,14 +14,7 @@
 #' ("North" or "South") the data were collected so that it may correctly output the
 #' \code{season} column (see below). The default is "South".
 #'
-#' @return The function will return a tibble with results similar to those seen in
-#' Table 2 of Hobday et al. (in review). This provides the information necessary to
-#' appraise the extent of the events in the output of \code{\link{detect}} based on the
-#' category ranking scale. The category thresholds are calculated based on the difference
-#' between the seasonal climatology and threshold climatology produced by \code{\link{detect}}.
-#' The four category levels are then the difference multiplied by the category level.
-#'
-#' The categories are:
+#' @details An explanation for the categories is as follows:
 #'   \item{Moderate}{Events that have been detected, but with a maximum intensity that does not
 #'   double the distance between the seasonal climatology and the threshold value.}
 #'   \item{Strong}{Events with a maximum intensity that doubles the distance from the seasonal
@@ -30,12 +23,19 @@
 #'   \item{Extreme}{Events with a maximum intensity that is four times or greater the
 #'   aforementioned distance. Scary stuff...}
 #'
+#' @return The function will return a tibble with results similar to those seen in
+#' Table 2 of Hobday et al. (in review). This provides the information necessary to
+#' appraise the extent of the events in the output of \code{\link{detect}} based on the
+#' category ranking scale. The category thresholds are calculated based on the difference
+#' between the seasonal climatology and threshold climatology produced by \code{\link{detect}}.
+#' The four category levels are then the difference multiplied by the category level.
+#'
 #' The definitions for the output columns are as follows:
 #'   \item{event_no}{The number of the event as determined by \code{\link{detect}}
 #'   for reference between the outputs.}
 #'   \item{event_name}{The name of the event. Generated from the \code{\link{name}}
 #'   value provided and the year of the \code{peak_date} (see following) of
-#'   the event. If no \code{\link{name}} value is provided the default ``Event'' is used.
+#'   the event. If no \code{\link{name}} value is provided the default "Event" is used.
 #'   As proposed in Hobday et al. (in review), \code{Moderate} events are not given a name
 #'   so as to prevent multiple repeat names within the same year. If two or more events
 #'   ranked greater than Moderate are reported withiin the same year, they will be
@@ -59,9 +59,9 @@
 #'   the fourth and final threshold. There is currently no recorded event that has
 #'   exceeded a hypothetical fifth threshold so none is calculated... yet..}
 #'   \item{season}{The season(S) during which the event occurred. If the event
-#'   occurred across two seasons this will be displayed as ``Winter/Spring''.
-#'   Across three seasons as ``Winter-Summer''. Events lasting across four or more
-#'   seasons are listed as ``Year-round''. December (June) is used here as the start of
+#'   occurred across two seasons this will be displayed as "Winter/Spring".
+#'   Across three seasons as "Winter-Summer". Events lasting across four or more
+#'   seasons are listed as "Year-round". December (June) is used here as the start of
 #'   Austral (Boreal) summer.}
 #'
 #' @author Robert W. Schlegel
