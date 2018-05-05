@@ -3,18 +3,16 @@
 #' Calculates the categories of a series of events as produced by \code{\link{detect}} in
 #' accordance with the naming scheme proposed in Hobday et al. (in review).
 #'
+#' @importFrom dplyr n
+#'
 #' @param data The function receives the full (list) output from the \code{\link{detect}} function.
-#' @param x This column is expected to contain a vector of dates as per the
-#' specification of \code{make_whole}. If a column headed \code{t} is present in
-#' the dataframe, this argument may be ommitted; otherwise, specify the name of
-#' the column with dates here.
 #' @param y This is a column containing the measurement variable. If the column
 #' name differs from the default (i.e. \code{temp}), specify the name here.
 #' @param name If a value is provide here it will be used to name the events in
 #' the \code{event_name} column (see below) of the output. Default is "Event".
-#' @param hemisphere This argument informs the function within which hemisphere the data were
-#' collected so that it may correctly output the \code{season} column (see below).
-#' The default is "South".
+#' @param hemisphere This argument informs the function within which hemisphere
+#' ("North" or "South") the data were collected so that it may correctly output the
+#' \code{season} column (see below). The default is "South".
 #'
 #' @return The function will return a tibble with results similar to those seen in
 #' Table 2 of Hobday et al. (in review). This provides the information necessary to
@@ -74,41 +72,33 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' ts_dat <- heatwaveR::make_whole(sst_WA)
-#' res <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
+#' ts_dat <- make_whole(sst_WA)
+#' res <- detect(ts_dat, climatology_start = "1983-01-01",
 #'                          climatology_end = "2012-12-31")
-#' res_cat <- heatwaveR::category(res)
+#' res_cat <- category(res)
 #' head(res_cat)
-#' }
 category <-
   function(data,
-           x = "t",
            y = "temp",
            name = "Event",
            hemisphere = "South") {
-    # I don't like how the eval() method of swapping out columns makes it difficult to test the functions
-    # So I'm trying a different method here and if you're happy with it I'll change it in the other functions
-    colnames(data$clim)[colnames(data$clim) == as.character(x)] <- "t"
-    colnames(data$clim)[colnames(data$clim) == as.character(y)] <- "temp"
-    # event <- data$event
-    # clim <- data$clim
+
+    p_extreme <- p_moderate <- p_severe <- p_strong <- seas_clim_year <-
+      season <- severe <- start_season <- stop_season <- strong <- temp <-
+      thresh_2x <- thresh_3x <- thresh_4x <- thresh_clim_year <- temp <- NULL
+
+    ts.y <- eval(substitute(y), data$clim)
+    data$clim$ts.y <- ts.y
 
     duration <- event_name <- event_no <- extreme <- moderate <-
-      p_extreme <- p_moderate <- p_severe <- p_strong <- seas_clim_year <-
-      season <- severe <- start_season <- stop_season <- strong <- temp <-
-      thresh_2x <- thresh_3x <- thresh_4x <- thresh_clim_year <- NULL
+
 
     cat_frame <- data.frame(event_no = data$event$event_no,
                             event_name = paste0(as.character(name), " ", lubridate::year(data$event$date_peak)),
                             peak_date = data$event$date_peak,
                             category = NA,
                             i_max = round(data$event$int_max, 2),
-                            duration = data$event$duration)#,
-                            # p_moderate = NA,
-                            # p_strong = NA,
-                            # p_severe = NA,
-                            # p_extreme = NA)
+                            duration = data$event$duration)
 
     seasons <- data.frame(event_no = data$event$event_no,
                           date_start = data$event$date_start,
@@ -165,22 +155,22 @@ category <-
                     thresh_4x = thresh_3x + diff)
 
     moderate_n <- clim_diff %>%
-      dplyr::filter(temp >= thresh_clim_year) %>%
+      dplyr::filter(ts.y >= thresh_clim_year) %>%
       dplyr::group_by(event_no) %>%
       dplyr::summarise(moderate = dplyr::n()) %>%
       dplyr::ungroup()
     strong_n <- clim_diff %>%
-      dplyr::filter(temp >= thresh_2x) %>%
+      dplyr::filter(ts.y >= thresh_2x) %>%
       dplyr::group_by(event_no) %>%
       dplyr::summarise(strong = dplyr::n()) %>%
       dplyr::ungroup()
     severe_n <- clim_diff %>%
-      dplyr::filter(temp >= thresh_3x) %>%
+      dplyr::filter(ts.y >= thresh_3x) %>%
       dplyr::group_by(event_no) %>%
       dplyr::summarise(severe = dplyr::n()) %>%
       dplyr::ungroup()
     extreme_n <- clim_diff %>%
-      dplyr::filter(temp >= thresh_4x) %>%
+      dplyr::filter(ts.y >= thresh_4x) %>%
       dplyr::group_by(event_no) %>%
       dplyr::summarise(extreme = dplyr::n()) %>%
       dplyr::ungroup()
@@ -190,7 +180,6 @@ category <-
     cat_n[is.na(cat_n)] <- 0
 
     cat_join <- dplyr::left_join(cat_frame, cat_n, by = "event_no") %>%
-      # dplyr::mutate_at(.vars = vars(moderate:extreme), .funs = funs(ifelse(is.na(.), 0, .))) %>%
       dplyr::mutate(p_moderate = round(((moderate - strong) / duration * 100), 0),
              p_strong = round(((strong - severe) / duration * 100), 0),
              p_severe = round(((severe - extreme) / duration * 100), 0),
@@ -206,6 +195,9 @@ category <-
 
     # RWS: Still need to polish this off
     # Event column touch-ups
+    # The idea is to find repeated event names
+    # and apend an a, b, c, etc. to the ends
+    # in order to make each name unique
     # remove cat 1 names
     # search for duplicates
     # add letter after for all duplicates

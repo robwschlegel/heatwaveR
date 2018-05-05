@@ -4,16 +4,10 @@
 \alias{category}
 \title{Calculate the categories of events.}
 \usage{
-category(data, x = "t", y = "temp", name = "Event",
-  hemisphere = "South")
+category(data, y = "temp", name = "Event", hemisphere = "South")
 }
 \arguments{
 \item{data}{The function receives the full (list) output from the \code{\link{detect}} function.}
-
-\item{x}{This column is expected to contain a vector of dates as per the
-specification of \code{make_whole}. If a column headed \code{t} is present in
-the dataframe, this argument may be ommitted; otherwise, specify the name of
-the column with dates here.}
 
 \item{y}{This is a column containing the measurement variable. If the column
 name differs from the default (i.e. \code{temp}), specify the name here.}
@@ -21,9 +15,9 @@ name differs from the default (i.e. \code{temp}), specify the name here.}
 \item{name}{If a value is provide here it will be used to name the events in
 the \code{event_name} column (see below) of the output. Default is "Event".}
 
-\item{hemisphere}{This argument informs the function within which hemisphere the data were
-collected so that it may correctly output the \code{season} column (see below).
-The default is "South".}
+\item{hemisphere}{This argument informs the function within which hemisphere
+("North" or "South") the data were collected so that it may correctly output the
+\code{season} column (see below). The default is "South".}
 }
 \value{
 The function will return a tibble with results similar to those seen in
@@ -81,13 +75,11 @@ Calculates the categories of a series of events as produced by \code{\link{detec
 accordance with the naming scheme proposed in Hobday et al. (in review).
 }
 \examples{
-\dontrun{
-ts_dat <- heatwaveR::make_whole(sst_WA)
-res <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
+ts_dat <- make_whole(sst_WA)
+res <- detect(ts_dat, climatology_start = "1983-01-01",
                          climatology_end = "2012-12-31")
-res_cat <- heatwaveR::category(res)
+res_cat <- category(res)
 head(res_cat)
-}
 }
 \references{
 Hobday et al. (in review). Categorizing and Naming

@@ -1,3 +1,7 @@
+# heatwaveR 0.0.7.9001 (2018-05-05)
+
+* Testing for `category()`
+
 # heatwaveR 0.0.7.9000 (2018-05-04)
 
 * New `category()` function returns the category results for events
