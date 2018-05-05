@@ -92,9 +92,6 @@ category <-
     ts.y <- eval(substitute(y), data$clim)
     data$clim$ts.y <- ts.y
 
-    duration <- event_name <- event_no <- extreme <- moderate <-
-
-
     cat_frame <- data.frame(event_no = data$event$event_no,
                             event_name = paste0(as.character(name), " ", lubridate::year(data$event$date_peak)),
                             peak_date = data$event$date_peak,
