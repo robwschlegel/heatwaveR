@@ -158,26 +158,28 @@ ggplot(data = dplyr::filter(res.11.T$clim, t <= "1982-12-31"),
 
 ```{r}
 library(fda)
-range_t <- c(0, 365)
-
-temp_k7 <- create.fourier.basis(rangeval = range(res.1.F$clim$doy), nbasis = 7)
-phimat <- eval.basis(res.1.F$clim$doy, basisobj = temp_k7)
-phi.frame <- data.frame(cbind(phimat, res.1.F$clim$doy))
-melt.phi <- melt(data = phi.frame, id.vars = "V8")
-```
-
-```{r}
-ggplot(data = melt.phi, aes(x = V8, y = value)) +
-  geom_line(aes(colour = variable))
-```
-
-```{r}
 clm <- res.1.F$clim %>% 
-  filter(t <= "1982-12-31")
-basis6 <- create.fourier.basis(rangeval = range(clm$doy), nbasis = 6)
-fourier6.fd <- smooth.basis(argvals = clm$doy, y = clm$seas_clim_year, fdParobj = basis6)$fd
-temp6 <- eval.fd(clm$doy, fourier6.fd)
-temps <- setNames(data.frame(clm$doy, clm$seas_clim_year, temp6), c("doy", "climatology", "Fourier_6"))
+  filter(t <= "1982-12-31") %>% 
+  as_tibble
+
+b7 <- create.fourier.basis(rangeval = range(clm$doy), nbasis = 7)
+plot(b7)
+
+b7.val <- as_tibble(eval.basis(clm$doy, basisobj = b7))
+b7.val <- cbind(doy = clm$doy, b7.val) %>% 
+  gather(key = "basis", value = "value", -doy) %>% 
+  as_tibble()
+
+ggplot(data = b7.val, aes(x = doy, y = value)) +
+  geom_line(aes(colour = basis))
+```
+
+```{r}
+b7.smth <- smooth.basis(argvals = clm$doy, y = clm$seas_clim_year, fdParobj = b7)$fd
+clm.smth <- eval.fd(clm$doy, b7.smth)
+temps <- as_tibble(data.frame(doy = clm$doy,
+                              climatology = clm$seas_clim_year,
+                              fourier7 = clm.smth))
 
 temps %>% 
   gather(key = "type", value = "temperature", -doy) %>% 
