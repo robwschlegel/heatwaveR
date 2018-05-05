@@ -15,6 +15,7 @@
 #' \code{season} column (see below). The default is "South".
 #'
 #' @details An explanation for the categories is as follows:
+#' \enumerate{
 #'   \item{Moderate}{Events that have been detected, but with a maximum intensity that does not
 #'   double the distance between the seasonal climatology and the threshold value.}
 #'   \item{Strong}{Events with a maximum intensity that doubles the distance from the seasonal
@@ -22,6 +23,7 @@
 #'   \item{Severe}{Events that triple the aforementioned distance, but do not quadruple it.}
 #'   \item{Extreme}{Events with a maximum intensity that is four times or greater the
 #'   aforementioned distance. Scary stuff...}
+#'   }
 #'
 #' @return The function will return a tibble with results similar to those seen in
 #' Table 2 of Hobday et al. (in review). This provides the information necessary to

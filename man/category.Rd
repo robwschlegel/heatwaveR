@@ -4,7 +4,7 @@
 \alias{category}
 \title{Calculate the categories of events.}
 \usage{
-category(data, y = "temp", name = "Event", hemisphere = "South")
+category(data, y = temp, name = "Event", hemisphere = "South")
 }
 \arguments{
 \item{data}{The function receives the full (list) output from the \code{\link{detect}} function.}
@@ -67,6 +67,7 @@ accordance with the naming scheme proposed in Hobday et al. (in review).
 }
 \details{
 An explanation for the categories is as follows:
+\enumerate{
   \item{Moderate}{Events that have been detected, but with a maximum intensity that does not
   double the distance between the seasonal climatology and the threshold value.}
   \item{Strong}{Events with a maximum intensity that doubles the distance from the seasonal
@@ -74,6 +75,7 @@ An explanation for the categories is as follows:
   \item{Severe}{Events that triple the aforementioned distance, but do not quadruple it.}
   \item{Extreme}{Events with a maximum intensity that is four times or greater the
   aforementioned distance. Scary stuff...}
+  }
 }
 \examples{
 ts_dat <- make_whole(sst_WA)
