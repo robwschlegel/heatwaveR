@@ -4,7 +4,7 @@
 \alias{category}
 \title{Calculate the categories of events.}
 \usage{
-category(data, y = "temp", name = "Event", hemisphere = "South")
+category(data, y = temp, name = "Event", hemisphere = "South")
 }
 \arguments{
 \item{data}{The function receives the full (list) output from the \code{\link{detect}} function.}
@@ -27,21 +27,12 @@ category ranking scale. The category thresholds are calculated based on the diff
 between the seasonal climatology and threshold climatology produced by \code{\link{detect}}.
 The four category levels are then the difference multiplied by the category level.
 
-The categories are:
-  \item{Moderate}{Events that have been detected, but with a maximum intensity that does not
-  double the distance between the seasonal climatology and the threshold value.}
-  \item{Strong}{Events with a maximum intensity that doubles the distance from the seasonal
-  climatology and the threshold, but do not triple it.}
-  \item{Severe}{Events that triple the aforementioned distance, but do not quadruple it.}
-  \item{Extreme}{Events with a maximum intensity that is four times or greater the
-  aforementioned distance. Scary stuff...}
-
 The definitions for the output columns are as follows:
   \item{event_no}{The number of the event as determined by \code{\link{detect}}
   for reference between the outputs.}
   \item{event_name}{The name of the event. Generated from the \code{\link{name}}
   value provided and the year of the \code{peak_date} (see following) of
-  the event. If no \code{\link{name}} value is provided the default ``Event'' is used.
+  the event. If no \code{\link{name}} value is provided the default "Event" is used.
   As proposed in Hobday et al. (in review), \code{Moderate} events are not given a name
   so as to prevent multiple repeat names within the same year. If two or more events
   ranked greater than Moderate are reported withiin the same year, they will be
@@ -65,14 +56,26 @@ The definitions for the output columns are as follows:
   the fourth and final threshold. There is currently no recorded event that has
   exceeded a hypothetical fifth threshold so none is calculated... yet..}
   \item{season}{The season(S) during which the event occurred. If the event
-  occurred across two seasons this will be displayed as ``Winter/Spring''.
-  Across three seasons as ``Winter-Summer''. Events lasting across four or more
-  seasons are listed as ``Year-round''. December (June) is used here as the start of
+  occurred across two seasons this will be displayed as "Winter/Spring".
+  Across three seasons as "Winter-Summer". Events lasting across four or more
+  seasons are listed as "Year-round". December (June) is used here as the start of
   Austral (Boreal) summer.}
 }
 \description{
 Calculates the categories of a series of events as produced by \code{\link{detect}} in
 accordance with the naming scheme proposed in Hobday et al. (in review).
+}
+\details{
+An explanation for the categories is as follows:
+\enumerate{
+  \item{Moderate}{Events that have been detected, but with a maximum intensity that does not
+  double the distance between the seasonal climatology and the threshold value.}
+  \item{Strong}{Events with a maximum intensity that doubles the distance from the seasonal
+  climatology and the threshold, but do not triple it.}
+  \item{Severe}{Events that triple the aforementioned distance, but do not quadruple it.}
+  \item{Extreme}{Events with a maximum intensity that is four times or greater the
+  aforementioned distance. Scary stuff...}
+  }
 }
 \examples{
 ts_dat <- make_whole(sst_WA)

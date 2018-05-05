@@ -22,8 +22,8 @@ test_that("The name argument works correctly", {
   res <- detect(data = ts, climatology_start = "1983-01-01", climatology_end = "2012-12-31")
   cat_res_banana <- category(res, name = "Banana")
   cat_res_pawpaw <- category(res, name = "Pawpaw")
-  expect_equal(droplevels(cat_res_banana$event_name[1]), as.factor("Banana 1982"))
-  expect_equal(droplevels(cat_res_pawpaw$event_name[1]), as.factor("Pawpaw 1982"))
+  expect_equal(droplevels(cat_res_banana$event_name[70]), as.factor("Banana 2014"))
+  expect_equal(droplevels(cat_res_pawpaw$event_name[70]), as.factor("Pawpaw 2014"))
 })
 
 test_that("y = any existing column", {

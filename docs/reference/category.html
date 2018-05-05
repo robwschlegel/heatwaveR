@@ -187,21 +187,12 @@ appraise the extent of the events in the output of <code><a href='detect.html'>d
 category ranking scale. The category thresholds are calculated based on the difference
 between the seasonal climatology and threshold climatology produced by <code><a href='detect.html'>detect</a></code>.
 The four category levels are then the difference multiplied by the category level.</p>
-<p>The categories are:</p>
-<dt>Moderate</dt><dd><p>Events that have been detected, but with a maximum intensity that does not
-  double the distance between the seasonal climatology and the threshold value.</p></dd>
-  <dt>Strong</dt><dd><p>Events with a maximum intensity that doubles the distance from the seasonal
-  climatology and the threshold, but do not triple it.</p></dd>
-  <dt>Severe</dt><dd><p>Events that triple the aforementioned distance, but do not quadruple it.</p></dd>
-  <dt>Extreme</dt><dd><p>Events with a maximum intensity that is four times or greater the
-  aforementioned distance. Scary stuff...</p></dd>
-
-The definitions for the output columns are as follows:
-  <dt>event_no</dt><dd><p>The number of the event as determined by <code><a href='detect.html'>detect</a></code>
+<p>The definitions for the output columns are as follows:</p>
+<dt>event_no</dt><dd><p>The number of the event as determined by <code><a href='detect.html'>detect</a></code>
   for reference between the outputs.</p></dd>
   <dt>event_name</dt><dd><p>The name of the event. Generated from the <code>name</code>
   value provided and the year of the <code>peak_date</code> (see following) of
-  the event. If no <code>name</code> value is provided the default ``Event'' is used.
+  the event. If no <code>name</code> value is provided the default "Event" is used.
   As proposed in Hobday et al. (in review), <code>Moderate</code> events are not given a name
   so as to prevent multiple repeat names within the same year. If two or more events
   ranked greater than Moderate are reported withiin the same year, they will be
@@ -225,11 +216,22 @@ The definitions for the output columns are as follows:
   the fourth and final threshold. There is currently no recorded event that has
   exceeded a hypothetical fifth threshold so none is calculated... yet..</p></dd>
   <dt>season</dt><dd><p>The season(S) during which the event occurred. If the event
-  occurred across two seasons this will be displayed as ``Winter/Spring''.
-  Across three seasons as ``Winter-Summer''. Events lasting across four or more
-  seasons are listed as ``Year-round''. December (June) is used here as the start of
+  occurred across two seasons this will be displayed as "Winter/Spring".
+  Across three seasons as "Winter-Summer". Events lasting across four or more
+  seasons are listed as "Year-round". December (June) is used here as the start of
   Austral (Boreal) summer.</p></dd>
 
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>An explanation for the categories is as follows:
+  ModerateEvents that have been detected, but with a maximum intensity that does not
+  double the distance between the seasonal climatology and the threshold value.
+  StrongEvents with a maximum intensity that doubles the distance from the seasonal
+  climatology and the threshold, but do not triple it.
+  SevereEvents that triple the aforementioned distance, but do not quadruple it.
+  ExtremeEvents with a maximum intensity that is four times or greater the
+  aforementioned distance. Scary stuff...</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -259,6 +261,8 @@ Marine Heatwaves. Oceanography.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
 
       <li><a href="#references">References</a></li>
       

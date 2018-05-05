@@ -3,7 +3,7 @@
 #' Calculates the categories of a series of events as produced by \code{\link{detect}} in
 #' accordance with the naming scheme proposed in Hobday et al. (in review).
 #'
-#' @importFrom dplyr n
+#' @importFrom dplyr n %>%
 #'
 #' @param data The function receives the full (list) output from the \code{\link{detect}} function.
 #' @param y This is a column containing the measurement variable. If the column
@@ -14,14 +14,8 @@
 #' ("North" or "South") the data were collected so that it may correctly output the
 #' \code{season} column (see below). The default is "South".
 #'
-#' @return The function will return a tibble with results similar to those seen in
-#' Table 2 of Hobday et al. (in review). This provides the information necessary to
-#' appraise the extent of the events in the output of \code{\link{detect}} based on the
-#' category ranking scale. The category thresholds are calculated based on the difference
-#' between the seasonal climatology and threshold climatology produced by \code{\link{detect}}.
-#' The four category levels are then the difference multiplied by the category level.
-#'
-#' The categories are:
+#' @details An explanation for the categories is as follows:
+#' \enumerate{
 #'   \item{Moderate}{Events that have been detected, but with a maximum intensity that does not
 #'   double the distance between the seasonal climatology and the threshold value.}
 #'   \item{Strong}{Events with a maximum intensity that doubles the distance from the seasonal
@@ -29,13 +23,21 @@
 #'   \item{Severe}{Events that triple the aforementioned distance, but do not quadruple it.}
 #'   \item{Extreme}{Events with a maximum intensity that is four times or greater the
 #'   aforementioned distance. Scary stuff...}
+#'   }
+#'
+#' @return The function will return a tibble with results similar to those seen in
+#' Table 2 of Hobday et al. (in review). This provides the information necessary to
+#' appraise the extent of the events in the output of \code{\link{detect}} based on the
+#' category ranking scale. The category thresholds are calculated based on the difference
+#' between the seasonal climatology and threshold climatology produced by \code{\link{detect}}.
+#' The four category levels are then the difference multiplied by the category level.
 #'
 #' The definitions for the output columns are as follows:
 #'   \item{event_no}{The number of the event as determined by \code{\link{detect}}
 #'   for reference between the outputs.}
 #'   \item{event_name}{The name of the event. Generated from the \code{\link{name}}
 #'   value provided and the year of the \code{peak_date} (see following) of
-#'   the event. If no \code{\link{name}} value is provided the default ``Event'' is used.
+#'   the event. If no \code{\link{name}} value is provided the default "Event" is used.
 #'   As proposed in Hobday et al. (in review), \code{Moderate} events are not given a name
 #'   so as to prevent multiple repeat names within the same year. If two or more events
 #'   ranked greater than Moderate are reported withiin the same year, they will be
@@ -59,9 +61,9 @@
 #'   the fourth and final threshold. There is currently no recorded event that has
 #'   exceeded a hypothetical fifth threshold so none is calculated... yet..}
 #'   \item{season}{The season(S) during which the event occurred. If the event
-#'   occurred across two seasons this will be displayed as ``Winter/Spring''.
-#'   Across three seasons as ``Winter-Summer''. Events lasting across four or more
-#'   seasons are listed as ``Year-round''. December (June) is used here as the start of
+#'   occurred across two seasons this will be displayed as "Winter/Spring".
+#'   Across three seasons as "Winter-Summer". Events lasting across four or more
+#'   seasons are listed as "Year-round". December (June) is used here as the start of
 #'   Austral (Boreal) summer.}
 #'
 #' @author Robert W. Schlegel
@@ -79,19 +81,17 @@
 #' head(res_cat)
 category <-
   function(data,
-           y = "temp",
+           y = temp,
            name = "Event",
            hemisphere = "South") {
 
-    p_extreme <- p_moderate <- p_severe <- p_strong <- seas_clim_year <-
-      season <- severe <- start_season <- stop_season <- strong <- temp <-
-      thresh_2x <- thresh_3x <- thresh_4x <- thresh_clim_year <- temp <- NULL
+    temp <- NULL
 
-    ts.y <- eval(substitute(y), data$clim)
-    data$clim$ts.y <- ts.y
+    ts_y <- eval(substitute(y), data$clim)
+    data$clim$ts_y <- ts_y
+    rm(ts_y)
 
-    duration <- event_name <- event_no <- extreme <- moderate <-
-
+    event_no <- event_name <- peak_date <- category <- duration <- season <- NULL
 
     cat_frame <- data.frame(event_no = data$event$event_no,
                             event_name = paste0(as.character(name), " ", lubridate::year(data$event$date_peak)),
@@ -113,6 +113,8 @@ category <-
     se <- as.POSIXlt(data$event$date_stop)
     se$day <- 1
     se$mo <- se$mo + 1
+
+    start_season <- stop_season <- NULL
 
     if (hemisphere == "South") {
       seasons$start_season <- factor(quarters(ss, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
@@ -147,6 +149,8 @@ category <-
       }
     }
 
+    seas_clim_year <- thresh_clim_year <- thresh_2x <- thresh_3x <- thresh_4x <- NULL
+
     clim_diff <- data$clim %>%
       dplyr::filter(!is.na(event_no)) %>%
       dplyr::mutate(diff = thresh_clim_year - seas_clim_year,
@@ -154,30 +158,34 @@ category <-
                     thresh_3x = thresh_2x + diff,
                     thresh_4x = thresh_3x + diff)
 
+    moderate <- strong <- severe <- extreme <- NULL
+
     moderate_n <- clim_diff %>%
-      dplyr::filter(ts.y >= thresh_clim_year) %>%
+      dplyr::filter(ts_y >= thresh_clim_year) %>%
       dplyr::group_by(event_no) %>%
-      dplyr::summarise(moderate = dplyr::n()) %>%
+      dplyr::summarise(moderate = n()) %>%
       dplyr::ungroup()
     strong_n <- clim_diff %>%
-      dplyr::filter(ts.y >= thresh_2x) %>%
+      dplyr::filter(ts_y >= thresh_2x) %>%
       dplyr::group_by(event_no) %>%
-      dplyr::summarise(strong = dplyr::n()) %>%
+      dplyr::summarise(strong = n()) %>%
       dplyr::ungroup()
     severe_n <- clim_diff %>%
-      dplyr::filter(ts.y >= thresh_3x) %>%
+      dplyr::filter(ts_y >= thresh_3x) %>%
       dplyr::group_by(event_no) %>%
-      dplyr::summarise(severe = dplyr::n()) %>%
+      dplyr::summarise(severe = n()) %>%
       dplyr::ungroup()
     extreme_n <- clim_diff %>%
-      dplyr::filter(ts.y >= thresh_4x) %>%
+      dplyr::filter(ts_y >= thresh_4x) %>%
       dplyr::group_by(event_no) %>%
-      dplyr::summarise(extreme = dplyr::n()) %>%
+      dplyr::summarise(extreme = n()) %>%
       dplyr::ungroup()
     cat_n <- dplyr::left_join(moderate_n, strong_n, by = "event_no") %>%
       dplyr::left_join(severe_n, by = "event_no") %>%
       dplyr::left_join(extreme_n, by = "event_no")
     cat_n[is.na(cat_n)] <- 0
+
+    p_moderate <- p_strong <- p_severe <- p_extreme <- NULL
 
     cat_join <- dplyr::left_join(cat_frame, cat_n, by = "event_no") %>%
       dplyr::mutate(p_moderate = round(((moderate - strong) / duration * 100), 0),
