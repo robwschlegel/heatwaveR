@@ -85,12 +85,13 @@ category <-
            name = "Event",
            hemisphere = "South") {
 
-    p_extreme <- p_moderate <- p_severe <- p_strong <- seas_clim_year <-
-      season <- severe <- start_season <- stop_season <- strong <- temp <-
-      thresh_2x <- thresh_3x <- thresh_4x <- thresh_clim_year <- temp <- NULL
+    temp <- NULL
 
-    ts.y <- eval(substitute(y), data$clim)
-    data$clim$ts.y <- ts.y
+    ts_y <- eval(substitute(y), data$clim)
+    data$clim$ts_y <- ts_y
+    rm(ts_y)
+
+    event_no <- event_name <- peak_date <- category <- duration <- season <- NULL
 
     cat_frame <- data.frame(event_no = data$event$event_no,
                             event_name = paste0(as.character(name), " ", lubridate::year(data$event$date_peak)),
@@ -112,6 +113,8 @@ category <-
     se <- as.POSIXlt(data$event$date_stop)
     se$day <- 1
     se$mo <- se$mo + 1
+
+    start_season <- stop_season <- NULL
 
     if (hemisphere == "South") {
       seasons$start_season <- factor(quarters(ss, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
@@ -146,6 +149,8 @@ category <-
       }
     }
 
+    seas_clim_year <- thresh_clim_year <- thresh_2x <- thresh_3x <- thresh_4x <- NULL
+
     clim_diff <- data$clim %>%
       dplyr::filter(!is.na(event_no)) %>%
       dplyr::mutate(diff = thresh_clim_year - seas_clim_year,
@@ -153,30 +158,34 @@ category <-
                     thresh_3x = thresh_2x + diff,
                     thresh_4x = thresh_3x + diff)
 
+    moderate <- strong <- severe <- extreme <- NULL
+
     moderate_n <- clim_diff %>%
-      dplyr::filter(ts.y >= thresh_clim_year) %>%
+      dplyr::filter(ts_y >= thresh_clim_year) %>%
       dplyr::group_by(event_no) %>%
-      dplyr::summarise(moderate = dplyr::n()) %>%
+      dplyr::summarise(moderate = n()) %>%
       dplyr::ungroup()
     strong_n <- clim_diff %>%
-      dplyr::filter(ts.y >= thresh_2x) %>%
+      dplyr::filter(ts_y >= thresh_2x) %>%
       dplyr::group_by(event_no) %>%
-      dplyr::summarise(strong = dplyr::n()) %>%
+      dplyr::summarise(strong = n()) %>%
       dplyr::ungroup()
     severe_n <- clim_diff %>%
-      dplyr::filter(ts.y >= thresh_3x) %>%
+      dplyr::filter(ts_y >= thresh_3x) %>%
       dplyr::group_by(event_no) %>%
-      dplyr::summarise(severe = dplyr::n()) %>%
+      dplyr::summarise(severe = n()) %>%
       dplyr::ungroup()
     extreme_n <- clim_diff %>%
-      dplyr::filter(ts.y >= thresh_4x) %>%
+      dplyr::filter(ts_y >= thresh_4x) %>%
       dplyr::group_by(event_no) %>%
-      dplyr::summarise(extreme = dplyr::n()) %>%
+      dplyr::summarise(extreme = n()) %>%
       dplyr::ungroup()
     cat_n <- dplyr::left_join(moderate_n, strong_n, by = "event_no") %>%
       dplyr::left_join(severe_n, by = "event_no") %>%
       dplyr::left_join(extreme_n, by = "event_no")
     cat_n[is.na(cat_n)] <- 0
+
+    p_moderate <- p_strong <- p_severe <- p_extreme <- NULL
 
     cat_join <- dplyr::left_join(cat_frame, cat_n, by = "event_no") %>%
       dplyr::mutate(p_moderate = round(((moderate - strong) / duration * 100), 0),
