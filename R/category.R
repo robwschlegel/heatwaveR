@@ -79,7 +79,7 @@
 #' head(res_cat)
 category <-
   function(data,
-           y = "temp",
+           y = temp,
            name = "Event",
            hemisphere = "South") {
 
