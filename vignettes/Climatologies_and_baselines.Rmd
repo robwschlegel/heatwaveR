@@ -23,9 +23,15 @@ knitr::opts_chunk$set(fig.width = 6, fig.align = 'center',
 
 A time series of temperatures taken at a specific locality is a sample of the thermal environment. Because it is a sample, which is used to approximate the true state of the environment, the representivity of the data is subject to certain limitations that have an influence on their accuracy and precision---in other words, on how well the data represent reality. Here we will not concern ourselves with matters of precision and accuracy; rather, we shall deal with ways to produce climatologies from a time series of daily thermal measurements.
 
+A climatological mean is a multiyear average over a base period of typically 30 years duration. Sometimes the climatology is also called a 'climate normal.' It predicts the temperatures over an annual cycle that will most likely be experienced at a particlar place and time.
+
+Another concept that we use here instead of a climatology is a baseline... <definition to follow>.
+
 ## The default climatology and threshold
 
-Central to the functioning of the **heatwaveR** detect algogorithm is a climatology, which is the reference against which the extremes are calculated. Sometimes it is also called a 'climate normal.' The climatology forms the basis against which observations in a time series can be compared. It also predicts the temperatures that will most likely be experienced at a particlar place and time. It has become standard practice to base a climatology on 30 years' worth of data, and in the **heatwaveR** package we recommend the same. In a daily climatology, there will be one mean temperature for each day of the year (365 or 366 days, depending on how leap years are dealt with). How the daily mean is calculated can vary somewhat from application to application, but the `detect()` function applies a sliding window centered on a Julian day for the pooling of values that will form the basis for the calculation of climatology and threshold percentile. We use a default of 5 days, which gives a window width of 11 days centered on the 6th day of the series of 11 days. For example, the mean temperature for Julian day 6 will be comprised of all temperatures measured on Julian days 1 to 11, across 30 years, i.e. `r 30*11` temperature measurements form this climatological daily mean. A sliding window centered on Julian day 7 will comprise all temperatures measured on Julian days 2 to 12 over the 30 years; etc. Currently we do not provide the option to calculate a weighted mean; rather, each day receives the same weighting as any other day, irrespective of how far the day is from the one on which the sliding window is centered. Climatologies produced with sliding windows of width 11, 31, and 61 days are presented in Figure 1. We can see that the curves are a bit bumpy, particularly at the narrower window widths.
+Central to the functioning of the **heatwaveR** detect algogorithm is the climatology, which is the reference against which the extremes are calculated. For historical reasons---which also turn out to make good practical sense---it has become standard practice to base a climatology on 30 years' worth of data, updated at the start of each new decade (the most recent being 1981-2010). For the **heatwaveR** package we recommend the same. Because heat wave detection is based on daily data, a daily climatology is required. That is, the mean value for each of the days in a 365 (non-leap) or 366 (leap) day long year. In the case of gridded data, we also require that the climatology is at the same spatial resolution as the SST time series within which the extreme events are sought. In the case of the dOISST v2. data, it is independently calculated at each of the 1/4° grid cells, and for station data it must be representative of that station and preferably also obtained with the same instrument that yielded the seawater temperature time series entering the event detection algorithm (in fact, the algorithm will by default use the daily time series to derive the climatology).
+
+In a daily climatology, there will be one mean temperature for each day of the year (365 or 366 days, depending on how leap years are dealt with). How the daily mean is calculated can vary somewhat from application to application. The `detect()` function applies a window centered on a sliding Julian day for the pooling of values that will form the basis for calculation of the climatology and threshold percentile. We use a default of 5 days, which gives a window width of 11 days centered on the 6th day of the series of 11 days. For example, the mean temperature for Julian day 6 will be comprised of all temperatures measured from Julian days 1 to 11, across 30 years, i.e. `r 30*11` temperature measurements are summarised in this climatological daily mean. A sliding window centered on Julian day 7 will comprise all temperatures measured on Julian days 2 to 12 over the 30 years; etc. Currently we do not provide the option to calculate a weighted mean; rather, each day receives the same weighting as any other day, irrespective of how far the day is from the one on which the sliding window is centered. Climatologies produced with sliding windows of width 1, 11, 31, and 61 days are presented in Figure 1. In the figure we see that the wider the sliding window becomes the less day-to-day noise is retained in the climatology.
 
 ```{r setup, echo = TRUE}
 library(tidyverse) # misc. data processing conveniences
@@ -56,6 +62,9 @@ theme_publ <- function(...) {
 # Using a built-in data set
 ts_dat <- heatwaveR::make_whole(sst_WA)
 # smooth_percentile = FALSE
+res.1.F <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
+              climatology_end = "2012-12-31",
+              window_half_width = 0, smooth_percentile = F)
 res.11.F <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
               climatology_end = "2012-12-31", smooth_percentile = F)
 res.31.F <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
@@ -90,6 +99,10 @@ ggplot(data = dplyr::filter(res.11.F$clim, t <= "1982-12-31"),
             aes(x = t, y = thresh_clim_year),
             colour = "red",
             size = 1.2, alpha = 0.4) +
+    geom_line(data = dplyr::filter(res.1.F$clim, t <= "1982-12-31"),
+            aes(x = t, y = seas_clim_year),
+            colour = "green4",
+            size = 0.4, alpha = 0.8) +
   labs(x = "Date", y = "SST (°C)", title = "Annual cycle climatology and threshold",
        subtitle = "1983-01-01 to 2012-12-31 reference period; smooth off") +
   theme_publ()
@@ -138,6 +151,41 @@ ggplot(data = dplyr::filter(res.11.T$clim, t <= "1982-12-31"),
   theme_publ()
 ```
 
+### Fourier analysis of time series to construct a smooth climatology
+
+
+
+
+```{r}
+library(fda)
+range_t <- c(0, 365)
+
+temp_k7 <- create.fourier.basis(rangeval = range(res.1.F$clim$doy), nbasis = 7)
+phimat <- eval.basis(res.1.F$clim$doy, basisobj = temp_k7)
+phi.frame <- data.frame(cbind(phimat, res.1.F$clim$doy))
+melt.phi <- melt(data = phi.frame, id.vars = "V8")
+```
+
+```{r}
+ggplot(data = melt.phi, aes(x = V8, y = value)) +
+  geom_line(aes(colour = variable))
+```
+
+```{r}
+clm <- res.1.F$clim %>% 
+  filter(t <= "1982-12-31")
+basis6 <- create.fourier.basis(rangeval = range(clm$doy), nbasis = 6)
+fourier6.fd <- smooth.basis(argvals = clm$doy, y = clm$seas_clim_year, fdParobj = basis6)$fd
+temp6 <- eval.fd(clm$doy, fourier6.fd)
+temps <- setNames(data.frame(clm$doy, clm$seas_clim_year, temp6), c("doy", "climatology", "Fourier_6"))
+
+temps %>% 
+  gather(key = "type", value = "temperature", -doy) %>% 
+  ggplot(aes(x = doy, y = temperature)) +
+  geom_line(aes(colour = type)) +
+  geom_line(data = dplyr::filter(res.11.T$clim, t <= "1982-12-31"),
+       aes(x = doy, y = seas_clim_year), colour = "black")
+```
 
 
 ## Using a custom climatology

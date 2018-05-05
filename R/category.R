@@ -108,21 +108,21 @@ category <-
 
     ss <- as.POSIXlt(data$event$date_start)
     ss$day <- 1
-    ss$mo <- ss$mo+1
+    ss$mo <- ss$mo + 1
 
     se <- as.POSIXlt(data$event$date_stop)
     se$day <- 1
-    se$mo <- se$mo+1
+    se$mo <- se$mo + 1
 
-    if(hemisphere == "South") {
-      seasons$start_season <- factor(quarters(ss), levels = c("Q1", "Q2", "Q3", "Q4"),
+    if (hemisphere == "South") {
+      seasons$start_season <- factor(quarters(ss, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
                                      labels = c("Summer", "Fall", "Winter", "Spring"))
-      seasons$stop_season <- factor(quarters(se), levels = c("Q1", "Q2", "Q3", "Q4"),
+      seasons$stop_season <- factor(quarters(se, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
                                     labels = c("Summer", "Fall", "Winter", "Spring"))
-    } else if(hemisphere == "North") {
-      seasons$start_season <- factor(quarters(ss), levels = c("Q1", "Q2", "Q3", "Q4"),
+    } else if (hemisphere == "North") {
+      seasons$start_season <- factor(quarters(ss, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
                                      labels = c("Winter", "Spring", "Summer", "Fall"))
-      seasons$stop_season <- factor(quarters(se), levels = c("Q1", "Q2", "Q3", "Q4"),
+      seasons$stop_season <- factor(quarters(se, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
                                     labels = c("Winter", "Spring", "Summer", "Fall"))
       } else {
       stop("Please ensure you have written either 'South' or 'North' for the hemisphere argument.")
@@ -131,16 +131,16 @@ category <-
     seasons <- seasons %>%
       dplyr::mutate(diff_season = as.integer(start_season) - as.integer(stop_season))
 
-    for(i in 1:nrow(seasons)){
-      if(seasons$diff_season[i] == 0 & seasons$duration[i] < 100){
+    for (i in 1:nrow(seasons)) {
+      if (seasons$diff_season[i] == 0 & seasons$duration[i] < 100) {
         seasons$season[i] <- paste0(seasons$start_season[i])
-      } else if(seasons$diff_season[i] %in% c(-1, 3) & seasons$duration[i] < 180){
+      } else if (seasons$diff_season[i] %in% c(-1, 3) & seasons$duration[i] < 180) {
         seasons$season[i] <- paste0(seasons$start_season[i], "/", seasons$stop_season[i])
-      } else if(seasons$diff_season[i] %in% c(-1, 3) & seasons$duration[i] > 180){
+      } else if (seasons$diff_season[i] %in% c(-1, 3) & seasons$duration[i] > 180) {
         seasons$season[i] <- paste0(seasons$start_season[i], "-", seasons$stop_season[i])
-      } else if(seasons$diff_season[i] %in% c(-2, 2)){
+      } else if (seasons$diff_season[i] %in% c(-2, 2)) {
         seasons$season[i] <- paste0(seasons$start_season[i], "-", seasons$stop_season[i])
-      } else if(seasons$duration[i] > 270){
+      } else if (seasons$duration[i] > 270) {
         seasons$season[i] <- "Year-round"
       } else {
         seasons$season[i] <- NA
