@@ -18,8 +18,7 @@
 #' @param y This is a column containing the measurement variable. If the column
 #' name differs from the default (i.e. \code{temp}), specify the name here.
 #' @param threshold The static threshold used to determine how many consecutive
-#' days are in exceedance of the temperature of interest. Default is
-#' \code{20} degrees.
+#' days are in exceedance of the temperature of interest.
 #' @param below Default is \code{FALSE}. When set to TRUE, consecutive days of temperature
 #' below the \code{threshold} variable are calculated. When set to FALSE,
 #' consecutive days above the \code{threshold} variable are calculated.
@@ -128,7 +127,7 @@ exceedance <-
   function(data,
            x = t,
            y = temp,
-           threshold = 20,
+           threshold,
            below = FALSE,
            min_duration = 5,
            join_across_gaps = TRUE,
@@ -150,12 +149,12 @@ exceedance <-
 
     if (threshold > max(t_series$ts.y, na.rm = T)) {
       stop(paste("The given threshold value of ", threshold, " is greater than the maximum temperature of ",
-                 max(t_series$ts.y, na.rm = T), " present in this time series.", sep = ""))
+                 round(max(t_series$ts.y, na.rm = T), 2), " present in this time series.", sep = ""))
     }
 
     if (threshold < min(t_series$ts.y, na.rm = T)) {
       stop(paste("The given threshold value of ", threshold, " is less than the minimum temperature of ",
-                 min(t_series$ts.y, na.rm = T), " present in this time series.", sep = ""))
+                 round(min(t_series$ts.y, na.rm = T), 2), " present in this time series.", sep = ""))
     }
 
     if (below) {
@@ -190,10 +189,10 @@ exceedance <-
       protoFunc()
 
     if (length(proto_exceedances$index_start) == 0 & below == FALSE) {
-      stop(paste("No temperatures over ", threshold, " degrees detected.", sep =  ""))
+      stop(paste0("Not enough consecutive days above ", threshold, " to detect an event."))
     }
     if (length(proto_exceedances$index_start) == 0 & below == TRUE) {
-      stop(paste("No temperatures under ", threshold, " degrees detected.", sep =  ""))
+      stop(paste0("Not enough consecutive days below ", abs(threshold), " to detect an event."))
     }
 
     t_series$duration_criterion <- rep(FALSE, nrow(t_series))
@@ -221,12 +220,6 @@ exceedance <-
         dplyr::filter(duration >= 1 & duration <= max_gap)
     } else {
       join_across_gaps <- FALSE
-    }
-
-    if (length(proto_gaps$index_start) == 0) {
-      stop(paste("No temperatures in exceedance of ", threshold,
-                 " degrees detected for ", min_duration,
-                 " or more consecutive days.", sep = ""))
     }
 
     if (join_across_gaps) {
@@ -336,6 +329,6 @@ exceedance <-
     names(t_series)[1] <- paste(substitute(x))
     names(t_series)[2] <- paste(substitute(y))
 
-    list(threshold = t_series,
-         exceedance = exceedances)
+    list(threshold = tibble::as_tibble(t_series),
+         exceedance = tibble::as_tibble(exceedances))
   }

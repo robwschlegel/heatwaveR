@@ -335,9 +335,5 @@ lolli_plot <- function(data,
     lolli <- lolli +
       scale_x_continuous(breaks = seq(from = 0, to = nrow(data$event), by = 5))
   }
-  if (event[1, 1] < 0 & metric != "duration") {
-    lolli <- lolli +
-      theme(legend.justification = c(0, 4.85))
-  }
   lolli
 }

@@ -4,7 +4,7 @@
 \alias{exceedance}
 \title{Detect consecutive days in exceedance of a given threshold.}
 \usage{
-exceedance(data, x = t, y = temp, threshold = 20, below = FALSE,
+exceedance(data, x = t, y = temp, threshold, below = FALSE,
   min_duration = 5, join_across_gaps = TRUE, max_gap = 2,
   max_pad_length = 3)
 }
@@ -28,8 +28,7 @@ the column with dates here.}
 name differs from the default (i.e. \code{temp}), specify the name here.}
 
 \item{threshold}{The static threshold used to determine how many consecutive
-days are in exceedance of the temperature of interest. Default is
-\code{20} degrees.}
+days are in exceedance of the temperature of interest.}
 
 \item{below}{Default is \code{FALSE}. When set to TRUE, consecutive days of temperature
 below the \code{threshold} variable are calculated. When set to FALSE,

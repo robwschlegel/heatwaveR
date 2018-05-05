@@ -1,6 +1,14 @@
 # heatwaveR 0.0.7.9001 (2018-05-05)
 
 * Testing for `category()`
+* Testing for `block_average()`
+* Testing for `detect()`
+* Testting `exceedance()`
+* Removed default `threshold` for `exceedance()`
+* Tweaks to `exceedance()` error messages
+* Testing for `event_line()`
+* Testing for `lolli_plot()`
+* Tweaks to `lolli_plot()` error messages
 
 # heatwaveR 0.0.7.9000 (2018-05-04)
 

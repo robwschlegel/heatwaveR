@@ -33,4 +33,4 @@ test_that("y = any existing column", {
   expect_is(category(res, y = pawpaw), "tbl_df")
 })
 
-## Test that season splits work under broad circumstances
+## Test that season splits work under all circumstances
