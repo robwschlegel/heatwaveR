@@ -11,8 +11,8 @@ test_that("category() returns the correct tibbles and columns", {
 test_that("The seasons by hemisphere come out correctly", {
   ts <- make_whole(sst_Med)
   res <- detect(data = ts, climatology_start = "1983-01-01", climatology_end = "2012-12-31")
-  cat_res_south <- category(res, hemisphere = "South")
-  cat_res_north <- category(res, hemisphere = "North")
+  cat_res_south <- category(res, S = T)
+  cat_res_north <- category(res, S = F)
   expect_equal(cat_res_south$season[1], "Fall")
   expect_equal(cat_res_north$season[1], "Spring")
 })
