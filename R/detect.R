@@ -67,18 +67,18 @@
 #' identify the most intense cold-spells one must also set \code{pctile = 90},
 #' even though cold spells are in fact simply the coldest extreme events in a
 #' time series, which statistically equate to values below the 10th percentile.
-#' @param diff_baseline When this switch is set to \code{FALSE}, the default,
+#' @param alt_clim When this switch is set to \code{FALSE}, the default,
 #' the climatology will be obtained from the time series provided to
-#' \code{data}. Enabling this option allows one to use baseline or climatology
-#' data different from that within which the extreme events will be detected in.
-#' The data used for the custom baseline or climatology must be exactly of the
-#' same structure as that provided to \code{data}; in other words, the column
-#' names must be the same, they must share at least the same duration as implied
-#' by \code{climatology_start} and \code{climatology_end}, and they must have
+#' \code{data}. Enabling this option allows one to supply a time series from
+#' which an alternative climatology will calculated. The data used for the
+#' creation of an alternative climatology must be exactly of the same structure
+#' as that provided to \code{data}; in other words, the column names must be the
+#' same, they must share at least the same duration as implied by
+#' \code{climatology_start} and \code{climatology_end}, and they must have
 #' previously been produced by \code{make_whole} or it must have been made by
 #' hand to conform with the data created by \code{make_whole}.
-#' @param baseline_data The name of the dataframe with data to use as the
-#' custom baseline or climatology. See \code{data} and \code{diff_baseline}
+#' @param alt_clim_data The name of the dataframe with data to use as the
+#' custom baseline or climatology. See \code{data} and \code{alt_clim}
 #' for more information about the data's structure.
 #'
 #' @details
@@ -97,11 +97,25 @@
 #' "1982-01-01" to "2011-12-31" or "1982-07-01" to "2012-06-30"; if not, this
 #' may result in an unequal weighting of data belonging with certain months
 #' within a time series.
-#' \item In this package we delibirately use the terms climatology and baseline,
-#' which do different things in as far as the event detection algorithm is
-#' concerned. The standard behaviour is to calculate a climatology is when
-#' \code{diff_baseline} is set as \code{FALSE} or when this argument is ommitted
-#' from `detect()`. A baseline on the other hand... <AJS to add more in here.>
+#' \item In this package we use the terms climatology and baseline, which do
+#' different things as far as the event detection algorithm is concerned.
+#' The standard behaviour is to calculate a climatology from the time series
+#' supplied to \code{data} when \code{alt_clim} is set as \code{FALSE} or when
+#' this argument is ommitted from \code{\link{detect}}. Should the default
+#' climatology not be desired for some reason, a different climatology may be
+#' created and used for event detection---this is done by supplying an
+#' alternative data series to \code{alt_clim_data}. Either way,
+#' \code{climatology_start}, \code{climatology_end}, \code{pctile},
+#' \code{window_half_width}, \code{smooth_percentile},
+#' \code{smooth_percentile_width}, and \code{clim_only} will be applied to all
+#' ensuing data processing steps. In both instances a daily climatology will be,
+#' created; that is, the climatology will be comprised of one mean temperature
+#' for each day of the year (365 or 366 days, depending on how leap years are
+#' dealt with), and the mean will be based on a sample size that is a function of
+#' the length of time determined by \code{climatology_start} to
+#' \code{climatology_end} and the width of the sliding window specified in
+#' \code{window_half_width}.
+#' \item A baseline on the other hand... <AJS to add more in here.>
 #' \item This function supports leap years. This is done by ignoring Feb 29s
 #' for the initial calculation of the climatology and threshold. The values for
 #' Feb 29 are then linearly interpolated from the values for Feb 28 and Mar 1.
@@ -239,8 +253,8 @@ detect <-
            max_gap = 2,
            max_pad_length = 3,
            cold_spells = FALSE,
-           diff_baseline = FALSE,
-           baseline_data = NULL
+           alt_clim = FALSE,
+           alt_clim_data = NULL
            # verbose = TRUE, # to be implemented
   ) {
 
@@ -291,8 +305,8 @@ detect <-
     ## in the case of the baseline... we need an option where the baseline is
     ## not processed into a climatology relative to which the events are detected;
     ## we might want to use the baseline *as is* for event detection
-    if (diff_baseline) {
-      for_clim <- baseline_data
+    if (alt_clim) {
+      for_clim <- alt_clim_data
     } else {
       for_clim <- ts_xy
     }

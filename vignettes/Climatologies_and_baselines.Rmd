@@ -153,9 +153,6 @@ ggplot(data = dplyr::filter(res.11.T$clim, t <= "1982-12-31"),
 
 ### Fourier analysis of time series to construct a smooth climatology
 
-
-
-
 ```{r}
 library(fda)
 clm <- res.1.F$clim %>% 
@@ -176,6 +173,10 @@ ggplot(data = b7.val, aes(x = doy, y = value)) +
 
 ```{r}
 b7.smth <- smooth.basis(argvals = clm$doy, y = clm$seas_clim_year, fdParobj = b7)$fd
+plot(b7.smth[1:7])
+b7.PCA = pca.fd(b7.smth, nharm=6)
+
+
 clm.smth <- eval.fd(clm$doy, b7.smth)
 temps <- as_tibble(data.frame(doy = clm$doy,
                               climatology = clm$seas_clim_year,
@@ -189,6 +190,36 @@ temps %>%
        aes(x = doy, y = seas_clim_year), colour = "black")
 ```
 
+```{r}
+library(TSA)
+# compute the Fourier Transform
+p <- periodogram(y)
+dd <- data.frame(freq = p$freq, spec = p$spec)
+order <- dd[order(-dd$spec), ]
+top6 <- head(order, 6)
+# display the 6 highest "power" frequencies
+top6
+# convert frequency to time periods
+time <- 1/top6$f
+time
+```
+
+```{r}
+fft(y)
+
+spectrum(y)
+```
+
+```{r}
+require(graphics)
+spec.y <- spec.pgram(y)
+plot(spec.y, plot.type = "coherency")
+plot(spec.y, plot.type = "phase")
+
+library(GeneCycle)
+GeneCycle::periodogram(y)
+
+```
 
 ## Using a custom climatology
 
