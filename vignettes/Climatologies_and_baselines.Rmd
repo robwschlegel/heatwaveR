@@ -27,19 +27,21 @@ A climatological mean is a multiyear average over a base period of typically 30 
 
 Another concept that we use here instead of a climatology is a baseline... <definition to follow>.
 
+![**Figure 1.** Processing pipeline in the `detect()` algorithm with emphasis on the climatology and baseline procedures. The dark black arrows indicate the options that are currently available.](detect_diagram.svg){width=100%}
+
 ## The default climatology and threshold
 
 Central to the functioning of the **heatwaveR** detect algogorithm is the climatology, which is the reference against which the extremes are calculated. For historical reasons---which also turn out to make good practical sense---it has become standard practice to base a climatology on 30 years' worth of data, updated at the start of each new decade (the most recent being 1981-2010). For the **heatwaveR** package we recommend the same. Because heat wave detection is based on daily data, a daily climatology is required. That is, the mean value for each of the days in a 365 (non-leap) or 366 (leap) day long year. In the case of gridded data, we also require that the climatology is at the same spatial resolution as the SST time series within which the extreme events are sought. In the case of the dOISST v2. data, it is independently calculated at each of the 1/4° grid cells, and for station data it must be representative of that station and preferably also obtained with the same instrument that yielded the seawater temperature time series entering the event detection algorithm (in fact, the algorithm will by default use the daily time series to derive the climatology).
 
 In a daily climatology, there will be one mean temperature for each day of the year (365 or 366 days, depending on how leap years are dealt with). How the daily mean is calculated can vary somewhat from application to application. The `detect()` function applies a window centered on a sliding Julian day for the pooling of values that will form the basis for calculation of the climatology and threshold percentile. We use a default of 5 days, which gives a window width of 11 days centered on the 6th day of the series of 11 days. For example, the mean temperature for Julian day 6 will be comprised of all temperatures measured from Julian days 1 to 11, across 30 years, i.e. `r 30*11` temperature measurements are summarised in this climatological daily mean. A sliding window centered on Julian day 7 will comprise all temperatures measured on Julian days 2 to 12 over the 30 years; etc. Currently we do not provide the option to calculate a weighted mean; rather, each day receives the same weighting as any other day, irrespective of how far the day is from the one on which the sliding window is centered. Climatologies produced with sliding windows of width 1, 11, 31, and 61 days are presented in Figure 1. In the figure we see that the wider the sliding window becomes the less day-to-day noise is retained in the climatology.
 
-```{r setup, echo = TRUE}
+```{r setup, echo=TRUE}
 library(tidyverse) # misc. data processing conveniences
 library(lubridate) # for working with dates
 library(heatwaveR)
 ```
 
-```{r theme_publ, echo = FALSE}
+```{r theme_publ, echo=FALSE}
 theme_publ <- function(...) {
   theme_bw() +
     theme(
@@ -64,98 +66,87 @@ ts_dat <- heatwaveR::make_whole(sst_WA)
 # smooth_percentile = FALSE
 res.1.F <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
               climatology_end = "2012-12-31",
-              window_half_width = 0, smooth_percentile = F)
+              window_half_width = 0, smooth_percentile = F)$clim
 res.11.F <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
-              climatology_end = "2012-12-31", smooth_percentile = F)
+              climatology_end = "2012-12-31", smooth_percentile = F)$clim
 res.31.F <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
               climatology_end = "2012-12-31",
-              window_half_width = 15, smooth_percentile = F)
+              window_half_width = 15, smooth_percentile = F)$clim
 res.61.F <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
               climatology_end = "2012-12-31",
-              window_half_width = 30, smooth_percentile = F)
+              window_half_width = 30, smooth_percentile = F)$clim
 ```
 
-```{r plot-1, echo=FALSE, fig.cap="**Figure 1.** Climatologies based on a sliding mean of window widths 11 (dotted), 31 (dashed), and 61 (solid) days (black lines). Matching thresholds are provided (red lines)."}
-ggplot(data = dplyr::filter(res.11.F$clim, t <= "1982-12-31"),
+```{r plot-1, fig.cap="**Figure 1.** Climatologies based on a sliding mean of window widths 11 (dotted), 31 (dashed), and 61 (solid) days (black lines). Matching thresholds are provided (red lines)."}
+res.1.F <- res.1.F %>% 
+  mutate(width = "1") %>% 
+  filter(t <= "1982-12-31")
+res.11.F <- res.11.F %>% 
+  mutate(width = "11") %>% 
+  filter(t <= "1982-12-31")
+res.31.F <- res.31.F %>% 
+  mutate(width = "31") %>% 
+  filter(t <= "1982-12-31")
+res.61.F <- res.61.F %>% 
+  mutate(width = "61") %>% 
+  filter(t <= "1982-12-31")
+no_smooth <- rbind(res.1.F, res.11.F, res.31.F, res.61.F)
+
+plt1 <- ggplot(data = no_smooth,
        aes(x = t, y = seas_clim_year)) +
-  geom_line(size = 0.6, linetype = "dotted", alpha = 0.9) +
-  geom_line(aes(y = thresh_clim_year),
-            colour = "red",
-            size = 0.6,
-            linetype = "dotted", alpha = 0.9) +
-  geom_line(data = dplyr::filter(res.31.F$clim, t <= "1982-12-31"),
-            aes(x = t, y = seas_clim_year),
-            linetype = "dashed",
-            size = 0.8, alpha = 0.6) +
-  geom_line(data = dplyr::filter(res.31.F$clim, t <= "1982-12-31"),
-            aes(x = t, y = thresh_clim_year),
-            linetype = "dashed",
-            colour = "red",
-            size = 0.8, alpha = 0.6) +
-  geom_line(data = dplyr::filter(res.61.F$clim, t <= "1982-12-31"),
-            aes(x = t, y = seas_clim_year),
-            size = 1.2, alpha = 0.4) +
-  geom_line(data = dplyr::filter(res.61.F$clim, t <= "1982-12-31"),
-            aes(x = t, y = thresh_clim_year),
-            colour = "red",
-            size = 1.2, alpha = 0.4) +
-    geom_line(data = dplyr::filter(res.1.F$clim, t <= "1982-12-31"),
-            aes(x = t, y = seas_clim_year),
-            colour = "green4",
-            size = 0.4, alpha = 0.8) +
+  geom_line(aes(colour = width), size = 0.4) +
+  geom_line(aes(y = thresh_clim_year, colour = width), size = 0.2) +
   labs(x = "Date", y = "SST (°C)", title = "Annual cycle climatology and threshold",
        subtitle = "1983-01-01 to 2012-12-31 reference period; smooth off") +
   theme_publ()
+ggsave(plt1, file = "climat_1.png", width = 6, height = 3.2)
 ```
+
+![**Figure 2.** ](climat_1.png){width=80%}
 
 To produce smoother climatologies, we can additionally enable a moving average smoother. The result is shown in Figure 2.
 
-```{r, detect-2, echo=TRUE}
+```{r detect-2, echo=TRUE}
 #smooth_percentile = TRUE
 res.11.T <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
-              climatology_end = "2012-12-31")
+              climatology_end = "2012-12-31")$clim
 res.31.T <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
               climatology_end = "2012-12-31",
-              window_half_width = 15)
+              window_half_width = 15)$clim
 res.61.T <- heatwaveR::detect(ts_dat, climatology_start = "1983-01-01",
               climatology_end = "2012-12-31",
-              window_half_width = 30)
+              window_half_width = 30)$clim
 ```
 
-```{r plot-2, echo=FALSE, fig.cap="**Figure 2.** Climatologies based on a sliding mean of window widths 11 (dotted), 31 (dashed), and 61 (solid) days (black lines). Matching thresholds are provided (red lines). The moving average smoother with a window width of 31 days is enable here."}
-ggplot(data = dplyr::filter(res.11.T$clim, t <= "1982-12-31"),
+```{r plot-2, fig.cap="**Figure 2.** Climatologies based on a sliding mean of window widths 11 (dotted), 31 (dashed), and 61 (solid) days (black lines). Matching thresholds are provided (red lines). The moving average smoother with a window width of 31 days is enable here."}
+res.11.T <- res.11.T %>% 
+  mutate(width = "11") %>% 
+  filter(t <= "1982-12-31")
+res.31.T <- res.31.T %>% 
+  mutate(width = "31") %>% 
+  filter(t <= "1982-12-31")
+res.61.T <- res.61.T %>% 
+  mutate(width = "61") %>% 
+  filter(t <= "1982-12-31")
+smooth <- rbind(res.11.T, res.31.T, res.61.T)
+
+plt2 <- ggplot(data = smooth,
        aes(x = t, y = seas_clim_year)) +
-  geom_line(size = 0.6, linetype = "dotted", alpha = 0.9) +
-  geom_line(aes(y = thresh_clim_year),
-            colour = "red",
-            size = 0.6,
-            linetype = "dotted", alpha = 0.9) +
-  geom_line(data = dplyr::filter(res.31.T$clim, t <= "1982-12-31"),
-            aes(x = t, y = seas_clim_year),
-            linetype = "dashed",
-            size = 0.8, alpha = 0.6) +
-  geom_line(data = dplyr::filter(res.31.T$clim, t <= "1982-12-31"),
-            aes(x = t, y = thresh_clim_year),
-            linetype = "dashed",
-            colour = "red",
-            size = 0.8, alpha = 0.6) +
-  geom_line(data = dplyr::filter(res.61.T$clim, t <= "1982-12-31"),
-            aes(x = t, y = seas_clim_year),
-            size = 1.2, alpha = 0.4) +
-  geom_line(data = dplyr::filter(res.61.T$clim, t <= "1982-12-31"),
-            aes(x = t, y = thresh_clim_year),
-            colour = "red",
-            size = 1.2, alpha = 0.4) +
+  geom_line(aes(colour = width), size = 0.4) +
+  geom_line(aes(y = thresh_clim_year, colour = width), size = 0.2) +
   labs(x = "Date", y = "SST (°C)", title = "Annual cycle climatology and threshold",
        subtitle = "1983-01-01 to 2012-12-31 reference period; smooth on") +
   theme_publ()
+ggsave(plt2, file = "climat_2.png", width = 6, height = 3.2)
 ```
+
+![**Figure 3.** ](climat_2.png){width=80%}
 
 ### Fourier analysis of time series to construct a smooth climatology
 
-```{r}
+```{r fourier_1, echo=TRUE}
 library(fda)
-clm <- res.1.F$clim %>% 
+clm <- res.1.F %>% 
   filter(t <= "1982-12-31") %>% 
   as_tibble
 
@@ -167,28 +158,36 @@ b7.val <- cbind(doy = clm$doy, b7.val) %>%
   gather(key = "basis", value = "value", -doy) %>% 
   as_tibble()
 
-ggplot(data = b7.val, aes(x = doy, y = value)) +
-  geom_line(aes(colour = basis))
+# ggplot(data = b7.val, aes(x = doy, y = value)) +
+#   geom_line(aes(colour = basis))
 ```
 
-```{r}
+```{r fourier_2, echo=TRUE}
 b7.smth <- smooth.basis(argvals = clm$doy, y = clm$seas_clim_year, fdParobj = b7)$fd
-plot(b7.smth[1:7])
-b7.PCA = pca.fd(b7.smth, nharm=6)
-
-
 clm.smth <- eval.fd(clm$doy, b7.smth)
 temps <- as_tibble(data.frame(doy = clm$doy,
-                              climatology = clm$seas_clim_year,
-                              fourier7 = clm.smth))
+                              unsmth_1 = clm$seas_clim_year,
+                              smth_11 = res.11.T$seas_clim_year,
+                              fourier_7 = clm.smth))
 
-temps %>% 
+library(forcats)
+plt3 <- temps %>% 
   gather(key = "type", value = "temperature", -doy) %>% 
   ggplot(aes(x = doy, y = temperature)) +
-  geom_line(aes(colour = type)) +
-  geom_line(data = dplyr::filter(res.11.T$clim, t <= "1982-12-31"),
-       aes(x = doy, y = seas_clim_year), colour = "black")
+  geom_line(aes(colour = fct_inorder(type), size = fct_inorder(type))) +
+  scale_colour_manual(name = "Smooth",
+                      values = c("red", "blue", "black"),
+                      labels = c("1, unsmooth", "11, smooth", "Fourier")) +
+  scale_size_manual(values = c(0.2, 0.2, 0.6), guide = FALSE) +
+  labs(x = "Julian day", y = "SST (°C)", title = "Annual cycle climatology and threshold",
+       subtitle = "1983-01-01 to 2012-12-31 reference period; various smooths") +
+  theme_publ()
+ggsave(plt3, file = "climat_3.png", width = 6, height = 3.2)
+# plot(b7.smth[1:7])
+# b7.PCA = pca.fd(b7.smth, nharm=6)
 ```
+
+![**Figure 4.** ](climat_3.png){width=80%}
 
 ```{r}
 library(TSA)
