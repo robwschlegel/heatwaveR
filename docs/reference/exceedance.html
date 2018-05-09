@@ -303,27 +303,30 @@ Feb 2015, and is documented by Hobday et al. (2016).</p>
 <span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>exceedance</span>(<span class='no'>ts_dat</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>25</span>)
 <span class='co'># show first ten days of daily data:</span>
 <span class='no'>res</span>$<span class='no'>threshold</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt; # A tibble: 10 x 7
-#&gt;    t           temp thresh thresh_criterion duration_criterion exceedance exceedance_no
-#&gt;    &lt;date&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;lgl&gt;            &lt;lgl&gt;              &lt;lgl&gt;              &lt;int&gt;
-#&gt;  1 1982-01-01  20.9     25 FALSE            FALSE              FALSE                 NA
-#&gt;  2 1982-01-02  21.2     25 FALSE            FALSE              FALSE                 NA
-#&gt;  3 1982-01-03  21.4     25 FALSE            FALSE              FALSE                 NA
-#&gt;  4 1982-01-04  21.2     25 FALSE            FALSE              FALSE                 NA
-#&gt;  5 1982-01-05  21.3     25 FALSE            FALSE              FALSE                 NA
-#&gt;  6 1982-01-06  21.6     25 FALSE            FALSE              FALSE                 NA
-#&gt;  7 1982-01-07  21.7     25 FALSE            FALSE              FALSE                 NA
-#&gt;  8 1982-01-08  21.5     25 FALSE            FALSE              FALSE                 NA
-#&gt;  9 1982-01-09  21.4     25 FALSE            FALSE              FALSE                 NA
-#&gt; 10 1982-01-10  21.4     25 FALSE            FALSE              FALSE                 NA</div><div class='input'><span class='co'># show first five exceedances:</span>
+#&gt;    t           temp thresh thresh_criterion duration_criterion exceedance
+#&gt;    &lt;date&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;lgl&gt;            &lt;lgl&gt;              &lt;lgl&gt;     
+#&gt;  1 1982-01-01  20.9     25 FALSE            FALSE              FALSE     
+#&gt;  2 1982-01-02  21.2     25 FALSE            FALSE              FALSE     
+#&gt;  3 1982-01-03  21.4     25 FALSE            FALSE              FALSE     
+#&gt;  4 1982-01-04  21.2     25 FALSE            FALSE              FALSE     
+#&gt;  5 1982-01-05  21.3     25 FALSE            FALSE              FALSE     
+#&gt;  6 1982-01-06  21.6     25 FALSE            FALSE              FALSE     
+#&gt;  7 1982-01-07  21.7     25 FALSE            FALSE              FALSE     
+#&gt;  8 1982-01-08  21.5     25 FALSE            FALSE              FALSE     
+#&gt;  9 1982-01-09  21.4     25 FALSE            FALSE              FALSE     
+#&gt; 10 1982-01-10  21.4     25 FALSE            FALSE              FALSE     
+#&gt; # ... with 1 more variable: exceedance_no &lt;int&gt;</div><div class='input'><span class='co'># show first five exceedances:</span>
 <span class='no'>res</span>$<span class='no'>exceedance</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, ]</div><div class='output co'>#&gt; # A tibble: 5 x 17
-#&gt;   index_start index_stop exceedance_no duration date_start date_stop  date_peak  int_mean int_max int_var int_cum int_mean_abs int_max_abs int_var_abs
-#&gt;         &lt;int&gt;      &lt;int&gt;         &lt;int&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;     &lt;date&gt;        &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
-#&gt; 1        2682       2686             1        5 1989-05-05 1989-05-09 1989-05-06    0.286   0.360  0.0462   1.43          25.3        25.4      0.0462
-#&gt; 2        6342       6358             2       17 1999-05-13 1999-05-29 1999-05-22    0.856   1.40   0.386   14.5           25.9        26.4      0.386 
-#&gt; 3        6362       6368             3        7 1999-06-02 1999-06-08 1999-06-03    0.207   0.270  0.0512   1.45          25.2        25.3      0.0512
-#&gt; 4        6686       6691             4        6 2000-04-21 2000-04-26 2000-04-23    0.155   0.410  0.180    0.930         25.2        25.4      0.180 
-#&gt; 5        6698       6707             5       10 2000-05-03 2000-05-12 2000-05-04    0.697   1.01   0.275    6.97          25.7        26.0      0.275 
-#&gt; # ... with 3 more variables: int_cum_abs &lt;dbl&gt;, rate_onset &lt;dbl&gt;, rate_decline &lt;dbl&gt;</div></pre>
+#&gt;   index_start index_stop exceedance_no duration date_start date_stop 
+#&gt;         &lt;int&gt;      &lt;int&gt;         &lt;int&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;    
+#&gt; 1        2682       2686             1        5 1989-05-05 1989-05-09
+#&gt; 2        6342       6358             2       17 1999-05-13 1999-05-29
+#&gt; 3        6362       6368             3        7 1999-06-02 1999-06-08
+#&gt; 4        6686       6691             4        6 2000-04-21 2000-04-26
+#&gt; 5        6698       6707             5       10 2000-05-03 2000-05-12
+#&gt; # ... with 11 more variables: date_peak &lt;date&gt;, int_mean &lt;dbl&gt;, int_max &lt;dbl&gt;,
+#&gt; #   int_var &lt;dbl&gt;, int_cum &lt;dbl&gt;, int_mean_abs &lt;dbl&gt;, int_max_abs &lt;dbl&gt;,
+#&gt; #   int_var_abs &lt;dbl&gt;, int_cum_abs &lt;dbl&gt;, rate_onset &lt;dbl&gt;, rate_decline &lt;dbl&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

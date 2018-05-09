@@ -447,26 +447,29 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
               <span class='kw'>climatology_end</span> <span class='kw'>=</span> <span class='st'>"2012-12-31"</span>)
 <span class='co'># show a portion of the climatology:</span>
 <span class='no'>res</span>$<span class='no'>clim</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt; # A tibble: 10 x 10
-#&gt;      doy t           temp seas_clim_year thresh_clim_year var_clim_year thresh_criterion duration_criterion event event_no
-#&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;dbl&gt;          &lt;dbl&gt;            &lt;dbl&gt;         &lt;dbl&gt; &lt;lgl&gt;            &lt;lgl&gt;              &lt;lgl&gt;    &lt;int&gt;
-#&gt;  1     1 1982-01-01  20.9           21.6             23.0         0.959 FALSE            FALSE              FALSE       NA
-#&gt;  2     2 1982-01-02  21.2           21.6             23.0         0.964 FALSE            FALSE              FALSE       NA
-#&gt;  3     3 1982-01-03  21.4           21.7             23.0         0.968 FALSE            FALSE              FALSE       NA
-#&gt;  4     4 1982-01-04  21.2           21.7             23.1         0.973 FALSE            FALSE              FALSE       NA
-#&gt;  5     5 1982-01-05  21.3           21.7             23.1         0.976 FALSE            FALSE              FALSE       NA
-#&gt;  6     6 1982-01-06  21.6           21.7             23.1         0.980 FALSE            FALSE              FALSE       NA
-#&gt;  7     7 1982-01-07  21.7           21.8             23.2         0.983 FALSE            FALSE              FALSE       NA
-#&gt;  8     8 1982-01-08  21.5           21.8             23.2         0.986 FALSE            FALSE              FALSE       NA
-#&gt;  9     9 1982-01-09  21.4           21.8             23.2         0.988 FALSE            FALSE              FALSE       NA
-#&gt; 10    10 1982-01-10  21.4           21.8             23.3         0.991 FALSE            FALSE              FALSE       NA</div><div class='input'><span class='co'># show some of the heat waves:</span>
+#&gt;      doy t           temp seas_clim_year thresh_clim_year var_clim_year
+#&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;dbl&gt;          &lt;dbl&gt;            &lt;dbl&gt;         &lt;dbl&gt;
+#&gt;  1     1 1982-01-01  20.9           21.6             23.0         0.959
+#&gt;  2     2 1982-01-02  21.2           21.6             23.0         0.964
+#&gt;  3     3 1982-01-03  21.4           21.7             23.0         0.968
+#&gt;  4     4 1982-01-04  21.2           21.7             23.1         0.973
+#&gt;  5     5 1982-01-05  21.3           21.7             23.1         0.976
+#&gt;  6     6 1982-01-06  21.6           21.7             23.1         0.980
+#&gt;  7     7 1982-01-07  21.7           21.8             23.2         0.983
+#&gt;  8     8 1982-01-08  21.5           21.8             23.2         0.986
+#&gt;  9     9 1982-01-09  21.4           21.8             23.2         0.988
+#&gt; 10    10 1982-01-10  21.4           21.8             23.3         0.991
+#&gt; # ... with 4 more variables: thresh_criterion &lt;lgl&gt;, duration_criterion &lt;lgl&gt;,
+#&gt; #   event &lt;lgl&gt;, event_no &lt;int&gt;</div><div class='input'><span class='co'># show some of the heat waves:</span>
 <span class='no'>res</span>$<span class='no'>event</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='fl'>1</span>:<span class='fl'>10</span>]</div><div class='output co'>#&gt; # A tibble: 5 x 10
-#&gt;   index_start index_stop event_no duration date_start date_stop  date_peak  int_mean int_max int_var
-#&gt;         &lt;int&gt;      &lt;int&gt;    &lt;int&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;     &lt;date&gt;        &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
-#&gt; 1         885        889        1        5 1984-06-03 1984-06-07 1984-06-05     1.70    1.92   0.150
-#&gt; 2         899        904        2        6 1984-06-17 1984-06-22 1984-06-19     1.99    2.11   0.188
-#&gt; 3         908        926        3       19 1984-06-26 1984-07-14 1984-07-10     1.91    2.22   0.187
-#&gt; 4        1023       1029        4        7 1984-10-19 1984-10-25 1984-10-23     1.46    1.83   0.291
-#&gt; 5        1033       1037        5        5 1984-10-29 1984-11-02 1984-10-30     1.30    1.49   0.155</div></pre>
+#&gt;   index_start index_stop event_no duration date_start date_stop  date_peak 
+#&gt;         &lt;int&gt;      &lt;int&gt;    &lt;int&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;     &lt;date&gt;    
+#&gt; 1         885        889        1        5 1984-06-03 1984-06-07 1984-06-05
+#&gt; 2         899        904        2        6 1984-06-17 1984-06-22 1984-06-19
+#&gt; 3         908        926        3       19 1984-06-26 1984-07-14 1984-07-10
+#&gt; 4        1023       1029        4        7 1984-10-19 1984-10-25 1984-10-23
+#&gt; 5        1033       1037        5        5 1984-10-29 1984-11-02 1984-10-30
+#&gt; # ... with 3 more variables: int_mean &lt;dbl&gt;, int_max &lt;dbl&gt;, int_var &lt;dbl&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
