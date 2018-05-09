@@ -288,23 +288,6 @@ detect <-
     if (cold_spells)
       ts_xy$ts_y <- -ts_xy$ts_y
 
-    ## 1. if a custom baseline is supplied it will be used to derive a climatology and threshold using the calculations below;
-    ## this custom baseline will share the same climatology_start and climatology_end as the main data
-    ## 2. i can also imagine a scenario where one might want to provide a precalculated custom baseline and threshold
-    ## relative to which the events will be detected--in this instance they will not be subject to the calcs below, and they
-    ## will cover the dull duration of the main data where the events will be detected in; this baseline and threshold might
-    ## be one (e.g.) from which the long-term trend had been removed beforehand, etc.; also, the interannual variation might
-    ## not necessarily be constant and the time series might be evolving throughout time, unlike a climatology (see below)
-    ## 3. lastly, i can also foresee the use of custom climatologies of the mean or median, and threshold--i.e. a daily
-    ## climatology of 365 or 366 days; it will replicated for as many times as is necessary to fit between climatology_start
-    ## and climatology_end; a climatology is therefore a constant annual signal that will repeat year after year
-    ## ...we need to provide proper documentation of these options, and talk about the differences between baselines and
-    ## climatologies, and in the paper give example applications of the various use scenarios.
-
-    ## both options will feed into climatology calc; this might not be desirable
-    ## in the case of the baseline... we need an option where the baseline is
-    ## not processed into a climatology relative to which the events are detected;
-    ## we might want to use the baseline *as is* for event detection
     if (alt_clim) {
       for_clim <- alt_clim_data
     } else {

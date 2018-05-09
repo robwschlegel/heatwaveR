@@ -99,7 +99,7 @@ plt1 <- ggplot(data = no_smooth,
   labs(x = "Date", y = "SST (°C)", title = "Annual cycle climatology and threshold",
        subtitle = "1983-01-01 to 2012-12-31 reference period; smooth off") +
   theme_publ()
-ggsave(plt1, file = "climat_1.png", width = 6, height = 3.2)
+ggsave(plt1, file = "climat_1.png", width = 6, height = 2.8)
 ```
 
 ![**Figure 2.** ](climat_1.png){width=80%}
@@ -137,7 +137,7 @@ plt2 <- ggplot(data = smooth,
   labs(x = "Date", y = "SST (°C)", title = "Annual cycle climatology and threshold",
        subtitle = "1983-01-01 to 2012-12-31 reference period; smooth on") +
   theme_publ()
-ggsave(plt2, file = "climat_2.png", width = 6, height = 3.2)
+ggsave(plt2, file = "climat_2.png", width = 6, height = 2.8)
 ```
 
 ![**Figure 3.** ](climat_2.png){width=80%}
@@ -182,7 +182,7 @@ plt3 <- temps %>%
   labs(x = "Julian day", y = "SST (°C)", title = "Annual cycle climatology and threshold",
        subtitle = "1983-01-01 to 2012-12-31 reference period; various smooths") +
   theme_publ()
-ggsave(plt3, file = "climat_3.png", width = 6, height = 3.2)
+ggsave(plt3, file = "climat_3.png", width = 6, height = 2.8)
 # plot(b7.smth[1:7])
 # b7.PCA = pca.fd(b7.smth, nharm=6)
 ```

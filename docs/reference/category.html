@@ -248,15 +248,14 @@ Marine Heatwaves. Oceanography.</p>
 <span class='co'># Note that the name argument expects a character vector</span>
 <span class='no'>cat_WA</span> <span class='kw'>&lt;-</span> <span class='fu'>category</span>(<span class='no'>res_WA</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"WA"</span>)
 <span class='fu'>tail</span>(<span class='no'>cat_WA</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 11
-#&gt;   event_no event_name peak_date  category   i_max duration p_moderate p_strong
-#&gt;      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
-#&gt; 1       38 WA 2010    2010-09-29 II Strong   2.58       18         78       22
-#&gt; 2       40 WA 2010    2010-12-02 II Strong   2.66       15         73       27
-#&gt; 3       31 WA 2008    2008-04-14 III Severe  3.77       34         62       29
-#&gt; 4       22 WA 1999    1999-05-22 II Strong   3.6        95         59       41
-#&gt; 5       58 WA 2014    2014-08-31 II Strong   2.2        12         58       42
-#&gt; 6       42 WA 2011    2011-02-28 IV Extreme  6.51       60         47       32
-#&gt; # ... with 3 more variables: p_severe &lt;dbl&gt;, p_extreme &lt;dbl&gt;, season &lt;chr&gt;</div><div class='input'>
+#&gt;   event_no event_name peak_date  category   i_max duration p_moderate p_strong p_severe p_extreme season       
+#&gt;      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;        
+#&gt; 1       38 WA 2010    2010-09-29 II Strong   2.58       18         78       22        0         0 Winter/Spring
+#&gt; 2       40 WA 2010    2010-12-02 II Strong   2.66       15         73       27        0         0 Spring       
+#&gt; 3       31 WA 2008    2008-04-14 III Severe  3.77       34         62       29        3         0 Summer/Fall  
+#&gt; 4       22 WA 1999    1999-05-22 II Strong   3.6        95         59       41        0         0 Fall/Winter  
+#&gt; 5       58 WA 2014    2014-08-31 II Strong   2.2        12         58       42        0         0 Winter       
+#&gt; 6       42 WA 2011    2011-02-28 IV Extreme  6.51       60         47       32        8        13 Summer/Fall  </div><div class='input'>
 <span class='co'># If the data were collected in the northern hemisphere</span>
 <span class='co'># we must let the funciton know this as seen below</span>
 <span class='no'>res_Med</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='detect.html'>detect</a></span>(<span class='fu'><a href='make_whole.html'>make_whole</a></span>(<span class='no'>sst_Med</span>),
@@ -264,15 +263,14 @@ Marine Heatwaves. Oceanography.</p>
                  <span class='kw'>climatology_end</span> <span class='kw'>=</span> <span class='st'>"2012-12-31"</span>)
 <span class='no'>cat_Med</span> <span class='kw'>&lt;-</span> <span class='fu'>category</span>(<span class='no'>res_Med</span>, <span class='kw'>S</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Med"</span>)
 <span class='fu'>tail</span>(<span class='no'>cat_Med</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 11
-#&gt;   event_no event_name peak_date  category   i_max duration p_moderate p_strong
-#&gt;      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
-#&gt; 1       55 Med 2011   2011-05-25 II Strong   4.05        8         62       38
-#&gt; 2       23 Med 1999   1999-04-06 II Strong   1.88        5         60       40
-#&gt; 3       28 Med 2003   2003-06-20 II Strong   5.02       30         57       43
-#&gt; 4       62 Med 2012   2012-08-20 II Strong   4.22       18         56       44
-#&gt; 5       44 Med 2007   2007-04-25 III Severe  4.02       19         42       53
-#&gt; 6       70 Med 2014   2014-10-18 II Strong   3.31      110         35       65
-#&gt; # ... with 3 more variables: p_severe &lt;dbl&gt;, p_extreme &lt;dbl&gt;, season &lt;chr&gt;</div></pre>
+#&gt;   event_no event_name peak_date  category   i_max duration p_moderate p_strong p_severe p_extreme season       
+#&gt;      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;        
+#&gt; 1       55 Med 2011   2011-05-25 II Strong   4.05        8         62       38        0         0 Spring       
+#&gt; 2       23 Med 1999   1999-04-06 II Strong   1.88        5         60       40        0         0 Spring       
+#&gt; 3       28 Med 2003   2003-06-20 II Strong   5.02       30         57       43        0         0 Spring/Summer
+#&gt; 4       62 Med 2012   2012-08-20 II Strong   4.22       18         56       44        0         0 Summer       
+#&gt; 5       44 Med 2007   2007-04-25 III Severe  4.02       19         42       53        5         0 Spring       
+#&gt; 6       70 Med 2014   2014-10-18 II Strong   3.31      110         35       65        0         0 Summer/Fall  </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
