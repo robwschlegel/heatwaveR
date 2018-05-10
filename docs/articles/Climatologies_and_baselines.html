@@ -104,7 +104,7 @@
       <h1>Climatologies and baselines</h1>
                         <h4 class="author">AJ Smit</h4>
             
-            <h4 class="date">2018-05-05</h4>
+            <h4 class="date">2018-05-10</h4>
       
       
       <div class="hidden name"><code>Climatologies_and_baselines.Rmd</code></div>
@@ -119,41 +119,90 @@
 <p>A time series of temperatures taken at a specific locality is a sample of the thermal environment. Because it is a sample, which is used to approximate the true state of the environment, the representivity of the data is subject to certain limitations that have an influence on their accuracy and precision—in other words, on how well the data represent reality. Here we will not concern ourselves with matters of precision and accuracy; rather, we shall deal with ways to produce climatologies from a time series of daily thermal measurements.</p>
 <p>A climatological mean is a multiyear average over a base period of typically 30 years duration. Sometimes the climatology is also called a ‘climate normal.’ It predicts the temperatures over an annual cycle that will most likely be experienced at a particlar place and time.</p>
 <p>Another concept that we use here instead of a climatology is a baseline… <definition to follow>.</definition></p>
+<div class="figure">
+<img src="heatwaveR_v3.svg" alt="Figure 1. Processing pipeline in the detect() algorithm with emphasis on the climatology and baseline procedures. The dark black arrows indicate the options that are currently available." style="width:100.0%"><p class="caption"><strong>Figure 1.</strong> Processing pipeline in the <code><a href="../reference/detect.html">detect()</a></code> algorithm with emphasis on the climatology and baseline procedures. The dark black arrows indicate the options that are currently available.</p>
+</div>
 <div id="the-default-climatology-and-threshold" class="section level2">
 <h2 class="hasAnchor">
 <a href="#the-default-climatology-and-threshold" class="anchor"></a>The default climatology and threshold</h2>
 <p>Central to the functioning of the <strong>heatwaveR</strong> detect algogorithm is the climatology, which is the reference against which the extremes are calculated. For historical reasons—which also turn out to make good practical sense—it has become standard practice to base a climatology on 30 years’ worth of data, updated at the start of each new decade (the most recent being 1981-2010). For the <strong>heatwaveR</strong> package we recommend the same. Because heat wave detection is based on daily data, a daily climatology is required. That is, the mean value for each of the days in a 365 (non-leap) or 366 (leap) day long year. In the case of gridded data, we also require that the climatology is at the same spatial resolution as the SST time series within which the extreme events are sought. In the case of the dOISST v2. data, it is independently calculated at each of the 1/4° grid cells, and for station data it must be representative of that station and preferably also obtained with the same instrument that yielded the seawater temperature time series entering the event detection algorithm (in fact, the algorithm will by default use the daily time series to derive the climatology).</p>
 <p>In a daily climatology, there will be one mean temperature for each day of the year (365 or 366 days, depending on how leap years are dealt with). How the daily mean is calculated can vary somewhat from application to application. The <code><a href="../reference/detect.html">detect()</a></code> function applies a window centered on a sliding Julian day for the pooling of values that will form the basis for calculation of the climatology and threshold percentile. We use a default of 5 days, which gives a window width of 11 days centered on the 6th day of the series of 11 days. For example, the mean temperature for Julian day 6 will be comprised of all temperatures measured from Julian days 1 to 11, across 30 years, i.e. 330 temperature measurements are summarised in this climatological daily mean. A sliding window centered on Julian day 7 will comprise all temperatures measured on Julian days 2 to 12 over the 30 years; etc. Currently we do not provide the option to calculate a weighted mean; rather, each day receives the same weighting as any other day, irrespective of how far the day is from the one on which the sliding window is centered. Climatologies produced with sliding windows of width 1, 11, 31, and 61 days are presented in Figure 1. In the figure we see that the wider the sliding window becomes the less day-to-day noise is retained in the climatology.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse) <span class="co"># misc. data processing conveniences</span>
-<span class="kw">library</span>(lubridate) <span class="co"># for working with dates</span>
-<span class="kw">library</span>(heatwaveR)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Using a built-in data set</span>
-ts_dat &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/make_whole">make_whole</a></span>(sst_WA)
-<span class="co"># smooth_percentile = FALSE</span>
-res.<span class="fl">1.</span>F &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/detect">detect</a></span>(ts_dat, <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,
-              <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>,
-              <span class="dt">window_half_width =</span> <span class="dv">0</span>, <span class="dt">smooth_percentile =</span> F)
-res.<span class="fl">11.</span>F &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/detect">detect</a></span>(ts_dat, <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,
-              <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>, <span class="dt">smooth_percentile =</span> F)
-res.<span class="fl">31.</span>F &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/detect">detect</a></span>(ts_dat, <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,
-              <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>,
-              <span class="dt">window_half_width =</span> <span class="dv">15</span>, <span class="dt">smooth_percentile =</span> F)
-res.<span class="fl">61.</span>F &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/detect">detect</a></span>(ts_dat, <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,
-              <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>,
-              <span class="dt">window_half_width =</span> <span class="dv">30</span>, <span class="dt">smooth_percentile =</span> F)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(tidyverse) <span class="co"># misc. data processing conveniences</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(lubridate) <span class="co"># for working with dates</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">library</span>(heatwaveR)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Using a built-in data set</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">ts_dat &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/make_whole">make_whole</a></span>(sst_WA)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co"># smooth_percentile = FALSE</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">res.<span class="fl">1.</span>F &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/detect">detect</a></span>(ts_dat, <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">              <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>,</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">              <span class="dt">window_half_width =</span> <span class="dv">0</span>, <span class="dt">smooth_percentile =</span> F)<span class="op">$</span>clim</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">res.<span class="fl">11.</span>F &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/detect">detect</a></span>(ts_dat, <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">              <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>, <span class="dt">smooth_percentile =</span> F)<span class="op">$</span>clim</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9">res.<span class="fl">31.</span>F &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/detect">detect</a></span>(ts_dat, <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,</a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">              <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>,</a>
+<a class="sourceLine" id="cb2-11" data-line-number="11">              <span class="dt">window_half_width =</span> <span class="dv">15</span>, <span class="dt">smooth_percentile =</span> F)<span class="op">$</span>clim</a>
+<a class="sourceLine" id="cb2-12" data-line-number="12">res.<span class="fl">61.</span>F &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/detect">detect</a></span>(ts_dat, <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,</a>
+<a class="sourceLine" id="cb2-13" data-line-number="13">              <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>,</a>
+<a class="sourceLine" id="cb2-14" data-line-number="14">              <span class="dt">window_half_width =</span> <span class="dv">30</span>, <span class="dt">smooth_percentile =</span> F)<span class="op">$</span>clim</a></code></pre></div>
+<div class="figure">
+<img src="climat_1.png" alt="Figure 2." style="width:80.0%"><p class="caption"><strong>Figure 2.</strong></p>
+</div>
 <p>To produce smoother climatologies, we can additionally enable a moving average smoother. The result is shown in Figure 2.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#smooth_percentile = TRUE</span>
-res.<span class="fl">11.</span>T &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/detect">detect</a></span>(ts_dat, <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,
-              <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>)
-res.<span class="fl">31.</span>T &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/detect">detect</a></span>(ts_dat, <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,
-              <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>,
-              <span class="dt">window_half_width =</span> <span class="dv">15</span>)
-res.<span class="fl">61.</span>T &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/detect">detect</a></span>(ts_dat, <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,
-              <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>,
-              <span class="dt">window_half_width =</span> <span class="dv">30</span>)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co">#smooth_percentile = TRUE</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">res.<span class="fl">11.</span>T &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/detect">detect</a></span>(ts_dat, <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">              <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>)<span class="op">$</span>clim</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">res.<span class="fl">31.</span>T &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/detect">detect</a></span>(ts_dat, <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">              <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>,</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">              <span class="dt">window_half_width =</span> <span class="dv">15</span>)<span class="op">$</span>clim</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">res.<span class="fl">61.</span>T &lt;-<span class="st"> </span>heatwaveR<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/heatwaveR/topics/detect">detect</a></span>(ts_dat, <span class="dt">climatology_start =</span> <span class="st">"1983-01-01"</span>,</a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">              <span class="dt">climatology_end =</span> <span class="st">"2012-12-31"</span>,</a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">              <span class="dt">window_half_width =</span> <span class="dv">30</span>)<span class="op">$</span>clim</a></code></pre></div>
+<div class="figure">
+<img src="climat_2.png" alt="Figure 3." style="width:80.0%"><p class="caption"><strong>Figure 3.</strong></p>
+</div>
 <div id="fourier-analysis-of-time-series-to-construct-a-smooth-climatology" class="section level3">
 <h3 class="hasAnchor">
 <a href="#fourier-analysis-of-time-series-to-construct-a-smooth-climatology" class="anchor"></a>Fourier analysis of time series to construct a smooth climatology</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">library</span>(fda)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">clm &lt;-<span class="st"> </span>res.<span class="fl">1.</span>F <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span><span class="kw">filter</span>(t <span class="op">&lt;=</span><span class="st"> "1982-12-31"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">  </span>as_tibble</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">b7 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/fda/topics/create.fourier.basis">create.fourier.basis</a></span>(<span class="dt">rangeval =</span> <span class="kw">range</span>(clm<span class="op">$</span>doy), <span class="dt">nbasis =</span> <span class="dv">7</span>)</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="kw">plot</span>(b7)</a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9">b7.val &lt;-<span class="st"> </span><span class="kw">as_tibble</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/fda/topics/eval.basis">eval.basis</a></span>(clm<span class="op">$</span>doy, <span class="dt">basisobj =</span> b7))</a>
+<a class="sourceLine" id="cb4-10" data-line-number="10">b7.val &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dt">doy =</span> clm<span class="op">$</span>doy, b7.val) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="st">  </span><span class="kw">gather</span>(<span class="dt">key =</span> <span class="st">"basis"</span>, <span class="dt">value =</span> <span class="st">"value"</span>, <span class="op">-</span>doy) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="st">  </span><span class="kw">as_tibble</span>()</a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co"># ggplot(data = b7.val, aes(x = doy, y = value)) +</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#   geom_line(aes(colour = basis))</span></a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">b7.smth &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/fda/topics/smooth.basis">smooth.basis</a></span>(<span class="dt">argvals =</span> clm<span class="op">$</span>doy, <span class="dt">y =</span> clm<span class="op">$</span>seas_clim_year, <span class="dt">fdParobj =</span> b7)<span class="op">$</span>fd</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">clm.smth &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/fda/topics/eval.fd">eval.fd</a></span>(clm<span class="op">$</span>doy, b7.smth)</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">temps &lt;-<span class="st"> </span><span class="kw">as_tibble</span>(<span class="kw">data.frame</span>(<span class="dt">doy =</span> clm<span class="op">$</span>doy,</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">                              <span class="dt">unsmth_1 =</span> clm<span class="op">$</span>seas_clim_year,</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">                              <span class="dt">smth_11 =</span> res.<span class="fl">11.</span>T<span class="op">$</span>seas_clim_year,</a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">                              <span class="dt">fourier_7 =</span> clm.smth))</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="kw">library</span>(forcats)</a>
+<a class="sourceLine" id="cb5-9" data-line-number="9">plt3 &lt;-<span class="st"> </span>temps <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="st">  </span><span class="kw">gather</span>(<span class="dt">key =</span> <span class="st">"type"</span>, <span class="dt">value =</span> <span class="st">"temperature"</span>, <span class="op">-</span>doy) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> doy, <span class="dt">y =</span> temperature)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">colour =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/forcats/topics/fct_inorder">fct_inorder</a></span>(type), <span class="dt">size =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/forcats/topics/fct_inorder">fct_inorder</a></span>(type))) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="st">  </span><span class="kw">scale_colour_manual</span>(<span class="dt">name =</span> <span class="st">"Smooth"</span>,</a>
+<a class="sourceLine" id="cb5-14" data-line-number="14">                      <span class="dt">values =</span> <span class="kw">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="st">"black"</span>),</a>
+<a class="sourceLine" id="cb5-15" data-line-number="15">                      <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">"1, unsmooth"</span>, <span class="st">"11, smooth"</span>, <span class="st">"Fourier"</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="st">  </span><span class="kw">scale_size_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="fl">0.2</span>, <span class="fl">0.2</span>, <span class="fl">0.6</span>), <span class="dt">guide =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">"Julian day"</span>, <span class="dt">y =</span> <span class="st">"SST (°C)"</span>, <span class="dt">title =</span> <span class="st">"Annual cycle climatology and threshold"</span>,</a>
+<a class="sourceLine" id="cb5-18" data-line-number="18">       <span class="dt">subtitle =</span> <span class="st">"1983-01-01 to 2012-12-31 reference period; various smooths"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="st">  </span><span class="kw">theme_publ</span>()</a>
+<a class="sourceLine" id="cb5-20" data-line-number="20"><span class="kw">ggsave</span>(plt3, <span class="dt">file =</span> <span class="st">"climat_3.png"</span>, <span class="dt">width =</span> <span class="dv">6</span>, <span class="dt">height =</span> <span class="fl">2.8</span>)</a>
+<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="co"># plot(b7.smth[1:7])</span></a>
+<a class="sourceLine" id="cb5-22" data-line-number="22"><span class="co"># b7.PCA = pca.fd(b7.smth, nharm=6)</span></a></code></pre></div>
+<div class="figure">
+<img src="climat_3.png" alt="Figure 4." style="width:80.0%"><p class="caption"><strong>Figure 4.</strong></p>
+</div>
 </div>
 </div>
 <div id="using-a-custom-climatology" class="section level2">

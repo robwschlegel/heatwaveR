@@ -157,7 +157,7 @@ series of temperature along with a daily date vector.</p>
   <span class='kw'>smooth_percentile</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>smooth_percentile_width</span> <span class='kw'>=</span> <span class='fl'>31</span>,
   <span class='kw'>clim_only</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>min_duration</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>join_across_gaps</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>max_gap</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>max_pad_length</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>cold_spells</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>diff_baseline</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>baseline_data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+  <span class='kw'>alt_clim</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>alt_clim_data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -273,22 +273,22 @@ even though cold spells are in fact simply the coldest extreme events in a
 time series, which statistically equate to values below the 10th percentile.</p></td>
     </tr>
     <tr>
-      <th>diff_baseline</th>
+      <th>alt_clim</th>
       <td><p>When this switch is set to <code>FALSE</code>, the default,
 the climatology will be obtained from the time series provided to
-<code>data</code>. Enabling this option allows one to use baseline or climatology
-data different from that within which the extreme events will be detected in.
-The data used for the custom baseline or climatology must be exactly of the
-same structure as that provided to <code>data</code>; in other words, the column
-names must be the same, they must share at least the same duration as implied
-by <code>climatology_start</code> and <code>climatology_end</code>, and they must have
+<code>data</code>. Enabling this option allows one to supply a time series from
+which an alternative climatology will calculated. The data used for the
+creation of an alternative climatology must be exactly of the same structure
+as that provided to <code>data</code>; in other words, the column names must be the
+same, they must share at least the same duration as implied by
+<code>climatology_start</code> and <code>climatology_end</code>, and they must have
 previously been produced by <code>make_whole</code> or it must have been made by
 hand to conform with the data created by <code>make_whole</code>.</p></td>
     </tr>
     <tr>
-      <th>baseline_data</th>
+      <th>alt_clim_data</th>
       <td><p>The name of the dataframe with data to use as the
-custom baseline or climatology. See <code>data</code> and <code>diff_baseline</code>
+custom baseline or climatology. See <code>data</code> and <code>alt_clim</code>
 for more information about the data's structure.</p></td>
     </tr>
     </table>
@@ -382,11 +382,25 @@ and end dates for the climatology period result in full years, e.g.
 "1982-01-01" to "2011-12-31" or "1982-07-01" to "2012-06-30"; if not, this
 may result in an unequal weighting of data belonging with certain months
 within a time series.</p></li>
-<li><p>In this package we delibirately use the terms climatology and baseline,
-which do different things in as far as the event detection algorithm is
-concerned. The standard behaviour is to calculate a climatology is when
-<code>diff_baseline</code> is set as <code>FALSE</code> or when this argument is ommitted
-from `detect()`. A baseline on the other hand... &lt;AJS to add more in here.&gt;</p></li>
+<li><p>In this package we use the terms climatology and baseline, which do
+different things as far as the event detection algorithm is concerned.
+The standard behaviour is to calculate a climatology from the time series
+supplied to <code>data</code> when <code>alt_clim</code> is set as <code>FALSE</code> or when
+this argument is ommitted from <code>detect</code>. Should the default
+climatology not be desired for some reason, a different climatology may be
+created and used for event detection---this is done by supplying an
+alternative data series to <code>alt_clim_data</code>. Either way,
+<code>climatology_start</code>, <code>climatology_end</code>, <code>pctile</code>,
+<code>window_half_width</code>, <code>smooth_percentile</code>,
+<code>smooth_percentile_width</code>, and <code>clim_only</code> will be applied to all
+ensuing data processing steps. In both instances a daily climatology will be,
+created; that is, the climatology will be comprised of one mean temperature
+for each day of the year (365 or 366 days, depending on how leap years are
+dealt with), and the mean will be based on a sample size that is a function of
+the length of time determined by <code>climatology_start</code> to
+<code>climatology_end</code> and the width of the sliding window specified in
+<code>window_half_width</code>.</p></li>
+<li><p>A baseline on the other hand... &lt;AJS to add more in here.&gt;</p></li>
 <li><p>This function supports leap years. This is done by ignoring Feb 29s
 for the initial calculation of the climatology and threshold. The values for
 Feb 29 are then linearly interpolated from the values for Feb 28 and Mar 1.</p></li>
