@@ -27,7 +27,7 @@ A climatological mean is a multiyear average over a base period of typically 30 
 
 Another concept that we use here instead of a climatology is a baseline... <definition to follow>.
 
-![**Figure 1.** Processing pipeline in the `detect()` algorithm with emphasis on the climatology and baseline procedures. The dark black arrows indicate the options that are currently available.](detect_diagram.svg){width=100%}
+![**Figure 1.** Processing pipeline in the `detect()` algorithm with emphasis on the climatology and baseline procedures. The dark black arrows indicate the options that are currently available.](heatwaveR_v3.svg){width=100%}
 
 ## The default climatology and threshold
 
