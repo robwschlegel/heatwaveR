@@ -329,6 +329,10 @@ detect <-
       thresh_clim_year <- rep(NA, nrow(t_dat))
       var_clim_year <- rep(NA, nrow(t_dat))
 
+
+# Smoothing functions START -----------------------------------------------
+
+
       for (i in (window_half_width + 1):((nrow(t_dat) - window_half_width))) {
         seas_clim_year[i] <-
           mean(
@@ -393,6 +397,10 @@ detect <-
       }
     }
 
+
+# Smoothing functions END -------------------------------------------------
+
+
     if (alt_clim) {
       if (is.data.frame(alt_clim_data)) {
         if (nrow(alt_clim_data) == 366) {
@@ -413,8 +421,6 @@ detect <-
       }
     }
 
-    ###
-
     t_series <- ts_xy %>%
       dplyr::inner_join(clim, by = "doy")
     if (clim_only) {
@@ -426,7 +432,13 @@ detect <-
       names(t_series)[2] <- paste(substitute(x))
       names(t_series)[3] <- paste(substitute(y))
       return(t_series)
-    } else {
+      } else {
+
+
+# Detect function START ---------------------------------------------------
+# (it's sitting in the middle of an if/else bit...)
+
+
       t_series$ts_y[is.na(t_series$ts_y)] <- t_series$seas_clim_year[is.na(t_series$ts_y)]
       t_series$thresh_criterion <- t_series$ts_y > t_series$thresh_clim_year
       ex1 <- rle(t_series$thresh_criterion)
@@ -610,6 +622,10 @@ detect <-
       names(t_series)[1] <- paste(substitute(doy))
       names(t_series)[2] <- paste(substitute(x))
       names(t_series)[3] <- paste(substitute(y))
+
+
+# Detect function END -----------------------------------------------------
+
 
       list(clim = tibble::as_tibble(t_series),
            event = tibble::as_tibble(events))
