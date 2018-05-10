@@ -104,9 +104,10 @@ hand to conform with the data created by \code{make_whole}.}
 \item{alt_clim_data}{The name of the dataframe with data to use as the
 custom baseline or climatology. See \code{data} and \code{alt_clim}
 for more information about the data's structure. If the length of the
-dataframe provided is either 365 or 366 rows then it will be used directly
-as the climatology to be used and the original \code{data} will be used to
-create the baseline.}
+dataframe provided is 366 rows then it will be used directly as the
+climatology against which \code{data} will be interrogated for events. Note
+that this 366 row dataframe must contain the columns: \code{doy},
+\code{seas_clim_year}, \code{thresh_clim_year}, and \code{var_clim_year}.}
 }
 \value{
 The function will return a list of two tibbles (see the \code{tidyverse}),
@@ -242,6 +243,9 @@ deviations below the (100 - pctile)th percentile  (e.g., the 10th instead of
 represent the temperature anomaly below climatology.
 \item If only the climatology for the time series is required, and not the
 events themselves, this may be done by setting \code{clim_only} = TRUE.
+\item If a 366 row dataframe is provided to \code{alt_clim_data} then the
+\code{climatology_start} and \code{climatology_end} arguments may be
+ommitted.
 }
 The original Python algorithm was written by Eric Oliver, Institute for
 Marine and Antarctic Studies, University of Tasmania, Feb 2015, and is

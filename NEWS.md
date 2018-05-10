@@ -1,3 +1,7 @@
+# heatwaveR 0.1.0.9000 (2018-05-10)
+
+* One may now provide alternative baselines and climatologies to `detect()`
+
 # heatwaveR 0.0.7.9001 (2018-05-05)
 
 * Testing for `category()`

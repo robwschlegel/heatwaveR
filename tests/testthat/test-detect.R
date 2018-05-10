@@ -47,3 +47,10 @@ test_that("cold_spells produces negative values", {
 #   expect_equal(ncol(res$clim), 10)
 #   expect_equal(ncol(res$event), 23)
 # })
+
+# Create test to check that missing climatology_start and climatolog_end do not
+# trigger a warning if an alt_clim_data of length 365 or 366 has been provided
+
+# Test that if cold_spells = TRUE & clim_only = TRUE that the output is not negative values
+
+# Test that the alt_clim_data must have the same column names as data

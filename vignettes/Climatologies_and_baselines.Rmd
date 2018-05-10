@@ -189,7 +189,7 @@ ggsave(plt3, file = "climat_3.png", width = 6, height = 2.8)
 
 ![**Figure 4.** ](climat_3.png){width=80%}
 
-```{r}
+```{r, error=TRUE}
 library(TSA)
 # compute the Fourier Transform
 p <- periodogram(y)
@@ -203,13 +203,13 @@ time <- 1/top6$f
 time
 ```
 
-```{r}
+```{r, error=TRUE}
 fft(y)
 
 spectrum(y)
 ```
 
-```{r}
+```{r, error=TRUE}
 require(graphics)
 spec.y <- spec.pgram(y)
 plot(spec.y, plot.type = "coherency")
@@ -217,9 +217,60 @@ plot(spec.y, plot.type = "phase")
 
 library(GeneCycle)
 GeneCycle::periodogram(y)
+```
 
+## Using a custom baseline
+
+Should one want to use a different baseline to calculate the climatology against which the events should be detected, this is now possible.
+
+```{r}
+# Grab all three built in time series
+ts1 <- make_whole(sst_WA)
+ts2 <- make_whole(sst_Med)
+ts3 <- make_whole(sst_NW_Atl)
+
+# Normal calculation
+res_norm <- detect(ts1, climatology_start = "1983-01-01", climatology_end = "2012-12-31")
+
+# Calculate events in one time series with a baseline from another
+res_base_diff <- detect(ts1, climatology_start = "1983-01-01", climatology_end = "2012-12-31",
+                        alt_clim = TRUE, alt_clim_data = ts2)
 ```
 
 ## Using a custom climatology
 
-## Using a custom baseline
+If one would rather supply a pre-calculated climatology, and not calculate one from a baseline, this is also now possible.
+
+```{r}
+# Pull out the climatologies from the built in time series
+ts1_clim <- detect(ts1, climatology_start = "1983-01-01", climatology_end = "2012-12-31")$clim %>%
+  dplyr::select(doy, seas_clim_year, thresh_clim_year, var_clim_year) %>%
+  base::unique() %>%
+  dplyr::arrange(doy)
+ts2_clim <- detect(ts2, climatology_start = "1983-01-01", climatology_end = "2012-12-31")$clim %>%
+  dplyr::select(doy, seas_clim_year, thresh_clim_year, var_clim_year) %>%
+  base::unique() %>%
+  dplyr::arrange(doy)
+ts3_clim <- detect(ts3, climatology_start = "1983-01-01", climatology_end = "2012-12-31")$clim %>%
+  dplyr::select(doy, seas_clim_year, thresh_clim_year, var_clim_year) %>%
+  base::unique() %>%
+  dplyr::arrange(doy)
+
+# Calculate events in one time series with a climatology from another
+res_clim_diff <- detect(ts1, alt_clim = TRUE, alt_clim_data = ts2_clim)
+```
+
+Note how the climatologies are the same below:
+
+```{r}
+head(ts2_clim)
+head(res_clim_diff$clim)
+```
+
+Should the provided climatology be to low, the function will return a warning letting the user know this.
+
+```{r, error=TRUE}
+# Calculate events in one time series with a climatology from another
+res_clim_diff <- detect(ts1, alt_clim = TRUE, alt_clim_data = ts3_clim)
+```
+
