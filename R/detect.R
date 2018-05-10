@@ -1,7 +1,9 @@
 #' Detect heatwaves and cold-spells.
 #'
 #' Applies the Hobday et al. (2016) marine heat wave definition to an input time
-#' series of temperature along with a daily date vector.
+#' series of a given value (temperature) along with a daily date vector. An alternate
+#' baseline and/or climatology may also be provided against which to detect the events
+#' (in development).
 #'
 #' @importFrom dplyr %>%
 #'
@@ -32,7 +34,7 @@
 #' calculated.
 #' @param pctile Threshold percentile (\%) for detection of extreme values.
 #' Default is \code{90}th percentile. Please see \code{cold_spells} for more
-#' information about the calculation of marine cold spells.
+#' information about the calculation of marine cold-spells.
 #' @param window_half_width Width of sliding window about day-of-year (to one
 #' side of the center day-of-year) used for the pooling of values and
 #' calculation of climatology and threshold percentile. Default is \code{5}
@@ -40,7 +42,7 @@
 #' series of 11 days.
 #' @param smooth_percentile Boolean switch selecting whether to smooth the
 #' climatology and threshold percentile timeseries with a moving average of
-#' width \code{smooth_percentile}. Default is \code{TRUE}.
+#' \code{smooth_percentile_width}. Default is \code{TRUE}.
 #' @param smooth_percentile_width Full width of moving average window for smoothing
 #' climatology and threshold. Default is \code{31} days.
 #' @param clim_only Choose to calculate only the climatologies and not the
@@ -63,7 +65,7 @@
 #' heatwaves, meaning that \code{pctile} should be set the same regardless
 #' if one is calculating heatwaves or cold-spells. For example, if one wants
 #' to calculate heatwaves above the 90th percentile threshold
-#' (the default) one sets \code{pctile = 90}. Likewise, if one would like
+#' (the default) one sets \code{pctile = 90}. Likewise, if one would like to
 #' identify the most intense cold-spells one must also set \code{pctile = 90},
 #' even though cold spells are in fact simply the coldest extreme events in a
 #' time series, which statistically equate to values below the 10th percentile.
@@ -80,6 +82,21 @@
 #' @param baseline_data The name of the dataframe with data to use as the
 #' custom baseline or climatology. See \code{data} and \code{diff_baseline}
 #' for more information about the data's structure.
+#' @param diff_clim This argument expects either \code{TRUE} or \code{FALSE}
+#' (default). When either ommitted or set to \cofe{FALSE}, the \code{data}
+#' provided will be used to calculate the climatology as instructed by the
+#' \code{window_half_width}, \code{smooth_percentile}, and
+#' \code{smooth_percentile_width} arguments. If \code{diff_baseline = TRUE},
+#' the climatology will be calculated from the data provided to
+#' \code{baseline_data}. If \code{diff_clim = TRUE}, niether the \code{data}
+#' nor the \code{baseline_data} will be used to calculate the climatology.
+#' Rather another dataframe, matching the same structure as required for
+#' \code{data} must be provided to the \code{clim_data} argument (see next).
+#' @param clim_data If \code{diff_clim = TRUE} then the dataframe provided
+#' to this argument will be used to calculate the climatology used to detect
+#' events. See \code{data} for more information about the data's structure.
+#' The length of the dataframe provided to \code{clim_data} must be either
+#' 365 or 366 rows.
 #'
 #' @details
 #' \enumerate{
@@ -125,12 +142,15 @@
 #' represent the temperature anomaly below climatology.
 #' \item If only the climatology for the time series is required, and not the
 #' events themselves, this may be done by setting \code{clim_only} = TRUE.
+#' \item If \code{clim_diff = TRUE}, the \code{climatology_start} and
+#' \code{climatology_end} arguments are ignored as they are effectively
+#' replaced by the pre-made climatology provided by the user.
 #' }
 #' The original Python algorithm was written by Eric Oliver, Institute for
 #' Marine and Antarctic Studies, University of Tasmania, Feb 2015, and is
 #' documented by Hobday et al. (2016). The marine cold spell option was
 #' implemented in version 0.13 (21 Nov 2015) of the Python module as a result
-#' of our preparation of Schlegel et al. (submitted), wherein the cold events
+#' of our preparation of Schlegel et al. (2017), wherein the cold events
 #' receive a brief overview.
 #'
 #' @return The function will return a list of two tibbles (see the \code{tidyverse}),
@@ -209,7 +229,7 @@
 #' doi:10.1016/j.pocean.2015.12.014
 #'
 #' Schlegel, R. W., Oliver, C. J., Wernberg, T. W., Smit, A. J. (2017).
-#' Coastal and offshore co-occurrences of marine heatwaves and cold-spells.
+#' Nearshore and offshore co-occurrences of marine heatwaves and cold-spells.
 #' Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004
 #'
 #' @export
@@ -240,7 +260,9 @@ detect <-
            max_pad_length = 3,
            cold_spells = FALSE,
            diff_baseline = FALSE,
-           baseline_data = NULL
+           baseline_data = NULL,
+           diff_clim = FALSE,
+           clim_data = NULL
            # verbose = TRUE, # to be implemented
   ) {
 
