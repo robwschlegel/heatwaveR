@@ -3,6 +3,7 @@
 export(block_average)
 export(category)
 export(detect)
+export(detect_clim)
 export(event_line)
 export(exceedance)
 export(geom_flame)

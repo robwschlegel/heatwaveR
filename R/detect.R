@@ -47,7 +47,7 @@
 #' climatology and threshold. Default is \code{31} days.
 #' @param clim_only Choose to calculate only the climatologies and not the
 #' events. Default is \code{FALSE}.
-#' @param min_duration Minimum duration for acceptance of detected MHWs.
+#' @param min_duration Minimum duration for acceptance of detected events.
 #' Default is \code{5} days.
 #' @param join_across_gaps Boolean switch indicating whether to join MHWs which
 #' occur before/after a short gap as specified by \code{max_gap}. Default
@@ -234,8 +234,6 @@
 #' Schlegel, R. W., Oliver, C. J., Wernberg, T. W., Smit, A. J. (2017).
 #' Nearshore and offshore co-occurrences of marine heatwaves and cold-spells.
 #' Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004
-#'
-#' @export
 #'
 #' @examples
 #' ts_dat <- make_whole(sst_WA)
@@ -440,7 +438,7 @@ detect <-
 
       duration <- NULL
 
-      protoFunc <- function(proto_data) {
+      proto_func <- function(proto_data) {
         out <- proto_data %>%
           dplyr::mutate(duration = index_stop - index_start + 1) %>%
           dplyr::filter(duration >= min_duration) %>%
