@@ -14,8 +14,10 @@ navbar:
       href: articles/OISST_preparation.html
     - text: "Extreme event detection in gridded data"
       href: articles/gridded_event_detection.html
-    - text: "Climatologies and baselines"
+    - text: "Alternative climatologies and baselines"
       href: articles/Climatologies_and_baselines.html
+    - text: "Climatology creation"
+      href: articles/Climatology_creation.html
   - text: News
     href: news/index.html
   right:

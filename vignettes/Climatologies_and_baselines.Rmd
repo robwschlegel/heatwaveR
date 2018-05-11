@@ -1,13 +1,13 @@
 ---
-title: "Climatologies and baselines"
+title: "Alternative climatologies and baselines"
 author: "AJ Smit"
 date: "`r Sys.Date()`"
-description: "This vignettes is about climatologies and baselines."
+description: "This vignettes is about alternative climatologies and baselines."
 output: 
   rmarkdown::html_vignette:
     fig_caption: yes
 vignette: >
-  %\VignetteIndexEntry{Climatologies and baselines}
+  %\VignetteIndexEntry{Alternative climatologies and baselines}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
