@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Climatologies and baselines • heatwaveR</title>
+<title>Alternative climatologies and baselines • heatwaveR</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/spacelab/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><!-- docsearch --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css">
 <link href="../docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Climatologies and baselines">
-<meta property="og:description" content="This vignettes is about climatologies and baselines.">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Alternative climatologies and baselines">
+<meta property="og:description" content="This vignettes is about alternative climatologies and baselines.">
 <meta property="og:image" content="https://robwschlegel.github.io/heatwaveR/index.html/logo.png">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
@@ -67,7 +67,10 @@
       <a href="../articles/gridded_event_detection.html">Extreme event detection in gridded data</a>
     </li>
     <li>
-      <a href="../articles/Climatologies_and_baselines.html">Climatologies and baselines</a>
+      <a href="../articles/Climatologies_and_baselines.html">Alternative climatologies and baselines</a>
+    </li>
+    <li>
+      <a href="../articles/Short_climatologies.html">Short climatologies</a>
     </li>
   </ul>
 </li>
@@ -101,10 +104,10 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Climatologies and baselines</h1>
+      <h1>Alternative climatologies and baselines</h1>
                         <h4 class="author">AJ Smit</h4>
             
-            <h4 class="date">2018-05-11</h4>
+            <h4 class="date">2018-05-12</h4>
       
       
       <div class="hidden name"><code>Climatologies_and_baselines.Rmd</code></div>
@@ -171,10 +174,10 @@
 <a class="sourceLine" id="cb4-6" data-line-number="6">b7 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/fda/topics/create.fourier.basis">create.fourier.basis</a></span>(<span class="dt">rangeval =</span> <span class="kw">range</span>(clm<span class="op">$</span>doy), <span class="dt">nbasis =</span> <span class="dv">7</span>)</a>
 <a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co"># plot(b7)</span></a>
 <a class="sourceLine" id="cb4-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9">b7.val &lt;-<span class="st"> </span><span class="kw">as_tibble</span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/fda/topics/eval.basis">eval.basis</a></span>(clm<span class="op">$</span>doy, <span class="dt">basisobj =</span> b7))</a>
-<a class="sourceLine" id="cb4-10" data-line-number="10">b7.val &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="dt">doy =</span> clm<span class="op">$</span>doy, b7.val) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="st">  </span><span class="kw">gather</span>(<span class="dt">key =</span> <span class="st">"basis"</span>, <span class="dt">value =</span> <span class="st">"value"</span>, <span class="op">-</span>doy) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="st">  </span><span class="kw">as_tibble</span>()</a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co"># b7.val &lt;- as_tibble(eval.basis(clm$doy, basisobj = b7))</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co"># b7.val &lt;- cbind(doy = clm$doy, b7.val) %&gt;% </span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#   gather(key = "basis", value = "value", -doy) %&gt;% </span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#   as_tibble()</span></a>
 <a class="sourceLine" id="cb4-13" data-line-number="13"></a>
 <a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co"># create smooth seasonal climatology</span></a>
 <a class="sourceLine" id="cb4-15" data-line-number="15">b7.seas.smth &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/fda/topics/smooth.basis">smooth.basis</a></span>(<span class="dt">argvals =</span> clm<span class="op">$</span>doy, <span class="dt">y =</span> clm<span class="op">$</span>seas_clim_year, <span class="dt">fdParobj =</span> b7)<span class="op">$</span>fd</a>

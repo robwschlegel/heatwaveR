@@ -159,10 +159,10 @@ clm <- res.1.F %>%
 b7 <- create.fourier.basis(rangeval = range(clm$doy), nbasis = 7)
 # plot(b7)
 
-b7.val <- as_tibble(eval.basis(clm$doy, basisobj = b7))
-b7.val <- cbind(doy = clm$doy, b7.val) %>% 
-  gather(key = "basis", value = "value", -doy) %>% 
-  as_tibble()
+# b7.val <- as_tibble(eval.basis(clm$doy, basisobj = b7))
+# b7.val <- cbind(doy = clm$doy, b7.val) %>% 
+#   gather(key = "basis", value = "value", -doy) %>% 
+#   as_tibble()
 
 # create smooth seasonal climatology
 b7.seas.smth <- smooth.basis(argvals = clm$doy, y = clm$seas_clim_year, fdParobj = b7)$fd

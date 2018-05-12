@@ -16,8 +16,8 @@ navbar:
       href: articles/gridded_event_detection.html
     - text: "Alternative climatologies and baselines"
       href: articles/Climatologies_and_baselines.html
-    - text: "Climatology creation"
-      href: articles/Climatology_creation.html
+    - text: "Short climatologies"
+      href: articles/Short_climatologies.html
   - text: News
     href: news/index.html
   right:

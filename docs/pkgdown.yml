@@ -4,6 +4,7 @@ pkgdown_sha: ~
 articles:
   Climatologies_and_baselines: Climatologies_and_baselines.html
   OISST_preparation: OISST_preparation.html
+  Short_climatologies: Short_climatologies.html
   gridded_event_detection: gridded_event_detection.html
 urls:
   reference: https://robwschlegel.github.io/heatwaveR/index.html/reference
