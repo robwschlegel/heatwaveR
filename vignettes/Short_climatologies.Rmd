@@ -165,4 +165,4 @@ plt3 <- ggplot(data = sst.repl.smth, aes(x = doy, y = smoothed)) +
 ggsave(plt3, file = "rand_mat_smoothed_1.png", width = 12, height = 6)
 ```
 
-![**Figure 2.** Bootstrapped reconstructions of daily climatologies based on mean SSTs derived from time series fo 10, 20 and 30 years long. Red lines are the smoothed climatologies obtained from a Fourier analysis.](rand_mat_smoothed_1.png){width=100%}
+![**Figure 2.** Bootstrapped reconstructions of daily climatologies based on mean SSTs derived from time series of 10, 20 and 30 years long. Red lines are the smoothed climatologies obtained from a Fourier analysis.](rand_mat_smoothed_1.png){width=100%}
