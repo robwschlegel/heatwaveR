@@ -114,7 +114,6 @@
 #' ts_dat <- make_whole(sst_WA)
 #' res <- ts2clm(ts_dat, clmStart = "1983-01-01",
 #'               clmEnd = "2012-12-31")
-#' # show a portion of the climatology:
 #' res
 ts2clm <-
   function(data,
