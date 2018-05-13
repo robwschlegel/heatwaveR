@@ -289,7 +289,6 @@ detect <-
           ts_x <- eval(substitute(x), alt_clim_data)
           ts_y <- eval(substitute(y), alt_clim_data)
           for_clim <- tibble::tibble(doy, ts_x, ts_y)
-          # rm(doy); rm(ts_x); rm(ts_y)
           if (cold_spells)
             for_clim$ts_y <- -for_clim$ts_y
         }
@@ -298,7 +297,7 @@ detect <-
 
     rm(doy); rm(ts_x); rm(ts_y)
 
-    if (exists("for_clim")){
+    if (exists("for_clim")) {
 
       if (missing(climatology_start))
         stop("Oops! Please provide BOTH start and end dates for the climatology.")
@@ -325,13 +324,13 @@ detect <-
       t_dat <- rbind(utils::tail(t_dat, window_half_width),
                      t_dat, utils::head(t_dat, window_half_width))
 
-      seas_clim_year <- rep(NA, nrow(t_dat))
-      thresh_clim_year <- rep(NA, nrow(t_dat))
-      var_clim_year <- rep(NA, nrow(t_dat))
-
 
 # Smoothing functions START -----------------------------------------------
 
+
+      seas_clim_year <- rep(NA, nrow(t_dat))
+      thresh_clim_year <- rep(NA, nrow(t_dat))
+      var_clim_year <- rep(NA, nrow(t_dat))
 
       for (i in (window_half_width + 1):((nrow(t_dat) - window_half_width))) {
         seas_clim_year[i] <-
@@ -424,7 +423,7 @@ detect <-
     t_series <- ts_xy %>%
       dplyr::inner_join(clim, by = "doy")
     if (clim_only) {
-      if (cold_spells){
+      if (cold_spells) {
         t_series$seas_clim_year <- -t_series$seas_clim_year
         t_series$thresh_clim_year <- -t_series$thresh_clim_year
       }
