@@ -69,12 +69,12 @@ units need to be determined by the user.
   \item{temp}{The measurement vector as per the the original \code{data} supplied
   to the function. If a different column was given to the \code{y} argument that
   will be shown here.}
-  \item{seas_clim_year}{Climatological seasonal cycle [deg. C].}
-  \item{thresh_clim_year}{Seasonally varying threshold (e.g., 90th
+  \item{seasClim}{Climatological seasonal cycle [deg. C].}
+  \item{threshClim}{Seasonally varying threshold (e.g., 90th
   percentile) [deg. C]. This is used in \code{\link{detect_event}} for the
   detection/calculation of events (MHWs).}
-  \item{var_clim_year}{Seasonally varying variance (standard deviation) [deg. C].}
-Should \code{clm_only} be enabled, only the 365 or 366 day climatology will be
+  \item{varClim}{Seasonally varying variance (standard deviation) [deg. C].}
+Should \code{clmOnly} be enabled, only the 365 or 366 day climatology will be
 returned.
 }
 \description{

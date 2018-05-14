@@ -1,15 +1,23 @@
 # heatwaveR 0.2.1.9000 (2018-05-14)
 
-* `ts2clm()` used instead of `detect_clim()`
-* Phasing in identical names the python version
+* Phasing in identical names as in the python version
 * `detect_event()` now passing checks
 * Must still test for MCSs
+* The old `detect()` function was unpacked and simplified. Internal code is now
+  in new functions, most of which will not be seen by the user. They are `make_whole()`
+  `proto_event()`, `clim_calc()`, `smooth_percentile()`, `clim_spread()`, and
+  `ts2clm()`
+* `ts2clm()` used instead of `detect_clim()`
+* Climatologies can now be calculated independently of the detect functionality
+* `exceedance()` function testthat checks updated to account for change in 
+  variable naming
 
 # heatwaveR 0.2.0.9000 (2018-05-11)
 
 * `detect()` has now been broken into `detect_clim()` and `detect_event()`
 * These now also rely on internal funcitons
 * The purpose of this is to create a family of functions that provide different options
+* New vignette on making short climatologies.
 
 # heatwaveR 0.1.0.9000 (2018-05-10)
 

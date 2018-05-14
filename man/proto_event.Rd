@@ -2,13 +2,13 @@
 % Please edit documentation in R/proto_event.R
 \name{proto_event}
 \alias{proto_event}
-\title{Detect proto-events based on a chosen criteria (column)}
+\title{Detect proto-events based on a chosen criterion (column)}
 \usage{
 proto_event(t_series, criterion_column, minDuration, gaps = FALSE,
   maxGap = 2)
 }
 \arguments{
-\item{t_series}{A dataframe of the correct diemensions inherited
+\item{t_series}{A dataframe of the correct dimensions inherited
 from \code{\link{detect_event}} within which this runs.}
 
 \item{criterion_column}{The column to use for the detection of events.}
@@ -23,6 +23,6 @@ events will be combined into one event if \code{joinAcrossGaps = TRUE}.}
 }
 \description{
 This functions detects proto-events, which are periods of time
-above a threshold, but without considering a minium starting
-duration or joining gap.
+above a threshold, but without considering a minimum duration or
+joining gap.
 }

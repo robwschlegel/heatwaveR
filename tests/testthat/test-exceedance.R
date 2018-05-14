@@ -26,7 +26,7 @@ test_that("threshold may not exceed the min temperature in the data", {
 
 test_that("below argument creates negative values", {
   res <- exceedance(data = make_whole(sst_Med), threshold = 15, below = TRUE)
-  expect_lt(res$exceedance$int_max[1], 0)
+  expect_lt(res$exceedance$intensity_max[1], 0)
 })
 
 test_that("threshold must be exceeded by enough to be able to detect events", {
@@ -37,9 +37,9 @@ test_that("threshold must be exceeded by enough to be able to detect events", {
                "Not enough consecutive days below 12 to detect an event.")
 })
 
-test_that("join_across_gaps = F creates more events", {
+test_that("joinAcrossGaps = F creates more events", {
   res1 <- exceedance(data = make_whole(sst_Med), threshold = 20)
-  res2 <- exceedance(data = make_whole(sst_Med), threshold = 20, join_across_gaps = F)
+  res2 <- exceedance(data = make_whole(sst_Med), threshold = 20, joinAcrossGaps = F)
   expect_lt(nrow(res1$exceedance), nrow(res2$exceedance))
 })
 

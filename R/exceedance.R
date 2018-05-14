@@ -22,20 +22,20 @@
 #' @param below Default is \code{FALSE}. When set to TRUE, consecutive days of temperature
 #' below the \code{threshold} variable are calculated. When set to FALSE,
 #' consecutive days above the \code{threshold} variable are calculated.
-#' @param min_duration Minimum duration that temperatures must be in exceedance
-#' of the \code{threshold} variable. Default is \code{5} days.
-#' @param join_across_gaps A TRUE/FALSE statement that indicates whether
+#' @param minDuration Minimum duration that temperatures must be in exceedance
+#' of the \code{threshold} variable. The default is \code{5} days.
+#' @param joinAcrossGaps A TRUE/FALSE statement that indicates whether
 #' or not to join consecutive days of temperatures in exceedance of the
 #' \code{threshold} across a small gap between groups before/after a short
-#' gap as specified by \code{max_gap}. Default is \code{TRUE}.
-#' @param max_gap The maximum length of the gap across which to connect
+#' gap as specified by \code{maxGap}. The default is \code{TRUE}.
+#' @param maxGap The maximum length of the gap across which to connect
 #' consecutive days in exceedance of the \code{threshold} when
-#' \code{join_across_gaps} is \code{TRUE}.
-#' @param max_pad_length Specifies the maximum length of days over which to
+#' \code{joinAcrossGaps = TRUE}.
+#' @param maxPadLength Specifies the maximum length of days over which to
 #' interpolate (pad) missing data (specified as \code{NA}) in the input
 #' temperature time series; i.e., any consecutive blocks of NAs with length
-#' greater than \code{max_pad_length} will be left as \code{NA}. Set as an
-#' integer. Default is \code{3} days.
+#' greater than \code{maxPadLength} will be left as \code{NA}. Set as an
+#' integer. The default is \code{3} days.
 #'
 #' @details
 #' \enumerate{
@@ -51,7 +51,7 @@
 #' after the end-day. This is consistent with the duration definition as implemented,
 #' which assumes duration = end day - start day + 1.
 #' \item For the purposes of exceedance detection, any missing temperature values not
-#' interpolated over (through optional \code{max_pad_length}) will remain as
+#' interpolated over (through optional \code{maxPadLength}) will remain as
 #' \code{NA}. This means they will trigger the end of an exceedance if the adjacent
 #' temperature values are in exceedance of the \code{threshold}.
 #' \item If the function is used to detect consecutive days of temperature under
@@ -85,7 +85,7 @@
 #'   \item{thresh_criterion}{Boolean indicating if \code{temp} exceeds
 #'   \code{threshold}.}
 #'   \item{duration_criterion}{Boolean indicating whether periods of consecutive
-#'   \code{thresh_criterion} are >= \code{min_duration}.}
+#'   \code{thresh_criterion} are >= \code{minDuration}.}
 #'   \item{exceedance}{Boolean indicting if all criteria that define a discrete
 #'   group in exceedance of the \code{threshold} are met.}
 #'   \item{exceedance_no}{A sequential number indicating the ID and order of
@@ -101,16 +101,16 @@
 #'   \item{date_start}{Start date of exceedance [date].}
 #'   \item{date_stop}{Stop date of exceedance [date].}
 #'   \item{date_peak}{Date of exceedance peak [date].}
-#'   \item{int_mean}{Mean intensity [deg. C].}
-#'   \item{int_max}{Maximum (peak) intensity [deg. C].}
-#'   \item{int_var}{Intensity variability (standard deviation) [deg. C].}
-#'   \item{int_cum}{Cumulative intensity [deg. C x days].}
+#'   \item{intensity_mean}{Mean intensity [deg. C].}
+#'   \item{intensity_max}{Maximum (peak) intensity [deg. C].}
+#'   \item{intensity_var}{Intensity variability (standard deviation) [deg. C].}
+#'   \item{intensity_cum}{Cumulative intensity [deg. C x days].}
 #'   \item{rate_onset}{Onset rate of exceedance [deg. C / day].}
 #'   \item{rate_decline}{Decline rate of exceedance [deg. C / day].}
 #'
-#' \code{int_max_abs}, \code{int_mean_abs}, \code{int_var_abs}, and
-#' \code{int_cum_abs} are as above except as absolute magnitudes
-#' rather than relative to the threshold.
+#' \code{intensity_max_abs}, \code{intensity_mean_abs}, \code{intensity_var_abs},
+#' and \code{intensity_cum_abs} are as above except as absolute magnitudes rather
+#' than relative to the threshold.
 #'
 #' @author Robert W. Schlegel, Albertus J. Smit
 #'
@@ -129,20 +129,19 @@ exceedance <-
            y = temp,
            threshold,
            below = FALSE,
-           min_duration = 5,
-           join_across_gaps = TRUE,
-           max_gap = 2,
-           max_pad_length = 3) {
+           minDuration = 5,
+           joinAcrossGaps = TRUE,
+           maxGap = 2,
+           maxPadLength = 3) {
 
     temp <- NULL
 
     ts.x <- eval(substitute(x), data)
     ts.y <- eval(substitute(y), data)
-    t_series <- tibble::tibble(ts.x,
-                               ts.y)
+    t_series <- tibble::tibble(ts.x, ts.y)
     rm(ts.x); rm(ts.y)
 
-    t_series$ts.y <- zoo::na.approx(t_series$ts.y, maxgap = max_pad_length)
+    t_series$ts.y <- zoo::na.approx(t_series$ts.y, maxgap = maxPadLength)
 
     if (missing(threshold))
       stop("Oh no! Please provide a threshold against which to calculate exceedances.")
@@ -169,7 +168,7 @@ exceedance <-
     ind1 <- rep(seq_along(ex1$lengths), ex1$lengths)
     s1 <- split(zoo::index(t_series$thresh_criterion), ind1)
     proto_exceedances <- s1[ex1$values == TRUE]
-    index_stop <- index_start <- NULL ###
+    index_stop <- index_start <- NULL
     proto_exceedances_rng <-
       lapply(proto_exceedances, function(x)
         data.frame(index_start = min(x), index_stop = max(x)))
@@ -179,7 +178,7 @@ exceedance <-
     protoFunc <- function(proto_data) {
       out <- proto_data %>%
         dplyr::mutate(duration = index_stop - index_start + 1) %>%
-        dplyr::filter(duration >= min_duration) %>%
+        dplyr::filter(duration >= minDuration) %>%
         dplyr::mutate(date_start = t_series$ts.x[index_start]) %>%
         dplyr::mutate(date_stop = t_series$ts.x[index_stop])
     }
@@ -213,16 +212,16 @@ exceedance <-
       dplyr::mutate(exceedance_no = c(1:length(ex2$values[ex2$values == FALSE]))) %>%
       dplyr::mutate(duration = index_stop - index_start + 1)
 
-    if (any(proto_gaps$duration >= 1 & proto_gaps$duration <= max_gap)) {
+    if (any(proto_gaps$duration >= 1 & proto_gaps$duration <= maxGap)) {
       proto_gaps <- proto_gaps %>%
         dplyr::mutate(date_start = t_series$ts.x[index_start]) %>%
         dplyr::mutate(date_stop = t_series$ts.x[index_stop]) %>%
-        dplyr::filter(duration >= 1 & duration <= max_gap)
+        dplyr::filter(duration >= 1 & duration <= maxGap)
     } else {
-      join_across_gaps <- FALSE
+      joinAcrossGaps <- FALSE
     }
 
-    if (join_across_gaps) {
+    if (joinAcrossGaps) {
       t_series$exceedance <- t_series$duration_criterion
       for (i in 1:nrow(proto_gaps)) {
         t_series$exceedance[proto_gaps$index_start[i]:proto_gaps$index_stop[i]] <-
@@ -236,7 +235,7 @@ exceedance <-
     ind3 <- rep(seq_along(ex3$lengths), ex3$lengths)
     s3 <- split(zoo::index(t_series$exceedance), ind3)
     exceedances <- s3[ex3$values == TRUE]
-    exceedance_no <- NULL ###
+    exceedance_no <- NULL
     exceedances_rng <-
       lapply(exceedances, function(x)
         data.frame(index_start = min(x), index_stop = max(x)))
@@ -263,22 +262,22 @@ exceedance <-
       )
     )
 
-    thresh <- int_mean <- int_max <- int_cum <- exceedance_rel_thresh <-
-      int_mean_abs <- int_max_abs <- int_cum_abs <- ts.y <- NULL ###
+    thresh <- intensity_mean <- intensity_max <- intensity_cum <- exceedance_rel_thresh <-
+      intensity_mean_abs <- intensity_max_abs <- intensity_cum_abs <- ts.y <- NULL ###
 
     exceedances <- cbind(exceedances,
                          exceedances_list %>%
                            dplyr::bind_rows(.id = "exceedance_no") %>%
                            dplyr::group_by(exceedance_no) %>%
                            dplyr::summarise(date_peak = ts.x[ts.y == max(ts.y)][1],
-                                            int_mean = mean(exceedance_rel_thresh),
-                                            int_max = max(exceedance_rel_thresh),
-                                            int_var = sqrt(stats::var(exceedance_rel_thresh)),
-                                            int_cum = max(cumsum(exceedance_rel_thresh)),
-                                            int_mean_abs = mean(ts.y),
-                                            int_max_abs = max(ts.y),
-                                            int_var_abs = sqrt(stats::var(ts.y)),
-                                            int_cum_abs = max(cumsum(ts.y))) %>%
+                                            intensity_mean = mean(exceedance_rel_thresh),
+                                            intensity_max = max(exceedance_rel_thresh),
+                                            intensity_var = sqrt(stats::var(exceedance_rel_thresh)),
+                                            intensity_cum = max(cumsum(exceedance_rel_thresh)),
+                                            intensity_mean_abs = mean(ts.y),
+                                            intensity_max_abs = max(ts.y),
+                                            intensity_var_abs = sqrt(stats::var(ts.y)),
+                                            intensity_cum_abs = max(cumsum(ts.y))) %>%
                            dplyr::arrange(as.numeric(exceedance_no)) %>%
                            dplyr::select(-exceedance_no))
 
@@ -294,7 +293,7 @@ exceedance <-
 
     exceedances$rate_onset <- ifelse(
       exceedances$index_start > 1,
-      (exceedances$int_max - exceedance_rel_thresh_start) / (as.numeric(
+      (exceedances$intensity_max - exceedance_rel_thresh_start) / (as.numeric(
         difftime(exceedances$date_peak, exceedances$date_start, units = "days")) + 0.5),
       NA
     )
@@ -306,19 +305,19 @@ exceedance <-
 
     exceedances$rate_decline <- ifelse(
       exceedances$index_stop < nrow(t_series),
-      (exceedances$int_max - exceedance_rel_thresh_end) / (as.numeric(
+      (exceedances$intensity_max - exceedance_rel_thresh_end) / (as.numeric(
         difftime(exceedances$date_stop, exceedances$date_peak, units = "days")) + 0.5),
       NA
     )
 
     if (below) {
       exceedances <- exceedances %>% dplyr::mutate(
-        int_mean = -int_mean,
-        int_max = -int_max,
-        int_cum = -int_cum,
-        int_mean_abs = -int_mean_abs,
-        int_max_abs = -int_max_abs,
-        int_cum_abs = -int_cum_abs
+        intensity_mean = -intensity_mean,
+        intensity_max = -intensity_max,
+        intensity_cum = -intensity_cum,
+        intensity_mean_abs = -intensity_mean_abs,
+        intensity_max_abs = -intensity_max_abs,
+        intensity_cum_abs = -intensity_cum_abs
       )
       t_series <- t_series %>% dplyr::mutate(
         ts.y = -ts.y,

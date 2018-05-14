@@ -15,7 +15,7 @@
 #' occurs. Default = 5, which makes an overall window size of 11.
 #'
 #' @return The function returns the data in a wide format.
-clim_spread <- function(data, clim_start, clim_end, windowHalfWidth){
+clim_spread <- function(data, clim_start, clim_end, windowHalfWidth) {
 
   ts_x <- ts_y <- NULL
 

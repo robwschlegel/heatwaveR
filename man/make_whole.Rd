@@ -52,8 +52,8 @@ automatically accommodated by 'zoo'.
 This function can handle some of missing days, but this is not a
 licence to actually use these data for the detection of anomalous thermal
 events. Hobday et al. (2016) recommend gaps of no more than 3 days, which
-may be adjusted by setting the \code{max_pad_length} argument of the
-\code{\link{detect}} function. The longer and more frequent the gaps become
+may be adjusted by setting the \code{maxPadLength} argument of the
+\code{\link{ts2clm}} function. The longer and more frequent the gaps become
 the lower the fidelity of the annual climatology and threshold that can be
 calculated, which will not only have repercussions for the accuracy at which
 the event metrics can be determined, but also for the number of events that

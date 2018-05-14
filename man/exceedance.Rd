@@ -5,8 +5,7 @@
 \title{Detect consecutive days in exceedance of a given threshold.}
 \usage{
 exceedance(data, x = t, y = temp, threshold, below = FALSE,
-  min_duration = 5, join_across_gaps = TRUE, max_gap = 2,
-  max_pad_length = 3)
+  minDuration = 5, joinAcrossGaps = TRUE, maxGap = 2, maxPadLength = 3)
 }
 \arguments{
 \item{data}{A data frame with at least the two following columns:
@@ -34,23 +33,23 @@ days are in exceedance of the temperature of interest.}
 below the \code{threshold} variable are calculated. When set to FALSE,
 consecutive days above the \code{threshold} variable are calculated.}
 
-\item{min_duration}{Minimum duration that temperatures must be in exceedance
-of the \code{threshold} variable. Default is \code{5} days.}
+\item{minDuration}{Minimum duration that temperatures must be in exceedance
+of the \code{threshold} variable. The default is \code{5} days.}
 
-\item{join_across_gaps}{A TRUE/FALSE statement that indicates whether
+\item{joinAcrossGaps}{A TRUE/FALSE statement that indicates whether
 or not to join consecutive days of temperatures in exceedance of the
 \code{threshold} across a small gap between groups before/after a short
-gap as specified by \code{max_gap}. Default is \code{TRUE}.}
+gap as specified by \code{maxGap}. The default is \code{TRUE}.}
 
-\item{max_gap}{The maximum length of the gap across which to connect
+\item{maxGap}{The maximum length of the gap across which to connect
 consecutive days in exceedance of the \code{threshold} when
-\code{join_across_gaps} is \code{TRUE}.}
+\code{joinAcrossGaps = TRUE}.}
 
-\item{max_pad_length}{Specifies the maximum length of days over which to
+\item{maxPadLength}{Specifies the maximum length of days over which to
 interpolate (pad) missing data (specified as \code{NA}) in the input
 temperature time series; i.e., any consecutive blocks of NAs with length
-greater than \code{max_pad_length} will be left as \code{NA}. Set as an
-integer. Default is \code{3} days.}
+greater than \code{maxPadLength} will be left as \code{NA}. Set as an
+integer. The default is \code{3} days.}
 }
 \value{
 The function will return a list of two components. The first being
@@ -74,7 +73,7 @@ The information shown in the \code{threshold} component is:
   \item{thresh_criterion}{Boolean indicating if \code{temp} exceeds
   \code{threshold}.}
   \item{duration_criterion}{Boolean indicating whether periods of consecutive
-  \code{thresh_criterion} are >= \code{min_duration}.}
+  \code{thresh_criterion} are >= \code{minDuration}.}
   \item{exceedance}{Boolean indicting if all criteria that define a discrete
   group in exceedance of the \code{threshold} are met.}
   \item{exceedance_no}{A sequential number indicating the ID and order of
@@ -90,16 +89,16 @@ The individual exceedances are summarised using the following metrics:
   \item{date_start}{Start date of exceedance [date].}
   \item{date_stop}{Stop date of exceedance [date].}
   \item{date_peak}{Date of exceedance peak [date].}
-  \item{int_mean}{Mean intensity [deg. C].}
-  \item{int_max}{Maximum (peak) intensity [deg. C].}
-  \item{int_var}{Intensity variability (standard deviation) [deg. C].}
-  \item{int_cum}{Cumulative intensity [deg. C x days].}
+  \item{intensity_mean}{Mean intensity [deg. C].}
+  \item{intensity_max}{Maximum (peak) intensity [deg. C].}
+  \item{intensity_var}{Intensity variability (standard deviation) [deg. C].}
+  \item{intensity_cum}{Cumulative intensity [deg. C x days].}
   \item{rate_onset}{Onset rate of exceedance [deg. C / day].}
   \item{rate_decline}{Decline rate of exceedance [deg. C / day].}
 
-\code{int_max_abs}, \code{int_mean_abs}, \code{int_var_abs}, and
-\code{int_cum_abs} are as above except as absolute magnitudes
-rather than relative to the threshold.
+\code{intensity_max_abs}, \code{intensity_mean_abs}, \code{intensity_var_abs},
+and \code{intensity_cum_abs} are as above except as absolute magnitudes rather
+than relative to the threshold.
 }
 \description{
 Detect consecutive days in exceedance of a given threshold.
@@ -118,7 +117,7 @@ to \code{\link{make_whole}}.
 after the end-day. This is consistent with the duration definition as implemented,
 which assumes duration = end day - start day + 1.
 \item For the purposes of exceedance detection, any missing temperature values not
-interpolated over (through optional \code{max_pad_length}) will remain as
+interpolated over (through optional \code{maxPadLength}) will remain as
 \code{NA}. This means they will trigger the end of an exceedance if the adjacent
 temperature values are in exceedance of the \code{threshold}.
 \item If the function is used to detect consecutive days of temperature under

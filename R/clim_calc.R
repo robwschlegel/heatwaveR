@@ -14,18 +14,18 @@
 #' Default is \code{90}th percentile.
 #'
 #' @return The function returns the calculated climatologies.
-clim_calc <- function(data, windowHalfWidth, pctile){
+clim_calc <- function(data, windowHalfWidth, pctile) {
 
-  seas_clim_year <- rep(NA, nrow(data))
-  thresh_clim_year <- rep(NA, nrow(data))
-  var_clim_year <- rep(NA, nrow(data))
+  seas <- rep(NA, nrow(data))
+  thresh <- rep(NA, nrow(data))
+  var <- rep(NA, nrow(data))
 
   for (i in (windowHalfWidth + 1):((nrow(data) - windowHalfWidth))) {
-    seas_clim_year[i] <-
+    seas[i] <-
       mean(
         c(t(data[(i - (windowHalfWidth)):(i + windowHalfWidth), 2:ncol(data)])),
         na.rm = TRUE)
-    thresh_clim_year[i] <-
+    thresh[i] <-
       stats::quantile(
         c(t(data[(i - (windowHalfWidth)):(i + windowHalfWidth), 2:ncol(data)])),
         probs = pctile/100,
@@ -33,7 +33,7 @@ clim_calc <- function(data, windowHalfWidth, pctile){
         na.rm = TRUE,
         names = FALSE
       )
-    var_clim_year[i] <-
+    var[i] <-
       stats::sd(
         c(t(data[(i - (windowHalfWidth)):(i + windowHalfWidth), 2:ncol(data)])),
         na.rm = TRUE
@@ -44,9 +44,9 @@ clim_calc <- function(data, windowHalfWidth, pctile){
   clim <-
     data.frame(
       doy = data[(windowHalfWidth + 1):((windowHalfWidth) + len_clim_year), 1],
-      seas_clim_year = seas_clim_year[(windowHalfWidth + 1):((windowHalfWidth) + len_clim_year)],
-      thresh_clim_year = thresh_clim_year[(windowHalfWidth + 1):((windowHalfWidth) + len_clim_year)],
-      var_clim_year = var_clim_year[(windowHalfWidth + 1):((windowHalfWidth) + len_clim_year)]
+      seas = seas[(windowHalfWidth + 1):((windowHalfWidth) + len_clim_year)],
+      thresh = thresh[(windowHalfWidth + 1):((windowHalfWidth) + len_clim_year)],
+      var = var[(windowHalfWidth + 1):((windowHalfWidth) + len_clim_year)]
     )
 
   return(clim)

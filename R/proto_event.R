@@ -1,12 +1,12 @@
-#' Detect proto-events based on a chosen criteria (column)
+#' Detect proto-events based on a chosen criterion (column)
 #'
 #' This functions detects proto-events, which are periods of time
-#' above a threshold, but without considering a minium starting
-#' duration or joining gap.
+#' above a threshold, but without considering a minimum duration or
+#' joining gap.
 #'
 #' @importFrom dplyr %>%
 #'
-#' @param t_series A dataframe of the correct diemensions inherited
+#' @param t_series A dataframe of the correct dimensions inherited
 #' from \code{\link{detect_event}} within which this runs.
 #' @param criterion_column The column to use for the detection of events.
 #' @param minDuration Minimum duration for acceptance of detected events.
@@ -25,11 +25,11 @@ proto_event <- function(t_series,
   index_start <- index_stop <- duration <- NULL
 
   t_series <- as.data.frame(t_series)
-  ex1 <- rle(as.vector(t_series[,criterion_column]))
+  ex1 <- rle(as.vector(t_series[, criterion_column]))
   ind1 <- rep(seq_along(ex1$lengths), ex1$lengths)
-  s1 <- split(zoo::index(t_series$thresh_criterion), ind1)
+  s1 <- split(zoo::index(t_series[, criterion_column]), ind1)
 
-  if(!(gaps)){
+  if (!(gaps)) {
     proto_event_value <- s1[ex1$values == TRUE]
 
     proto_event_rng <-

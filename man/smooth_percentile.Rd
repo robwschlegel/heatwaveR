@@ -4,13 +4,13 @@
 \alias{smooth_percentile}
 \title{Detect the climatology for a time series}
 \usage{
-smooth_percentile(data, smooth_percentile_width)
+smooth_percentile(data, smoothPercentileWidth)
 }
 \arguments{
 \item{data}{The data given to this function during the calculations
 performed by \code{\link{ts2clm}}.}
 
-\item{smooth_percentile_width}{The width of the smoothing window
+\item{smoothPercentileWidth}{The width of the smoothing window
 to be applied.}
 }
 \value{
