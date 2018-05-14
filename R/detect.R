@@ -47,7 +47,7 @@
 #' climatology and threshold. Default is \code{31} days.
 #' @param clim_only Choose to calculate only the climatologies and not the
 #' events. Default is \code{FALSE}.
-#' @param min_duration Minimum duration for acceptance of detected MHWs.
+#' @param min_duration Minimum duration for acceptance of detected events.
 #' Default is \code{5} days.
 #' @param join_across_gaps Boolean switch indicating whether to join MHWs which
 #' occur before/after a short gap as specified by \code{max_gap}. Default

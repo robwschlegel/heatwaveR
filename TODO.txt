@@ -56,3 +56,21 @@ Text added to `detect()` and repeated here (to be deleted from the function late
 ## ...we need to provide proper documentation of these options, and talk about the differences between baselines and
 ## climatologies, and in the paper give example applications of the various use scenarios.
 
+
+Friday, May 11th, 2018 Skype meeting:
+* A code paper that uses various user requests over the years as the case study
+* Also play around with ALL of the different arguments
+** Show what the sensitivities are to these changes
+* Also provide options and advice about what to do given certain limitations
+** Such as NA values and short time series
+* The alternative baseline and climatology options need to be demonstrated, too
+* It needs to be insured that all core options are available across both languages
+** And that the results are exactly the same
+** And that the names of the arguments etc. are exactly the same
+* Base period choice needs to be investigated, too
+** Try to offer how to choose the best base period
+* Best practices, broadly, need to be demonstrated and discussed
+** This consists of the technical issues
+** As well as the scientific ones
+*** Including how to determine the correct baselines and climatologies to use
+* Round it out with case studies and pitfalls
