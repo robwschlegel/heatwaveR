@@ -82,7 +82,7 @@ geoms as necessary." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.7.9001</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.0.9000</span>
       </span>
     </div>
 
@@ -111,7 +111,10 @@ geoms as necessary." />
       <a href="../articles/gridded_event_detection.html">Extreme event detection in gridded data</a>
     </li>
     <li>
-      <a href="../articles/Climatologies_and_baselines.html">Climatologies and baselines</a>
+      <a href="../articles/Climatologies_and_baselines.html">Alternative climatologies and baselines</a>
+    </li>
+    <li>
+      <a href="../articles/Short_climatologies.html">Short climatologies</a>
     </li>
   </ul>
 </li>
@@ -255,7 +258,8 @@ discrete. ggplot2 will attempt to do this automatically.</p></li>
 <span class='co'># with defaults:</span>
 <span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='detect.html'>detect</a></span>(<span class='no'>ts_dat</span>, <span class='kw'>climatology_start</span> <span class='kw'>=</span> <span class='st'>"1983-01-01"</span>,
               <span class='kw'>climatology_end</span> <span class='kw'>=</span> <span class='st'>"2012-12-31"</span>)
-<span class='no'>mhw</span> <span class='kw'>&lt;-</span> <span class='no'>res</span>$<span class='no'>event</span></div><span class='co'># NOT RUN {</span>
+<span class='no'>mhw</span> <span class='kw'>&lt;-</span> <span class='no'>res</span>$<span class='no'>event</span></div><div class='img'><img src='geom_lolli-1.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><span class='co'># NOT RUN {</span>
 <span class='fu'>library</span>(<span class='no'>ggplot2</span>)
 
 <span class='co'># Height of lollis represent event durations and their colours</span>

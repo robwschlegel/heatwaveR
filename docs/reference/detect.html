@@ -36,7 +36,9 @@
 <meta property="og:title" content="Detect heatwaves and cold-spells. — detect" />
 
 <meta property="og:description" content="Applies the Hobday et al. (2016) marine heat wave definition to an input time
-series of temperature along with a daily date vector." />
+series of a given value (temperature) along with a daily date vector. An alternate
+baseline and/or climatology may also be provided against which to detect the events
+(in development)." />
 
 <meta property="og:image" content="https://robwschlegel.github.io/heatwaveR/index.html/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -76,7 +78,7 @@ series of temperature along with a daily date vector." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.7.9001</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.0.9000</span>
       </span>
     </div>
 
@@ -105,7 +107,10 @@ series of temperature along with a daily date vector." />
       <a href="../articles/gridded_event_detection.html">Extreme event detection in gridded data</a>
     </li>
     <li>
-      <a href="../articles/Climatologies_and_baselines.html">Climatologies and baselines</a>
+      <a href="../articles/Climatologies_and_baselines.html">Alternative climatologies and baselines</a>
+    </li>
+    <li>
+      <a href="../articles/Short_climatologies.html">Short climatologies</a>
     </li>
   </ul>
 </li>
@@ -148,7 +153,9 @@ series of temperature along with a daily date vector." />
     <div class="ref-description">
     
     <p>Applies the Hobday et al. (2016) marine heat wave definition to an input time
-series of temperature along with a daily date vector.</p>
+series of a given value (temperature) along with a daily date vector. An alternate
+baseline and/or climatology may also be provided against which to detect the events
+(in development).</p>
     
     </div>
 
@@ -209,7 +216,7 @@ calculated.</p></td>
       <th>pctile</th>
       <td><p>Threshold percentile (%) for detection of extreme values.
 Default is <code>90</code>th percentile. Please see <code>cold_spells</code> for more
-information about the calculation of marine cold spells.</p></td>
+information about the calculation of marine cold-spells.</p></td>
     </tr>
     <tr>
       <th>window_half_width</th>
@@ -223,7 +230,7 @@ series of 11 days.</p></td>
       <th>smooth_percentile</th>
       <td><p>Boolean switch selecting whether to smooth the
 climatology and threshold percentile timeseries with a moving average of
-width <code>smooth_percentile</code>. Default is <code>TRUE</code>.</p></td>
+<code>smooth_percentile_width</code>. Default is <code>TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>smooth_percentile_width</th>
@@ -267,7 +274,7 @@ climatological thresholds for cold-spells are calculated the same as for
 heatwaves, meaning that <code>pctile</code> should be set the same regardless
 if one is calculating heatwaves or cold-spells. For example, if one wants
 to calculate heatwaves above the 90th percentile threshold
-(the default) one sets <code>pctile = 90</code>. Likewise, if one would like
+(the default) one sets <code>pctile = 90</code>. Likewise, if one would like to
 identify the most intense cold-spells one must also set <code>pctile = 90</code>,
 even though cold spells are in fact simply the coldest extreme events in a
 time series, which statistically equate to values below the 10th percentile.</p></td>
@@ -277,7 +284,7 @@ time series, which statistically equate to values below the 10th percentile.</p>
       <td><p>When this switch is set to <code>FALSE</code>, the default,
 the climatology will be obtained from the time series provided to
 <code>data</code>. Enabling this option allows one to supply a time series from
-which an alternative climatology will calculated. The data used for the
+which an alternative climatology will be calculated. The data used for the
 creation of an alternative climatology must be exactly of the same structure
 as that provided to <code>data</code>; in other words, the column names must be the
 same, they must share at least the same duration as implied by
@@ -289,7 +296,11 @@ hand to conform with the data created by <code>make_whole</code>.</p></td>
       <th>alt_clim_data</th>
       <td><p>The name of the dataframe with data to use as the
 custom baseline or climatology. See <code>data</code> and <code>alt_clim</code>
-for more information about the data's structure.</p></td>
+for more information about the data's structure. If the length of the
+dataframe provided is 366 rows then it will be used directly as the
+climatology against which <code>data</code> will be interrogated for events. Note
+that this 366 row dataframe must contain the columns: <code>doy</code>,
+<code>seas_clim_year</code>, <code>thresh_clim_year</code>, and <code>var_clim_year</code>.</p></td>
     </tr>
     </table>
     
@@ -424,11 +435,14 @@ deviations below the (100 - pctile)th percentile  (e.g., the 10th instead of
 represent the temperature anomaly below climatology.</p></li>
 <li><p>If only the climatology for the time series is required, and not the
 events themselves, this may be done by setting <code>clim_only</code> = TRUE.</p></li>
+<li><p>If a 366 row dataframe is provided to <code>alt_clim_data</code> then the
+<code>climatology_start</code> and <code>climatology_end</code> arguments may be
+ommitted.</p></li>
 </ol><p>The original Python algorithm was written by Eric Oliver, Institute for
 Marine and Antarctic Studies, University of Tasmania, Feb 2015, and is
 documented by Hobday et al. (2016). The marine cold spell option was
 implemented in version 0.13 (21 Nov 2015) of the Python module as a result
-of our preparation of Schlegel et al. (submitted), wherein the cold events
+of our preparation of Schlegel et al. (2017), wherein the cold events
 receive a brief overview.</p>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
@@ -437,7 +451,7 @@ receive a brief overview.</p>
 marine heatwaves, Progress in Oceanography, 141, pp. 227-238,
 doi:10.1016/j.pocean.2015.12.014</p>
 <p>Schlegel, R. W., Oliver, C. J., Wernberg, T. W., Smit, A. J. (2017).
-Coastal and offshore co-occurrences of marine heatwaves and cold-spells.
+Nearshore and offshore co-occurrences of marine heatwaves and cold-spells.
 Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
     
 
