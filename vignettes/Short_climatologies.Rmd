@@ -54,13 +54,12 @@ daily <- daily.in %>%
   ungroup()
 ```
 
-
 Now I make a function that will fit a Fourier series with seven basis functions (3 sine, 3 cosine and the constant) to the data. This is the same approach I used to create the smooth climatology in "Climatologies and baseline" elsewhere on this site. Here it is wrapped in a function so I can easily apply it to each time series.
 
 ```{r, echo=TRUE}
 fFun <- function(data) {
   require(fda)
-  b7 <- create.fourier.basis(rangeval = range(data$doy), nbasis = 7)
+  b7 <- create.fourier.basis(rangeval = range(data$doy), nbasis = 11)
 
   # create smooth seasonal climatology
   b7.smth <- smooth.basis(argvals = data$doy, y = data$temp, fdParobj = b7)$fd
@@ -95,6 +94,8 @@ ggsave(plt1, file = "smooth_mat_1.png", width = 12, height = 9)
 ![**Figure 1.** Smooth climatologies derived from a Fourier analysis fitted to coastal seawater time series along the South African coast. Climatologies were produced only for sites with at least 30 year long time series.](smooth_mat_1.png){width=100%}
 
 ## Time series length
+
+### Fourier series
 
 There are instances when we might need to create climatologies when we don't have access to time series of 30 years or longer. To look at this problem, I created a quick bootstrap analysis to see what the effect of time series length is on the resultant climatology. In this instance I used a Fourier analysis (see Banzon et al., 2014) to calculate six modes within an annual cycle, and used these to reconstruct a smooth climatology. This technique is quite forgiving of SST seasonalities that depart from typical sinusoidal profiles, such as which we find along upwelling areas (I have tested this on our coastal seawater temperatures).
 
@@ -162,7 +163,73 @@ plt3 <- ggplot(data = sst.repl.smth, aes(x = doy, y = smoothed)) +
   geom_point(aes(y = temp), shape = "+", colour = "red", alpha = 0.1, size = 1) +
   geom_line(aes(group = rep), alpha = 0.3, size = 0.1) +
   facet_wrap(~ts.len, nrow = 3)
-ggsave(plt3, file = "rand_mat_smoothed_1.png", width = 12, height = 6)
+ggsave(plt3, file = "rand_mat_smoothed_1b.png", width = 12, height = 6)
 ```
 
 ![**Figure 2.** Bootstrapped reconstructions of daily climatologies based on mean SSTs derived from time series of 10, 20 and 30 years long. Red lines are the smoothed climatologies obtained from a Fourier analysis.](rand_mat_smoothed_1.png){width=100%}
+
+### heatwaveR's climatology functions
+
+The heatwaveR climatology tool creates the mean and 90th percentiles (threshold) for all the data within a sliding window with certain window width (by default 11 days centered on a day-of-year), and then this is followed by a running mean smoother for both the mean and the threshold. Using he approach I created for the Fourier series, lets do the same here.
+
+```{r, echo=TRUE}
+sstRepl2 <- function(sst) {
+  sst.sampled <- sst %>% 
+    mutate(sample_10 = map(data, sample_n, 10, replace = TRUE),
+           sample_20 = map(data, sample_n, 20, replace = TRUE),
+           sample_30 = map(data, sample_n, 30, replace = TRUE))
+  return(sst.sampled)
+}
+
+sst.repl2 <- purrr::rerun(100, sstRepl2(sst)) %>% 
+  map_df(as.data.frame, .id = "rep")
+
+parseDates <- function(data, rep_col, len) {
+  parsed <- data %>% 
+    mutate(id = rep_col,
+           y = year(t),
+           m = month(t),
+           d = day(t)) %>% 
+    group_by(rep, doy) %>% 
+    mutate(y = seq(1983, by = 1, len = len)) %>% 
+    mutate(t = ymd(paste(y, m, d, sep = "-"))) %>%
+    select(-y, -m, -d) %>% 
+    na.omit() # because of complications due to leap years
+  return(parsed)
+}
+
+sample_10 <- sst.repl2 %>% 
+  unnest(sample_10) %>%
+  parseDates("sample_10", len = 10) %>% 
+  group_by(id, rep) %>% 
+  nest() %>% 
+  mutate(smoothed = map(data, function(x) ts2clm(x, clmStart = "1983-01-01", clmEnd = "1992-12-31"))) %>% 
+  unnest(smoothed)
+
+sample_20 <- sst.repl2 %>% 
+  unnest(sample_20) %>%
+  parseDates("sample_20", len = 20) %>% 
+  group_by(id, rep) %>% 
+  nest() %>% 
+  mutate(smoothed = map(data, function(x) ts2clm(x, clmStart = "1983-01-01", clmEnd = "2002-12-31"))) %>% 
+  unnest(smoothed)
+
+sample_30 <- sst.repl2 %>% 
+  unnest(sample_30) %>%
+  parseDates("sample_30", len = 30) %>% 
+  group_by(id, rep) %>% 
+  nest() %>% 
+  mutate(smoothed = map(data, function(x) ts2clm(x, clmStart = "1983-01-01", clmEnd = "2012-12-31"))) %>% 
+  unnest(smoothed)
+
+sst.repl2.smth <- bind_rows(sample_10, sample_20, sample_30)
+```
+
+```{r, echo=TRUE}
+plt4 <- sst.repl2.smth %>% 
+  ggplot(aes(x = doy, y = temp)) +
+  # geom_point(shape = "+", colour = "red", alpha = 0.1, size = 1) +
+  geom_line(data = filter(sst.repl2.smth, t <= "1984-01-01"), aes(, y = seas_clim_year, group = rep), alpha = 0.3, size = 0.1) +
+  facet_wrap(~id, nrow = 3)
+ggsave(plt4, file = "rand_mat_smoothed_2.png", width = 12, height = 6)
+```
