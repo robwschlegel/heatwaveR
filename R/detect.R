@@ -235,6 +235,8 @@
 #' Nearshore and offshore co-occurrences of marine heatwaves and cold-spells.
 #' Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004
 #'
+#' @export
+#'
 #' @examples
 #' ts_dat <- make_whole(sst_WA)
 #' res <- detect(ts_dat, climatology_start = "1983-01-01",
@@ -449,7 +451,7 @@ detect <-
 
       duration <- NULL
 
-      proto_func <- function(proto_data) {
+      protoFunc <- function(proto_data) {
         out <- proto_data %>%
           dplyr::mutate(duration = index_stop - index_start + 1) %>%
           dplyr::filter(duration >= min_duration) %>%

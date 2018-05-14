@@ -1,3 +1,10 @@
+# heatwaveR 0.2.1.9000 (2018-05-14)
+
+* `ts2clm()` used instead of `detect_clim()`
+* Phasing in identical names the python version
+* `detect_event()` now passing checks
+* Must still test for MCSs
+
 # heatwaveR 0.2.0.9000 (2018-05-11)
 
 * `detect()` has now been broken into `detect_clim()` and `detect_event()`

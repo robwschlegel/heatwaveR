@@ -8,7 +8,7 @@ smooth_percentile(data, smooth_percentile_width)
 }
 \arguments{
 \item{data}{The data given to this function during the calculations
-performed by \code{\link{detect_clim}}.}
+performed by \code{\link{ts2clm}}.}
 
 \item{smooth_percentile_width}{The width of the smoothing window
 to be applied.}

@@ -63,7 +63,7 @@ climatology and threshold. Default is \code{31} days.}
 \item{clim_only}{Choose to calculate only the climatologies and not the
 events. Default is \code{FALSE}.}
 
-\item{min_duration}{Minimum duration for acceptance of detected MHWs.
+\item{min_duration}{Minimum duration for acceptance of detected events.
 Default is \code{5} days.}
 
 \item{join_across_gaps}{Boolean switch indicating whether to join MHWs which

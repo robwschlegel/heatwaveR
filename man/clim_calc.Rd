@@ -4,20 +4,23 @@
 \alias{clim_calc}
 \title{Calculate seasonal and threshold climatologies as wellas the varaince}
 \usage{
-clim_calc(data, window_half_width)
+clim_calc(data, windowHalfWidth, pctile)
 }
 \arguments{
 \item{data}{The data given to this function during the calculations
-performed by \code{\link{detect_clim}}.}
+performed by \code{\link{ts2clm}}.}
 
-\item{window_half_width}{The width of the smoothing window to be applied.
+\item{windowHalfWidth}{The width of the smoothing window to be applied.
 This width is doubled and centred around the point that the smoothing
 occurs. Default = 5, which makes an overall window size of 11.}
+
+\item{pctile}{Threshold percentile (\%) for detection of events (MHWs).
+Default is \code{90}th percentile.}
 }
 \value{
 The function returns the calculated climatologies.
 }
 \description{
 An internal function that helps to create the climatologies that are
-then output with \code{\link{detect_clim}}.
+then output with \code{\link{ts2clm}}.
 }

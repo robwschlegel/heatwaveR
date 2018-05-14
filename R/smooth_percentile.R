@@ -6,13 +6,15 @@
 #' @importFrom dplyr %>%
 #'
 #' @param data The data given to this function during the calculations
-#' performed by \code{\link{detect_clim}}.
+#' performed by \code{\link{ts2clm}}.
 #' @param smooth_percentile_width The width of the smoothing window
 #' to be applied.
 #'
 #' @return The function returns the data in the same format it was
 #' input as, with the climatology values smoothed as desired.
 smooth_percentile <- function(data, smooth_percentile_width) {
+
+  seas_clim_year <- thresh_clim_year <- var_clim_year <- NULL
 
   clim <- data %>%
     dplyr::mutate(

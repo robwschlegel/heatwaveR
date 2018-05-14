@@ -4,17 +4,17 @@
 \alias{clim_spread}
 \title{Spead a time series wide to allow for a climatology to be calculated}
 \usage{
-clim_spread(data, clim_start, clim_end, window_half_width)
+clim_spread(data, clim_start, clim_end, windowHalfWidth)
 }
 \arguments{
 \item{data}{The data given to this function during the calculations
-performed by \code{\link{detect_clim}}.}
+performed by \code{\link{ts2clm}}.}
 
 \item{clim_start}{The first day of the time series to use when spreading.}
 
 \item{clim_end}{The last day of the time series to use when spreading.}
 
-\item{window_half_width}{The width of the smoothing window to be applied.
+\item{windowHalfWidth}{The width of the smoothing window to be applied.
 This width is doubled and centred around the point that the smoothing
 occurs. Default = 5, which makes an overall window size of 11.}
 }
@@ -23,6 +23,6 @@ The function returns the data in a wide format.
 }
 \description{
 An internal function that helps to create a wide time series that will
-then be used by \code{\link{clim_clac}} within \code{\link{detect_clim}}
+then be used by \code{\link{clim_calc}} within \code{\link{ts2clm}}
 to produce a climatology as desired by the user.
 }
