@@ -1,8 +1,8 @@
 #' Detect proto-events based on a chosen criterion (column)
 #'
-#' This functions detects proto-events, which are periods of time
-#' above a threshold, but without considering a minimum duration or
-#' joining gap.
+#' An internal function that detects proto-events, which are periods of
+#' time above a threshold, but without necessarily considering a minimum
+#' duration or joining acros gaps.
 #'
 #' @importFrom dplyr %>%
 #'
@@ -12,14 +12,17 @@
 #' @param minDuration Minimum duration for acceptance of detected events.
 #' @param gaps This logic gate tells this internal function if it should be
 #' calculating the lengths of events, or rather the gaps in between them.
+#' The default is \code{FALSE}.
 #' @param maxGap This is the number of rows (days) across which distinct
 #' events will be combined into one event if \code{joinAcrossGaps = TRUE}.
 #'
+#' @return A dataframe that will be used within
+#' \code{\link{detect_event}}.
 proto_event <- function(t_series,
                         criterion_column,
                         minDuration,
                         gaps = FALSE,
-                        maxGap = 2) {
+                        maxGap) {
 
 
   index_start <- index_stop <- duration <- NULL

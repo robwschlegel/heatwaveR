@@ -41,7 +41,8 @@ days, which gives a window width of 11 days centered on the 6th day of the
 series of 11 days.}
 
 \item{pctile}{Threshold percentile (\%) for detection of events (MHWs).
-Default is \code{90}th percentile.}
+Default is \code{90}th percentile. Should the intent be to use these
+threshold data for MCSs, set \code{pctile = 10}. Or some other low value.}
 
 \item{smoothPercentile}{Boolean switch selecting whether to smooth the
 climatology and threshold percentile time series with a moving average of

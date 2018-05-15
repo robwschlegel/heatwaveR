@@ -11,7 +11,7 @@ smooth_percentile(data, smoothPercentileWidth)
 performed by \code{\link{ts2clm}}.}
 
 \item{smoothPercentileWidth}{The width of the smoothing window
-to be applied.}
+to be applied. The default is \code{31} days.}
 }
 \value{
 The function returns the data in the same format it was

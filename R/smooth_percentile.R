@@ -8,7 +8,7 @@
 #' @param data The data given to this function during the calculations
 #' performed by \code{\link{ts2clm}}.
 #' @param smoothPercentileWidth The width of the smoothing window
-#' to be applied.
+#' to be applied. The default is \code{31} days.
 #'
 #' @return The function returns the data in the same format it was
 #' input as, with the climatology values smoothed as desired.

@@ -1,3 +1,10 @@
+# heatwaveR 0.2.1.9001 (2018-05-15)
+
+* Micro edits to documentation
+* Testing for all exported and internal functions brought up to speed
+* Ensuring that new `ts2clm()` and `detect_event()` pipeline returns the same
+  results as the old `make_whole()` and `detect()` pipeline
+
 # heatwaveR 0.2.1.9000 (2018-05-14)
 
 * Phasing in identical names as in the python version

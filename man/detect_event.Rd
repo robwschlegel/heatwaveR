@@ -49,18 +49,17 @@ default is \code{2} days.}
 
 \item{coldSpells}{Boolean specifying if the code should detect cold events
 instead of warm events. The default is \code{FALSE}. Please note that the
-climatological thresholds for cold-spells are calculated the same as for
-heatwaves, meaning that \code{pctile} should be set the same regardless
-if one is calculating heatwaves or cold-spells. For example, if one wants
-to calculate heatwaves above the 90th percentile threshold (the default) one
-sets \code{pctile = 90}. Likewise, if one would like to identify the most
-intense cold-spells one must also set \code{pctile = 90}, even though cold
-spells are in fact simply the coldest extreme events in a time series, which
-statistically equate to values below the 10th percentile.}
+climatological thresholds for cold-spells are considered to be the inverse
+of those for MHWs. For example, the defaulr setting for the detection of
+MHWs is \code{pctile = 90}, as seen in \code{\link{ts2clm}}. Should one want
+to use \code{detect_event} for MCSs, this threshold would best be generated
+in \code{\link{ts2clm}} by setting \code{pctile = 10} (see example below).
+Any value may be used, but this is the setting used for the calculation of
+MCSs in Schlegel et al. (2017a).}
 }
 \value{
 The function will return a list of two tibbles (see the \code{tidyverse}),
-\code{climatology} and \code{event}, which are, surprisingly,  the climatology
+\code{climatology} and \code{event}, which are, surprisingly, the climatology
 and events, respectively. The climatology contains the full time series of
 daily temperatures, as well as the the seasonal climatology, the threshold
 and various aspects of the events that were detected. The software was
@@ -88,7 +87,7 @@ case, the appropriate units need to be determined by the user.
   \item{event}{Boolean indicating if all criteria that define an extreme event
   are met.}
   \item{event_no}{A sequential number indicating the ID and order of
-  occurence of the extreme events.}
+  occurence of the events.}
 
 The events are summarised using a range of event metrics:
   \item{event_no}{A sequential number indicating the ID and order of
@@ -176,6 +175,15 @@ out <- detect_event(res_clim)
 # show a portion of the climatology:
 out$climatology[1:10, ]
 # show some of the heat waves:
+out$event[1:5, 1:10]
+
+# Or if one wants to calculate MCSs
+res_clim <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
+                   pctile = 10)
+out <- detect_event(res_clim, coldSpells = TRUE)
+# show a portion of the climatology:
+out$climatology[1:10, ]
+# show some of the cold-spells:
 out$event[1:5, 1:10]
 }
 \references{

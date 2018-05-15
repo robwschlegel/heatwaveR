@@ -29,15 +29,17 @@ reference:
 - title: Functions
   desc: ~
   contents:
+  - '`make_whole`'
+  - '`ts2clm`'
+  - '`detect_event`'
+  - '`detect`'
   - '`block_average`'
   - '`category`'
-  - '`detect`'
-  - '`event_line`'
   - '`exceedance`'
+  - '`event_line`'
+  - '`lolli_plot`'
   - '`geom_flame`'
   - '`geom_lolli`'
-  - '`lolli_plot`'
-  - '`make_whole`'
 - title: Data
   desc: ~
   contents:

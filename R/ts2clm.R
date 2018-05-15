@@ -32,7 +32,8 @@
 #' days, which gives a window width of 11 days centered on the 6th day of the
 #' series of 11 days.
 #' @param pctile Threshold percentile (\%) for detection of events (MHWs).
-#' Default is \code{90}th percentile.
+#' Default is \code{90}th percentile. Should the intent be to use these
+#' threshold data for MCSs, set \code{pctile = 10}. Or some other low value.
 #' @param smoothPercentile Boolean switch selecting whether to smooth the
 #' climatology and threshold percentile time series with a moving average of
 #' \code{smoothPercentileWidth}. Default is \code{TRUE}.
@@ -147,12 +148,12 @@ ts2clm <-
 
     clim_start <- climatologyPeriod[1]
     if (ts_whole$ts_x[1] > clim_start)
-      stop(paste("The specified start date precedes the first day of series, which is ",
+      stop(paste("The specified start date precedes the first day of series, which is",
                  ts_whole$ts_x[1]))
 
     clim_end <- climatologyPeriod[2]
     if (clim_end > ts_whole$ts_x[nrow(ts_whole)])
-      stop(paste("The specified end date follows the last day of series, which is ",
+      stop(paste("The specified end date follows the last day of series, which is",
                  ts_whole$ts_x[nrow(ts_whole)]))
 
     ts_wide <- clim_spread(ts_whole, clim_start, clim_end, windowHalfWidth)
