@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1.9001</span>
       </span>
     </div>
 
@@ -113,7 +113,7 @@
 </h1></div>
 
 <p>The <strong><code>heatwaveR</code></strong> package is a project-wide update to the <a href="https://github.com/ajsmit/RmarineHeatWaves"><strong><code>RmarineHeatWaves</code></strong></a> package, which is itself a translation of the original <a href="https://github.com/ecjoliver/marineHeatWaves">Python code</a> written by Eric C. J. Oliver.</p>
-<p>The <strong><code>heatwaveR</code></strong> R package contains the original functions from the <strong><code>RmarineHeatWaves</code></strong> package that calculate and display marine heatwaves (MHWs) according to the definition of Hobday et al. (2016) as well as calculating and visualising marine cold-spells (MCSs) as first introduced in Schlegel et al. (2017).</p>
+<p>The <strong><code>heatwaveR</code></strong> R package contains the original functions from the <strong><code>RmarineHeatWaves</code></strong> package that calculate and display marine heatwaves (MHWs) according to the definition of Hobday et al. (2016) as well as calculating and visualising marine cold-spells (MCSs) as first introduced in Schlegel et al. (2017a).</p>
 <p>A new package was developed and released in order to better accommodate the inclusion of the definitions of atmospheric heatwaves in addition to MHWs. Additionally, <strong><code>heatwaveR</code></strong> also provides the first implementation of a definition for a ‘compound heatwave’. There are currently multiple different definitions for this type of event and each of which has an algorithm provided for it in the output of the <code><a href="reference/detect.html">detect()</a></code> function.</p>
 <p>This package is not yet available on CRAN, but may be installed from GitHub by issuing the following command:</p>
 <p><code><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">devtools::install_github("robwschlegel/heatwaveR")</a></code></p>
@@ -300,9 +300,9 @@
 <a class="sourceLine" id="cb1-2" data-line-number="2">ts &lt;-<span class="st"> </span><span class="kw"><a href="reference/ts2clm.html">ts2clm</a></span>(sst_WA, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>))</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3">mhw &lt;-<span class="st"> </span><span class="kw"><a href="reference/detect_event.html">detect_event</a></span>(ts)</a>
 <a class="sourceLine" id="cb1-4" data-line-number="4">mhw<span class="op">$</span>event <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/group_by">ungroup</a></span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(event_no, duration, date_start, date_peak, intensity_mean, intensity_max, intensity_cumulative) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/arrange">arrange</a></span>(<span class="op">-</span>intensity_cumulative) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(event_no, duration, date_start, date_peak, intensity_mean, intensity_max, intensity_cumulative) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(<span class="op">-</span>intensity_cumulative) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb1-8" data-line-number="8"><span class="st">  </span><span class="kw">head</span>(<span class="dv">5</span>)</a>
 <a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt; # A tibble: 5 x 7</span></a>
 <a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt;   event_no duration date_start date_peak  intensity_mean intensity_max</span></a>
@@ -320,7 +320,7 @@
 <p><img src="fig-example2-1.png"></p>
 <p>The <code><a href="reference/event_line.html">event_line()</a></code> and <code><a href="reference/lolli_plot.html">lolli_plot()</a></code> functions were designed to work directly on one of the dataframes in the list returned by <code><a href="reference/detect.html">detect()</a></code>. If more control over the figures is required, it may be useful to create them in <strong><code>ggplot2</code></strong> by stacking <code>geoms</code>. We specifically created two new <strong><code>ggplot2</code></strong> <code>geoms</code> to reproduce the functionality of <code><a href="reference/event_line.html">event_line()</a></code> and <code><a href="reference/lolli_plot.html">lolli_plot()</a></code>. These functions are more general in their functionality and can be used outside of the <strong><code>heatwaveR</code></strong> package too. To apply them to MHWs and MCSs first requires that we access the <code>clim</code> or <code>event</code> dataframes within the list that is produced by <code><a href="reference/detect.html">detect()</a></code>. Here is how:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">mhw2 &lt;-<span class="st"> </span>mhw<span class="op">$</span>clim <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/slice">slice</a></span>(<span class="dv">10580</span><span class="op">:</span><span class="dv">10690</span>) <span class="co"># select the region of the time series of interest</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">10580</span><span class="op">:</span><span class="dv">10690</span>) <span class="co"># select the region of the time series of interest</span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(mhw2, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> t, <span class="dt">y =</span> temp, <span class="dt">y2 =</span> thresh)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="reference/geom_flame.html">geom_flame</a></span>() <span class="op">+</span></a>
@@ -334,7 +334,7 @@
 <p>The default output of these function may not be to your liking. If so, not to worry. As <strong><code>ggplot2</code></strong> <code>geoms</code>, they are highly malleable. For example, if we were to choose to reproduce the format of the MHWs as seen in Hobday et al. (2016), the code would look something like this:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># It is necessary to give geom_flame() at least one row on either side of the event in order to calculate the polygon corners smoothly</span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">mhw_top &lt;-<span class="st"> </span>mhw2 <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/slice">slice</a></span>(<span class="dv">49</span><span class="op">:</span><span class="dv">110</span>)</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">49</span><span class="op">:</span><span class="dv">110</span>)</a>
 <a class="sourceLine" id="cb5-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb5-5" data-line-number="5"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> mhw2, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> t)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb5-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="reference/geom_flame.html">geom_flame</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> temp, <span class="dt">y2 =</span> thresh, <span class="dt">fill =</span> <span class="st">"all"</span>), <span class="dt">show.legend =</span> T) <span class="op">+</span></a>
@@ -355,22 +355,22 @@
 <a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="reference/geom_lolli.html">geom_lolli</a></span>(<span class="dt">colour =</span> <span class="st">"salmon"</span>, <span class="dt">n =</span> <span class="dv">3</span>, <span class="dt">colour.n =</span> <span class="ot">NA</span>)</a></code></pre></div>
 <p><img src="fig-example5-1.png"></p>
 <p>The calculation and visualisation of cold-spells is also accommodated within this package. Here is a cold spell detected in the OISST data for Western Australia:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">mcs &lt;-<span class="st"> </span><span class="kw"><a href="reference/detect_event.html">detect_event</a></span>(ts, <span class="dt">coldSpells =</span> <span class="ot">TRUE</span>)</a>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">ts_10th &lt;-<span class="st"> </span><span class="kw"><a href="reference/ts2clm.html">ts2clm</a></span>(sst_WA, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>), <span class="dt">pctile =</span> <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">mcs &lt;-<span class="st"> </span><span class="kw"><a href="reference/detect_event.html">detect_event</a></span>(ts_10th, <span class="dt">coldSpells =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb7-3" data-line-number="3">mcs<span class="op">$</span>event <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/group_by">ungroup</a></span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(event_no, duration, date_start,</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(event_no, duration, date_start,</a>
 <a class="sourceLine" id="cb7-6" data-line-number="6">                date_peak, intensity_mean, intensity_max, intensity_cumulative) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/arrange">arrange</a></span>(intensity_cumulative) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(intensity_cumulative) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb7-8" data-line-number="8"><span class="st">  </span><span class="kw">head</span>(<span class="dv">5</span>)</a>
 <a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt; # A tibble: 5 x 7</span></a>
 <a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;   event_no duration date_start date_peak  intensity_mean intensity_max</span></a>
 <a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;      &lt;int&gt;    &lt;int&gt; &lt;date&gt;     &lt;date&gt;              &lt;dbl&gt;         &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt; 1       29      668 1989-11-23 1990-05-11         -0.798         -3.22</span></a>
-<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt; 2       32      806 1992-08-23 1993-04-11         -0.487         -2.49</span></a>
-<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt; 3       15      782 1985-07-26 1986-07-17         -0.506         -2.95</span></a>
-<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt; 4       54      420 2003-03-11 2004-01-23         -0.751         -2.66</span></a>
-<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt; 5       93      201 2014-01-15 2014-05-05         -0.832         -2.57</span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt; 1       16       76 1990-04-13 1990-05-11          -2.54         -3.22</span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt; 2       54       58 2003-12-19 2004-01-23          -1.80         -2.66</span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt; 3       71       52 2014-04-14 2014-05-05          -1.82         -2.57</span></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt; 4        8       38 1986-06-24 1986-07-17          -2.01         -2.95</span></a>
+<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt; 5       51       32 2003-09-08 2003-09-16          -1.56         -2.12</span></a>
 <a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt; # ... with 1 more variable: intensity_cumulative &lt;dbl&gt;</span></a></code></pre></div>
 <p>The plots showing the cold-spells look like this:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="reference/event_line.html">event_line</a></span>(mcs, <span class="dt">spread =</span> <span class="dv">200</span>, <span class="dt">metric =</span> <span class="st">"intensity_cumulative"</span>,</a>
@@ -380,7 +380,7 @@
 <p><img src="fig-example6-1.png"><img src="fig-example6-2.png"></p>
 <p>Cold spell figures may be created as <code>geoms</code> in <strong><code>ggplot2</code></strong>, too:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">mcs2 &lt;-<span class="st"> </span>mcs<span class="op">$</span>clim <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/slice">slice</a></span>(<span class="dv">2990</span><span class="op">:</span><span class="dv">3190</span>)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">2990</span><span class="op">:</span><span class="dv">3190</span>)</a>
 <a class="sourceLine" id="cb9-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co"># # Note that the plot centres on the polygons, so it may be necessary to manually zoom out a bit</span></a>
 <a class="sourceLine" id="cb9-5" data-line-number="5"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> mcs2, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> t)) <span class="op">+</span></a>
@@ -406,9 +406,9 @@
 <p>In addition to the calculation of extreme events, consecutive days over a given static threshold may be calculated with the <code><a href="reference/exceedance.html">exceedance()</a></code> function.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">exc_<span class="dv">25</span> &lt;-<span class="st"> </span><span class="kw"><a href="reference/exceedance.html">exceedance</a></span>(ts, <span class="dt">threshold =</span> <span class="dv">25</span>)</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2">exc_<span class="dv">25</span><span class="op">$</span>exceedance <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/group_by">ungroup</a></span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(exceedance_no, duration, date_start, date_peak, intensity_mean, intensity_cumulative) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/arrange">arrange</a></span>(<span class="op">-</span>intensity_cumulative) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(exceedance_no, duration, date_start, date_peak, intensity_mean, intensity_cumulative) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(<span class="op">-</span>intensity_cumulative) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb10-6" data-line-number="6"><span class="st">  </span><span class="kw">head</span>(<span class="dv">5</span>)</a>
 <a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt; # A tibble: 5 x 6</span></a>
 <a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;   exceedance_no duration date_start date_peak  intensity_mean</span></a>
@@ -421,7 +421,7 @@
 <a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#&gt; # ... with 1 more variable: intensity_cumulative &lt;dbl&gt;</span></a></code></pre></div>
 <p>Which, when plotted with <strong><code>ggplot2</code></strong> code would look like this:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">exc_<span class="dv">25</span>_thresh &lt;-<span class="st"> </span>exc_<span class="dv">25</span><span class="op">$</span>threshold <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/slice">slice</a></span>(<span class="dv">9500</span><span class="op">:</span><span class="dv">9866</span>)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">9500</span><span class="op">:</span><span class="dv">9866</span>)</a>
 <a class="sourceLine" id="cb11-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb11-4" data-line-number="4"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> exc_<span class="dv">25</span>_thresh, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> t)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb11-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="reference/geom_flame.html">geom_flame</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> temp, <span class="dt">y2 =</span> thresh, <span class="dt">fill =</span> <span class="st">"all"</span>), <span class="dt">show.legend =</span> F) <span class="op">+</span></a>
@@ -438,9 +438,9 @@
 <p>The same function may be used to calculate consecutive days below a threshold, too.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">exc_<span class="dv">19</span> &lt;-<span class="st"> </span><span class="kw"><a href="reference/exceedance.html">exceedance</a></span>(ts, <span class="dt">threshold =</span> <span class="dv">19</span>, <span class="dt">below =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb12-2" data-line-number="2">exc_<span class="dv">19</span><span class="op">$</span>exceedance <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/group_by">ungroup</a></span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(exceedance_no, duration, date_start, date_peak, intensity_mean, intensity_cumulative) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/arrange">arrange</a></span>(intensity_cumulative) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(exceedance_no, duration, date_start, date_peak, intensity_mean, intensity_cumulative) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(intensity_cumulative) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb12-6" data-line-number="6"><span class="st">  </span><span class="kw">head</span>(<span class="dv">5</span>)</a>
 <a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt; # A tibble: 5 x 6</span></a>
 <a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt;   exceedance_no duration date_start date_peak  intensity_mean</span></a>
@@ -453,7 +453,7 @@
 <a class="sourceLine" id="cb12-15" data-line-number="15"><span class="co">#&gt; # ... with 1 more variable: intensity_cumulative &lt;dbl&gt;</span></a></code></pre></div>
 <p>And were one to desire a visualisation of these data it could be produced with the following code:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">exc_<span class="dv">19</span>_thresh &lt;-<span class="st"> </span>exc_<span class="dv">19</span><span class="op">$</span>threshold <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/slice">slice</a></span>(<span class="dv">1500</span><span class="op">:</span><span class="dv">1866</span>)</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">1500</span><span class="op">:</span><span class="dv">1866</span>)</a>
 <a class="sourceLine" id="cb13-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb13-4" data-line-number="4"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> exc_<span class="dv">19</span>_thresh, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> t)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb13-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="reference/geom_flame.html">geom_flame</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> thresh, <span class="dt">y2 =</span> temp), <span class="dt">fill =</span> <span class="st">"steelblue3"</span>, <span class="dt">show.legend =</span> F) <span class="op">+</span></a>
@@ -514,11 +514,11 @@
 <p>Were one to want to visualise the categories of a MHW ‘by hand’, the following code will provide a good starting point.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="co"># Create category breaks and select slice of data.frame</span></a>
 <a class="sourceLine" id="cb17-2" data-line-number="2">clim_cat &lt;-<span class="st"> </span>mhw<span class="op">$</span>clim <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/mutate">mutate</a></span>(<span class="dt">diff =</span> thresh <span class="op">-</span><span class="st"> </span>seas,</a>
+<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">diff =</span> thresh <span class="op">-</span><span class="st"> </span>seas,</a>
 <a class="sourceLine" id="cb17-4" data-line-number="4">                <span class="dt">thresh_2x =</span> thresh <span class="op">+</span><span class="st"> </span>diff,</a>
 <a class="sourceLine" id="cb17-5" data-line-number="5">                <span class="dt">thresh_3x =</span> thresh_2x <span class="op">+</span><span class="st"> </span>diff,</a>
 <a class="sourceLine" id="cb17-6" data-line-number="6">                <span class="dt">thresh_4x =</span> thresh_3x <span class="op">+</span><span class="st"> </span>diff) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb17-7" data-line-number="7"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/slice">slice</a></span>(<span class="dv">10580</span><span class="op">:</span><span class="dv">10690</span>)</a>
+<a class="sourceLine" id="cb17-7" data-line-number="7"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">10580</span><span class="op">:</span><span class="dv">10690</span>)</a>
 <a class="sourceLine" id="cb17-8" data-line-number="8"></a>
 <a class="sourceLine" id="cb17-9" data-line-number="9"><span class="co"># Set line colours</span></a>
 <a class="sourceLine" id="cb17-10" data-line-number="10">lineColCat &lt;-<span class="st"> </span><span class="kw">c</span>(</a>
@@ -564,8 +564,8 @@
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h2>
 <p>Hobday, A.J. et al. (2016). A hierarchical approach to defining marine heatwaves, Progress in Oceanography, 141, pp. 227-238.</p>
-<p>Schlegel, R. W., Oliver, E. C. J., Wernberg, T. W., Smit, A. J. (2017). Nearshore and offshore co-occurrences of marine heatwaves and cold-spells. Progress in Oceanography, 151, pp. 189-205.</p>
-<p>Schlegel, R. W., Oliver, E. C., Perkins-Kirkpatrick, S., Kruger, A., Smit, A. J. (2017). Predominant atmospheric and oceanic patterns during coastal marine heatwaves. Frontiers in Marine Science, 4, 323.</p>
+<p>Schlegel, R. W., Oliver, E. C. J., Wernberg, T. W., Smit, A. J. (2017a). Nearshore and offshore co-occurrences of marine heatwaves and cold-spells. Progress in Oceanography, 151, pp. 189-205.</p>
+<p>Schlegel, R. W., Oliver, E. C., Perkins-Kirkpatrick, S., Kruger, A., Smit, A. J. (2017b). Predominant atmospheric and oceanic patterns during coastal marine heatwaves. Frontiers in Marine Science, 4, 323.</p>
 <p>Hobday et al. (in review). Categorizing and Naming Marine Heatwaves. Oceanography.</p>
 </div>
 <div id="acknowledgements" class="section level2">
