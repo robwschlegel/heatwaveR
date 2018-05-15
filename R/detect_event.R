@@ -130,7 +130,7 @@
 #'   \item{rate_onset}{Onset rate of event [deg. C / day].}
 #'   \item{rate_decline}{Decline rate of event [deg. C / day].}
 #'
-#' \code{intensity_max_relThres}, \code{intensity_mean_relThresh},
+#' \code{intensity_max_relThresh}, \code{intensity_mean_relThresh},
 #' \code{intensity_var_relThresh}, and \code{intensity_cumulative_relThresh}
 #' are as above except relative to the threshold (e.g., 90th percentile) rather
 #' than the seasonal climatology.
@@ -249,7 +249,7 @@ detect_event <- function(data,
   }
 
   intensity_mean <- intensity_max <- intensity_cumulative <- intensity_mean_relThresh <-
-    intensity_max_relThres <- intensity_cumulative_relThresh <- intensity_mean_abs <-
+    intensity_max_relThresh <- intensity_cumulative_relThresh <- intensity_mean_abs <-
     intensity_max_abs <- intensity_cumulative_abs <- intensity_mean_norm <- intensity_max_norm <-
     rate_onset <- rate_decline <- mhw_rel_thresh <-
     rel_thresh_norm <- mhw_rel_seas <- event_no <- row_index <-  NULL
@@ -274,7 +274,7 @@ detect_event <- function(data,
                      intensity_var = sqrt(stats::var(mhw_rel_seas)),
                      intensity_cumulative = max(cumsum(mhw_rel_seas)),
                      intensity_mean_relThresh = mean(mhw_rel_thresh),
-                     intensity_max_relThres = max(mhw_rel_thresh),
+                     intensity_max_relThresh = max(mhw_rel_thresh),
                      intensity_var_relThresh = sqrt(stats::var(mhw_rel_thresh)),
                      intensity_cumulative_relThresh = max(cumsum(mhw_rel_thresh)),
                      intensity_mean_abs = mean(ts_y),
@@ -321,7 +321,7 @@ detect_event <- function(data,
       intensity_max = -intensity_max,
       intensity_cumulative = -intensity_cumulative,
       intensity_mean_relThresh = -intensity_mean_relThresh,
-      intensity_max_relThres = -intensity_max_relThres,
+      intensity_max_relThresh = -intensity_max_relThresh,
       intensity_cumulative_relThresh = -intensity_cumulative_relThresh,
       intensity_mean_abs = -intensity_mean_abs,
       intensity_max_abs = -intensity_max_abs,
@@ -331,12 +331,6 @@ detect_event <- function(data,
       rate_onset = -rate_onset,
       rate_decline = -rate_decline
     )
-    # This should no longer be necessary...
-    # t_series <- t_series %>% dplyr::mutate(
-    #   ts_y = -ts_y,
-    #   ts_seas = -ts_seas,
-    #   ts_thresh = -ts_thresh
-    # )
   }
 
   data_clim <- cbind(data, t_series[,5:8])

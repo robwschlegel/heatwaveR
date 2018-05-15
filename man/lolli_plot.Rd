@@ -8,10 +8,11 @@ lolli_plot(data, metric = "intensity_max", event_count = 3,
   xaxis = "date_start")
 }
 \arguments{
-\item{data}{Output from the \code{\link{detect}} function.}
+\item{data}{Output from the \code{\link{detect_event}} function.}
 
-\item{metric}{One of \code{intensity_mean}, \code{intensity_max}, \code{intensity_cumulative} and \code{duration}.
-Default is \code{intensity_cumulative}.}
+\item{metric}{One of \code{intensity_mean}, \code{intensity_max},
+\code{intensity_cumulative} and \code{duration}.
+ Default is \code{intensity_cumulative}.}
 
 \item{event_count}{The number of top events to highlight. Default is 3.}
 
@@ -30,9 +31,8 @@ that one must not have any prior knowledge of \code{ggplot2} to create the figur
 Visualise a timeline of several possible event metrics as 'lollipop' graphs.
 }
 \examples{
-ts_dat <- make_whole(sst_NW_Atl)
-res <- detect(ts_dat, climatology_start = "1983-01-01",
-              climatology_end = "2012-12-31")
+ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+res <- detect_event(ts)
 
 \dontrun{
 lolli_plot(res, metric = "int_cum", event_count = 3, xaxis = "date_peak")

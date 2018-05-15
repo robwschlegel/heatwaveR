@@ -52,14 +52,15 @@ specification, e.g. \code{borders()}.}
 }
 \description{
 This function will create polygons between two lines. If given a
-temperature and theshold time series, like that produced by \code{\link{detect}},
-the output will meet the specifications of Hobday et al. (2016) shown as
-'flame polygons.' If one wishes to plot polygons below a given threshold, and not
-above, switch the values being fed to the \code{y} and \code{y2}
-aesthetics. This function differs in use from \code{\link{event_line}}
-in that it must be created as a \code{ggplot} 'geom' object. The benefit
-of this being that one may add additional information to the figure as geom
-layers to ggplot2 graphs as may be necessary.
+temperature and theshold time series, like that produced by
+\code{\link{detect_event}}, the output will meet the specifications
+of Hobday et al. (2016) shown as 'flame polygons.' If one wishes to
+plot polygons below a given threshold, and not above, switch the values
+being fed to the \code{y} and \code{y2} aesthetics. This function differs
+in use from \code{\link{event_line}} in that it must be created as a
+\code{ggplot} 'geom' object. The benefit of this being that one may add
+additional information to the figure as geom layers to ggplot2 graphs
+as may be necessary.
 }
 \section{Aesthetics}{
 
@@ -78,9 +79,8 @@ are in bold):
 }
 
 \examples{
-ts_dat <- make_whole(sst_WA)
-res <- detect(ts_dat, climatology_start = "1983-01-01",
-              climatology_end = "2012-12-31")
+ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+res <- detect_event(ts)
 mhw <- res$clim
 mhw <- mhw[10580:10690,]
 

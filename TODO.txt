@@ -62,7 +62,9 @@ Friday, May 11th, 2018 Skype meeting:
 * Also play around with ALL of the different arguments
 ** Show what the sensitivities are to these changes
 * Also provide options and advice about what to do given certain limitations
-** Such as NA values and short time series
+** Such as NA values
+** Short time series
+** Predictable NA time periods (e.g. sea ice regions)
 * The alternative baseline and climatology options need to be demonstrated, too
 * It needs to be insured that all core options are available across both languages
 ** And that the results are exactly the same

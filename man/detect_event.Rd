@@ -105,7 +105,7 @@ The events are summarised using a range of event metrics:
   \item{rate_onset}{Onset rate of event [deg. C / day].}
   \item{rate_decline}{Decline rate of event [deg. C / day].}
 
-\code{intensity_max_relThres}, \code{intensity_mean_relThresh},
+\code{intensity_max_relThresh}, \code{intensity_mean_relThresh},
 \code{intensity_var_relThresh}, and \code{intensity_cumulative_relThresh}
 are as above except relative to the threshold (e.g., 90th percentile) rather
 than the seasonal climatology.

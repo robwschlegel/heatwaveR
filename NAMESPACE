@@ -2,7 +2,6 @@
 
 export(block_average)
 export(category)
-export(detect)
 export(detect_event)
 export(event_line)
 export(exceedance)
