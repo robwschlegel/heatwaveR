@@ -75,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1.9001</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.2.9000</span>
       </span>
     </div>
 
@@ -160,7 +160,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>Accepts the data returned by the <code><a href='detect.html'>detect</a></code> function.</p></td>
+      <td><p>Accepts the data returned by the <code><a href='detect_event.html'>detect_event</a></code> function.</p></td>
     </tr>
     <tr>
       <th>x</th>
@@ -193,28 +193,28 @@ metrics. It includes the following:</p>
   <dt>temp_max</dt><dd><p>The maximum temperature for the specified year [deg. C].</p></dd>
   <dt>count</dt><dd><p>The number of events per year.</p></dd>
   <dt>duration</dt><dd><p>The average duration of events per year [days].</p></dd>
-  <dt>int_mean</dt><dd><p>The average event "mean intensity" in each year [deg. C].</p></dd>
-  <dt>int_max</dt><dd><p>The average event "maximum (peak) intensity" in each year
+  <dt>intensity_mean</dt><dd><p>The average event "mean intensity" in each year [deg. C].</p></dd>
+  <dt>intensity_max</dt><dd><p>The average event "maximum (peak) intensity" in each year
   [deg. C].</p></dd>
-  <dt>int_var</dt><dd><p>The average event "intensity variability" in each year
+  <dt>intensity_var</dt><dd><p>The average event "intensity variability" in each year
   [deg. C].</p></dd>
-  <dt>int_cum</dt><dd><p>The average event "cumulative intensity" in each year
+  <dt>intensity_cumulative</dt><dd><p>The average event "cumulative intensity" in each year
   [deg. C x days].</p></dd>
   <dt>rate_onset</dt><dd><p>Average event onset rate in each year [deg. C / days].</p></dd>
   <dt>rate_decline</dt><dd><p>Average event decline rate in each year [deg. C / days].</p></dd>
   <dt>total_days</dt><dd><p>Total number of events days in each year [days].</p></dd>
   <dt>total_icum</dt><dd><p>Total cumulative intensity over all events in each year [deg. C x days].</p></dd>
 
-int_max_rel_thresh, int_mean_rel_thresh,
-int_var_rel_thresh, and int_cum_rel_thresh
+intensity_max_relThresh, intensity_mean_relThresh,
+intensity_var_relThresh, and intensity_cumulative_relThresh
 are as above except relative to the threshold (e.g., 90th percentile) rather
 than the seasonal climatology.
 
-int_max_abs, int_mean_abs, int_var_abs, and
-int_cum_abs are as above except as absolute magnitudes
+intensity_max_abs, intensity_mean_abs, intensity_var_abs, and
+intensity_cumulative_abs are as above except as absolute magnitudes
 rather than relative to the seasonal climatology or threshold.
 
-int_max_norm and int_mean_norm are as above except
+intensity_max_norm and intensity_mean_norm are as above except
 units are in multiples of threshold exceedances, i.e., a value of 1.5
 indicates the event intensity (relative to the climatology) was 1.5 times the
 value of the threshold (relative to climatology,
@@ -241,9 +241,8 @@ doi: 10.1016/j.pocean.2015.12.014</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>t_dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_whole.html'>make_whole</a></span>(<span class='no'>sst_Med</span>)
-<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='detect.html'>detect</a></span>(<span class='no'>t_dat</span>, <span class='kw'>climatology_start</span> <span class='kw'>=</span> <span class='st'>"1983-01-01"</span>,
-              <span class='kw'>climatology_end</span> <span class='kw'>=</span> <span class='st'>"2012-12-31"</span>) <span class='co'># using default values</span>
+    <pre class="examples"><div class='input'><span class='no'>ts</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ts2clm.html'>ts2clm</a></span>(<span class='no'>sst_WA</span>, <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span>))
+<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='detect_event.html'>detect_event</a></span>(<span class='no'>ts</span>)
 <span class='no'>out</span> <span class='kw'>&lt;-</span> <span class='fu'>block_average</span>(<span class='no'>res</span>)
 <span class='fu'>summary</span>(<span class='fu'>glm</span>(<span class='no'>count</span> ~ <span class='no'>year</span>, <span class='no'>out</span>, <span class='kw'>family</span> <span class='kw'>=</span> <span class='st'>"poisson"</span>))</div><div class='output co'>#&gt; 
 #&gt; Call:
@@ -251,22 +250,22 @@ doi: 10.1016/j.pocean.2015.12.014</p>
 #&gt; 
 #&gt; Deviance Residuals: 
 #&gt;     Min       1Q   Median       3Q      Max  
-#&gt; -2.0580  -1.0345  -0.1116   0.4711   2.2930  
+#&gt; -2.3992  -1.5279  -0.5768   0.6122   3.7773  
 #&gt; 
 #&gt; Coefficients:
-#&gt;              Estimate Std. Error z value Pr(&gt;|z|)    
-#&gt; (Intercept) -90.78973   26.55752  -3.419 0.000629 ***
-#&gt; year          0.04577    0.01327   3.450 0.000560 ***
+#&gt;               Estimate Std. Error z value Pr(&gt;|z|)    
+#&gt; (Intercept) -105.58986   29.22236  -3.613 0.000302 ***
+#&gt; year           0.05308    0.01459   3.638 0.000275 ***
 #&gt; ---
 #&gt; Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #&gt; 
 #&gt; (Dispersion parameter for poisson family taken to be 1)
 #&gt; 
-#&gt;     Null deviance: 54.333  on 32  degrees of freedom
-#&gt; Residual deviance: 41.753  on 31  degrees of freedom
-#&gt; AIC: 118.37
+#&gt;     Null deviance: 89.964  on 32  degrees of freedom
+#&gt; Residual deviance: 75.723  on 31  degrees of freedom
+#&gt; AIC: 133.7
 #&gt; 
-#&gt; Number of Fisher Scoring iterations: 5
+#&gt; Number of Fisher Scoring iterations: 6
 #&gt; </div><div class='input'>
 </div><span class='co'># NOT RUN {</span>
 <span class='fu'>ggplot</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>out</span>, <span class='fu'>aes</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>year</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>count</span>)) +

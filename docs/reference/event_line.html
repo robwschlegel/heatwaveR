@@ -76,7 +76,7 @@ Hobday et al. (2016)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1.9001</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.2.9000</span>
       </span>
     </div>
 
@@ -163,7 +163,8 @@ Hobday et al. (2016).</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>The function receives the full (list) output from the <code><a href='detect.html'>detect</a></code> function.</p></td>
+      <td><p>The function receives the full (list) output from the
+<code><a href='detect_event.html'>detect_event</a></code> function.</p></td>
     </tr>
     <tr>
       <th>x</th>
@@ -192,10 +193,11 @@ qualify as a heatwave or cold-spell.</p></td>
       <th>metric</th>
       <td><p>This tells the function how to choose the event that should be highlighted as the
 'greatest' of the events in the chosen period. One may choose from the following options:
-<code>intensity_mean</code>, <code>intensity_max</code>, <code>intensity_var</code>,<code>intensity_cumulative</code>, <code>int_mean_rel_thresh</code>,
-<code>int_max_rel_thresh</code>, <code>int_var_rel_thresh</code>,<code>int_cum_rel_thresh</code>, <code>int_mean_abs</code>,
-<code>int_max_abs</code>, <code>int_var_abs</code>, <code>int_cum_abs</code>, <code>int_mean_norm</code>, <code>int_max_norm</code>,
-<code>rate_onset</code>, <code>rate_decline</code>. Partial name matching is currently not supported so please
+<code>intensity_mean</code>, <code>intensity_max</code>, <code>intensity_var</code>,<code>intensity_cumulative</code>,
+<code>int_mean_rel_thresh</code>, <code>int_max_rel_thresh</code>, <code>int_var_rel_thresh</code>,
+<code>int_cum_rel_thresh</code>, <code>int_mean_abs</code>, <code>int_max_abs</code>, <code>int_var_abs</code>,
+<code>int_cum_abs</code>, <code>int_mean_norm</code>, <code>int_max_norm</code>, <code>rate_onset</code>,
+<code>rate_decline</code>. Partial name matching is currently not supported so please
 specify the metric name precisely. The default is <code>intensity_cumulative</code>.</p></td>
     </tr>
     <tr>
@@ -205,7 +207,7 @@ event (as per <code>metric</code>) is retrieved and plotted. This may not necess
 correspond to the biggest event of the specified metric within the entire
 data set. To plot the biggest event within the whole time series, make sure
 <code>start_date</code> and <code>end_date</code> straddle this event, or simply specify
-the start and end dates of the full time series given to <code><a href='detect.html'>detect</a></code>.</p></td>
+the start and end dates of the full time series given to <code><a href='detect_event.html'>detect_event</a></code>.</p></td>
     </tr>
     <tr>
       <th>end_date</th>
@@ -228,7 +230,7 @@ seen in Figure 3 of Hobday et al. (in review), will be produced. If <code>catego
     <p>The function will return a line plot indicating the climatology,
 threshold and temperature, with the hot or cold events that meet the
 specifications of Hobday et al. (2016) shaded in as appropriate. The plotting
-of hot or cold events depends on which option is specified in <code><a href='detect.html'>detect</a></code>.
+of hot or cold events depends on which option is specified in <code><a href='detect_event.html'>detect_event</a></code>.
 The top event detect during the selected time period will be visible in a
 brighter colour. This function differs in use from <code><a href='geom_flame.html'>geom_flame</a></code>
 in that it creates a stand alone figure. The benefit of this being
@@ -242,9 +244,8 @@ doi: 10.1016/j.pocean.2015.12.014</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>ts_dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_whole.html'>make_whole</a></span>(<span class='no'>sst_WA</span>)
-<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='detect.html'>detect</a></span>(<span class='no'>ts_dat</span>, <span class='kw'>climatology_start</span> <span class='kw'>=</span> <span class='st'>"1983-01-01"</span>,
-              <span class='kw'>climatology_end</span> <span class='kw'>=</span> <span class='st'>"2012-12-31"</span>)</div><span class='co'># NOT RUN {</span>
+    <pre class="examples"><div class='input'><span class='no'>ts</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ts2clm.html'>ts2clm</a></span>(<span class='no'>sst_WA</span>, <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span>))
+<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='detect_event.html'>detect_event</a></span>(<span class='no'>ts</span>)</div><span class='co'># NOT RUN {</span>
 <span class='fu'>event_line</span>(<span class='no'>res</span>, <span class='kw'>spread</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>metric</span> <span class='kw'>=</span> <span class='st'>"intensity_cumulative"</span>,
 <span class='kw'>start_date</span> <span class='kw'>=</span> <span class='st'>"2010-12-01"</span>, <span class='kw'>end_date</span> <span class='kw'>=</span> <span class='st'>"2011-06-30"</span>)
 

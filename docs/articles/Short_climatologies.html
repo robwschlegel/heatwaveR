@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1.9001</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.2.9000</span>
       </span>
     </div>
 
@@ -118,51 +118,51 @@
     
 <p>How does one create the best climatology? What if the time series is shorter than the recommended 30 years?</p>
 <p>Lets look at all the SACTN data that’s longer than 30 years first. Can each site’s annual signal be represented by a sine/cosine curve derived from a Fourier analysis? First I find all the sites within the South African Coastal Temperature Network that are approaimately 30 years or more in duration.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">load</span>(<span class="st">"/Volumes/GoogleDrive/My Drive/SACTN/SACTNraw/data/4_products/SACTN_daily_v4.2.RData"</span>)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">daily.in &lt;-<span class="st"> </span>SACTN_daily_v4<span class="fl">.2</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">rm</span>(SACTN_daily_v4<span class="fl">.2</span>)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">long_sites &lt;-<span class="st"> </span>daily.in <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="st">  </span><span class="kw">group_by</span>(index) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">n =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="st">  </span><span class="kw">filter</span>(n <span class="op">&gt;=</span><span class="st"> </span><span class="dv">365</span> <span class="op">*</span><span class="st"> </span><span class="dv">30</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="st">  </span><span class="kw">ungroup</span>()</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">load</span>(<span class="st">"/Volumes/GoogleDrive/My Drive/SACTN/SACTNraw/data/4_products/SACTN_daily_v4.2.RData"</span>)
+daily.in &lt;-<span class="st"> </span>SACTN_daily_v4.<span class="dv">2</span>
+<span class="kw">rm</span>(SACTN_daily_v4.<span class="dv">2</span>)
+long_sites &lt;-<span class="st"> </span>daily.in <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(index) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">n =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(n <span class="op">&gt;=</span><span class="st"> </span><span class="dv">365</span> <span class="op">*</span><span class="st"> </span><span class="dv">30</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">ungroup</span>()</code></pre></div>
 <p>Now, for each site that has ≥30 years of data, I create a daily climatology by taking the mean for each Julian day, using all data across the full duration of each time series.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">daily &lt;-<span class="st"> </span>daily.in <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(index <span class="op">%in%</span><span class="st"> </span>long_sites<span class="op">$</span>index) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">index =</span> <span class="kw">as.character</span>(index)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="st">  </span><span class="co"># droplevels() %&gt;% </span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="st">  </span><span class="kw">group_by</span>(index) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">doy =</span> <span class="kw">yday</span>(date)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="st">  </span><span class="kw">group_by</span>(index, doy) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">temp =</span> <span class="kw">mean</span>(temp, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="st">  </span><span class="kw">ungroup</span>()</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">daily &lt;-<span class="st"> </span>daily.in <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(index <span class="op">%in%</span><span class="st"> </span>long_sites<span class="op">$</span>index) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">index =</span> <span class="kw">as.character</span>(index)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="co"># droplevels() %&gt;% </span>
+<span class="st">  </span><span class="kw">group_by</span>(index) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">doy =</span> <span class="kw">yday</span>(date)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(index, doy) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">temp =</span> <span class="kw">mean</span>(temp, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">ungroup</span>()</code></pre></div>
 <p>I make a function that will fit a Fourier series with seven basis functions (3 sine, 3 cosine and the constant) to the data. This is the same approach I used to create the smooth climatology in “Climatologies and baseline” elsewhere on this site, and it is also the one favoured in the creation of the dialy Optimally Interpolated Sea Surface Temperature climatology <span class="citation">(Banzon et al. 2014)</span>. Here it is wrapped in a function so I can easily apply it to each time series.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">fFun &lt;-<span class="st"> </span><span class="cf">function</span>(data) {</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="kw">require</span>(fda)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">  b7 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/fda/topics/create.fourier.basis">create.fourier.basis</a></span>(<span class="dt">rangeval =</span> <span class="kw">range</span>(data<span class="op">$</span>doy), <span class="dt">nbasis =</span> <span class="dv">7</span>)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">  <span class="co"># create smooth seasonal climatology</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">  b7.smth &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/fda/topics/smooth.basis">smooth.basis</a></span>(<span class="dt">argvals =</span> data<span class="op">$</span>doy, <span class="dt">y =</span> data<span class="op">$</span>temp, <span class="dt">fdParobj =</span> b7)<span class="op">$</span>fd</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">  data.smth &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/fda/topics/eval.fd">eval.fd</a></span>(data<span class="op">$</span>doy, b7.smth)</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">  <span class="kw">return</span>(data.smth)</a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">}</a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co"># currently this function fails when the 1st of January is an NA</span></a></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># which sites have NAs?</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">excl.sites &lt;-<span class="st"> </span><span class="kw">c</span>(daily[<span class="kw">is.na</span>(daily<span class="op">$</span>temp), <span class="dv">1</span>])<span class="op">$</span>index</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">daily.nest &lt;-<span class="st"> </span>daily <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span>index <span class="op">%in%</span><span class="st"> </span>excl.sites) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="st">  </span><span class="kw">nest</span>(<span class="op">-</span>index)</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8">daily.smth &lt;-<span class="st"> </span>daily.nest <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">smoothed =</span> <span class="kw">map</span>(data, fFun)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="st">  </span><span class="kw">unnest</span>(data, smoothed)</a></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">plt1 &lt;-<span class="st"> </span>daily.smth <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> doy, <span class="dt">y =</span> temp)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">shape =</span> <span class="st">"+"</span>, <span class="dt">colour =</span> <span class="st">"red"</span>, <span class="dt">alpha =</span> <span class="fl">0.6</span>, <span class="dt">size =</span> <span class="dv">1</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> smoothed, <span class="dt">group =</span> index), <span class="dt">size =</span> <span class="fl">0.6</span>, <span class="dt">colour =</span> <span class="st">"black"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>index)</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="kw">ggsave</span>(plt1, <span class="dt">file =</span> <span class="st">"smooth_mat_1.png"</span>, <span class="dt">width =</span> <span class="dv">12</span>, <span class="dt">height =</span> <span class="dv">9</span>, <span class="dt">dpi =</span> <span class="dv">120</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fFun &lt;-<span class="st"> </span><span class="cf">function</span>(data) {
+  <span class="kw">require</span>(fda)
+  b7 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/fda/topics/create.fourier.basis">create.fourier.basis</a></span>(<span class="dt">rangeval =</span> <span class="kw">range</span>(data<span class="op">$</span>doy), <span class="dt">nbasis =</span> <span class="dv">7</span>)
+
+  <span class="co"># create smooth seasonal climatology</span>
+  b7.smth &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/fda/topics/smooth.basis">smooth.basis</a></span>(<span class="dt">argvals =</span> data<span class="op">$</span>doy, <span class="dt">y =</span> data<span class="op">$</span>temp, <span class="dt">fdParobj =</span> b7)<span class="op">$</span>fd
+  data.smth &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/fda/topics/eval.fd">eval.fd</a></span>(data<span class="op">$</span>doy, b7.smth)
+  <span class="kw">return</span>(data.smth)
+}
+<span class="co"># currently this function fails when the 1st of January is an NA</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># which sites have NAs?</span>
+excl.sites &lt;-<span class="st"> </span><span class="kw">c</span>(daily[<span class="kw">is.na</span>(daily<span class="op">$</span>temp), <span class="dv">1</span>])<span class="op">$</span>index
+
+daily.nest &lt;-<span class="st"> </span>daily <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span>index <span class="op">%in%</span><span class="st"> </span>excl.sites) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">nest</span>(<span class="op">-</span>index)
+
+daily.smth &lt;-<span class="st"> </span>daily.nest <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">smoothed =</span> <span class="kw">map</span>(data, fFun)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">unnest</span>(data, smoothed)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">plt1 &lt;-<span class="st"> </span>daily.smth <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> doy, <span class="dt">y =</span> temp)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">shape =</span> <span class="st">"+"</span>, <span class="dt">colour =</span> <span class="st">"red"</span>, <span class="dt">alpha =</span> <span class="fl">0.6</span>, <span class="dt">size =</span> <span class="dv">1</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> smoothed, <span class="dt">group =</span> index), <span class="dt">size =</span> <span class="fl">0.6</span>, <span class="dt">colour =</span> <span class="st">"black"</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>index)
+<span class="kw">ggsave</span>(plt1, <span class="dt">file =</span> <span class="st">"smooth_mat_1.png"</span>, <span class="dt">width =</span> <span class="dv">12</span>, <span class="dt">height =</span> <span class="dv">9</span>, <span class="dt">dpi =</span> <span class="dv">120</span>)</code></pre></div>
 <div class="figure">
 <img src="smooth_mat_1.png" alt="Figure 1. Smooth climatologies derived from a Fourier analysis fitted to coastal seawater time series along the South African coast. Climatologies were produced only for sites with at least 30 year long time series." style="width:100.0%"><p class="caption"><strong>Figure 1.</strong> Smooth climatologies derived from a Fourier analysis fitted to coastal seawater time series along the South African coast. Climatologies were produced only for sites with at least 30 year long time series.</p>
 </div>
@@ -178,52 +178,52 @@
 <p>In total I now have 300 annual cycles: 100 of them representing a 10-year long times series, 100 representing a 20-year long time series, and 100 for a 30 year time series. To each of them, separately, I then fit the smooth climatology assembled from their Fourier components.</p>
 <p>The attached plots show the outcome. The three panels represent 10, 20 and 30 year long time series. In Figure 2, each of the 100 daily time series is plotted as a line graph. In Figure 3, the red crosses show, for each doy, each of the 100 mean temperatures that I obtained. The black lines are of course the smooth climatologies–there is also 100 of these lines on each of the three panels.</p>
 <p>So, using bootstrapping and a Fourier analysis we can get away with using shorter time series. I can see later what happens if I shrink even further the time series down to only five years long. I will also test how well the python and R heatwave scripts’ internal climatology functions (windowHalfWidth and smoothPercentile) are able to produce reliable climatologies from short time series.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">library</span>(heatwaveR)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">sst.in &lt;-<span class="st"> </span><span class="kw">as_tibble</span>(heatwaveR<span class="op">::</span>sst_WA)</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">sst &lt;-<span class="st"> </span>sst.in <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">doy =</span> <span class="kw">yday</span>(<span class="kw">as.Date</span>(t))) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="st">  </span><span class="kw">nest</span>(<span class="op">-</span>doy)</a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7">meanFun &lt;-<span class="st"> </span><span class="cf">function</span>(data) {</a>
-<a class="sourceLine" id="cb6-8" data-line-number="8">  m &lt;-<span class="st"> </span><span class="kw">mean</span>(data<span class="op">$</span>temp, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb6-9" data-line-number="9">  <span class="kw">return</span>(m)</a>
-<a class="sourceLine" id="cb6-10" data-line-number="10">}</a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb6-12" data-line-number="12">sstRepl &lt;-<span class="st"> </span><span class="cf">function</span>(sst) {</a>
-<a class="sourceLine" id="cb6-13" data-line-number="13">  sst.sampled &lt;-<span class="st"> </span>sst <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">sample_10 =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(data, sample_n, <span class="dv">10</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb6-15" data-line-number="15">           <span class="dt">sample_20 =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(data, sample_n, <span class="dv">20</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb6-16" data-line-number="16">           <span class="dt">sample_30 =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(data, sample_n, <span class="dv">30</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">sample_10_m =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(sample_<span class="dv">10</span>, meanFun),</a>
-<a class="sourceLine" id="cb6-18" data-line-number="18">           <span class="dt">sample_20_m =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(sample_<span class="dv">20</span>, meanFun),</a>
-<a class="sourceLine" id="cb6-19" data-line-number="19">           <span class="dt">sample_30_m =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(sample_<span class="dv">30</span>, meanFun)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-20" data-line-number="20"><span class="st">    </span><span class="kw">select</span>(<span class="op">-</span>data, <span class="op">-</span>sample_<span class="dv">10</span>, <span class="op">-</span>sample_<span class="dv">20</span>, <span class="op">-</span>sample_<span class="dv">30</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-21" data-line-number="21"><span class="st">    </span><span class="kw">unnest</span>(sample_<span class="dv">10</span>_m, sample_<span class="dv">20</span>_m, sample_<span class="dv">30</span>_m)</a>
-<a class="sourceLine" id="cb6-22" data-line-number="22">  <span class="kw">return</span>(sst.sampled)</a>
-<a class="sourceLine" id="cb6-23" data-line-number="23">}</a>
-<a class="sourceLine" id="cb6-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb6-25" data-line-number="25"><span class="kw">library</span>(purrr)</a>
-<a class="sourceLine" id="cb6-26" data-line-number="26">sst.repl &lt;-<span class="st"> </span>purrr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/rerun">rerun</a></span>(<span class="dv">100</span>, <span class="kw">sstRepl</span>(sst)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-27" data-line-number="27"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map_df</a></span>(as.data.frame, <span class="dt">.id =</span> <span class="st">"rep"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-28" data-line-number="28"><span class="st">  </span><span class="kw">gather</span>(<span class="dt">key =</span> <span class="st">"ts.len"</span>, <span class="dt">value =</span> <span class="st">"temp"</span>, <span class="op">-</span>rep, <span class="op">-</span>doy)</a></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">plt2 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">data =</span> sst.repl, <span class="kw">aes</span>(<span class="dt">x =</span> doy, <span class="dt">y =</span> temp)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">group =</span> rep), <span class="dt">alpha =</span> <span class="fl">0.3</span>, <span class="dt">size =</span> <span class="fl">0.1</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>ts.len, <span class="dt">nrow =</span> <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="kw">ggsave</span>(plt2, <span class="dt">file =</span> <span class="st">"rand_mat_raw_1.png"</span>, <span class="dt">width =</span> <span class="dv">12</span>, <span class="dt">height =</span> <span class="dv">6</span>, <span class="dt">dpi =</span> <span class="dv">120</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(heatwaveR)
+sst.in &lt;-<span class="st"> </span><span class="kw">as_tibble</span>(heatwaveR<span class="op">::</span>sst_WA)
+sst &lt;-<span class="st"> </span>sst.in <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">doy =</span> <span class="kw">yday</span>(<span class="kw">as.Date</span>(t))) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">nest</span>(<span class="op">-</span>doy)
+
+meanFun &lt;-<span class="st"> </span><span class="cf">function</span>(data) {
+  m &lt;-<span class="st"> </span><span class="kw">mean</span>(data<span class="op">$</span>temp, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)
+  <span class="kw">return</span>(m)
+}
+
+sstRepl &lt;-<span class="st"> </span><span class="cf">function</span>(sst) {
+  sst.sampled &lt;-<span class="st"> </span>sst <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">mutate</span>(<span class="dt">sample_10 =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(data, sample_n, <span class="dv">10</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>),
+           <span class="dt">sample_20 =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(data, sample_n, <span class="dv">20</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>),
+           <span class="dt">sample_30 =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(data, sample_n, <span class="dv">30</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">mutate</span>(<span class="dt">sample_10_m =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(sample_<span class="dv">10</span>, meanFun),
+           <span class="dt">sample_20_m =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(sample_<span class="dv">20</span>, meanFun),
+           <span class="dt">sample_30_m =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(sample_<span class="dv">30</span>, meanFun)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">select</span>(<span class="op">-</span>data, <span class="op">-</span>sample_<span class="dv">10</span>, <span class="op">-</span>sample_<span class="dv">20</span>, <span class="op">-</span>sample_<span class="dv">30</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">unnest</span>(sample_10_m, sample_20_m, sample_30_m)
+  <span class="kw">return</span>(sst.sampled)
+}
+
+<span class="kw">library</span>(purrr)
+sst.repl &lt;-<span class="st"> </span>purrr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/rerun">rerun</a></span>(<span class="dv">100</span>, <span class="kw">sstRepl</span>(sst)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map_df</a></span>(as.data.frame, <span class="dt">.id =</span> <span class="st">"rep"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">gather</span>(<span class="dt">key =</span> <span class="st">"ts.len"</span>, <span class="dt">value =</span> <span class="st">"temp"</span>, <span class="op">-</span>rep, <span class="op">-</span>doy)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">plt2 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">data =</span> sst.repl, <span class="kw">aes</span>(<span class="dt">x =</span> doy, <span class="dt">y =</span> temp)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">group =</span> rep), <span class="dt">alpha =</span> <span class="fl">0.3</span>, <span class="dt">size =</span> <span class="fl">0.1</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>ts.len, <span class="dt">nrow =</span> <span class="dv">3</span>)
+<span class="kw">ggsave</span>(plt2, <span class="dt">file =</span> <span class="st">"rand_mat_raw_1.png"</span>, <span class="dt">width =</span> <span class="dv">12</span>, <span class="dt">height =</span> <span class="dv">6</span>, <span class="dt">dpi =</span> <span class="dv">120</span>)</code></pre></div>
 <div class="figure">
 <img src="rand_mat_raw_1.png" alt="Figure 2. Bootstrapped reconstructions of daily climatologies based on mean SSTs derived from time series fo 10, 20 and 30 years long. Each of 100 realisations are plotted as individual black traces on the three panels." style="width:100.0%"><p class="caption"><strong>Figure 2.</strong> Bootstrapped reconstructions of daily climatologies based on mean SSTs derived from time series fo 10, 20 and 30 years long. Each of 100 realisations are plotted as individual black traces on the three panels.</p>
 </div>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">sst.repl.nest &lt;-<span class="st"> </span>sst.repl <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span><span class="kw">nest</span>(<span class="op">-</span>rep, <span class="op">-</span>ts.len)</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4">sst.repl.smth &lt;-<span class="st"> </span>sst.repl.nest <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">smoothed =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(data, fFun)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="st">  </span><span class="kw">unnest</span>(data, smoothed)</a></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">plt3 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">data =</span> sst.repl.smth, <span class="kw">aes</span>(<span class="dt">x =</span> doy, <span class="dt">y =</span> smoothed)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y =</span> temp), <span class="dt">shape =</span> <span class="st">"+"</span>, <span class="dt">colour =</span> <span class="st">"red"</span>, <span class="dt">alpha =</span> <span class="fl">0.1</span>, <span class="dt">size =</span> <span class="dv">1</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">group =</span> rep), <span class="dt">alpha =</span> <span class="fl">0.3</span>, <span class="dt">size =</span> <span class="fl">0.1</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>ts.len, <span class="dt">nrow =</span> <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="kw">ggsave</span>(plt3, <span class="dt">file =</span> <span class="st">"rand_mat_smoothed_1.png"</span>, <span class="dt">width =</span> <span class="dv">12</span>, <span class="dt">height =</span> <span class="dv">6</span>, <span class="dt">dpi =</span> <span class="dv">120</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sst.repl.nest &lt;-<span class="st"> </span>sst.repl <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">nest</span>(<span class="op">-</span>rep, <span class="op">-</span>ts.len)
+
+sst.repl.smth &lt;-<span class="st"> </span>sst.repl.nest <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">smoothed =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(data, fFun)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">unnest</span>(data, smoothed)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">plt3 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">data =</span> sst.repl.smth, <span class="kw">aes</span>(<span class="dt">x =</span> doy, <span class="dt">y =</span> smoothed)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y =</span> temp), <span class="dt">shape =</span> <span class="st">"+"</span>, <span class="dt">colour =</span> <span class="st">"red"</span>, <span class="dt">alpha =</span> <span class="fl">0.1</span>, <span class="dt">size =</span> <span class="dv">1</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">group =</span> rep), <span class="dt">alpha =</span> <span class="fl">0.3</span>, <span class="dt">size =</span> <span class="fl">0.1</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>ts.len, <span class="dt">nrow =</span> <span class="dv">3</span>)
+<span class="kw">ggsave</span>(plt3, <span class="dt">file =</span> <span class="st">"rand_mat_smoothed_1.png"</span>, <span class="dt">width =</span> <span class="dv">12</span>, <span class="dt">height =</span> <span class="dv">6</span>, <span class="dt">dpi =</span> <span class="dv">120</span>)</code></pre></div>
 <div class="figure">
 <img src="rand_mat_smoothed_1.png" alt="Figure 3. Bootstrapped reconstructions of daily climatologies based on mean SSTs derived from time series of 10, 20 and 30 years long. Red lines are the smoothed climatologies obtained from a Fourier analysis." style="width:100.0%"><p class="caption"><strong>Figure 3.</strong> Bootstrapped reconstructions of daily climatologies based on mean SSTs derived from time series of 10, 20 and 30 years long. Red lines are the smoothed climatologies obtained from a Fourier analysis.</p>
 </div>
@@ -232,67 +232,67 @@
 <h3 class="hasAnchor">
 <a href="#heatwavers-climatology-functions" class="anchor"></a>heatwaveR’s climatology functions</h3>
 <p>The heatwaveR climatology tool creates the mean and 90th percentiles (threshold) for all the data within a sliding window with certain window width (by default 11 days centered on a day-of-year), and then this is followed by a running mean smoother for both the mean and the threshold. Using he approach I created for the Fourier series, lets do the same here.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">sstRepl2 &lt;-<span class="st"> </span><span class="cf">function</span>(sst) {</a>
-<a class="sourceLine" id="cb10-2" data-line-number="2">  sst.sampled &lt;-<span class="st"> </span>sst <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">sample_10 =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(data, sample_n, <span class="dv">10</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb10-4" data-line-number="4">           <span class="dt">sample_20 =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(data, sample_n, <span class="dv">20</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb10-5" data-line-number="5">           <span class="dt">sample_30 =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(data, sample_n, <span class="dv">30</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>))</a>
-<a class="sourceLine" id="cb10-6" data-line-number="6">  <span class="kw">return</span>(sst.sampled)</a>
-<a class="sourceLine" id="cb10-7" data-line-number="7">}</a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb10-9" data-line-number="9">sst.repl2 &lt;-<span class="st"> </span>purrr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/rerun">rerun</a></span>(<span class="dv">100</span>, <span class="kw">sstRepl2</span>(sst)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map_df</a></span>(as.data.frame, <span class="dt">.id =</span> <span class="st">"rep"</span>)</a>
-<a class="sourceLine" id="cb10-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb10-12" data-line-number="12">parseDates &lt;-<span class="st"> </span><span class="cf">function</span>(data, rep_col, len) {</a>
-<a class="sourceLine" id="cb10-13" data-line-number="13">  parsed &lt;-<span class="st"> </span>data <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">id =</span> rep_col,</a>
-<a class="sourceLine" id="cb10-15" data-line-number="15">           <span class="dt">y =</span> <span class="kw">year</span>(t),</a>
-<a class="sourceLine" id="cb10-16" data-line-number="16">           <span class="dt">m =</span> <span class="kw">month</span>(t),</a>
-<a class="sourceLine" id="cb10-17" data-line-number="17">           <span class="dt">d =</span> <span class="kw">day</span>(t)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-18" data-line-number="18"><span class="st">    </span><span class="kw">group_by</span>(rep, doy) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-19" data-line-number="19"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">y =</span> <span class="kw">seq</span>(<span class="dv">1983</span>, <span class="dt">by =</span> <span class="dv">1</span>, <span class="dt">len =</span> len)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-20" data-line-number="20"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">t =</span> <span class="kw">ymd</span>(<span class="kw">paste</span>(y, m, d, <span class="dt">sep =</span> <span class="st">"-"</span>))) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-21" data-line-number="21"><span class="st">    </span><span class="kw">select</span>(<span class="op">-</span>y, <span class="op">-</span>m, <span class="op">-</span>d) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-22" data-line-number="22"><span class="st">    </span><span class="kw">na.omit</span>() <span class="co"># because of complications due to leap years</span></a>
-<a class="sourceLine" id="cb10-23" data-line-number="23">  <span class="kw">return</span>(parsed)</a>
-<a class="sourceLine" id="cb10-24" data-line-number="24">}</a></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">sample_<span class="dv">10</span> &lt;-<span class="st"> </span>sst.repl2 <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">  </span><span class="kw">unnest</span>(sample_<span class="dv">10</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">  </span><span class="kw">parseDates</span>(<span class="st">"sample_10"</span>, <span class="dt">len =</span> <span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="st">  </span><span class="kw">group_by</span>(id, rep) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="st">  </span><span class="kw">nest</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">smoothed =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(data, <span class="cf">function</span>(x) <span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(x, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"1992-12-31"</span>)))) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="st">  </span><span class="kw">unnest</span>(smoothed)</a>
-<a class="sourceLine" id="cb11-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb11-9" data-line-number="9">sample_<span class="dv">20</span> &lt;-<span class="st"> </span>sst.repl2 <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb11-10" data-line-number="10"><span class="st">  </span><span class="kw">unnest</span>(sample_<span class="dv">20</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb11-11" data-line-number="11"><span class="st">  </span><span class="kw">parseDates</span>(<span class="st">"sample_20"</span>, <span class="dt">len =</span> <span class="dv">20</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb11-12" data-line-number="12"><span class="st">  </span><span class="kw">group_by</span>(id, rep) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="st">  </span><span class="kw">nest</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb11-14" data-line-number="14"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">smoothed =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(data, <span class="cf">function</span>(x) <span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(x, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2002-12-31"</span>)))) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb11-15" data-line-number="15"><span class="st">  </span><span class="kw">unnest</span>(smoothed)</a>
-<a class="sourceLine" id="cb11-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb11-17" data-line-number="17">sample_<span class="dv">30</span> &lt;-<span class="st"> </span>sst.repl2 <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb11-18" data-line-number="18"><span class="st">  </span><span class="kw">unnest</span>(sample_<span class="dv">30</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb11-19" data-line-number="19"><span class="st">  </span><span class="kw">parseDates</span>(<span class="st">"sample_30"</span>, <span class="dt">len =</span> <span class="dv">30</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb11-20" data-line-number="20"><span class="st">  </span><span class="kw">group_by</span>(id, rep) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb11-21" data-line-number="21"><span class="st">  </span><span class="kw">nest</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb11-22" data-line-number="22"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">smoothed =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(data, <span class="cf">function</span>(x) <span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(x, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>)))) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb11-23" data-line-number="23"><span class="st">  </span><span class="kw">unnest</span>(smoothed)</a>
-<a class="sourceLine" id="cb11-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb11-25" data-line-number="25">sst.repl2.smth &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(sample_<span class="dv">10</span>, sample_<span class="dv">20</span>, sample_<span class="dv">30</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">plt4 &lt;-<span class="st"> </span>sst.repl2.smth <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> doy, <span class="dt">y =</span> temp)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="st">  </span><span class="co"># geom_point(shape = "+", colour = "red", alpha = 0.1, size = 1) +</span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> <span class="kw">filter</span>(sst.repl2.smth, t <span class="op">&lt;=</span><span class="st"> "1984-01-01"</span>), <span class="kw">aes</span>(, <span class="dt">y =</span> seas, <span class="dt">group =</span> rep), <span class="dt">alpha =</span> <span class="fl">0.3</span>, <span class="dt">size =</span> <span class="fl">0.1</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>id, <span class="dt">nrow =</span> <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="kw">ggsave</span>(plt4, <span class="dt">file =</span> <span class="st">"rand_mat_smoothed_2.png"</span>, <span class="dt">width =</span> <span class="dv">12</span>, <span class="dt">height =</span> <span class="dv">6</span>, <span class="dt">dpi =</span> <span class="dv">120</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sstRepl2 &lt;-<span class="st"> </span><span class="cf">function</span>(sst) {
+  sst.sampled &lt;-<span class="st"> </span>sst <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">mutate</span>(<span class="dt">sample_10 =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(data, sample_n, <span class="dv">10</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>),
+           <span class="dt">sample_20 =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(data, sample_n, <span class="dv">20</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>),
+           <span class="dt">sample_30 =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(data, sample_n, <span class="dv">30</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>))
+  <span class="kw">return</span>(sst.sampled)
+}
+
+sst.repl2 &lt;-<span class="st"> </span>purrr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/rerun">rerun</a></span>(<span class="dv">100</span>, <span class="kw">sstRepl2</span>(sst)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map_df</a></span>(as.data.frame, <span class="dt">.id =</span> <span class="st">"rep"</span>)
+
+parseDates &lt;-<span class="st"> </span><span class="cf">function</span>(data, rep_col, len) {
+  parsed &lt;-<span class="st"> </span>data <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">mutate</span>(<span class="dt">id =</span> rep_col,
+           <span class="dt">y =</span> <span class="kw">year</span>(t),
+           <span class="dt">m =</span> <span class="kw">month</span>(t),
+           <span class="dt">d =</span> <span class="kw">day</span>(t)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">group_by</span>(rep, doy) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">mutate</span>(<span class="dt">y =</span> <span class="kw">seq</span>(<span class="dv">1983</span>, <span class="dt">by =</span> <span class="dv">1</span>, <span class="dt">len =</span> len)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">mutate</span>(<span class="dt">t =</span> <span class="kw">ymd</span>(<span class="kw">paste</span>(y, m, d, <span class="dt">sep =</span> <span class="st">"-"</span>))) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">select</span>(<span class="op">-</span>y, <span class="op">-</span>m, <span class="op">-</span>d) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">na.omit</span>() <span class="co"># because of complications due to leap years</span>
+  <span class="kw">return</span>(parsed)
+}</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sample_<span class="dv">10</span> &lt;-<span class="st"> </span>sst.repl2 <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">unnest</span>(sample_<span class="dv">10</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">parseDates</span>(<span class="st">"sample_10"</span>, <span class="dt">len =</span> <span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(id, rep) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">nest</span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">smoothed =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(data, <span class="cf">function</span>(x) <span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(x, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"1992-12-31"</span>)))) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">unnest</span>(smoothed)
+
+sample_<span class="dv">20</span> &lt;-<span class="st"> </span>sst.repl2 <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">unnest</span>(sample_<span class="dv">20</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">parseDates</span>(<span class="st">"sample_20"</span>, <span class="dt">len =</span> <span class="dv">20</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(id, rep) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">nest</span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">smoothed =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(data, <span class="cf">function</span>(x) <span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(x, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2002-12-31"</span>)))) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">unnest</span>(smoothed)
+
+sample_<span class="dv">30</span> &lt;-<span class="st"> </span>sst.repl2 <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">unnest</span>(sample_<span class="dv">30</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">parseDates</span>(<span class="st">"sample_30"</span>, <span class="dt">len =</span> <span class="dv">30</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(id, rep) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">nest</span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">smoothed =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map</a></span>(data, <span class="cf">function</span>(x) <span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(x, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>)))) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">unnest</span>(smoothed)
+
+sst.repl2.smth &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(sample_<span class="dv">10</span>, sample_<span class="dv">20</span>, sample_<span class="dv">30</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">plt4 &lt;-<span class="st"> </span>sst.repl2.smth <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> doy, <span class="dt">y =</span> temp)) <span class="op">+</span>
+<span class="st">  </span><span class="co"># geom_point(shape = "+", colour = "red", alpha = 0.1, size = 1) +</span>
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> <span class="kw">filter</span>(sst.repl2.smth, t <span class="op">&lt;=</span><span class="st"> "1984-01-01"</span>), <span class="kw">aes</span>(, <span class="dt">y =</span> seas, <span class="dt">group =</span> rep), <span class="dt">alpha =</span> <span class="fl">0.3</span>, <span class="dt">size =</span> <span class="fl">0.1</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>id, <span class="dt">nrow =</span> <span class="dv">3</span>)
+<span class="kw">ggsave</span>(plt4, <span class="dt">file =</span> <span class="st">"rand_mat_smoothed_2.png"</span>, <span class="dt">width =</span> <span class="dv">12</span>, <span class="dt">height =</span> <span class="dv">6</span>, <span class="dt">dpi =</span> <span class="dv">120</span>)</code></pre></div>
 <div class="figure">
 <img src="rand_mat_smoothed_2.png" alt="Figure 4. Bootstrapped daily climatologies based on 10, 20 and 30 years long SST time series that were randomly assembled from the original 32-year long Western Australian SST data set included with the heatwaveR package. The lines are the smoothed climatologies obtained from applying the default heatwaveR climatology algorithm that includes a mean computed from all data withing a sliding 11-day wide window, centered on the doy, followed by a 31-day wide moving averages smoother." style="width:100.0%"><p class="caption"><strong>Figure 4.</strong> Bootstrapped daily climatologies based on 10, 20 and 30 years long SST time series that were randomly assembled from the original 32-year long Western Australian SST data set included with the heatwaveR package. The lines are the smoothed climatologies obtained from applying the default heatwaveR climatology algorithm that includes a mean computed from all data withing a sliding 11-day wide window, centered on the doy, followed by a 31-day wide moving averages smoother.</p>
 </div>
 <div id="refs" class="references">
 <div id="ref-Banzon2014">
-<p>Banzon, Viva F., Richard W. Reynolds, Diane Stokes, and Yan Xue. 2014. “A 1/4°-Spatial-resolution daily sea surface temperature climatology based on a blended satellite and in situ analysis.” <em>Journal of Climate</em> 27 (21): 8221–8. <a href="https://doi.org/10.1175/JCLI-D-14-00293.1" class="uri">https://doi.org/10.1175/JCLI-D-14-00293.1</a>.</p>
+<p>Banzon, Viva F., Richard W. Reynolds, Diane Stokes, and Yan Xue. 2014. “A 1/4°-Spatial-resolution daily sea surface temperature climatology based on a blended satellite and in situ analysis.” <em>Journal of Climate</em> 27 (21): 8221–8. doi:<a href="https://doi.org/10.1175/JCLI-D-14-00293.1">10.1175/JCLI-D-14-00293.1</a>.</p>
 </div>
 </div>
 </div>

@@ -36,14 +36,15 @@
 <meta property="og:title" content="Create 'flame' ploygons. — geom_flame" />
 
 <meta property="og:description" content="This function will create polygons between two lines. If given a
-temperature and theshold time series, like that produced by detect,
-the output will meet the specifications of Hobday et al. (2016) shown as
-'flame polygons.' If one wishes to plot polygons below a given threshold, and not
-above, switch the values being fed to the y and y2
-aesthetics. This function differs in use from event_line
-in that it must be created as a ggplot 'geom' object. The benefit
-of this being that one may add additional information to the figure as geom
-layers to ggplot2 graphs as may be necessary." />
+temperature and theshold time series, like that produced by
+detect_event, the output will meet the specifications
+of Hobday et al. (2016) shown as 'flame polygons.' If one wishes to
+plot polygons below a given threshold, and not above, switch the values
+being fed to the y and y2 aesthetics. This function differs
+in use from event_line in that it must be created as a
+ggplot 'geom' object. The benefit of this being that one may add
+additional information to the figure as geom layers to ggplot2 graphs
+as may be necessary." />
 
 <meta property="og:image" content="https://robwschlegel.github.io/heatwaveR/index.html/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -83,7 +84,7 @@ layers to ggplot2 graphs as may be necessary." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1.9001</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.2.9000</span>
       </span>
     </div>
 
@@ -158,14 +159,15 @@ layers to ggplot2 graphs as may be necessary." />
     <div class="ref-description">
     
     <p>This function will create polygons between two lines. If given a
-temperature and theshold time series, like that produced by <code><a href='detect.html'>detect</a></code>,
-the output will meet the specifications of Hobday et al. (2016) shown as
-'flame polygons.' If one wishes to plot polygons below a given threshold, and not
-above, switch the values being fed to the <code>y</code> and <code>y2</code>
-aesthetics. This function differs in use from <code><a href='event_line.html'>event_line</a></code>
-in that it must be created as a <code>ggplot</code> 'geom' object. The benefit
-of this being that one may add additional information to the figure as geom
-layers to ggplot2 graphs as may be necessary.</p>
+temperature and theshold time series, like that produced by
+<code><a href='detect_event.html'>detect_event</a></code>, the output will meet the specifications
+of Hobday et al. (2016) shown as 'flame polygons.' If one wishes to
+plot polygons below a given threshold, and not above, switch the values
+being fed to the <code>y</code> and <code>y2</code> aesthetics. This function differs
+in use from <code><a href='event_line.html'>event_line</a></code> in that it must be created as a
+<code>ggplot</code> 'geom' object. The benefit of this being that one may add
+additional information to the figure as geom layers to ggplot2 graphs
+as may be necessary.</p>
     
     </div>
 
@@ -259,9 +261,8 @@ doi: 10.1016/j.pocean.2015.12.014</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>ts_dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_whole.html'>make_whole</a></span>(<span class='no'>sst_WA</span>)
-<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='detect.html'>detect</a></span>(<span class='no'>ts_dat</span>, <span class='kw'>climatology_start</span> <span class='kw'>=</span> <span class='st'>"1983-01-01"</span>,
-              <span class='kw'>climatology_end</span> <span class='kw'>=</span> <span class='st'>"2012-12-31"</span>)
+    <pre class="examples"><div class='input'><span class='no'>ts</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ts2clm.html'>ts2clm</a></span>(<span class='no'>sst_WA</span>, <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span>))
+<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='detect_event.html'>detect_event</a></span>(<span class='no'>ts</span>)
 <span class='no'>mhw</span> <span class='kw'>&lt;-</span> <span class='no'>res</span>$<span class='no'>clim</span>
 <span class='no'>mhw</span> <span class='kw'>&lt;-</span> <span class='no'>mhw</span>[<span class='fl'>10580</span>:<span class='fl'>10690</span>,]</div><span class='co'># NOT RUN {</span>
 <span class='fu'>library</span>(<span class='no'>ggplot2</span>)
