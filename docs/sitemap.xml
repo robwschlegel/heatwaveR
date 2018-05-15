@@ -10,7 +10,16 @@
     <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/category.html</loc>
   </url>
   <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/clim_calc.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/clim_spread.html</loc>
+  </url>
+  <url>
     <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/detect.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.html</loc>
   </url>
   <url>
     <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.html</loc>
@@ -32,6 +41,12 @@
   </url>
   <url>
     <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/make_whole.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/proto_event.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/smooth_percentile.html</loc>
   </url>
   <url>
     <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/sst_Med.html</loc>

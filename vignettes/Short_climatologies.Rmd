@@ -10,6 +10,7 @@ vignette: >
   %\VignetteIndexEntry{Short climatologies}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
+bibliography: bibliography.bib
 ---
 
 ```{r global_options, include = FALSE}
@@ -27,7 +28,7 @@ library(lubridate) # for working with dates
 
 How does one create the best climatology? What if the time series is shorter than the recommended 30 years?
 
-Lets look at all the SACTN data that's longer than 30 years first. Can each site's annual signal be represented by a sine/cosine curve as (i.e. the sum of sine and cosine curves derived from a Fourier analysis)?
+Lets look at all the SACTN data that's longer than 30 years first. Can each site's annual signal be represented by a sine/cosine curve derived from a Fourier analysis? First I find all the sites within the South African Coastal Temperature Network that are approaimately 30 years or more in duration.
 
 ```{r, echo=TRUE}
 load("/Volumes/GoogleDrive/My Drive/SACTN/SACTNraw/data/4_products/SACTN_daily_v4.2.RData")
@@ -40,7 +41,7 @@ long_sites <- daily.in %>%
   ungroup()
 ```
 
-Now, for each site that has >30 years of data, I create a daily climatology by taking the mean for each Julian day, using all data across the full duration of each time series.
+Now, for each site that has ≥30 years of data, I create a daily climatology by taking the mean for each Julian day, using all data across the full duration of each time series.
 
 ```{r, echo=TRUE}
 daily <- daily.in %>% 
@@ -54,12 +55,12 @@ daily <- daily.in %>%
   ungroup()
 ```
 
-Now I make a function that will fit a Fourier series with seven basis functions (3 sine, 3 cosine and the constant) to the data. This is the same approach I used to create the smooth climatology in "Climatologies and baseline" elsewhere on this site. Here it is wrapped in a function so I can easily apply it to each time series.
+I make a function that will fit a Fourier series with seven basis functions (3 sine, 3 cosine and the constant) to the data. This is the same approach I used to create the smooth climatology in "Climatologies and baseline" elsewhere on this site, and it is also the one favoured in the creation of the dialy Optimally Interpolated Sea Surface Temperature climatology [@Banzon2014]. Here it is wrapped in a function so I can easily apply it to each time series.
 
 ```{r, echo=TRUE}
 fFun <- function(data) {
   require(fda)
-  b7 <- create.fourier.basis(rangeval = range(data$doy), nbasis = 11)
+  b7 <- create.fourier.basis(rangeval = range(data$doy), nbasis = 7)
 
   # create smooth seasonal climatology
   b7.smth <- smooth.basis(argvals = data$doy, y = data$temp, fdParobj = b7)$fd
@@ -88,7 +89,7 @@ plt1 <- daily.smth %>%
   geom_point(shape = "+", colour = "red", alpha = 0.6, size = 1) +
   geom_line(aes(y = smoothed, group = index), size = 0.6, colour = "black") +
   facet_wrap(~index)
-ggsave(plt1, file = "smooth_mat_1.png", width = 12, height = 9)
+ggsave(plt1, file = "smooth_mat_1.png", width = 12, height = 9, dpi = 120)
 ```
 
 ![**Figure 1.** Smooth climatologies derived from a Fourier analysis fitted to coastal seawater time series along the South African coast. Climatologies were produced only for sites with at least 30 year long time series.](smooth_mat_1.png){width=100%}
@@ -144,7 +145,7 @@ sst.repl <- purrr::rerun(100, sstRepl(sst)) %>%
 plt2 <- ggplot(data = sst.repl, aes(x = doy, y = temp)) +
   geom_line(aes(group = rep), alpha = 0.3, size = 0.1) +
   facet_wrap(~ts.len, nrow = 3)
-ggsave(plt2, file = "rand_mat_raw_1.png", width = 12, height = 6)
+ggsave(plt2, file = "rand_mat_raw_1.png", width = 12, height = 6, dpi = 120)
 ```
 
 ![**Figure 2.** Bootstrapped reconstructions of daily climatologies based on mean SSTs derived from time series fo 10, 20 and 30 years long. Each of 100 realisations are plotted as individual black traces on the three panels.](rand_mat_raw_1.png){width=100%}
@@ -163,10 +164,10 @@ plt3 <- ggplot(data = sst.repl.smth, aes(x = doy, y = smoothed)) +
   geom_point(aes(y = temp), shape = "+", colour = "red", alpha = 0.1, size = 1) +
   geom_line(aes(group = rep), alpha = 0.3, size = 0.1) +
   facet_wrap(~ts.len, nrow = 3)
-ggsave(plt3, file = "rand_mat_smoothed_1b.png", width = 12, height = 6)
+ggsave(plt3, file = "rand_mat_smoothed_1.png", width = 12, height = 6, dpi = 120)
 ```
 
-![**Figure 2.** Bootstrapped reconstructions of daily climatologies based on mean SSTs derived from time series of 10, 20 and 30 years long. Red lines are the smoothed climatologies obtained from a Fourier analysis.](rand_mat_smoothed_1.png){width=100%}
+![**Figure 3.** Bootstrapped reconstructions of daily climatologies based on mean SSTs derived from time series of 10, 20 and 30 years long. Red lines are the smoothed climatologies obtained from a Fourier analysis.](rand_mat_smoothed_1.png){width=100%}
 
 ### heatwaveR's climatology functions
 
@@ -197,13 +198,15 @@ parseDates <- function(data, rep_col, len) {
     na.omit() # because of complications due to leap years
   return(parsed)
 }
+```
 
+```{r, echo=TRUE}
 sample_10 <- sst.repl2 %>% 
   unnest(sample_10) %>%
   parseDates("sample_10", len = 10) %>% 
   group_by(id, rep) %>% 
   nest() %>% 
-  mutate(smoothed = map(data, function(x) ts2clm(x, clmStart = "1983-01-01", clmEnd = "1992-12-31"))) %>% 
+  mutate(smoothed = map(data, function(x) ts2clm(x, climatologyPeriod = c("1983-01-01", "1992-12-31")))) %>% 
   unnest(smoothed)
 
 sample_20 <- sst.repl2 %>% 
@@ -211,7 +214,7 @@ sample_20 <- sst.repl2 %>%
   parseDates("sample_20", len = 20) %>% 
   group_by(id, rep) %>% 
   nest() %>% 
-  mutate(smoothed = map(data, function(x) ts2clm(x, clmStart = "1983-01-01", clmEnd = "2002-12-31"))) %>% 
+  mutate(smoothed = map(data, function(x) ts2clm(x, climatologyPeriod = c("1983-01-01", "2002-12-31")))) %>% 
   unnest(smoothed)
 
 sample_30 <- sst.repl2 %>% 
@@ -219,7 +222,7 @@ sample_30 <- sst.repl2 %>%
   parseDates("sample_30", len = 30) %>% 
   group_by(id, rep) %>% 
   nest() %>% 
-  mutate(smoothed = map(data, function(x) ts2clm(x, clmStart = "1983-01-01", clmEnd = "2012-12-31"))) %>% 
+  mutate(smoothed = map(data, function(x) ts2clm(x, climatologyPeriod = c("1983-01-01", "2012-12-31")))) %>% 
   unnest(smoothed)
 
 sst.repl2.smth <- bind_rows(sample_10, sample_20, sample_30)
@@ -229,7 +232,9 @@ sst.repl2.smth <- bind_rows(sample_10, sample_20, sample_30)
 plt4 <- sst.repl2.smth %>% 
   ggplot(aes(x = doy, y = temp)) +
   # geom_point(shape = "+", colour = "red", alpha = 0.1, size = 1) +
-  geom_line(data = filter(sst.repl2.smth, t <= "1984-01-01"), aes(, y = seas_clim_year, group = rep), alpha = 0.3, size = 0.1) +
+  geom_line(data = filter(sst.repl2.smth, t <= "1984-01-01"), aes(, y = seas, group = rep), alpha = 0.3, size = 0.1) +
   facet_wrap(~id, nrow = 3)
-ggsave(plt4, file = "rand_mat_smoothed_2.png", width = 12, height = 6)
+ggsave(plt4, file = "rand_mat_smoothed_2.png", width = 12, height = 6, dpi = 120)
 ```
+
+![**Figure 4.** Bootstrapped daily climatologies based on 10, 20 and 30 years long SST time series that were randomly assembled from the original 32-year long Western Australian SST data set included with the heatwaveR package. The lines are the smoothed climatologies obtained from applying the default heatwaveR climatology algorithm that includes a mean computed from all data withing a sliding 11-day wide window, centered on the doy, followed by a 31-day wide moving averages smoother.](rand_mat_smoothed_2.png){width=100%}

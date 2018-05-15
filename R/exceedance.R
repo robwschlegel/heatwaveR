@@ -103,8 +103,8 @@
 #'   \item{date_peak}{Date of exceedance peak [date].}
 #'   \item{intensity_mean}{Mean intensity [deg. C].}
 #'   \item{intensity_max}{Maximum (peak) intensity [deg. C].}
-#'   \item{intensity_var}{Intensity variability (standard deviation) [deg. C].}
-#'   \item{intensity_cum}{Cumulative intensity [deg. C x days].}
+#'   \item{intensity_var}{Intensity standard deviation [deg. C].}
+#'   \item{intensity_cumulative}{Cumulative intensity [deg. C x days].}
 #'   \item{rate_onset}{Onset rate of exceedance [deg. C / day].}
 #'   \item{rate_decline}{Decline rate of exceedance [deg. C / day].}
 #'
@@ -262,7 +262,7 @@ exceedance <-
       )
     )
 
-    thresh <- intensity_mean <- intensity_max <- intensity_cum <- exceedance_rel_thresh <-
+    thresh <- intensity_mean <- intensity_max <- intensity_cumulative <- exceedance_rel_thresh <-
       intensity_mean_abs <- intensity_max_abs <- intensity_cum_abs <- ts.y <- NULL ###
 
     exceedances <- cbind(exceedances,
@@ -273,7 +273,7 @@ exceedance <-
                                             intensity_mean = mean(exceedance_rel_thresh),
                                             intensity_max = max(exceedance_rel_thresh),
                                             intensity_var = sqrt(stats::var(exceedance_rel_thresh)),
-                                            intensity_cum = max(cumsum(exceedance_rel_thresh)),
+                                            intensity_cumulative = max(cumsum(exceedance_rel_thresh)),
                                             intensity_mean_abs = mean(ts.y),
                                             intensity_max_abs = max(ts.y),
                                             intensity_var_abs = sqrt(stats::var(ts.y)),
@@ -314,7 +314,7 @@ exceedance <-
       exceedances <- exceedances %>% dplyr::mutate(
         intensity_mean = -intensity_mean,
         intensity_max = -intensity_max,
-        intensity_cum = -intensity_cum,
+        intensity_cumulative = -intensity_cumulative,
         intensity_mean_abs = -intensity_mean_abs,
         intensity_max_abs = -intensity_max_abs,
         intensity_cum_abs = -intensity_cum_abs

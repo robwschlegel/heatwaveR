@@ -22,11 +22,11 @@
 #' \code{start_date} and \code{end_date}. The default is 150 days.
 #' @param metric This tells the function how to choose the event that should be highlighted as the
 #' 'greatest' of the events in the chosen period. One may choose from the following options:
-#' \code{int_mean}, \code{int_max}, \code{int_var},\code{int_cum}, \code{int_mean_rel_thresh},
+#' \code{intensity_mean}, \code{intensity_max}, \code{intensity_var},\code{intensity_cumulative}, \code{int_mean_rel_thresh},
 #' \code{int_max_rel_thresh}, \code{int_var_rel_thresh},\code{int_cum_rel_thresh}, \code{int_mean_abs},
 #' \code{int_max_abs}, \code{int_var_abs}, \code{int_cum_abs}, \code{int_mean_norm}, \code{int_max_norm},
 #' \code{rate_onset}, \code{rate_decline}. Partial name matching is currently not supported so please
-#' specify the metric name precisely. The default is \code{int_cum}.
+#' specify the metric name precisely. The default is \code{intensity_cumulative}.
 #' @param start_date The start date of a period of time within which the largest
 #' event (as per \code{metric}) is retrieved and plotted. This may not necessarily
 #' correspond to the biggest event of the specified metric within the entire
@@ -65,7 +65,7 @@
 #'               climatology_end = "2012-12-31")
 #'
 #' \dontrun{
-#' event_line(res, spread = 100, metric = "int_cum",
+#' event_line(res, spread = 100, metric = "intensity_cumulative",
 #' start_date = "2010-12-01", end_date = "2011-06-30")
 #'
 #' event_line(res, spread = 100, start_date = "2010-12-01",
@@ -76,7 +76,7 @@ event_line <- function(data,
                        y = temp,
                        min_duration = 5,
                        spread = 150,
-                       metric = "int_cum",
+                       metric = "intensity_cumulative",
                        start_date,
                        end_date,
                        category = FALSE) {
@@ -95,7 +95,7 @@ event_line <- function(data,
 
   if (nrow(event) == 0) stop("No events detected!\nConsider changing the 'start_date' or 'end_date' values.")
 
-  if (!(metric %in% c("int_mean", "int_max", "int_var", "int_cum", "int_mean_rel_thresh", "int_max_rel_thresh",
+  if (!(metric %in% c("intensity_mean", "intensity_max", "intensity_var", "intensity_cumulative", "int_mean_rel_thresh", "int_max_rel_thresh",
                       "int_var_rel_thresh","int_cum_rel_thresh", "int_mean_abs", "int_max_abs", "int_var_abs",
                       "int_cum_abs", "int_mean_norm", "int_max_norm", "rate_onset", "rate_decline"))) {
     stop("Please ensure you have spelled the desired metric correctly.")
@@ -116,8 +116,8 @@ event_line <- function(data,
   thresh_2x <- thresh_3x <- thresh_4x <- NULL
 
   clim_diff <- data$clim %>%
-    dplyr::mutate(diff = thresh_clim_year - seas_clim_year,
-           thresh_2x = thresh_clim_year + diff,
+    dplyr::mutate(diff = thresh - seas,
+           thresh_2x = thresh + diff,
            thresh_3x = thresh_2x + diff,
            thresh_4x = thresh_3x + diff)
 
@@ -132,19 +132,19 @@ event_line <- function(data,
   clim_spread <- clim_diff %>%
     dplyr::filter(ts.x %in% date_spread)
 
-  thresh_clim_year <- seas_clim_year <- y1 <- y2 <-  NULL
+  thresh <- seas <- y1 <- y2 <-  NULL
 
-  if (event_top$int_mean > 0) {
+  if (event_top$intensity_mean > 0) {
     fillCol <- c("events" = "salmon", "peak event" = "red")
     clim_events$y1 <- clim_events$ts.y
-    clim_events$y2 <- clim_events$thresh_clim_year
+    clim_events$y2 <- clim_events$thresh
     clim_top$y1 <- clim_top$ts.y
-    clim_top$y2 <- clim_top$thresh_clim_year
+    clim_top$y2 <- clim_top$thresh
   } else {
     fillCol <- c("events" = "steelblue3", "peak event" = "navy")
-    clim_events$y1 <- clim_events$thresh_clim_year
+    clim_events$y1 <- clim_events$thresh
     clim_events$y2 <- clim_events$ts.y
-    clim_top$y1 <- clim_top$thresh_clim_year
+    clim_top$y1 <- clim_top$thresh
     clim_top$y2 <- clim_top$ts.y
   }
 
@@ -171,7 +171,7 @@ event_line <- function(data,
 
   if(category){
 
-    if(event_top$int_mean < 0) stop("Categories currently only calculated for MHWs, not MCSs. But coming soon!")
+    if(event_top$intensity_mean < 0) stop("Categories currently only calculated for MHWs, not MCSs. But coming soon!")
 
     lineColCat <- c(
       "Temperature" = "black",
@@ -204,9 +204,9 @@ event_line <- function(data,
                 size = 0.7, linetype = "dotdash") +
       geom_line(aes(y = thresh_4x, col = "4x Threshold"),
                 size = 0.7, linetype = "dotted") +
-      geom_line(aes(y = seas_clim_year, col = "Climatology"),
+      geom_line(aes(y = seas, col = "Climatology"),
                 size = 0.7, alpha = 1) +
-      geom_line(aes(y = thresh_clim_year, col = "Threshold"),
+      geom_line(aes(y = thresh, col = "Threshold"),
                 size = 0.7, alpha = 1) +
       geom_line(aes(y = ts.y, col = "Temperature"), size = 0.6) +
       scale_colour_manual(name = NULL, values = lineColCat,
@@ -231,9 +231,9 @@ event_line <- function(data,
                  aes(x = ts.x, y = y1, y2 = y2, fill = "events")) +
       geom_flame(data = clim_top, size = 0.5,
                  aes(x = ts.x, y = y1, y2 = y2, fill = "peak event")) +
-      geom_line(aes(y = seas_clim_year, col = "Climatology"),
+      geom_line(aes(y = seas, col = "Climatology"),
                 size = 0.7, alpha = 1) +
-      geom_line(aes(y = thresh_clim_year, col = "Threshold"),
+      geom_line(aes(y = thresh, col = "Threshold"),
                 size = 0.7, alpha = 1) +
       geom_line(aes(y = ts.y, col = "Temperature"), size = 0.6) +
       scale_colour_manual(name = NULL, values = lineCol,
@@ -251,8 +251,8 @@ event_line <- function(data,
 #' element_rect element_line labs
 #'
 #' @param data Output from the \code{\link{detect}} function.
-#' @param metric One of \code{int_mean}, \code{int_max}, \code{int_cum} and \code{duration}.
-#' Default is \code{int_cum}.
+#' @param metric One of \code{intensity_mean}, \code{intensity_max}, \code{intensity_cumulative} and \code{duration}.
+#' Default is \code{intensity_cumulative}.
 #' @param event_count The number of top events to highlight. Default is 3.
 #' @param xaxis One of \code{event_no}, \code{date_start} or \code{date_peak}.
 #' Default is \code{date_start}.
@@ -277,13 +277,13 @@ event_line <- function(data,
 #' lolli_plot(res, metric = "int_cum", event_count = 3, xaxis = "date_peak")
 #' }
 lolli_plot <- function(data,
-                       metric = "int_max",
+                       metric = "intensity_max",
                        event_count = 3,
                        xaxis = "date_start") {
 
   if (!(is.list(data))) stop("Please ensure you are running this function on the output of 'heatwaveR::detect()'")
 
-  if (!(metric %in% c("int_mean", "int_max", "int_cum", "duration"))) {
+  if (!(metric %in% c("intensity_mean", "intensity_max", "int_cum", "duration"))) {
     stop("Please ensure you have spelled the desired metric correctly.")
   }
 
@@ -306,9 +306,9 @@ lolli_plot <- function(data,
   if (xaxis == "event_no") xlabel <- "Event number"
   if (xaxis == "date_start") xlabel <- "Start date"
   if (xaxis == "date_peak") xlabel <- "Peak date"
-  # yaxis = "int_max" yaxis = "int_mean" yaxis = "int_cum" yaxis = "duration"
-  if (metric == "int_max") ylabel <- expression(paste("Maximum intensity [", degree, "C]"))
-  if (metric == "int_mean") ylabel <- expression(paste("Mean intensity [", degree, "C]"))
+  # yaxis = "intensity_max" yaxis = "intensity_mean" yaxis = "int_cum" yaxis = "duration"
+  if (metric == "intensity_max") ylabel <- expression(paste("Maximum intensity [", degree, "C]"))
+  if (metric == "intensity_mean") ylabel <- expression(paste("Mean intensity [", degree, "C]"))
   if (metric == "int_cum") ylabel <- expression(paste("Cumulative intensity [", degree, "C x days]"))
   if (metric == "duration") ylabel <- "Duration [days]"
   if (!exists("ylabel")) ylabel <- metric
