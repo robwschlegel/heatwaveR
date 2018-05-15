@@ -2,7 +2,7 @@
 #'
 #' An internal function that detects proto-events, which are periods of
 #' time above a threshold, but without necessarily considering a minimum
-#' duration or joining acros gaps.
+#' duration or joining across gaps.
 #'
 #' @importFrom dplyr %>%
 #'

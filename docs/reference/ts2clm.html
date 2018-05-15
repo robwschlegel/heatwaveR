@@ -77,7 +77,7 @@ by an optional moving average smoother as used by Hobday et al. (2016)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1.9001</span>
       </span>
     </div>
 
@@ -210,7 +210,8 @@ series of 11 days.</p></td>
     <tr>
       <th>pctile</th>
       <td><p>Threshold percentile (%) for detection of events (MHWs).
-Default is <code>90</code>th percentile.</p></td>
+Default is <code>90</code>th percentile. Should the intent be to use these
+threshold data for MCSs, set <code>pctile = 10</code>. Or some other low value.</p></td>
     </tr>
     <tr>
       <th>smoothPercentile</th>

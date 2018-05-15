@@ -79,7 +79,7 @@ other means." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1.9001</span>
       </span>
     </div>
 
@@ -226,21 +226,20 @@ default is <code>2</code> days.</p></td>
       <th>coldSpells</th>
       <td><p>Boolean specifying if the code should detect cold events
 instead of warm events. The default is <code>FALSE</code>. Please note that the
-climatological thresholds for cold-spells are calculated the same as for
-heatwaves, meaning that <code>pctile</code> should be set the same regardless
-if one is calculating heatwaves or cold-spells. For example, if one wants
-to calculate heatwaves above the 90th percentile threshold (the default) one
-sets <code>pctile = 90</code>. Likewise, if one would like to identify the most
-intense cold-spells one must also set <code>pctile = 90</code>, even though cold
-spells are in fact simply the coldest extreme events in a time series, which
-statistically equate to values below the 10th percentile.</p></td>
+climatological thresholds for cold-spells are considered to be the inverse
+of those for MHWs. For example, the defaulr setting for the detection of
+MHWs is <code>pctile = 90</code>, as seen in <code><a href='ts2clm.html'>ts2clm</a></code>. Should one want
+to use <code>detect_event</code> for MCSs, this threshold would best be generated
+in <code><a href='ts2clm.html'>ts2clm</a></code> by setting <code>pctile = 10</code> (see example below).
+Any value may be used, but this is the setting used for the calculation of
+MCSs in Schlegel et al. (2017a).</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The function will return a list of two tibbles (see the <code>tidyverse</code>),
-<code>climatology</code> and <code>event</code>, which are, surprisingly,  the climatology
+<code>climatology</code> and <code>event</code>, which are, surprisingly, the climatology
 and events, respectively. The climatology contains the full time series of
 daily temperatures, as well as the the seasonal climatology, the threshold
 and various aspects of the events that were detected. The software was
@@ -268,7 +267,7 @@ case, the appropriate units need to be determined by the user.</p>
   <dt>event</dt><dd><p>Boolean indicating if all criteria that define an extreme event
   are met.</p></dd>
   <dt>event_no</dt><dd><p>A sequential number indicating the ID and order of
-  occurence of the extreme events.</p></dd>
+  occurence of the events.</p></dd>
 
 The events are summarised using a range of event metrics:
   <dt>event_no</dt><dd><p>A sequential number indicating the ID and order of
@@ -380,6 +379,35 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
 #&gt; 3        3         908        926       19 1984-06-26 1984-07-14 1984-07-10
 #&gt; 4        4        1023       1029        7 1984-10-19 1984-10-25 1984-10-23
 #&gt; 5        5        1033       1037        5 1984-10-29 1984-11-02 1984-10-30
+#&gt; # ... with 3 more variables: intensity_mean &lt;dbl&gt;, intensity_max &lt;dbl&gt;,
+#&gt; #   intensity_var &lt;dbl&gt;</div><div class='input'>
+<span class='co'># Or if one wants to calculate MCSs</span>
+<span class='no'>res_clim</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ts2clm.html'>ts2clm</a></span>(<span class='no'>sst_WA</span>, <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span>),
+                   <span class='kw'>pctile</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+<span class='no'>out</span> <span class='kw'>&lt;-</span> <span class='fu'>detect_event</span>(<span class='no'>res_clim</span>, <span class='kw'>coldSpells</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='co'># show a portion of the climatology:</span>
+<span class='no'>out</span>$<span class='no'>climatology</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt; # A tibble: 10 x 10
+#&gt;      doy t           temp  seas thresh   var threshCriterion durationCriterion
+#&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;           &lt;lgl&gt;            
+#&gt;  1     1 1982-01-01  20.9  21.6   20.5 0.959 FALSE           FALSE            
+#&gt;  2     2 1982-01-02  21.2  21.6   20.6 0.964 FALSE           FALSE            
+#&gt;  3     3 1982-01-03  21.4  21.7   20.6 0.968 FALSE           FALSE            
+#&gt;  4     4 1982-01-04  21.2  21.7   20.6 0.973 FALSE           FALSE            
+#&gt;  5     5 1982-01-05  21.3  21.7   20.6 0.976 FALSE           FALSE            
+#&gt;  6     6 1982-01-06  21.6  21.7   20.7 0.980 FALSE           FALSE            
+#&gt;  7     7 1982-01-07  21.7  21.8   20.7 0.983 FALSE           FALSE            
+#&gt;  8     8 1982-01-08  21.5  21.8   20.7 0.986 FALSE           FALSE            
+#&gt;  9     9 1982-01-09  21.4  21.8   20.8 0.988 FALSE           FALSE            
+#&gt; 10    10 1982-01-10  21.4  21.8   20.8 0.991 FALSE           FALSE            
+#&gt; # ... with 2 more variables: event &lt;lgl&gt;, event_no &lt;int&gt;</div><div class='input'><span class='co'># show some of the cold-spells:</span>
+<span class='no'>out</span>$<span class='no'>event</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='fl'>1</span>:<span class='fl'>10</span>]</div><div class='output co'>#&gt; # A tibble: 5 x 10
+#&gt;   event_no index_start index_stop duration date_start date_stop  date_peak 
+#&gt;      &lt;int&gt;       &lt;dbl&gt;      &lt;dbl&gt;    &lt;int&gt; &lt;date&gt;     &lt;date&gt;     &lt;date&gt;    
+#&gt; 1        1          83         87        5 1982-03-24 1982-03-28 1982-03-24
+#&gt; 2        2         194        207       14 1982-07-13 1982-07-26 1982-07-18
+#&gt; 3        3         270        277        8 1982-09-27 1982-10-04 1982-09-29
+#&gt; 4        4         296        306       11 1982-10-23 1982-11-02 1982-10-30
+#&gt; 5        5         672        685       14 1983-11-03 1983-11-16 1983-11-12
 #&gt; # ... with 3 more variables: intensity_mean &lt;dbl&gt;, intensity_max &lt;dbl&gt;,
 #&gt; #   intensity_var &lt;dbl&gt;</div></pre>
   </div>
