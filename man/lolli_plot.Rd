@@ -4,14 +4,14 @@
 \alias{lolli_plot}
 \title{Create a timeline of selected event metrics as 'lollipops'.}
 \usage{
-lolli_plot(data, metric = "int_max", event_count = 3,
+lolli_plot(data, metric = "intensity_max", event_count = 3,
   xaxis = "date_start")
 }
 \arguments{
 \item{data}{Output from the \code{\link{detect}} function.}
 
-\item{metric}{One of \code{int_mean}, \code{int_max}, \code{int_cum} and \code{duration}.
-Default is \code{int_cum}.}
+\item{metric}{One of \code{intensity_mean}, \code{intensity_max}, \code{intensity_cumulative} and \code{duration}.
+Default is \code{intensity_cumulative}.}
 
 \item{event_count}{The number of top events to highlight. Default is 3.}
 

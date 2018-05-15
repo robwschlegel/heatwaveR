@@ -91,8 +91,8 @@ The individual exceedances are summarised using the following metrics:
   \item{date_peak}{Date of exceedance peak [date].}
   \item{intensity_mean}{Mean intensity [deg. C].}
   \item{intensity_max}{Maximum (peak) intensity [deg. C].}
-  \item{intensity_var}{Intensity variability (standard deviation) [deg. C].}
-  \item{intensity_cum}{Cumulative intensity [deg. C x days].}
+  \item{intensity_var}{Intensity standard deviation [deg. C].}
+  \item{intensity_cumulative}{Cumulative intensity [deg. C x days].}
   \item{rate_onset}{Onset rate of exceedance [deg. C / day].}
   \item{rate_decline}{Decline rate of exceedance [deg. C / day].}
 

@@ -76,7 +76,7 @@ missing dates and fills correpsonding temperatures with NAs." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.0.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1.9000</span>
       </span>
     </div>
 
@@ -210,8 +210,8 @@ automatically accommodated by 'zoo'.</p>
 <p>This function can handle some of missing days, but this is not a
 licence to actually use these data for the detection of anomalous thermal
 events. Hobday et al. (2016) recommend gaps of no more than 3 days, which
-may be adjusted by setting the <code>max_pad_length</code> argument of the
-<code><a href='detect.html'>detect</a></code> function. The longer and more frequent the gaps become
+may be adjusted by setting the <code>maxPadLength</code> argument of the
+<code><a href='ts2clm.html'>ts2clm</a></code> function. The longer and more frequent the gaps become
 the lower the fidelity of the annual climatology and threshold that can be
 calculated, which will not only have repercussions for the accuracy at which
 the event metrics can be determined, but also for the number of events that
@@ -226,10 +226,10 @@ in order to capture any decadal thermal periodicities.</p>
 <span class='no'>clim_start</span> <span class='kw'>&lt;-</span> <span class='st'>"1983-01-01"</span>
 <span class='no'>clim_end</span> <span class='kw'>&lt;-</span> <span class='st'>"2012-12-31"</span>
 <span class='no'>ts_dat</span> <span class='kw'>%&gt;%</span>
-<span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>t</span> <span class='kw'>&gt;=</span> <span class='no'>clim_start</span> <span class='kw'>&amp;</span> <span class='no'>t</span> <span class='kw'>&lt;=</span> <span class='no'>clim_end</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>t</span> <span class='kw'>=</span> <span class='fu'><a href='http://lubridate.tidyverse.org/reference/year.html'>year</a></span>(<span class='no'>t</span>)) <span class='kw'>%&gt;%</span>
+<span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/filter'>filter</a></span>(<span class='no'>t</span> <span class='kw'>&gt;=</span> <span class='no'>clim_start</span> <span class='kw'>&amp;</span> <span class='no'>t</span> <span class='kw'>&lt;=</span> <span class='no'>clim_end</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/mutate'>mutate</a></span>(<span class='kw'>t</span> <span class='kw'>=</span> <span class='fu'><a href='http://lubridate.tidyverse.org/reference/year.html'>year</a></span>(<span class='no'>t</span>)) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='http://www.rdocumentation.org/packages/tidyr/topics/spread'>spread</a></span>(<span class='no'>t</span>, <span class='no'>temp</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>doy</span> <span class='kw'>&gt;=</span> <span class='fl'>55</span> <span class='kw'>&amp;</span> <span class='no'>doy</span> <span class='kw'>&lt;=</span> <span class='fl'>65</span>)</div><div class='output co'>#&gt;    doy  1983  1984  1985  1986  1987  1988  1989  1990  1991  1992  1993  1994
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/filter'>filter</a></span>(<span class='no'>doy</span> <span class='kw'>&gt;=</span> <span class='fl'>55</span> <span class='kw'>&amp;</span> <span class='no'>doy</span> <span class='kw'>&lt;=</span> <span class='fl'>65</span>)</div><div class='output co'>#&gt;    doy  1983  1984  1985  1986  1987  1988  1989  1990  1991  1992  1993  1994
 #&gt; 1   55 23.13 25.25 24.37 22.65 22.47 23.26 24.23 23.85 21.87 23.00 21.30 21.45
 #&gt; 2   56 23.47 25.00 24.21 22.51 22.54 23.38 24.07 25.02 21.83 22.89 21.06 21.11
 #&gt; 3   57 23.65 23.65 24.34 22.32 22.49 23.46 24.18 25.01 21.82 23.76 20.81 21.15

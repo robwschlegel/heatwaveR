@@ -77,7 +77,7 @@ by an optional moving average smoother as used by Hobday et al. (2016)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.0.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1.9000</span>
       </span>
     </div>
 
@@ -157,38 +157,26 @@ by an optional moving average smoother as used by Hobday et al. (2016).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ts2clm</span>(<span class='no'>data</span>, <span class='kw'>doy</span> <span class='kw'>=</span> <span class='no'>doy</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='no'>clmStart</span>, <span class='no'>clmEnd</span>,
-  <span class='kw'>maxPadLength</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>pctile</span> <span class='kw'>=</span> <span class='fl'>90</span>, <span class='kw'>windowHalfWidth</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>smoothPercentile</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>smoothPercentileWidth</span> <span class='kw'>=</span> <span class='fl'>31</span>, <span class='kw'>clmOnly</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>ts2clm</span>(<span class='no'>data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='no'>climatologyPeriod</span>, <span class='kw'>maxPadLength</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>windowHalfWidth</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>pctile</span> <span class='kw'>=</span> <span class='fl'>90</span>, <span class='kw'>smoothPercentile</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>smoothPercentileWidth</span> <span class='kw'>=</span> <span class='fl'>31</span>, <span class='kw'>clmOnly</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>A data frame with three columns. In the default setting (i.e. ommitting
-the arguments <code>doy</code>, <code>x</code> and <code>y</code>; see immediately below), the
-data set is expected to have the headers <code>doy</code>, <code>t</code> and <code>temp</code>.
-<code>doy</code> is the Julian day running from 1 to 366, but modified so that the
-day-of-year (doy) vector for non-leap-years runs 1...59 and then 61...366.
-For leap years the 60th day is February 29. The <code>t</code> column is a vector
-of dates of class <code>Date</code>, while <code>temp</code> is the measured variable (by
-default it is assumed to be temperature). Data of the appropriate format are
-created by the function <code><a href='make_whole.html'>make_whole</a></code>, but your own data can be supplied
-if they meet the criteria specified by <code><a href='make_whole.html'>make_whole</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>doy</th>
-      <td><p>If a column headed <code>doy</code> is not available, another column with
-Julian dates can be supplied. This argument accepts the name of that column. The
-default name is, of course, <code>doy</code>.</p></td>
+      <td><p>A data frame with two columns. In the default setting (i.e. ommitting
+the arguments <code>x</code> and <code>y</code>; see immediately below), the data set is
+expected to have the headers <code>t</code> and <code>temp</code>. The <code>t</code> column is a
+vector of dates of class <code>Date</code>, while <code>temp</code> is the measured variable
+(by default it is assumed to be temperature).</p></td>
     </tr>
     <tr>
       <th>x</th>
-      <td><p>This column is expected to contain a vector of dates as per the
-specification of <code>make_whole</code>. If a column headed <code>t</code> is present in
-the dataframe, this argument may be ommitted; otherwise, specify the name of
-the column with dates here.</p></td>
+      <td><p>This column is expected to contain a vector of dates. If a column
+headed <code>t</code> is present in the dataframe, this argument may be ommitted;
+otherwise, specify the name of the column with dates here.</p></td>
     </tr>
     <tr>
       <th>y</th>
@@ -196,16 +184,12 @@ the column with dates here.</p></td>
 name differs from the default (i.e. <code>temp</code>), specify the name here.</p></td>
     </tr>
     <tr>
-      <th>clmStart</th>
-      <td><p>Required. The start date for the period across which
-the (varying by day-of-year) seasonal cycle and extremes threshold are
-calculated.</p></td>
-    </tr>
-    <tr>
-      <th>clmEnd</th>
-      <td><p>Required. The end date for the period across which
-the (varying by day-of-year) seasonal cycle and extremes threshold are
-calculated.</p></td>
+      <th>climatologyPeriod</th>
+      <td><p>Required. To this argument should be passed two values
+(see example below). The first value should be the chosen date for the start of
+the climatology period, and the second value the end date of said period. This
+chosen period (preferably 30 years in length) is then used to calculate the
+seasonal cycle and the extreme value threshold.</p></td>
     </tr>
     <tr>
       <th>maxPadLength</th>
@@ -216,12 +200,6 @@ greater than <code>maxPadLength</code> will be left as <code>NA</code>. Set as a
 integer. The default is <code>3</code> days.</p></td>
     </tr>
     <tr>
-      <th>pctile</th>
-      <td><p>Threshold percentile (%) for detection of extreme values.
-Default is <code>90</code>th percentile. Please see <code>cold_spells</code> for more
-information about the calculation of marine cold-spells.</p></td>
-    </tr>
-    <tr>
       <th>windowHalfWidth</th>
       <td><p>Width of sliding window about day-of-year (to one
 side of the center day-of-year) used for the pooling of values and
@@ -230,9 +208,14 @@ days, which gives a window width of 11 days centered on the 6th day of the
 series of 11 days.</p></td>
     </tr>
     <tr>
+      <th>pctile</th>
+      <td><p>Threshold percentile (%) for detection of events (MHWs).
+Default is <code>90</code>th percentile.</p></td>
+    </tr>
+    <tr>
       <th>smoothPercentile</th>
       <td><p>Boolean switch selecting whether to smooth the
-climatology and threshold percentile timeseries with a moving average of
+climatology and threshold percentile time series with a moving average of
 <code>smoothPercentileWidth</code>. Default is <code>TRUE</code>.</p></td>
     </tr>
     <tr>
@@ -242,33 +225,35 @@ climatology and threshold. The default is <code>31</code> days.</p></td>
     </tr>
     <tr>
       <th>clmOnly</th>
-      <td><p>Choose to calculate only the climatologies and not the
-events. The default is <code>FALSE</code>.</p></td>
+      <td><p>Choose to calculate and return only the climatologies.
+The default is <code>FALSE</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The function will return a tibble (see the <code>tidyverse</code>) with the
-climatology. The climatology contains the full time series of daily temperatures,
-as well as the the seasonal climatology and the threshold. The software was
+input time series and the newly calculated climatology. The climatology contains
+the seasonal climatology and the threshold for calculating MHWs. The software was
 designed for creating climatologies of daily temperatures, and the units
 specified below reflect that intended purpose. However, various other kinds
 of climatologies may be created, and if that is the case, the appropriate
 units need to be determined by the user.</p>
 <dt>doy</dt><dd><p>Julian day (day-of-year). For non-leap years it runs 1...59 and
-  61...366, while leap years run 1...366. This column will be named differently if
-  another name was specified to the <code>doy</code> argument.</p></dd>
-  <dt>seas_clim_year</dt><dd><p>Climatological seasonal cycle [deg. C].</p></dd>
-  <dt>thresh_clim_year</dt><dd><p>Seasonally varying threshold (e.g., 90th
-  percentile) [deg. C].</p></dd>
-  <dt>var_clim_year</dt><dd><p>Seasonally varying variance (standard deviation) [deg. C].</p></dd>
-Should clmOnly be disabled, two additional variables will be included
-with the climatology, and the climatology replicated over the entire
-duration of data.
-  <dt>t</dt><dd><p>The date vector in the original time series supplied in <code>data</code>.</p></dd>
+  61...366, while leap years run 1...366.</p></dd>
+  <dt>t</dt><dd><p>The date vector in the original time series supplied in <code>data</code>. If
+  an alternate column was provided to the <code>x</code> argument, that name will rather
+  be used for this column.</p></dd>
   <dt>temp</dt><dd><p>The measurement vector as per the the original <code>data</code> supplied
-  to the function.</p></dd>
+  to the function. If a different column was given to the <code>y</code> argument that
+  will be shown here.</p></dd>
+  <dt>seasClim</dt><dd><p>Climatological seasonal cycle [deg. C].</p></dd>
+  <dt>threshClim</dt><dd><p>Seasonally varying threshold (e.g., 90th
+  percentile) [deg. C]. This is used in <code><a href='detect_event.html'>detect_event</a></code> for the
+  detection/calculation of events (MHWs).</p></dd>
+  <dt>varClim</dt><dd><p>Seasonally varying variance (standard deviation) [deg. C].</p></dd>
+Should clmOnly be enabled, only the 365 or 366 day climatology will be
+returned.
 
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -276,23 +261,19 @@ duration of data.
     <ol>
 <li><p>This function assumes that the input time series consists of continuous
 daily values with few missing values. Time ranges which start and end
-part-way through the calendar year are supported. The accompanying function
-<code><a href='make_whole.html'>make_whole</a></code> aids in the preparation of a time series that is
-suitable for use with <code>ts2clm</code>, although this may also be accomplished
-'by hand' as long as the criteria are met as discussed in the documentation
-to <code><a href='make_whole.html'>make_whole</a></code>.</p></li>
+part-way through the calendar year are supported.</p></li>
 <li><p>It is recommended that a period of at least 30 years is specified in
 order to produce a climatology that smooths out any decadal thermal
 periodicities that may be present. It is further advised that full the start
 and end dates for the climatology period result in full years, e.g.
 "1982-01-01" to "2011-12-31" or "1982-07-01" to "2012-06-30"; if not, this
 may result in an unequal weighting of data belonging with certain months
-within a time series. A daily climatology will be, created; that is, the
+within a time series. A daily climatology will be created; that is, the
 climatology will be comprised of one mean temperature for each day of the
 year (365 or 366 days, depending on how leap years are dealt with), and the
 mean will be based on a sample size that is a function of the length of time
-determined by <code>clmStart</code> to <code>clmEnd</code> and the width of the
-sliding window specified in <code>windowHalfWidth</code>.</p></li>
+determined by the start and end values given to <code>climatologyPeriod</code> and
+the width of the sliding window specified in <code>windowHalfWidth</code>.</p></li>
 <li><p>This function supports leap years. This is done by ignoring Feb 29s
 for the initial calculation of the climatology and threshold. The values for
 Feb 29 are then linearly interpolated from the values for Feb 28 and Mar 1.</p></li>
@@ -308,23 +289,38 @@ doi:10.1016/j.pocean.2015.12.014</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>ts_dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_whole.html'>make_whole</a></span>(<span class='no'>sst_WA</span>)
-<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>ts2clm</span>(<span class='no'>ts_dat</span>, <span class='kw'>clmStart</span> <span class='kw'>=</span> <span class='st'>"1983-01-01"</span>,
-              <span class='kw'>clmEnd</span> <span class='kw'>=</span> <span class='st'>"2012-12-31"</span>)
+    <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>ts2clm</span>(<span class='no'>sst_WA</span>, <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span>))
 <span class='no'>res</span></div><div class='output co'>#&gt; # A tibble: 12,053 x 6
-#&gt;      doy t           temp seas_clim_year thresh_clim_year var_clim_year
-#&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;dbl&gt;          &lt;dbl&gt;            &lt;dbl&gt;         &lt;dbl&gt;
-#&gt;  1     1 1982-01-01  20.9           21.6             23.0         0.959
-#&gt;  2     2 1982-01-02  21.2           21.6             23.0         0.964
-#&gt;  3     3 1982-01-03  21.4           21.7             23.0         0.968
-#&gt;  4     4 1982-01-04  21.2           21.7             23.1         0.973
-#&gt;  5     5 1982-01-05  21.3           21.7             23.1         0.976
-#&gt;  6     6 1982-01-06  21.6           21.7             23.1         0.980
-#&gt;  7     7 1982-01-07  21.7           21.8             23.2         0.983
-#&gt;  8     8 1982-01-08  21.5           21.8             23.2         0.986
-#&gt;  9     9 1982-01-09  21.4           21.8             23.2         0.988
-#&gt; 10    10 1982-01-10  21.4           21.8             23.3         0.991
-#&gt; # ... with 12,043 more rows</div></pre>
+#&gt;      doy t           temp  seas thresh   var
+#&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+#&gt;  1     1 1982-01-01  20.9  21.6   23.0 0.959
+#&gt;  2     2 1982-01-02  21.2  21.6   23.0 0.964
+#&gt;  3     3 1982-01-03  21.4  21.7   23.0 0.968
+#&gt;  4     4 1982-01-04  21.2  21.7   23.1 0.973
+#&gt;  5     5 1982-01-05  21.3  21.7   23.1 0.976
+#&gt;  6     6 1982-01-06  21.6  21.7   23.1 0.980
+#&gt;  7     7 1982-01-07  21.7  21.8   23.2 0.983
+#&gt;  8     8 1982-01-08  21.5  21.8   23.2 0.986
+#&gt;  9     9 1982-01-09  21.4  21.8   23.2 0.988
+#&gt; 10    10 1982-01-10  21.4  21.8   23.3 0.991
+#&gt; # ... with 12,043 more rows</div><div class='input'>
+<span class='co'># Or if one only wants the 366 day climatology</span>
+<span class='no'>res_clim</span> <span class='kw'>&lt;-</span> <span class='fu'>ts2clm</span>(<span class='no'>sst_WA</span>, <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span>),
+                   <span class='kw'>clmOnly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>res_clim</span></div><div class='output co'>#&gt; # A tibble: 366 x 4
+#&gt;      doy  seas thresh   var
+#&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
+#&gt;  1     1  21.6   23.0 0.959
+#&gt;  2     2  21.6   23.0 0.964
+#&gt;  3     3  21.7   23.0 0.968
+#&gt;  4     4  21.7   23.1 0.973
+#&gt;  5     5  21.7   23.1 0.976
+#&gt;  6     6  21.7   23.1 0.980
+#&gt;  7     7  21.8   23.2 0.983
+#&gt;  8     8  21.8   23.2 0.986
+#&gt;  9     9  21.8   23.2 0.988
+#&gt; 10    10  21.8   23.3 0.991
+#&gt; # ... with 356 more rows</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

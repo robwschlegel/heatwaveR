@@ -79,18 +79,16 @@ An explanation for the categories is as follows:
   }
 }
 \examples{
-res_WA <- detect(make_whole(sst_WA),
-                 climatology_start = "1983-01-01",
-                 climatology_end = "2012-12-31")
+res_WA <- detect_event(ts2clm(sst_WA,
+                       climatologyPeriod = c("1983-01-01", "2012-12-31")))
 # Note that the name argument expects a character vector
 cat_WA <- category(res_WA, name = "WA")
 tail(cat_WA)
 
 # If the data were collected in the northern hemisphere
 # we must let the funciton know this as seen below
-res_Med <- detect(make_whole(sst_Med),
-                 climatology_start = "1983-01-01",
-                 climatology_end = "2012-12-31")
+res_Med <- detect_event(ts2clm(sst_Med,
+                        climatologyPeriod = c("1983-01-01", "2012-12-31")))
 cat_Med <- category(res_Med, S = FALSE, name = "Med")
 tail(cat_Med)
 }

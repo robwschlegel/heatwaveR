@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Optimally interpolated 0.25 degree SST for the Mediterranean region. — sst_Med • heatwaveR</title>
+<title>Detect the climatology for a time series — smooth_percentile • heatwaveR</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -33,10 +33,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Optimally interpolated 0.25 degree SST for the Mediterranean region. — sst_Med" />
+<meta property="og:title" content="Detect the climatology for a time series — smooth_percentile" />
 
-<meta property="og:description" content="A dataset containing the sea surface temperature (in degrees Celsius)
-and date for the Mediterranean region from 1982-01-01 to 2014-12-31." />
+<meta property="og:description" content="An internal function that helps to create climatologies in
+accordance with the Hobday et al. (2016) standard." />
 
 <meta property="og:image" content="https://robwschlegel.github.io/heatwaveR/index.html/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -143,41 +143,48 @@ and date for the Mediterranean region from 1982-01-01 to 2014-12-31." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Optimally interpolated 0.25 degree SST for the Mediterranean region.</h1>
+    <h1>Detect the climatology for a time series</h1>
     
-    <div class="hidden name"><code>sst_Med.Rd</code></div>
+    <div class="hidden name"><code>smooth_percentile.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>A dataset containing the sea surface temperature (in degrees Celsius)
-and date for the Mediterranean region from 1982-01-01 to 2014-12-31.</p>
+    <p>An internal function that helps to create climatologies in
+accordance with the Hobday et al. (2016) standard.</p>
     
     </div>
 
-    <pre class="usage"><span class='no'>sst_Med</span></pre>
-        
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p>A data frame with 12053 rows and 2 variables:</p><dl class='dl-horizontal'>
-  <dt>t</dt><dd><p>date, as POSIXct</p></dd>
-  <dt>temp</dt><dd><p>SST, in degrees Celsius</p></dd>
-  ...
-</dl>
+    <pre class="usage"><span class='fu'>smooth_percentile</span>(<span class='no'>data</span>, <span class='no'>smoothPercentileWidth</span>)</pre>
     
-    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>data</th>
+      <td><p>The data given to this function during the calculations
+performed by <code><a href='ts2clm.html'>ts2clm</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>smoothPercentileWidth</th>
+      <td><p>The width of the smoothing window
+to be applied.</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><a href='https://www.ncdc.noaa.gov/oisst'>https://www.ncdc.noaa.gov/oisst</a></p>
+    <p>The function returns the data in the same format it was
+input as, with the climatology values smoothed as desired.</p>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#format">Format</a></li>
-
-      <li><a href="#source">Source</a></li>
+      <li><a href="#value">Value</a></li>
           </ul>
 
   </div>

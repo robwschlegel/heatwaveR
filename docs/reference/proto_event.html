@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Optimally interpolated 0.25 degree SST for the Mediterranean region. — sst_Med • heatwaveR</title>
+<title>Detect proto-events based on a chosen criterion (column) — proto_event • heatwaveR</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -33,10 +33,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Optimally interpolated 0.25 degree SST for the Mediterranean region. — sst_Med" />
+<meta property="og:title" content="Detect proto-events based on a chosen criterion (column) — proto_event" />
 
-<meta property="og:description" content="A dataset containing the sea surface temperature (in degrees Celsius)
-and date for the Mediterranean region from 1982-01-01 to 2014-12-31." />
+<meta property="og:description" content="This functions detects proto-events, which are periods of time
+above a threshold, but without considering a minimum duration or
+joining gap." />
 
 <meta property="og:image" content="https://robwschlegel.github.io/heatwaveR/index.html/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -143,42 +144,57 @@ and date for the Mediterranean region from 1982-01-01 to 2014-12-31." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Optimally interpolated 0.25 degree SST for the Mediterranean region.</h1>
+    <h1>Detect proto-events based on a chosen criterion (column)</h1>
     
-    <div class="hidden name"><code>sst_Med.Rd</code></div>
+    <div class="hidden name"><code>proto_event.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>A dataset containing the sea surface temperature (in degrees Celsius)
-and date for the Mediterranean region from 1982-01-01 to 2014-12-31.</p>
+    <p>This functions detects proto-events, which are periods of time
+above a threshold, but without considering a minimum duration or
+joining gap.</p>
     
     </div>
 
-    <pre class="usage"><span class='no'>sst_Med</span></pre>
-        
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p>A data frame with 12053 rows and 2 variables:</p><dl class='dl-horizontal'>
-  <dt>t</dt><dd><p>date, as POSIXct</p></dd>
-  <dt>temp</dt><dd><p>SST, in degrees Celsius</p></dd>
-  ...
-</dl>
+    <pre class="usage"><span class='fu'>proto_event</span>(<span class='no'>t_series</span>, <span class='no'>criterion_column</span>, <span class='no'>minDuration</span>, <span class='kw'>gaps</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>maxGap</span> <span class='kw'>=</span> <span class='fl'>2</span>)</pre>
     
-    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
-
-    <p><a href='https://www.ncdc.noaa.gov/oisst'>https://www.ncdc.noaa.gov/oisst</a></p>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>t_series</th>
+      <td><p>A dataframe of the correct dimensions inherited
+from <code><a href='detect_event.html'>detect_event</a></code> within which this runs.</p></td>
+    </tr>
+    <tr>
+      <th>criterion_column</th>
+      <td><p>The column to use for the detection of events.</p></td>
+    </tr>
+    <tr>
+      <th>minDuration</th>
+      <td><p>Minimum duration for acceptance of detected events.</p></td>
+    </tr>
+    <tr>
+      <th>gaps</th>
+      <td><p>This logic gate tells this internal function if it should be
+calculating the lengths of events, or rather the gaps in between them.</p></td>
+    </tr>
+    <tr>
+      <th>maxGap</th>
+      <td><p>This is the number of rows (days) across which distinct
+events will be combined into one event if <code>joinAcrossGaps = TRUE</code>.</p></td>
+    </tr>
+    </table>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#format">Format</a></li>
-
-      <li><a href="#source">Source</a></li>
-          </ul>
+      <li><a href="#arguments">Arguments</a></li>
+                </ul>
 
   </div>
 </div>

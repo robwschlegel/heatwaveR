@@ -75,18 +75,16 @@
 #' @export
 #'
 #' @examples
-#' res_WA <- detect(make_whole(sst_WA),
-#'                  climatology_start = "1983-01-01",
-#'                  climatology_end = "2012-12-31")
+#' res_WA <- detect_event(ts2clm(sst_WA,
+#'                        climatologyPeriod = c("1983-01-01", "2012-12-31")))
 #' # Note that the name argument expects a character vector
 #' cat_WA <- category(res_WA, name = "WA")
 #' tail(cat_WA)
 #'
 #' # If the data were collected in the northern hemisphere
 #' # we must let the funciton know this as seen below
-#' res_Med <- detect(make_whole(sst_Med),
-#'                  climatology_start = "1983-01-01",
-#'                  climatology_end = "2012-12-31")
+#' res_Med <- detect_event(ts2clm(sst_Med,
+#'                         climatologyPeriod = c("1983-01-01", "2012-12-31")))
 #' cat_Med <- category(res_Med, S = FALSE, name = "Med")
 #' tail(cat_Med)
 category <-
@@ -107,7 +105,7 @@ category <-
                             event_name = paste0(as.character(name), " ", lubridate::year(data$event$date_peak)),
                             peak_date = data$event$date_peak,
                             category = NA,
-                            i_max = round(data$event$int_max, 2),
+                            i_max = round(data$event$intensity_max, 2),
                             duration = data$event$duration)
 
     seasons <- data.frame(event_no = data$event$event_no,
@@ -156,19 +154,19 @@ category <-
       }
     }
 
-    seas_clim_year <- thresh_clim_year <- thresh_2x <- thresh_3x <- thresh_4x <- NULL
+    seas <- thresh <- thresh_2x <- thresh_3x <- thresh_4x <- NULL
 
     clim_diff <- data$clim %>%
       dplyr::filter(!is.na(event_no)) %>%
-      dplyr::mutate(diff = thresh_clim_year - seas_clim_year,
-                    thresh_2x = thresh_clim_year + diff,
+      dplyr::mutate(diff = thresh - seas,
+                    thresh_2x = thresh + diff,
                     thresh_3x = thresh_2x + diff,
                     thresh_4x = thresh_3x + diff)
 
     moderate <- strong <- severe <- extreme <- NULL
 
     moderate_n <- clim_diff %>%
-      dplyr::filter(ts_y >= thresh_clim_year) %>%
+      dplyr::filter(ts_y >= thresh) %>%
       dplyr::group_by(event_no) %>%
       dplyr::summarise(moderate = n()) %>%
       dplyr::ungroup()

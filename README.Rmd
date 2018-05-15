@@ -322,7 +322,7 @@ tail(category(mhw, S = TRUE, name = "WA"))
 Note that this functions expects the data to have been collected in the southern hemisphere, hence the argument `S = TRUE`. If they were not, one must set `S = FALSE` as seen in the example below. This ensures that the correct seasons are attributed to the event.
 
 ```{r category-example2, echo = TRUE}
-res_Med <- detect(make_whole(sst_Med), climatology_start = "1983-01-01", climatology_end = "2012-12-31")
+res_Med <- detect_event(ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31")))
 tail(category(res_Med, S = FALSE, name = "Med"))
 ```
 

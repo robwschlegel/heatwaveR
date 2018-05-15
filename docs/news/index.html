@@ -73,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.0.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1.9000</span>
       </span>
     </div>
 
@@ -144,6 +144,36 @@
       
     </div>
 
+    <div id="heatwaver-0-2-1-9000-2018-05-14" class="section level1">
+<h1 class="page-header">
+<a href="#heatwaver-0-2-1-9000-2018-05-14" class="anchor"></a>heatwaveR 0.2.1.9000 (2018-05-14)</h1>
+<ul>
+<li>Phasing in identical names as in the python version</li>
+<li>
+<code><a href="../reference/detect_event.html">detect_event()</a></code> now passing checks</li>
+<li>Must still test for MCSs</li>
+<li>The old <code><a href="../reference/detect.html">detect()</a></code> function was unpacked and simplified. Internal code is now in new functions, most of which will not be seen by the user. They are <code><a href="../reference/make_whole.html">make_whole()</a></code> <code><a href="../reference/proto_event.html">proto_event()</a></code>, <code><a href="../reference/clim_calc.html">clim_calc()</a></code>, <code><a href="../reference/smooth_percentile.html">smooth_percentile()</a></code>, <code><a href="../reference/clim_spread.html">clim_spread()</a></code>, and <code><a href="../reference/ts2clm.html">ts2clm()</a></code>
+</li>
+<li>
+<code><a href="../reference/ts2clm.html">ts2clm()</a></code> used instead of <code>detect_clim()</code>
+</li>
+<li>Climatologies can now be calculated independently of the detect functionality</li>
+<li>
+<code><a href="../reference/exceedance.html">exceedance()</a></code> function testthat checks updated to account for change in variable naming</li>
+</ul>
+</div>
+    <div id="heatwaver-0-2-0-9000-2018-05-11" class="section level1">
+<h1 class="page-header">
+<a href="#heatwaver-0-2-0-9000-2018-05-11" class="anchor"></a>heatwaveR 0.2.0.9000 (2018-05-11)</h1>
+<ul>
+<li>
+<code><a href="../reference/detect.html">detect()</a></code> has now been broken into <code>detect_clim()</code> and <code><a href="../reference/detect_event.html">detect_event()</a></code>
+</li>
+<li>These now also rely on internal funcitons</li>
+<li>The purpose of this is to create a family of functions that provide different options</li>
+<li>New vignette on making short climatologies.</li>
+</ul>
+</div>
     <div id="heatwaver-0-1-0-9000-2018-05-10" class="section level1">
 <h1 class="page-header">
 <a href="#heatwaver-0-1-0-9000-2018-05-10" class="anchor"></a>heatwaveR 0.1.0.9000 (2018-05-10)</h1>
@@ -266,6 +296,8 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#heatwaver-0-2-1-9000-2018-05-14">0.2.1.9000</a></li>
+        <li><a href="#heatwaver-0-2-0-9000-2018-05-11">0.2.0.9000</a></li>
         <li><a href="#heatwaver-0-1-0-9000-2018-05-10">0.1.0.9000</a></li>
         <li><a href="#heatwaver-0-0-7-9001-2018-05-05">0.0.7.9001</a></li>
         <li><a href="#heatwaver-0-0-7-9000-2018-05-04">0.0.7.9000</a></li>
