@@ -2,6 +2,7 @@
 
 * Minor fix to testhat
 * codecov up to 100%
+* Speed-up of make_whole()
 
 # heatwaveR 0.2.3.9000 (2018-05-16)
 
