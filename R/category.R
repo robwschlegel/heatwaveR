@@ -146,8 +146,6 @@ category <-
         seasons$season[i] <- paste0(seasons$start_season[i])
       } else if (seasons$diff_season[i] %in% c(-1, 3) & seasons$duration[i] < 180) {
         seasons$season[i] <- paste0(seasons$start_season[i], "/", seasons$stop_season[i])
-      } else if (seasons$diff_season[i] %in% c(-1, 3) & seasons$duration[i] > 180) {
-        seasons$season[i] <- paste0(seasons$start_season[i], "-", seasons$stop_season[i])
       } else if (seasons$diff_season[i] %in% c(-3, -2, 2)) {
         seasons$season[i] <- paste0(seasons$start_season[i], "-", seasons$stop_season[i])
       }

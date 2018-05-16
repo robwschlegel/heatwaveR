@@ -1,3 +1,8 @@
+# heatwaveR 0.2.3.9001 (2018-05-16)
+
+* Minor fix to testhat
+* codecov up to 100%
+
 # heatwaveR 0.2.3.9000 (2018-05-16)
 
 * Major spead-up in the climatology creation function. clim_spread() now returns

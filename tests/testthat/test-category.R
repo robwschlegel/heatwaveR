@@ -38,7 +38,7 @@ test_that("season splits work under all circumstances", {
   ts$temp[1000:1500] <- 24
   ts$temp[2000:2200] <- 22
   ts$temp[4000:4200] <- 22
-  res <- detect_event(data = ts)
+  res <- detect_event(ts)
   cat_res <- category(res, S = F)
   expect_equal(cat_res$season[70], "Summer-Winter")
   expect_equal(cat_res$season[71], "Year-round")
