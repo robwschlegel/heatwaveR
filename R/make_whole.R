@@ -70,41 +70,30 @@ make_whole <- function(data, x = t, y = temp) {
 
   temp <- NULL
 
-  ts.x <- eval(substitute(x), data)
-  ts.y <- eval(substitute(y), data)
-  dat <- tibble::tibble(ts.x,
-                        ts.y)
-  rm(ts.x); rm(ts.y)
+  ts_x <- eval(substitute(x), data)
+  ts_y <- eval(substitute(y), data)
 
-  dat <- dat %>%
-    dplyr::group_by(ts.x) %>%
-    dplyr::summarise(ts.y = mean(ts.y, na.rm = TRUE)) %>%
-    dplyr::ungroup()
-  t_series <- zoo::zoo(dat$ts.y, dat$ts.x)
-  ser <-
-    data.frame(ts.x = seq(stats::start(t_series), stats::end(t_series), by = "1 day"))
-  ser <- zoo::zoo(rep(NA, length(ser$ts.x)), order.by = ser$ts.x)
-  t_series <- merge(ser, t_series)[, 2]
+  t_series <- zoo::zoo(ts_y, ts_x)
+  ts_x_ser <- seq(stats::start(t_series), stats::end(t_series), by = "1 day")
+  ts_x_ser <- zoo::zoo(rep(NA, length(ts_x_ser)), order.by = ts_x_ser)
+  t_series <- merge(ts_x_ser, t_series)[, 2]
 
   feb28 <- 59
-  doy <- NULL ###
-  t_series <-
-    data.frame(
-      doy = lubridate::yday(t_series),
-      date = as.Date(as.POSIXct(t_series)),
-      ts.y = t_series,
-      row.names = NULL ###
-    ) %>%
-    dplyr::mutate(doy = ifelse(
-      lubridate::leap_year(lubridate::year(t_series)) == FALSE,
-      ifelse(doy > feb28, doy + 1, doy),
-      doy
-    ))
+  v_date <- as.Date(stats::time(t_series))
+  v_doy <- lubridate::yday(t_series)
+  v_doy <- as.integer(ifelse(
+    lubridate::leap_year(lubridate::year(t_series)) == FALSE,
+    ifelse(v_doy > feb28, v_doy + 1, v_doy),
+    v_doy)
+  )
+  v_ts_y <- as.numeric(t_series)
 
-  names(t_series)[1] <- "doy"
+  t_series <- tibble::tibble(doy = v_doy,
+                     date = v_date,
+                     ts_y = v_ts_y)
+
   names(t_series)[2] <- paste(substitute(x))
   names(t_series)[3] <- paste(substitute(y))
-  t_series <- tibble::as_tibble(t_series)
 
   return(t_series)
 }

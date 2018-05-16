@@ -4,13 +4,15 @@
 * codecov up to 100%
 * Fix to `geom_lolli()` n argument
 * Fix to `lolli_plot()` y-axis range
+* Minor fix to `make_whole()`
 
 # heatwaveR 0.2.3.9000 (2018-05-16)
 
-* Major spead-up in the climatology creation function. clim_spread() now returns
-  a matrix, not a data frame. This makes the loop in clim_calc() much faster.
+* Major spead-up in the climatology creation function. `clim_spread()` now returns
+  a matrix, not a data frame. This makes the loop in `clim_calc()` much faster.
   In testing with the sst_WA data, it leads to a 3.7 fold speed improvement
   (520 ms down to 140 ms).
+* Speed-up of `make_whole()` (60 ms down to 40 ms)
 
 # heatwaveR 0.2.2.9000 (2018-05-15)
 

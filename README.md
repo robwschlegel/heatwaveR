@@ -209,7 +209,7 @@ ggplot(mhw2, aes(x = t, y = temp, y2 = thresh)) +
   geom_text(aes(x = as.Date("2011-02-26"), y = 25.8, label = "the Destroyer\nof Kelps"))
 
 ggplot(mhw$event, aes(x = date_start, y = intensity_max)) +
-  geom_lolli(colour = "salmon", colour.n = "red", n = 3) +
+  geom_lolli(colour = "salmon", colour_n = "red", n = 3) +
   geom_text(colour = "black", aes(x = as.Date("2006-08-01"), y = 5,
                 label = "The marine heatwaves\nTend to be left skewed in a\nGiven time series"))
 ```
@@ -242,9 +242,8 @@ ggplot(data = mhw2, aes(x = t)) +
 Should we not wish to highlight any events with `geom_lolli()`, it would look like this:
 
 ``` r
-# Note that this is accomplished by setting 'colour.n = NA', not by setting 'n = 0'.
 ggplot(mhw$event, aes(x = date_start, y = intensity_cumulative)) +
-  geom_lolli(colour = "salmon", n = 3, colour.n = NA)
+  geom_lolli(colour = "salmon")
 ```
 
 ![](docs/fig-example5-1.png)
@@ -301,7 +300,7 @@ ggplot(data = mcs2, aes(x = t)) +
   labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
 
 ggplot(mcs$event, aes(x = date_start, y = intensity_cumulative)) +
-  geom_lolli(colour = "steelblue3", colour.n = "navy", n = 7) +
+  geom_lolli(colour = "steelblue3", colour_n = "navy", n = 7) +
   xlab("Date") +
   ylab(expression(paste("Cumulative intensity [days x ", degree, "C]")))
 ```
