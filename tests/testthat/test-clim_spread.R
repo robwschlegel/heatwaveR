@@ -7,7 +7,7 @@ test_that("clim_spread() returns the correct output", {
   ts_whole$ts_y <- zoo::na.approx(ts_whole$ts_y, maxgap = 3)
   res <- heatwaveR:::clim_spread(ts_whole, clim_start = "1983-01-01",
                                  clim_end = "2012-12-31", windowHalfWidth = 5)
-  expect_is(res, "data.frame")
-  expect_equal(ncol(res), 31)
+  expect_is(res, "matrix")
+  expect_equal(ncol(res), 30)
   expect_equal(nrow(res), 376)
 })
