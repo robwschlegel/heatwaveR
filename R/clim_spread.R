@@ -25,9 +25,12 @@ clim_spread <- function(data, clim_start, clim_end, windowHalfWidth) {
     tidyr::spread(ts_x, ts_y)
 
   ts_spread[59:61, ] <- zoo::na.approx(ts_spread[59:61, ], maxgap = 1, na.rm = TRUE)
-  ts_spread <- rbind(utils::tail(ts_spread, windowHalfWidth), # bind_rows()?
+  ts_spread <- dplyr::bind_rows(utils::tail(ts_spread, windowHalfWidth),
                      ts_spread,
                      utils::head(ts_spread, windowHalfWidth))
 
-  return(ts_spread)
+  len_yr <- length(lubridate::year(clim_start):lubridate::year(clim_end))
+
+  ts_mat <- as.matrix(ts_spread)[, 2:(len_yr + 1)]
+  return(ts_mat)
 }

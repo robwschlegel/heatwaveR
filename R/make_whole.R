@@ -104,6 +104,7 @@ make_whole <- function(data, x = t, y = temp) {
   names(t_series)[1] <- "doy"
   names(t_series)[2] <- paste(substitute(x))
   names(t_series)[3] <- paste(substitute(y))
+  t_series <- tibble::as_tibble(t_series)
 
   return(t_series)
 }

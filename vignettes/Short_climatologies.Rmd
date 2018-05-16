@@ -173,7 +173,7 @@ plt3 <- ggplot(data = sst.repl.smth, aes(x = doy, y = smoothed)) +
 ggsave(plt3, file = "WA_Fourier7.png", width = 12, height = 6, dpi = 120)
 ```
 
-![**Figure 3.** Bootstrapped reconstructions of daily climatologies based on mean SSTs derived from time series of 10, 20 and 30 years long. Red lines are the smoothed climatologies obtained from a Fourier analysis.](rand_mat_smoothed_1.png){width=100%}
+![**Figure 3.** Bootstrapped reconstructions of daily climatologies based on mean SSTs derived from time series of 10, 20 and 30 years long. Red lines are the smoothed climatologies obtained from a Fourier analysis.](WA_Fourier7.png){width=100%}
 
 ### heatwaveR's climatology functions
 
@@ -241,7 +241,7 @@ plt4 <- sst.repl2.smth %>%
   geom_line(data = filter(sst.repl2.smth, t <= "1984-01-01"), aes(, y = seas, group = rep), alpha = 0.3, size = 0.1) +
   facet_wrap(~id, nrow = 3) +
   labs(x = "Julian day", y = "SST (°C)", title = "WA SST: daily climatology",
-       subtitle = "MHW climatology, default settings") +
+       subtitle = "MHW climatology, default settings")
 ggsave(plt4, file = "rand_mat_smoothed_2.png", width = 12, height = 6, dpi = 120)
 ```
 

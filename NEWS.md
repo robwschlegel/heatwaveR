@@ -1,3 +1,10 @@
+# heatwaveR 0.2.3.9000 (2018-05-16)
+
+* Major spead-up in the climatology creation function. clim_spread() now returns
+  a matrix, not a data frame. This makes the loop in clim_calc() much faster.
+  In testing with the sst_WA data, it leads to a 3.7 fold speed improvement
+  (520 ms down to 140 ms).
+
 # heatwaveR 0.2.2.9000 (2018-05-15)
 
 * Removed all instances of `detect()` in favour of the new pipeline
