@@ -2,7 +2,7 @@
 #'
 #' @importFrom dplyr %>%
 #'
-#' @param data Accepts the data returned by the \code{\link{detect}} function.
+#' @param data Accepts the data returned by the \code{\link{detect_event}} function.
 #' @param x This column is expected to contain a vector of dates as per the
 #' specification of \code{make_whole}. If a column headed \code{t} is present in
 #' the dataframe, this argument may be ommitted; otherwise, specify the name of
@@ -34,28 +34,28 @@
 #'   \item{temp_max}{The maximum temperature for the specified year [deg. C].}
 #'   \item{count}{The number of events per year.}
 #'   \item{duration}{The average duration of events per year [days].}
-#'   \item{int_mean}{The average event "mean intensity" in each year [deg. C].}
-#'   \item{int_max}{The average event "maximum (peak) intensity" in each year
+#'   \item{intensity_mean}{The average event "mean intensity" in each year [deg. C].}
+#'   \item{intensity_max}{The average event "maximum (peak) intensity" in each year
 #'   [deg. C].}
-#'   \item{int_var}{The average event "intensity variability" in each year
+#'   \item{intensity_var}{The average event "intensity variability" in each year
 #'   [deg. C].}
-#'   \item{int_cum}{The average event "cumulative intensity" in each year
+#'   \item{intensity_cumulative}{The average event "cumulative intensity" in each year
 #'   [deg. C x days].}
 #'   \item{rate_onset}{Average event onset rate in each year [deg. C / days].}
 #'   \item{rate_decline}{Average event decline rate in each year [deg. C / days].}
 #'   \item{total_days}{Total number of events days in each year [days].}
 #'   \item{total_icum}{Total cumulative intensity over all events in each year [deg. C x days].}
 #'
-#' \code{int_max_rel_thresh}, \code{int_mean_rel_thresh},
-#' \code{int_var_rel_thresh}, and \code{int_cum_rel_thresh}
+#' \code{intensity_max_relThresh}, \code{intensity_mean_relThresh},
+#' \code{intensity_var_relThresh}, and \code{intensity_cumulative_relThresh}
 #' are as above except relative to the threshold (e.g., 90th percentile) rather
 #' than the seasonal climatology.
 #'
-#' \code{int_max_abs}, \code{int_mean_abs}, \code{int_var_abs}, and
-#' \code{int_cum_abs} are as above except as absolute magnitudes
+#' \code{intensity_max_abs}, \code{intensity_mean_abs}, \code{intensity_var_abs}, and
+#' \code{intensity_cumulative_abs} are as above except as absolute magnitudes
 #' rather than relative to the seasonal climatology or threshold.
 #'
-#' \code{int_max_norm} and \code{int_mean_norm} are as above except
+#' \code{intensity_max_norm} and \code{intensity_mean_norm} are as above except
 #' units are in multiples of threshold exceedances, i.e., a value of 1.5
 #' indicates the event intensity (relative to the climatology) was 1.5 times the
 #' value of the threshold (relative to climatology,
@@ -70,9 +70,8 @@
 #' @export
 #'
 #' @examples
-#' t_dat <- make_whole(sst_Med)
-#' res <- detect(t_dat, climatology_start = "1983-01-01",
-#'               climatology_end = "2012-12-31") # using default values
+#' ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+#' res <- detect_event(ts)
 #' out <- block_average(res)
 #' summary(glm(count ~ year, out, family = "poisson"))
 #'
@@ -87,46 +86,48 @@ block_average <- function(data,
                           y = temp,
                           report = "full") {
 
-  ts.x <- eval(substitute(x), data$clim)
-  ts.y <- eval(substitute(y), data$clim)
+  ts_x <- eval(substitute(x), data$climatology)
+  ts_y <- eval(substitute(y), data$climatology)
 
-  clim <- data$clim
-  clim$t <- ts.x
-  clim$temp <- ts.y
+  clim <- data$climatology
+  clim$t <- ts_x
+  clim$temp <- ts_y
 
-  year <- temp <- date_start <- temp_mean <- temp_min <- temp_max <- NULL ###
+  year <- temp <- date_start <- temp_mean <- temp_min <- temp_max <- NULL
+
   temp_yr <- clim %>%
     dplyr::group_by(year = lubridate::year(t)) %>%
     dplyr::summarise(temp_mean = mean(temp, na.rm = TRUE),
                      temp_min = min(temp),
                      temp_max = max(temp))
 
-  duration <- count <- int_mean <- int_max <- int_var <- int_cum <-
-    int_mean_rel_thresh <- int_max_rel_thresh <- int_var_rel_thresh <-
-    int_cum_rel_thresh <- int_mean_abs <- int_max_abs <- int_var_abs <-
-    int_cum_abs <- int_mean_norm <- int_max_norm <- rate_onset <-
-    rate_decline <- total_days <- total_icum <- NULL ###
+  duration <- count <- intensity_mean <- intensity_max <- intensity_var <- intensity_cumulative <-
+    intensity_mean_relThresh <- intensity_max_relThresh <- intensity_var_relThresh <-
+    intensity_cumulative_relThresh <- intensity_mean_abs <- intensity_max_abs <- intensity_var_abs <-
+    intensity_cumulative_abs <- intensity_mean_norm <- intensity_max_norm <- rate_onset <-
+    rate_decline <- total_days <- total_icum <- NULL
+
   event_block <- data$event %>%
     dplyr::group_by(year = lubridate::year(date_start)) %>%
     dplyr::summarise(count = length(duration),
-                     int_mean = mean(int_mean),
-                     int_max = mean(int_max),
-                     int_var = mean(int_var),
-                     int_cum = mean(int_cum),
-                     int_mean_rel_thresh = mean(int_mean_rel_thresh),
-                     int_max_rel_thresh = mean(int_max_rel_thresh),
-                     int_var_rel_thresh = mean(int_var_rel_thresh),
-                     int_cum_rel_thresh = mean(int_cum_rel_thresh),
-                     int_mean_abs = mean(int_mean_abs),
-                     int_max_abs = mean(int_max_abs),
-                     int_var_abs = mean(int_var_abs),
-                     int_cum_abs = mean(int_cum_abs),
-                     int_mean_norm = mean(int_mean_norm),
-                     int_max_norm = mean(int_max_norm),
+                     intensity_mean = mean(intensity_mean),
+                     intensity_max = mean(intensity_max),
+                     intensity_var = mean(intensity_var),
+                     intensity_cumulative = mean(intensity_cumulative),
+                     intensity_mean_relThresh = mean(intensity_mean_relThresh),
+                     intensity_max_relThresh = mean(intensity_max_relThresh),
+                     intensity_var_relThresh = mean(intensity_var_relThresh),
+                     intensity_cumulative_relThresh = mean(intensity_cumulative_relThresh),
+                     intensity_mean_abs = mean(intensity_mean_abs),
+                     intensity_max_abs = mean(intensity_max_abs),
+                     intensity_var_abs = mean(intensity_var_abs),
+                     intensity_cumulative_abs = mean(intensity_cumulative_abs),
+                     intensity_mean_norm = mean(intensity_mean_norm),
+                     intensity_max_norm = mean(intensity_max_norm),
                      rate_onset = mean(rate_onset),
                      rate_decline = mean(rate_decline),
                      total_days = sum(duration),
-                     total_icum = sum(int_cum))
+                     total_icum = sum(intensity_cumulative))
 
   if (report == "full") {
     event_block <- dplyr::left_join(temp_yr, event_block, by = "year")

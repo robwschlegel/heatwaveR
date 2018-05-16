@@ -1,3 +1,9 @@
+# heatwaveR 0.2.2.9000 (2018-05-15)
+
+* Removed all instances of `detect()` in favour of the new pipeline
+* Updated `exceedance()` to utilise the internal functions
+* Updated object names in `block_average()`
+
 # heatwaveR 0.2.1.9001 (2018-05-15)
 
 * Micro edits to documentation

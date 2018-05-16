@@ -35,7 +35,7 @@
 
 <meta property="og:title" content="Calculate the categories of events. — category" />
 
-<meta property="og:description" content="Calculates the categories of a series of events as produced by detect in
+<meta property="og:description" content="Calculates the categories of a series of events as produced by detect_event in
 accordance with the naming scheme proposed in Hobday et al. (in review)." />
 
 <meta property="og:image" content="https://robwschlegel.github.io/heatwaveR/index.html/logo.png" />
@@ -76,7 +76,7 @@ accordance with the naming scheme proposed in Hobday et al. (in review)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1.9001</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.2.9000</span>
       </span>
     </div>
 
@@ -150,7 +150,7 @@ accordance with the naming scheme proposed in Hobday et al. (in review)." />
 
     <div class="ref-description">
     
-    <p>Calculates the categories of a series of events as produced by <code><a href='detect.html'>detect</a></code> in
+    <p>Calculates the categories of a series of events as produced by <code><a href='detect_event.html'>detect_event</a></code> in
 accordance with the naming scheme proposed in Hobday et al. (in review).</p>
     
     </div>
@@ -162,7 +162,8 @@ accordance with the naming scheme proposed in Hobday et al. (in review).</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>The function receives the full (list) output from the <code><a href='detect.html'>detect</a></code> function.</p></td>
+      <td><p>The function receives the full (list) output from the
+<code><a href='detect_event.html'>detect_event</a></code> function.</p></td>
     </tr>
     <tr>
       <th>y</th>
@@ -187,12 +188,13 @@ If no value is provided the default output is "Event".</p></td>
 
     <p>The function will return a tibble with results similar to those seen in
 Table 2 of Hobday et al. (in review). This provides the information necessary to
-appraise the extent of the events in the output of <code><a href='detect.html'>detect</a></code> based on the
+appraise the extent of the events in the output of <code><a href='detect_event.html'>detect_event</a></code> based on the
 category ranking scale. The category thresholds are calculated based on the difference
-between the seasonal climatology and threshold climatology produced by <code><a href='detect.html'>detect</a></code>.
-The four category levels are then the difference multiplied by the category level.</p>
+between the seasonal climatology and threshold climatology produced by
+<code><a href='detect_event.html'>detect_event</a></code>. The four category levels are then the difference
+multiplied by the category level.</p>
 <p>The definitions for the output columns are as follows:</p>
-<dt>event_no</dt><dd><p>The number of the event as determined by <code><a href='detect.html'>detect</a></code>
+<dt>event_no</dt><dd><p>The number of the event as determined by <code><a href='detect_event.html'>detect_event</a></code>
   for reference between the outputs.</p></dd>
   <dt>event_name</dt><dd><p>The name of the event. Generated from the <code>name</code>
   value provided and the year of the <code>peak_date</code> (see following) of

@@ -30,19 +30,27 @@ test_that("below argument creates negative values", {
 })
 
 test_that("threshold must be exceeded by enough to be able to detect events", {
-  ts <- make_whole(sst_Med)
-  expect_error(exceedance(data = make_whole(sst_Med), threshold = 28),
+  expect_error(exceedance(sst_Med, threshold = 28),
                "Not enough consecutive days above 28 to detect an event.")
   expect_error(exceedance(data = make_whole(sst_Med), threshold = 12, below = T),
                "Not enough consecutive days below 12 to detect an event.")
 })
 
 test_that("joinAcrossGaps = F creates more events", {
-  res1 <- exceedance(data = make_whole(sst_Med), threshold = 20)
-  res2 <- exceedance(data = make_whole(sst_Med), threshold = 20, joinAcrossGaps = F)
+  res1 <- exceedance(data = sst_Med, threshold = 20)
+  res2 <- exceedance(data = sst_Med, threshold = 20, joinAcrossGaps = F)
   expect_lt(nrow(res1$exceedance), nrow(res2$exceedance))
 })
 
-# test_that("conditionals for calculating exceedance_rel_thresh are responsive", {
-#   # This requires that such events may be found and the code tested upon them...
-# })
+test_that("conditionals for calculating exceedance_rel_thresh are responsive", {
+  ts <- sst_Med[156:12001, ]
+  res <- exceedance(ts, threshold = 20)
+  expect_equal(is.na(res$exceedance$rate_onset[1]), TRUE)
+  expect_equal(is.na(res$exceedance$rate_decline[53]), TRUE)
+})
+
+test_that("gaps are not joined if none exist", {
+  ts <- sst_Med[150:170, ]
+  res <- exceedance(ts, threshold = 20)
+  expect_equal(nrow(res$exceedance), 1)
+})

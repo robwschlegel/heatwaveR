@@ -136,155 +136,104 @@ exceedance <-
 
     temp <- NULL
 
-    ts.x <- eval(substitute(x), data)
-    ts.y <- eval(substitute(y), data)
-    t_series <- tibble::tibble(ts.x, ts.y)
-    rm(ts.x); rm(ts.y)
+    ts_x <- eval(substitute(x), data)
+    ts_y <- eval(substitute(y), data)
+    t_series <- tibble::tibble(ts_x, ts_y)
+    rm(ts_x); rm(ts_y)
 
-    t_series$ts.y <- zoo::na.approx(t_series$ts.y, maxgap = maxPadLength)
+    t_series$ts_y <- zoo::na.approx(t_series$ts_y, maxgap = maxPadLength)
 
     if (missing(threshold))
       stop("Oh no! Please provide a threshold against which to calculate exceedances.")
 
-    if (threshold > max(t_series$ts.y, na.rm = T)) {
+    if (threshold > max(t_series$ts_y, na.rm = T)) {
       stop(paste("The given threshold value of ", threshold, " is greater than the maximum temperature of ",
-                 round(max(t_series$ts.y, na.rm = T), 2), " present in this time series.", sep = ""))
+                 round(max(t_series$ts_y, na.rm = T), 2), " present in this time series.", sep = ""))
     }
 
-    if (threshold < min(t_series$ts.y, na.rm = T)) {
+    if (threshold < min(t_series$ts_y, na.rm = T)) {
       stop(paste("The given threshold value of ", threshold, " is less than the minimum temperature of ",
-                 round(min(t_series$ts.y, na.rm = T), 2), " present in this time series.", sep = ""))
+                 round(min(t_series$ts_y, na.rm = T), 2), " present in this time series.", sep = ""))
     }
 
     if (below) {
-      t_series$ts.y <- -t_series$ts.y
+      t_series$ts_y <- -t_series$ts_y
       threshold <- -threshold
     }
 
-    t_series$thresh <- rep(threshold, nrow(t_series))
+    t_series$ts_thresh <- rep(threshold, nrow(t_series))
+    t_series$threshCriterion <- t_series$ts_y > t_series$ts_thresh
 
-    t_series$thresh_criterion <- t_series$ts.y >= t_series$thresh
-    ex1 <- rle(t_series$thresh_criterion)
-    ind1 <- rep(seq_along(ex1$lengths), ex1$lengths)
-    s1 <- split(zoo::index(t_series$thresh_criterion), ind1)
-    proto_exceedances <- s1[ex1$values == TRUE]
-    index_stop <- index_start <- NULL
-    proto_exceedances_rng <-
-      lapply(proto_exceedances, function(x)
-        data.frame(index_start = min(x), index_stop = max(x)))
+    proto_1 <- proto_event(t_series, criterion_column = 4, minDuration = minDuration,
+                           maxGap = maxGap)
 
-    duration <- NULL ###
-
-    protoFunc <- function(proto_data) {
-      out <- proto_data %>%
-        dplyr::mutate(duration = index_stop - index_start + 1) %>%
-        dplyr::filter(duration >= minDuration) %>%
-        dplyr::mutate(date_start = t_series$ts.x[index_start]) %>%
-        dplyr::mutate(date_stop = t_series$ts.x[index_stop])
-    }
-
-    proto_exceedances <- do.call(rbind, proto_exceedances_rng) %>%
-      dplyr::mutate(exceedance_no = cumsum(ex1$values[ex1$values == TRUE])) %>%
-      protoFunc()
-
-    if (length(proto_exceedances$index_start) == 0 & below == FALSE) {
+    if (length(proto_1$index_start) == 0 & below == FALSE) {
       stop(paste0("Not enough consecutive days above ", threshold, " to detect an event."))
     }
-    if (length(proto_exceedances$index_start) == 0 & below == TRUE) {
+    if (length(proto_1$index_start) == 0 & below == TRUE) {
       stop(paste0("Not enough consecutive days below ", abs(threshold), " to detect an event."))
     }
 
-    t_series$duration_criterion <- rep(FALSE, nrow(t_series))
-
-    for (i in 1:nrow(proto_exceedances)) {
-      t_series$duration_criterion[proto_exceedances$index_start[i]:proto_exceedances$index_stop[i]] <-
-        rep(TRUE, length = proto_exceedances$duration[i])
+    t_series$durationCriterion <- rep(FALSE, nrow(t_series))
+    for (i in 1:nrow(proto_1)) {
+      t_series$durationCriterion[proto_1$index_start[i]:proto_1$index_stop[i]] <-
+        rep(TRUE, length = proto_1$duration[i])
     }
 
-    ex2 <- rle(t_series$duration_criterion)
-    ind2 <- rep(seq_along(ex2$lengths), ex2$lengths)
-    s2 <- split(zoo::index(t_series$thresh_criterion), ind2)
-    proto_gaps <- s2[ex2$values == FALSE]
-    proto_gaps_rng <-
-      lapply(proto_gaps, function(x) data.frame(index_start = min(x), index_stop = max(x)))
+    proto_2 <- proto_event(t_series, criterion_column = 5, minDuration = minDuration,
+                           gaps = TRUE, maxGap = maxGap)
 
-    proto_gaps <- do.call(rbind, proto_gaps_rng) %>%
-      dplyr::mutate(exceedance_no = c(1:length(ex2$values[ex2$values == FALSE]))) %>%
-      dplyr::mutate(duration = index_stop - index_start + 1)
-
-    if (any(proto_gaps$duration >= 1 & proto_gaps$duration <= maxGap)) {
-      proto_gaps <- proto_gaps %>%
-        dplyr::mutate(date_start = t_series$ts.x[index_start]) %>%
-        dplyr::mutate(date_stop = t_series$ts.x[index_stop]) %>%
-        dplyr::filter(duration >= 1 & duration <= maxGap)
-    } else {
+    if (ncol(proto_2) == 4)
       joinAcrossGaps <- FALSE
-    }
 
     if (joinAcrossGaps) {
-      t_series$exceedance <- t_series$duration_criterion
-      for (i in 1:nrow(proto_gaps)) {
-        t_series$exceedance[proto_gaps$index_start[i]:proto_gaps$index_stop[i]] <-
-          rep(TRUE, length = proto_gaps$duration[i])
+      t_series$event <- t_series$durationCriterion
+      for (i in 1:nrow(proto_2)) {
+        t_series$event[proto_2$index_start[i]:proto_2$index_stop[i]] <-
+          rep(TRUE, length = proto_2$duration[i])
       }
     } else {
-      t_series$exceedance <- t_series$duration_criterion
+      t_series$event <- t_series$durationCriterion
     }
 
-    ex3 <- rle(t_series$exceedance)
-    ind3 <- rep(seq_along(ex3$lengths), ex3$lengths)
-    s3 <- split(zoo::index(t_series$exceedance), ind3)
-    exceedances <- s3[ex3$values == TRUE]
-    exceedance_no <- NULL
-    exceedances_rng <-
-      lapply(exceedances, function(x)
-        data.frame(index_start = min(x), index_stop = max(x)))
-
-    exceedances <- do.call(rbind, exceedances_rng) %>%
-      dplyr::mutate(exceedance_no = cumsum(ex3$values[ex3$values == TRUE])) %>%
-      protoFunc()
+    proto_3 <- proto_event(t_series, criterion_column = 6, minDuration = minDuration,
+                           maxGap = maxGap)
 
     t_series$exceedance_no <- rep(NA, nrow(t_series))
-    for (i in 1:nrow(exceedances)) {
-      t_series$exceedance_no[exceedances$index_start[i]:exceedances$index_stop[i]] <-
-        rep(i, length = exceedances$duration[i])
+    for (i in 1:nrow(proto_3)) {
+      t_series$exceedance_no[proto_3$index_start[i]:proto_3$index_stop[i]] <-
+        rep(i, length = proto_3$duration[i])
     }
 
-    exceedances_list <- plyr::dlply(exceedances, c("exceedance_no"), function(x)
-      with(
-        t_series,
-        data.frame(
-          ts.x = c(ts.x[x$index_start:x$index_stop]),
-          ts.y = c(ts.y[x$index_start:x$index_stop]),
-          thresh = c(thresh[x$index_start:x$index_stop]),
-          exceedance_rel_thresh = c(ts.y[x$index_start:x$index_stop]) - c(thresh[x$index_start:x$index_stop])
-        )
-      )
-    )
+    ts_thresh <- intensity_mean <- intensity_max <- intensity_cumulative <-
+      exceedance_rel_thresh <- intensity_mean_abs <- intensity_max_abs <-
+      intensity_cum_abs <- ts_y <- exceedance_no <- row_index <- NULL
 
-    thresh <- intensity_mean <- intensity_max <- intensity_cumulative <- exceedance_rel_thresh <-
-      intensity_mean_abs <- intensity_max_abs <- intensity_cum_abs <- ts.y <- NULL ###
+    exceedances <- t_series %>%
+      dplyr::mutate(row_index = 1:nrow(t_series),
+                    exceedance_rel_thresh = ts_y - ts_thresh) %>%
+      dplyr::filter(stats::complete.cases(exceedance_no)) %>%
+      dplyr::group_by(exceedance_no) %>%
+      dplyr::summarise(index_start = min(row_index),
+                       index_stop = max(row_index),
+                       duration = n(),
+                       date_start = min(ts_x),
+                       date_stop = max(ts_x),
+                       date_peak = ts_x[exceedance_rel_thresh == max(exceedance_rel_thresh)][1],
+                       intensity_mean = mean(exceedance_rel_thresh),
+                       intensity_max = max(exceedance_rel_thresh),
+                       intensity_var = sqrt(stats::var(exceedance_rel_thresh)),
+                       intensity_cumulative = max(cumsum(exceedance_rel_thresh)),
+                       intensity_mean_abs = mean(ts_y),
+                       intensity_max_abs = max(ts_y),
+                       intensity_var_abs = sqrt(stats::var(ts_y)),
+                       intensity_cum_abs = max(cumsum(ts_y)))
 
-    exceedances <- cbind(exceedances,
-                         exceedances_list %>%
-                           dplyr::bind_rows(.id = "exceedance_no") %>%
-                           dplyr::group_by(exceedance_no) %>%
-                           dplyr::summarise(date_peak = ts.x[ts.y == max(ts.y)][1],
-                                            intensity_mean = mean(exceedance_rel_thresh),
-                                            intensity_max = max(exceedance_rel_thresh),
-                                            intensity_var = sqrt(stats::var(exceedance_rel_thresh)),
-                                            intensity_cumulative = max(cumsum(exceedance_rel_thresh)),
-                                            intensity_mean_abs = mean(ts.y),
-                                            intensity_max_abs = max(ts.y),
-                                            intensity_var_abs = sqrt(stats::var(ts.y)),
-                                            intensity_cum_abs = max(cumsum(ts.y))) %>%
-                           dplyr::arrange(as.numeric(exceedance_no)) %>%
-                           dplyr::select(-exceedance_no))
 
-    exceedance_rel_thresh <- t_series$ts.y - t_series$thresh
+    exceedance_rel_thresh <- t_series$ts_y - t_series$ts_thresh
     A <- exceedance_rel_thresh[exceedances$index_start]
-    B <- t_series$ts.y[exceedances$index_start - 1]
-    C <- t_series$thresh[exceedances$index_start - 1]
+    B <- t_series$ts_y[exceedances$index_start - 1]
+    C <- t_series$ts_thresh[exceedances$index_start - 1]
     if (length(B) + 1 == length(A)) {
       B <- c(NA, B)
       C <- c(NA, C)
@@ -299,8 +248,8 @@ exceedance <-
     )
 
     D <- exceedance_rel_thresh[exceedances$index_stop]
-    E <- t_series$ts.y[exceedances$index_stop + 1]
-    F <- t_series$thresh[exceedances$index_stop + 1]
+    E <- t_series$ts_y[exceedances$index_stop + 1]
+    F <- t_series$ts_thresh[exceedances$index_stop + 1]
     exceedance_rel_thresh_end <- 0.5 * (D + E - F)
 
     exceedances$rate_decline <- ifelse(
@@ -320,13 +269,14 @@ exceedance <-
         intensity_cum_abs = -intensity_cum_abs
       )
       t_series <- t_series %>% dplyr::mutate(
-        ts.y = -ts.y,
-        thresh = -thresh
+        ts_y = -ts_y,
+        ts_thresh = -ts_thresh
       )
     }
 
-    names(t_series)[1] <- paste(substitute(x))
-    names(t_series)[2] <- paste(substitute(y))
+    names(t_series)[names(t_series) == "ts_x"] <- paste(substitute(x))
+    names(t_series)[names(t_series) == "ts_y"] <- paste(substitute(y))
+    names(t_series)[names(t_series) == "ts_thresh"] <- "thresh"
 
     list(threshold = tibble::as_tibble(t_series),
          exceedance = tibble::as_tibble(exceedances))

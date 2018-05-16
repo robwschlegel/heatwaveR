@@ -1,11 +1,12 @@
 #' Calculate the categories of events.
 #'
-#' Calculates the categories of a series of events as produced by \code{\link{detect}} in
+#' Calculates the categories of a series of events as produced by \code{\link{detect_event}} in
 #' accordance with the naming scheme proposed in Hobday et al. (in review).
 #'
 #' @importFrom dplyr n %>%
 #'
-#' @param data The function receives the full (list) output from the \code{\link{detect}} function.
+#' @param data The function receives the full (list) output from the
+#' \code{\link{detect_event}} function.
 #' @param y This is a column containing the measurement variable. If the column
 #' name differs from the default (i.e. \code{temp}), specify the name here.
 #' @param S This argument informs the function if the data were collected in the
@@ -28,13 +29,14 @@
 #'
 #' @return The function will return a tibble with results similar to those seen in
 #' Table 2 of Hobday et al. (in review). This provides the information necessary to
-#' appraise the extent of the events in the output of \code{\link{detect}} based on the
+#' appraise the extent of the events in the output of \code{\link{detect_event}} based on the
 #' category ranking scale. The category thresholds are calculated based on the difference
-#' between the seasonal climatology and threshold climatology produced by \code{\link{detect}}.
-#' The four category levels are then the difference multiplied by the category level.
+#' between the seasonal climatology and threshold climatology produced by
+#' \code{\link{detect_event}}. The four category levels are then the difference
+#' multiplied by the category level.
 #'
 #' The definitions for the output columns are as follows:
-#'   \item{event_no}{The number of the event as determined by \code{\link{detect}}
+#'   \item{event_no}{The number of the event as determined by \code{\link{detect_event}}
 #'   for reference between the outputs.}
 #'   \item{event_name}{The name of the event. Generated from the \code{\link{name}}
 #'   value provided and the year of the \code{peak_date} (see following) of

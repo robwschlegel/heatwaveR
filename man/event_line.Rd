@@ -8,7 +8,8 @@ event_line(data, x = t, y = temp, min_duration = 5, spread = 150,
   metric = "intensity_cumulative", start_date, end_date, category = FALSE)
 }
 \arguments{
-\item{data}{The function receives the full (list) output from the \code{\link{detect}} function.}
+\item{data}{The function receives the full (list) output from the
+\code{\link{detect_event}} function.}
 
 \item{x}{This column is expected to contain a vector of dates as per the
 specification of \code{make_whole}. If a column headed \code{t} is present in
@@ -27,10 +28,11 @@ qualify as a heatwave or cold-spell.}
 
 \item{metric}{This tells the function how to choose the event that should be highlighted as the
 'greatest' of the events in the chosen period. One may choose from the following options:
-\code{intensity_mean}, \code{intensity_max}, \code{intensity_var},\code{intensity_cumulative}, \code{int_mean_rel_thresh},
-\code{int_max_rel_thresh}, \code{int_var_rel_thresh},\code{int_cum_rel_thresh}, \code{int_mean_abs},
-\code{int_max_abs}, \code{int_var_abs}, \code{int_cum_abs}, \code{int_mean_norm}, \code{int_max_norm},
-\code{rate_onset}, \code{rate_decline}. Partial name matching is currently not supported so please
+\code{intensity_mean}, \code{intensity_max}, \code{intensity_var},\code{intensity_cumulative},
+\code{int_mean_rel_thresh}, \code{int_max_rel_thresh}, \code{int_var_rel_thresh},
+\code{int_cum_rel_thresh}, \code{int_mean_abs}, \code{int_max_abs}, \code{int_var_abs},
+\code{int_cum_abs}, \code{int_mean_norm}, \code{int_max_norm}, \code{rate_onset},
+\code{rate_decline}. Partial name matching is currently not supported so please
 specify the metric name precisely. The default is \code{intensity_cumulative}.}
 
 \item{start_date}{The start date of a period of time within which the largest
@@ -38,7 +40,7 @@ event (as per \code{metric}) is retrieved and plotted. This may not necessarily
 correspond to the biggest event of the specified metric within the entire
 data set. To plot the biggest event within the whole time series, make sure
 \code{start_date} and \code{end_date} straddle this event, or simply specify
-the start and end dates of the full time series given to \code{\link{detect}}.}
+the start and end dates of the full time series given to \code{\link{detect_event}}.}
 
 \item{end_date}{The end date of a period of time within which the largest
 event (as per \code{metric}) is retrieved and plotted. See \code{start_date}
@@ -54,7 +56,7 @@ seen in Figure 3 of Hobday et al. (in review), will be produced. If \code{catego
 The function will return a line plot indicating the climatology,
 threshold and temperature, with the hot or cold events that meet the
 specifications of Hobday et al. (2016) shaded in as appropriate. The plotting
-of hot or cold events depends on which option is specified in \code{\link{detect}}.
+of hot or cold events depends on which option is specified in \code{\link{detect_event}}.
 The top event detect during the selected time period will be visible in a
 brighter colour. This function differs in use from \code{\link{geom_flame}}
 in that it creates a stand alone figure. The benefit of this being
@@ -65,9 +67,8 @@ Creates a graph of warm or cold events as per the second row of Figure 3 in
 Hobday et al. (2016).
 }
 \examples{
-ts_dat <- make_whole(sst_WA)
-res <- detect(ts_dat, climatology_start = "1983-01-01",
-              climatology_end = "2012-12-31")
+ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+res <- detect_event(ts)
 
 \dontrun{
 event_line(res, spread = 100, metric = "intensity_cumulative",

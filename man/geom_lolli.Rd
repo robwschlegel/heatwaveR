@@ -82,10 +82,8 @@ discrete. ggplot2 will attempt to do this automatically.
 }
 
 \examples{
-ts_dat <- make_whole(sst_NW_Atl)
-# with defaults:
-res <- detect(ts_dat, climatology_start = "1983-01-01",
-              climatology_end = "2012-12-31")
+ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+res <- detect_event(ts)
 mhw <- res$event
 
 \dontrun{

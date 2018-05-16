@@ -32,7 +32,6 @@ reference:
   - '`make_whole`'
   - '`ts2clm`'
   - '`detect_event`'
-  - '`detect`'
   - '`block_average`'
   - '`category`'
   - '`exceedance`'
