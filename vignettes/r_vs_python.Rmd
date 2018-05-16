@@ -45,7 +45,7 @@ The basic functionality for calculating marine heatwaves (MHWs) in R may be foun
 
 With the necessary packages installed, we activate `heatwaveR` with the following line of code.
 
-```{r r-init}
+```{r r-init, eval = FALSE}
 library(heatwaveR)
 ```
 
@@ -53,7 +53,7 @@ library(heatwaveR)
 
 With everything downloaded and ready for us to use we may now calculate some events. The `heatwaveR` package has three built in time series (`sst_WA`, `sst_Med`, `sst_NW_Atl`) that we may use to more easily demonstrate how the code works. The general pipeline in `R` for calculating events is first to create a climatology from a chosen time series using `ts2clm()`, and then to feed that ooutput into `detect_event()`, as seen below.
 
-```{r}
+```{r, eval = FALSE}
 # First we create a default climatology as outlined in Hobday et al. (2016)
 ts_clim <- ts2clm(data = sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
 
@@ -64,7 +64,7 @@ res <- detect_event(ts_clim)
 
 ### Python code
 
-```{r python-setup, include = FALSE}
+```{r python-setup, include = FALSE, eval = FALSE}
 library(reticulate)
 use_condaenv("ocean_py")
 py_config()
