@@ -88,11 +88,13 @@ plt1 <- daily.smth %>%
   ggplot(aes(x = doy, y = temp)) +
   geom_point(shape = "+", colour = "red", alpha = 0.6, size = 1) +
   geom_line(aes(y = smoothed, group = index), size = 0.6, colour = "black") +
-  facet_wrap(~index)
-ggsave(plt1, file = "smooth_mat_1.png", width = 12, height = 9, dpi = 120)
+  facet_wrap(~index) +
+  labs(x = "Julian day", y = "Temperature (°C)", title = "SACTN: daily climatology",
+       subtitle = "Fourier series: 7 basis functions") +
+ggsave(plt1, file = "SACTN_Fourier7.png", width = 12, height = 9, dpi = 120)
 ```
 
-![**Figure 1.** Smooth climatologies derived from a Fourier analysis fitted to coastal seawater time series along the South African coast. Climatologies were produced only for sites with at least 30 year long time series.](smooth_mat_1.png){width=100%}
+![**Figure 1.** Smooth climatologies derived from a Fourier analysis fitted to coastal seawater time series along the South African coast. Climatologies were produced only for sites with at least 30 year long time series.](SACTN_Fourier7.png){width=100%}
 
 ## Time series length
 
@@ -144,11 +146,13 @@ sst.repl <- purrr::rerun(100, sstRepl(sst)) %>%
 ```{r, echo=TRUE}
 plt2 <- ggplot(data = sst.repl, aes(x = doy, y = temp)) +
   geom_line(aes(group = rep), alpha = 0.3, size = 0.1) +
-  facet_wrap(~ts.len, nrow = 3)
-ggsave(plt2, file = "rand_mat_raw_1.png", width = 12, height = 6, dpi = 120)
+  facet_wrap(~ts.len, nrow = 3) +
+  labs(x = "Julian day", y = "SST (°C)", title = "Raw daily climatology",
+       subtitle = "100 daily climatological means") +
+ggsave(plt2, file = "WA_100_simul.png", width = 12, height = 6, dpi = 120)
 ```
 
-![**Figure 2.** Bootstrapped reconstructions of daily climatologies based on mean SSTs derived from time series fo 10, 20 and 30 years long. Each of 100 realisations are plotted as individual black traces on the three panels.](rand_mat_raw_1.png){width=100%}
+![**Figure 2.** Bootstrapped reconstructions of daily climatologies based on mean SSTs derived from time series fo 10, 20 and 30 years long. Each of 100 realisations are plotted as individual black traces on the three panels.](WA_100_simul.png){width=100%}
 
 ```{r, echo=TRUE}
 sst.repl.nest <- sst.repl %>% 
@@ -163,8 +167,10 @@ sst.repl.smth <- sst.repl.nest %>%
 plt3 <- ggplot(data = sst.repl.smth, aes(x = doy, y = smoothed)) +
   geom_point(aes(y = temp), shape = "+", colour = "red", alpha = 0.1, size = 1) +
   geom_line(aes(group = rep), alpha = 0.3, size = 0.1) +
-  facet_wrap(~ts.len, nrow = 3)
-ggsave(plt3, file = "rand_mat_smoothed_1.png", width = 12, height = 6, dpi = 120)
+  facet_wrap(~ts.len, nrow = 3) +
+  labs(x = "Julian day", y = "SST (°C)", title = "WA SST: daily climatology",
+       subtitle = "Fourier series: 7 basis functions") +
+ggsave(plt3, file = "WA_Fourier7.png", width = 12, height = 6, dpi = 120)
 ```
 
 ![**Figure 3.** Bootstrapped reconstructions of daily climatologies based on mean SSTs derived from time series of 10, 20 and 30 years long. Red lines are the smoothed climatologies obtained from a Fourier analysis.](rand_mat_smoothed_1.png){width=100%}
@@ -233,7 +239,9 @@ plt4 <- sst.repl2.smth %>%
   ggplot(aes(x = doy, y = temp)) +
   # geom_point(shape = "+", colour = "red", alpha = 0.1, size = 1) +
   geom_line(data = filter(sst.repl2.smth, t <= "1984-01-01"), aes(, y = seas, group = rep), alpha = 0.3, size = 0.1) +
-  facet_wrap(~id, nrow = 3)
+  facet_wrap(~id, nrow = 3) +
+  labs(x = "Julian day", y = "SST (°C)", title = "WA SST: daily climatology",
+       subtitle = "MHW climatology, default settings") +
 ggsave(plt4, file = "rand_mat_smoothed_2.png", width = 12, height = 6, dpi = 120)
 ```
 
