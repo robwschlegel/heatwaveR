@@ -21,12 +21,14 @@
 #' @param spread The number of days leading and trailing the largest event
 #' (as per \code{metric}) detected within the time period specified by
 #' \code{start_date} and \code{end_date}. The default is 150 days.
-#' @param metric This tells the function how to choose the event that should be highlighted as the
-#' 'greatest' of the events in the chosen period. One may choose from the following options:
-#' \code{intensity_mean}, \code{intensity_max}, \code{intensity_var},\code{intensity_cumulative},
-#' \code{int_mean_rel_thresh}, \code{int_max_rel_thresh}, \code{int_var_rel_thresh},
-#' \code{int_cum_rel_thresh}, \code{int_mean_abs}, \code{int_max_abs}, \code{int_var_abs},
-#' \code{int_cum_abs}, \code{int_mean_norm}, \code{int_max_norm}, \code{rate_onset},
+#' @param metric This tells the function how to choose the event that should be
+#' highlighted as the 'greatest' of the events in the chosen period. One may
+#' choose from the following options: \code{intensity_mean}, \code{intensity_max},
+#' \code{intensity_var},\code{intensity_cumulative}, \code{intensity_mean_relThresh},
+#' \code{intensity_max_relThresh}, \code{intensity_var_relThresh},
+#' \code{intensity_cumulative_relThresh}, \code{intensity_mean_abs},
+#' \code{intensity_max_abs}, \code{intensity_var_abs}, \code{intensity_cumulative_abs},
+#' \code{intensity_mean_norm}, \code{intensity_max_norm}, \code{rate_onset},
 #' \code{rate_decline}. Partial name matching is currently not supported so please
 #' specify the metric name precisely. The default is \code{intensity_cumulative}.
 #' @param start_date The start date of a period of time within which the largest
@@ -84,7 +86,7 @@ event_line <- function(data,
 
   date_stop <- date_start <- duration <-  temp <-  NULL
 
-  if (!(is.list(data))) stop("Please ensure you are running this function on the output of 'heatwaveR::detect()'")
+  if (!(is.list(data))) stop("Please ensure you are running this function on the output of 'heatwaveR::detect_event()'")
 
   ts.x <- eval(substitute(x), data$clim)
   data$clim$ts.x <- ts.x
@@ -96,9 +98,9 @@ event_line <- function(data,
 
   if (nrow(event) == 0) stop("No events detected!\nConsider changing the 'start_date' or 'end_date' values.")
 
-  if (!(metric %in% c("intensity_mean", "intensity_max", "intensity_var", "intensity_cumulative", "int_mean_rel_thresh", "int_max_rel_thresh",
-                      "int_var_rel_thresh","int_cum_rel_thresh", "int_mean_abs", "int_max_abs", "int_var_abs",
-                      "int_cum_abs", "int_mean_norm", "int_max_norm", "rate_onset", "rate_decline"))) {
+  if (!(metric %in% c("intensity_mean", "intensity_max", "intensity_var", "intensity_cumulative", "intensity_mean_relThresh", "intensity_max_relThresh",
+                      "intensity_var_relThresh","intensity_cumulative_relThresh", "intensity_mean_abs", "intensity_max_abs", "intensity_var_abs",
+                      "intensity_cumulative_abs", "intensity_mean_norm", "intensity_max_norm", "rate_onset", "rate_decline"))) {
     stop("Please ensure you have spelled the desired metric correctly.")
   }
 
@@ -249,21 +251,22 @@ event_line <- function(data,
 #' Visualise a timeline of several possible event metrics as 'lollipop' graphs.
 #'
 #' @importFrom ggplot2 aes_string geom_segment geom_point scale_x_continuous
-#' element_rect element_line labs
+#' element_rect element_line labs scale_y_continuous
 #'
 #' @param data Output from the \code{\link{detect_event}} function.
-#' @param metric One of \code{intensity_mean}, \code{intensity_max},
-#' \code{intensity_cumulative} and \code{duration}.
-#'  Default is \code{intensity_cumulative}.
-#' @param event_count The number of top events to highlight. Default is 3.
 #' @param xaxis One of \code{event_no}, \code{date_start} or \code{date_peak}.
 #' Default is \code{date_start}.
+#' @param metric One of \code{intensity_mean}, \code{intensity_max},
+#' \code{intensity_cumulative} and \code{duration}.
+#'  Default is \code{intensity_max}.
+#' @param event_count The number of top events to highlight, as determined by the
+#' value given to \code{metric}. Default is 3.
 #'
 #' @return The function will return a graph of the intensity of the selected
-#' \code{metric} along the y-axis versus the choseb \code{xaxis}.
+#' \code{metric} along the y-axis and the chosen \code{xaxis} value.
 #' The number of top events as per \code{event_count} will be highlighted
 #' in a brighter colour. This function differs in use from \code{\link{geom_lolli}}
-#' in that it creates a stand alone figure. The benefit of this being
+#' in that it creates a stand-alone figure. The benefit of this being
 #' that one must not have any prior knowledge of \code{ggplot2} to create the figure.
 #'
 #' @author Albertus J. Smit and Robert W. Schlegel
@@ -275,16 +278,19 @@ event_line <- function(data,
 #' res <- detect_event(ts)
 #'
 #' \dontrun{
-#' lolli_plot(res, metric = "int_cum", event_count = 3, xaxis = "date_peak")
+#' # The default output
+#' lolli_plot(res)
+#'
+#' # Change the parameters and highlight no events
 #' }
 lolli_plot <- function(data,
+                       xaxis = "date_peak",
                        metric = "intensity_max",
-                       event_count = 3,
-                       xaxis = "date_start") {
+                       event_count = 3) {
 
   if (!(is.list(data))) stop("Please ensure you are running this function on the output of 'heatwaveR::detect()'")
 
-  if (!(metric %in% c("intensity_mean", "intensity_max", "int_cum", "duration"))) {
+  if (!(metric %in% c("intensity_mean", "intensity_max", "intensity_cumulative", "duration"))) {
     stop("Please ensure you have spelled the desired metric correctly.")
   }
 
@@ -297,7 +303,11 @@ lolli_plot <- function(data,
 
   if (nrow(event) == 0) stop("No events detected!")
 
-  if (event[1, 1] < 0) {
+  y_top <- as.numeric(event[which(abs(event[ ,1]) == max(abs(event[ ,1]))), 1])*1.05
+  if (y_top >= 0) y_limits <- c(0, y_top)
+  if (y_top < 0) y_limits <- c(y_top, 0)
+
+  if (data$event$intensity_cumulative[1] < 0) {
     lolli_col <- c("steelblue3", "navy")
   } else {
     lolli_col <- c("salmon", "red")
@@ -307,16 +317,18 @@ lolli_plot <- function(data,
   if (xaxis == "event_no") xlabel <- "Event number"
   if (xaxis == "date_start") xlabel <- "Start date"
   if (xaxis == "date_peak") xlabel <- "Peak date"
-  # yaxis = "intensity_max" yaxis = "intensity_mean" yaxis = "int_cum" yaxis = "duration"
+  # metric = "intensity_max" metric = "intensity_mean" metric = "intensity_cumulative" metric = "duration"
   if (metric == "intensity_max") ylabel <- expression(paste("Maximum intensity [", degree, "C]"))
   if (metric == "intensity_mean") ylabel <- expression(paste("Mean intensity [", degree, "C]"))
-  if (metric == "int_cum") ylabel <- expression(paste("Cumulative intensity [", degree, "C x days]"))
+  if (metric == "intensity_cumulative") ylabel <- expression(paste("Cumulative intensity [", degree, "C x days]"))
   if (metric == "duration") ylabel <- "Duration [days]"
   if (!exists("ylabel")) ylabel <- metric
 
   lolli <- ggplot(data = event, aes_string(x = xaxis, y = metric)) +
-    geom_lolli(colour = lolli_col[1], colour.n = lolli_col[2], fill = "grey70", n = event_count) +
+    geom_lolli(colour = lolli_col[1], colour_n = lolli_col[2], fill = "grey70", n = event_count) +
+    # geom_blank(x = event$metric[abs(event$metric) == abs(event$metric)]*1.05) +
     labs(x = xlabel, y = ylabel) +
+    scale_y_continuous(expand = c(0, 0), limits = y_limits) +
     theme(
       plot.background = element_blank(),
       panel.background = element_rect(fill = "white"),
@@ -328,10 +340,7 @@ lolli_plot <- function(data,
       axis.text.y = element_text(margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
       axis.ticks.length = unit(-0.25, "cm")
     )
-  if (event_count < 1) {
-    lolli <- lolli +
-      geom_lolli(colour = lolli_col[1], colour.n = NA, fill = "grey70")
-  }
+
   if (xaxis == "event_no") {
     lolli <- lolli +
       scale_x_continuous(breaks = seq(from = 0, to = nrow(data$event), by = 5))

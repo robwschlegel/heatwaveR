@@ -56,21 +56,21 @@ test_that("lolli_plot() xaxis must be spelled correctly", {
 })
 
 test_that("lolli_plot() may create MCS output", {
-  res <- detect_event(data = ts2clm(sst_Med,
+  res <- detect_event(data = ts2clm(sst_Med, pctile = 10,
                 climatologyPeriod = c("1983-01-01", "2012-12-31")), coldSpells = TRUE)
   tp <- lolli_plot(res)
   expect_is(tp, "ggplot")
 })
 
 test_that("lolli_plot() correctly highlights no events when told not to", {
-  res <- detect_event(data = ts2clm(sst_Med,
+  res <- detect_event(data = ts2clm(sst_Med, pctile = 10,
                 climatologyPeriod = c("1983-01-01", "2012-12-31")), coldSpells = TRUE)
   tp <- lolli_plot(res, event_count = 0)
   expect_is(tp, "ggplot")
 })
 
 test_that("lolli_plot() correctly changes x axis when xaxis = 'event_no'", {
-  res <- detect_event(data = ts2clm(sst_Med,
+  res <- detect_event(data = ts2clm(sst_Med, pctile = 10,
                 climatologyPeriod = c("1983-01-01", "2012-12-31")), coldSpells = TRUE)
   tp <- lolli_plot(res, xaxis = "event_no")
   expect_is(tp, "ggplot")

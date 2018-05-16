@@ -2,6 +2,8 @@
 
 * Minor fix to testhat
 * codecov up to 100%
+* Fix to `geom_lolli()` n argument
+* Fix to `lolli_plot()` y-axis range
 
 # heatwaveR 0.2.3.9000 (2018-05-16)
 

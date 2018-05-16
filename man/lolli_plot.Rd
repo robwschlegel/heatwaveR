@@ -4,27 +4,28 @@
 \alias{lolli_plot}
 \title{Create a timeline of selected event metrics as 'lollipops'.}
 \usage{
-lolli_plot(data, metric = "intensity_max", event_count = 3,
-  xaxis = "date_start")
+lolli_plot(data, xaxis = "date_peak", metric = "intensity_max",
+  event_count = 3)
 }
 \arguments{
 \item{data}{Output from the \code{\link{detect_event}} function.}
 
-\item{metric}{One of \code{intensity_mean}, \code{intensity_max},
-\code{intensity_cumulative} and \code{duration}.
- Default is \code{intensity_cumulative}.}
-
-\item{event_count}{The number of top events to highlight. Default is 3.}
-
 \item{xaxis}{One of \code{event_no}, \code{date_start} or \code{date_peak}.
 Default is \code{date_start}.}
+
+\item{metric}{One of \code{intensity_mean}, \code{intensity_max},
+\code{intensity_cumulative} and \code{duration}.
+ Default is \code{intensity_max}.}
+
+\item{event_count}{The number of top events to highlight, as determined by the
+value given to \code{metric}. Default is 3.}
 }
 \value{
 The function will return a graph of the intensity of the selected
-\code{metric} along the y-axis versus the choseb \code{xaxis}.
+\code{metric} along the y-axis and the chosen \code{xaxis} value.
 The number of top events as per \code{event_count} will be highlighted
 in a brighter colour. This function differs in use from \code{\link{geom_lolli}}
-in that it creates a stand alone figure. The benefit of this being
+in that it creates a stand-alone figure. The benefit of this being
 that one must not have any prior knowledge of \code{ggplot2} to create the figure.
 }
 \description{
@@ -35,7 +36,10 @@ ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
 res <- detect_event(ts)
 
 \dontrun{
-lolli_plot(res, metric = "int_cum", event_count = 3, xaxis = "date_peak")
+# The default output
+lolli_plot(res)
+
+# Change the parameters and highlight no events
 }
 }
 \author{

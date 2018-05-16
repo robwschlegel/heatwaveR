@@ -26,12 +26,14 @@ qualify as a heatwave or cold-spell.}
 (as per \code{metric}) detected within the time period specified by
 \code{start_date} and \code{end_date}. The default is 150 days.}
 
-\item{metric}{This tells the function how to choose the event that should be highlighted as the
-'greatest' of the events in the chosen period. One may choose from the following options:
-\code{intensity_mean}, \code{intensity_max}, \code{intensity_var},\code{intensity_cumulative},
-\code{int_mean_rel_thresh}, \code{int_max_rel_thresh}, \code{int_var_rel_thresh},
-\code{int_cum_rel_thresh}, \code{int_mean_abs}, \code{int_max_abs}, \code{int_var_abs},
-\code{int_cum_abs}, \code{int_mean_norm}, \code{int_max_norm}, \code{rate_onset},
+\item{metric}{This tells the function how to choose the event that should be
+highlighted as the 'greatest' of the events in the chosen period. One may
+choose from the following options: \code{intensity_mean}, \code{intensity_max},
+\code{intensity_var},\code{intensity_cumulative}, \code{intensity_mean_relThresh},
+\code{intensity_max_relThresh}, \code{intensity_var_relThresh},
+\code{intensity_cumulative_relThresh}, \code{intensity_mean_abs},
+\code{intensity_max_abs}, \code{intensity_var_abs}, \code{intensity_cumulative_abs},
+\code{intensity_mean_norm}, \code{intensity_max_norm}, \code{rate_onset},
 \code{rate_decline}. Partial name matching is currently not supported so please
 specify the metric name precisely. The default is \code{intensity_cumulative}.}
 

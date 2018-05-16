@@ -4,7 +4,7 @@
 \alias{geom_lolli}
 \title{Visualise a timeline of several event metrics as 'lollipops'.}
 \usage{
-geom_lolli(mapping = NULL, data = NULL, ..., n = 1, na.rm = FALSE,
+geom_lolli(mapping = NULL, data = NULL, ..., n = 0, na.rm = FALSE,
   show.legend = NA, inherit.aes = TRUE)
 }
 \arguments{
@@ -14,24 +14,23 @@ default mapping at the top level of the plot. You must supply mapping if
 there is no plot mapping.}
 
 \item{data}{The data to be displayed in this layer. There are three options:
-
-If NULL, the default, the data is inherited from the plot data as specified
+\enumerate{
+\item If NULL, the default, the data is inherited from the plot data as specified
 in the call to \code{ggplot()}.
-
-A data.frame, or other object, will override the plot data. All objects will
+\item A data.frame, or other object, will override the plot data. All objects will
 be fortified to produce a data frame. See \code{fortify()} for which variables will
 be created.
-
-A function will be called with a single argument, the plot data. The return
-value must be a \code{data.frame}, and will be used as the layer data.}
+\item A function will be called with a single argument, the plot data. The return
+value must be a \code{data.frame}, and will be used as the layer data.
+}}
 
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
 to the paired geom/stat.}
 
-\item{n}{The number of top events to highlight. Default is 1. This parameter
-has no effect if \code{colour.n} is set to \code{NA} outside of \code{aes()}.}
+\item{n}{The number of top events to highlight as based on the value provided
+to \code{aes(y)}. Default is 0.}
 
 \item{na.rm}{If \code{FALSE} (the default), removes missing values with
 a warning. If \code{TRUE} silently removes missing values.}
@@ -50,7 +49,7 @@ specification, e.g. \code{borders()}.}
 The function will return a graph of the intensity of the selected
 metric along the *y*-axis versus a time variable along the *x*-axis.
 The number of top events (\code{n}) from the chosen metric may be highlighted
-in a brighter colour with the aesthetic value \code{colour.n}.
+in a brighter colour with the aesthetic value \code{colour_n}.
 This function differs in use from \code{\link{lolli_plot}}
 in that it must be created as a ggplot2 'geom' object. The benefit of this being
 that one may add additional information layer by layer to the figure as
@@ -70,14 +69,13 @@ are in bold):
   \item \code{shape}
   \item \code{stroke}
   \item \code{fill}
-  \item \code{colour.n}: While this value may be used as an aesthetic, it also
-works as a parameter for this function. If one chooses not to highlight
-any events, use \code{colour.n = NA} outside of \code{aes()}. One may
-also provide a non-static value to \code{colour.na} but remember that
-one may not provide multiple continuous or discrete scales to a single
-ggplot2 object. Therefore, if one provides a continuous value to
-\code{aes(colour)}, the values supplied to \code{colour.n} must be
-discrete. ggplot2 will attempt to do this automatically.
+  \item \code{colour_n} While this value may be used as an aesthetic, it works
+  better as a parameter for this function because it is set to use discrete values.
+  One may provide continuous values to \code{colour_n} but remember that one may
+  not provide multiple continuous or discrete scales to a single ggplot2 object.
+  Therefore, if one provides a continuous value to \code{aes(colour)}, the values
+  supplied to \code{colour_n} must be discrete. \code{ggplot2} will attempt to
+  do this automatically.
 }
 }
 
@@ -91,17 +89,24 @@ library(ggplot2)
 
 # Height of lollis represent event durations and their colours
 # are mapped to the events' cumulative intensity:
-ggplot(mhw, aes(x = mhw$date_peak, y = mhw$duration)) +
-  geom_lolli(n = 0, shape = 20, aes(colour = mhw$int_cum), colour.n = NA) +
+ggplot(mhw, aes(x = date_peak, y = duration)) +
+  geom_lolli(aes(colour = intensity_cumulative)) +
   scale_color_distiller(palette = "Spectral", name = "Cumulative \\nintensity") +
   xlab("Date") + ylab("Event duration [days]")
 
 # Height of lollis represent event durations and the top three (longest)
 # lollis are highlighted in red:
-ggplot(mhw, aes(x = mhw$date_peak, y = mhw$duration)) +
-  geom_lolli(n = 3, shape = 20, colour.n = "red") +
-  scale_color_distiller(palette = "Spectral", name = "Cumulative \\nintensity") +
-  xlab("Date") + ylab("Event duration [days]")
+ggplot(mhw, aes(x = date_peak, y = duration)) +
+  geom_lolli(n = 3, colour_n = "red") +
+  scale_color_distiller(palette = "Spectral") +
+  xlab("Peak date") + ylab("Event duration [days]")
+
+# Because this is a proper geom, any number of ill-advised things
+# may be done with it:
+ggplot(mhw, aes(x = event_no, y = intensity_max)) +
+  geom_lolli(shape = 5, aes(colour = rate_onset), linetype = "dotted") +
+  scale_color_distiller(palette = "RdYlGn", name = "Rate \\nonset") +
+  xlab("Event number") + ylab("Max intensity [degree C]")
 }
 }
 \seealso{

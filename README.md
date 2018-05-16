@@ -5,9 +5,9 @@ heatwaveR <img src="logo.png" width=200 align="right" />
 
 The **`heatwaveR`** package is a project-wide update to the [**`RmarineHeatWaves`**](https://github.com/ajsmit/RmarineHeatWaves) package, which is itself a translation of the original [Python code](https://github.com/ecjoliver/marineHeatWaves) written by Eric C. J. Oliver.
 
-The **`heatwaveR`** R package contains the original functions from the **`RmarineHeatWaves`** package that calculate and display marine heatwaves (MHWs) according to the definition of Hobday et al. (2016) as well as calculating and visualising marine cold-spells (MCSs) as first introduced in Schlegel et al. (2017).
+The **`heatwaveR`** R package contains the original functions from the **`RmarineHeatWaves`** package that calculate and display marine heatwaves (MHWs) according to the definition of Hobday et al. (2016) as well as calculating and visualising marine cold-spells (MCSs) as first introduced in Schlegel et al. (2017a).
 
-A new package was developed and released in order to better accommodate the inclusion of the definitions of atmospheric heatwaves in addition to MHWs. Additionally, **`heatwaveR`** also provides the first implementation of a definition for a ‘compound heatwave’. There are currently multiple different definitions for this type of event and each of which has an algorithm provided for it in the output of the `detect()` function.
+A new package was developed and released in order to better accommodate the inclusion of the definitions of atmospheric heatwaves in addition to MHWs. Additionally, **`heatwaveR`** also provides the first implementation of a definition for a ‘compound heatwave’. There are currently multiple different definitions for this type of event and each of which has an algorithm provided for it in the output of the `detect_event()` function.
 
 This package is not yet available on CRAN, but may be installed from GitHub by issuing the following command:
 
@@ -29,20 +29,28 @@ The functions
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>detect()</code></td>
-<td>The main function which detects the events as per the definition of Hobday et al. (2016).</td>
-</tr>
-<tr class="even">
 <td><code>make_whole()</code></td>
 <td>Constructs a continuous, uninterrupted time series of temperatures.</td>
 </tr>
+<tr class="even">
+<td><code>ts2clm()</code></td>
+<td>Constructs seasonal and threshold climatologies as per the definition of Hobday et al. (2016).</td>
+</tr>
 <tr class="odd">
+<td><code>detect_event()</code></td>
+<td>The main function which detects the events as per the definition of Hobday et al. (2016).</td>
+</tr>
+<tr class="even">
 <td><code>block_average()</code></td>
 <td>Calculates annual means for event metrics.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>category()</code></td>
-<td>Applies event categories to the output of <code>detect()</code> based on Hobday et al. (in review).</td>
+<td>Applies event categories to the output of <code>detect_event()</code> based on Hobday et al. (in review).</td>
+</tr>
+<tr class="even">
+<td><code>exceedance()</code></td>
+<td>A function similar to <code>detect_event()</code> but that detects consecutive days above/below a given static threshold.</td>
 </tr>
 <tr class="odd">
 <td><code>event_line()</code></td>
@@ -53,14 +61,10 @@ The functions
 <td>Creates a timeline of selected event metrics.</td>
 </tr>
 <tr class="odd">
-<td><code>exceedance()</code></td>
-<td>A function similar to <code>detect()</code> but that detects consecutive days above/below a given static threshold.</td>
-</tr>
-<tr class="even">
 <td><code>geom_flame()</code></td>
 <td>Creates flame polygons of heatwaves or cold-spells.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>geom_lolli()</code></td>
 <td>Creates a lolliplot timeline of selected event metric.</td>
 </tr>
@@ -158,7 +162,7 @@ Note that `rate_onset` and `rate_decline` will return `NA` when the event begins
 Examples of detection and graphing
 ----------------------------------
 
-The `detect()` function is the package’s core function. Here is the `detect()` function applied to the Western Australian test data, which are also discussed by Hobday et al. (2016):
+The `detect_event()` function is the package’s core function. Here is the `detect_event()` function applied to the Western Australian test data, which are also discussed by Hobday et al. (2016):
 
 ``` r
 library(heatwaveR); library(dplyr); library(ggplot2)
@@ -194,7 +198,7 @@ lolli_plot(mhw)
 
 ![](docs/fig-example2-1.png)
 
-The `event_line()` and `lolli_plot()` functions were designed to work directly on one of the dataframes in the list returned by `detect()`. If more control over the figures is required, it may be useful to create them in **`ggplot2`** by stacking `geoms`. We specifically created two new **`ggplot2`** `geoms` to reproduce the functionality of `event_line()` and `lolli_plot()`. These functions are more general in their functionality and can be used outside of the **`heatwaveR`** package too. To apply them to MHWs and MCSs first requires that we access the `clim` or `event` dataframes within the list that is produced by `detect()`. Here is how:
+The `event_line()` and `lolli_plot()` functions were designed to work directly on one of the dataframes in the list returned by `detect_event()`. If more control over the figures is required, it may be useful to create them in **`ggplot2`** by stacking `geoms`. We specifically created two new **`ggplot2`** `geoms` to reproduce the functionality of `event_line()` and `lolli_plot()`. These functions are more general in their functionality and can be used outside of the **`heatwaveR`** package too. To apply them to MHWs and MCSs first requires that we access the `clim` or `event` dataframes within the list that is produced by `detect_event()`. Here is how:
 
 ``` r
 mhw2 <- mhw$clim %>% 
@@ -248,8 +252,8 @@ ggplot(mhw$event, aes(x = date_start, y = intensity_cumulative)) +
 The calculation and visualisation of cold-spells is also accommodated within this package. Here is a cold spell detected in the OISST data for Western Australia:
 
 ``` r
-
-mcs <- detect_event(ts, coldSpells = TRUE)
+ts_10th <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), pctile = 10)
+mcs <- detect_event(ts_10th, coldSpells = TRUE)
 mcs$event %>% 
   dplyr::ungroup() %>%
   dplyr::select(event_no, duration, date_start,
@@ -259,11 +263,11 @@ mcs$event %>%
 #> # A tibble: 5 x 7
 #>   event_no duration date_start date_peak  intensity_mean intensity_max
 #>      <int>    <int> <date>     <date>              <dbl>         <dbl>
-#> 1       29      668 1989-11-23 1990-05-11         -0.798         -3.22
-#> 2       32      806 1992-08-23 1993-04-11         -0.487         -2.49
-#> 3       15      782 1985-07-26 1986-07-17         -0.506         -2.95
-#> 4       54      420 2003-03-11 2004-01-23         -0.751         -2.66
-#> 5       93      201 2014-01-15 2014-05-05         -0.832         -2.57
+#> 1       16       76 1990-04-13 1990-05-11          -2.54         -3.22
+#> 2       54       58 2003-12-19 2004-01-23          -1.80         -2.66
+#> 3       71       52 2014-04-14 2014-05-05          -1.82         -2.57
+#> 4        8       38 1986-06-24 1986-07-17          -2.01         -2.95
+#> 5       51       32 2003-09-08 2003-09-16          -1.56         -2.12
 #> # ... with 1 more variable: intensity_cumulative <dbl>
 ```
 
@@ -318,7 +322,7 @@ exc_25$exceedance %>%
   head(5)
 #> # A tibble: 5 x 6
 #>   exceedance_no duration date_start date_peak  intensity_mean
-#>           <int>    <dbl> <date>     <date>              <dbl>
+#>           <int>    <int> <date>     <date>              <dbl>
 #> 1             7       52 2011-02-08 2011-02-28          1.67 
 #> 2             6       25 2008-04-03 2008-04-14          0.980
 #> 3            10       41 2012-03-03 2012-04-10          0.439
@@ -359,7 +363,7 @@ exc_19$exceedance %>%
   head(5)
 #> # A tibble: 5 x 6
 #>   exceedance_no duration date_start date_peak  intensity_mean
-#>           <int>    <dbl> <date>     <date>              <dbl>
+#>           <int>    <int> <date>     <date>              <dbl>
 #> 1            17       46 2003-09-06 2003-09-16         -0.601
 #> 2            16       31 2002-09-08 2002-09-25         -0.848
 #> 3            13       24 1997-09-03 1997-09-15         -0.769
@@ -390,18 +394,18 @@ ggplot(data = exc_19_thresh, aes(x = t)) +
 Working with gridded SST data
 -----------------------------
 
-We can also load the gridded 0.25 degree Reynolds [OISST data](https://www.ncei.noaa.gov/thredds/blended-global/oisst-catalog.html) and apply the function pixel by pixel over all of the days of data. The example data used here have 93 longitude steps, 43 latitude steps, and cover 12797 days (1981 to 2016). We apply the `detect()` function to these data, fit a generalised linear model (GLM), and then plot the trend per decade of the marine heatwave count. In other words, have marine heatwaves become more or less frequent in recent years? Under climate change we can expect that extreme events would tend to occur more frequently and be of greater intensity. Indeed, we can clearly see in the figure below of the result of the GLM, how the Agulhas Current has been experiencing marine heatwaves more frequently in recent decades. But there are two smaller areas, one along the western side of the Cape Peninsula in the Benguela Upwelling system and another around the Eastern Cape Province near Algoa Bay, where the frequency of marine heatwaves seems to have actually been decreasing – although the *P*-value of the decreasing trend is &gt; 0.05, and therefore not significant.
+We can also load the gridded 0.25 degree Reynolds [OISST data](https://www.ncei.noaa.gov/thredds/blended-global/oisst-catalog.html) and apply the function pixel by pixel over all of the days of data. The example data used here have 93 longitude steps, 43 latitude steps, and cover 12797 days (1981 to 2016). We apply the `detect_event()` function to these data, fit a generalised linear model (GLM), and then plot the trend per decade of the marine heatwave count. In other words, have marine heatwaves become more or less frequent in recent years? Under climate change we can expect that extreme events would tend to occur more frequently and be of greater intensity. Indeed, we can clearly see in the figure below of the result of the GLM, how the Agulhas Current has been experiencing marine heatwaves more frequently in recent decades. But there are two smaller areas, one along the western side of the Cape Peninsula in the Benguela Upwelling system and another around the Eastern Cape Province near Algoa Bay, where the frequency of marine heatwaves seems to have actually been decreasing – although the *P*-value of the decreasing trend is &gt; 0.05, and therefore not significant.
 
 ![Count-trend](docs/README-grid-example1.png)
 
 ![P-of-trend](docs/README-grid-example2.png)
 
-Please read the package [vignette](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html) to see how to load a netCDF file with the OISST data, apply the `detect()` function to the whole 3D array of data, and then fit the GLM and plot the data.
+Please read the package [vignette](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html) to see how to load a netCDF file with the OISST data, apply the `detect_event()` function to the whole 3D array of data, and then fit the GLM and plot the data.
 
 Categories
 ----------
 
-The classification of MHWs under the naming scheme first proposed by Hobday et al. (in review) may also be calculated and visualised with the **`heatwaveR`** package using the `category()` function on the output of the `detect()` function. Note that one may control the output for the names of the events by providing ones own character string for the `name` argument. Because we have calculated MHWs on the Western Australia data, we provide the name “WA” below.
+The classification of MHWs under the naming scheme first proposed by Hobday et al. (in review) may also be calculated and visualised with the **`heatwaveR`** package using the `category()` function on the output of the `detect_event()` function. Note that one may control the output for the names of the events by providing ones own character string for the `name` argument. Because we have calculated MHWs on the Western Australia data, we provide the name “WA” below.
 
 ``` r
 tail(category(mhw, S = TRUE, name = "WA"))
@@ -503,9 +507,9 @@ References
 
 Hobday, A.J. et al. (2016). A hierarchical approach to defining marine heatwaves, Progress in Oceanography, 141, pp. 227-238.
 
-Schlegel, R. W., Oliver, E. C. J., Wernberg, T. W., Smit, A. J. (2017). Nearshore and offshore co-occurrences of marine heatwaves and cold-spells. Progress in Oceanography, 151, pp. 189-205.
+Schlegel, R. W., Oliver, E. C. J., Wernberg, T. W., Smit, A. J. (2017a). Nearshore and offshore co-occurrences of marine heatwaves and cold-spells. Progress in Oceanography, 151, pp. 189-205.
 
-Schlegel, R. W., Oliver, E. C., Perkins-Kirkpatrick, S., Kruger, A., Smit, A. J. (2017). Predominant atmospheric and oceanic patterns during coastal marine heatwaves. Frontiers in Marine Science, 4, 323.
+Schlegel, R. W., Oliver, E. C., Perkins-Kirkpatrick, S., Kruger, A., Smit, A. J. (2017b). Predominant atmospheric and oceanic patterns during coastal marine heatwaves. Frontiers in Marine Science, 4, 323.
 
 Hobday et al. (in review). Categorizing and Naming Marine Heatwaves. Oceanography.
 
