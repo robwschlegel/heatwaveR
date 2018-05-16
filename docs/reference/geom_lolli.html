@@ -38,7 +38,7 @@
 <meta property="og:description" content="The function will return a graph of the intensity of the selected
 metric along the *y*-axis versus a time variable along the *x*-axis.
 The number of top events (n) from the chosen metric may be highlighted
-in a brighter colour with the aesthetic value colour.n.
+in a brighter colour with the aesthetic value colour_n.
 This function differs in use from lolli_plot
 in that it must be created as a ggplot2 'geom' object. The benefit of this being
 that one may add additional information layer by layer to the figure as
@@ -82,7 +82,7 @@ geoms as necessary." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.2.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.3.9001</span>
       </span>
     </div>
 
@@ -115,6 +115,9 @@ geoms as necessary." />
     </li>
     <li>
       <a href="../articles/Short_climatologies.html">Short climatologies</a>
+    </li>
+    <li>
+      <a href="../articles/r_vs_python.html">R vs Python</a>
     </li>
   </ul>
 </li>
@@ -159,7 +162,7 @@ geoms as necessary." />
     <p>The function will return a graph of the intensity of the selected
 metric along the *y*-axis versus a time variable along the *x*-axis.
 The number of top events (<code>n</code>) from the chosen metric may be highlighted
-in a brighter colour with the aesthetic value <code>colour.n</code>.
+in a brighter colour with the aesthetic value <code>colour_n</code>.
 This function differs in use from <code><a href='lolli_plot.html'>lolli_plot</a></code>
 in that it must be created as a ggplot2 'geom' object. The benefit of this being
 that one may add additional information layer by layer to the figure as
@@ -167,7 +170,7 @@ geoms as necessary.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>geom_lolli</span>(<span class='kw'>mapping</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+    <pre class="usage"><span class='fu'>geom_lolli</span>(<span class='kw'>mapping</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>show.legend</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>inherit.aes</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -182,14 +185,15 @@ there is no plot mapping.</p></td>
     </tr>
     <tr>
       <th>data</th>
-      <td><p>The data to be displayed in this layer. There are three options:</p>
-<p>If NULL, the default, the data is inherited from the plot data as specified
-in the call to <code>ggplot()</code>.</p>
-<p>A data.frame, or other object, will override the plot data. All objects will
+      <td><p>The data to be displayed in this layer. There are three options:</p><ol>
+<li><p>If NULL, the default, the data is inherited from the plot data as specified
+in the call to <code>ggplot()</code>.</p></li>
+<li><p>A data.frame, or other object, will override the plot data. All objects will
 be fortified to produce a data frame. See <code>fortify()</code> for which variables will
-be created.</p>
-<p>A function will be called with a single argument, the plot data. The return
-value must be a <code>data.frame</code>, and will be used as the layer data.</p></td>
+be created.</p></li>
+<li><p>A function will be called with a single argument, the plot data. The return
+value must be a <code>data.frame</code>, and will be used as the layer data.</p></li>
+</ol></td>
     </tr>
     <tr>
       <th>...</th>
@@ -200,8 +204,8 @@ to the paired geom/stat.</p></td>
     </tr>
     <tr>
       <th>n</th>
-      <td><p>The number of top events to highlight. Default is 1. This parameter
-has no effect if <code>colour.n</code> is set to <code>NA</code> outside of <code>aes()</code>.</p></td>
+      <td><p>The number of top events to highlight as based on the value provided
+to <code>aes(y)</code>. Default is 0.</p></td>
     </tr>
     <tr>
       <th>na.rm</th>
@@ -238,14 +242,13 @@ are in bold):</p><ul>
 <li><p><code>shape</code></p></li>
 <li><p><code>stroke</code></p></li>
 <li><p><code>fill</code></p></li>
-<li><p><code>colour.n</code>: While this value may be used as an aesthetic, it also
-works as a parameter for this function. If one chooses not to highlight
-any events, use <code>colour.n = NA</code> outside of <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes()</a></code>. One may
-also provide a non-static value to <code>colour.na</code> but remember that
-one may not provide multiple continuous or discrete scales to a single
-ggplot2 object. Therefore, if one provides a continuous value to
-<code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes(colour)</a></code>, the values supplied to <code>colour.n</code> must be
-discrete. ggplot2 will attempt to do this automatically.</p></li>
+<li><p><code>colour_n</code> While this value may be used as an aesthetic, it works
+  better as a parameter for this function because it is set to use discrete values.
+  One may provide continuous values to <code>colour_n</code> but remember that one may
+  not provide multiple continuous or discrete scales to a single ggplot2 object.
+  Therefore, if one provides a continuous value to <code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes(colour)</a></code>, the values
+  supplied to <code>colour_n</code> must be discrete. <code>ggplot2</code> will attempt to
+  do this automatically.</p></li>
 </ul>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -261,17 +264,24 @@ discrete. ggplot2 will attempt to do this automatically.</p></li>
 
 <span class='co'># Height of lollis represent event durations and their colours</span>
 <span class='co'># are mapped to the events' cumulative intensity:</span>
-<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>mhw</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>mhw</span>$<span class='no'>date_peak</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>mhw</span>$<span class='no'>duration</span>)) +
-  <span class='fu'>geom_lolli</span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>colour</span> <span class='kw'>=</span> <span class='no'>mhw</span>$<span class='no'>int_cum</span>), <span class='kw'>colour.n</span> <span class='kw'>=</span> <span class='fl'>NA</span>) +
+<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>mhw</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>date_peak</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>duration</span>)) +
+  <span class='fu'>geom_lolli</span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>colour</span> <span class='kw'>=</span> <span class='no'>intensity_cumulative</span>)) +
   <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/scale_brewer'>scale_color_distiller</a></span>(<span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"Spectral"</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Cumulative \nintensity"</span>) +
   <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>xlab</a></span>(<span class='st'>"Date"</span>) + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>ylab</a></span>(<span class='st'>"Event duration [days]"</span>)
 
 <span class='co'># Height of lollis represent event durations and the top three (longest)</span>
 <span class='co'># lollis are highlighted in red:</span>
-<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>mhw</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>mhw</span>$<span class='no'>date_peak</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>mhw</span>$<span class='no'>duration</span>)) +
-  <span class='fu'>geom_lolli</span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>colour.n</span> <span class='kw'>=</span> <span class='st'>"red"</span>) +
-  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/scale_brewer'>scale_color_distiller</a></span>(<span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"Spectral"</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Cumulative \nintensity"</span>) +
-  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>xlab</a></span>(<span class='st'>"Date"</span>) + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>ylab</a></span>(<span class='st'>"Event duration [days]"</span>)
+<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>mhw</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>date_peak</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>duration</span>)) +
+  <span class='fu'>geom_lolli</span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>colour_n</span> <span class='kw'>=</span> <span class='st'>"red"</span>) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/scale_brewer'>scale_color_distiller</a></span>(<span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"Spectral"</span>) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>xlab</a></span>(<span class='st'>"Peak date"</span>) + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>ylab</a></span>(<span class='st'>"Event duration [days]"</span>)
+
+<span class='co'># Because this is a proper geom, any number of ill-advised things</span>
+<span class='co'># may be done with it:</span>
+<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>mhw</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>event_no</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>intensity_max</span>)) +
+  <span class='fu'>geom_lolli</span>(<span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>colour</span> <span class='kw'>=</span> <span class='no'>rate_onset</span>), <span class='kw'>linetype</span> <span class='kw'>=</span> <span class='st'>"dotted"</span>) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/scale_brewer'>scale_color_distiller</a></span>(<span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"RdYlGn"</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Rate \nonset"</span>) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>xlab</a></span>(<span class='st'>"Event number"</span>) + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>ylab</a></span>(<span class='st'>"Max intensity [degree C]"</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -5,6 +5,7 @@
 * Fix to `geom_lolli()` n argument
 * Fix to `lolli_plot()` y-axis range
 * Minor fix to `make_whole()`
+* Skeleton of R vs Python vignette added
 
 # heatwaveR 0.2.3.9000 (2018-05-16)
 

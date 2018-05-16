@@ -18,6 +18,8 @@ navbar:
       href: articles/Climatologies_and_baselines.html
     - text: "Short climatologies"
       href: articles/Short_climatologies.html
+    - text: "R vs Python"
+      href: articles/r_vs_python.html
   - text: News
     href: news/index.html
   right:

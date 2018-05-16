@@ -79,7 +79,7 @@ other means." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.2.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.3.9001</span>
       </span>
     </div>
 
@@ -112,6 +112,9 @@ other means." />
     </li>
     <li>
       <a href="../articles/Short_climatologies.html">Short climatologies</a>
+    </li>
+    <li>
+      <a href="../articles/r_vs_python.html">R vs Python</a>
     </li>
   </ul>
 </li>
@@ -359,7 +362,7 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
 <span class='co'># show a portion of the climatology:</span>
 <span class='no'>out</span>$<span class='no'>climatology</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt; # A tibble: 10 x 10
 #&gt;      doy t           temp  seas thresh   var threshCriterion durationCriterion
-#&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;           &lt;lgl&gt;            
+#&gt;    &lt;int&gt; &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;           &lt;lgl&gt;            
 #&gt;  1     1 1982-01-01  20.9  21.6   23.0 0.959 FALSE           FALSE            
 #&gt;  2     2 1982-01-02  21.2  21.6   23.0 0.964 FALSE           FALSE            
 #&gt;  3     3 1982-01-03  21.4  21.7   23.0 0.968 FALSE           FALSE            
@@ -388,7 +391,7 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
 <span class='co'># show a portion of the climatology:</span>
 <span class='no'>out</span>$<span class='no'>climatology</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt; # A tibble: 10 x 10
 #&gt;      doy t           temp  seas thresh   var threshCriterion durationCriterion
-#&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;           &lt;lgl&gt;            
+#&gt;    &lt;int&gt; &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;           &lt;lgl&gt;            
 #&gt;  1     1 1982-01-01  20.9  21.6   20.5 0.959 FALSE           FALSE            
 #&gt;  2     2 1982-01-02  21.2  21.6   20.6 0.964 FALSE           FALSE            
 #&gt;  3     3 1982-01-03  21.4  21.7   20.6 0.968 FALSE           FALSE            

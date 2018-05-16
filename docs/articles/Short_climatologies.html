@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.2.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.3.9001</span>
       </span>
     </div>
 
@@ -71,6 +71,9 @@
     </li>
     <li>
       <a href="../articles/Short_climatologies.html">Short climatologies</a>
+    </li>
+    <li>
+      <a href="../articles/r_vs_python.html">R vs Python</a>
     </li>
   </ul>
 </li>
@@ -107,7 +110,7 @@
       <h1>How to create climatologies from short time series</h1>
                         <h4 class="author">AJ Smit</h4>
             
-            <h4 class="date">2018-05-15</h4>
+            <h4 class="date">2018-05-16</h4>
       
       
       <div class="hidden name"><code>Short_climatologies.Rmd</code></div>
@@ -161,10 +164,12 @@ daily.smth &lt;-<span class="st"> </span>daily.nest <span class="op">%&gt;%</spa
 <span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> doy, <span class="dt">y =</span> temp)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">shape =</span> <span class="st">"+"</span>, <span class="dt">colour =</span> <span class="st">"red"</span>, <span class="dt">alpha =</span> <span class="fl">0.6</span>, <span class="dt">size =</span> <span class="dv">1</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> smoothed, <span class="dt">group =</span> index), <span class="dt">size =</span> <span class="fl">0.6</span>, <span class="dt">colour =</span> <span class="st">"black"</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>index)
-<span class="kw">ggsave</span>(plt1, <span class="dt">file =</span> <span class="st">"smooth_mat_1.png"</span>, <span class="dt">width =</span> <span class="dv">12</span>, <span class="dt">height =</span> <span class="dv">9</span>, <span class="dt">dpi =</span> <span class="dv">120</span>)</code></pre></div>
+<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>index) <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">"Julian day"</span>, <span class="dt">y =</span> <span class="st">"Temperature (°C)"</span>, <span class="dt">title =</span> <span class="st">"SACTN: daily climatology"</span>,
+       <span class="dt">subtitle =</span> <span class="st">"Fourier series: 7 basis functions"</span>) <span class="op">+</span>
+<span class="kw">ggsave</span>(plt1, <span class="dt">file =</span> <span class="st">"SACTN_Fourier7.png"</span>, <span class="dt">width =</span> <span class="dv">12</span>, <span class="dt">height =</span> <span class="dv">9</span>, <span class="dt">dpi =</span> <span class="dv">120</span>)</code></pre></div>
 <div class="figure">
-<img src="smooth_mat_1.png" alt="Figure 1. Smooth climatologies derived from a Fourier analysis fitted to coastal seawater time series along the South African coast. Climatologies were produced only for sites with at least 30 year long time series." style="width:100.0%"><p class="caption"><strong>Figure 1.</strong> Smooth climatologies derived from a Fourier analysis fitted to coastal seawater time series along the South African coast. Climatologies were produced only for sites with at least 30 year long time series.</p>
+<img src="SACTN_Fourier7.png" alt="Figure 1. Smooth climatologies derived from a Fourier analysis fitted to coastal seawater time series along the South African coast. Climatologies were produced only for sites with at least 30 year long time series." style="width:100.0%"><p class="caption"><strong>Figure 1.</strong> Smooth climatologies derived from a Fourier analysis fitted to coastal seawater time series along the South African coast. Climatologies were produced only for sites with at least 30 year long time series.</p>
 </div>
 <div id="time-series-length" class="section level2">
 <h2 class="hasAnchor">
@@ -208,10 +213,12 @@ sst.repl &lt;-<span class="st"> </span>purrr<span class="op">::</span><span clas
 <span class="st">  </span><span class="kw">gather</span>(<span class="dt">key =</span> <span class="st">"ts.len"</span>, <span class="dt">value =</span> <span class="st">"temp"</span>, <span class="op">-</span>rep, <span class="op">-</span>doy)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">plt2 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">data =</span> sst.repl, <span class="kw">aes</span>(<span class="dt">x =</span> doy, <span class="dt">y =</span> temp)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">group =</span> rep), <span class="dt">alpha =</span> <span class="fl">0.3</span>, <span class="dt">size =</span> <span class="fl">0.1</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>ts.len, <span class="dt">nrow =</span> <span class="dv">3</span>)
-<span class="kw">ggsave</span>(plt2, <span class="dt">file =</span> <span class="st">"rand_mat_raw_1.png"</span>, <span class="dt">width =</span> <span class="dv">12</span>, <span class="dt">height =</span> <span class="dv">6</span>, <span class="dt">dpi =</span> <span class="dv">120</span>)</code></pre></div>
+<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>ts.len, <span class="dt">nrow =</span> <span class="dv">3</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">"Julian day"</span>, <span class="dt">y =</span> <span class="st">"SST (°C)"</span>, <span class="dt">title =</span> <span class="st">"Raw daily climatology"</span>,
+       <span class="dt">subtitle =</span> <span class="st">"100 daily climatological means"</span>) <span class="op">+</span>
+<span class="kw">ggsave</span>(plt2, <span class="dt">file =</span> <span class="st">"WA_100_simul.png"</span>, <span class="dt">width =</span> <span class="dv">12</span>, <span class="dt">height =</span> <span class="dv">6</span>, <span class="dt">dpi =</span> <span class="dv">120</span>)</code></pre></div>
 <div class="figure">
-<img src="rand_mat_raw_1.png" alt="Figure 2. Bootstrapped reconstructions of daily climatologies based on mean SSTs derived from time series fo 10, 20 and 30 years long. Each of 100 realisations are plotted as individual black traces on the three panels." style="width:100.0%"><p class="caption"><strong>Figure 2.</strong> Bootstrapped reconstructions of daily climatologies based on mean SSTs derived from time series fo 10, 20 and 30 years long. Each of 100 realisations are plotted as individual black traces on the three panels.</p>
+<img src="WA_100_simul.png" alt="Figure 2. Bootstrapped reconstructions of daily climatologies based on mean SSTs derived from time series fo 10, 20 and 30 years long. Each of 100 realisations are plotted as individual black traces on the three panels." style="width:100.0%"><p class="caption"><strong>Figure 2.</strong> Bootstrapped reconstructions of daily climatologies based on mean SSTs derived from time series fo 10, 20 and 30 years long. Each of 100 realisations are plotted as individual black traces on the three panels.</p>
 </div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sst.repl.nest &lt;-<span class="st"> </span>sst.repl <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">nest</span>(<span class="op">-</span>rep, <span class="op">-</span>ts.len)
@@ -222,10 +229,12 @@ sst.repl.smth &lt;-<span class="st"> </span>sst.repl.nest <span class="op">%&gt;
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">plt3 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">data =</span> sst.repl.smth, <span class="kw">aes</span>(<span class="dt">x =</span> doy, <span class="dt">y =</span> smoothed)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y =</span> temp), <span class="dt">shape =</span> <span class="st">"+"</span>, <span class="dt">colour =</span> <span class="st">"red"</span>, <span class="dt">alpha =</span> <span class="fl">0.1</span>, <span class="dt">size =</span> <span class="dv">1</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">group =</span> rep), <span class="dt">alpha =</span> <span class="fl">0.3</span>, <span class="dt">size =</span> <span class="fl">0.1</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>ts.len, <span class="dt">nrow =</span> <span class="dv">3</span>)
-<span class="kw">ggsave</span>(plt3, <span class="dt">file =</span> <span class="st">"rand_mat_smoothed_1.png"</span>, <span class="dt">width =</span> <span class="dv">12</span>, <span class="dt">height =</span> <span class="dv">6</span>, <span class="dt">dpi =</span> <span class="dv">120</span>)</code></pre></div>
+<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>ts.len, <span class="dt">nrow =</span> <span class="dv">3</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">"Julian day"</span>, <span class="dt">y =</span> <span class="st">"SST (°C)"</span>, <span class="dt">title =</span> <span class="st">"WA SST: daily climatology"</span>,
+       <span class="dt">subtitle =</span> <span class="st">"Fourier series: 7 basis functions"</span>) <span class="op">+</span>
+<span class="kw">ggsave</span>(plt3, <span class="dt">file =</span> <span class="st">"WA_Fourier7.png"</span>, <span class="dt">width =</span> <span class="dv">12</span>, <span class="dt">height =</span> <span class="dv">6</span>, <span class="dt">dpi =</span> <span class="dv">120</span>)</code></pre></div>
 <div class="figure">
-<img src="rand_mat_smoothed_1.png" alt="Figure 3. Bootstrapped reconstructions of daily climatologies based on mean SSTs derived from time series of 10, 20 and 30 years long. Red lines are the smoothed climatologies obtained from a Fourier analysis." style="width:100.0%"><p class="caption"><strong>Figure 3.</strong> Bootstrapped reconstructions of daily climatologies based on mean SSTs derived from time series of 10, 20 and 30 years long. Red lines are the smoothed climatologies obtained from a Fourier analysis.</p>
+<img src="WA_Fourier7.png" alt="Figure 3. Bootstrapped reconstructions of daily climatologies based on mean SSTs derived from time series of 10, 20 and 30 years long. Red lines are the smoothed climatologies obtained from a Fourier analysis." style="width:100.0%"><p class="caption"><strong>Figure 3.</strong> Bootstrapped reconstructions of daily climatologies based on mean SSTs derived from time series of 10, 20 and 30 years long. Red lines are the smoothed climatologies obtained from a Fourier analysis.</p>
 </div>
 </div>
 <div id="heatwavers-climatology-functions" class="section level3">
@@ -285,7 +294,9 @@ sst.repl2.smth &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(s
 <span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> doy, <span class="dt">y =</span> temp)) <span class="op">+</span>
 <span class="st">  </span><span class="co"># geom_point(shape = "+", colour = "red", alpha = 0.1, size = 1) +</span>
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> <span class="kw">filter</span>(sst.repl2.smth, t <span class="op">&lt;=</span><span class="st"> "1984-01-01"</span>), <span class="kw">aes</span>(, <span class="dt">y =</span> seas, <span class="dt">group =</span> rep), <span class="dt">alpha =</span> <span class="fl">0.3</span>, <span class="dt">size =</span> <span class="fl">0.1</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>id, <span class="dt">nrow =</span> <span class="dv">3</span>)
+<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>id, <span class="dt">nrow =</span> <span class="dv">3</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">"Julian day"</span>, <span class="dt">y =</span> <span class="st">"SST (°C)"</span>, <span class="dt">title =</span> <span class="st">"WA SST: daily climatology"</span>,
+       <span class="dt">subtitle =</span> <span class="st">"MHW climatology, default settings"</span>)
 <span class="kw">ggsave</span>(plt4, <span class="dt">file =</span> <span class="st">"rand_mat_smoothed_2.png"</span>, <span class="dt">width =</span> <span class="dv">12</span>, <span class="dt">height =</span> <span class="dv">6</span>, <span class="dt">dpi =</span> <span class="dv">120</span>)</code></pre></div>
 <div class="figure">
 <img src="rand_mat_smoothed_2.png" alt="Figure 4. Bootstrapped daily climatologies based on 10, 20 and 30 years long SST time series that were randomly assembled from the original 32-year long Western Australian SST data set included with the heatwaveR package. The lines are the smoothed climatologies obtained from applying the default heatwaveR climatology algorithm that includes a mean computed from all data withing a sliding 11-day wide window, centered on the doy, followed by a 31-day wide moving averages smoother." style="width:100.0%"><p class="caption"><strong>Figure 4.</strong> Bootstrapped daily climatologies based on 10, 20 and 30 years long SST time series that were randomly assembled from the original 32-year long Western Australian SST data set included with the heatwaveR package. The lines are the smoothed climatologies obtained from applying the default heatwaveR climatology algorithm that includes a mean computed from all data withing a sliding 11-day wide window, centered on the doy, followed by a 31-day wide moving averages smoother.</p>

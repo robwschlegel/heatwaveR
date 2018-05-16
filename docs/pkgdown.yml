@@ -6,6 +6,7 @@ articles:
   OISST_preparation: OISST_preparation.html
   Short_climatologies: Short_climatologies.html
   gridded_event_detection: gridded_event_detection.html
+  r_vs_python: r_vs_python.html
 urls:
   reference: https://robwschlegel.github.io/heatwaveR/index.html/reference
   article: https://robwschlegel.github.io/heatwaveR/index.html/articles

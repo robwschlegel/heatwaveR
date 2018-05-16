@@ -73,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.2.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.3.9001</span>
       </span>
     </div>
 
@@ -106,6 +106,9 @@
     </li>
     <li>
       <a href="../articles/Short_climatologies.html">Short climatologies</a>
+    </li>
+    <li>
+      <a href="../articles/r_vs_python.html">R vs Python</a>
     </li>
   </ul>
 </li>
@@ -144,6 +147,27 @@
       
     </div>
 
+    <div id="heatwaver-0-2-3-9001-2018-05-16" class="section level1">
+<h1 class="page-header">
+<a href="#heatwaver-0-2-3-9001-2018-05-16" class="anchor"></a>heatwaveR 0.2.3.9001 (2018-05-16)</h1>
+<ul>
+<li>Minor fix to testhat</li>
+<li>codecov up to 100%</li>
+<li>Fix to <code><a href="../reference/geom_lolli.html">geom_lolli()</a></code> n argument</li>
+<li>Fix to <code><a href="../reference/lolli_plot.html">lolli_plot()</a></code> y-axis range</li>
+<li>Minor fix to <code><a href="../reference/make_whole.html">make_whole()</a></code>
+</li>
+<li>Skeleton of R vs Python vignette added</li>
+</ul>
+</div>
+    <div id="heatwaver-0-2-3-9000-2018-05-16" class="section level1">
+<h1 class="page-header">
+<a href="#heatwaver-0-2-3-9000-2018-05-16" class="anchor"></a>heatwaveR 0.2.3.9000 (2018-05-16)</h1>
+<ul>
+<li>Major spead-up in the climatology creation function. <code><a href="../reference/clim_spread.html">clim_spread()</a></code> now returns a matrix, not a data frame. This makes the loop in <code><a href="../reference/clim_calc.html">clim_calc()</a></code> much faster. In testing with the sst_WA data, it leads to a 3.7 fold speed improvement (520 ms down to 140 ms).</li>
+<li>Speed-up of <code><a href="../reference/make_whole.html">make_whole()</a></code> (60 ms down to 40 ms)</li>
+</ul>
+</div>
     <div id="heatwaver-0-2-2-9000-2018-05-15" class="section level1">
 <h1 class="page-header">
 <a href="#heatwaver-0-2-2-9000-2018-05-15" class="anchor"></a>heatwaveR 0.2.2.9000 (2018-05-15)</h1>
@@ -315,6 +339,8 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#heatwaver-0-2-3-9001-2018-05-16">0.2.3.9001</a></li>
+        <li><a href="#heatwaver-0-2-3-9000-2018-05-16">0.2.3.9000</a></li>
         <li><a href="#heatwaver-0-2-2-9000-2018-05-15">0.2.2.9000</a></li>
         <li><a href="#heatwaver-0-2-1-9001-2018-05-15">0.2.1.9001</a></li>
         <li><a href="#heatwaver-0-2-1-9000-2018-05-14">0.2.1.9000</a></li>
