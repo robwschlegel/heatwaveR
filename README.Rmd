@@ -47,7 +47,6 @@ by issuing the following command:
 
 |Function             |Description|
 |---------------------|--------------------------------------------------------------------------------------------------------|
-|`make_whole()`       |Constructs a continuous, uninterrupted time series of temperatures.|
 |`ts2clm()`           |Constructs seasonal and threshold climatologies as per the definition of Hobday et al. (2016).|
 |`detect_event()`     |The main function which detects the events as per the definition of Hobday et al. (2016).|
 |`block_average()`    |Calculates annual means for event metrics.|
