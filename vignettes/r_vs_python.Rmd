@@ -1,8 +1,8 @@
 ---
-title: "Comparing the calculation of MHWs in R vs Python"
+title: "Comparing the calculation of MHWs in R vs Python - Basic"
 author: "Robert W Schlegel"
 date: "`r Sys.Date()`"
-description: "This vignette compares the code/work flow one would use to calculate MHWs in both R and Python as well as the different outputs."
+description: "This vignette compares the code/work flow one would use to calculate default (Hobday et al. 2016) MHWs in both R and Python as well as the different outputs and speeds."
 output: 
   rmarkdown::html_vignette:
     fig_caption: yes
@@ -45,7 +45,7 @@ The basic functionality for calculating marine heatwaves (MHWs) in R may be foun
 
 With the necessary packages installed, we activate `heatwaveR` with the following line of code.
 
-```{r r-init, eval = FALSE}
+```{r r-init}
 library(heatwaveR)
 ```
 
@@ -53,42 +53,251 @@ library(heatwaveR)
 
 With everything downloaded and ready for us to use we may now calculate some events. The `heatwaveR` package has three built in time series (`sst_WA`, `sst_Med`, `sst_NW_Atl`) that we may use to more easily demonstrate how the code works. The general pipeline in `R` for calculating events is first to create a climatology from a chosen time series using `ts2clm()`, and then to feed that ooutput into `detect_event()`, as seen below.
 
-```{r, eval = FALSE}
+```{r r-default}
 # First we create a default climatology as outlined in Hobday et al. (2016)
-ts_clim <- ts2clm(data = sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+ts_clim <- ts2clm(data = sst_WA, climatologyPeriod = c("1982-01-01", "2014-12-31"))
 
 # Then we feed that object into the second and final function
 res <- detect_event(ts_clim)
 ```
 
+To look at these outputs we would use the following options. For now we'll just look at the event output.
+
+```{r r-view}
+# Look at the top six rows of the first 6 columns of the events
+res$event[1:6, 1:6]
+
+# Or perhaps the most intense event
+res$event[res$event$intensity_max == max(res$event$intensity_max), 1:6]
+```
 
 ### Python code
 
-```{r python-setup, include = FALSE, eval = FALSE}
+```{r python-setup, include = FALSE}
+# devtools::install_github("rstudio/reticulate")
 library(reticulate)
-use_condaenv("ocean_py")
-py_config()
+use_condaenv("py27")
 ```
 
 #### Setup
 
-To download and install the Python package for calculating MHWs one must run the following code.
+To download and install the Python package for calculating MHWs one may run the following line of code in a console:
+
+```{r, eval=FALSE}
+# Note that the hashtag must be removed in order
+# pip install git+git://github.com/ecjoliver/marineHeatWaves@master
+```
+
+Or simply download the [GitHub repository](https://github.com/ecjoliver/marineHeatWaves) and follow the instructions there for downloading. Or if still lost, phone a friend!
+
+Before we begin the calculations we need to crerate a time series. I've chosen to take the `sst_WA` time series from the __`heatwaveR`__ package to ensure consistency between the results. For ease of use I simply saved this object as a csv file on my computer and loaded it back in to Python.
+
+```{r python-prep, eval=FALSE}
+ts <- sst_WA
+# Write out only a vector of temperatures
+write.csv(ts$temp, "sst_WA.csv", row.names = FALSE)
+```
+
 
 #### Default calculations
 
-## Comparisons
+With the package installed it is then activated and run as follows:
 
-With some climatologies and events calculated with both languages we may now compare the results of the two.
+```{python}
+# Required for data prep
+import numpy as np
+from datetime import date
+
+# The MHW functions
+import marineHeatWaves as mhw
+
+# The date values
+t = np.arange(date(1982,1,1).toordinal(),date(2014,12,31).toordinal()+1)
+#print(type(t))
+#np.save('t.npy', t)
+#np.savetxt('t.csv', t)
+#print(t)
+
+# The temperature values
+sst = np.loadtxt(open("sst_WA.csv", "r"), delimiter=',', skiprows=1) # because a heading row needs to be skipped
+#print(type(sst))
+#print(sst)
+
+# The event metrics
+mhws, clim = mhw.detect(t, sst)
+#print(type(mhws))
+#np.savetxt('mhws_py.csv', mhws)
+#print(mhws)
+#np.save('clim.npy', clim) 
+#np.save('event.npy', event) 
+
+#import csv
+#with open('mhw_py.csv','wb') as f:
+#    w = csv.writer(f)
+#    w.writerows(mhws.items())
+
+import pandas as pd
+# Save event results
+mhws_df = pd.DataFrame.from_dict(mhws)
+mhws_df.to_csv('mhws_py.csv', sep = ',', index=False)
+# Save climatology results
+clim_df = pd.DataFrame.from_dict(clim)
+clim_df.to_csv('clim_py.csv', sep = ',', index=False)
+
+#dic = mhws
+# Creating your dataframe from your dictionnary
+#df = pd.DataFrame([(k, v) for k, v in mhws.iteritems()], columns=['key', 'value'])
+# Store the data into a csv file
+#df.to_csv('mhw_py.csv', sep=',') # indicate the path where to store the csv file
+```
+
+### Reticulate code
+
+It is also possible to run the Python code through R with the use of the R package __`reticulate`__. This is particularly useful as it allows us to perform the comparisons and benchmarking all within the same language.
+
+#### Setup
+
+Here we load the __`reticulate`__ package and choose the conda environment I've already created called `py27`. For help on how to set up a conda environment go [here](https://conda.io/docs/user-guide/tasks/manage-environments.html). I've ensured that all of the required python modules are installed within this environment.
 
 ```{r}
+# install.packages("reticulate")
+library(reticulate)
+use_condaenv("py27")
+```
 
+Once we've told R which version/environment we would like to use for Python we may then load the necessary modules.
+
+```{r python-modules}
+np <- import("numpy")
+datetime <- import("datetime")
+mhw <- import("marineHeatWaves")
+```
+
+One may run python code in it's native form within R by passing it as a character vector to `py_run_string()`.
+
+```{r python-strings}
+py_run_string("x = 10")
+py_run_string("t = np.arange(date(1982,1,1).toordinal(),date(2014,12,31).toordinal()+1)")
+py_run_string("sst = np.loadtxt(open('sst_WA.csv', 'r'), delimiter=',', skiprows=1)")
+```
+
+#### Default calculations
+
+```{r python-code}
+# These numbers were taken from print(t) in the python code above
+# t <- as.integer(np$array(seq(723546, 735598)))
+# sst <- np$array(sst_WA$temp)
+# res_python <- mhw$detect(t = py$t, temp = py$sst) # There appears to be an Rcpp issue preventing this from handshaking...
+# The reticulate package is still in development...
+```
+
+## Comparisons
+
+With some climatologies and events calculated with both languages we may now compare the results of the two. I'll do so here natively in R to avoid any potential hiccups from translating across languages. I'll create the R output here, and load the Python output created above.
+
+```{r load-comparisons}
+# Load libraries for data manipulation and visualisation
+library(tidyverse)
+
+# Set R results
+res_event_R <- res$event
+res_clim_R <- res$climatology
+
+# Set Python results
+res_event_Python <- read_csv("mhws_py.csv")
+res_clim_Python <- read_csv("clim_py.csv")
+```
+
+With these default results loaded in the same format in the same language we can now start to look at how they stack up. For starters I am just doing some simple correlations.
+
+### Climatologies
+
+```{r}
+cor(res_clim_R$seas, res_clim_Python$seas)
+cor(res_clim_R$thresh, res_clim_Python$thresh)
+```
+
+That looks about right. Good to see things getting off to a good start. Now for the events.
+
+### Events
+
+First we peak at a few specific values of interest.
+
+```{r}
+cor(res_event_R$intensity_max, res_event_Python$intensity_max)
+cor(res_event_R$intensity_var, res_event_Python$intensity_var)
+cor(res_event_R$rate_onset, res_event_Python$rate_onset)
+cor(res_event_R$rate_decline, res_event_Python$rate_decline)
+
+# Or just slam everything together
+# colnames(res_event_R) <- paste("R", colnames(res_event_R), sep = "_")
+# colnames(res_event_Python) <- paste("Py", colnames(res_event_Python), sep = "_")
+# res_event_num <- cbind(res_event_R, res_event_Python) %>% 
+#   select(-Py_category, -(Py_time_end:Py_time_start), -Py_n_events,
+#          -(R_date_start:R_date_peak), -(Py_date_end:Py_date_start),
+#          -R_event_no, -(Py_duration_extreme:Py_duration_strong))
+# cor(res_event_num)
+```
+
+With that looking fine, we next run a for loop that will run a correlation on all rows with the same name.
+
+```{r}
+# Remove non-numeric columns
+res_event_num <- res_event_R %>% 
+  select_if(is.numeric)
+
+res_event_cor <- data.frame()
+for(i in 1:length(colnames(res_event_num))){
+  if(colnames(res_event_num)[i] %in% colnames(res_event_Python) & res_event_R[1,i] > 0){
+    x1 <- res_event_R[colnames(res_event_R) == colnames(res_event_num)[i]]
+    x2 <- res_event_Python[colnames(res_event_Python) == colnames(res_event_num)[i]]
+    x <- data.frame(r = cor(x1, x2), var = colnames(res_event_num)[i])
+    colnames(x)[1] <- "r"
+    rownames(x) <- NULL
+  } else {
+    x <- data.frame(r = NA, var = colnames(res_event_num)[i])
+    # colnames(x) <- colnames(res_event_R)[i]
+  }
+  res_event_cor <- rbind(res_event_cor, x)
+}
+res_event_cor
+```
+
+With all of our overlapping columns compared, and our Pearson r values looking solid, let's finish off this basic comparison by finding which columns are not shared between the different language outputs.
+
+```{r}
+cols_R <- colnames(res_event_R)[!(colnames(res_event_R) %in% colnames(res_event_Python))]
+cols_R
+cols_Py <- colnames(res_event_Python)[!(colnames(res_event_Python) %in% colnames(res_event_R))]
+cols_Py
+```
+
+Wonderful! Most things match up nicely. There is some disagreement between the use of the word "stop" or "end" that must be sorted out. The R output also has a couple of "norm" columns that are not produced by Python and should maybe be omitted. The R output must also have an "index_peak" column added. The duration of categories of events is something added in R by another function `category()`, and will be left that way for now. The "time" columns in the Python output aren't relavent as far as I can see in the present usage as these functions currently only take day values.
+
+```{python}
+# Still to be compared and benchmarked
+mhwBlock = mhw.blockAverage(t, mhws, clim)
+mean, trend, dtrend = mhw.meanTrend(mhwBlock)
 ```
 
 ## Benchmarks
 
 The final thing we want to look at in this vignette is the speed differences in calculating MHWs between the two languages.
 
-```{r}
+### R
 
+```{r}
+system.time(detect_event(ts2clm(data = sst_WA, climatologyPeriod = c("1982-01-01", "2014-12-31"))))
 ```
 
+### Python
+
+```{python}
+import time
+t1 = time.time()
+mhws, clim = mhw.detect(t, sst)
+t2 = time.time()
+print(t2-t1)
+```
+
+The python code appears to be about twice as fast. And it is calculating the event categories as well, which R is not. That is done in an additonal step with `category()`.

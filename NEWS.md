@@ -1,3 +1,7 @@
+# heatwaveR 0.2.3.9002 (2018-05-17)
+
+* Basic R vs Python vignette finished
+
 # heatwaveR 0.2.3.9001 (2018-05-16)
 
 * Minor fix to testhat
