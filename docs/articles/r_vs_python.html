@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Comparing the calculation of MHWs in R vs Python • heatwaveR</title>
+<title>Comparing the calculation of MHWs in R vs Python - Basic • heatwaveR</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/spacelab/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><!-- docsearch --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css">
 <link href="../docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Comparing the calculation of MHWs in R vs Python">
-<meta property="og:description" content="This vignette compares the code/work flow one would use to calculate MHWs in both R and Python as well as the different outputs.">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Comparing the calculation of MHWs in R vs Python - Basic">
+<meta property="og:description" content="This vignette compares the code/work flow one would use to calculate default (Hobday et al. 2016) MHWs in both R and Python as well as the different outputs and speeds.">
 <meta property="og:image" content="https://robwschlegel.github.io/heatwaveR/index.html/logo.png">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.3.9001</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.3.9002</span>
       </span>
     </div>
 
@@ -107,10 +107,10 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Comparing the calculation of MHWs in R vs Python</h1>
+      <h1>Comparing the calculation of MHWs in R vs Python - Basic</h1>
                         <h4 class="author">Robert W Schlegel</h4>
             
-            <h4 class="date">2018-05-16</h4>
+            <h4 class="date">2018-05-18</h4>
       
       
       <div class="hidden name"><code>r_vs_python.Rmd</code></div>
@@ -135,12 +135,43 @@
 <h4 class="hasAnchor">
 <a href="#setup" class="anchor"></a>Setup</h4>
 <p>The basic functionality for calculating marine heatwaves (MHWs) in R may be found in the <strong><code>heatwaveR</code></strong> package that may currently be downloaded and installed with the following lines of code. Note that if one has already installed these packages they do not need to be installed again. To run one of the lines in the following code chunk will require that the hashtag first be removed.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("devtools")</span>
+## Development version from GitHub
+<span class="co"># devtools::install_github("robwschlegel/heatwaveR") </span>
+## Stable version from rOpenSci
+## Currently not available
+## Stable version from CRAN
+<span class="co"># install.packages("heatwaveR") # Currently not available</span></code></pre></div>
 <p>With the necessary packages installed, we activate <code>heatwaveR</code> with the following line of code.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(heatwaveR)</code></pre></div>
 </div>
 <div id="default-output" class="section level4">
 <h4 class="hasAnchor">
 <a href="#default-output" class="anchor"></a>Default output</h4>
 <p>With everything downloaded and ready for us to use we may now calculate some events. The <code>heatwaveR</code> package has three built in time series (<code>sst_WA</code>, <code>sst_Med</code>, <code>sst_NW_Atl</code>) that we may use to more easily demonstrate how the code works. The general pipeline in <code>R</code> for calculating events is first to create a climatology from a chosen time series using <code><a href="../reference/ts2clm.html">ts2clm()</a></code>, and then to feed that ooutput into <code><a href="../reference/detect_event.html">detect_event()</a></code>, as seen below.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># First we create a default climatology as outlined in Hobday et al. (2016)</span>
+ts_clim &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(<span class="dt">data =</span> sst_WA, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1982-01-01"</span>, <span class="st">"2014-12-31"</span>))
+
+<span class="co"># Then we feed that object into the second and final function</span>
+res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/detect_event.html">detect_event</a></span>(ts_clim)</code></pre></div>
+<p>To look at these outputs we would use the following options. For now we’ll just look at the event output.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Look at the top six rows of the first 6 columns of the events</span>
+res<span class="op">$</span>event[<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>]</code></pre></div>
+<pre><code>## # A tibble: 6 x 6
+##   event_no index_start index_stop duration date_start date_stop 
+##      &lt;int&gt;       &lt;dbl&gt;      &lt;dbl&gt;    &lt;int&gt; &lt;date&gt;     &lt;date&gt;    
+## 1        1         884        895       12 1984-06-02 1984-06-13
+## 2        2         899        904        6 1984-06-17 1984-06-22
+## 3        3         908        926       19 1984-06-26 1984-07-14
+## 4        4        1008       1012        5 1984-10-04 1984-10-08
+## 5        5        1023       1029        7 1984-10-19 1984-10-25
+## 6        6        1033       1052       20 1984-10-29 1984-11-17</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Or perhaps the most intense event</span>
+res<span class="op">$</span>event[res<span class="op">$</span>event<span class="op">$</span>intensity_max <span class="op">==</span><span class="st"> </span><span class="kw">max</span>(res<span class="op">$</span>event<span class="op">$</span>intensity_max), <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>]</code></pre></div>
+<pre><code>## # A tibble: 1 x 6
+##   event_no index_start index_stop duration date_start date_stop 
+##      &lt;int&gt;       &lt;dbl&gt;      &lt;dbl&gt;    &lt;int&gt; &lt;date&gt;     &lt;date&gt;    
+## 1       42       10629      10689       61 2011-02-06 2011-04-07</code></pre>
 </div>
 </div>
 <div id="python-code" class="section level3">
@@ -149,23 +180,214 @@
 <div id="setup-1" class="section level4">
 <h4 class="hasAnchor">
 <a href="#setup-1" class="anchor"></a>Setup</h4>
-<p>To download and install the Python package for calculating MHWs one must run the following code.</p>
+<p>To download and install the Python package for calculating MHWs one may run the following line of code in a console:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Note that the hashtag must be removed in order</span>
+<span class="co"># pip install git+git://github.com/ecjoliver/marineHeatWaves@master</span></code></pre></div>
+<p>Or simply download the <a href="https://github.com/ecjoliver/marineHeatWaves">GitHub repository</a> and follow the instructions there for downloading. Or if still lost, phone a friend!</p>
+<p>Before we begin the calculations we need to crerate a time series. I’ve chosen to take the <code>sst_WA</code> time series from the <strong><code>heatwaveR</code></strong> package to ensure consistency between the results. For ease of use I simply saved this object as a csv file on my computer and loaded it back in to Python.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ts &lt;-<span class="st"> </span>sst_WA
+<span class="co"># Write out only a vector of temperatures</span>
+<span class="kw">write.csv</span>(ts<span class="op">$</span>temp, <span class="st">"sst_WA.csv"</span>, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</code></pre></div>
 </div>
 <div id="default-calculations" class="section level4">
 <h4 class="hasAnchor">
 <a href="#default-calculations" class="anchor"></a>Default calculations</h4>
+<p>With the package installed it is then activated and run as follows:</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="co"># Required for data prep</span>
+<span class="im">import</span> numpy <span class="im">as</span> np
+<span class="im">from</span> datetime <span class="im">import</span> date
+<span class="co"># The MHW functions</span>
+<span class="im">import</span> marineHeatWaves <span class="im">as</span> mhw
+<span class="co"># The date values</span>
+t <span class="op">=</span> np.arange(date(<span class="dv">1982</span>,<span class="dv">1</span>,<span class="dv">1</span>).toordinal(),date(<span class="dv">2014</span>,<span class="dv">12</span>,<span class="dv">31</span>).toordinal()<span class="op">+</span><span class="dv">1</span>)
+<span class="co">#print(type(t))</span>
+<span class="co">#np.save('t.npy', t)</span>
+<span class="co">#np.savetxt('t.csv', t)</span>
+<span class="co">#print(t)</span>
+<span class="co"># The temperature values</span>
+sst <span class="op">=</span> np.loadtxt(<span class="bu">open</span>(<span class="st">"sst_WA.csv"</span>, <span class="st">"r"</span>), delimiter<span class="op">=</span><span class="st">','</span>, skiprows<span class="op">=</span><span class="dv">1</span>) <span class="co"># because a heading row needs to be skipped</span>
+<span class="co">#print(type(sst))</span>
+<span class="co">#print(sst)</span>
+<span class="co"># The event metrics</span>
+mhws, clim <span class="op">=</span> mhw.detect(t, sst)
+<span class="co">#print(type(mhws))</span>
+<span class="co">#np.savetxt('mhws_py.csv', mhws)</span>
+<span class="co">#print(mhws)</span>
+<span class="co">#np.save('clim.npy', clim) </span>
+<span class="co">#np.save('event.npy', event) </span>
+<span class="co">#import csv</span>
+<span class="co">#with open('mhw_py.csv','wb') as f:</span>
+<span class="co">#    w = csv.writer(f)</span>
+<span class="co">#    w.writerows(mhws.items())</span>
+<span class="im">import</span> pandas <span class="im">as</span> pd
+<span class="co"># Save event results</span>
+mhws_df <span class="op">=</span> pd.DataFrame.from_dict(mhws)
+mhws_df.to_csv(<span class="st">'mhws_py.csv'</span>, sep <span class="op">=</span> <span class="st">','</span>, index<span class="op">=</span><span class="va">False</span>)
+<span class="co"># Save climatology results</span>
+clim_df <span class="op">=</span> pd.DataFrame.from_dict(clim)
+clim_df.to_csv(<span class="st">'clim_py.csv'</span>, sep <span class="op">=</span> <span class="st">','</span>, index<span class="op">=</span><span class="va">False</span>)
+<span class="co">#dic = mhws</span>
+<span class="co"># Creating your dataframe from your dictionnary</span>
+<span class="co">#df = pd.DataFrame([(k, v) for k, v in mhws.iteritems()], columns=['key', 'value'])</span>
+<span class="co"># Store the data into a csv file</span>
+<span class="co">#df.to_csv('mhw_py.csv', sep=',') # indicate the path where to store the csv file</span></code></pre></div>
+</div>
+</div>
+<div id="reticulate-code" class="section level3">
+<h3 class="hasAnchor">
+<a href="#reticulate-code" class="anchor"></a>Reticulate code</h3>
+<p>It is also possible to run the Python code through R with the use of the R package <strong><code>reticulate</code></strong>. This is particularly useful as it allows us to perform the comparisons and benchmarking all within the same language.</p>
+<div id="setup-2" class="section level4">
+<h4 class="hasAnchor">
+<a href="#setup-2" class="anchor"></a>Setup</h4>
+<p>Here we load the <strong><code>reticulate</code></strong> package and choose the conda environment I’ve already created called <code>py27</code>. For help on how to set up a conda environment go <a href="https://conda.io/docs/user-guide/tasks/manage-environments.html">here</a>. I’ve ensured that all of the required python modules are installed within this environment.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("reticulate")</span>
+<span class="kw">library</span>(reticulate)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/reticulate/topics/use_python">use_condaenv</a></span>(<span class="st">"py27"</span>)</code></pre></div>
+<p>Once we’ve told R which version/environment we would like to use for Python we may then load the necessary modules.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">np &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/reticulate/topics/import">import</a></span>(<span class="st">"numpy"</span>)
+datetime &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/reticulate/topics/import">import</a></span>(<span class="st">"datetime"</span>)
+mhw &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/reticulate/topics/import">import</a></span>(<span class="st">"marineHeatWaves"</span>)</code></pre></div>
+<p>One may run python code in it’s native form within R by passing it as a character vector to <code><a href="http://www.rdocumentation.org/packages/reticulate/topics/py_run">py_run_string()</a></code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/reticulate/topics/py_run">py_run_string</a></span>(<span class="st">"x = 10"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/reticulate/topics/py_run">py_run_string</a></span>(<span class="st">"t = np.arange(date(1982,1,1).toordinal(),date(2014,12,31).toordinal()+1)"</span>)
+<span class="kw"><a href="http://www.rdocumentation.org/packages/reticulate/topics/py_run">py_run_string</a></span>(<span class="st">"sst = np.loadtxt(open('sst_WA.csv', 'r'), delimiter=',', skiprows=1)"</span>)</code></pre></div>
+</div>
+<div id="default-calculations-1" class="section level4">
+<h4 class="hasAnchor">
+<a href="#default-calculations-1" class="anchor"></a>Default calculations</h4>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># These numbers were taken from print(t) in the python code above</span>
+<span class="co"># t &lt;- as.integer(np$array(seq(723546, 735598)))</span>
+<span class="co"># sst &lt;- np$array(sst_WA$temp)</span>
+<span class="co"># res_python &lt;- mhw$detect(t = py$t, temp = py$sst) # There appears to be an Rcpp issue preventing this from handshaking...</span>
+<span class="co"># The reticulate package is still in development...</span></code></pre></div>
 </div>
 </div>
 </div>
 <div id="comparisons" class="section level2">
 <h2 class="hasAnchor">
 <a href="#comparisons" class="anchor"></a>Comparisons</h2>
-<p>With some climatologies and events calculated with both languages we may now compare the results of the two.</p>
+<p>With some climatologies and events calculated with both languages we may now compare the results of the two. I’ll do so here natively in R to avoid any potential hiccups from translating across languages. I’ll create the R output here, and load the Python output created above.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Load libraries for data manipulation and visualisation</span>
+<span class="kw">library</span>(tidyverse)
+
+<span class="co"># Set R results</span>
+res_event_R &lt;-<span class="st"> </span>res<span class="op">$</span>event
+res_clim_R &lt;-<span class="st"> </span>res<span class="op">$</span>climatology
+
+<span class="co"># Set Python results</span>
+res_event_Python &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">"mhws_py.csv"</span>)
+res_clim_Python &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">"clim_py.csv"</span>)</code></pre></div>
+<p>With these default results loaded in the same format in the same language we can now start to look at how they stack up. For starters I am just doing some simple correlations.</p>
+<div id="climatologies" class="section level3">
+<h3 class="hasAnchor">
+<a href="#climatologies" class="anchor"></a>Climatologies</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cor</span>(res_clim_R<span class="op">$</span>seas, res_clim_Python<span class="op">$</span>seas)</code></pre></div>
+<pre><code>## [1] 0.9999999</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cor</span>(res_clim_R<span class="op">$</span>thresh, res_clim_Python<span class="op">$</span>thresh)</code></pre></div>
+<pre><code>## [1] 0.9999996</code></pre>
+<p>That looks about right. Good to see things getting off to a good start. Now for the events.</p>
+</div>
+<div id="events" class="section level3">
+<h3 class="hasAnchor">
+<a href="#events" class="anchor"></a>Events</h3>
+<p>First we peak at a few specific values of interest.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cor</span>(res_event_R<span class="op">$</span>intensity_max, res_event_Python<span class="op">$</span>intensity_max)</code></pre></div>
+<pre><code>## [1] 0.9999997</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cor</span>(res_event_R<span class="op">$</span>intensity_var, res_event_Python<span class="op">$</span>intensity_var)</code></pre></div>
+<pre><code>## [1] 0.999608</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cor</span>(res_event_R<span class="op">$</span>rate_onset, res_event_Python<span class="op">$</span>rate_onset)</code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cor</span>(res_event_R<span class="op">$</span>rate_decline, res_event_Python<span class="op">$</span>rate_decline)</code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Or just slam everything together</span>
+<span class="co"># colnames(res_event_R) &lt;- paste("R", colnames(res_event_R), sep = "_")</span>
+<span class="co"># colnames(res_event_Python) &lt;- paste("Py", colnames(res_event_Python), sep = "_")</span>
+<span class="co"># res_event_num &lt;- cbind(res_event_R, res_event_Python) %&gt;% </span>
+<span class="co">#   select(-Py_category, -(Py_time_end:Py_time_start), -Py_n_events,</span>
+<span class="co">#          -(R_date_start:R_date_peak), -(Py_date_end:Py_date_start),</span>
+<span class="co">#          -R_event_no, -(Py_duration_extreme:Py_duration_strong))</span>
+<span class="co"># cor(res_event_num)</span></code></pre></div>
+<p>With that looking fine, we next run a for loop that will run a correlation on all rows with the same name.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Remove non-numeric columns</span>
+res_event_num &lt;-<span class="st"> </span>res_event_R <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">select_if</span>(is.numeric)
+
+res_event_cor &lt;-<span class="st"> </span><span class="kw">data.frame</span>()
+<span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(<span class="kw">colnames</span>(res_event_num))){
+  <span class="cf">if</span>(<span class="kw">colnames</span>(res_event_num)[i] <span class="op">%in%</span><span class="st"> </span><span class="kw">colnames</span>(res_event_Python) <span class="op">&amp;</span><span class="st"> </span>res_event_R[<span class="dv">1</span>,i] <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>){
+    x1 &lt;-<span class="st"> </span>res_event_R[<span class="kw">colnames</span>(res_event_R) <span class="op">==</span><span class="st"> </span><span class="kw">colnames</span>(res_event_num)[i]]
+    x2 &lt;-<span class="st"> </span>res_event_Python[<span class="kw">colnames</span>(res_event_Python) <span class="op">==</span><span class="st"> </span><span class="kw">colnames</span>(res_event_num)[i]]
+    x &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">r =</span> <span class="kw">cor</span>(x1, x2), <span class="dt">var =</span> <span class="kw">colnames</span>(res_event_num)[i])
+    <span class="kw">colnames</span>(x)[<span class="dv">1</span>] &lt;-<span class="st"> "r"</span>
+    <span class="kw">rownames</span>(x) &lt;-<span class="st"> </span><span class="ot">NULL</span>
+  } <span class="cf">else</span> {
+    x &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">r =</span> <span class="ot">NA</span>, <span class="dt">var =</span> <span class="kw">colnames</span>(res_event_num)[i])
+    <span class="co"># colnames(x) &lt;- colnames(res_event_R)[i]</span>
+  }
+  res_event_cor &lt;-<span class="st"> </span><span class="kw">rbind</span>(res_event_cor, x)
+}
+res_event_cor</code></pre></div>
+<pre><code>##            r                            var
+## 1         NA                       event_no
+## 2  1.0000000                    index_start
+## 3         NA                     index_stop
+## 4  1.0000000                       duration
+## 5  0.9999991                 intensity_mean
+## 6  0.9999997                  intensity_max
+## 7  0.9996080                  intensity_var
+## 8  1.0000000           intensity_cumulative
+## 9  0.9999971       intensity_mean_relThresh
+## 10 0.9999994        intensity_max_relThresh
+## 11 0.9995685        intensity_var_relThresh
+## 12 0.9999996 intensity_cumulative_relThresh
+## 13 1.0000000             intensity_mean_abs
+## 14 0.9990733              intensity_max_abs
+## 15 0.9997267              intensity_var_abs
+## 16 1.0000000       intensity_cumulative_abs
+## 17        NA            intensity_mean_norm
+## 18        NA             intensity_max_norm
+## 19 1.0000000                     rate_onset
+## 20 1.0000000                   rate_decline</code></pre>
+<p>With all of our overlapping columns compared, and our Pearson r values looking solid, let’s finish off this basic comparison by finding which columns are not shared between the different language outputs.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cols_R &lt;-<span class="st"> </span><span class="kw">colnames</span>(res_event_R)[<span class="op">!</span>(<span class="kw">colnames</span>(res_event_R) <span class="op">%in%</span><span class="st"> </span><span class="kw">colnames</span>(res_event_Python))]
+cols_R</code></pre></div>
+<pre><code>## [1] "event_no"            "index_stop"          "date_stop"          
+## [4] "intensity_mean_norm" "intensity_max_norm"</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cols_Py &lt;-<span class="st"> </span><span class="kw">colnames</span>(res_event_Python)[<span class="op">!</span>(<span class="kw">colnames</span>(res_event_Python) <span class="op">%in%</span><span class="st"> </span><span class="kw">colnames</span>(res_event_R))]
+cols_Py</code></pre></div>
+<pre><code>##  [1] "category"          "date_end"          "duration_extreme" 
+##  [4] "duration_moderate" "duration_severe"   "duration_strong"  
+##  [7] "index_end"         "index_peak"        "n_events"         
+## [10] "time_end"          "time_peak"         "time_start"</code></pre>
+<p>Wonderful! Most things match up nicely. There is some disagreement between the use of the word “stop” or “end” that must be sorted out. The R output also has a couple of “norm” columns that are not produced by Python and should maybe be omitted. The R output must also have an “index_peak” column added. The duration of categories of events is something added in R by another function <code><a href="../reference/category.html">category()</a></code>, and will be left that way for now. The “time” columns in the Python output aren’t relavent as far as I can see in the present usage as these functions currently only take day values.</p>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="co"># Still to be compared and benchmarked</span>
+mhwBlock <span class="op">=</span> mhw.blockAverage(t, mhws, clim)
+mean, trend, dtrend <span class="op">=</span> mhw.meanTrend(mhwBlock)</code></pre></div>
+</div>
 </div>
 <div id="benchmarks" class="section level2">
 <h2 class="hasAnchor">
 <a href="#benchmarks" class="anchor"></a>Benchmarks</h2>
 <p>The final thing we want to look at in this vignette is the speed differences in calculating MHWs between the two languages.</p>
+<div id="r" class="section level3">
+<h3 class="hasAnchor">
+<a href="#r" class="anchor"></a>R</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">system.time</span>(<span class="kw"><a href="../reference/detect_event.html">detect_event</a></span>(<span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(<span class="dt">data =</span> sst_WA, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1982-01-01"</span>, <span class="st">"2014-12-31"</span>))))</code></pre></div>
+<pre><code>##    user  system elapsed 
+##   0.756   0.004   0.775</code></pre>
+</div>
+<div id="python" class="section level3">
+<h3 class="hasAnchor">
+<a href="#python" class="anchor"></a>Python</h3>
+<div class="sourceCode"><pre class="sourceCode python"><code class="sourceCode python"><span class="im">import</span> time
+t1 <span class="op">=</span> time.time()
+mhws, clim <span class="op">=</span> mhw.detect(t, sst)
+t2 <span class="op">=</span> time.time()
+<span class="bu">print</span>(t2<span class="op">-</span>t1)</code></pre></div>
+<pre><code>## 0.298869848251</code></pre>
+<p>The python code appears to be about twice as fast. And it is calculating the event categories as well, which R is not. That is done in an additonal step with <code><a href="../reference/category.html">category()</a></code>.</p>
+</div>
 </div>
   </div>
 
