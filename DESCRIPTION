@@ -23,7 +23,8 @@ Suggests:
     testthat,
     knitr,
     rmarkdown,
-    covr
+    covr,
+    reticulate
 Imports:
     tibble,
     ggplot2,
