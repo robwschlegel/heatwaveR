@@ -104,51 +104,30 @@ write.csv(ts$temp, "sst_WA.csv", row.names = FALSE)
 With the package installed it is then activated and run as follows:
 
 ```{python}
-# Required for data prep
+# Required for data prep and export
 import numpy as np
 from datetime import date
+import pandas as pd
 
 # The MHW functions
 import marineHeatWaves as mhw
 
 # The date values
 t = np.arange(date(1982,1,1).toordinal(),date(2014,12,31).toordinal()+1)
-#print(type(t))
-#np.save('t.npy', t)
-#np.savetxt('t.csv', t)
-#print(t)
 
 # The temperature values
 sst = np.loadtxt(open("sst_WA.csv", "r"), delimiter=',', skiprows=1) # because a heading row needs to be skipped
-#print(type(sst))
-#print(sst)
 
 # The event metrics
 mhws, clim = mhw.detect(t, sst)
-#print(type(mhws))
-#np.savetxt('mhws_py.csv', mhws)
-#print(mhws)
-#np.save('clim.npy', clim) 
-#np.save('event.npy', event) 
 
-#import csv
-#with open('mhw_py.csv','wb') as f:
-#    w = csv.writer(f)
-#    w.writerows(mhws.items())
-
-import pandas as pd
 # Save event results
 mhws_df = pd.DataFrame.from_dict(mhws)
 mhws_df.to_csv('mhws_py.csv', sep = ',', index=False)
+
 # Save climatology results
 clim_df = pd.DataFrame.from_dict(clim)
 clim_df.to_csv('clim_py.csv', sep = ',', index=False)
-
-#dic = mhws
-# Creating your dataframe from your dictionnary
-#df = pd.DataFrame([(k, v) for k, v in mhws.iteritems()], columns=['key', 'value'])
-# Store the data into a csv file
-#df.to_csv('mhw_py.csv', sep=',') # indicate the path where to store the csv file
 ```
 
 ### Reticulate code
@@ -167,7 +146,7 @@ use_condaenv("py27")
 
 Once we've told R which version/environment we would like to use for Python we may then load the necessary modules.
 
-```{r python-modules}
+```{r python-modules, eval=FALSE}
 np <- import("numpy")
 datetime <- import("datetime")
 mhw <- import("marineHeatWaves")
@@ -175,7 +154,7 @@ mhw <- import("marineHeatWaves")
 
 One may run python code in it's native form within R by passing it as a character vector to `py_run_string()`.
 
-```{r python-strings}
+```{r python-strings, eval=FALSE}
 py_run_string("x = 10")
 py_run_string("t = np.arange(date(1982,1,1).toordinal(),date(2014,12,31).toordinal()+1)")
 py_run_string("sst = np.loadtxt(open('sst_WA.csv', 'r'), delimiter=',', skiprows=1)")
@@ -183,11 +162,11 @@ py_run_string("sst = np.loadtxt(open('sst_WA.csv', 'r'), delimiter=',', skiprows
 
 #### Default calculations
 
-```{r python-code}
+```{r python-code, eval=FALSE}
 # These numbers were taken from print(t) in the python code above
-# t <- as.integer(np$array(seq(723546, 735598)))
-# sst <- np$array(sst_WA$temp)
-# res_python <- mhw$detect(t = py$t, temp = py$sst) # There appears to be an Rcpp issue preventing this from handshaking...
+t <- as.integer(np$array(seq(723546, 735598)))
+sst <- np$array(sst_WA$temp)
+res_python <- mhw$detect(t = py$t, temp = py$sst) # There appears to be an Rcpp issue preventing this from handshaking...
 # The reticulate package is still in development...
 ```
 
@@ -228,15 +207,6 @@ cor(res_event_R$intensity_max, res_event_Python$intensity_max)
 cor(res_event_R$intensity_var, res_event_Python$intensity_var)
 cor(res_event_R$rate_onset, res_event_Python$rate_onset)
 cor(res_event_R$rate_decline, res_event_Python$rate_decline)
-
-# Or just slam everything together
-# colnames(res_event_R) <- paste("R", colnames(res_event_R), sep = "_")
-# colnames(res_event_Python) <- paste("Py", colnames(res_event_Python), sep = "_")
-# res_event_num <- cbind(res_event_R, res_event_Python) %>% 
-#   select(-Py_category, -(Py_time_end:Py_time_start), -Py_n_events,
-#          -(R_date_start:R_date_peak), -(Py_date_end:Py_date_start),
-#          -R_event_no, -(Py_duration_extreme:Py_duration_strong))
-# cor(res_event_num)
 ```
 
 With that looking fine, we next run a for loop that will run a correlation on all rows with the same name.
@@ -246,6 +216,7 @@ With that looking fine, we next run a for loop that will run a correlation on al
 res_event_num <- res_event_R %>% 
   select_if(is.numeric)
 
+# Run the loop
 res_event_cor <- data.frame()
 for(i in 1:length(colnames(res_event_num))){
   if(colnames(res_event_num)[i] %in% colnames(res_event_Python) & res_event_R[1,i] > 0){

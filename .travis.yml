@@ -8,3 +8,6 @@ after_success:
 addons:
     apt:
       update: true
+before_install:
+  - pip install numpy pandas
+  - pip install git+git://github.com/ecjoliver/marineHeatWaves@master
