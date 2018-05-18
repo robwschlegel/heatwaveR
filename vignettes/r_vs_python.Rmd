@@ -73,7 +73,7 @@ res$event[res$event$intensity_max == max(res$event$intensity_max), 1:6]
 
 ### Python code
 
-```{r python-setup, include = FALSE}
+```{r python-setup, include = FALSE, eval=FALSE}
 # devtools::install_github("rstudio/reticulate")
 library(reticulate)
 use_condaenv("py27")
@@ -103,7 +103,7 @@ write.csv(ts$temp, "sst_WA.csv", row.names = FALSE)
 
 With the package installed it is then activated and run as follows:
 
-```{python}
+```{python, eval=FALSE}
 # Required for data prep and export
 import numpy as np
 from datetime import date
@@ -138,7 +138,7 @@ It is also possible to run the Python code through R with the use of the R packa
 
 Here we load the __`reticulate`__ package and choose the conda environment I've already created called `py27`. For help on how to set up a conda environment go [here](https://conda.io/docs/user-guide/tasks/manage-environments.html). I've ensured that all of the required python modules are installed within this environment.
 
-```{r}
+```{r, eval=FALSE}
 # install.packages("reticulate")
 library(reticulate)
 use_condaenv("py27")
@@ -245,7 +245,7 @@ cols_Py
 
 Wonderful! Most things match up nicely. There is some disagreement between the use of the word "stop" or "end" that must be sorted out. The R output also has a couple of "norm" columns that are not produced by Python and should maybe be omitted. The R output must also have an "index_peak" column added. The duration of categories of events is something added in R by another function `category()`, and will be left that way for now. The "time" columns in the Python output aren't relavent as far as I can see in the present usage as these functions currently only take day values.
 
-```{python}
+```{python, eval=FALSE}
 # Still to be compared and benchmarked
 mhwBlock = mhw.blockAverage(t, mhws, clim)
 mean, trend, dtrend = mhw.meanTrend(mhwBlock)
@@ -263,7 +263,7 @@ system.time(detect_event(ts2clm(data = sst_WA, climatologyPeriod = c("1982-01-01
 
 ### Python
 
-```{python}
+```{python, eval=FALSE}
 import time
 t1 = time.time()
 mhws, clim = mhw.detect(t, sst)
