@@ -9,6 +9,7 @@ addons:
     apt:
       update: true
 before_install:
+  - python -m pip install -U pip
   - pip install --upgrade pip
   - pip install numpy pandas
   - pip install git+git://github.com/ecjoliver/marineHeatWaves@master
