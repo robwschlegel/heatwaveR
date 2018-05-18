@@ -38,7 +38,8 @@ Takes a series of dates and temperatures, and if irregular (but ordered), insert
 missing dates and fills correpsonding temperatures with NAs.
 }
 \details{
-Upon import, the package uses `zoo` and `lubridate` to process the input
+\enumerate{
+\item Upon import, the package uses `zoo` and `lubridate` to process the input
 date and temperature data. It reads in daily data with the time vector
 specified as either \code{POSIXct} or \code{Date}  (e.g. "1982-01-01 02:00:00" or
 "1982-01-01"). The data may be an irregular time series, but date must be
@@ -49,7 +50,7 @@ temperature value per day otherwise the function will fail. It is up to the
 user to calculate daily data from sub-daily measurements. Leap years are
 automatically accommodated by 'zoo'.
 
-This function can handle some of missing days, but this is not a
+\item This function can handle some of missing days, but this is not a
 licence to actually use these data for the detection of anomalous thermal
 events. Hobday et al. (2016) recommend gaps of no more than 3 days, which
 may be adjusted by setting the \code{maxPadLength} argument of the
@@ -59,8 +60,16 @@ calculated, which will not only have repercussions for the accuracy at which
 the event metrics can be determined, but also for the number of events that
 can be detected.
 
-It is recommended that a climatology period of at least 30 years is specified
+\item Previous versions of \code{make_whole()} tested to see if some rows are
+duplicated, or if replicate temperature readings are present per day, but this
+has now been disabled. Should the user be concerned about such repeated
+measurements, we suggest that the necessary checks and fixes are implemented
+prior to feeding the time series to \code{make_whole} (this is usually done
+via \code{ts2clm()}).
+
+\item It is recommended that a climatology period of at least 30 years is specified
 in order to capture any decadal thermal periodicities.
+}
 }
 \examples{
 library(dplyr); library(tidyr); library(lubridate)

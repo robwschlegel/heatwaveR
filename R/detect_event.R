@@ -41,7 +41,7 @@
 #' @param coldSpells Boolean specifying if the code should detect cold events
 #' instead of warm events. The default is \code{FALSE}. Please note that the
 #' climatological thresholds for cold-spells are considered to be the inverse
-#' of those for MHWs. For example, the defaulr setting for the detection of
+#' of those for MHWs. For example, the default setting for the detection of
 #' MHWs is \code{pctile = 90}, as seen in \code{\link{ts2clm}}. Should one want
 #' to use \code{detect_event} for MCSs, this threshold would best be generated
 #' in \code{\link{ts2clm}} by setting \code{pctile = 10} (see example below).

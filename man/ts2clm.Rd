@@ -103,6 +103,11 @@ the width of the sliding window specified in \code{windowHalfWidth}.
 \item This function supports leap years. This is done by ignoring Feb 29s
 for the initial calculation of the climatology and threshold. The values for
 Feb 29 are then linearly interpolated from the values for Feb 28 and Mar 1.
+\item Previous versions of \code{ts2clm()} tested to see if some rows
+are duplicated, or if replicate temperature readings are present per day, but
+this has now been disabled. Should the user be concerned about such repeated
+measurements, we suggest that the necessary checks and fixes are implemented
+prior to feeding the time series to \code{ts2clm()}.
 }
 The original Python algorithm was written by Eric Oliver, Institute for
 Marine and Antarctic Studies, University of Tasmania, Feb 2015, and is
