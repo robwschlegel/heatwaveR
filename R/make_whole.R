@@ -34,7 +34,7 @@
 #' licence to actually use these data for the detection of anomalous thermal
 #' events. Hobday et al. (2016) recommend gaps of no more than 3 days, which
 #' may be adjusted by setting the \code{maxPadLength} argument of the
-#' \code{\link{ts2clm()}} function. The longer and more frequent the gaps become
+#' \code{\link{ts2clm}} function. The longer and more frequent the gaps become
 #' the lower the fidelity of the annual climatology and threshold that can be
 #' calculated, which will not only have repercussions for the accuracy at which
 #' the event metrics can be determined, but also for the number of events that
@@ -49,7 +49,7 @@
 #' measurements, we suggest that the necessary checks and fixes are implemented
 #' prior to feeding the time series to \code{make_whole} (this is usually done
 #' via \code{\link{ts2clm}}).
-#' #'
+#'
 #' \item A faster version of this function called \code{make_whole_fast}
 #' is enabled by default in \code{ts2clm}, and we assume (hopefully correctly)
 #' that the user is certain that her data do not have missing rows (dates) or

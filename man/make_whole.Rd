@@ -54,30 +54,21 @@ measurements. Leap years are automatically accommodated by this function.
 licence to actually use these data for the detection of anomalous thermal
 events. Hobday et al. (2016) recommend gaps of no more than 3 days, which
 may be adjusted by setting the \code{maxPadLength} argument of the
-\code{ts2clm} function. The longer and more frequent the gaps become
+\code{\link{ts2clm}} function. The longer and more frequent the gaps become
 the lower the fidelity of the annual climatology and threshold that can be
 calculated, which will not only have repercussions for the accuracy at which
 the event metrics can be determined, but also for the number of events that
 can be detected.
 
-<<<<<<< HEAD
 \item It is recommended that a climatology period of at least 30 years is
 specified in order to capture any decadal thermal periodicities.
-||||||| merged common ancestors
-\item Previous versions of \code{make_whole()} tested to see if some rows are
-duplicated, or if replicate temperature readings are present per day, but this
-has now been disabled. Should the user be concerned about such repeated
-measurements, we suggest that the necessary checks and fixes are implemented
-prior to feeding the time series to \code{make_whole} (this is usually done
-via \code{ts2clm()}).
-=======
+
 \item Previous versions of \code{make_whole} tested to see if some rows are
 duplicated, or if replicate temperature readings are present per day, but this
 has now been disabled. Should the user be concerned about such repeated
 measurements, we suggest that the necessary checks and fixes are implemented
 prior to feeding the time series to \code{make_whole} (this is usually done
 via \code{\link{ts2clm}}).
->>>>>>> 343a5e1b05c443f1699855905d0d460f811819d2
 
 \item A faster version of this function called \code{make_whole_fast}
 is enabled by default in \code{ts2clm}, and we assume (hopefully correctly)
