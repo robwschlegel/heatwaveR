@@ -76,3 +76,5 @@ Friday, May 11th, 2018 Skype meeting:
 ** As well as the scientific ones
 *** Including how to determine the correct baselines and climatologies to use
 * Round it out with case studies and pitfalls
+
+Submit package to onboarding process with rOpenSci
