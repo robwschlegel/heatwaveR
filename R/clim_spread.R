@@ -1,4 +1,4 @@
-#' Spead a time series wide to allow for a climatology to be calculated
+#' Spead a time series wide to allow for a climatology to be calculated.
 #'
 #' An internal function that helps to create a wide time series that will
 #' then be used by \code{\link{clim_calc}} within \code{\link{ts2clm}}
@@ -14,7 +14,7 @@
 #' This width is doubled and centred around the point that the smoothing
 #' occurs. Default = 5, which makes an overall window size of 11.
 #'
-#' @return The function returns the data in a wide format.
+#' @return The function returns the data (a matrix) in a wide format.
 clim_spread <- function(data, clim_start, clim_end, windowHalfWidth) {
 
   ts_x <- ts_y <- NULL
@@ -24,10 +24,11 @@ clim_spread <- function(data, clim_start, clim_end, windowHalfWidth) {
     dplyr::mutate(ts_x = lubridate::year(ts_x)) %>%
     tidyr::spread(ts_x, ts_y)
 
-  ts_spread[59:61, ] <- zoo::na.approx(ts_spread[59:61, ], maxgap = 1, na.rm = TRUE)
+  ts_spread[59:61, ] <- zoo::na.approx(ts_spread[59:61, ],
+                                       maxgap = 1, na.rm = TRUE)
   ts_spread <- dplyr::bind_rows(utils::tail(ts_spread, windowHalfWidth),
-                     ts_spread,
-                     utils::head(ts_spread, windowHalfWidth))
+                                ts_spread,
+                                utils::head(ts_spread, windowHalfWidth))
 
   len_yr <- length(lubridate::year(clim_start):lubridate::year(clim_end))
 

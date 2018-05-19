@@ -4,9 +4,9 @@
 \alias{ts2clm}
 \title{Make a climatology from a daily time series.}
 \usage{
-ts2clm(data, x = t, y = temp, climatologyPeriod, maxPadLength = 3,
-  windowHalfWidth = 5, pctile = 90, smoothPercentile = TRUE,
-  smoothPercentileWidth = 31, clmOnly = FALSE)
+ts2clm(data, x = t, y = temp, climatologyPeriod, robust = FALSE,
+  maxPadLength = 3, windowHalfWidth = 5, pctile = 90,
+  smoothPercentile = TRUE, smoothPercentileWidth = 31, clmOnly = FALSE)
 }
 \arguments{
 \item{data}{A data frame with two columns. In the default setting (i.e. ommitting
@@ -27,6 +27,14 @@ name differs from the default (i.e. \code{temp}), specify the name here.}
 the climatology period, and the second value the end date of said period. This
 chosen period (preferably 30 years in length) is then used to calculate the
 seasonal cycle and the extreme value threshold.}
+
+\item{robust}{This switch selects between a slower, but more robust (default is
+\code{FALSE}), function that checks for the completeness of the date vector (i.e.
+it must be regular and with no duplicates), or a faster one, which assumes that
+the user has verified that no missing dates are present in the time series or
+whether or not some measurements are replicated (in which case it takes the mean).
+Internally, this decides whether \code{make_whole} or \code{make_whole_fast}
+will be used.}
 
 \item{maxPadLength}{Specifies the maximum length of days over which to
 interpolate (pad) missing data (specified as \code{NA}) in the input

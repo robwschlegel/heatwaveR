@@ -2,7 +2,7 @@
 % Please edit documentation in R/proto_event.R
 \name{proto_event}
 \alias{proto_event}
-\title{Detect proto-events based on a chosen criterion (column)}
+\title{Detect proto-events based on a chosen criterion (column).}
 \usage{
 proto_event(t_series, criterion_column, minDuration, gaps = FALSE, maxGap)
 }

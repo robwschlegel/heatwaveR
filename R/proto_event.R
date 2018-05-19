@@ -1,4 +1,4 @@
-#' Detect proto-events based on a chosen criterion (column)
+#' Detect proto-events based on a chosen criterion (column).
 #'
 #' An internal function that detects proto-events, which are periods of
 #' time above a threshold, but without necessarily considering a minimum

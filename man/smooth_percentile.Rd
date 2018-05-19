@@ -2,7 +2,7 @@
 % Please edit documentation in R/smooth_percentile.R
 \name{smooth_percentile}
 \alias{smooth_percentile}
-\title{Detect the climatology for a time series}
+\title{Detect the climatology for a time series.}
 \usage{
 smooth_percentile(data, smoothPercentileWidth)
 }

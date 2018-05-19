@@ -21,6 +21,13 @@
 #' the climatology period, and the second value the end date of said period. This
 #' chosen period (preferably 30 years in length) is then used to calculate the
 #' seasonal cycle and the extreme value threshold.
+#' @param robust This switch selects between a slower, but more robust (default is
+#' \code{FALSE}), function that checks for the completeness of the date vector (i.e.
+#' it must be regular and with no duplicates), or a faster one, which assumes that
+#' the user has verified that no missing dates are present in the time series or
+#' whether or not some measurements are replicated (in which case it takes the mean).
+#' Internally, this decides whether \code{make_whole} or \code{make_whole_fast}
+#' will be used.
 #' @param maxPadLength Specifies the maximum length of days over which to
 #' interpolate (pad) missing data (specified as \code{NA}) in the input
 #' temperature time series; i.e., any consecutive blocks of NAs with length
@@ -116,6 +123,7 @@ ts2clm <-
            x = t,
            y = temp,
            climatologyPeriod,
+           robust = FALSE,
            maxPadLength = 3,
            windowHalfWidth = 5,
            pctile = 90,
@@ -148,7 +156,12 @@ ts2clm <-
     ts_xy <- tibble::tibble(ts_x, ts_y)
     rm(ts_x); rm(ts_y)
 
-    ts_whole <- make_whole(ts_xy, x = ts_x, y = ts_y)
+    if (robust) {
+      ts_whole <- make_whole(ts_xy, x = ts_x, y = ts_y)
+    } else {
+      ts_whole <- make_whole_fast(ts_xy, x = ts_x, y = ts_y)
+      }
+
     ts_whole$ts_y <- zoo::na.approx(ts_whole$ts_y, maxgap = maxPadLength)
 
     clim_start <- climatologyPeriod[1]

@@ -2,7 +2,7 @@
 % Please edit documentation in R/block_average.R
 \name{block_average}
 \alias{block_average}
-\title{Calculate Yearly Means for Event Metrics.}
+\title{Calculate yearly means for event metrics.}
 \usage{
 block_average(data, x = t, y = temp, report = "full")
 }
@@ -59,7 +59,7 @@ value of the threshold (relative to climatology,
 i.e., threshold - climatology.)
 }
 \description{
-Calculate Yearly Means for Event Metrics.
+Calculate yearly means for event metrics.
 }
 \details{
 This function needs to be provided with the full output from the \code{detect}

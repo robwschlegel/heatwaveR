@@ -1,4 +1,4 @@
-#' Detect the climatology for a time series
+#' Detect the climatology for a time series.
 #'
 #' An internal function that helps to create climatologies in
 #' accordance with the Hobday et al. (2016) standard.

@@ -1,4 +1,4 @@
-#' Calculate Yearly Means for Event Metrics.
+#' Calculate yearly means for event metrics.
 #'
 #' @importFrom dplyr %>%
 #'

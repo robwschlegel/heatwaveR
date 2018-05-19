@@ -2,7 +2,7 @@
 % Please edit documentation in R/clim_calc.R
 \name{clim_calc}
 \alias{clim_calc}
-\title{Calculate seasonal and threshold climatologies as well as the variance}
+\title{Calculate seasonal and threshold climatologies as well as the variance.}
 \usage{
 clim_calc(data, windowHalfWidth, pctile)
 }

@@ -125,7 +125,7 @@ the given \code{theshold}, these temperatures are then taken as being in
 exceedance below the \code{threshold} as there is no antonym in the English
 language for 'exceedance'.
 }
-This function is based largely on the \code{detect} function found in this
+This function is based largely on the \code{detect_event} function found in this
 package, which was ported from the Python algorithm that was written by Eric
 Oliver, Institute for Marine and Antarctic Studies, University of Tasmania,
 Feb 2015, and is documented by Hobday et al. (2016).

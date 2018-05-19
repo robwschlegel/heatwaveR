@@ -2,7 +2,7 @@
 % Please edit documentation in R/clim_spread.R
 \name{clim_spread}
 \alias{clim_spread}
-\title{Spead a time series wide to allow for a climatology to be calculated}
+\title{Spead a time series wide to allow for a climatology to be calculated.}
 \usage{
 clim_spread(data, clim_start, clim_end, windowHalfWidth)
 }
@@ -19,7 +19,7 @@ This width is doubled and centred around the point that the smoothing
 occurs. Default = 5, which makes an overall window size of 11.}
 }
 \value{
-The function returns the data in a wide format.
+The function returns the data (a matrix) in a wide format.
 }
 \description{
 An internal function that helps to create a wide time series that will
