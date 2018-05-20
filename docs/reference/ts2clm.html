@@ -77,7 +77,7 @@ by an optional moving average smoother as used by Hobday et al. (2016)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.3.9002</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.4.9002</span>
       </span>
     </div>
 
@@ -160,9 +160,9 @@ by an optional moving average smoother as used by Hobday et al. (2016).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ts2clm</span>(<span class='no'>data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='no'>climatologyPeriod</span>, <span class='kw'>maxPadLength</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>windowHalfWidth</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>pctile</span> <span class='kw'>=</span> <span class='fl'>90</span>, <span class='kw'>smoothPercentile</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>smoothPercentileWidth</span> <span class='kw'>=</span> <span class='fl'>31</span>, <span class='kw'>clmOnly</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>ts2clm</span>(<span class='no'>data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='no'>climatologyPeriod</span>, <span class='kw'>robust</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>maxPadLength</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>windowHalfWidth</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>pctile</span> <span class='kw'>=</span> <span class='fl'>90</span>,
+  <span class='kw'>smoothPercentile</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>smoothPercentileWidth</span> <span class='kw'>=</span> <span class='fl'>31</span>, <span class='kw'>clmOnly</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -193,6 +193,16 @@ name differs from the default (i.e. <code>temp</code>), specify the name here.</
 the climatology period, and the second value the end date of said period. This
 chosen period (preferably 30 years in length) is then used to calculate the
 seasonal cycle and the extreme value threshold.</p></td>
+    </tr>
+    <tr>
+      <th>robust</th>
+      <td><p>This switch selects between a slower, but more robust (default is
+<code>FALSE</code>), function that checks for the completeness of the date vector (i.e.
+it must be regular and with no duplicates), or a faster one, which assumes that
+the user has verified that no missing dates are present in the time series or
+whether or not some measurements are replicated (in which case it takes the mean).
+Internally, this decides whether <code>make_whole</code> or <code>make_whole_fast</code>
+will be used.</p></td>
     </tr>
     <tr>
       <th>maxPadLength</th>

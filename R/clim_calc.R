@@ -41,14 +41,13 @@ clim_calc <- function(data, windowHalfWidth, pctile) {
   }
 
   len_clim_year <- 366
-  clim <-
-    tibble::tibble(
-      # doy = data[(windowHalfWidth + 1):((windowHalfWidth) + len_clim_year), 1],
-      doy = 1:366,
-      seas = seas[(windowHalfWidth + 1):((windowHalfWidth) + len_clim_year)],
-      thresh = thresh[(windowHalfWidth + 1):((windowHalfWidth) + len_clim_year)],
-      var = var[(windowHalfWidth + 1):((windowHalfWidth) + len_clim_year)]
-    )
+  doy <- 1:366
+  seas <- seas[(windowHalfWidth + 1):((windowHalfWidth) + len_clim_year)]
+  thresh <- thresh[(windowHalfWidth + 1):((windowHalfWidth) + len_clim_year)]
+  var <- var[(windowHalfWidth + 1):((windowHalfWidth) + len_clim_year)]
+
+  clim <- matrix(c(doy, seas, thresh, var), ncol = 4, byrow = FALSE,
+                 dimnames = list(NULL, c("doy", "seas", "thresh", "var")))
 
   return(clim)
 }

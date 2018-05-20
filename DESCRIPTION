@@ -1,5 +1,5 @@
 Package: heatwaveR
-Version: 0.2.3.9002
+Version: 0.2.4.9002
 Date: 2018-05-17
 Title: Detect heatwaves and cold-spells
 Description: This package is designed to include and encompass the different methods of defining and detecting extreme events, known as heatwaves or cold-spells in both air and water temperature data. These detection algorithms may be used on non-temperature data as well however, this is not catered for explicitly here as no use of this technique in the literature currently exists.
@@ -36,6 +36,7 @@ Imports:
     utils,
     zoo,
     grid,
-    lazyeval
+    lazyeval,
+    RcppRoll
 VignetteBuilder: knitr
 URL: https://robwschlegel.github.io/heatwaveR/index.html

@@ -1,3 +1,8 @@
+# heatwaveR 0.2.4.9002 (2018-05-17)
+* Take advantage of C++ speed enhancement in smooth_percentile() by using 
+  RcppRoll
+* Update testthat accordingly
+
 # heatwaveR 0.2.3.9002 (2018-05-17)
 
 * Basic R vs Python vignette finished
