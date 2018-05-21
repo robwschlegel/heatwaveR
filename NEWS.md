@@ -1,4 +1,9 @@
+# heatwaveR 0.2.4.9003 (2018-05-21)
+
+* Update testthat for `lolli_ploy` and `event_line`
+
 # heatwaveR 0.2.4.9002 (2018-05-17)
+
 * Take advantage of C++ speed enhancement in smooth_percentile() by using 
   RcppRoll
 * Update testthat accordingly

@@ -86,17 +86,17 @@ event_line <- function(data,
 
   date_stop <- date_start <- duration <-  temp <-  NULL
 
-  if (!(is.list(data))) stop("Please ensure you are running this function on the output of 'heatwaveR::detect_event()'")
+  if (!(exists("event", data)) | !(exists("climatology", data))) stop("Please ensure you are running this function on the output of 'heatwaveR::detect_event()'")
 
-  ts.x <- eval(substitute(x), data$clim)
-  data$clim$ts.x <- ts.x
-  ts.y <- eval(substitute(y), data$clim)
-  data$clim$ts.y <- ts.y
+  ts.x <- eval(substitute(x), data$climatology)
+  data$climatology$ts.x <- ts.x
+  ts.y <- eval(substitute(y), data$climatology)
+  data$climatology$ts.y <- ts.y
 
   event <- data$event %>%
     dplyr::filter(date_stop >= start_date & date_start <= end_date)
 
-  if (nrow(event) == 0) stop("No events detected!\nConsider changing the 'start_date' or 'end_date' values.")
+  if (nrow(event) == 0) stop("No events detected! Consider changing the 'start_date' or 'end_date' values.")
 
   if (!(metric %in% c("intensity_mean", "intensity_max", "intensity_var", "intensity_cumulative", "intensity_mean_relThresh", "intensity_max_relThresh",
                       "intensity_var_relThresh","intensity_cumulative_relThresh", "intensity_mean_abs", "intensity_max_abs", "intensity_var_abs",
@@ -118,7 +118,7 @@ event_line <- function(data,
 
   thresh_2x <- thresh_3x <- thresh_4x <- NULL
 
-  clim_diff <- data$clim %>%
+  clim_diff <- data$climatology %>%
     dplyr::mutate(diff = thresh - seas,
            thresh_2x = thresh + diff,
            thresh_3x = thresh_2x + diff,
@@ -288,7 +288,7 @@ lolli_plot <- function(data,
                        metric = "intensity_max",
                        event_count = 3) {
 
-  if (!(is.list(data))) stop("Please ensure you are running this function on the output of 'heatwaveR::detect()'")
+  if (!(exists("event", data)) | !(exists("climatology", data))) stop("Please ensure you are running this function on the output of 'heatwaveR::detect_event()'")
 
   if (!(metric %in% c("intensity_mean", "intensity_max", "intensity_cumulative", "duration"))) {
     stop("Please ensure you have spelled the desired metric correctly.")
@@ -300,8 +300,6 @@ lolli_plot <- function(data,
 
   event <- data$event %>%
     dplyr::select(metric, xaxis)
-
-  if (nrow(event) == 0) stop("No events detected!")
 
   y_top <- as.numeric(event[which(abs(event[ ,1]) == max(abs(event[ ,1]))), 1])*1.05
   if (y_top >= 0) y_limits <- c(0, y_top)
@@ -322,7 +320,6 @@ lolli_plot <- function(data,
   if (metric == "intensity_mean") ylabel <- expression(paste("Mean intensity [", degree, "C]"))
   if (metric == "intensity_cumulative") ylabel <- expression(paste("Cumulative intensity [", degree, "C x days]"))
   if (metric == "duration") ylabel <- "Duration [days]"
-  if (!exists("ylabel")) ylabel <- metric
 
   lolli <- ggplot(data = event, aes_string(x = xaxis, y = metric)) +
     geom_lolli(colour = lolli_col[1], colour_n = lolli_col[2], fill = "grey70", n = event_count) +
