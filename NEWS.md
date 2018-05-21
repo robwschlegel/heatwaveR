@@ -1,7 +1,8 @@
 # heatwaveR 0.2.4.9003 (2018-05-21)
 
 * Updated testthat for `lolli_plot` and `event_line`
-* Updated testthat for `ts2clm` 
+* Updated testthat for `ts2clm`
+* Updated testthat for `detect_event`
 
 # heatwaveR 0.2.4.9002 (2018-05-17)
 

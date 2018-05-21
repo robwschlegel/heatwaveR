@@ -43,27 +43,9 @@ test_that("events starting/ending before/after the time series dates aredealt wi
   expect_equal(is.na(res_event$rate_decline[58]), TRUE)
 })
 
-# test_that("the default output of detect_event() matches detect()", {
-#   res_old <- detect(data = make_whole(sst_WA),
-#                     climatology_start = "1983-01-01", climatology_end = "2012-12-31")
-#   res_new <- detect_event(ts2clm(sst_WA,
-#                                  climatologyPeriod = c("1983-01-01", "2012-12-31")))
-#   expect_equal(sum(res_old$clim$seas_clim_year), sum(res_new$climatology$seas))
-#   expect_equal(sum(res_old$clim$thresh_clim_year), sum(res_new$climatology$thresh))
-#   expect_equal(sum(res_old$event$int_mean), sum(res_new$event$intensity_mean))
-#   expect_equal(sum(res_old$event$int_mean_rel_thresh), sum(res_new$event$intensity_mean_relThresh))
-#   expect_equal(sum(res_old$event$int_cum), sum(res_new$event$intensity_cumulative))
-# })
-#
-# test_that("the default cold-spell output of detect_event() matches detect()", {
-#   res_old <- detect(data = make_whole(sst_WA), cold_spells = TRUE,
-#                     climatology_start = "1983-01-01", climatology_end = "2012-12-31")
-#   res_new <- detect_event(ts2clm(sst_WA, pctile = 10,
-#                                  climatologyPeriod = c("1983-01-01", "2012-12-31")),
-#                           coldSpells = TRUE)
-#   expect_equal(sum(res_old$clim$seas_clim_year), sum(res_new$climatology$seas))
-#   expect_equal(sum(res_old$clim$thresh_clim_year), sum(res_new$climatology$thresh))
-#   expect_equal(sum(res_old$event$int_mean), sum(res_new$event$intensity_mean))
-#   expect_equal(sum(res_old$event$int_mean_rel_thresh), sum(res_new$event$intensity_mean_relThresh))
-#   expect_equal(sum(res_old$event$int_cum), sum(res_new$event$intensity_cumulative))
-# })
+test_that("detect_event() does not joinAcrossGaps if conditions are not met", {
+  ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  res_1 <- detect_event(ts, maxGap = 0)
+  res_2 <- detect_event(ts)
+  expect_lt(nrow(res_2$event), nrow(res_1$event))
+})
