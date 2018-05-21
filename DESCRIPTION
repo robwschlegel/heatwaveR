@@ -38,6 +38,6 @@ Imports:
     grid,
     lazyeval,
     Rcpp (>= 0.12.16)
-LinkingTo: Rcpp, RcppArmadillo
+LinkingTo: Rcpp, RcppArmadillo, BH
 VignetteBuilder: knitr
 URL: https://robwschlegel.github.io/heatwaveR/index.html

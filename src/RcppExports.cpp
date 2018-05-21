@@ -2,12 +2,37 @@
 // Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #include <RcppArmadillo.h>
+#include <RcppGSL.h>
 #include <Rcpp.h>
 
 using namespace Rcpp;
 
+// computeGCD
+int computeGCD(int a, int b);
+RcppExport SEXP _heatwaveR_computeGCD(SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type a(aSEXP);
+    Rcpp::traits::input_parameter< int >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(computeGCD(a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
+// computeLCM
+int computeLCM(int a, int b);
+RcppExport SEXP _heatwaveR_computeLCM(SEXP aSEXP, SEXP bSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type a(aSEXP);
+    Rcpp::traits::input_parameter< int >::type b(bSEXP);
+    rcpp_result_gen = Rcpp::wrap(computeLCM(a, b));
+    return rcpp_result_gen;
+END_RCPP
+}
 // fun1
-arma::mat fun1(arma::mat x, int windowHalfWidth);
+arma::vec fun1(arma::mat x, int windowHalfWidth);
 RcppExport SEXP _heatwaveR_fun1(SEXP xSEXP, SEXP windowHalfWidthSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -15,6 +40,30 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
     Rcpp::traits::input_parameter< int >::type windowHalfWidth(windowHalfWidthSEXP);
     rcpp_result_gen = Rcpp::wrap(fun1(x, windowHalfWidth));
+    return rcpp_result_gen;
+END_RCPP
+}
+// fun2
+double fun2(arma::mat x, int windowHalfWidth);
+RcppExport SEXP _heatwaveR_fun2(SEXP xSEXP, SEXP windowHalfWidthSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type windowHalfWidth(windowHalfWidthSEXP);
+    rcpp_result_gen = Rcpp::wrap(fun2(x, windowHalfWidth));
+    return rcpp_result_gen;
+END_RCPP
+}
+// fun3
+arma::vec fun3(arma::mat x, int windowHalfWidth);
+RcppExport SEXP _heatwaveR_fun3(SEXP xSEXP, SEXP windowHalfWidthSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type windowHalfWidth(windowHalfWidthSEXP);
+    rcpp_result_gen = Rcpp::wrap(fun3(x, windowHalfWidth));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -38,6 +87,45 @@ BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< DataFrame >::type d(dSEXP);
     rcpp_result_gen = Rcpp::wrap(mw_cpp(d));
+    return rcpp_result_gen;
+END_RCPP
+}
+// run_quantile0
+NumericVector run_quantile0(NumericVector x, int n, double prob);
+RcppExport SEXP _heatwaveR_run_quantile0(SEXP xSEXP, SEXP nSEXP, SEXP probSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< double >::type prob(probSEXP);
+    rcpp_result_gen = Rcpp::wrap(run_quantile0(x, n, prob));
+    return rcpp_result_gen;
+END_RCPP
+}
+// run_quantile
+NumericVector run_quantile(NumericVector x, int n, double prob);
+RcppExport SEXP _heatwaveR_run_quantile(SEXP xSEXP, SEXP nSEXP, SEXP probSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< double >::type prob(probSEXP);
+    rcpp_result_gen = Rcpp::wrap(run_quantile(x, n, prob));
+    return rcpp_result_gen;
+END_RCPP
+}
+// run_quantile_matrix
+NumericVector run_quantile_matrix(NumericVector x, int n, NumericVector probs);
+RcppExport SEXP _heatwaveR_run_quantile_matrix(SEXP xSEXP, SEXP nSEXP, SEXP probsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type probs(probsSEXP);
+    rcpp_result_gen = Rcpp::wrap(run_quantile_matrix(x, n, probs));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -107,17 +195,36 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// gsl_vector_sum_2
+double gsl_vector_sum_2(const Rcpp::List& data);
+RcppExport SEXP _heatwaveR_gsl_vector_sum_2(SEXP dataSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const Rcpp::List& >::type data(dataSEXP);
+    rcpp_result_gen = Rcpp::wrap(gsl_vector_sum_2(data));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_heatwaveR_computeGCD", (DL_FUNC) &_heatwaveR_computeGCD, 2},
+    {"_heatwaveR_computeLCM", (DL_FUNC) &_heatwaveR_computeLCM, 2},
     {"_heatwaveR_fun1", (DL_FUNC) &_heatwaveR_fun1, 2},
+    {"_heatwaveR_fun2", (DL_FUNC) &_heatwaveR_fun2, 2},
+    {"_heatwaveR_fun3", (DL_FUNC) &_heatwaveR_fun3, 2},
     {"_heatwaveR_fun1", (DL_FUNC) &_heatwaveR_fun1, 2},
     {"_heatwaveR_mw_cpp", (DL_FUNC) &_heatwaveR_mw_cpp, 1},
+    {"_heatwaveR_run_quantile0", (DL_FUNC) &_heatwaveR_run_quantile0, 3},
+    {"_heatwaveR_run_quantile", (DL_FUNC) &_heatwaveR_run_quantile, 3},
+    {"_heatwaveR_run_quantile_matrix", (DL_FUNC) &_heatwaveR_run_quantile_matrix, 3},
     {"_heatwaveR_sumCpp", (DL_FUNC) &_heatwaveR_sumCpp, 1},
     {"_heatwaveR_rcpparma_hello_world", (DL_FUNC) &_heatwaveR_rcpparma_hello_world, 0},
     {"_heatwaveR_rcpparma_outerproduct", (DL_FUNC) &_heatwaveR_rcpparma_outerproduct, 1},
     {"_heatwaveR_rcpparma_innerproduct", (DL_FUNC) &_heatwaveR_rcpparma_innerproduct, 1},
     {"_heatwaveR_rcpparma_bothproducts", (DL_FUNC) &_heatwaveR_rcpparma_bothproducts, 1},
     {"_heatwaveR_add_vecs", (DL_FUNC) &_heatwaveR_add_vecs, 2},
+    {"_heatwaveR_gsl_vector_sum_2", (DL_FUNC) &_heatwaveR_gsl_vector_sum_2, 1},
     {NULL, NULL, 0}
 };
 
