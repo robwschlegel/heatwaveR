@@ -36,6 +36,8 @@ Imports:
     utils,
     zoo,
     grid,
-    lazyeval
+    lazyeval,
+    Rcpp (>= 0.12.16)
+LinkingTo: Rcpp, RcppArmadillo
 VignetteBuilder: knitr
 URL: https://robwschlegel.github.io/heatwaveR/index.html

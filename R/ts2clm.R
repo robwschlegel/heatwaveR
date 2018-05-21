@@ -160,7 +160,7 @@ ts2clm <-
       ts_whole <- make_whole(ts_xy, x = ts_x, y = ts_y)
     } else {
       ts_whole <- make_whole_fast(ts_xy, x = ts_x, y = ts_y)
-      }
+    }
 
     ts_whole$ts_y <- zoo::na.approx(ts_whole$ts_y, maxgap = maxPadLength)
 
@@ -176,13 +176,15 @@ ts2clm <-
 
     ts_wide <- clim_spread(ts_whole, clim_start, clim_end, windowHalfWidth)
 
-    ts_clim <- clim_calc(ts_wide, windowHalfWidth, pctile)
+    ts_mat <- clim_calc(ts_wide, windowHalfWidth, pctile)
 
-    if (smoothPercentile)
-      ts_clim <- smooth_percentile(ts_clim, smoothPercentileWidth)
+    if (smoothPercentile) {
+      ts_clim <- smooth_percentile(ts_mat, smoothPercentileWidth)
+    } else {
+      ts_clim <- tibble::as.tibble((ts_mat))
+    }
 
     if (clmOnly) {
-      ts_clim <- tibble::as_tibble(ts_clim)
       return(ts_clim)
     } else {
       ts_res <- ts_whole %>%
