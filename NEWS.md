@@ -1,3 +1,9 @@
+# heatwaveR 0.2.5.9003 (2018-05-22)
+
+* Added C++ function, clim_calc_ccp() for faster climatology calculations; speed
+  of climatology calculation comes down from 50.6 ms in R to 3.4 ms in C++ on
+  my MacBook Pro (15-inch, 2017) 2.9 GHz Intel Core i7 16 GB RAM computer
+
 # heatwaveR 0.2.4.9003 (2018-05-21)
 
 * Updated testthat for `lolli_plot` and `event_line`
