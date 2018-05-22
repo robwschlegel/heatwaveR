@@ -18,8 +18,10 @@ navbar:
       href: articles/Climatologies_and_baselines.html
     - text: "Short climatologies"
       href: articles/Short_climatologies.html
-    - text: "R vs Python"
+    - text: "Default MHW outputs in R and Python"
       href: articles/r_vs_python.html
+    - text: "Additional MHW outputs in R and Python"
+      href: articles/r_vs_python_more.html
   - text: News
     href: news/index.html
   right:
