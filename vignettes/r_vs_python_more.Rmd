@@ -30,19 +30,49 @@ First let's revisit the base detect funcitons and see how the results hold up as
 ```{r r-init}
 # The basic output
 library(heatwaveR)
-res <- detect_event(ts2clm(data = sst_WA, 
-                           climatologyPeriod = c("1982-01-01", "2014-12-31")))
+default_r <- detect_event(ts2clm(data = sst_WA, 
+                                 climatologyPeriod = c("1982-01-01", "2014-12-31")))
 ```
 
 ```{r}
 # Changing the percentile threshold
-res_80 <- detect_event(ts2clm(data = sst_WA, pctile = 80,
+pctile_80_r <- detect_event(ts2clm(data = sst_WA, pctile = 80,
+                                   climatologyPeriod = c("1982-01-01", "2014-12-31")))
+pctile_85_r <- detect_event(ts2clm(data = sst_WA, pctile = 85,
+                                   climatologyPeriod = c("1982-01-01", "2014-12-31")))
+pctile_95_r <- detect_event(ts2clm(data = sst_WA, pctile = 95,
+                                   climatologyPeriod = c("1982-01-01", "2014-12-31")))
+pctile_99_r <- detect_event(ts2clm(data = sst_WA, pctile = 99,
+                                   climatologyPeriod = c("1982-01-01", "2014-12-31")))
+```
+
+```{r}
+# Changing the windowHalfWidth
+whw_1_r <- detect_event(ts2clm(data = sst_WA, windowHalfWidth = 1,
                               climatologyPeriod = c("1982-01-01", "2014-12-31")))
-res_85 <- detect_event(ts2clm(data = sst_WA, pctile = 85,
+whw_3_r <- detect_event(ts2clm(data = sst_WA, windowHalfWidth = 3,
                               climatologyPeriod = c("1982-01-01", "2014-12-31")))
-res_95 <- detect_event(ts2clm(data = sst_WA, pctile = 95,
+whw_7_r <- detect_event(ts2clm(data = sst_WA, windowHalfWidth = 7,
                               climatologyPeriod = c("1982-01-01", "2014-12-31")))
-res_99 <- detect_event(ts2clm(data = sst_WA, pctile = 99,
+whw_9_r <- detect_event(ts2clm(data = sst_WA, windowHalfWidth = 9,
                               climatologyPeriod = c("1982-01-01", "2014-12-31")))
+```
+
+```{r}
+# Changing the smoothPercentileWidth
+spw_11_r <- detect_event(ts2clm(data = sst_WA, smoothPercentileWidth = 11,
+                              climatologyPeriod = c("1982-01-01", "2014-12-31")))
+spw_21_r <- detect_event(ts2clm(data = sst_WA, smoothPercentileWidth = 21,
+                              climatologyPeriod = c("1982-01-01", "2014-12-31")))
+spw_41_r <- detect_event(ts2clm(data = sst_WA, smoothPercentileWidth = 41,
+                              climatologyPeriod = c("1982-01-01", "2014-12-31")))
+spw_51_r <- detect_event(ts2clm(data = sst_WA, smoothPercentileWidth = 51,
+                              climatologyPeriod = c("1982-01-01", "2014-12-31")))
+```
+
+```{r}
+# Changing minDuration
+minD_3_r <- detect_event(ts2clm(data = sst_WA, climatologyPeriod = c("1982-01-01", "2014-12-31")), 
+                         minDuration = 3)
 ```
 
