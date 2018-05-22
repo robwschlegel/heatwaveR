@@ -1,15 +1,15 @@
 Package: heatwaveR
-Version: 0.2.4.9003
-Date: 2018-05-21
+Version: 0.2.5.9003
+Date: 2018-05-22
 Title: Detect heatwaves and cold-spells
 Description: This package is designed to include and encompass the different methods of defining and detecting extreme events, known as heatwaves or cold-spells in both air and water temperature data. These detection algorithms may be used on non-temperature data as well however, this is not catered for explicitly here as no use of this technique in the literature currently exists.
 Type: Package
 Authors@R: c(person("Robert W.", "Schlegel", role = c("aut", "cre", "ctb"),
-    email = "robwschlegel@gmail.com", 
+    email = "robwschlegel@gmail.com",
     comment = c(ORCID = "0000-0002-0705-1287")),
-    person("Eric C. J.", "Oliver", role = "aut", 
+    person("Eric C. J.", "Oliver", role = "aut",
     comment = c(ORCID = "0000-0002-4006-2826")),
-    person("Albertus J.", "Smit", role = c("aut", "ctb"), 
+    person("Albertus J.", "Smit", role = c("aut", "ctb"),
     comment = c(ORCID = "0000-0002-3799-6126")))
 Maintainer: Robert W. Schlegel <robwschlegel@gmail.com>
 License: MIT + file LICENSE
@@ -18,7 +18,7 @@ LazyData: true
 ByteCompile: true
 RoxygenNote: 6.0.1
 Depends: R (>= 3.00)
-Suggests: 
+Suggests:
     tidyverse,
     testthat,
     knitr,
@@ -37,6 +37,10 @@ Imports:
     zoo,
     grid,
     lazyeval,
-    RcppRoll
+    RcppRoll,
+    Rcpp (>= 0.12.16),
+    RcppArmadillo
+LinkingTo: Rcpp, RcppArmadillo
+NeedsCompilation: yes
 VignetteBuilder: knitr
 URL: https://robwschlegel.github.io/heatwaveR/index.html
