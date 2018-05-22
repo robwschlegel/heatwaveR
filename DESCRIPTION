@@ -18,7 +18,7 @@ LazyData: true
 ByteCompile: true
 RoxygenNote: 6.0.1
 Depends: R (>= 3.00)
-Suggests: 
+Suggests:
     tidyverse,
     testthat,
     knitr,
@@ -37,7 +37,10 @@ Imports:
     zoo,
     grid,
     lazyeval,
-    Rcpp (>= 0.12.16)
-LinkingTo: Rcpp, RcppArmadillo, BH
+    RcppRoll,
+    Rcpp (>= 0.12.16),
+    RcppArmadillo
+LinkingTo: Rcpp, RcppArmadillo
+NeedsCompilation: yes
 VignetteBuilder: knitr
 URL: https://robwschlegel.github.io/heatwaveR/index.html

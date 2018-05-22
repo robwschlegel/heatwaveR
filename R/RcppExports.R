@@ -2,6 +2,6 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 clim_calc_cpp <- function(x, windowHalfWidth, pctile) {
-    .Call(`_heatwaveR_clim_calc_cpp`, x, windowHalfWidth, pctile)
+    .Call('_heatwaveR_clim_calc_cpp', PACKAGE = 'heatwaveR', x, windowHalfWidth, pctile)
 }
 
