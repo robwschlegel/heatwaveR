@@ -249,6 +249,15 @@ default_event
 
 Seeing now that the choice of the `pctile` threshold may create results different enough as to produce a different counts of events, we need to look closer at the different arguments. I have my suspicions that the smoothing of the threshold values may be the culprit here.
 
+```{r}
+spw_no_r <- detect_event(ts2clm(data = sst_WA, smoothPercentile = FALSE,
+                                climatologyPeriod = c("1982-01-01", "2014-12-31")))
+spw_11_r <- detect_event(ts2clm(data = sst_WA, smoothPercentileWidth = 11,
+                                climatologyPeriod = c("1982-01-01", "2014-12-31")))
+spw_51_r <- detect_event(ts2clm(data = sst_WA, smoothPercentileWidth = 51,
+                                climatologyPeriod = c("1982-01-01", "2014-12-31")))
+```
+
 ```{python, eval = FALSE}
 # smoothPercentileWidth = FALSE
 mhws, clim = mhw.detect(t, sst, smoothPercentile = False)
@@ -268,15 +277,6 @@ mhws_df = pd.DataFrame.from_dict(mhws)
 mhws_df.to_csv('mhws_py_spw_51.csv', sep = ',', index = False)
 clim_df = pd.DataFrame.from_dict(clim)
 clim_df.to_csv('clim_py_spw_51.csv', sep = ',', index = False)
-```
-
-```{r}
-spw_no_r <- detect_event(ts2clm(data = sst_WA, smoothPercentile = FALSE,
-                                climatologyPeriod = c("1982-01-01", "2014-12-31")))
-spw_11_r <- detect_event(ts2clm(data = sst_WA, smoothPercentileWidth = 11,
-                                climatologyPeriod = c("1982-01-01", "2014-12-31")))
-spw_51_r <- detect_event(ts2clm(data = sst_WA, smoothPercentileWidth = 51,
-                                climatologyPeriod = c("1982-01-01", "2014-12-31")))
 ```
 
 ```{r}
