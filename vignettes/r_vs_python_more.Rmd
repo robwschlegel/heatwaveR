@@ -1,0 +1,78 @@
+---
+title: "Additional MHW outputs in R and Python"
+author: "Robert W Schlegel"
+date: "`r Sys.Date()`"
+description: "This vignette compares the code/work flow for the additional outputs found within the Python and R versions."
+output: 
+  rmarkdown::html_vignette:
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r global_options, include = FALSE}
+knitr::opts_chunk$set(fig.width = 4, fig.align = 'center',
+                      warning = FALSE, 
+                      message = FALSE, 
+                      tidy = FALSE)
+```
+
+## Overview
+
+Building on the identical default functionality shared between the two languages, this vignette goes further to look at the additional functionality contained within the two packages. Along the way the outputs are checked for consistency and all of the arguments for all of the functions are tweaked to look for irregularities. This is necessary before only one language is used to further investigate best practices for dealing with sub-optimal time series in the detection of MHWs.
+
+## Base function arguments
+
+First let's revisit the base detect funcitons and see how the results hold up as we shift the arguments about.
+
+```{r r-init}
+# The basic output
+library(heatwaveR)
+default_r <- detect_event(ts2clm(data = sst_WA, 
+                                 climatologyPeriod = c("1982-01-01", "2014-12-31")))
+```
+
+```{r}
+# Changing the percentile threshold
+pctile_80_r <- detect_event(ts2clm(data = sst_WA, pctile = 80,
+                                   climatologyPeriod = c("1982-01-01", "2014-12-31")))
+pctile_85_r <- detect_event(ts2clm(data = sst_WA, pctile = 85,
+                                   climatologyPeriod = c("1982-01-01", "2014-12-31")))
+pctile_95_r <- detect_event(ts2clm(data = sst_WA, pctile = 95,
+                                   climatologyPeriod = c("1982-01-01", "2014-12-31")))
+pctile_99_r <- detect_event(ts2clm(data = sst_WA, pctile = 99,
+                                   climatologyPeriod = c("1982-01-01", "2014-12-31")))
+```
+
+```{r}
+# Changing the windowHalfWidth
+whw_1_r <- detect_event(ts2clm(data = sst_WA, windowHalfWidth = 1,
+                              climatologyPeriod = c("1982-01-01", "2014-12-31")))
+whw_3_r <- detect_event(ts2clm(data = sst_WA, windowHalfWidth = 3,
+                              climatologyPeriod = c("1982-01-01", "2014-12-31")))
+whw_7_r <- detect_event(ts2clm(data = sst_WA, windowHalfWidth = 7,
+                              climatologyPeriod = c("1982-01-01", "2014-12-31")))
+whw_9_r <- detect_event(ts2clm(data = sst_WA, windowHalfWidth = 9,
+                              climatologyPeriod = c("1982-01-01", "2014-12-31")))
+```
+
+```{r}
+# Changing the smoothPercentileWidth
+spw_11_r <- detect_event(ts2clm(data = sst_WA, smoothPercentileWidth = 11,
+                              climatologyPeriod = c("1982-01-01", "2014-12-31")))
+spw_21_r <- detect_event(ts2clm(data = sst_WA, smoothPercentileWidth = 21,
+                              climatologyPeriod = c("1982-01-01", "2014-12-31")))
+spw_41_r <- detect_event(ts2clm(data = sst_WA, smoothPercentileWidth = 41,
+                              climatologyPeriod = c("1982-01-01", "2014-12-31")))
+spw_51_r <- detect_event(ts2clm(data = sst_WA, smoothPercentileWidth = 51,
+                              climatologyPeriod = c("1982-01-01", "2014-12-31")))
+```
+
+```{r}
+# Changing minDuration
+minD_3_r <- detect_event(ts2clm(data = sst_WA, climatologyPeriod = c("1982-01-01", "2014-12-31")), 
+                         minDuration = 3)
+```
+

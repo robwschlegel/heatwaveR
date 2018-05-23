@@ -1,5 +1,5 @@
 ---
-title: "Comparing the calculation of MHWs in R vs Python - Basic"
+title: "Default MHW outputs in R and Python"
 author: "Robert W Schlegel"
 date: "`r Sys.Date()`"
 description: "This vignette compares the code/work flow one would use to calculate default (Hobday et al. 2016) MHWs in both R and Python as well as the different outputs and speeds."
