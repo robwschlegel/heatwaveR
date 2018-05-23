@@ -33,7 +33,7 @@ First up, let's look at the two different ways in which one may calculate MHWs. 
 
 The basic functionality for calculating marine heatwaves (MHWs) in R may be found in the __`heatwaveR`__ package that may currently be downloaded and installed with the following lines of code. Note that if one has already installed these packages they do not need to be installed again. To run one of the lines in the following code chunk will require that the hashtag first be removed.
 
-```{r r-packages, eval=FALSE}
+```{r r-packages}
 # install.packages("devtools")
 ## Development version from GitHub
 # devtools::install_github("robwschlegel/heatwaveR") 
@@ -73,7 +73,7 @@ res$event[res$event$intensity_max == max(res$event$intensity_max), 1:6]
 
 ### Python code
 
-```{r python-setup, include = FALSE, eval=FALSE}
+```{r python-setup, include = FALSE}
 # devtools::install_github("rstudio/reticulate")
 library(reticulate)
 use_condaenv("py27")
@@ -83,7 +83,7 @@ use_condaenv("py27")
 
 To download and install the Python package for calculating MHWs one may run the following line of code in a console:
 
-```{r, eval=FALSE}
+```{r}
 # Note that the hashtag must be removed in order
 # pip install git+git://github.com/ecjoliver/marineHeatWaves@master
 ```
@@ -92,7 +92,7 @@ Or simply download the [GitHub repository](https://github.com/ecjoliver/marineHe
 
 Before we begin the calculations we need to crerate a time series. I've chosen to take the `sst_WA` time series from the __`heatwaveR`__ package to ensure consistency between the results. For ease of use I simply saved this object as a csv file on my computer and loaded it back in to Python.
 
-```{r python-prep, eval=FALSE}
+```{r python-prep}
 ts <- sst_WA
 # Write out only a vector of temperatures
 write.csv(ts$temp, "sst_WA.csv", row.names = FALSE)
@@ -154,7 +154,7 @@ mhw <- import("marineHeatWaves")
 
 One may run python code in it's native form within R by passing it as a character vector to `py_run_string()`.
 
-```{r python-strings, eval=FALSE}
+```{r python-strings, error=TRUE, eval=FALSE}
 py_run_string("x = 10")
 py_run_string("t = np.arange(date(1982,1,1).toordinal(),date(2014,12,31).toordinal()+1)")
 py_run_string("sst = np.loadtxt(open('sst_WA.csv', 'r'), delimiter=',', skiprows=1)")
@@ -162,7 +162,7 @@ py_run_string("sst = np.loadtxt(open('sst_WA.csv', 'r'), delimiter=',', skiprows
 
 #### Default calculations
 
-```{r python-code, eval=FALSE}
+```{r python-code, error=TRUE, eval=FALSE}
 # These numbers were taken from print(t) in the python code above
 t <- as.integer(np$array(seq(723546, 735598)))
 sst <- np$array(sst_WA$temp)
@@ -243,7 +243,9 @@ cols_Py <- colnames(res_event_Python)[!(colnames(res_event_Python) %in% colnames
 cols_Py
 ```
 
-Wonderful! Most things match up nicely. There is some disagreement between the use of the word "stop" or "end" that must be sorted out. The R output also has a couple of "norm" columns that are not produced by Python and should maybe be omitted. The R output must also have an "index_peak" column added. The duration of categories of events is something added in R by another function `category()`, and will be left that way for now. The "time" columns in the Python output aren't relavent as far as I can see in the present usage as these functions currently only take day values.
+Wonderful! Most things match up nicely. The duration of categories of events is something added in R by another function `category()`, and will be left that way for now. The "time" columns in the Python output aren't relavent as far as I can see in the present usage as these functions currently only take day values. THe different methods of labelling the events will be left as they are for now as well.
+
+It is also worth noting that the values for `index_start`, `index_peak`, and `index_end` are off by one between the two languages. This is due to the difference in indexing between the languages. Looking at the `date_start`, `date_peak`, and `date_end` values we see that they are the same.
 
 ```{python, eval=FALSE}
 # Still to be compared and benchmarked
@@ -271,4 +273,4 @@ t2 = time.time()
 print(t2-t1)
 ```
 
-The python code appears to be about twice as fast. And it is calculating the event categories as well, which R is not. That is done in an additonal step with `category()`.
+The Python code appears to be just a bit faster at ~0.18 seconds to ~0.20 seconds for R. And it is calculating the event categories as well, which R is not. That is done in an additonal step with `category()`.

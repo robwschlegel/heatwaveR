@@ -78,3 +78,5 @@ Friday, May 11th, 2018 Skype meeting:
 * Round it out with case studies and pitfalls
 
 Submit package to onboarding process with rOpenSci
+
+Correct maxPadLength to match Python

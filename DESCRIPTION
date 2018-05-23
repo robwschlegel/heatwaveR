@@ -24,7 +24,8 @@ Suggests:
     knitr,
     rmarkdown,
     covr,
-    reticulate
+    reticulate,
+    ggpubr
 Imports:
     tibble,
     ggplot2,

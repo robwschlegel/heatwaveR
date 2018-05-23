@@ -118,10 +118,10 @@
 #'   \item{event_no}{A sequential number indicating the ID and order of
 #'   the events.}
 #'   \item{index_start}{Start index of event.}
-#'   \item{index_stop}{Stop index of event.}
+#'   \item{index_end}{End index of event.}
 #'   \item{duration}{Duration of event [days].}
 #'   \item{date_start}{Start date of event [date].}
-#'   \item{date_stop}{Stop date of event [date].}
+#'   \item{date_end}{End date of event [date].}
 #'   \item{date_peak}{Date of event peak [date].}
 #'   \item{intensity_mean}{Mean intensity [deg. C].}
 #'   \item{intensity_max}{Maximum (peak) intensity [deg. C].}
@@ -138,12 +138,6 @@
 #' \code{intensity_max_abs}, \code{intensity_mean_abs}, \code{intensity_var_abs}, and
 #' \code{intensity_cumulative_abs} are as above except as absolute magnitudes
 #' rather than relative to the seasonal climatology or threshold.
-#'
-#' \code{intensity_max_norm} and \code{intensity_mean_norm} are as above except
-#' units are in multiples of threshold exceedances, i.e., a value of 1.5
-#' indicates the event intensity (relative to the climatology) was 1.5 times the
-#' value of the threshold (relative to climatology,
-#' i.e., threshold - climatology.)
 #'
 #' Note that \code{rate_onset} and \code{rate_decline} will return \code{NA}
 #' when the event begins/ends on the first/last day of the time series. This
@@ -219,7 +213,7 @@ detect_event <- function(data,
                          maxGap = maxGap)
   t_series$durationCriterion <- rep(FALSE, nrow(t_series))
   for (i in 1:nrow(proto_1)) {
-    t_series$durationCriterion[proto_1$index_start[i]:proto_1$index_stop[i]] <-
+    t_series$durationCriterion[proto_1$index_start[i]:proto_1$index_end[i]] <-
       rep(TRUE, length = proto_1$duration[i])
   }
 
@@ -232,7 +226,7 @@ detect_event <- function(data,
   if (joinAcrossGaps) {
     t_series$event <- t_series$durationCriterion
     for (i in 1:nrow(proto_2)) {
-      t_series$event[proto_2$index_start[i]:proto_2$index_stop[i]] <-
+      t_series$event[proto_2$index_start[i]:proto_2$index_end[i]] <-
         rep(TRUE, length = proto_2$duration[i])
     }
   } else {
@@ -244,31 +238,28 @@ detect_event <- function(data,
 
   t_series$event_no <- rep(NA, nrow(t_series))
   for (i in 1:nrow(proto_3)) {
-    t_series$event_no[proto_3$index_start[i]:proto_3$index_stop[i]] <-
+    t_series$event_no[proto_3$index_start[i]:proto_3$index_end[i]] <-
       rep(i, length = proto_3$duration[i])
   }
 
   intensity_mean <- intensity_max <- intensity_cumulative <- intensity_mean_relThresh <-
     intensity_max_relThresh <- intensity_cumulative_relThresh <- intensity_mean_abs <-
-    intensity_max_abs <- intensity_cumulative_abs <- intensity_mean_norm <- intensity_max_norm <-
-    rate_onset <- rate_decline <- mhw_rel_thresh <-
-    rel_thresh_norm <- mhw_rel_seas <- event_no <- row_index <-  NULL
+    intensity_max_abs <- intensity_cumulative_abs <- rate_onset <- rate_decline <-
+    mhw_rel_thresh <- mhw_rel_seas <- event_no <- row_index <- index_peak <-  NULL
 
   events <- t_series %>%
     dplyr::mutate(row_index = 1:nrow(t_series),
                   mhw_rel_seas = ts_y - ts_seas,
-                  mhw_rel_thresh = ts_y - ts_thresh,
-                  # The missing brackets around this equation may be an error...
-                  # But it matches the output of the original
-                  rel_thresh_norm = ts_y - ts_thresh / ts_thresh - ts_seas) %>%
+                  mhw_rel_thresh = ts_y - ts_thresh) %>%
     dplyr::filter(stats::complete.cases(event_no)) %>%
     dplyr::group_by(event_no) %>%
     dplyr::summarise(index_start = min(row_index),
-                     index_stop = max(row_index),
+                     index_peak = row_index[mhw_rel_seas == max(mhw_rel_seas)][1],
+                     index_end = max(row_index),
                      duration = n(),
                      date_start = min(ts_x),
-                     date_stop = max(ts_x),
                      date_peak = ts_x[mhw_rel_seas == max(mhw_rel_seas)][1],
+                     date_end = max(ts_x),
                      intensity_mean = mean(mhw_rel_seas),
                      intensity_max = max(mhw_rel_seas),
                      intensity_var = sqrt(stats::var(mhw_rel_seas)),
@@ -280,9 +271,7 @@ detect_event <- function(data,
                      intensity_mean_abs = mean(ts_y),
                      intensity_max_abs = max(ts_y),
                      intensity_var_abs = sqrt(stats::var(ts_y)),
-                     intensity_cumulative_abs = max(cumsum(ts_y)),
-                     intensity_mean_norm = mean(rel_thresh_norm),
-                     intensity_max_norm = max(rel_thresh_norm))
+                     intensity_cumulative_abs = max(cumsum(ts_y)))
   # Note that this creates an output with a different column order than the original
   # 'event_no' is now the first column, rather than the third
 
@@ -303,15 +292,15 @@ detect_event <- function(data,
     NA
   )
 
-  D <- mhw_rel_seas[events$index_stop]
-  E <- t_series$ts_y[events$index_stop + 1]
-  F <- t_series$ts_seas[events$index_stop + 1]
+  D <- mhw_rel_seas[events$index_end]
+  E <- t_series$ts_y[events$index_end + 1]
+  F <- t_series$ts_seas[events$index_end + 1]
   mhw_rel_seas_end <- 0.5 * (D + E - F)
 
   events$rate_decline <- ifelse(
-    events$index_stop < nrow(t_series),
+    events$index_end < nrow(t_series),
     (events$intensity_max - mhw_rel_seas_end) / (as.numeric(
-      difftime(events$date_stop, events$date_peak, units = "days")) + 0.5),
+      difftime(events$date_end, events$date_peak, units = "days")) + 0.5),
     NA
   )
 
@@ -326,8 +315,6 @@ detect_event <- function(data,
       intensity_mean_abs = -intensity_mean_abs,
       intensity_max_abs = -intensity_max_abs,
       intensity_cumulative_abs = -intensity_cumulative_abs,
-      intensity_mean_norm = -intensity_mean_norm,
-      intensity_max_norm = -intensity_max_norm,
       rate_onset = -rate_onset,
       rate_decline = -rate_decline
     )

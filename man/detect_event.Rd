@@ -93,10 +93,10 @@ The events are summarised using a range of event metrics:
   \item{event_no}{A sequential number indicating the ID and order of
   the events.}
   \item{index_start}{Start index of event.}
-  \item{index_stop}{Stop index of event.}
+  \item{index_end}{End index of event.}
   \item{duration}{Duration of event [days].}
   \item{date_start}{Start date of event [date].}
-  \item{date_stop}{Stop date of event [date].}
+  \item{date_end}{End date of event [date].}
   \item{date_peak}{Date of event peak [date].}
   \item{intensity_mean}{Mean intensity [deg. C].}
   \item{intensity_max}{Maximum (peak) intensity [deg. C].}
@@ -113,12 +113,6 @@ than the seasonal climatology.
 \code{intensity_max_abs}, \code{intensity_mean_abs}, \code{intensity_var_abs}, and
 \code{intensity_cumulative_abs} are as above except as absolute magnitudes
 rather than relative to the seasonal climatology or threshold.
-
-\code{intensity_max_norm} and \code{intensity_mean_norm} are as above except
-units are in multiples of threshold exceedances, i.e., a value of 1.5
-indicates the event intensity (relative to the climatology) was 1.5 times the
-value of the threshold (relative to climatology,
-i.e., threshold - climatology.)
 
 Note that \code{rate_onset} and \code{rate_decline} will return \code{NA}
 when the event begins/ends on the first/last day of the time series. This
