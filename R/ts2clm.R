@@ -5,6 +5,7 @@
 #' by an optional moving average smoother as used by Hobday et al. (2016).
 #'
 #' @importFrom dplyr %>%
+#' @useDynLib heatwaveR
 #'
 #' @param data A data frame with two columns. In the default setting (i.e. ommitting
 #' the arguments \code{x} and \code{y}; see immediately below), the data set is
@@ -176,7 +177,8 @@ ts2clm <-
 
     ts_wide <- clim_spread(ts_whole, clim_start, clim_end, windowHalfWidth)
 
-    ts_mat <- clim_calc(ts_wide, windowHalfWidth, pctile)
+    ts_mat <- clim_calc_cpp(ts_wide, windowHalfWidth, pctile)
+    # ts_mat <- clim_calc(ts_wide, windowHalfWidth, pctile)
 
     if (smoothPercentile) {
       ts_clim <- smooth_percentile(ts_mat, smoothPercentileWidth)

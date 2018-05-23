@@ -14,7 +14,7 @@ Rcpp::NumericMatrix clim_calc_cpp(arma::mat x, int windowHalfWidth, double pctil
   // quantile setup
   int lo, hi;
   double hlo, hhi;
-  double index = (window_vec - 1) * (pctile / 100);
+  double index = (window_vec - 1) * (pctile / 100); // window_vec = n; the rank of the quantiles
   lo = floor(index);
   hi = lo + 1;
   hhi = index - lo;
