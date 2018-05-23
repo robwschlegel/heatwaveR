@@ -55,12 +55,6 @@
 #' \code{intensity_cumulative_abs} are as above except as absolute magnitudes
 #' rather than relative to the seasonal climatology or threshold.
 #'
-#' \code{intensity_max_norm} and \code{intensity_mean_norm} are as above except
-#' units are in multiples of threshold exceedances, i.e., a value of 1.5
-#' indicates the event intensity (relative to the climatology) was 1.5 times the
-#' value of the threshold (relative to climatology,
-#' i.e., threshold - climatology.)
-#'
 #' @author Albertus J. Smit, Eric C. J. Oliver
 #'
 #' @references Hobday, A.J. et al. (2016), A hierarchical approach to defining
@@ -104,8 +98,7 @@ block_average <- function(data,
   duration <- count <- intensity_mean <- intensity_max <- intensity_var <- intensity_cumulative <-
     intensity_mean_relThresh <- intensity_max_relThresh <- intensity_var_relThresh <-
     intensity_cumulative_relThresh <- intensity_mean_abs <- intensity_max_abs <- intensity_var_abs <-
-    intensity_cumulative_abs <- intensity_mean_norm <- intensity_max_norm <- rate_onset <-
-    rate_decline <- total_days <- total_icum <- NULL
+    intensity_cumulative_abs <- rate_onset <- rate_decline <- total_days <- total_icum <- NULL
 
   event_block <- data$event %>%
     dplyr::group_by(year = lubridate::year(date_start)) %>%
@@ -122,8 +115,6 @@ block_average <- function(data,
                      intensity_max_abs = mean(intensity_max_abs),
                      intensity_var_abs = mean(intensity_var_abs),
                      intensity_cumulative_abs = mean(intensity_cumulative_abs),
-                     intensity_mean_norm = mean(intensity_mean_norm),
-                     intensity_max_norm = mean(intensity_max_norm),
                      rate_onset = mean(rate_onset),
                      rate_decline = mean(rate_decline),
                      total_days = sum(duration),

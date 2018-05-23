@@ -29,9 +29,13 @@ Preferably this step could have been done programmatically, without creating an 
 library(tidyverse)
 library(ggpubr)
 library(heatwaveR)
+```
+
+```{r python-init, eval=FALSE}
 library(reticulate)
 use_condaenv("py27")
 ```
+
 
 ```{python, eval=FALSE}
 import numpy as np

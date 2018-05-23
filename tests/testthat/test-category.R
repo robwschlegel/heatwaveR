@@ -2,7 +2,7 @@ context("Test category.R")
 
 test_that("category() returns the correct tibbles and columns", {
   ts <- ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-  res <- detect_event(data = ts)
+  res <- detect_event(ts)
   cat_res <- category(res)
   expect_is(cat_res, "tbl_df")
   expect_equal(ncol(cat_res), 11)
@@ -10,7 +10,7 @@ test_that("category() returns the correct tibbles and columns", {
 
 test_that("The seasons by hemisphere come out correctly", {
   ts <- ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-  res <- detect_event(data = ts)
+  res <- detect_event(ts)
   cat_res_south <- category(res, S = T)
   cat_res_north <- category(res, S = F)
   expect_equal(cat_res_south$season[1], "Fall")
@@ -29,7 +29,7 @@ test_that("The name argument works correctly", {
 test_that("y = any existing column", {
   ts <- ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   res <- detect_event(data = ts)
-  res$clim$pawpaw <- res$clim$temp
+  res$climatology$pawpaw <- res$climatology$temp
   expect_is(category(res, y = pawpaw), "tbl_df")
 })
 

@@ -51,12 +51,6 @@ than the seasonal climatology.
 \code{intensity_max_abs}, \code{intensity_mean_abs}, \code{intensity_var_abs}, and
 \code{intensity_cumulative_abs} are as above except as absolute magnitudes
 rather than relative to the seasonal climatology or threshold.
-
-\code{intensity_max_norm} and \code{intensity_mean_norm} are as above except
-units are in multiples of threshold exceedances, i.e., a value of 1.5
-indicates the event intensity (relative to the climatology) was 1.5 times the
-value of the threshold (relative to climatology,
-i.e., threshold - climatology.)
 }
 \description{
 Calculate yearly means for event metrics.

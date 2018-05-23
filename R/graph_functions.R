@@ -28,9 +28,9 @@
 #' \code{intensity_max_relThresh}, \code{intensity_var_relThresh},
 #' \code{intensity_cumulative_relThresh}, \code{intensity_mean_abs},
 #' \code{intensity_max_abs}, \code{intensity_var_abs}, \code{intensity_cumulative_abs},
-#' \code{intensity_mean_norm}, \code{intensity_max_norm}, \code{rate_onset},
-#' \code{rate_decline}. Partial name matching is currently not supported so please
-#' specify the metric name precisely. The default is \code{intensity_cumulative}.
+#' \code{rate_onset}, \code{rate_decline}. Partial name matching is currently not
+#' supported so please specify the metric name precisely. The default is
+#' \code{intensity_cumulative}.
 #' @param start_date The start date of a period of time within which the largest
 #' event (as per \code{metric}) is retrieved and plotted. This may not necessarily
 #' correspond to the biggest event of the specified metric within the entire
@@ -84,7 +84,7 @@ event_line <- function(data,
                        end_date,
                        category = FALSE) {
 
-  date_stop <- date_start <- duration <-  temp <-  NULL
+  date_end <- date_start <- duration <-  temp <-  NULL
 
   if (!(exists("event", data)) | !(exists("climatology", data))) stop("Please ensure you are running this function on the output of 'heatwaveR::detect_event()'")
 
@@ -94,27 +94,27 @@ event_line <- function(data,
   data$climatology$ts.y <- ts.y
 
   event <- data$event %>%
-    dplyr::filter(date_stop >= start_date & date_start <= end_date)
+    dplyr::filter(date_end >= start_date & date_start <= end_date)
 
   if (nrow(event) == 0) stop("No events detected! Consider changing the 'start_date' or 'end_date' values.")
 
   if (!(metric %in% c("intensity_mean", "intensity_max", "intensity_var", "intensity_cumulative", "intensity_mean_relThresh", "intensity_max_relThresh",
                       "intensity_var_relThresh","intensity_cumulative_relThresh", "intensity_mean_abs", "intensity_max_abs", "intensity_var_abs",
-                      "intensity_cumulative_abs", "intensity_mean_norm", "intensity_max_norm", "rate_onset", "rate_decline"))) {
+                      "intensity_cumulative_abs", "rate_onset", "rate_decline"))) {
     stop("Please ensure you have spelled the desired metric correctly.")
   }
 
-  index_start <- index_stop <- NULL
+  index_start <- index_end <- NULL
 
   event <- event[order(-abs(event[colnames(event) == metric])),]
   event <- event %>%
     dplyr::filter(duration >= min_duration) %>%
     dplyr::mutate(index_start_fix = index_start - 1,
-           index_stop_fix = index_stop + 1)
+           index_end_fix = index_end + 1)
 
   event_top <- event[1, ]
 
-  date_spread <- seq((event_top$date_start - spread), (event_top$date_stop + spread), by = "day")
+  date_spread <- seq((event_top$date_start - spread), (event_top$date_end + spread), by = "day")
 
   thresh_2x <- thresh_3x <- thresh_4x <- NULL
 
@@ -126,11 +126,11 @@ event_line <- function(data,
 
   clim_events <- data.frame()
   for (i in 1:nrow(event)) {
-    clim_sub <- clim_diff[(event$index_start_fix[i]):(event$index_stop_fix[i]),]
+    clim_sub <- clim_diff[(event$index_start_fix[i]):(event$index_end_fix[i]),]
     clim_events <- rbind(clim_events, clim_sub)
   }
 
-  clim_top <- clim_diff[event_top$index_start_fix:event_top$index_stop_fix,]
+  clim_top <- clim_diff[event_top$index_start_fix:event_top$index_end_fix,]
 
   clim_spread <- clim_diff %>%
     dplyr::filter(ts.x %in% date_spread)

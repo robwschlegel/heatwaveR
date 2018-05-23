@@ -97,8 +97,8 @@ category <-
 
     temp <- NULL
 
-    ts_y <- eval(substitute(y), data$clim)
-    data$clim$ts_y <- ts_y
+    ts_y <- eval(substitute(y), data$climatology)
+    data$climatology$ts_y <- ts_y
     rm(ts_y)
 
     event_no <- event_name <- peak_date <- category <- duration <- season <- NULL
@@ -112,7 +112,7 @@ category <-
 
     seasons <- data.frame(event_no = data$event$event_no,
                           date_start = data$event$date_start,
-                          date_stop = data$event$date_stop,
+                          date_end = data$event$date_end,
                           duration = data$event$duration,
                           season = NA)
 
@@ -120,34 +120,34 @@ category <-
     ss$day <- 1
     ss$mo <- ss$mo + 1
 
-    se <- as.POSIXlt(data$event$date_stop)
+    se <- as.POSIXlt(data$event$date_end)
     se$day <- 1
     se$mo <- se$mo + 1
 
-    start_season <- stop_season <- NULL
+    start_season <- end_season <- NULL
 
     if (S) {
       seasons$start_season <- factor(quarters(ss, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
                                      labels = c("Summer", "Fall", "Winter", "Spring"))
-      seasons$stop_season <- factor(quarters(se, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
+      seasons$end_season <- factor(quarters(se, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
                                     labels = c("Summer", "Fall", "Winter", "Spring"))
     } else {
       seasons$start_season <- factor(quarters(ss, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
                                      labels = c("Winter", "Spring", "Summer", "Fall"))
-      seasons$stop_season <- factor(quarters(se, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
+      seasons$end_season <- factor(quarters(se, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
                                     labels = c("Winter", "Spring", "Summer", "Fall"))
       }
 
     seasons <- seasons %>%
-      dplyr::mutate(diff_season = as.integer(start_season) - as.integer(stop_season))
+      dplyr::mutate(diff_season = as.integer(start_season) - as.integer(end_season))
 
     for (i in 1:nrow(seasons)) {
       if (seasons$diff_season[i] == 0 & seasons$duration[i] < 100) {
         seasons$season[i] <- paste0(seasons$start_season[i])
       } else if (seasons$diff_season[i] %in% c(-1, 3) & seasons$duration[i] < 180) {
-        seasons$season[i] <- paste0(seasons$start_season[i], "/", seasons$stop_season[i])
+        seasons$season[i] <- paste0(seasons$start_season[i], "/", seasons$end_season[i])
       } else if (seasons$diff_season[i] %in% c(-3, -2, 2)) {
-        seasons$season[i] <- paste0(seasons$start_season[i], "-", seasons$stop_season[i])
+        seasons$season[i] <- paste0(seasons$start_season[i], "-", seasons$end_season[i])
       }
       if (seasons$duration[i] > 270) {
         seasons$season[i] <- "Year-round"
@@ -156,7 +156,7 @@ category <-
 
     seas <- thresh <- thresh_2x <- thresh_3x <- thresh_4x <- NULL
 
-    clim_diff <- data$clim %>%
+    clim_diff <- data$climatology %>%
       dplyr::filter(!is.na(event_no)) %>%
       dplyr::mutate(diff = thresh - seas,
                     thresh_2x = thresh + diff,

@@ -75,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.4.9002</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.6.9000</span>
       </span>
     </div>
 
@@ -110,7 +110,10 @@
       <a href="../articles/Short_climatologies.html">Short climatologies</a>
     </li>
     <li>
-      <a href="../articles/r_vs_python.html">R vs Python</a>
+      <a href="../articles/r_vs_python.html">Default MHW outputs in R and Python</a>
+    </li>
+    <li>
+      <a href="../articles/r_vs_python_more.html">Additional MHW outputs in R and Python</a>
     </li>
   </ul>
 </li>
@@ -255,13 +258,13 @@ in the <code>doy</code> column, this column will appear in the output.</p>
 
 The individual exceedances are summarised using the following metrics:
   <dt>index_start</dt><dd><p>Row number on which exceedance starts.</p></dd>
-  <dt>index_stop</dt><dd><p>Row number on which exceedance stops.</p></dd>
+  <dt>index_end</dt><dd><p>Row number on which exceedance ends.</p></dd>
   <dt>exceedance_no</dt><dd><p>The same sequential number indicating the ID and
   order of the exceedance as found in the <code>threshold</code> component of the
   output list.</p></dd>
   <dt>duration</dt><dd><p>Duration of exceedance [days].</p></dd>
   <dt>date_start</dt><dd><p>Start date of exceedance [date].</p></dd>
-  <dt>date_stop</dt><dd><p>Stop date of exceedance [date].</p></dd>
+  <dt>date_end</dt><dd><p>End date of exceedance [date].</p></dd>
   <dt>date_peak</dt><dd><p>Date of exceedance peak [date].</p></dd>
   <dt>intensity_mean</dt><dd><p>Mean intensity [deg. C].</p></dd>
   <dt>intensity_max</dt><dd><p>Maximum (peak) intensity [deg. C].</p></dd>
@@ -320,15 +323,15 @@ Feb 2015, and is documented by Hobday et al. (2016).</p>
 #&gt;  8 1982-01-08  21.5     25 FALSE           FALSE            FALSE            NA
 #&gt;  9 1982-01-09  21.4     25 FALSE           FALSE            FALSE            NA
 #&gt; 10 1982-01-10  21.4     25 FALSE           FALSE            FALSE            NA</div><div class='input'><span class='co'># show first five exceedances:</span>
-<span class='no'>res</span>$<span class='no'>exceedance</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, ]</div><div class='output co'>#&gt; # A tibble: 5 x 17
-#&gt;   exceedance_no index_start index_stop duration date_start date_stop 
-#&gt;           &lt;int&gt;       &lt;dbl&gt;      &lt;dbl&gt;    &lt;int&gt; &lt;date&gt;     &lt;date&gt;    
-#&gt; 1             1        2682       2686        5 1989-05-05 1989-05-09
-#&gt; 2             2        6342       6358       17 1999-05-13 1999-05-29
-#&gt; 3             3        6362       6368        7 1999-06-02 1999-06-08
-#&gt; 4             4        6686       6691        6 2000-04-21 2000-04-26
-#&gt; 5             5        6698       6707       10 2000-05-03 2000-05-12
-#&gt; # ... with 11 more variables: date_peak &lt;date&gt;, intensity_mean &lt;dbl&gt;,
+<span class='no'>res</span>$<span class='no'>exceedance</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, ]</div><div class='output co'>#&gt; # A tibble: 5 x 18
+#&gt;   exceedance_no index_start index_peak index_end duration date_start date_peak 
+#&gt;           &lt;int&gt;       &lt;dbl&gt;      &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt; &lt;date&gt;     &lt;date&gt;    
+#&gt; 1             1        2682       2683      2686        5 1989-05-05 1989-05-06
+#&gt; 2             2        6342       6351      6358       17 1999-05-13 1999-05-22
+#&gt; 3             3        6362       6363      6368        7 1999-06-02 1999-06-03
+#&gt; 4             4        6686       6688      6691        6 2000-04-21 2000-04-23
+#&gt; 5             5        6698       6699      6707       10 2000-05-03 2000-05-04
+#&gt; # ... with 11 more variables: date_end &lt;date&gt;, intensity_mean &lt;dbl&gt;,
 #&gt; #   intensity_max &lt;dbl&gt;, intensity_var &lt;dbl&gt;, intensity_cumulative &lt;dbl&gt;,
 #&gt; #   intensity_mean_abs &lt;dbl&gt;, intensity_max_abs &lt;dbl&gt;, intensity_var_abs &lt;dbl&gt;,
 #&gt; #   intensity_cum_abs &lt;dbl&gt;, rate_onset &lt;dbl&gt;, rate_decline &lt;dbl&gt;</div></pre>

@@ -73,7 +73,7 @@ res$event[res$event$intensity_max == max(res$event$intensity_max), 1:6]
 
 ### Python code
 
-```{r python-setup, include = FALSE}
+```{r python-setup, include = FALSE, eval=FALSE}
 # devtools::install_github("rstudio/reticulate")
 library(reticulate)
 use_condaenv("py27")
