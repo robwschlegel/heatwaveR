@@ -33,9 +33,9 @@ choose from the following options: \code{intensity_mean}, \code{intensity_max},
 \code{intensity_max_relThresh}, \code{intensity_var_relThresh},
 \code{intensity_cumulative_relThresh}, \code{intensity_mean_abs},
 \code{intensity_max_abs}, \code{intensity_var_abs}, \code{intensity_cumulative_abs},
-\code{intensity_mean_norm}, \code{intensity_max_norm}, \code{rate_onset},
-\code{rate_decline}. Partial name matching is currently not supported so please
-specify the metric name precisely. The default is \code{intensity_cumulative}.}
+\code{rate_onset}, \code{rate_decline}. Partial name matching is currently not
+supported so please specify the metric name precisely. The default is
+\code{intensity_cumulative}.}
 
 \item{start_date}{The start date of a period of time within which the largest
 event (as per \code{metric}) is retrieved and plotted. This may not necessarily

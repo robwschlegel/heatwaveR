@@ -2,7 +2,7 @@
 title: "Additional MHW outputs in R and Python"
 author: "Robert W Schlegel"
 date: "`r Sys.Date()`"
-description: "This vignette compares the code/work flow for the additional outputs found within the Python and R versions."
+description: "This vignette compares the code/work flow for altering the additional arguments found within the base Python and R function."
 output: 
   rmarkdown::html_vignette:
     fig_caption: yes
@@ -23,22 +23,114 @@ knitr::opts_chunk$set(fig.width = 4, fig.align = 'center',
 
 Building on the identical default functionality shared between the two languages, this vignette goes further to look at the additional functionality contained within the two packages. Along the way the outputs are checked for consistency and all of the arguments for all of the functions are tweaked to look for irregularities. This is necessary before only one language is used to further investigate best practices for dealing with sub-optimal time series in the detection of MHWs.
 
-## Base function arguments
-
-First let's revisit the base detect funcitons and see how the results hold up as we shift the arguments about.
+Preferably this step could have been done programmatically, without creating an army of outputs as seen below. The R package __`reticulate`__ does not seem to want to play along though so I must rather run the Python code, save the outputs, load them into R and compare the results natively in just R... So let's get started.
 
 ```{r r-init}
-# The basic output
+library(tidyverse)
+library(ggpubr)
 library(heatwaveR)
-default_r <- detect_event(ts2clm(data = sst_WA, 
+```
+
+```{r python-init, eval=FALSE}
+library(reticulate)
+use_condaenv("py27")
+```
+
+
+```{python, eval=FALSE}
+import numpy as np
+from datetime import date
+import pandas as pd
+import marineHeatWaves as mhw
+
+# The date values
+t = np.arange(date(1982,1,1).toordinal(),date(2014,12,31).toordinal()+1)
+
+# The temperature values
+sst = np.loadtxt(open("sst_WA.csv", "r"), delimiter = ',', skiprows = 1)
+```
+
+```{r py-default}
+# The default python output from the previous comparison vignette
+default_py_event <- read_csv("mhws_py.csv")
+default_py_clim <- read_csv("clim_py.csv")
+```
+
+```{r r-default}
+# The default R output
+default_r <- detect_event(ts2clm(data = sst_WA,
                                  climatologyPeriod = c("1982-01-01", "2014-12-31")))
 ```
 
+```{r compare-func}
+compare_event <- function(res_event_R, res_event_Python){
+  # Remove non-numeric columns
+  res_event_num <- res_event_R %>% 
+    select_if(is.numeric)
+  # Run the loop
+  res_event_cor <- data.frame()
+  for(i in 1:length(colnames(res_event_num))){
+    if(colnames(res_event_num)[i] %in% colnames(res_event_Python)){
+      x1 <- res_event_R[colnames(res_event_R) == colnames(res_event_num)[i]]
+      x2 <- res_event_Python[colnames(res_event_Python) == colnames(res_event_num)[i]]
+      x <- data.frame(r = cor(x1, x2), var = colnames(res_event_num)[i])
+      colnames(x)[1] <- "r"
+      rownames(x) <- NULL
+      } else {
+        x <- data.frame(r = NA, var = colnames(res_event_num)[i])
+        # colnames(x) <- colnames(res_event_R)[i]
+        }
+    res_event_cor <- rbind(res_event_cor, x)
+    }
+  return(res_event_cor)
+  }
+```
+
 ```{r}
-# Changing the percentile threshold
+# Compare default clims and intensities
+cor(default_r$climatology$seas, default_py_clim$seas)
+sum(default_r$climatology$seas) - sum(default_py_clim$seas)
+cor(default_r$climatology$thresh, default_py_clim$thresh)
+sum(default_r$climatology$thresh) - sum(default_py_clim$thresh)
+sum(default_r$event$intensity_cumulative) - sum(default_py_event$intensity_cumulative)
+sum(default_r$event$intensity_max) - sum(default_py_event$intensity_max)
+
+# Compare default events
+default_event <- compare_event(default_r$event, default_py_event)
+default_event
+```
+
+## `pctile` comparisons
+
+Here we look at a few possible settings for the `pctile` argument and ensure that everything matches up.
+
+First run and save the Python output.
+
+```{python, eval = FALSE}
+# pctile = 80
+mhws, clim = mhw.detect(t, sst, pctile = 80)
+mhws_df = pd.DataFrame.from_dict(mhws)
+mhws_df.to_csv('mhws_py_pctile_80.csv', sep = ',', index = False)
+clim_df = pd.DataFrame.from_dict(clim)
+clim_df.to_csv('clim_py_pctile_80.csv', sep = ',', index = False)
+# pctile = 95
+mhws, clim = mhw.detect(t, sst, pctile = 95)
+mhws_df = pd.DataFrame.from_dict(mhws)
+mhws_df.to_csv('mhws_py_pctile_95.csv', sep = ',', index = False)
+clim_df = pd.DataFrame.from_dict(clim)
+clim_df.to_csv('clim_py_pctile_95.csv', sep = ',', index = False)
+# pctile = 99
+mhws, clim = mhw.detect(t, sst, pctile = 99)
+mhws_df = pd.DataFrame.from_dict(mhws)
+mhws_df.to_csv('mhws_py_pctile_99.csv', sep = ',', index = False)
+clim_df = pd.DataFrame.from_dict(clim)
+clim_df.to_csv('clim_py_pctile_99.csv', sep = ',', index = False)
+```
+
+Then run the R output.
+
+```{r r-pctile}
 pctile_80_r <- detect_event(ts2clm(data = sst_WA, pctile = 80,
-                                   climatologyPeriod = c("1982-01-01", "2014-12-31")))
-pctile_85_r <- detect_event(ts2clm(data = sst_WA, pctile = 85,
                                    climatologyPeriod = c("1982-01-01", "2014-12-31")))
 pctile_95_r <- detect_event(ts2clm(data = sst_WA, pctile = 95,
                                    climatologyPeriod = c("1982-01-01", "2014-12-31")))
@@ -46,33 +138,430 @@ pctile_99_r <- detect_event(ts2clm(data = sst_WA, pctile = 99,
                                    climatologyPeriod = c("1982-01-01", "2014-12-31")))
 ```
 
-```{r}
-# Changing the windowHalfWidth
-whw_1_r <- detect_event(ts2clm(data = sst_WA, windowHalfWidth = 1,
-                              climatologyPeriod = c("1982-01-01", "2014-12-31")))
-whw_3_r <- detect_event(ts2clm(data = sst_WA, windowHalfWidth = 3,
-                              climatologyPeriod = c("1982-01-01", "2014-12-31")))
-whw_7_r <- detect_event(ts2clm(data = sst_WA, windowHalfWidth = 7,
-                              climatologyPeriod = c("1982-01-01", "2014-12-31")))
-whw_9_r <- detect_event(ts2clm(data = sst_WA, windowHalfWidth = 9,
-                              climatologyPeriod = c("1982-01-01", "2014-12-31")))
-```
+Lastly load the Python output and compare the two.
 
 ```{r}
-# Changing the smoothPercentileWidth
+# Load Python
+pctile_80_py_event <- read_csv("mhws_py_pctile_80.csv")
+pctile_80_py_clim <- read_csv("clim_py_pctile_80.csv")
+pctile_95_py_event <- read_csv("mhws_py_pctile_95.csv")
+pctile_95_py_clim <- read_csv("clim_py_pctile_95.csv")
+pctile_99_py_event <- read_csv("mhws_py_pctile_99.csv")
+pctile_99_py_clim <- read_csv("clim_py_pctile_99.csv")
+
+# Compare clims and intensities
+# 80
+cor(pctile_80_r$climatology$seas, pctile_80_py_clim$seas)
+sum(pctile_80_r$climatology$seas) - sum(pctile_80_py_clim$seas)
+cor(pctile_80_r$climatology$thresh, pctile_80_py_clim$thresh)
+sum(pctile_80_r$climatology$thresh) - sum(pctile_80_py_clim$thresh)
+sum(pctile_80_r$event$intensity_cumulative) - sum(pctile_80_py_event$intensity_cumulative)
+sum(pctile_80_r$event$intensity_max) - sum(pctile_80_py_event$intensity_max)
+# 95
+cor(pctile_95_r$climatology$seas, pctile_95_py_clim$seas)
+sum(pctile_95_r$climatology$seas) - sum(pctile_95_py_clim$seas)
+cor(pctile_95_r$climatology$thresh, pctile_95_py_clim$thresh)
+sum(pctile_95_r$climatology$thresh) - sum(pctile_95_py_clim$thresh)
+sum(pctile_95_r$event$intensity_cumulative) - sum(pctile_95_py_event$intensity_cumulative)
+sum(pctile_95_r$event$intensity_max) - sum(pctile_95_py_event$intensity_max)
+# 99
+cor(pctile_99_r$climatology$seas, pctile_99_py_clim$seas)
+sum(pctile_99_r$climatology$seas) - sum(pctile_99_py_clim$seas)
+cor(pctile_99_r$climatology$thresh, pctile_99_py_clim$thresh)
+sum(pctile_99_r$climatology$thresh) - sum(pctile_99_py_clim$thresh)
+sum(pctile_99_r$event$intensity_cumulative) - sum(pctile_99_py_event$intensity_cumulative)
+sum(pctile_99_r$event$intensity_max) - sum(pctile_99_py_event$intensity_max)
+
+# Compare events
+# pctile_80_event <- compare_event(pctile_80_r$event, pctile_80_py_event)
+pctile_95_event <- compare_event(pctile_95_r$event, pctile_95_py_event)
+pctile_95_event
+pctile_99_event <- compare_event(pctile_99_r$event, pctile_99_py_event)
+pctile_99_event
+```
+
+There appears to be an issue with the results when the threshold is set to `pctile = 80` as Python detects one more event than R. Let's take a closer look.
+
+```{r}
+pctile_80_r_event <- pctile_80_r$event
+pctile_80_py_event$date_start[!pctile_80_py_event$date_start %in% pctile_80_r_event$date_start]
+```
+
+The issue appears to be that the R code is joining across a four day gap, which it shouldn't do. So I assume that the threshold is different between the languages. This is curious as the seasonal and threshold climatologies correlate nearly perfectly. Diving deeper, let's pull out the clim values around the time of this event and see what we see.
+
+```{r}
+pctile_80_r_clim <- pctile_80_r$climatology
+pctile_80_r_clim_sub <- pctile_80_r_clim[11670:11720, ]
+pctile_80_py_clim_sub <- pctile_80_py_clim[11670:11720, ]
+
+r_fig <- ggplot(pctile_80_r_clim_sub, aes(x = t, y = temp)) +
+  geom_flame(aes(y2 = thresh)) +
+  geom_line() +
+  geom_line(aes(y = thresh), colour = "Red") +
+  geom_line(aes(y = seas), colour = "grey20") +
+  ggtitle("R code")
+
+py_fig <- ggplot(pctile_80_py_clim_sub, 
+                 aes(x = pctile_80_r_clim_sub$t, y = pctile_80_r_clim_sub$temp)) +
+  geom_flame(aes(y2 = thresh)) +
+  geom_line() +
+  geom_line(aes(y = thresh), colour = "Red") +
+  geom_line(aes(y = seas), colour = "grey20") +
+  ggtitle("Python code")
+
+ggarrange(r_fig, py_fig, ncol = 1, nrow = 2)
+```
+
+As we may see in the figure above, the difference is not perceptible to the human eye. Looking very closely at the clim outputs manually one may see that in the R code, the threshold on `2013-12-29` is just below the temperature value due to a rounding difference from the Python code at the third decimal place.
+
+Also above one may see that even though the values correlate nearly perfectly, the sum of the seasonal climatology value output by R are `1.98122` less than the Python output. Considering that there are 12053 values, the average difference is only `0.00016`, which is not terribly much at all. The issue appears to be in the calculation of the threshold climatology. This value is not consistently different based on the `pctile` value used. It varies quite a bit. With the sum difference at `pctile = 80` being `-13.86432`, the default of `pctile = 90` being `-6.563516`, `pctile = 95` being `-3.382435`, and `pctile = 80` being `28.37769`. This is strong evidence that the threshold values are being calculated using some different method that needs to be addressed. That being said, even at the largest difference of `28.37769`, that is still only an average difference per row of `0.002354409`
+
+Digging deeper still, let's pull up the old `RmarineHeatWaves` code and run another comparison with that to see if this difference is due to newer changes in the development of the `heatwaveR` package.
+
+```{r}
+ts <- RmarineHeatWaves::make_whole(sst_WA)
+default_r_old <- RmarineHeatWaves::detect(data = ts, climatology_start = 1982, climatology_end = 2014)
+default_r_old_event <- default_r_old$event
+default_r_old_clim <- default_r_old$clim
+
+# Compare default new and old R clims  and intensities
+cor(default_r$climatology$seas, default_r_old_clim$seas_clim_year)
+sum(default_r$climatology$seas) - sum(default_r_old_clim$seas_clim_year)
+cor(default_r$climatology$thresh, default_r_old_clim$thresh_clim_year)
+sum(default_r$climatology$thresh) - sum(default_r_old_clim$thresh_clim_year)
+sum(default_r$event$intensity_cumulative) - sum(default_py_event$intensity_cumulative)
+sum(default_r$event$intensity_max) - sum(default_py_event$intensity_max)
+
+# Compare default new and old R clims
+default_event <- compare_event(default_r$event, default_r_old_event)
+default_event
+
+# Compare Python and old R clims  and intensities
+cor(default_py_clim$seas, default_r_old_clim$seas_clim_year)
+sum(default_py_clim$seas) - sum(default_r_old_clim$seas_clim_year)
+cor(default_py_clim$thresh, default_r_old_clim$thresh_clim_year)
+sum(default_py_clim$thresh) - sum(default_r_old_clim$thresh_clim_year)
+sum(default_py_event$intensity_cumulative) - sum(default_r_old_event$int_cum)
+sum(default_py_event$intensity_max) - sum(default_r_old_event$int_max)
+
+# Compare Python and old R clims
+default_event <- compare_event(default_r_old_event, default_py_event)
+default_event
+```
+
+## `smoothPercentileWidth` comparisons
+
+Seeing now that the choice of the `pctile` threshold may create results different enough as to produce a different counts of events, we need to look closer at the different arguments. I have my suspicions that the smoothing of the threshold values may be the culprit here.
+
+```{r}
+spw_no_r <- detect_event(ts2clm(data = sst_WA, smoothPercentile = FALSE,
+                                climatologyPeriod = c("1982-01-01", "2014-12-31")))
 spw_11_r <- detect_event(ts2clm(data = sst_WA, smoothPercentileWidth = 11,
-                              climatologyPeriod = c("1982-01-01", "2014-12-31")))
-spw_21_r <- detect_event(ts2clm(data = sst_WA, smoothPercentileWidth = 21,
-                              climatologyPeriod = c("1982-01-01", "2014-12-31")))
-spw_41_r <- detect_event(ts2clm(data = sst_WA, smoothPercentileWidth = 41,
-                              climatologyPeriod = c("1982-01-01", "2014-12-31")))
+                                climatologyPeriod = c("1982-01-01", "2014-12-31")))
 spw_51_r <- detect_event(ts2clm(data = sst_WA, smoothPercentileWidth = 51,
-                              climatologyPeriod = c("1982-01-01", "2014-12-31")))
+                                climatologyPeriod = c("1982-01-01", "2014-12-31")))
+```
+
+```{python, eval = FALSE}
+# smoothPercentileWidth = FALSE
+mhws, clim = mhw.detect(t, sst, smoothPercentile = False)
+mhws_df = pd.DataFrame.from_dict(mhws)
+mhws_df.to_csv('mhws_py_spw_no.csv', sep = ',', index = False)
+clim_df = pd.DataFrame.from_dict(clim)
+clim_df.to_csv('clim_py_spw_no.csv', sep = ',', index = False)
+# smoothPercentileWidth = 11
+mhws, clim = mhw.detect(t, sst, smoothPercentileWidth = 11)
+mhws_df = pd.DataFrame.from_dict(mhws)
+mhws_df.to_csv('mhws_py_spw_11.csv', sep = ',', index = False)
+clim_df = pd.DataFrame.from_dict(clim)
+clim_df.to_csv('clim_py_spw_11.csv', sep = ',', index = False)
+# smoothPercentileWidth = 51
+mhws, clim = mhw.detect(t, sst, smoothPercentileWidth = 51)
+mhws_df = pd.DataFrame.from_dict(mhws)
+mhws_df.to_csv('mhws_py_spw_51.csv', sep = ',', index = False)
+clim_df = pd.DataFrame.from_dict(clim)
+clim_df.to_csv('clim_py_spw_51.csv', sep = ',', index = False)
 ```
 
 ```{r}
-# Changing minDuration
+# Load Python
+spw_no_py_event <- read_csv("mhws_py_spw_no.csv")
+spw_no_py_clim <- read_csv("clim_py_spw_no.csv")
+spw_11_py_event <- read_csv("mhws_py_spw_11.csv")
+spw_11_py_clim <- read_csv("clim_py_spw_11.csv")
+spw_51_py_event <- read_csv("mhws_py_spw_51.csv")
+spw_51_py_clim <- read_csv("clim_py_spw_51.csv")
+
+# Compare clims and intensities
+# no smoothing
+cor(spw_no_r$climatology$seas, spw_no_py_clim$seas)
+sum(spw_no_r$climatology$seas) - sum(spw_no_py_clim$seas)
+cor(spw_no_r$climatology$thresh, spw_no_py_clim$thresh)
+sum(spw_no_r$climatology$thresh) - sum(spw_no_py_clim$thresh)
+sum(spw_no_r$event$intensity_cumulative) - sum(spw_no_py_event$intensity_cumulative)
+sum(spw_no_r$event$intensity_max) - sum(spw_no_py_event$intensity_max)
+# 11 days
+cor(spw_11_r$climatology$seas, spw_11_py_clim$seas)
+sum(spw_11_r$climatology$seas) - sum(spw_11_py_clim$seas)
+cor(spw_11_r$climatology$thresh, spw_11_py_clim$thresh)
+sum(spw_11_r$climatology$thresh) - sum(spw_11_py_clim$thresh)
+sum(spw_11_r$event$intensity_cumulative) - sum(spw_11_py_event$intensity_cumulative)
+sum(spw_11_r$event$intensity_max) - sum(spw_11_py_event$intensity_max)
+# 51 days
+cor(spw_51_r$climatology$seas, spw_51_py_clim$seas)
+sum(spw_51_r$climatology$seas) - sum(spw_51_py_clim$seas)
+cor(spw_51_r$climatology$thresh, spw_51_py_clim$thresh)
+sum(spw_51_r$climatology$thresh) - sum(spw_51_py_clim$thresh)
+sum(spw_51_r$event$intensity_cumulative) - sum(spw_51_py_event$intensity_cumulative)
+sum(spw_51_r$event$intensity_max) - sum(spw_51_py_event$intensity_max)
+
+# Compare events
+spw_no_event <- compare_event(spw_no_r$event, spw_no_py_event)
+spw_no_event
+spw_11_event <- compare_event(spw_11_r$event, spw_11_py_event)
+spw_11_event
+spw_51_event <- compare_event(spw_51_r$event, spw_51_py_event)
+spw_51_event
+```
+
+Surprisingly the smoothing window, regardless if it is applied or not, seems to make little difference. But again, let's compare the old R code against Python as well.
+
+```{r}
+ts <- RmarineHeatWaves::make_whole(sst_WA)
+spw_no_r_old <- RmarineHeatWaves::detect(data = ts, climatology_start = 1982, climatology_end = 2014, smooth_percentile = FALSE)
+spw_no_r_old_event <- spw_no_r_old$event
+spw_no_r_old_clim <- spw_no_r_old$clim
+
+# Compare new and old R code
+sum(spw_no_r$climatology$seas) - sum(spw_no_r_old_clim$seas_clim_year)
+sum(spw_no_r$climatology$thresh) - sum(spw_no_r_old_clim$thresh_clim_year)
+
+# Compare old & new R against Python
+sum(spw_no_py_clim$seas) - sum(spw_no_r_old_clim$seas_clim_year)
+sum(spw_no_py_clim$seas) - sum(spw_no_r$climatology$seas)
+sum(spw_no_py_clim$thresh) - sum(spw_no_r_old_clim$thresh_clim_year)
+sum(spw_no_py_clim$thresh) - sum(spw_no_r$climatology$thresh)
+```
+
+## `windowHalfWidth` comparisons
+
+We've now seen that the differences between both the new & old R code and the Python code hold consistently different regardless of the changing of the `pctile` or `smoothWindowPercentile`. This then leads me to think that this is just a rounding issue between the two languages, and that there is not some fundamentally different calculation happening somewhere in the code. That being said, it is still necessary to be thorough and so I'll go through the rest of the arguments now. Starting with `windowHalfWidth`.
+
+```{r}
+whw_3_r <- detect_event(ts2clm(data = sst_WA, windowHalfWidth = 3,
+                               climatologyPeriod = c("1982-01-01", "2014-12-31")))
+whw_7_r <- detect_event(ts2clm(data = sst_WA, windowHalfWidth = 7,
+                               climatologyPeriod = c("1982-01-01", "2014-12-31")))
+```
+
+```{python, eval = FALSE}
+# windowHalfWidth = 3
+mhws, clim = mhw.detect(t, sst, windowHalfWidth = 3)
+mhws_df = pd.DataFrame.from_dict(mhws)
+mhws_df.to_csv('mhws_py_whw_3.csv', sep = ',', index = False)
+clim_df = pd.DataFrame.from_dict(clim)
+clim_df.to_csv('clim_py_whw_3.csv', sep = ',', index = False)
+# windowHalfWidth = 7
+mhws, clim = mhw.detect(t, sst, windowHalfWidth = 7)
+mhws_df = pd.DataFrame.from_dict(mhws)
+mhws_df.to_csv('mhws_py_whw_7.csv', sep = ',', index = False)
+clim_df = pd.DataFrame.from_dict(clim)
+clim_df.to_csv('clim_py_whw_7.csv', sep = ',', index = False)
+```
+
+```{r}
+# Load Python
+whw_3_py_event <- read_csv("mhws_py_whw_3.csv")
+whw_3_py_clim <- read_csv("clim_py_whw_3.csv")
+whw_7_py_event <- read_csv("mhws_py_whw_7.csv")
+whw_7_py_clim <- read_csv("clim_py_whw_7.csv")
+
+# Compare clims and intensities
+# 3 days
+cor(whw_3_r$climatology$seas, whw_3_py_clim$seas)
+sum(whw_3_r$climatology$seas) - sum(whw_3_py_clim$seas)
+cor(whw_3_r$climatology$thresh, whw_3_py_clim$thresh)
+sum(whw_3_r$climatology$thresh) - sum(whw_3_py_clim$thresh)
+sum(whw_3_r$event$intensity_cumulative) - sum(whw_3_py_event$intensity_cumulative)
+sum(whw_3_r$event$intensity_max) - sum(whw_3_py_event$intensity_max)
+# 7 days
+cor(whw_7_r$climatology$seas, whw_7_py_clim$seas)
+sum(whw_7_r$climatology$seas) - sum(whw_7_py_clim$seas)
+cor(whw_7_r$climatology$thresh, whw_7_py_clim$thresh)
+sum(whw_7_r$climatology$thresh) - sum(whw_7_py_clim$thresh)
+sum(whw_7_r$event$intensity_cumulative) - sum(whw_7_py_event$intensity_cumulative)
+sum(whw_7_r$event$intensity_max) - sum(whw_7_py_event$intensity_max)
+
+# Compare events
+whw_3_event <- compare_event(whw_3_r$event, whw_3_py_event)
+whw_3_event
+# whw_7_event <- compare_event(whw_7_r$event, whw_7_py_event)
+# whw_7_event
+```
+
+We see here that the `windowHalfWidth` has a large effect on the difference between the results than anything else so far. The difference per row is still low at ~0.001 so isn't much cause for alarm. We do however detect a different number of events if `windowHalfWidth = 7`. Let's see how they differ.
+
+```{r}
+whw_7_r_event <- whw_7_r$event
+whw_7_r_event$date_start[!whw_7_r_event$date_start %in% whw_7_py_event$date_start]
+```
+
+The difference lies in the R code detecting a five day event that the Python code must have seen as only 4 days or less. Again due to very narrow differences in the threshold values.
+
+Let's look if there is a difference between the old and new R code.
+
+```{r}
+ts <- RmarineHeatWaves::make_whole(sst_WA)
+whw_7_r_old <- RmarineHeatWaves::detect(data = ts, climatology_start = 1982, climatology_end = 2014, window_half_width = 7)
+
+# Compare new and old R code
+sum(whw_7_r$climatology$seas) - sum(whw_7_r_old$clim$seas_clim_year)
+sum(whw_7_r$climatology$thresh) - sum(whw_7_r_old$clim$thresh_clim_year)
+sum(whw_7_r$event$intensity_cumulative) - sum(whw_7_r_old$event$int_cum)
+sum(whw_7_r$event$intensity_max) - sum(whw_7_r_old$event$int_max)
+```
+
+Everything matches up between old and new R for `windowHalfWidth = 7`.
+
+## `minDuration` comparisons
+
+Now we move away form the arguments that effect the climatology calculations, and focus just on those that determine the classification of events.
+
+```{r}
 minD_3_r <- detect_event(ts2clm(data = sst_WA, climatologyPeriod = c("1982-01-01", "2014-12-31")), 
                          minDuration = 3)
+minD_7_r <- detect_event(ts2clm(data = sst_WA, climatologyPeriod = c("1982-01-01", "2014-12-31")), 
+                         minDuration = 7)
 ```
 
+```{python, eval=FALSE}
+# minDuration = 3
+mhws, clim = mhw.detect(t, sst, minDuration = 3)
+mhws_df = pd.DataFrame.from_dict(mhws)
+mhws_df.to_csv('mhws_py_minD_3.csv', sep = ',', index = False)
+clim_df = pd.DataFrame.from_dict(clim)
+clim_df.to_csv('clim_py_minD_3.csv', sep = ',', index = False)
+# minDuration = 7
+mhws, clim = mhw.detect(t, sst, minDuration = 7)
+mhws_df = pd.DataFrame.from_dict(mhws)
+mhws_df.to_csv('mhws_py_minD_7.csv', sep = ',', index = False)
+clim_df = pd.DataFrame.from_dict(clim)
+clim_df.to_csv('clim_py_minD_7.csv', sep = ',', index = False)
+```
+
+```{r}
+# Load Python
+minD_3_py_event <- read_csv("mhws_py_minD_3.csv")
+minD_3_py_clim <- read_csv("clim_py_minD_3.csv")
+minD_7_py_event <- read_csv("mhws_py_minD_7.csv")
+minD_7_py_clim <- read_csv("clim_py_minD_7.csv")
+
+# Compare clims and intensities
+# 3 days
+cor(minD_3_r$climatology$seas, minD_3_py_clim$seas)
+sum(minD_3_r$climatology$seas) - sum(minD_3_py_clim$seas)
+cor(minD_3_r$climatology$thresh, minD_3_py_clim$thresh)
+sum(minD_3_r$climatology$thresh) - sum(minD_3_py_clim$thresh)
+sum(minD_3_r$event$intensity_cumulative) - sum(minD_3_py_event$intensity_cumulative)
+sum(minD_3_r$event$intensity_max) - sum(minD_3_py_event$intensity_max)
+# 7 days
+cor(minD_7_r$climatology$seas, minD_7_py_clim$seas)
+sum(minD_7_r$climatology$seas) - sum(minD_7_py_clim$seas)
+cor(minD_7_r$climatology$thresh, minD_7_py_clim$thresh)
+sum(minD_7_r$climatology$thresh) - sum(minD_7_py_clim$thresh)
+sum(minD_7_r$event$intensity_cumulative) - sum(minD_7_py_event$intensity_cumulative)
+sum(minD_7_r$event$intensity_max) - sum(minD_7_py_event$intensity_max)
+
+# Compare events
+minD_3_event <- compare_event(minD_3_r$event, minD_3_py_event)
+minD_3_event
+minD_7_event <- compare_event(minD_7_r$event, minD_7_py_event)
+minD_7_event
+```
+
+As expected, changing the minimum duration of events has no effect on the threshold calculations. It is however gratifying to see that the same number of events is calculated between languages, regardless of the minimum duration. The difference these cause in the intensities of the events is also negligible between languages.
+
+## `joinAcrossGaps` comparisons
+
+Now for the final argument in the base functionality. This too should not effect the climatologies. Only the events.
+
+```{r}
+joinAG_no_r <- detect_event(ts2clm(data = sst_WA, climatologyPeriod = c("1982-01-01", "2014-12-31")), 
+                            joinAcrossGaps = FALSE)
+joinAG_1_r <- detect_event(ts2clm(data = sst_WA, climatologyPeriod = c("1982-01-01", "2014-12-31")), 
+                           maxGap = 1)
+joinAG_5_r <- detect_event(ts2clm(data = sst_WA, climatologyPeriod = c("1982-01-01", "2014-12-31")), 
+                           maxGap = 5)
+```
+
+```{python, eval=FALSE}
+# joinAGuration = False
+mhws, clim = mhw.detect(t, sst, joinAcrossGaps = False)
+mhws_df = pd.DataFrame.from_dict(mhws)
+mhws_df.to_csv('mhws_py_joinAG_no.csv', sep = ',', index = False)
+clim_df = pd.DataFrame.from_dict(clim)
+clim_df.to_csv('clim_py_joinAG_no.csv', sep = ',', index = False)
+# maxGap = 1
+mhws, clim = mhw.detect(t, sst, maxGap = 1)
+mhws_df = pd.DataFrame.from_dict(mhws)
+mhws_df.to_csv('mhws_py_joinAG_1.csv', sep = ',', index = False)
+clim_df = pd.DataFrame.from_dict(clim)
+clim_df.to_csv('clim_py_joinAG_1.csv', sep = ',', index = False)
+# maxGap = 5
+mhws, clim = mhw.detect(t, sst, maxGap = 5)
+mhws_df = pd.DataFrame.from_dict(mhws)
+mhws_df.to_csv('mhws_py_joinAG_5.csv', sep = ',', index = False)
+clim_df = pd.DataFrame.from_dict(clim)
+clim_df.to_csv('clim_py_joinAG_5.csv', sep = ',', index = False)
+```
+
+```{r}
+# Load Python
+joinAG_no_py_event <- read_csv("mhws_py_joinAG_no.csv")
+joinAG_no_py_clim <- read_csv("clim_py_joinAG_no.csv")
+joinAG_1_py_event <- read_csv("mhws_py_joinAG_1.csv")
+joinAG_1_py_clim <- read_csv("clim_py_joinAG_1.csv")
+joinAG_5_py_event <- read_csv("mhws_py_joinAG_5.csv")
+joinAG_5_py_clim <- read_csv("clim_py_joinAG_5.csv")
+
+# Compare clims and intensities
+# no days
+cor(joinAG_no_r$climatology$seas, joinAG_no_py_clim$seas)
+sum(joinAG_no_r$climatology$seas) - sum(joinAG_no_py_clim$seas)
+cor(joinAG_no_r$climatology$thresh, joinAG_no_py_clim$thresh)
+sum(joinAG_no_r$climatology$thresh) - sum(joinAG_no_py_clim$thresh)
+sum(joinAG_no_r$event$intensity_cumulative) - sum(joinAG_no_py_event$intensity_cumulative)
+sum(joinAG_no_r$event$intensity_max) - sum(joinAG_no_py_event$intensity_max)
+# 1 day
+cor(joinAG_1_r$climatology$seas, joinAG_1_py_clim$seas)
+sum(joinAG_1_r$climatology$seas) - sum(joinAG_1_py_clim$seas)
+cor(joinAG_1_r$climatology$thresh, joinAG_1_py_clim$thresh)
+sum(joinAG_1_r$climatology$thresh) - sum(joinAG_1_py_clim$thresh)
+sum(joinAG_1_r$event$intensity_cumulative) - sum(joinAG_1_py_event$intensity_cumulative)
+sum(joinAG_1_r$event$intensity_max) - sum(joinAG_1_py_event$intensity_max)
+# 7 days
+cor(joinAG_5_r$climatology$seas, joinAG_5_py_clim$seas)
+sum(joinAG_5_r$climatology$seas) - sum(joinAG_5_py_clim$seas)
+cor(joinAG_5_r$climatology$thresh, joinAG_5_py_clim$thresh)
+sum(joinAG_5_r$climatology$thresh) - sum(joinAG_5_py_clim$thresh)
+sum(joinAG_5_r$event$intensity_cumulative) - sum(joinAG_5_py_event$intensity_cumulative)
+sum(joinAG_5_r$event$intensity_max) - sum(joinAG_5_py_event$intensity_max)
+
+# Compare events
+joinAG_no_event <- compare_event(joinAG_no_r$event, joinAG_no_py_event)
+joinAG_no_event
+joinAG_1_event <- compare_event(joinAG_1_r$event, joinAG_1_py_event)
+joinAG_1_event
+joinAG_5_event <- compare_event(joinAG_5_r$event, joinAG_5_py_event)
+joinAG_5_event
+```
+
+A little surprising, but good to see, is that the length of gap between events does not cause a different number of events to be calculated between languages considering all other arguments are kept at the default.
+
+## Conclusion
+
+It appears as though, down to a very small degree, there are differences between the outputs of the two languages. That being said, these differences appear to be due to the rounding differences that exist between the languages and so it is not a fault of the code in either, nor are there fundamentally different processes being employed to make the calculations. Indeed, though minute differences may be found in the calculations of the seasonal and threshold climatologies, these differences are consistent. They do not vary. They may change in magnitude depending on the arguments supplied, but these differences never become larger than ~0.001 per row, which has been deemed here as acceptable. Interestingly, though not surprising in hindsight, is that the changing of the `windowHalfWidth` argument causes the largest difference between the languages. This makes sense because this argument determines how many values are meaned together in the beginning of the climatology calculations. And as the differences are due to rounding, that numerical fingerprint is boldest here.
+
+Depending on how some of the arguments were tweaked, the tow languages very rarely would detect one event more or less than the other. This was due to the odd day being just above or below the threshold by ~0.001 degrees or so. Very rare, but so is existent, hypothetically.
+
+Ultimately, I am very confident in saying that the outputs of these two languages are comparable.

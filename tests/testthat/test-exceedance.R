@@ -6,7 +6,7 @@ test_that("exceedance() returns the correct lists, tibbles, and columns", {
   expect_is(res$threshold, "tbl_df")
   expect_is(res$exceedance, "tbl_df")
   expect_equal(ncol(res$threshold), 7)
-  expect_equal(ncol(res$exceedance), 17)
+  expect_equal(ncol(res$exceedance), 18)
 })
 
 test_that("threshold may not be missing", {

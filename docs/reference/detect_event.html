@@ -79,7 +79,7 @@ other means." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.4.9002</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.6.9000</span>
       </span>
     </div>
 
@@ -114,7 +114,10 @@ other means." />
       <a href="../articles/Short_climatologies.html">Short climatologies</a>
     </li>
     <li>
-      <a href="../articles/r_vs_python.html">R vs Python</a>
+      <a href="../articles/r_vs_python.html">Default MHW outputs in R and Python</a>
+    </li>
+    <li>
+      <a href="../articles/r_vs_python_more.html">Additional MHW outputs in R and Python</a>
     </li>
   </ul>
 </li>
@@ -276,10 +279,10 @@ The events are summarised using a range of event metrics:
   <dt>event_no</dt><dd><p>A sequential number indicating the ID and order of
   the events.</p></dd>
   <dt>index_start</dt><dd><p>Start index of event.</p></dd>
-  <dt>index_stop</dt><dd><p>Stop index of event.</p></dd>
+  <dt>index_end</dt><dd><p>End index of event.</p></dd>
   <dt>duration</dt><dd><p>Duration of event [days].</p></dd>
   <dt>date_start</dt><dd><p>Start date of event [date].</p></dd>
-  <dt>date_stop</dt><dd><p>Stop date of event [date].</p></dd>
+  <dt>date_end</dt><dd><p>End date of event [date].</p></dd>
   <dt>date_peak</dt><dd><p>Date of event peak [date].</p></dd>
   <dt>intensity_mean</dt><dd><p>Mean intensity [deg. C].</p></dd>
   <dt>intensity_max</dt><dd><p>Maximum (peak) intensity [deg. C].</p></dd>
@@ -296,12 +299,6 @@ than the seasonal climatology.
 intensity_max_abs, intensity_mean_abs, intensity_var_abs, and
 intensity_cumulative_abs are as above except as absolute magnitudes
 rather than relative to the seasonal climatology or threshold.
-
-intensity_max_norm and intensity_mean_norm are as above except
-units are in multiples of threshold exceedances, i.e., a value of 1.5
-indicates the event intensity (relative to the climatology) was 1.5 times the
-value of the threshold (relative to climatology,
-i.e., threshold - climatology.)
 
 Note that rate_onset and rate_decline will return NA
 when the event begins/ends on the first/last day of the time series. This
@@ -375,15 +372,15 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
 #&gt; 10    10 1982-01-10  21.4  21.8   23.3 0.991 FALSE           FALSE            
 #&gt; # ... with 2 more variables: event &lt;lgl&gt;, event_no &lt;int&gt;</div><div class='input'><span class='co'># show some of the heat waves:</span>
 <span class='no'>out</span>$<span class='no'>event</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='fl'>1</span>:<span class='fl'>10</span>]</div><div class='output co'>#&gt; # A tibble: 5 x 10
-#&gt;   event_no index_start index_stop duration date_start date_stop  date_peak 
-#&gt;      &lt;int&gt;       &lt;dbl&gt;      &lt;dbl&gt;    &lt;int&gt; &lt;date&gt;     &lt;date&gt;     &lt;date&gt;    
-#&gt; 1        1         885        889        5 1984-06-03 1984-06-07 1984-06-05
-#&gt; 2        2         899        904        6 1984-06-17 1984-06-22 1984-06-19
-#&gt; 3        3         908        926       19 1984-06-26 1984-07-14 1984-07-10
-#&gt; 4        4        1023       1029        7 1984-10-19 1984-10-25 1984-10-23
-#&gt; 5        5        1033       1037        5 1984-10-29 1984-11-02 1984-10-30
-#&gt; # ... with 3 more variables: intensity_mean &lt;dbl&gt;, intensity_max &lt;dbl&gt;,
-#&gt; #   intensity_var &lt;dbl&gt;</div><div class='input'>
+#&gt;   event_no index_start index_peak index_end duration date_start date_peak 
+#&gt;      &lt;int&gt;       &lt;dbl&gt;      &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt; &lt;date&gt;     &lt;date&gt;    
+#&gt; 1        1         885        887       889        5 1984-06-03 1984-06-05
+#&gt; 2        2         899        901       904        6 1984-06-17 1984-06-19
+#&gt; 3        3         908        922       926       19 1984-06-26 1984-07-10
+#&gt; 4        4        1023       1027      1029        7 1984-10-19 1984-10-23
+#&gt; 5        5        1033       1034      1037        5 1984-10-29 1984-10-30
+#&gt; # ... with 3 more variables: date_end &lt;date&gt;, intensity_mean &lt;dbl&gt;,
+#&gt; #   intensity_max &lt;dbl&gt;</div><div class='input'>
 <span class='co'># Or if one wants to calculate MCSs</span>
 <span class='no'>res_clim</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ts2clm.html'>ts2clm</a></span>(<span class='no'>sst_WA</span>, <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span>),
                    <span class='kw'>pctile</span> <span class='kw'>=</span> <span class='fl'>10</span>)
@@ -404,15 +401,15 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
 #&gt; 10    10 1982-01-10  21.4  21.8   20.8 0.991 FALSE           FALSE            
 #&gt; # ... with 2 more variables: event &lt;lgl&gt;, event_no &lt;int&gt;</div><div class='input'><span class='co'># show some of the cold-spells:</span>
 <span class='no'>out</span>$<span class='no'>event</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='fl'>1</span>:<span class='fl'>10</span>]</div><div class='output co'>#&gt; # A tibble: 5 x 10
-#&gt;   event_no index_start index_stop duration date_start date_stop  date_peak 
-#&gt;      &lt;int&gt;       &lt;dbl&gt;      &lt;dbl&gt;    &lt;int&gt; &lt;date&gt;     &lt;date&gt;     &lt;date&gt;    
-#&gt; 1        1          83         87        5 1982-03-24 1982-03-28 1982-03-24
-#&gt; 2        2         194        207       14 1982-07-13 1982-07-26 1982-07-18
-#&gt; 3        3         270        277        8 1982-09-27 1982-10-04 1982-09-29
-#&gt; 4        4         296        306       11 1982-10-23 1982-11-02 1982-10-30
-#&gt; 5        5         672        685       14 1983-11-03 1983-11-16 1983-11-12
-#&gt; # ... with 3 more variables: intensity_mean &lt;dbl&gt;, intensity_max &lt;dbl&gt;,
-#&gt; #   intensity_var &lt;dbl&gt;</div></pre>
+#&gt;   event_no index_start index_peak index_end duration date_start date_peak 
+#&gt;      &lt;int&gt;       &lt;dbl&gt;      &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt; &lt;date&gt;     &lt;date&gt;    
+#&gt; 1        1          83         83        87        5 1982-03-24 1982-03-24
+#&gt; 2        2         194        199       207       14 1982-07-13 1982-07-18
+#&gt; 3        3         270        272       277        8 1982-09-27 1982-09-29
+#&gt; 4        4         296        303       306       11 1982-10-23 1982-10-30
+#&gt; 5        5         672        681       685       14 1983-11-03 1983-11-12
+#&gt; # ... with 3 more variables: date_end &lt;date&gt;, intensity_mean &lt;dbl&gt;,
+#&gt; #   intensity_max &lt;dbl&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

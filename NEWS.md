@@ -1,3 +1,10 @@
+# heatwaveR 0.2.6.9000 (2018-05-23)
+
+* Added vignette that shows how tweaking arguments for detect changes the outputs
+  between languages and how those outputs may differ
+* Changed output of `detect_event` to better match Python version
+* Corrections to testthat to match changes to `detect_event` output
+
 # heatwaveR 0.2.5.9003 (2018-05-22)
 
 * Added C++ function, `clim_calc_ccp()` for faster climatology calculations; speed

@@ -4,10 +4,10 @@ test_that("detect() returns the correct lists, tibbles, and columns", {
   ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   res <- detect_event(ts)
   expect_is(res, "list")
-  expect_is(res$clim, "tbl_df")
+  expect_is(res$climatology, "tbl_df")
   expect_is(res$event, "tbl_df")
-  expect_equal(ncol(res$clim), 10)
-  expect_equal(ncol(res$event), 23)
+  expect_equal(ncol(res$climatology), 10)
+  expect_equal(ncol(res$event), 22)
 })
 
 test_that("all starting error checks flag correctly", {

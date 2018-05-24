@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.4.9002</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.6.9000</span>
       </span>
     </div>
 
@@ -73,7 +73,10 @@
       <a href="../articles/Short_climatologies.html">Short climatologies</a>
     </li>
     <li>
-      <a href="../articles/r_vs_python.html">R vs Python</a>
+      <a href="../articles/r_vs_python.html">Default MHW outputs in R and Python</a>
+    </li>
+    <li>
+      <a href="../articles/r_vs_python_more.html">Additional MHW outputs in R and Python</a>
     </li>
   </ul>
 </li>
@@ -110,7 +113,7 @@
       <h1>Alternative climatologies and baselines</h1>
                         <h4 class="author">AJ Smit</h4>
             
-            <h4 class="date">2018-05-20</h4>
+            <h4 class="date">2018-05-23</h4>
       
       
       <div class="hidden name"><code>Climatologies_and_baselines.Rmd</code></div>
@@ -133,62 +136,62 @@
 <a href="#the-default-climatology-and-threshold" class="anchor"></a>The default climatology and threshold</h2>
 <p>Central to the functioning of the <strong>heatwaveR</strong> detect algogorithm is the climatology, which is the reference against which the extremes are calculated. For historical reasons—which also turn out to make good practical sense—it has become standard practice to base a climatology on 30 years’ worth of data, updated at the start of each new decade (the most recent being 1981-2010). For the <strong>heatwaveR</strong> package we recommend the same. Because heat wave detection is based on daily data, a daily climatology is required. That is, the mean value for each of the days in a 365 (non-leap) or 366 (leap) day long year. In the case of gridded data, we also require that the climatology is at the same spatial resolution as the SST time series within which the extreme events are sought. In the case of the dOISST v2. data, it is independently calculated at each of the 1/4° grid cells, and for station data it must be representative of that station and preferably also obtained with the same instrument that yielded the seawater temperature time series entering the event detection algorithm (in fact, the algorithm will by default use the daily time series to derive the climatology).</p>
 <p>In a daily climatology, there will be one mean temperature for each day of the year (365 or 366 days, depending on how leap years are dealt with). How the daily mean is calculated can vary somewhat from application to application. The <code>detect()</code> function applies a window centered on a sliding Julian day for the pooling of values that will form the basis for calculation of the climatology and threshold percentile. We use a default of 5 days, which gives a window width of 11 days centered on the 6th day of the series of 11 days. For example, the mean temperature for Julian day 6 will be comprised of all temperatures measured from Julian days 1 to 11, across 30 years, i.e. 330 temperature measurements are summarised in this climatological daily mean. A sliding window centered on Julian day 7 will comprise all temperatures measured on Julian days 2 to 12 over the 30 years; etc. Currently we do not provide the option to calculate a weighted mean; rather, each day receives the same weighting as any other day, irrespective of how far the day is from the one on which the sliding window is centered. Climatologies produced with sliding windows of width 1, 11, 31, and 61 days are presented in Figure 1. In the figure we see that the wider the sliding window becomes the less day-to-day noise is retained in the climatology.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(tidyverse) <span class="co"># misc. data processing conveniences</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(lubridate) <span class="co"># for working with dates</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">library</span>(heatwaveR)</a></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Using a built-in data set</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co"># smoothPercentile = FALSE</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">res.<span class="fl">1.</span>F &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(sst_WA, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>),</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">                  <span class="dt">windowHalfWidth =</span> <span class="dv">0</span>, <span class="dt">smoothPercentile =</span> F, <span class="dt">clmOnly =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">res.<span class="fl">11.</span>F &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(sst_WA, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>),</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">                   <span class="dt">smoothPercentile =</span> F, <span class="dt">clmOnly =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">res.<span class="fl">31.</span>F &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(sst_WA, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>),</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">                   <span class="dt">windowHalfWidth =</span> <span class="dv">15</span>, <span class="dt">smoothPercentile =</span> F, <span class="dt">clmOnly =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">res.<span class="fl">61.</span>F &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(sst_WA, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>),</a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">                   <span class="dt">windowHalfWidth =</span> <span class="dv">30</span>, <span class="dt">smoothPercentile =</span> F, <span class="dt">clmOnly =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse) <span class="co"># misc. data processing conveniences</span>
+<span class="kw">library</span>(lubridate) <span class="co"># for working with dates</span>
+<span class="kw">library</span>(heatwaveR)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Using a built-in data set</span>
+<span class="co"># smoothPercentile = FALSE</span>
+res.<span class="fl">1.</span>F &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(sst_WA, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>),
+                  <span class="dt">windowHalfWidth =</span> <span class="dv">0</span>, <span class="dt">smoothPercentile =</span> F, <span class="dt">clmOnly =</span> <span class="ot">TRUE</span>)
+res.<span class="fl">11.</span>F &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(sst_WA, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>),
+                   <span class="dt">smoothPercentile =</span> F, <span class="dt">clmOnly =</span> <span class="ot">TRUE</span>)
+res.<span class="fl">31.</span>F &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(sst_WA, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>),
+                   <span class="dt">windowHalfWidth =</span> <span class="dv">15</span>, <span class="dt">smoothPercentile =</span> F, <span class="dt">clmOnly =</span> <span class="ot">TRUE</span>)
+res.<span class="fl">61.</span>F &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(sst_WA, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>),
+                   <span class="dt">windowHalfWidth =</span> <span class="dv">30</span>, <span class="dt">smoothPercentile =</span> F, <span class="dt">clmOnly =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <div class="figure">
 <img src="climat_1.png" alt="Figure 2. Daily climatologies of the mean (lower lines) and 90th percentile (top lines) produced by the detect() function, with various windowHalfWidth values and with smoothPercentile switched off." style="width:80.0%"><p class="caption"><strong>Figure 2.</strong> Daily climatologies of the mean (lower lines) and 90th percentile (top lines) produced by the <code>detect()</code> function, with various <code>windowHalfWidth</code> values and with <code>smoothPercentile</code> switched off.</p>
 </div>
 <p>To produce smoother climatologies, we can additionally enable a moving average smoother. The result is shown in Figure 3.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co">#smoothPercentile = TRUE</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">res.<span class="fl">11.</span>T &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(sst_WA, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>), <span class="dt">clmOnly =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">res.<span class="fl">31.</span>T &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(sst_WA, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>), <span class="dt">clmOnly =</span> <span class="ot">TRUE</span>, <span class="dt">windowHalfWidth =</span> <span class="dv">15</span>)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">res.<span class="fl">61.</span>T &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(sst_WA, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>), <span class="dt">clmOnly =</span> <span class="ot">TRUE</span>, <span class="dt">windowHalfWidth =</span> <span class="dv">30</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#smoothPercentile = TRUE</span>
+res.<span class="fl">11.</span>T &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(sst_WA, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>), <span class="dt">clmOnly =</span> <span class="ot">TRUE</span>)
+res.<span class="fl">31.</span>T &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(sst_WA, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>), <span class="dt">clmOnly =</span> <span class="ot">TRUE</span>, <span class="dt">windowHalfWidth =</span> <span class="dv">15</span>)
+res.<span class="fl">61.</span>T &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(sst_WA, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>), <span class="dt">clmOnly =</span> <span class="ot">TRUE</span>, <span class="dt">windowHalfWidth =</span> <span class="dv">30</span>)</code></pre></div>
 <div class="figure">
 <img src="climat_2.png" alt="Figure 3. Daily climatologies of the mean (lower lines) and 90th percentile (upper lines) produced by the detect() function, with various windowHalfWidth values and with smoothPercentile at the default value of 31 days." style="width:80.0%"><p class="caption"><strong>Figure 3.</strong> Daily climatologies of the mean (lower lines) and 90th percentile (upper lines) produced by the <code>detect()</code> function, with various <code>windowHalfWidth</code> values and with <code>smoothPercentile</code> at the default value of 31 days.</p>
 </div>
 <div id="fourier-analysis-of-time-series-to-construct-a-smooth-climatology" class="section level3">
 <h3 class="hasAnchor">
 <a href="#fourier-analysis-of-time-series-to-construct-a-smooth-climatology" class="anchor"></a>Fourier analysis of time series to construct a smooth climatology</h3>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">library</span>(fda)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">clm &lt;-<span class="st"> </span>res.<span class="fl">1.</span>F <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span>as_tibble</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">b7 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/fda/topics/create.fourier.basis">create.fourier.basis</a></span>(<span class="dt">rangeval =</span> <span class="kw">range</span>(clm<span class="op">$</span>doy), <span class="dt">nbasis =</span> <span class="dv">7</span>)</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co"># plot(b7)</span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co"># b7.val &lt;- as_tibble(eval.basis(clm$doy, basisobj = b7))</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co"># b7.val &lt;- cbind(doy = clm$doy, b7.val) %&gt;% </span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#   gather(key = "basis", value = "value", -doy) %&gt;% </span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#   as_tibble()</span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co"># create smooth seasonal climatology</span></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14">b7.seas.smth &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/fda/topics/smooth.basis">smooth.basis</a></span>(<span class="dt">argvals =</span> clm<span class="op">$</span>doy, <span class="dt">y =</span> clm<span class="op">$</span>seas, <span class="dt">fdParobj =</span> b7)<span class="op">$</span>fd</a>
-<a class="sourceLine" id="cb4-15" data-line-number="15">clm.seas.smth &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/fda/topics/eval.fd">eval.fd</a></span>(clm<span class="op">$</span>doy, b7.seas.smth)</a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co"># create  smooth threshold</span></a>
-<a class="sourceLine" id="cb4-18" data-line-number="18">b7.thresh.smth &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/fda/topics/smooth.basis">smooth.basis</a></span>(<span class="dt">argvals =</span> clm<span class="op">$</span>doy, <span class="dt">y =</span> clm<span class="op">$</span>thresh, <span class="dt">fdParobj =</span> b7)<span class="op">$</span>fd</a>
-<a class="sourceLine" id="cb4-19" data-line-number="19">clm.thresh.smth &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/fda/topics/eval.fd">eval.fd</a></span>(clm<span class="op">$</span>doy, b7.thresh.smth)</a>
-<a class="sourceLine" id="cb4-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb4-21" data-line-number="21">temps &lt;-<span class="st"> </span><span class="kw">as_tibble</span>(<span class="kw">data.frame</span>(<span class="dt">doy =</span> clm<span class="op">$</span>doy,</a>
-<a class="sourceLine" id="cb4-22" data-line-number="22">                              <span class="dt">seas.unsmth_1 =</span> clm<span class="op">$</span>seas,</a>
-<a class="sourceLine" id="cb4-23" data-line-number="23">                              <span class="dt">seas.smth_11 =</span> res.<span class="fl">11.</span>T<span class="op">$</span>seas,</a>
-<a class="sourceLine" id="cb4-24" data-line-number="24">                              <span class="dt">clim.fourier_7 =</span> clm.seas.smth,</a>
-<a class="sourceLine" id="cb4-25" data-line-number="25">                              <span class="dt">thresh.unsmth_1 =</span> clm<span class="op">$</span>thresh,</a>
-<a class="sourceLine" id="cb4-26" data-line-number="26">                              <span class="dt">thresh.smth_11 =</span> res.<span class="fl">11.</span>T<span class="op">$</span>thresh,</a>
-<a class="sourceLine" id="cb4-27" data-line-number="27">                              <span class="dt">thresh.fourier_7 =</span> clm.thresh.smth))</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(fda)
+clm &lt;-<span class="st"> </span>res.<span class="fl">1.</span>F <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>as_tibble
+
+b7 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/fda/topics/create.fourier.basis">create.fourier.basis</a></span>(<span class="dt">rangeval =</span> <span class="kw">range</span>(clm<span class="op">$</span>doy), <span class="dt">nbasis =</span> <span class="dv">7</span>)
+<span class="co"># plot(b7)</span>
+
+<span class="co"># b7.val &lt;- as_tibble(eval.basis(clm$doy, basisobj = b7))</span>
+<span class="co"># b7.val &lt;- cbind(doy = clm$doy, b7.val) %&gt;% </span>
+<span class="co">#   gather(key = "basis", value = "value", -doy) %&gt;% </span>
+<span class="co">#   as_tibble()</span>
+
+<span class="co"># create smooth seasonal climatology</span>
+b7.seas.smth &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/fda/topics/smooth.basis">smooth.basis</a></span>(<span class="dt">argvals =</span> clm<span class="op">$</span>doy, <span class="dt">y =</span> clm<span class="op">$</span>seas, <span class="dt">fdParobj =</span> b7)<span class="op">$</span>fd
+clm.seas.smth &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/fda/topics/eval.fd">eval.fd</a></span>(clm<span class="op">$</span>doy, b7.seas.smth)
+
+<span class="co"># create  smooth threshold</span>
+b7.thresh.smth &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/fda/topics/smooth.basis">smooth.basis</a></span>(<span class="dt">argvals =</span> clm<span class="op">$</span>doy, <span class="dt">y =</span> clm<span class="op">$</span>thresh, <span class="dt">fdParobj =</span> b7)<span class="op">$</span>fd
+clm.thresh.smth &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/fda/topics/eval.fd">eval.fd</a></span>(clm<span class="op">$</span>doy, b7.thresh.smth)
+
+temps &lt;-<span class="st"> </span><span class="kw">as_tibble</span>(<span class="kw">data.frame</span>(<span class="dt">doy =</span> clm<span class="op">$</span>doy,
+                              <span class="dt">seas.unsmth_1 =</span> clm<span class="op">$</span>seas,
+                              <span class="dt">seas.smth_11 =</span> res.<span class="fl">11.</span>T<span class="op">$</span>seas,
+                              <span class="dt">clim.fourier_7 =</span> clm.seas.smth,
+                              <span class="dt">thresh.unsmth_1 =</span> clm<span class="op">$</span>thresh,
+                              <span class="dt">thresh.smth_11 =</span> res.<span class="fl">11.</span>T<span class="op">$</span>thresh,
+                              <span class="dt">thresh.fourier_7 =</span> clm.thresh.smth))</code></pre></div>
 <div class="figure">
-<img src="climat_3.png" alt="Figure 4. Daily climatologies of the mean (lower lines) and 90th percentile (upper lines) produced by the detect() function; “1, unsmooth” indicates that a windowHalfWidth of 0 days had been set, and that the data had not been subjected to smoothPercentile; “11, smooth” is the default settings of the detect() function; and “Fourier” indicates that an alternative climatology had been produced through the application of a Fourier analysis with 7 basis points." style="width:80.0%"><p class="caption"><strong>Figure 4.</strong> Daily climatologies of the mean (lower lines) and 90th percentile (upper lines) produced by the <code>detect()</code> function; “1, unsmooth” indicates that a <code>windowHalfWidth</code> of 0 days had been set, and that the data had not been subjected to <code>smoothPercentile</code>; “11, smooth” is the default settings of the <code>detect()</code> function; and “Fourier” indicates that an alternative climatology had been produced through the application of a Fourier analysis with 7 basis points.</p>
+<img src="climat_3.png" alt="Figure 4. Daily climatologies of the mean (lower lines) and 90th percentile (upper lines) produced by the detect() function; 1, unsmooth indicates that a windowHalfWidth of 0 days had been set, and that the data had not been subjected to smoothPercentile; 11, smooth is the default settings of the detect() function; and Fourier indicates that an alternative climatology had been produced through the application of a Fourier analysis with 7 basis points." style="width:80.0%"><p class="caption"><strong>Figure 4.</strong> Daily climatologies of the mean (lower lines) and 90th percentile (upper lines) produced by the <code>detect()</code> function; “1, unsmooth” indicates that a <code>windowHalfWidth</code> of 0 days had been set, and that the data had not been subjected to <code>smoothPercentile</code>; “11, smooth” is the default settings of the <code>detect()</code> function; and “Fourier” indicates that an alternative climatology had been produced through the application of a Fourier analysis with 7 basis points.</p>
 </div>
 </div>
 </div>
@@ -196,55 +199,55 @@
 <h2 class="hasAnchor">
 <a href="#using-a-custom-baseline" class="anchor"></a>Using a custom baseline</h2>
 <p>Should one want to use a different baseline to calculate the climatology against which the events should be detected, this is now possible.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># Again, using the built-in time series</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co"># The Hobday et al. (2016) default definition applied above is available in</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co"># `res.11.T`; we repeat it her and return the original time series with the</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co"># climatology so as to have data in the specified format as required by the</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co"># detect function, `detect_event()`:</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">res.<span class="fl">11.</span>T.full &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(sst_WA, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>), <span class="dt">clmOnly =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co"># Calculate an anomaly:</span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10">daily.dat &lt;-<span class="st"> </span>res.<span class="fl">11.</span>T.full <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">anom =</span> temp <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(temp, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb5-12" data-line-number="12">         <span class="dt">num =</span> <span class="kw">seq</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(temp)))</a>
-<a class="sourceLine" id="cb5-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co"># Let us remove the long-term non-linear trend from the WA anomaly data using a </span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co"># generalised additive model; first, define the GAM:</span></a>
-<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="kw">library</span>(broom)</a>
-<a class="sourceLine" id="cb5-17" data-line-number="17">mod.gam &lt;-<span class="st"> </span><span class="kw">gam</span>(temp <span class="op">~</span><span class="st"> </span><span class="kw">s</span>(num, <span class="dt">k =</span> <span class="dv">20</span>), <span class="dt">data =</span> daily.dat)</a>
-<a class="sourceLine" id="cb5-18" data-line-number="18">daily.dat2 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/broom/topics/augment">augment</a></span>(mod.gam)</a>
-<a class="sourceLine" id="cb5-19" data-line-number="19">daily.dat2 &lt;-<span class="st"> </span><span class="kw">cbind</span>(daily.dat2, daily.dat[, <span class="kw">c</span>(<span class="st">"doy"</span>, <span class="st">"t"</span>, <span class="st">"anom"</span>)])</a>
-<a class="sourceLine" id="cb5-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb5-21" data-line-number="21">raw.clim &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(daily.dat2, <span class="dt">x =</span> t, <span class="dt">y =</span> anom,</a>
-<a class="sourceLine" id="cb5-22" data-line-number="22">                   <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>), <span class="dt">clmOnly =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb5-23" data-line-number="23"></a>
-<a class="sourceLine" id="cb5-24" data-line-number="24">detrended.clim &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(daily.dat2, <span class="dt">x =</span> t, <span class="dt">y =</span> .resid,</a>
-<a class="sourceLine" id="cb5-25" data-line-number="25">                   <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>), <span class="dt">clmOnly =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb5-26" data-line-number="26"></a>
-<a class="sourceLine" id="cb5-27" data-line-number="27"><span class="co"># Plot the two climatologies (raw vs. detrended):</span></a>
-<a class="sourceLine" id="cb5-28" data-line-number="28">plt4 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">data =</span> <span class="kw">filter</span>(raw.clim, t <span class="op">&lt;</span><span class="st"> "1983-01-01"</span>), <span class="kw">aes</span>(<span class="dt">x =</span> doy, <span class="dt">y =</span> seas)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-29" data-line-number="29"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">colour =</span> <span class="st">"black"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-30" data-line-number="30"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> <span class="kw">filter</span>(detrended.clim, t <span class="op">&lt;</span><span class="st"> "1983-01-01"</span>),</a>
-<a class="sourceLine" id="cb5-31" data-line-number="31">            <span class="dt">colour =</span> <span class="st">"red"</span>, <span class="dt">alpha =</span> <span class="fl">0.6</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-32" data-line-number="32"><span class="st">  </span><span class="kw">theme_publ</span>()</a>
-<a class="sourceLine" id="cb5-33" data-line-number="33"><span class="kw">ggsave</span>(plt4, <span class="dt">file =</span> <span class="st">"climat_4.png"</span>, <span class="dt">width =</span> <span class="dv">12</span>, <span class="dt">height =</span> <span class="dv">6</span>, <span class="dt">dpi =</span> <span class="dv">120</span>)</a>
-<a class="sourceLine" id="cb5-34" data-line-number="34"><span class="co"># ... there is a tiny, almost imperceptable difference between the two...</span></a>
-<a class="sourceLine" id="cb5-35" data-line-number="35"></a>
-<a class="sourceLine" id="cb5-36" data-line-number="36"><span class="co"># Calculate events in the original WA SST (anomaly) relative to a climatology </span></a>
-<a class="sourceLine" id="cb5-37" data-line-number="37"><span class="co"># created from the detrended WA SST data:</span></a>
-<a class="sourceLine" id="cb5-38" data-line-number="38">raw.res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/detect_event.html">detect_event</a></span>(raw.clim, <span class="dt">x =</span> t, <span class="dt">y =</span> anom,</a>
-<a class="sourceLine" id="cb5-39" data-line-number="39">                              <span class="dt">seasClim =</span> seas,</a>
-<a class="sourceLine" id="cb5-40" data-line-number="40">                              <span class="dt">threshClim =</span> thresh)</a>
-<a class="sourceLine" id="cb5-41" data-line-number="41"></a>
-<a class="sourceLine" id="cb5-42" data-line-number="42">detrended.res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/detect_event.html">detect_event</a></span>(raw.clim, <span class="dt">x =</span> t, <span class="dt">y =</span> anom,</a>
-<a class="sourceLine" id="cb5-43" data-line-number="43">                              <span class="dt">seasClim =</span> detrended.clim<span class="op">$</span>seas,</a>
-<a class="sourceLine" id="cb5-44" data-line-number="44">                              <span class="dt">threshClim =</span> detrended.clim<span class="op">$</span>thresh)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Again, using the built-in time series</span>
+<span class="co"># The Hobday et al. (2016) default definition applied above is available in</span>
+<span class="co"># `res.11.T`; we repeat it her and return the original time series with the</span>
+<span class="co"># climatology so as to have data in the specified format as required by the</span>
+<span class="co"># detect function, `detect_event()`:</span>
+
+res.<span class="fl">11.</span>T.full &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(sst_WA, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>), <span class="dt">clmOnly =</span> <span class="ot">FALSE</span>)
+
+<span class="co"># Calculate an anomaly:</span>
+daily.dat &lt;-<span class="st"> </span>res.<span class="fl">11.</span>T.full <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">anom =</span> temp <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(temp, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),
+         <span class="dt">num =</span> <span class="kw">seq</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(temp)))
+
+<span class="co"># Let us remove the long-term non-linear trend from the WA anomaly data using a </span>
+<span class="co"># generalised additive model; first, define the GAM:</span>
+<span class="kw">library</span>(broom)
+mod.gam &lt;-<span class="st"> </span><span class="kw">gam</span>(temp <span class="op">~</span><span class="st"> </span><span class="kw">s</span>(num, <span class="dt">k =</span> <span class="dv">20</span>), <span class="dt">data =</span> daily.dat)
+daily.dat2 &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/broom/topics/augment">augment</a></span>(mod.gam)
+daily.dat2 &lt;-<span class="st"> </span><span class="kw">cbind</span>(daily.dat2, daily.dat[, <span class="kw">c</span>(<span class="st">"doy"</span>, <span class="st">"t"</span>, <span class="st">"anom"</span>)])
+
+raw.clim &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(daily.dat2, <span class="dt">x =</span> t, <span class="dt">y =</span> anom,
+                   <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>), <span class="dt">clmOnly =</span> <span class="ot">FALSE</span>)
+
+detrended.clim &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(daily.dat2, <span class="dt">x =</span> t, <span class="dt">y =</span> .resid,
+                   <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>), <span class="dt">clmOnly =</span> <span class="ot">FALSE</span>)
+
+<span class="co"># Plot the two climatologies (raw vs. detrended):</span>
+plt4 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">data =</span> <span class="kw">filter</span>(raw.clim, t <span class="op">&lt;</span><span class="st"> "1983-01-01"</span>), <span class="kw">aes</span>(<span class="dt">x =</span> doy, <span class="dt">y =</span> seas)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">colour =</span> <span class="st">"black"</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> <span class="kw">filter</span>(detrended.clim, t <span class="op">&lt;</span><span class="st"> "1983-01-01"</span>),
+            <span class="dt">colour =</span> <span class="st">"red"</span>, <span class="dt">alpha =</span> <span class="fl">0.6</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme_publ</span>()
+<span class="kw">ggsave</span>(plt4, <span class="dt">file =</span> <span class="st">"climat_4.png"</span>, <span class="dt">width =</span> <span class="dv">12</span>, <span class="dt">height =</span> <span class="dv">6</span>, <span class="dt">dpi =</span> <span class="dv">120</span>)
+<span class="co"># ... there is a tiny, almost imperceptable difference between the two...</span>
+
+<span class="co"># Calculate events in the original WA SST (anomaly) relative to a climatology </span>
+<span class="co"># created from the detrended WA SST data:</span>
+raw.res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/detect_event.html">detect_event</a></span>(raw.clim, <span class="dt">x =</span> t, <span class="dt">y =</span> anom,
+                              <span class="dt">seasClim =</span> seas,
+                              <span class="dt">threshClim =</span> thresh)
+
+detrended.res &lt;-<span class="st"> </span><span class="kw"><a href="../reference/detect_event.html">detect_event</a></span>(raw.clim, <span class="dt">x =</span> t, <span class="dt">y =</span> anom,
+                              <span class="dt">seasClim =</span> detrended.clim<span class="op">$</span>seas,
+                              <span class="dt">threshClim =</span> detrended.clim<span class="op">$</span>thresh)</code></pre></div>
 <div class="figure">
 <img src="climat_4.png" alt="Figure 5. Daily climatologies of the WA SST (anomalies). The black line is the climatology prepared from the raw data, and the red line represents the daily SST anomalies that had been detrended using a generalised additive model. The lines plot practically on top of each other, so differences are barely perceptable; yet, despite these apparently small differences, there are large consequences for the events that are detected, as can be seen in the printout of the top 10 events, as seen below." style="width:80.0%"><p class="caption"><strong>Figure 5.</strong> Daily climatologies of the WA SST (anomalies). The black line is the climatology prepared from the raw data, and the red line represents the daily SST anomalies that had been detrended using a generalised additive model. The lines plot practically on top of each other, so differences are barely perceptable; yet, despite these apparently small differences, there are large consequences for the events that are detected, as can be seen in the printout of the top 10 events, as seen below.</p>
 </div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">raw.res</a></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">detrended.res</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">raw.res</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">detrended.res</code></pre></div>
 <p>The events that get detected are somewhat different now. Notice that in <code>detrended.clim</code>, <code>seas</code> and <code>thresh</code> are unfortunately the ones that were calculted together with raw (anomaly) time series, not the <code>seas</code> and <code>thresh</code> that were actually used and included against climSeas and climThresh. We will fix that.</p>
 </div>
 <div id="using-a-custom-climatology" class="section level2">

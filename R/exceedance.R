@@ -93,13 +93,13 @@
 #'
 #' The individual exceedances are summarised using the following metrics:
 #'   \item{index_start}{Row number on which exceedance starts.}
-#'   \item{index_stop}{Row number on which exceedance stops.}
+#'   \item{index_end}{Row number on which exceedance ends.}
 #'   \item{exceedance_no}{The same sequential number indicating the ID and
 #'   order of the exceedance as found in the \code{threshold} component of the
 #'   output list.}
 #'   \item{duration}{Duration of exceedance [days].}
 #'   \item{date_start}{Start date of exceedance [date].}
-#'   \item{date_stop}{Stop date of exceedance [date].}
+#'   \item{date_end}{End date of exceedance [date].}
 #'   \item{date_peak}{Date of exceedance peak [date].}
 #'   \item{intensity_mean}{Mean intensity [deg. C].}
 #'   \item{intensity_max}{Maximum (peak) intensity [deg. C].}
@@ -176,7 +176,7 @@ exceedance <-
 
     t_series$durationCriterion <- rep(FALSE, nrow(t_series))
     for (i in 1:nrow(proto_1)) {
-      t_series$durationCriterion[proto_1$index_start[i]:proto_1$index_stop[i]] <-
+      t_series$durationCriterion[proto_1$index_start[i]:proto_1$index_end[i]] <-
         rep(TRUE, length = proto_1$duration[i])
     }
 
@@ -189,7 +189,7 @@ exceedance <-
     if (joinAcrossGaps) {
       t_series$event <- t_series$durationCriterion
       for (i in 1:nrow(proto_2)) {
-        t_series$event[proto_2$index_start[i]:proto_2$index_stop[i]] <-
+        t_series$event[proto_2$index_start[i]:proto_2$index_end[i]] <-
           rep(TRUE, length = proto_2$duration[i])
       }
     } else {
@@ -201,13 +201,13 @@ exceedance <-
 
     t_series$exceedance_no <- rep(NA, nrow(t_series))
     for (i in 1:nrow(proto_3)) {
-      t_series$exceedance_no[proto_3$index_start[i]:proto_3$index_stop[i]] <-
+      t_series$exceedance_no[proto_3$index_start[i]:proto_3$index_end[i]] <-
         rep(i, length = proto_3$duration[i])
     }
 
     ts_thresh <- intensity_mean <- intensity_max <- intensity_cumulative <-
       exceedance_rel_thresh <- intensity_mean_abs <- intensity_max_abs <-
-      intensity_cum_abs <- ts_y <- exceedance_no <- row_index <- NULL
+      intensity_cum_abs <- ts_y <- exceedance_no <- row_index <- index_peak <-  NULL
 
     exceedances <- t_series %>%
       dplyr::mutate(row_index = 1:nrow(t_series),
@@ -215,11 +215,12 @@ exceedance <-
       dplyr::filter(stats::complete.cases(exceedance_no)) %>%
       dplyr::group_by(exceedance_no) %>%
       dplyr::summarise(index_start = min(row_index),
-                       index_stop = max(row_index),
+                       index_peak = row_index[exceedance_rel_thresh == max(exceedance_rel_thresh)][1],
+                       index_end = max(row_index),
                        duration = n(),
                        date_start = min(ts_x),
-                       date_stop = max(ts_x),
                        date_peak = ts_x[exceedance_rel_thresh == max(exceedance_rel_thresh)][1],
+                       date_end = max(ts_x),
                        intensity_mean = mean(exceedance_rel_thresh),
                        intensity_max = max(exceedance_rel_thresh),
                        intensity_var = sqrt(stats::var(exceedance_rel_thresh)),
@@ -247,15 +248,15 @@ exceedance <-
       NA
     )
 
-    D <- exceedance_rel_thresh[exceedances$index_stop]
-    E <- t_series$ts_y[exceedances$index_stop + 1]
-    F <- t_series$ts_thresh[exceedances$index_stop + 1]
+    D <- exceedance_rel_thresh[exceedances$index_end]
+    E <- t_series$ts_y[exceedances$index_end + 1]
+    F <- t_series$ts_thresh[exceedances$index_end + 1]
     exceedance_rel_thresh_end <- 0.5 * (D + E - F)
 
     exceedances$rate_decline <- ifelse(
-      exceedances$index_stop < nrow(t_series),
+      exceedances$index_end < nrow(t_series),
       (exceedances$intensity_max - exceedance_rel_thresh_end) / (as.numeric(
-        difftime(exceedances$date_stop, exceedances$date_peak, units = "days")) + 0.5),
+        difftime(exceedances$date_end, exceedances$date_peak, units = "days")) + 0.5),
       NA
     )
 
