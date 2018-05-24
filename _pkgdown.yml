@@ -14,14 +14,6 @@ navbar:
       href: articles/OISST_preparation.html
     - text: "Extreme event detection in gridded data"
       href: articles/gridded_event_detection.html
-    - text: "Alternative climatologies and baselines"
-      href: articles/Climatologies_and_baselines.html
-    - text: "Short climatologies"
-      href: articles/Short_climatologies.html
-    - text: "Default MHW outputs in R and Python"
-      href: articles/r_vs_python.html
-    - text: "Additional MHW outputs in R and Python"
-      href: articles/r_vs_python_more.html
   - text: News
     href: news/index.html
   right:
@@ -34,6 +26,7 @@ reference:
   desc: ~
   contents:
   - '`make_whole`'
+  - '`make_whole_fast`'
   - '`ts2clm`'
   - '`detect_event`'
   - '`block_average`'

@@ -1,3 +1,8 @@
+# heatwaveR 0.2.6.9001 (2018-05-24)
+
+* Moved all vignettes relating to the upcoming MHW_detection paper to that repo
+* This helps to unclutter this repo as it should be primarily kept for package content
+
 # heatwaveR 0.2.6.9000 (2018-05-23)
 
 * Added vignette that shows how tweaking arguments for detect changes the outputs
