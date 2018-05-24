@@ -19,16 +19,16 @@ clim_spread <- function(data, clim_start, clim_end, windowHalfWidth) {
 
   ts_x <- ts_y <- NULL
 
-  ts_spread <- data %>%
-    dplyr::filter(ts_x >= clim_start & ts_x <= clim_end) %>%
-    dplyr::mutate(ts_x = lubridate::year(ts_x)) %>%
-    tidyr::spread(ts_x, ts_y)
+  ts_whole <- data[ts_x %between% c(clim_start, clim_end)]
+  data.table::setDT(ts_whole)[, ts_x := format(as.Date(ts_x), "%Y") ]
+  ts_spread <- data.table::dcast(ts_whole, doy ~ ts_x, value.var = "ts_y")
+  ts_spread <- imputeTS::na.interpolation(ts_spread)
 
-  ts_spread[59:61, ] <- zoo::na.approx(ts_spread[59:61, ],
-                                       maxgap = 1, na.rm = TRUE)
-  ts_spread <- dplyr::bind_rows(utils::tail(ts_spread, windowHalfWidth),
-                                ts_spread,
-                                utils::head(ts_spread, windowHalfWidth))
+  begin_pad <- utils::tail(ts_spread, windowHalfWidth)
+  end_pad <- utils::head(ts_spread, windowHalfWidth)
+  l <- list(begin_pad, ts_spread, end_pad)
+  ts_spread <- data.table::rbindlist(l)
+  rm(begin_pad); rm(end_pad); rm(l)
 
   len_yr <- length(lubridate::year(clim_start):lubridate::year(clim_end))
 
