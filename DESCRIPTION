@@ -22,8 +22,7 @@ Suggests:
     tidyverse,
     testthat,
     knitr,
-    rmarkdown,
-    covr
+    rmarkdown
 Imports:
     tibble,
     ggplot2,
