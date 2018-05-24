@@ -99,9 +99,13 @@ make_whole_fast <- function(data, x = t, y = temp) {
   )
   v_ts_y <- as.numeric(ts_y)
 
-  t_series <- tibble::tibble(doy = v_doy,
-                             date = v_date,
-                             ts_y = v_ts_y)
+  t_series <- data.table(doy = v_doy,
+                         date = v_date,
+                         ts_y = v_ts_y)
+
+  # t_series <- tibble::tibble(doy = v_doy,
+  #                            date = v_date,
+  #                            ts_y = v_ts_y)
 
   names(t_series)[2] <- paste(substitute(x))
   names(t_series)[3] <- paste(substitute(y))
