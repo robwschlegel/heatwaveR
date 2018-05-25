@@ -3,6 +3,9 @@
 * Fixes to `make_whole` and testing
 * Fixes to `block_average`
 * No longer exporting `make_whole` and `make_whole_fast`
+* No longer uses zoo for time series NA handling--made custom function to replace it
+* Additional speed improvements
+* Repair testthat tests
 
 # heatwaveR 0.2.6.9001 (2018-05-24)
 
@@ -30,7 +33,7 @@
 
 # heatwaveR 0.2.4.9002 (2018-05-17)
 
-* Take advantage of C++ speed enhancement in `smooth_percentile()` by using 
+* Take advantage of C++ speed enhancement in `smooth_percentile()` by using
   RcppRoll
 * Update testthat accordingly
 
@@ -79,7 +82,7 @@
   `ts2clm()`
 * `ts2clm()` used instead of `detect_clim()`
 * Climatologies can now be calculated independently of the detect functionality
-* `exceedance()` function testthat checks updated to account for change in 
+* `exceedance()` function testthat checks updated to account for change in
   variable naming
 
 # heatwaveR 0.2.0.9000 (2018-05-11)
