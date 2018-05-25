@@ -272,8 +272,6 @@ detect_event <- function(data,
                      intensity_max_abs = max(ts_y),
                      intensity_var_abs = sqrt(stats::var(ts_y)),
                      intensity_cumulative_abs = max(cumsum(ts_y)))
-  # Note that this creates an output with a different column order than the original
-  # 'event_no' is now the first column, rather than the third
 
   mhw_rel_seas <- t_series$ts_y - t_series$ts_seas
   A <- mhw_rel_seas[events$index_start]
