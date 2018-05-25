@@ -3,8 +3,6 @@
 #' An internal function that helps to create the climatologies that are
 #' then output with \code{\link{ts2clm}}.
 #'
-#' @importFrom dplyr %>%
-#'
 #' @param data The data given to this function during the calculations
 #' performed by \code{\link{ts2clm}}.
 #' @param windowHalfWidth The width of the smoothing window to be applied.

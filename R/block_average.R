@@ -37,6 +37,8 @@
 #'   \item{intensity_mean}{The average event "mean intensity" in each year [deg. C].}
 #'   \item{intensity_max}{The average event "maximum (peak) intensity" in each year
 #'   [deg. C].}
+#'   #'   \item{intensity_max_max}{The maximum event "maximum (peak) intensity" in
+#'   each year [deg. C].}
 #'   \item{intensity_var}{The average event "intensity variability" in each year
 #'   [deg. C].}
 #'   \item{intensity_cumulative}{The average event "cumulative intensity" in each year
@@ -91,22 +93,23 @@ block_average <- function(data,
 
   temp_yr <- clim %>%
     dplyr::group_by(year = lubridate::year(t)) %>%
-    dplyr::summarise(temp_mean = mean(temp, na.rm = TRUE),
-                     temp_min = min(temp),
-                     temp_max = max(temp))
+    dplyr::summarise()
 
   duration <- count <- intensity_mean <- intensity_max <- intensity_var <- intensity_cumulative <-
     intensity_mean_relThresh <- intensity_max_relThresh <- intensity_var_relThresh <-
     intensity_cumulative_relThresh <- intensity_mean_abs <- intensity_max_abs <- intensity_var_abs <-
-    intensity_cumulative_abs <- rate_onset <- rate_decline <- total_days <- total_icum <- NULL
+    intensity_cumulative_abs <- rate_onset <- rate_decline <- total_days <- total_icum <-
+    duration_mean <- intensity_max_mean <- intensity_cumulative_mean <- NULL
 
   event_block <- data$event %>%
     dplyr::group_by(year = lubridate::year(date_start)) %>%
     dplyr::summarise(count = length(duration),
+                     duration_mean = mean(duration),
                      intensity_mean = mean(intensity_mean),
-                     intensity_max = mean(intensity_max),
+                     intensity_max_mean = mean(intensity_max),
+                     intensity_max_max = max(intensity_max),
                      intensity_var = mean(intensity_var),
-                     intensity_cumulative = mean(intensity_cumulative),
+                     intensity_cumulative_mean = mean(intensity_cumulative),
                      intensity_mean_relThresh = mean(intensity_mean_relThresh),
                      intensity_max_relThresh = mean(intensity_max_relThresh),
                      intensity_var_relThresh = mean(intensity_var_relThresh),
@@ -118,10 +121,14 @@ block_average <- function(data,
                      rate_onset = mean(rate_onset),
                      rate_decline = mean(rate_decline),
                      total_days = sum(duration),
-                     total_icum = sum(intensity_cumulative))
+                     total_icum = sum(intensity_cumulative)) %>%
+    dplyr::rename(duration = duration_mean,
+                  intensity_max = intensity_max_mean,
+                  intensity_cumulative = intensity_cumulative_mean)
 
   if (report == "full") {
     event_block <- dplyr::left_join(temp_yr, event_block, by = "year")
+    event_block$count[is.na(event_block$count)] <- 0
   } else if (report == "partial") {
     event_block <-
       dplyr::inner_join(temp_yr, event_block, by = "year")

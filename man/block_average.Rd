@@ -34,6 +34,8 @@ metrics. It includes the following:
   \item{intensity_mean}{The average event "mean intensity" in each year [deg. C].}
   \item{intensity_max}{The average event "maximum (peak) intensity" in each year
   [deg. C].}
+  #'   \item{intensity_max_max}{The maximum event "maximum (peak) intensity" in
+  each year [deg. C].}
   \item{intensity_var}{The average event "intensity variability" in each year
   [deg. C].}
   \item{intensity_cumulative}{The average event "cumulative intensity" in each year

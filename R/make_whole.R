@@ -69,13 +69,11 @@
 #' be uninterrupted and continuous daily values between the first and last dates
 #' of the input data.
 #'
-#' @export
-#'
 #' @author Smit, A. J.
 #'
 #' @examples
 #' library(dplyr); library(tidyr); library(lubridate)
-#' ts_dat <- make_whole(sst_WA) # default columns "t" and "temp", in that order
+#' ts_dat <- heatwaveR:::make_whole(sst_WA) # default columns "t" and "temp", in that order
 #' clim_start <- "1983-01-01"
 #' clim_end <- "2012-12-31"
 #' ts_dat %>%

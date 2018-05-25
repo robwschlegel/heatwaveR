@@ -71,7 +71,7 @@
 #' of days in exceedance of the given \code{threshold}. Note that any additional
 #' columns left in the data frame given to this function will be output in the
 #' \code{threshold} component of the output. For example, if one uses
-#' \code{\link{make_whole}} to prepare a time series for analysis and leaves
+#' \code{\link{ts2clm}} to prepare a time series for analysis and leaves
 #' in the \code{doy} column, this column will appear in the output.
 #'
 #' The information shown in the \code{threshold} component is:
@@ -117,8 +117,7 @@
 #' @export
 #'
 #' @examples
-#' ts_dat <- make_whole(sst_WA)
-#' res <- exceedance(ts_dat, threshold = 25)
+#' res <- exceedance(sst_WA, threshold = 25)
 #' # show first ten days of daily data:
 #' res$threshold[1:10, ]
 #' # show first five exceedances:

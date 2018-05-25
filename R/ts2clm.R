@@ -24,7 +24,7 @@
 #' chosen period (preferably 30 years in length) is then used to calculate the
 #' seasonal cycle and the extreme value threshold.
 #' @param robust This switch selects between a slower, but more robust (default is
-#' \code{FALSE}), function that checks for the completeness of the date vector (i.e.
+#' \code{TRUE}), function that checks for the completeness of the date vector (i.e.
 #' it must be regular and with no duplicates), or a faster one, which assumes that
 #' the user has verified that no missing dates are present in the time series or
 #' whether or not some measurements are replicated (in which case it takes the mean).
@@ -125,7 +125,7 @@ ts2clm <-
            x = t,
            y = temp,
            climatologyPeriod,
-           robust = FALSE,
+           robust = TRUE,
            maxPadLength = 3,
            windowHalfWidth = 5,
            pctile = 90,
@@ -160,7 +160,7 @@ ts2clm <-
     rm(ts_x); rm(ts_y)
 
     if (robust) {
-      ts_whole <- make_whole(ts_xy, x = ts_x, y = ts_y) ### <- check if works with data.table
+      ts_whole <- make_whole(ts_xy, x = ts_x, y = ts_y)
     } else {
       ts_whole <- make_whole_fast(ts_xy, x = ts_x, y = ts_y)
     }

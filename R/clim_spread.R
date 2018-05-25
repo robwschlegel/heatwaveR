@@ -4,8 +4,6 @@
 #' then be used by \code{\link{clim_calc}} within \code{\link{ts2clm}}
 #' to produce a climatology as desired by the user.
 #'
-#' @importFrom dplyr %>%
-#'
 #' @param data The data given to this function during the calculations
 #' performed by \code{\link{ts2clm}}.
 #' @param clim_start The first day of the time series to use when spreading.
