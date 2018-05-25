@@ -5,3 +5,6 @@ inst/doc
 _private
 heatwaveR.code-workspace
 .DS_Store
+src/RcppExports.o
+src/clim_calc.o
+src/heatwaveR.so

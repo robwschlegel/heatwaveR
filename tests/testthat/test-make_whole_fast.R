@@ -16,4 +16,3 @@ test_that("y = any existing column", {
   expect_is(make_whole_fast(data = sst_Med, y = pawpaw), "data.table")
   expect_error(make_whole_fast(data = sst_Med, y = banana))
 })
-

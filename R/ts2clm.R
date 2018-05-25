@@ -156,7 +156,6 @@ ts2clm <-
     ts_x <- eval(substitute(x), data)
     ts_y <- eval(substitute(y), data)
     ts_xy <- data.table::data.table(ts_x, ts_y)
-    # ts_xy <- tibble::tibble(ts_x, ts_y)
     rm(ts_x); rm(ts_y)
 
     if (robust) {
@@ -165,7 +164,8 @@ ts2clm <-
       ts_whole <- make_whole_fast(ts_xy, x = ts_x, y = ts_y)
     }
 
-    ts_whole$ts_y <- zoo::na.approx(ts_whole$ts_y, maxgap = maxPadLength) ##
+    ts_whole <- na_interp(doy = ts_whole$doy, x = ts_whole$ts_x,
+                          y = ts_whole$ts_y, maxPadLength = 3)
 
     clim_start <- climatologyPeriod[1]
     if (ts_whole$ts_x[1] > clim_start)

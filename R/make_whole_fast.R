@@ -3,8 +3,6 @@
 #' Takes a series of dates and temperatures, and if irregular (but ordered), inserts
 #' missing dates and fills correpsonding temperatures with NAs.
 #'
-#' @importFrom data.table := data.table
-#'
 #' @param data A data frame with columns for date and temperature data.
 #' Ordered daily data are expected, and although missing values (NA) can be
 #' accommodated, the function is only recommended when NAs occur infrequently,
@@ -97,13 +95,9 @@ make_whole_fast <- function(data, x = t, y = temp) {
   )
   v_ts_y <- as.numeric(ts_y)
 
-  t_series <- data.table(doy = v_doy,
-                         date = v_date,
-                         ts_y = v_ts_y)
-
-  # t_series <- tibble::tibble(doy = v_doy,
-  #                            date = v_date,
-  #                            ts_y = v_ts_y)
+  t_series <- data.table::data.table(doy = v_doy,
+                                     date = v_date,
+                                     ts_y = v_ts_y)
 
   names(t_series)[2] <- paste(substitute(x))
   names(t_series)[3] <- paste(substitute(y))

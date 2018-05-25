@@ -84,6 +84,7 @@
 make_whole <- function(data, x = t, y = temp) {
 
   temp <- NULL
+  feb28 <- 59
 
   ts_x <- eval(substitute(x), data)
   ts_y <- eval(substitute(y), data)
