@@ -165,7 +165,7 @@ ts2clm <-
     }
 
     ts_whole <- na_interp(doy = ts_whole$doy, x = ts_whole$ts_x,
-                          y = ts_whole$ts_y, maxPadLength = 3)
+                          y = ts_whole$ts_y, maxPadLength = maxPadLength)
 
     clim_start <- climatologyPeriod[1]
     if (ts_whole$ts_x[1] > clim_start)
