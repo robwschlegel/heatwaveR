@@ -32,7 +32,6 @@ Imports:
     stats,
     utils,
     zoo,
-    imputeTS,
     grid,
     lazyeval,
     RcppRoll,

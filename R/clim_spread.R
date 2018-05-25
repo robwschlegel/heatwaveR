@@ -5,6 +5,7 @@
 #' to produce a climatology as desired by the user.
 #'
 #' @importFrom data.table :=
+#' @importFrom data.table %between%
 #'
 #' @param data The data given to this function during the calculations
 #' performed by \code{\link{ts2clm}}.
@@ -17,21 +18,29 @@
 #' @return The function returns the data (a matrix) in a wide format.
 clim_spread <- function(data, clim_start, clim_end, windowHalfWidth) {
 
+  .NA2mean <- function(x) {
+    z <- round(mean(x, na.rm = TRUE), 2)
+    x[is.na(x)] <- z
+    return(x)
+  }
+
   ts_x <- ts_y <- NULL
 
   ts_whole <- data[ts_x %between% c(clim_start, clim_end)]
   data.table::setDT(ts_whole)[, ts_x := format(as.Date(ts_x), "%Y") ]
   ts_spread <- data.table::dcast(ts_whole, doy ~ ts_x, value.var = "ts_y")
-  ts_spread <- imputeTS::na.interpolation(ts_spread)
+  ts_spread_filled <- data.table::data.table((sapply(ts_spread[59:61, ],
+                                                     function(x) .NA2mean(x))))
+  ts_spread[60, ] <- ts_spread_filled[2, ]
 
   begin_pad <- utils::tail(ts_spread, windowHalfWidth)
   end_pad <- utils::head(ts_spread, windowHalfWidth)
   l <- list(begin_pad, ts_spread, end_pad)
   ts_spread <- data.table::rbindlist(l)
-  rm(begin_pad); rm(end_pad); rm(l)
 
   len_yr <- length(lubridate::year(clim_start):lubridate::year(clim_end))
 
+  # clim_calc_cpp needs a matrix...
   ts_mat <- as.matrix(ts_spread)[, 2:(len_yr + 1)]
   return(ts_mat)
 }
