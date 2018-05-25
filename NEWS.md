@@ -101,7 +101,7 @@
 * Testing for `category()`
 * Testing for `block_average()`
 * Testing for `detect()`
-* Testting `exceedance()`
+* Testing `exceedance()`
 * Removed default `threshold` for `exceedance()`
 * Tweaks to `exceedance()` error messages
 * Testing for `event_line()`
