@@ -1,1 +1,3 @@
 heatwaveR.so
+clim_calc.o
+RcppExports.o
