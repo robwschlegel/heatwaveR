@@ -10,6 +10,9 @@
 #'
 #' @return The function returns the data in the same format it was
 #' input as, with the climatology values smoothed as desired.
+#'
+#' @author Smit, A. J.
+#'
 smooth_percentile <- function(data, smoothPercentileWidth) {
 
   seas <- thresh <- var <- NULL

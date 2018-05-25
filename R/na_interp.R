@@ -14,6 +14,9 @@
 #' integer. The default is \code{3} days.
 #'
 #' @return The function returns the data (a data.table) in a long format.
+#'
+#' @author Smit, A. J.
+#'
 na_interp <- function(doy = doy,
                       x = ts_x,
                       y = ts_y,

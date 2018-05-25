@@ -16,6 +16,9 @@
 #' occurs. Default = 5, which makes an overall window size of 11.
 #'
 #' @return The function returns the data (a matrix) in a wide format.
+#'
+#' @author Smit, A. J.
+#'
 clim_spread <- function(data, clim_start, clim_end, windowHalfWidth) {
 
   .NA2mean <- function(x) {

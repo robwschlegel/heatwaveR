@@ -12,6 +12,9 @@
 #' Default is \code{90}th percentile.
 #'
 #' @return The function returns the calculated climatologies.
+#'
+#' @author Smit, A. J.
+#'
 clim_calc <- function(data, windowHalfWidth, pctile) {
 
   seas <- rep(NA, nrow(data))

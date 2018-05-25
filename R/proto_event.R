@@ -24,7 +24,6 @@ proto_event <- function(t_series,
                         gaps = FALSE,
                         maxGap) {
 
-
   index_start <- index_end <- duration <- NULL
 
   t_series <- as.data.frame(t_series)
@@ -67,8 +66,3 @@ proto_event <- function(t_series,
     return(proto_gaps)
   }
 }
-
-
-
-
-

@@ -1,3 +1,6 @@
+// Smit, A. J.
+// 20 May 2018
+
 #include "RcppArmadillo.h"
 using namespace arma;
 
