@@ -1,3 +1,7 @@
+# heatwaveR 0.2.6.9002 (2018-05-25)
+
+* Fixes to `make_whole` and testing
+
 # heatwaveR 0.2.6.9001 (2018-05-24)
 
 * Moved all vignettes relating to the upcoming MHW_detection paper to that repo
