@@ -29,7 +29,6 @@ Imports:
     lubridate,
     dplyr,
     tidyr,
-    raster,
     stats,
     utils,
     zoo,

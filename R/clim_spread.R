@@ -5,6 +5,7 @@
 #' to produce a climatology as desired by the user.
 #'
 #' @importFrom dplyr %>%
+#' @importFrom data.table :=
 #'
 #' @param data The data given to this function during the calculations
 #' performed by \code{\link{ts2clm}}.

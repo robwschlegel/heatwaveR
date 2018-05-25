@@ -86,6 +86,7 @@
 make_whole <- function(data, x = t, y = temp) {
 
   temp <- NULL
+  feb28 <- 59
 
   ts_x <- eval(substitute(x), data)
   ts_y <- eval(substitute(y), data)
@@ -110,21 +111,6 @@ make_whole <- function(data, x = t, y = temp) {
     ifelse(t_series$doy > feb28, t_series$doy + 1, t_series$doy),
     t_series$doy)
   )
-
-  # feb28 <- 59
-  # doy <- NULL
-  # t_series <-
-  #   data.table::data.table(
-  #     doy = lubridate::yday(t_series),
-  #     date = as.Date(as.POSIXct(t_series)),
-  #     ts_y = t_series,
-  #     row.names = NULL
-  #   ) %>%
-  #   dplyr::mutate(doy = ifelse(
-  #     lubridate::leap_year(lubridate::year(t_series)) == FALSE,
-  #     ifelse(doy > feb28, doy + 1, doy),
-  #     doy
-  #   ))
 
   names(t_series)[2] <- paste(substitute(x))
   names(t_series)[3] <- paste(substitute(y))

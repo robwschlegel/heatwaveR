@@ -11,7 +11,7 @@ ts_y <- data$temp
 ts_xy <- data.table(ts_x, ts_y)
 
 climatologyPeriod <- c("1983-01-01", "2012-12-31")
-maxPadLength <- 3
+maxPadLength <- 1
 windowHalfWidth <- 5
 pctile <- 90
 smoothPercentile <- TRUE
@@ -25,10 +25,20 @@ clim_end <- "2012-12-31"
 
 ts_whole <- make_whole_fast(ts_xy, x = ts_x, y = ts_y)
 
-ts_spread <- clim_spread(ts_whole, clim_start, clim_end, windowHalfWidth)
+ind <- which(ts_whole$ts_y %in% sample(ts_whole$ts_y, 100))
+ts_whole$ts_y[ind] <- NA
+
+# benchmarks --------------------------------------------------------------
+
+
 
 profvis(res_climT <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), robust = TRUE))
 profvis(res_climF <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), robust = FALSE))
+
+res_clim <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), robust = FALSE)
+# res_clim <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), robust = TRUE)
+profvis(out <- detect_event(res_clim))
+
 
 microbenchmark(ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), robust = TRUE),
                ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), robust = FALSE))
