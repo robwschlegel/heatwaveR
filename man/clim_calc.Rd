@@ -24,3 +24,6 @@ The function returns the calculated climatologies.
 An internal function that helps to create the climatologies that are
 then output with \code{\link{ts2clm}}.
 }
+\author{
+Smit, A. J.
+}

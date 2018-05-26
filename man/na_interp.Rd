@@ -27,3 +27,6 @@ An internal function that helps to create a time series that will
 then be used by \code{\link{clim_calc}} within \code{\link{ts2clm}}
 to produce a climatology as desired by the user.
 }
+\author{
+Smit, A. J.
+}

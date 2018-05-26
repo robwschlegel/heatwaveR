@@ -151,7 +151,7 @@ ts2clm <-
     if(!(is.logical(clmOnly)))
       stop("Please ensure that 'clmOnly' is either TRUE or FALSE.")
 
-    temp <- NULL
+    doy <- temp <- NULL
 
     ts_x <- eval(substitute(x), data)
     ts_y <- eval(substitute(y), data)
@@ -164,8 +164,10 @@ ts2clm <-
       ts_whole <- make_whole_fast(ts_xy, x = ts_x, y = ts_y)
     }
 
-    ts_whole <- na_interp(doy = ts_whole$doy, x = ts_whole$ts_x,
-                          y = ts_whole$ts_y, maxPadLength = maxPadLength)
+    ts_whole <- na_interp(doy = ts_whole$doy,
+                          x = ts_whole$ts_x,
+                          y = ts_whole$ts_y,
+                          maxPadLength = maxPadLength)
 
     clim_start <- climatologyPeriod[1]
     if (ts_whole$ts_x[1] > clim_start)
@@ -184,15 +186,21 @@ ts2clm <-
     if (smoothPercentile) {
       ts_clim <- smooth_percentile(ts_mat, smoothPercentileWidth)
     } else {
-      ts_clim <- tibble::as.tibble((ts_mat))
+      ts_clim <- data.table::data.table(ts_mat)
     }
 
     if (clmOnly) {
       return(ts_clim)
     } else {
-      ts_res <- ts_whole %>%
-        dplyr::inner_join(ts_clim, by = "doy")
-      ts_res <- tibble::as_tibble(ts_res)
+      # using data.table
+      data.table::setkey(ts_whole, doy)
+      data.table::setkey(ts_clim, doy)
+      ts_res <- merge(ts_whole, ts_clim, all = TRUE)
+      data.table::setorder(ts_res, ts_x)
+      # using tibble
+      # ts_res <- ts_whole
+      # ts_res <- dplyr::inner_join(ts_res, ts_clim, by = "doy")
+      # ts_res <- tibble::as_tibble(ts_res)
       names(ts_res)[2] <- paste(substitute(x))
       names(ts_res)[3] <- paste(substitute(y))
       return(ts_res)

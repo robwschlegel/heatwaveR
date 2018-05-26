@@ -21,3 +21,6 @@ input as, with the climatology values smoothed as desired.
 An internal function that helps to create climatologies in
 accordance with the Hobday et al. (2016) standard.
 }
+\author{
+Smit, A. J.
+}

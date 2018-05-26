@@ -88,7 +88,7 @@
 # heatwaveR 0.2.0.9000 (2018-05-11)
 
 * `detect()` has now been broken into `detect_clim()` and `detect_event()`
-* These now also rely on internal funcitons
+* These now also rely on internal functions
 * The purpose of this is to create a family of functions that provide different options
 * New vignette on making short climatologies.
 

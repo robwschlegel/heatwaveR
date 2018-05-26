@@ -54,9 +54,8 @@ rm(begin_pad); rm(end_pad); rm(l)
 
 
 
-profvis(res_climT <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), robust = TRUE))
 profvis(res_climF <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), robust = FALSE))
-
+out <- detect_event(res_climF)
 
 
 microbenchmark(ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), robust = TRUE),
