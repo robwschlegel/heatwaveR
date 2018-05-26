@@ -197,10 +197,6 @@ ts2clm <-
       data.table::setkey(ts_clim, doy)
       ts_res <- merge(ts_whole, ts_clim, all = TRUE)
       data.table::setorder(ts_res, ts_x)
-      # using tibble
-      # ts_res <- ts_whole
-      # ts_res <- dplyr::inner_join(ts_res, ts_clim, by = "doy")
-      # ts_res <- tibble::as_tibble(ts_res)
       names(ts_res)[2] <- paste(substitute(x))
       names(ts_res)[3] <- paste(substitute(y))
       return(ts_res)
