@@ -192,7 +192,6 @@ ts2clm <-
     if (clmOnly) {
       return(ts_clim)
     } else {
-      # using data.table
       data.table::setkey(ts_whole, doy)
       data.table::setkey(ts_clim, doy)
       ts_res <- merge(ts_whole, ts_clim, all = TRUE)

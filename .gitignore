@@ -8,3 +8,4 @@ heatwaveR.code-workspace
 src/RcppExports.o
 src/clim_calc.o
 src/heatwaveR.so
+.vscode

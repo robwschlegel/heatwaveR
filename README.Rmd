@@ -32,6 +32,21 @@ package that calculate and display marine heatwaves (MHWs) according to the
 definition of Hobday et al. (2016) as well as calculating and visualising marine 
 cold-spells (MCSs) as first introduced in Schlegel et al. (2017a).
 
+This package does what __`RmarineHeatWaves`__ does, but faster. The entire package has been
+deconstructed and modularised, and slow portions of the code are being implemented in C++. 
+C++ has already replaced some of the bottlenecks that slowed down the climatology creation 
+portions of the code, and we will slowly but surely improve the efficiency and speed 
+in other portions of the code too. Currently the R code runs about as fast as the original
+python functions, at least in as far as applying it to single time series of temperatures.
+Readers familiar with both languages will know about the ongoing debate around the relative
+speed of the two languages. In our experience, R can be as fast as python, provided that
+attention is paid the finding ways to reduce the computational inefficiencies that stem
+from i) the liberal use of complex and inefficient non-atomic data structures, such as
+data frames; ii) the reliance on non-vectorised calculations such as loops; and iii) lazy
+(but convenient) coding that comes from drawing too heavily on the tidyverse suite of
+packages. We will continue to ensure that __`heatwaveR`__ becomes more-and-more efficient
+so that it can be applied to large gridded data products with ease.
+
 A new package was developed and released in order to better accommodate the inclusion of
 the definitions of atmospheric heatwaves in addition to MHWs. Additionally, __`heatwaveR`__
 also provides the first implementation of a definition for a 'compound heatwave'.
