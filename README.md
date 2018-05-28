@@ -1,5 +1,5 @@
-heatwaveR <img src="logo.png" width=200 align="right" />
-========================================================
+heatwaveR <img src="vignettes/logo.png" width=200 align="right" />
+==================================================================
 
 [![Travis build status](https://travis-ci.org/robwschlegel/heatwaveR.svg?branch=master)](https://travis-ci.org/robwschlegel/heatwaveR) [![Coverage status](https://codecov.io/gh/robwschlegel/heatwaveR/branch/master/graph/badge.svg)](https://codecov.io/github/robwschlegel/heatwaveR?branch=master)
 
@@ -393,10 +393,8 @@ Working with gridded SST data
 
 We can also load the gridded 0.25 degree Reynolds [OISST data](https://www.ncei.noaa.gov/thredds/blended-global/oisst-catalog.html) and apply the function pixel by pixel over all of the days of data. The example data used here have 93 longitude steps, 43 latitude steps, and cover 12797 days (1981 to 2016). We apply the `detect_event()` function to these data, fit a generalised linear model (GLM), and then plot the trend per decade of the marine heatwave count. In other words, have marine heatwaves become more or less frequent in recent years? Under climate change we can expect that extreme events would tend to occur more frequently and be of greater intensity. Indeed, we can clearly see in the figure below of the result of the GLM, how the Agulhas Current has been experiencing marine heatwaves more frequently in recent decades. But there are two smaller areas, one along the western side of the Cape Peninsula in the Benguela Upwelling system and another around the Eastern Cape Province near Algoa Bay, where the frequency of marine heatwaves seems to have actually been decreasing – although the *P*-value of the decreasing trend is &gt; 0.05, and therefore not significant.
 
-![Count-trend](vignettes/README-grid-example1.png)
-
-![P-of-trend](vignettes/README-grid-example2.png)
-
+<!-- ![Count-trend](vignettes/README-grid-example1.png) -->
+<!-- ![P-of-trend](vignettes/README-grid-example2.png) -->
 Please read the package [vignette](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html) to see how to load a netCDF file with the OISST data, apply the `detect_event()` function to the whole 3D array of data, and then fit the GLM and plot the data.
 
 Categories
