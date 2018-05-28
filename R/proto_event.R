@@ -18,6 +18,9 @@
 #'
 #' @return A dataframe that will be used within
 #' \code{\link{detect_event}}.
+#'
+#' @author Smit, A. J.
+#'
 proto_event <- function(t_series,
                         criterion_column,
                         minDuration,

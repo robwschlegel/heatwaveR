@@ -28,12 +28,10 @@ Imports:
     ggplot2,
     lubridate,
     dplyr,
-    tidyr,
     stats,
     utils,
     zoo,
     grid,
-    lazyeval,
     RcppRoll,
     Rcpp (>= 0.12.16)
 LinkingTo: Rcpp, RcppArmadillo

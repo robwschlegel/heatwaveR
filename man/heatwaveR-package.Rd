@@ -4,9 +4,9 @@
 \name{heatwaveR-package}
 \alias{heatwaveR}
 \alias{heatwaveR-package}
-\title{heatwaveR: Detect heatwaves and cold-spells}
+\title{heatwaveR: Detect Heatwaves and Cold-Spells}
 \description{
-This package is designed to include and encompass the different methods of defining and detecting extreme events, known as heatwaves or cold-spells in both air and water temperature data. These detection algorithms may be used on non-temperature data as well however, this is not catered for explicitly here as no use of this technique in the literature currently exists.
+The different methods of defining and detecting extreme events, known as heatwaves or cold-spells in both air and water temperature data are encompassed within this package. These detection algorithms may be used on non-temperature data as well however, this is not catered for explicitly here as no use of this technique in the literature currently exists.
 }
 \seealso{
 Useful links:

@@ -78,17 +78,6 @@ may be selected as an argument to \code{ts2clm} in case the data may have some
 issues.
 }
 }
-\examples{
-library(dplyr); library(tidyr); library(lubridate)
-ts_dat <- heatwaveR:::make_whole(sst_WA) # default columns "t" and "temp", in that order
-clim_start <- "1983-01-01"
-clim_end <- "2012-12-31"
-ts_dat \%>\%
-filter(t >= clim_start & t <= clim_end) \%>\%
-  mutate(t = year(t)) \%>\%
-  spread(t, temp) \%>\%
-  filter(doy >= 55 & doy <= 65)
-}
 \author{
 Smit, A. J.
 }
