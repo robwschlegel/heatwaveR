@@ -7,6 +7,8 @@ The **`heatwaveR`** package is a project-wide update to the [**`RmarineHeatWaves
 
 The **`heatwaveR`** R package contains the original functions from the **`RmarineHeatWaves`** package that calculate and display marine heatwaves (MHWs) according to the definition of Hobday et al. (2016) as well as calculating and visualising marine cold-spells (MCSs) as first introduced in Schlegel et al. (2017a).
 
+This package does what **`RmarineHeatWaves`** does, but faster. The entire package has been deconstructed and modularised, and slow portions of the code are being implemented in C++. C++ has already replaced some of the bottlenecks that slowed down the climatology creation portions of the code, and we will slowly but surely improve the efficiency and speed in other portions of the code too. Currently the R code runs about as fast as the original python functions, at least in as far as applying it to single time series of temperatures. Readers familiar with both languages will know about the ongoing debate around the relative speed of the two languages. In our experience, R can be as fast as python, provided that attention is paid the finding ways to reduce the computational inefficiencies that stem from i) the liberal use of complex and inefficient non-atomic data structures, such as data frames; ii) the reliance on non-vectorised calculations such as loops; and iii) lazy (but convenient) coding that comes from drawing too heavily on the tidyverse suite of packages. We will continue to ensure that **`heatwaveR`** becomes more-and-more efficient so that it can be applied to large gridded data products with ease.
+
 A new package was developed and released in order to better accommodate the inclusion of the definitions of atmospheric heatwaves in addition to MHWs. Additionally, **`heatwaveR`** also provides the first implementation of a definition for a ‘compound heatwave’. There are currently multiple different definitions for this type of event and each of which has an algorithm provided for it in the output of the `detect_event()` function.
 
 This package is not yet available on CRAN, but may be installed from GitHub by issuing the following command:
@@ -29,42 +31,38 @@ The functions
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>make_whole()</code></td>
-<td>Constructs a continuous, uninterrupted time series of temperatures.</td>
-</tr>
-<tr class="even">
 <td><code>ts2clm()</code></td>
 <td>Constructs seasonal and threshold climatologies as per the definition of Hobday et al. (2016).</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>detect_event()</code></td>
 <td>The main function which detects the events as per the definition of Hobday et al. (2016).</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>block_average()</code></td>
 <td>Calculates annual means for event metrics.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>category()</code></td>
 <td>Applies event categories to the output of <code>detect_event()</code> based on Hobday et al. (in review).</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>exceedance()</code></td>
 <td>A function similar to <code>detect_event()</code> but that detects consecutive days above/below a given static threshold.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>event_line()</code></td>
 <td>Creates a line plot of heatwaves or cold-spells.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>lolli_plot()</code></td>
 <td>Creates a timeline of selected event metrics.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>geom_flame()</code></td>
 <td>Creates flame polygons of heatwaves or cold-spells.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>geom_lolli()</code></td>
 <td>Creates a lolliplot timeline of selected event metric.</td>
 </tr>
@@ -190,13 +188,13 @@ The corresponding `event_line()` and `lolli_plot()`, which represent the massive
 event_line(mhw, spread = 100, metric = "intensity_cumulative", start_date = "2010-11-01", end_date = "2011-06-30")
 ```
 
-![](docs/fig-example1-1.png)
+![](vignettes/fig-example1-1.png)
 
 ``` r
 lolli_plot(mhw)
 ```
 
-![](docs/fig-example2-1.png)
+![](vignettes/fig-example2-1.png)
 
 The `event_line()` and `lolli_plot()` functions were designed to work directly on one of the dataframes in the list returned by `detect_event()`. If more control over the figures is required, it may be useful to create them in **`ggplot2`** by stacking `geoms`. We specifically created two new **`ggplot2`** `geoms` to reproduce the functionality of `event_line()` and `lolli_plot()`. These functions are more general in their functionality and can be used outside of the **`heatwaveR`** package too. To apply them to MHWs and MCSs first requires that we access the `clim` or `event` dataframes within the list that is produced by `detect_event()`. Here is how:
 
@@ -214,7 +212,7 @@ ggplot(mhw$event, aes(x = date_start, y = intensity_max)) +
                 label = "The marine heatwaves\nTend to be left skewed in a\nGiven time series"))
 ```
 
-![](docs/fig-example3-1.png) ![](docs/fig-example3-2.png)
+![](vignettes/fig-example3-1.png) ![](vignettes/fig-example3-2.png)
 
 The default output of these function may not be to your liking. If so, not to worry. As **`ggplot2`** `geoms`, they are highly malleable. For example, if we were to choose to reproduce the format of the MHWs as seen in Hobday et al. (2016), the code would look something like this:
 
@@ -237,7 +235,7 @@ ggplot(data = mhw2, aes(x = t)) +
   labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
 ```
 
-![](docs/fig-example4-1.png)
+![](vignettes/fig-example4-1.png)
 
 Should we not wish to highlight any events with `geom_lolli()`, it would look like this:
 
@@ -246,7 +244,7 @@ ggplot(mhw$event, aes(x = date_start, y = intensity_cumulative)) +
   geom_lolli(colour = "salmon")
 ```
 
-![](docs/fig-example5-1.png)
+![](vignettes/fig-example5-1.png)
 
 The calculation and visualisation of cold-spells is also accommodated within this package. Here is a cold spell detected in the OISST data for Western Australia:
 
@@ -279,7 +277,7 @@ event_line(mcs, spread = 200, metric = "intensity_cumulative",
 lolli_plot(mcs)
 ```
 
-![](docs/fig-example6-1.png) ![](docs/fig-example6-2.png)
+![](vignettes/fig-example6-1.png) ![](vignettes/fig-example6-2.png)
 
 Cold spell figures may be created as `geoms` in **`ggplot2`**, too:
 
@@ -305,7 +303,7 @@ ggplot(mcs$event, aes(x = date_start, y = intensity_cumulative)) +
   ylab(expression(paste("Cumulative intensity [days x ", degree, "C]")))
 ```
 
-![](docs/fig-example7-1.png) ![](docs/fig-example7-2.png)
+![](vignettes/fig-example7-1.png) ![](vignettes/fig-example7-2.png)
 
 The exceedance function
 -----------------------
@@ -349,7 +347,7 @@ ggplot(data = exc_25_thresh, aes(x = t)) +
   labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
 ```
 
-![](docs/fig-example8-1.png)
+![](vignettes/fig-example8-1.png)
 
 The same function may be used to calculate consecutive days below a threshold, too.
 
@@ -388,16 +386,16 @@ ggplot(data = exc_19_thresh, aes(x = t)) +
   labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
 ```
 
-![](docs/fig-example9-1.png)
+![](vignettes/fig-example9-1.png)
 
 Working with gridded SST data
 -----------------------------
 
 We can also load the gridded 0.25 degree Reynolds [OISST data](https://www.ncei.noaa.gov/thredds/blended-global/oisst-catalog.html) and apply the function pixel by pixel over all of the days of data. The example data used here have 93 longitude steps, 43 latitude steps, and cover 12797 days (1981 to 2016). We apply the `detect_event()` function to these data, fit a generalised linear model (GLM), and then plot the trend per decade of the marine heatwave count. In other words, have marine heatwaves become more or less frequent in recent years? Under climate change we can expect that extreme events would tend to occur more frequently and be of greater intensity. Indeed, we can clearly see in the figure below of the result of the GLM, how the Agulhas Current has been experiencing marine heatwaves more frequently in recent decades. But there are two smaller areas, one along the western side of the Cape Peninsula in the Benguela Upwelling system and another around the Eastern Cape Province near Algoa Bay, where the frequency of marine heatwaves seems to have actually been decreasing – although the *P*-value of the decreasing trend is &gt; 0.05, and therefore not significant.
 
-![Count-trend](docs/README-grid-example1.png)
+![Count-trend](vignettes/README-grid-example1.png)
 
-![P-of-trend](docs/README-grid-example2.png)
+![P-of-trend](vignettes/README-grid-example2.png)
 
 Please read the package [vignette](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html) to see how to load a netCDF file with the OISST data, apply the `detect_event()` function to the whole 3D array of data, and then fit the GLM and plot the data.
 
@@ -445,7 +443,7 @@ A quick and easy visualisation of the categories of a MHW may be accomplished wi
 event_line(mhw, spread = 100, start_date = "2010-11-01", end_date = "2011-06-30", category = TRUE)
 ```
 
-![](docs/docs/fig-example-10-1.png)
+![](vignettes/fig-example-10-1.png)
 
 Were one to want to visualise the categories of a MHW ‘by hand’, the following code will provide a good starting point.
 
@@ -497,7 +495,7 @@ ggplot(data = clim_cat, aes(x = t, y = temp)) +
   labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
 ```
 
-![](docs/docs/fig-example-11-1.png)
+![](vignettes/fig-example-11-1.png)
 
 Presently the functionality for the detection of categories for MCSs has not been introduced into **`heatwaveR`**, but it is inbound.
 
@@ -525,5 +523,3 @@ Contact
 -------
 
 Robert W. Schlegel Department for Biodiversity & Conservation Biology, University of the Western Cape, Private Bag X17, Bellville 7535, South Africa, E-mail: <robwschlegel@gmail.com>, <!-- Work tel.: +27 (0)21 959 3783 -->
-
-<!-- ![](team_kelp.png) -->

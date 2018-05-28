@@ -22,7 +22,7 @@ knitr::opts_chunk$set(fig.width = 4, fig.align = 'center',
 
 In this vignette we shall look at retrieving and processing the [Reynolds optimally interpolated sea surface temperature](https://journals.ametsoc.org/doi/full/10.1175/2007JCLI1824.1) (OISST), which is a global data set of Advanced Very High Resolution Radiometer (AVHRR) derived SSTs at a daily resolution, starting on 1 September 1981. The source of the data is the [Physical Oceanography Distributed Active Archive Centre (PODAAC)](https://podaac.jpl.nasa.gov/). 
 
-![**Figure 1.** OISST data plotted on a Gnomic Cubic Sphere projection thanks to [Panoply](https://www.giss.nasa.gov/tools/panoply/)---the link to certain religious iconography is purely coincidental. The SST field is filled using the Parula colour scale.](avhrr-only-v2.19810901.png){width=100%}
+<!-- ![**Figure 1.** OISST data plotted on a Gnomic Cubic Sphere projection thanks to [Panoply](https://www.giss.nasa.gov/tools/panoply/)---the link to certain religious iconography is purely coincidental. The SST field is filled using the Parula colour scale.](avhrr-only-v2.19810901.png){width=100%} -->
 
 Each global, daily file is around 8.3Mb, so they add up to a large amount of data when a time series of at least 30 years duration is downloaded. A time series of at least 30 years is needed for heatwave detection. Currently I have 13,216 of these global files, and this amounts to ~108Gb of total disk space. Since not everyone will need all of these data, we shall subset the data using a python script prior to downloading them.
 

@@ -1,3 +1,7 @@
+# heatwaveR 0.2.7 (2018-05-28)
+
+* Submitted to CRAN
+
 # heatwaveR 0.2.6.9002 (2018-05-25)
 
 * Fixes to `make_whole` and testing

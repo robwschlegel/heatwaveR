@@ -7,7 +7,6 @@
 ^CODE_OF_CONDUCT\.md$
 ^_pkgdown\.yml$
 ^docs$
-^logo.png
 ^README.Rmd
 ^TODO.txt
 ^_testing$
@@ -16,3 +15,4 @@
 ^hex_sticker.R
 ^paper.md
 ^\.vscode
+^logo.png
