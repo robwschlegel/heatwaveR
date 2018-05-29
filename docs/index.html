@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Detect heatwaves and cold-spells • heatwaveR</title>
+<title>Detect Heatwaves and Cold-Spells • heatwaveR</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/spacelab/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><!-- docsearch --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css">
 <link href="docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Detect heatwaves and cold-spells">
-<meta property="og:description" content="This package is designed to include and encompass the different methods of defining and detecting extreme events, known as heatwaves or cold-spells in both air and water temperature data. These detection algorithms may be used on non-temperature data as well however, this is not catered for explicitly here as no use of this technique in the literature currently exists.">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Detect Heatwaves and Cold-Spells">
+<meta property="og:description" content="The different methods of defining and detecting extreme events, known as heatwaves or cold-spells in both air and water temperature data are encompassed within this package. These detection algorithms may be used on non-temperature data as well however, this is not catered for explicitly here as no use of this technique in the literature currently exists.">
 <meta property="og:image" content="https://robwschlegel.github.io/heatwaveR/index.html/logo.png">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.6.9001</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.7</span>
       </span>
     </div>
 
@@ -103,11 +103,12 @@
     
 <div id="heatwaver" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#heatwaver" class="anchor"></a>heatwaveR <img src="logo.png" width="200" align="right">
+<a href="#heatwaver" class="anchor"></a>heatwaveR <img src="articles/logo.png" width="200" align="right">
 </h1></div>
 
 <p>The <strong><code>heatwaveR</code></strong> package is a project-wide update to the <a href="https://github.com/ajsmit/RmarineHeatWaves"><strong><code>RmarineHeatWaves</code></strong></a> package, which is itself a translation of the original <a href="https://github.com/ecjoliver/marineHeatWaves">Python code</a> written by Eric C. J. Oliver.</p>
 <p>The <strong><code>heatwaveR</code></strong> R package contains the original functions from the <strong><code>RmarineHeatWaves</code></strong> package that calculate and display marine heatwaves (MHWs) according to the definition of Hobday et al. (2016) as well as calculating and visualising marine cold-spells (MCSs) as first introduced in Schlegel et al. (2017a).</p>
+<p>This package does what <strong><code>RmarineHeatWaves</code></strong> does, but faster. The entire package has been deconstructed and modularised, and slow portions of the code are being implemented in C++. C++ has already replaced some of the bottlenecks that slowed down the climatology creation portions of the code, and we will slowly but surely improve the efficiency and speed in other portions of the code too. Currently the R code runs about as fast as the original python functions, at least in as far as applying it to single time series of temperatures. Readers familiar with both languages will know about the ongoing debate around the relative speed of the two languages. In our experience, R can be as fast as python, provided that attention is paid the finding ways to reduce the computational inefficiencies that stem from i) the liberal use of complex and inefficient non-atomic data structures, such as data frames; ii) the reliance on non-vectorised calculations such as loops; and iii) lazy (but convenient) coding that comes from drawing too heavily on the tidyverse suite of packages. We will continue to ensure that <strong><code>heatwaveR</code></strong> becomes more-and-more efficient so that it can be applied to large gridded data products with ease.</p>
 <p>A new package was developed and released in order to better accommodate the inclusion of the definitions of atmospheric heatwaves in addition to MHWs. Additionally, <strong><code>heatwaveR</code></strong> also provides the first implementation of a definition for a ‘compound heatwave’. There are currently multiple different definitions for this type of event and each of which has an algorithm provided for it in the output of the <code><a href="reference/detect_event.html">detect_event()</a></code> function.</p>
 <p>This package is not yet available on CRAN, but may be installed from GitHub by issuing the following command:</p>
 <p><code><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">devtools::install_github("robwschlegel/heatwaveR")</a></code></p>
@@ -310,11 +311,11 @@ mhw<span class="op">$</span>event <span class="op">%&gt;%</span><span class="st"
 <p>The corresponding <code><a href="reference/event_line.html">event_line()</a></code> and <code><a href="reference/lolli_plot.html">lolli_plot()</a></code>, which represent the massive Western Australian heatwave of 2011, look like this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/event_line.html">event_line</a></span>(mhw, <span class="dt">spread =</span> <span class="dv">100</span>, <span class="dt">metric =</span> <span class="st">"intensity_cumulative"</span>, <span class="dt">start_date =</span> <span class="st">"2010-11-01"</span>, <span class="dt">end_date =</span> <span class="st">"2011-06-30"</span>)</code></pre></div>
 <div class="figure">
-<img src="fig-example1-1.png">
+<img src="articles/fig-example1-1.png">
 </div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/lolli_plot.html">lolli_plot</a></span>(mhw)</code></pre></div>
 <div class="figure">
-<img src="fig-example2-1.png">
+<img src="articles/fig-example2-1.png">
 </div>
 <p>The <code><a href="reference/event_line.html">event_line()</a></code> and <code><a href="reference/lolli_plot.html">lolli_plot()</a></code> functions were designed to work directly on one of the dataframes in the list returned by <code><a href="reference/detect_event.html">detect_event()</a></code>. If more control over the figures is required, it may be useful to create them in <strong><code>ggplot2</code></strong> by stacking <code>geoms</code>. We specifically created two new <strong><code>ggplot2</code></strong> <code>geoms</code> to reproduce the functionality of <code><a href="reference/event_line.html">event_line()</a></code> and <code><a href="reference/lolli_plot.html">lolli_plot()</a></code>. These functions are more general in their functionality and can be used outside of the <strong><code>heatwaveR</code></strong> package too. To apply them to MHWs and MCSs first requires that we access the <code>clim</code> or <code>event</code> dataframes within the list that is produced by <code><a href="reference/detect_event.html">detect_event()</a></code>. Here is how:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mhw2 &lt;-<span class="st"> </span>mhw<span class="op">$</span>clim <span class="op">%&gt;%</span><span class="st"> </span>
@@ -328,7 +329,7 @@ mhw<span class="op">$</span>event <span class="op">%&gt;%</span><span class="st"
 <span class="st">  </span><span class="kw"><a href="reference/geom_lolli.html">geom_lolli</a></span>(<span class="dt">colour =</span> <span class="st">"salmon"</span>, <span class="dt">colour_n =</span> <span class="st">"red"</span>, <span class="dt">n =</span> <span class="dv">3</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_text">geom_text</a></span>(<span class="dt">colour =</span> <span class="st">"black"</span>, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> <span class="kw">as.Date</span>(<span class="st">"2006-08-01"</span>), <span class="dt">y =</span> <span class="dv">5</span>,
                 <span class="dt">label =</span> <span class="st">"The marine heatwaves</span><span class="ch">\n</span><span class="st">Tend to be left skewed in a</span><span class="ch">\n</span><span class="st">Given time series"</span>))</code></pre></div>
-<p><img src="fig-example3-1.png"><img src="fig-example3-2.png"></p>
+<p><img src="articles/fig-example3-1.png"><img src="articles/fig-example3-2.png"></p>
 <p>The default output of these function may not be to your liking. If so, not to worry. As <strong><code>ggplot2</code></strong> <code>geoms</code>, they are highly malleable. For example, if we were to choose to reproduce the format of the MHWs as seen in Hobday et al. (2016), the code would look something like this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># It is necessary to give geom_flame() at least one row on either side of the event in order to calculate the polygon corners smoothly</span>
 mhw_top &lt;-<span class="st"> </span>mhw2 <span class="op">%&gt;%</span><span class="st"> </span>
@@ -347,13 +348,13 @@ mhw_top &lt;-<span class="st"> </span>mhw2 <span class="op">%&gt;%</span><span c
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/guides">guides</a></span>(<span class="dt">colour =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/guide_legend">guide_legend</a></span>(<span class="dt">override.aes =</span> <span class="kw">list</span>(<span class="dt">fill =</span> <span class="ot">NA</span>))) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">y =</span> <span class="kw">expression</span>(<span class="kw">paste</span>(<span class="st">"Temperature ["</span>, degree, <span class="st">"C]"</span>)), <span class="dt">x =</span> <span class="ot">NULL</span>)</code></pre></div>
 <div class="figure">
-<img src="fig-example4-1.png">
+<img src="articles/fig-example4-1.png">
 </div>
 <p>Should we not wish to highlight any events with <code><a href="reference/geom_lolli.html">geom_lolli()</a></code>, it would look like this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(mhw<span class="op">$</span>event, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> date_start, <span class="dt">y =</span> intensity_cumulative)) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="reference/geom_lolli.html">geom_lolli</a></span>(<span class="dt">colour =</span> <span class="st">"salmon"</span>)</code></pre></div>
 <div class="figure">
-<img src="fig-example5-1.png">
+<img src="articles/fig-example5-1.png">
 </div>
 <p>The calculation and visualisation of cold-spells is also accommodated within this package. Here is a cold spell detected in the OISST data for Western Australia:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ts_10th &lt;-<span class="st"> </span><span class="kw"><a href="reference/ts2clm.html">ts2clm</a></span>(sst_WA, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>), <span class="dt">pctile =</span> <span class="dv">10</span>)
@@ -378,7 +379,7 @@ mcs<span class="op">$</span>event <span class="op">%&gt;%</span><span class="st"
            <span class="dt">start_date =</span> <span class="st">"1990-01-01"</span>, <span class="dt">end_date =</span> <span class="st">"1990-08-30"</span>)
 
 <span class="kw"><a href="reference/lolli_plot.html">lolli_plot</a></span>(mcs)</code></pre></div>
-<p><img src="fig-example6-1.png"><img src="fig-example6-2.png"></p>
+<p><img src="articles/fig-example6-1.png"><img src="articles/fig-example6-2.png"></p>
 <p>Cold spell figures may be created as <code>geoms</code> in <strong><code>ggplot2</code></strong>, too:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mcs2 &lt;-<span class="st"> </span>mcs<span class="op">$</span>clim <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">2990</span><span class="op">:</span><span class="dv">3190</span>)
@@ -399,7 +400,7 @@ mcs<span class="op">$</span>event <span class="op">%&gt;%</span><span class="st"
 <span class="st">  </span><span class="kw"><a href="reference/geom_lolli.html">geom_lolli</a></span>(<span class="dt">colour =</span> <span class="st">"steelblue3"</span>, <span class="dt">colour_n =</span> <span class="st">"navy"</span>, <span class="dt">n =</span> <span class="dv">7</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">xlab</a></span>(<span class="st">"Date"</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">ylab</a></span>(<span class="kw">expression</span>(<span class="kw">paste</span>(<span class="st">"Cumulative intensity [days x "</span>, degree, <span class="st">"C]"</span>)))</code></pre></div>
-<p><img src="fig-example7-1.png"><img src="fig-example7-2.png"></p>
+<p><img src="articles/fig-example7-1.png"><img src="articles/fig-example7-2.png"></p>
 </div>
 <div id="the-exceedance-function" class="section level2">
 <h2 class="hasAnchor">
@@ -436,7 +437,7 @@ exc_<span class="dv">25</span><span class="op">$</span>exceedance <span class="o
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_date">scale_x_date</a></span>(<span class="dt">date_labels =</span> <span class="st">"%b %Y"</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">y =</span> <span class="kw">expression</span>(<span class="kw">paste</span>(<span class="st">"Temperature ["</span>, degree, <span class="st">"C]"</span>)), <span class="dt">x =</span> <span class="ot">NULL</span>)</code></pre></div>
 <div class="figure">
-<img src="fig-example8-1.png">
+<img src="articles/fig-example8-1.png">
 </div>
 <p>The same function may be used to calculate consecutive days below a threshold, too.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">exc_<span class="dv">19</span> &lt;-<span class="st"> </span><span class="kw"><a href="reference/exceedance.html">exceedance</a></span>(ts, <span class="dt">threshold =</span> <span class="dv">19</span>, <span class="dt">below =</span> <span class="ot">TRUE</span>)
@@ -468,19 +469,15 @@ exc_<span class="dv">19</span><span class="op">$</span>exceedance <span class="o
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_date">scale_x_date</a></span>(<span class="dt">date_labels =</span> <span class="st">"%b %Y"</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">y =</span> <span class="kw">expression</span>(<span class="kw">paste</span>(<span class="st">"Temperature ["</span>, degree, <span class="st">"C]"</span>)), <span class="dt">x =</span> <span class="ot">NULL</span>)</code></pre></div>
 <div class="figure">
-<img src="fig-example9-1.png">
+<img src="articles/fig-example9-1.png">
 </div>
 </div>
 <div id="working-with-gridded-sst-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#working-with-gridded-sst-data" class="anchor"></a>Working with gridded SST data</h2>
 <p>We can also load the gridded 0.25 degree Reynolds <a href="https://www.ncei.noaa.gov/thredds/blended-global/oisst-catalog.html">OISST data</a> and apply the function pixel by pixel over all of the days of data. The example data used here have 93 longitude steps, 43 latitude steps, and cover 12797 days (1981 to 2016). We apply the <code><a href="reference/detect_event.html">detect_event()</a></code> function to these data, fit a generalised linear model (GLM), and then plot the trend per decade of the marine heatwave count. In other words, have marine heatwaves become more or less frequent in recent years? Under climate change we can expect that extreme events would tend to occur more frequently and be of greater intensity. Indeed, we can clearly see in the figure below of the result of the GLM, how the Agulhas Current has been experiencing marine heatwaves more frequently in recent decades. But there are two smaller areas, one along the western side of the Cape Peninsula in the Benguela Upwelling system and another around the Eastern Cape Province near Algoa Bay, where the frequency of marine heatwaves seems to have actually been decreasing – although the <em>P</em>-value of the decreasing trend is &gt; 0.05, and therefore not significant.</p>
-<div class="figure">
-<img src="README-grid-example1.png" alt="Count-trend"><p class="caption">Count-trend</p>
-</div>
-<div class="figure">
-<img src="README-grid-example2.png" alt="P-of-trend"><p class="caption">P-of-trend</p>
-</div>
+<!-- ![Count-trend](vignettes/README-grid-example1.png) -->
+<!-- ![P-of-trend](vignettes/README-grid-example2.png) -->
 <p>Please read the package <a href="https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html">vignette</a> to see how to load a netCDF file with the OISST data, apply the <code><a href="reference/detect_event.html">detect_event()</a></code> function to the whole 3D array of data, and then fit the GLM and plot the data.</p>
 </div>
 <div id="categories" class="section level2">
@@ -516,7 +513,7 @@ exc_<span class="dv">19</span><span class="op">$</span>exceedance <span class="o
 <p>A quick and easy visualisation of the categories of a MHW may be accomplished with <code><a href="reference/event_line.html">event_line()</a></code> by setting the <code>category</code> argument to <code>TRUE</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/event_line.html">event_line</a></span>(mhw, <span class="dt">spread =</span> <span class="dv">100</span>, <span class="dt">start_date =</span> <span class="st">"2010-11-01"</span>, <span class="dt">end_date =</span> <span class="st">"2011-06-30"</span>, <span class="dt">category =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <div class="figure">
-<img src="docs/fig-example-10-1.png">
+<img src="articles/fig-example-10-1.png">
 </div>
 <p>Were one to want to visualise the categories of a MHW ‘by hand’, the following code will provide a good starting point.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create category breaks and select slice of data.frame</span>
@@ -565,7 +562,7 @@ fillColCat &lt;-<span class="st"> </span><span class="kw">c</span>(
                                                                 <span class="st">"dashed"</span>, <span class="st">"dotdash"</span>, <span class="st">"dotted"</span>)))) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">y =</span> <span class="kw">expression</span>(<span class="kw">paste</span>(<span class="st">"Temperature ["</span>, degree, <span class="st">"C]"</span>)), <span class="dt">x =</span> <span class="ot">NULL</span>)</code></pre></div>
 <div class="figure">
-<img src="docs/fig-example-11-1.png">
+<img src="articles/fig-example-11-1.png">
 </div>
 <p>Presently the functionality for the detection of categories for MCSs has not been introduced into <strong><code>heatwaveR</code></strong>, but it is inbound.</p>
 </div>
@@ -588,7 +585,6 @@ fillColCat &lt;-<span class="st"> </span><span class="kw">c</span>(
 <h2 class="hasAnchor">
 <a href="#contact" class="anchor"></a>Contact</h2>
 <p>Robert W. Schlegel Department for Biodiversity &amp; Conservation Biology, University of the Western Cape, Private Bag X17, Bellville 7535, South Africa, E-mail: <a href="mailto:robwschlegel@gmail.com">robwschlegel@gmail.com</a>, <!-- Work tel.: +27 (0)21 959 3783 --></p>
-<!-- ![](team_kelp.png) -->
 </div>
 </div>
   </div>
@@ -612,7 +608,6 @@ fillColCat &lt;-<span class="st"> </span><span class="kw">c</span>(
 <h2>Developers</h2>
 <ul class="list-unstyled">
 <li>Robert W. Schlegel <br><small class="roles"> Author, maintainer, contributor </small> <a href="https://orcid.org/0000-0002-0705-1287" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" height="16"></a> </li>
-<li>Eric C. J. Oliver <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-4006-2826" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" height="16"></a> </li>
 <li>Albertus J. Smit <br><small class="roles"> Author, contributor </small> <a href="https://orcid.org/0000-0002-3799-6126" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" height="16"></a> </li>
 </ul>
 </div>
@@ -630,7 +625,7 @@ fillColCat &lt;-<span class="st"> </span><span class="kw">c</span>(
 
 
       <footer><div class="copyright">
-  <p>Developed by Robert W. Schlegel, Eric C. J. Oliver, Albertus J. Smit.</p>
+  <p>Developed by Robert W. Schlegel, Albertus J. Smit.</p>
 </div>
 
 <div class="pkgdown">

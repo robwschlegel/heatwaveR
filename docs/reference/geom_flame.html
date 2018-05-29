@@ -84,7 +84,7 @@ as may be necessary." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.6.9001</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.7</span>
       </span>
     </div>
 
@@ -258,15 +258,16 @@ doi: 10.1016/j.pocean.2015.12.014</p>
     <pre class="examples"><div class='input'><span class='no'>ts</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ts2clm.html'>ts2clm</a></span>(<span class='no'>sst_WA</span>, <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span>))
 <span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='detect_event.html'>detect_event</a></span>(<span class='no'>ts</span>)
 <span class='no'>mhw</span> <span class='kw'>&lt;-</span> <span class='no'>res</span>$<span class='no'>clim</span>
-<span class='no'>mhw</span> <span class='kw'>&lt;-</span> <span class='no'>mhw</span>[<span class='fl'>10580</span>:<span class='fl'>10690</span>,]</div><span class='co'># NOT RUN {</span>
+<span class='no'>mhw</span> <span class='kw'>&lt;-</span> <span class='no'>mhw</span>[<span class='fl'>10580</span>:<span class='fl'>10690</span>,]
+
 <span class='fu'>library</span>(<span class='no'>ggplot2</span>)
 
 <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>mhw</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>)) +
-  <span class='fu'>geom_flame</span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>y2</span> <span class='kw'>=</span> <span class='no'>thresh_clim_year</span>)) +
+  <span class='fu'>geom_flame</span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>y2</span> <span class='kw'>=</span> <span class='no'>thresh</span>)) +
   <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_text'>geom_text</a></span>(<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'>as.Date</span>(<span class='st'>"2011-02-01"</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>28</span>,
-  <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"That's not a heatwave.\nThis, is a heatwave."</span>)) +
-  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>xlab</a></span>(<span class='st'>"Date"</span>) + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>ylab</a></span>(<span class='fu'>expression</span>(<span class='fu'>paste</span>(<span class='st'>"Temperature ["</span>, <span class='no'>degree</span>, <span class='st'>"C]"</span>)))
-<span class='co'># }</span></pre>
+            <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"That's not a heatwave.\nThis, is a heatwave."</span>)) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>xlab</a></span>(<span class='st'>"Date"</span>) + <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>ylab</a></span>(<span class='fu'>expression</span>(<span class='fu'>paste</span>(<span class='st'>"Temperature ["</span>, <span class='no'>degree</span>, <span class='st'>"C]"</span>)))</div><div class='img'><img src='geom_flame-1.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -291,7 +292,7 @@ Robert W. Schlegel
 
       <footer>
       <div class="copyright">
-  <p>Developed by Robert W. Schlegel, Eric C. J. Oliver, Albertus J. Smit.</p>
+  <p>Developed by Robert W. Schlegel, Albertus J. Smit.</p>
 </div>
 
 <div class="pkgdown">
