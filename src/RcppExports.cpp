@@ -19,9 +19,33 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rle2_char
+CharacterMatrix rle2_char(CharacterVector x);
+RcppExport SEXP _heatwaveR_rle2_char(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(rle2_char(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rle2_num
+NumericMatrix rle2_num(NumericVector x);
+RcppExport SEXP _heatwaveR_rle2_num(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(rle2_num(x));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_heatwaveR_clim_calc_cpp", (DL_FUNC) &_heatwaveR_clim_calc_cpp, 3},
+    {"_heatwaveR_rle2_char", (DL_FUNC) &_heatwaveR_rle2_char, 1},
+    {"_heatwaveR_rle2_num", (DL_FUNC) &_heatwaveR_rle2_num, 1},
     {NULL, NULL, 0}
 };
 
