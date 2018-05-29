@@ -29,12 +29,13 @@ proto_event <- function(t_series,
 
   index_start <- index_end <- duration <- NULL
 
-  t_series <- as.data.frame(t_series)
+  t_series <- as.data.frame(t_series) ###
   ex1 <- rle(as.vector(t_series[, criterion_column]))
   ind1 <- rep(seq_along(ex1$lengths), ex1$lengths)
   s1 <- split(zoo::index(t_series[, criterion_column]), ind1)
 
   if (!(gaps)) {
+
     proto_event_value <- s1[ex1$values == TRUE]
 
     proto_event_rng <-
@@ -50,6 +51,7 @@ proto_event <- function(t_series,
     return(proto_events)
 
   } else {
+
     proto_gap_value <- s1[ex1$values == FALSE]
 
     proto_gap_rng <-
@@ -65,7 +67,10 @@ proto_event <- function(t_series,
         dplyr::mutate(date_start = t_series$ts_x[index_start]) %>%
         dplyr::mutate(date_end = t_series$ts_x[index_end]) %>%
         dplyr::filter(duration >= 1 & duration <= maxGap)
+
     }
+
     return(proto_gaps)
+
   }
 }
