@@ -7,8 +7,6 @@ Type: Package
 Authors@R: c(person("Robert W.", "Schlegel", role = c("aut", "cre", "ctb"),
     email = "robwschlegel@gmail.com",
     comment = c(ORCID = "0000-0002-0705-1287")),
-    person("Eric C. J.", "Oliver", role = "aut",
-    comment = c(ORCID = "0000-0002-4006-2826")),
     person("Albertus J.", "Smit", role = c("aut", "ctb"),
     comment = c(ORCID = "0000-0002-3799-6126")))
 Maintainer: Robert W. Schlegel <robwschlegel@gmail.com>
