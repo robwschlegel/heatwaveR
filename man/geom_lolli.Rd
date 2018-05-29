@@ -84,7 +84,6 @@ ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
 res <- detect_event(ts)
 mhw <- res$event
 
-\dontrun{
 library(ggplot2)
 
 # Height of lollis represent event durations and their colours
@@ -107,7 +106,7 @@ ggplot(mhw, aes(x = event_no, y = intensity_max)) +
   geom_lolli(shape = 5, aes(colour = rate_onset), linetype = "dotted") +
   scale_color_distiller(palette = "RdYlGn", name = "Rate \\nonset") +
   xlab("Event number") + ylab("Max intensity [degree C]")
-}
+
 }
 \seealso{
 \code{\link{lolli_plot}} for a non-geom based lolliplot function.

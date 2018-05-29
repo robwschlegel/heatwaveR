@@ -35,12 +35,11 @@ Visualise a timeline of several possible event metrics as 'lollipop' graphs.
 ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
 res <- detect_event(ts)
 
-\dontrun{
+library(ggplot2)
+
 # The default output
 lolli_plot(res)
 
-# Change the parameters and highlight no events
-}
 }
 \author{
 Albertus J. Smit and Robert W. Schlegel

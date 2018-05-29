@@ -93,6 +93,7 @@ res_Med <- detect_event(ts2clm(sst_Med,
                         climatologyPeriod = c("1983-01-01", "2012-12-31")))
 cat_Med <- category(res_Med, S = FALSE, name = "Med")
 tail(cat_Med)
+
 }
 \references{
 Hobday et al. (in review). Categorizing and Naming
