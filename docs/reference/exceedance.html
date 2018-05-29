@@ -75,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.6.9001</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.7</span>
       </span>
     </div>
 
@@ -225,7 +225,7 @@ the given <code>threshold</code> was exceeded. The second component of the list 
 of days in exceedance of the given <code>threshold</code>. Note that any additional
 columns left in the data frame given to this function will be output in the
 <code>threshold</code> component of the output. For example, if one uses
-<code><a href='make_whole.html'>make_whole</a></code> to prepare a time series for analysis and leaves
+<code><a href='ts2clm.html'>ts2clm</a></code> to prepare a time series for analysis and leaves
 in the <code>doy</code> column, this column will appear in the output.</p>
 <p>The information shown in the <code>threshold</code> component is:</p>
 <dt>t</dt><dd><p>The date of the temperature measurement. This variable may named
@@ -295,9 +295,34 @@ Feb 2015, and is documented by Hobday et al. (2016).</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>ts_dat</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='make_whole.html'>make_whole</a></span>(<span class='no'>sst_WA</span>)</div><div class='output co'>#&gt; <span class='error'>Error in ifelse(t_series$doy &gt; feb28, t_series$doy + 1, t_series$doy): object 'feb28' not found</span></div><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>exceedance</span>(<span class='no'>ts_dat</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>25</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(substitute(x), data): object 'ts_dat' not found</span></div><div class='input'><span class='co'># show first ten days of daily data:</span>
-<span class='no'>res</span>$<span class='no'>threshold</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'res' not found</span></div><div class='input'><span class='co'># show first five exceedances:</span>
-<span class='no'>res</span>$<span class='no'>exceedance</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, ]</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'res' not found</span></div></pre>
+    <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>exceedance</span>(<span class='no'>sst_WA</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>25</span>)
+<span class='co'># show first ten days of daily data:</span>
+<span class='no'>res</span>$<span class='no'>threshold</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt; # A tibble: 10 x 7
+#&gt;    t           temp thresh threshCriterion durationCriteri… event exceedance_no
+#&gt;    &lt;date&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;lgl&gt;           &lt;lgl&gt;            &lt;lgl&gt;         &lt;int&gt;
+#&gt;  1 1982-01-01  20.9     25 FALSE           FALSE            FALSE            NA
+#&gt;  2 1982-01-02  21.2     25 FALSE           FALSE            FALSE            NA
+#&gt;  3 1982-01-03  21.4     25 FALSE           FALSE            FALSE            NA
+#&gt;  4 1982-01-04  21.2     25 FALSE           FALSE            FALSE            NA
+#&gt;  5 1982-01-05  21.3     25 FALSE           FALSE            FALSE            NA
+#&gt;  6 1982-01-06  21.6     25 FALSE           FALSE            FALSE            NA
+#&gt;  7 1982-01-07  21.7     25 FALSE           FALSE            FALSE            NA
+#&gt;  8 1982-01-08  21.5     25 FALSE           FALSE            FALSE            NA
+#&gt;  9 1982-01-09  21.4     25 FALSE           FALSE            FALSE            NA
+#&gt; 10 1982-01-10  21.4     25 FALSE           FALSE            FALSE            NA</div><div class='input'><span class='co'># show first five exceedances:</span>
+<span class='no'>res</span>$<span class='no'>exceedance</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, ]</div><div class='output co'>#&gt; # A tibble: 5 x 18
+#&gt;   exceedance_no index_start index_peak index_end duration date_start date_peak 
+#&gt;           &lt;int&gt;       &lt;dbl&gt;      &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt; &lt;date&gt;     &lt;date&gt;    
+#&gt; 1             1        2682       2683      2686        5 1989-05-05 1989-05-06
+#&gt; 2             2        6342       6351      6358       17 1999-05-13 1999-05-22
+#&gt; 3             3        6362       6363      6368        7 1999-06-02 1999-06-03
+#&gt; 4             4        6686       6688      6691        6 2000-04-21 2000-04-23
+#&gt; 5             5        6698       6699      6707       10 2000-05-03 2000-05-04
+#&gt; # ... with 11 more variables: date_end &lt;date&gt;, intensity_mean &lt;dbl&gt;,
+#&gt; #   intensity_max &lt;dbl&gt;, intensity_var &lt;dbl&gt;, intensity_cumulative &lt;dbl&gt;,
+#&gt; #   intensity_mean_abs &lt;dbl&gt;, intensity_max_abs &lt;dbl&gt;, intensity_var_abs &lt;dbl&gt;,
+#&gt; #   intensity_cum_abs &lt;dbl&gt;, rate_onset &lt;dbl&gt;, rate_decline &lt;dbl&gt;</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -320,7 +345,7 @@ Robert W. Schlegel, Albertus J. Smit
 
       <footer>
       <div class="copyright">
-  <p>Developed by Robert W. Schlegel, Eric C. J. Oliver, Albertus J. Smit.</p>
+  <p>Developed by Robert W. Schlegel, Albertus J. Smit.</p>
 </div>
 
 <div class="pkgdown">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Optimally interpolated 0.25 degree SST for the Western Australian region. — sst_WA • heatwaveR</title>
+<title>Pad NA gaps of user-defined width with interpolated values. — na_interp • heatwaveR</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -33,11 +33,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Optimally interpolated 0.25 degree SST for the Western Australian region. — sst_WA" />
+<meta property="og:title" content="Pad NA gaps of user-defined width with interpolated values. — na_interp" />
 
-<meta property="og:description" content="A dataset containing the sea surface temperature temperature
-(in degrees Celsius) and date for the Western Australian region
-for the period 1982-01-01 to 2014-12-31." />
+<meta property="og:description" content="An internal function that helps to create a time series that will
+then be used by clim_calc within ts2clm
+to produce a climatology as desired by the user." />
 
 <meta property="og:image" content="https://robwschlegel.github.io/heatwaveR/index.html/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -138,43 +138,63 @@ for the period 1982-01-01 to 2014-12-31." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Optimally interpolated 0.25 degree SST for the Western Australian region.</h1>
+    <h1>Pad NA gaps of user-defined width with interpolated values.</h1>
     
-    <div class="hidden name"><code>sst_WA.Rd</code></div>
+    <div class="hidden name"><code>na_interp.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>A dataset containing the sea surface temperature temperature
-(in degrees Celsius) and date for the Western Australian region
-for the period 1982-01-01 to 2014-12-31.</p>
+    <p>An internal function that helps to create a time series that will
+then be used by <code><a href='clim_calc.html'>clim_calc</a></code> within <code><a href='ts2clm.html'>ts2clm</a></code>
+to produce a climatology as desired by the user.</p>
     
     </div>
 
-    <pre class="usage"><span class='no'>sst_WA</span></pre>
-        
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p>A data frame with 12053 rows and 2 variables:</p><dl class='dl-horizontal'>
-  <dt>t</dt><dd><p>date, as POSIXct</p></dd>
-  <dt>temp</dt><dd><p>SST, in degrees Celsius</p></dd>
-  ...
-</dl>
+    <pre class="usage"><span class='fu'>na_interp</span>(<span class='kw'>doy</span> <span class='kw'>=</span> <span class='no'>doy</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>ts_x</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>ts_y</span>, <span class='kw'>maxPadLength</span> <span class='kw'>=</span> <span class='fl'>3</span>)</pre>
     
-    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>doy</th>
+      <td><p>Date-of-year as per <code>make_whole</code> or <code>make_whole_fast</code>.</p></td>
+    </tr>
+    <tr>
+      <th>x</th>
+      <td><p>Date as per <code>make_whole</code> or <code>make_whole_fast</code>.</p></td>
+    </tr>
+    <tr>
+      <th>y</th>
+      <td><p>Measurement variable as per <code>make_whole</code> or <code>make_whole_fast</code>.</p></td>
+    </tr>
+    <tr>
+      <th>maxPadLength</th>
+      <td><p>Specifies the maximum length of days over which to
+interpolate (pad) missing data (specified as <code>NA</code>) in the input
+temperature time series; i.e., any consecutive blocks of NAs with length
+greater than <code>maxPadLength</code> will be left as <code>NA</code>. Set as an
+integer. The default is <code>3</code> days.</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><a href='https://www.ncdc.noaa.gov/oisst'>https://www.ncdc.noaa.gov/oisst</a></p>
+    <p>The function returns the data (a data.table) in a long format.</p>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#format">Format</a></li>
-
-      <li><a href="#source">Source</a></li>
+      <li><a href="#value">Value</a></li>
           </ul>
+
+    <h2>Author</h2>
+    
+Smit, A. J.
 
   </div>
 </div>

@@ -75,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.6.9001</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.7</span>
       </span>
     </div>
 
@@ -190,6 +190,8 @@ metrics. It includes the following:</p>
   <dt>intensity_mean</dt><dd><p>The average event "mean intensity" in each year [deg. C].</p></dd>
   <dt>intensity_max</dt><dd><p>The average event "maximum (peak) intensity" in each year
   [deg. C].</p></dd>
+  #'   <dt>intensity_max_max</dt><dd><p>The maximum event "maximum (peak) intensity" in
+  each year [deg. C].</p></dd>
   <dt>intensity_var</dt><dd><p>The average event "intensity variability" in each year
   [deg. C].</p></dd>
   <dt>intensity_cumulative</dt><dd><p>The average event "cumulative intensity" in each year
@@ -255,12 +257,13 @@ doi: 10.1016/j.pocean.2015.12.014</p>
 #&gt; 
 #&gt; Number of Fisher Scoring iterations: 6
 #&gt; </div><div class='input'>
-</div><span class='co'># NOT RUN {</span>
-<span class='fu'>ggplot</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>out</span>, <span class='fu'>aes</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>year</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>count</span>)) +
- <span class='fu'>geom_point</span>(<span class='kw'>colour</span> <span class='kw'>=</span> <span class='st'>"salmon"</span>) +
- <span class='fu'>geom_line</span>() +
- <span class='fu'>labs</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Number of events"</span>)
-<span class='co'># }</span></pre>
+<span class='fu'>library</span>(<span class='no'>ggplot2</span>)
+
+<span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>out</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>year</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>count</span>)) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>geom_point</a></span>(<span class='kw'>colour</span> <span class='kw'>=</span> <span class='st'>"salmon"</span>) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_path'>geom_line</a></span>() +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Number of events"</span>)</div><div class='img'><img src='block_average-1.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -285,7 +288,7 @@ Albertus J. Smit, Eric C. J. Oliver
 
       <footer>
       <div class="copyright">
-  <p>Developed by Robert W. Schlegel, Eric C. J. Oliver, Albertus J. Smit.</p>
+  <p>Developed by Robert W. Schlegel, Albertus J. Smit.</p>
 </div>
 
 <div class="pkgdown">
