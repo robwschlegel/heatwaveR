@@ -89,6 +89,7 @@
 #'                         climatologyPeriod = c("1983-01-01", "2012-12-31")))
 #' cat_Med <- category(res_Med, S = FALSE, name = "Med")
 #' tail(cat_Med)
+#'
 category <-
   function(data,
            y = temp,

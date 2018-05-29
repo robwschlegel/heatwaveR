@@ -179,6 +179,7 @@ out <- detect_event(res_clim, coldSpells = TRUE)
 out$climatology[1:10, ]
 # show some of the cold-spells:
 out$event[1:5, 1:10]
+
 }
 \references{
 Hobday, A.J. et al. (2016). A hierarchical approach to defining

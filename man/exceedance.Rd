@@ -136,6 +136,7 @@ res <- exceedance(sst_WA, threshold = 25)
 res$threshold[1:10, ]
 # show first five exceedances:
 res$exceedance[1:5, ]
+
 }
 \author{
 Robert W. Schlegel, Albertus J. Smit

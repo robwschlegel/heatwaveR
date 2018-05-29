@@ -71,12 +71,13 @@
 #' out <- block_average(res)
 #' summary(glm(count ~ year, out, family = "poisson"))
 #'
-#' \dontrun{
-#'ggplot(data = out, aes(x = year, y = count)) +
-#'  geom_point(colour = "salmon") +
-#'  geom_line() +
-#'  labs(x = NULL, y = "Number of events")
-#' }
+#' library(ggplot2)
+#'
+#' ggplot(data = out, aes(x = year, y = count)) +
+#'   geom_point(colour = "salmon") +
+#'   geom_line() +
+#'   labs(x = NULL, y = "Number of events")
+#'
 block_average <- function(data,
                           x = t,
                           y = temp,

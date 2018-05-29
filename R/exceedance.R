@@ -122,6 +122,7 @@
 #' res$threshold[1:10, ]
 #' # show first five exceedances:
 #' res$exceedance[1:5, ]
+#'
 exceedance <-
   function(data,
            x = t,

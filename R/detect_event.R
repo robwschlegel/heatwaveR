@@ -174,6 +174,7 @@
 #' out$climatology[1:10, ]
 #' # show some of the cold-spells:
 #' out$event[1:5, 1:10]
+#'
 detect_event <- function(data,
                          x = t,
                          y = temp,

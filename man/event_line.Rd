@@ -72,13 +72,12 @@ Hobday et al. (2016).
 ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
 res <- detect_event(ts)
 
-\dontrun{
 event_line(res, spread = 100, metric = "intensity_cumulative",
 start_date = "2010-12-01", end_date = "2011-06-30")
 
 event_line(res, spread = 100, start_date = "2010-12-01",
 end_date = "2011-06-30", category = TRUE)
-}
+
 }
 \references{
 Hobday, A.J. et al. (2016), A hierarchical approach to defining

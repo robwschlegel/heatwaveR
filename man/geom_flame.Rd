@@ -84,15 +84,14 @@ res <- detect_event(ts)
 mhw <- res$clim
 mhw <- mhw[10580:10690,]
 
-\dontrun{
 library(ggplot2)
 
 ggplot(mhw, aes(x = t, y = temp)) +
-  geom_flame(aes(y2 = thresh_clim_year)) +
+  geom_flame(aes(y2 = thresh)) +
   geom_text(aes(x = as.Date("2011-02-01"), y = 28,
-  label = "That's not a heatwave.\\nThis, is a heatwave.")) +
+            label = "That's not a heatwave.\\nThis, is a heatwave.")) +
   xlab("Date") + ylab(expression(paste("Temperature [", degree, "C]")))
-}
+
 }
 \references{
 Hobday, A.J. et al. (2016), A hierarchical approach to defining

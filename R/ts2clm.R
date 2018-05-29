@@ -114,12 +114,13 @@
 #'
 #' @examples
 #' res <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-#' res
+#' res[1:10, ]
 #'
 #' # Or if one only wants the 366 day climatology
 #' res_clim <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
 #'                    clmOnly = TRUE)
-#' res_clim
+#' res_clim[1:10, ]
+#'
 ts2clm <-
   function(data,
            x = t,

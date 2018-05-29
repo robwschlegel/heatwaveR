@@ -67,13 +67,12 @@
 #' ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
 #' res <- detect_event(ts)
 #'
-#' \dontrun{
 #' event_line(res, spread = 100, metric = "intensity_cumulative",
 #' start_date = "2010-12-01", end_date = "2011-06-30")
 #'
 #' event_line(res, spread = 100, start_date = "2010-12-01",
 #' end_date = "2011-06-30", category = TRUE)
-#' }
+#'
 event_line <- function(data,
                        x = t,
                        y = temp,
@@ -170,7 +169,7 @@ event_line <- function(data,
           legend.justification = c(0, 0),
           legend.position = c(0.005, 0.015),
           legend.key = element_blank()
-    )
+          )
 
   if(category){
 
@@ -202,7 +201,7 @@ event_line <- function(data,
       geom_flame(data = clim_events, size = 0.5,
                  aes(x = ts.x, y = y1, y2 = thresh_4x, fill = "Extreme")) +
       geom_line(aes(y = thresh_2x, col = "2x Threshold"),
-                             size = 0.7, linetype = "dashed") +
+                size = 0.7, linetype = "dashed") +
       geom_line(aes(y = thresh_3x, col = "3x Threshold"),
                 size = 0.7, linetype = "dotdash") +
       geom_line(aes(y = thresh_4x, col = "4x Threshold"),
@@ -252,6 +251,7 @@ event_line <- function(data,
 #'
 #' @importFrom ggplot2 aes_string geom_segment geom_point scale_x_continuous
 #' element_rect element_line labs scale_y_continuous
+#' @importFrom grid unit
 #'
 #' @param data Output from the \code{\link{detect_event}} function.
 #' @param xaxis One of \code{event_no}, \code{date_start} or \code{date_peak}.
@@ -277,12 +277,11 @@ event_line <- function(data,
 #' ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
 #' res <- detect_event(ts)
 #'
-#' \dontrun{
+#' library(ggplot2)
+#'
 #' # The default output
 #' lolli_plot(res)
 #'
-#' # Change the parameters and highlight no events
-#' }
 lolli_plot <- function(data,
                        xaxis = "date_peak",
                        metric = "intensity_max",
@@ -311,11 +310,10 @@ lolli_plot <- function(data,
     lolli_col <- c("salmon", "red")
   }
 
-  # xaxis = "event_no" xaxis = "date_start" xaxis = "date_peak"
   if (xaxis == "event_no") xlabel <- "Event number"
   if (xaxis == "date_start") xlabel <- "Start date"
   if (xaxis == "date_peak") xlabel <- "Peak date"
-  # metric = "intensity_max" metric = "intensity_mean" metric = "intensity_cumulative" metric = "duration"
+
   if (metric == "intensity_max") ylabel <- expression(paste("Maximum intensity [", degree, "C]"))
   if (metric == "intensity_mean") ylabel <- expression(paste("Mean intensity [", degree, "C]"))
   if (metric == "intensity_cumulative") ylabel <- expression(paste("Cumulative intensity [", degree, "C x days]"))
@@ -323,20 +321,18 @@ lolli_plot <- function(data,
 
   lolli <- ggplot(data = event, aes_string(x = xaxis, y = metric)) +
     geom_lolli(colour = lolli_col[1], colour_n = lolli_col[2], fill = "grey70", n = event_count) +
-    # geom_blank(x = event$metric[abs(event$metric) == abs(event$metric)]*1.05) +
     labs(x = xlabel, y = ylabel) +
     scale_y_continuous(expand = c(0, 0), limits = y_limits) +
-    theme(
-      plot.background = element_blank(),
-      panel.background = element_rect(fill = "white"),
-      panel.border = element_rect(colour = "black", fill = NA, size = 0.75),
-      panel.grid.minor = element_line(colour = NA),
-      panel.grid.major = element_line(colour = "black", size = 0.2, linetype = "dotted"),
-      axis.text = element_text(colour = "black"),
-      axis.text.x = element_text(margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
-      axis.text.y = element_text(margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
-      axis.ticks.length = unit(-0.25, "cm")
-    )
+    theme(plot.background = element_blank(),
+          panel.background = element_rect(fill = "white"),
+          panel.border = element_rect(colour = "black", fill = NA, size = 0.75),
+          panel.grid.minor = element_line(colour = NA),
+          panel.grid.major = element_line(colour = "black", size = 0.2, linetype = "dotted"),
+          axis.text = element_text(colour = "black"),
+          axis.text.x = element_text(margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
+          axis.text.y = element_text(margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
+          axis.ticks.length = unit(-0.25, "cm")
+          )
 
   if (xaxis == "event_no") {
     lolli <- lolli +

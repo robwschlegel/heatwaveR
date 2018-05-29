@@ -75,15 +75,14 @@
 #' mhw <- res$clim
 #' mhw <- mhw[10580:10690,]
 #'
-#' \dontrun{
 #' library(ggplot2)
 #'
 #' ggplot(mhw, aes(x = t, y = temp)) +
-#'   geom_flame(aes(y2 = thresh_clim_year)) +
+#'   geom_flame(aes(y2 = thresh)) +
 #'   geom_text(aes(x = as.Date("2011-02-01"), y = 28,
-#'   label = "That's not a heatwave.\nThis, is a heatwave.")) +
+#'             label = "That's not a heatwave.\nThis, is a heatwave.")) +
 #'   xlab("Date") + ylab(expression(paste("Temperature [", degree, "C]")))
-#' }
+#'
 geom_flame <- function(mapping = NULL, data = NULL,
                        stat = "identity", position = "identity",
                        ...,
@@ -250,7 +249,6 @@ GeomFlame <- ggplot2::ggproto("GeomFlame", ggplot2::Geom,
 #' res <- detect_event(ts)
 #' mhw <- res$event
 #'
-#' \dontrun{
 #' library(ggplot2)
 #'
 #' # Height of lollis represent event durations and their colours
@@ -273,7 +271,7 @@ GeomFlame <- ggplot2::ggproto("GeomFlame", ggplot2::Geom,
 #'   geom_lolli(shape = 5, aes(colour = rate_onset), linetype = "dotted") +
 #'   scale_color_distiller(palette = "RdYlGn", name = "Rate \nonset") +
 #'   xlab("Event number") + ylab("Max intensity [degree C]")
-#' }
+#'
 geom_lolli <- function(mapping = NULL, data = NULL,
                        ...,
                        n = 0,

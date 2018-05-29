@@ -75,12 +75,13 @@ res <- detect_event(ts)
 out <- block_average(res)
 summary(glm(count ~ year, out, family = "poisson"))
 
-\dontrun{
+library(ggplot2)
+
 ggplot(data = out, aes(x = year, y = count)) +
- geom_point(colour = "salmon") +
- geom_line() +
- labs(x = NULL, y = "Number of events")
-}
+  geom_point(colour = "salmon") +
+  geom_line() +
+  labs(x = NULL, y = "Number of events")
+
 }
 \references{
 Hobday, A.J. et al. (2016), A hierarchical approach to defining
