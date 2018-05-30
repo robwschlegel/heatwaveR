@@ -1,4 +1,3 @@
-<<<<<<< refs/remotes/origin/cpp-dev
 # heatwaveR 0.2.7 (2018-05-28)
 
 * Submitted to CRAN
@@ -11,11 +10,6 @@
 * No longer uses zoo for time series NA handling--made custom function to replace it
 * Additional speed improvements
 * Repair testthat tests
-=======
-# heatwaveR 0.2.6.9002 (2018-05-25)
-
-* Fixes to `make_whole` and testing
->>>>>>> cpp-dev~14
 
 # heatwaveR 0.2.6.9001 (2018-05-24)
 
