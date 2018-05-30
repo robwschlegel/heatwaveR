@@ -29,7 +29,7 @@ proto_event <- function(t_series,
 
   index_start <- index_end <- duration <- NULL
 
-  t_series <- as.data.frame(t_series) ###
+  t_series <- as.matrix(t_series) ###
   ex1 <- rle(as.vector(t_series[, criterion_column]))
   ind1 <- rep(seq_along(ex1$lengths), ex1$lengths)
   s1 <- split(zoo::index(t_series[, criterion_column]), ind1)
