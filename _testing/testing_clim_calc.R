@@ -37,14 +37,26 @@ t_series$threshCriterion <- as.numeric(t_series$ts_y > t_series$ts_thresh)
 criterion_column <- 5
 
 t_series <- as.data.frame(t_series)
-ex1 <- rle(as.vector(t_series[, get(criterion_column)])) ###
+ex1 <- rle(as.vector(t_series[, criterion_column])) ###
 ind1 <- rep(seq_along(ex1$lengths), ex1$lengths)
-s1 <- split(zoo::index(t_series[, get(criterion_column)]), ind1)
+s1 <- split(zoo::index(t_series[, criterion_column]), ind1)
+s1[1:5]
+
+microbenchmark(
+  rep(seq_along(ex1$lengths), ex1$lengths),
+  rep_vec(seq_along(ex1$lengths), ex1$lengths)
+)
+
+s1 <- split(zoo::index(t_series[, criterion_column]), ind1)
 
 
 
 
 
+
+# cpp ---------------------------------------------------------------------
+
+rle2_num(t_series$threshCriterion)[1:10,]
 
 # benchmarks --------------------------------------------------------------
 
