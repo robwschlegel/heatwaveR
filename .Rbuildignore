@@ -13,6 +13,9 @@
 ^_private$
 ^heatwaveR.code-workspace
 ^hex_sticker.R
+<<<<<<< refs/remotes/origin/cpp-dev
 ^paper.md
 ^\.vscode
 ^logo.png
+=======
+>>>>>>> cpp-dev~14

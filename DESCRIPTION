@@ -1,8 +1,15 @@
 Package: heatwaveR
+<<<<<<< refs/remotes/origin/cpp-dev
 Version: 0.2.7
 Date: 2018-05-28
 Title: Detect Heatwaves and Cold-Spells
 Description: The different methods of defining and detecting extreme events, known as heatwaves or cold-spells in both air and water temperature data are encompassed within this package. These detection algorithms may be used on non-temperature data as well however, this is not catered for explicitly here as no use of this technique in the literature currently exists.
+=======
+Version: 0.2.6.9002
+Date: 2018-05-25
+Title: Detect heatwaves and cold-spells
+Description: This package is designed to include and encompass the different methods of defining and detecting extreme events, known as heatwaves or cold-spells in both air and water temperature data. These detection algorithms may be used on non-temperature data as well however, this is not catered for explicitly here as no use of this technique in the literature currently exists.
+>>>>>>> cpp-dev~14
 Type: Package
 Authors@R: c(person("Robert W.", "Schlegel", role = c("aut", "cre", "ctb"),
     email = "robwschlegel@gmail.com",

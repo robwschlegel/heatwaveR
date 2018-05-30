@@ -11,6 +11,10 @@ export(lolli_plot)
 export(ts2clm)
 importFrom(data.table,"%between%")
 importFrom(data.table,":=")
+<<<<<<< refs/remotes/origin/cpp-dev
+=======
+importFrom(data.table,data.table)
+>>>>>>> cpp-dev~14
 importFrom(dplyr,"%>%")
 importFrom(dplyr,n)
 importFrom(ggplot2,aes)

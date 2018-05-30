@@ -94,6 +94,7 @@ make_whole <- function(data, x = t, y = temp) {
   t_series <- data.table::data.table(doy = lubridate::yday(t_series),
                                  date = as.Date(as.POSIXct(t_series)),
                                  ts_y = as.numeric(t_series))
+
   t_series$doy <- as.integer(ifelse(
     lubridate::leap_year(lubridate::year(t_series$date)) == FALSE,
     ifelse(t_series$doy > feb28, t_series$doy + 1, t_series$doy),
