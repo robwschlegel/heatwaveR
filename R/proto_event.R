@@ -31,12 +31,12 @@ proto_event <- function(t_series,
 
   t_series <- as.matrix(t_series) ###
   ex1 <- rle(as.vector(t_series[, criterion_column]))
-  ind1 <- rep(seq_along(ex1$lengths), ex1$lengths)
-  s1 <- split(zoo::index(t_series[, criterion_column]), ind1)
+  ind <- rep(seq_along(ex1$lengths), ex1$lengths)
+  s <- split(zoo::index(t_series[, criterion_column]), ind)
 
   if (!(gaps)) {
 
-    proto_event_value <- s1[ex1$values == TRUE]
+    proto_event_value <- s[ex1$values == TRUE]
 
     proto_event_rng <-
       lapply(proto_event_value, function(x)
@@ -52,7 +52,7 @@ proto_event <- function(t_series,
 
   } else {
 
-    proto_gap_value <- s1[ex1$values == FALSE]
+    proto_gap_value <- s[ex1$values == FALSE]
 
     proto_gap_rng <-
       lapply(proto_gap_value, function(x)
