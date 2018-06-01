@@ -5,11 +5,3 @@ clim_calc_cpp <- function(x, windowHalfWidth, pctile) {
     .Call('_heatwaveR_clim_calc_cpp', PACKAGE = 'heatwaveR', x, windowHalfWidth, pctile)
 }
 
-rle2_char <- function(x) {
-    .Call('_heatwaveR_rle2_char', PACKAGE = 'heatwaveR', x)
-}
-
-rle2_num <- function(x) {
-    .Call('_heatwaveR_rle2_num', PACKAGE = 'heatwaveR', x)
-}
-

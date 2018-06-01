@@ -198,7 +198,7 @@ detect_event <- function(data,
   ts_y <- eval(substitute(y), data)
   ts_seas <- eval(substitute(seasClim), data)
   ts_thresh <- eval(substitute(threshClim), data)
-  t_series <- data.table::data.table(ts_x, ts_y, ts_seas, ts_thresh)
+  t_series <- data.frame(ts_x, ts_y, ts_seas, ts_thresh)
   rm(ts_x); rm(ts_y); rm(ts_seas); rm(ts_thresh)
 
   if (coldSpells) {
@@ -210,16 +210,19 @@ detect_event <- function(data,
   t_series$ts_y[is.na(t_series$ts_y)] <- t_series$ts_seas[is.na(t_series$ts_y)]
   t_series$threshCriterion <- t_series$ts_y > t_series$ts_thresh
 
-  proto_1 <- proto_event(t_series, criterion_column = 5, minDuration = minDuration,
-                         maxGap = maxGap)
+  proto_1 <- proto_event(t_series, criterion_column = 5,
+                         minDuration = minDuration, maxGap = maxGap)
+
   t_series$durationCriterion <- rep(FALSE, nrow(t_series))
+
   for (i in 1:nrow(proto_1)) {
     t_series$durationCriterion[proto_1$index_start[i]:proto_1$index_end[i]] <-
       rep(TRUE, length = proto_1$duration[i])
   }
 
-  proto_2 <- proto_event(t_series, criterion_column = 6, minDuration = minDuration,
-                         gaps = TRUE, maxGap = maxGap)
+  proto_2 <- proto_event(t_series, criterion_column = 6,
+                         minDuration = minDuration, gaps = TRUE,
+                         maxGap = maxGap)
 
   if (ncol(proto_2) == 4)
     joinAcrossGaps <- FALSE
@@ -234,10 +237,11 @@ detect_event <- function(data,
     t_series$event <- t_series$durationCriterion
   }
 
-  proto_3 <- proto_event(t_series, criterion_column = 7, minDuration = minDuration,
-                         maxGap = maxGap)
+  proto_3 <- proto_event(t_series, criterion_column = 7,
+                         minDuration = minDuration, maxGap = maxGap)
 
   t_series$event_no <- rep(NA, nrow(t_series))
+
   for (i in 1:nrow(proto_3)) {
     t_series$event_no[proto_3$index_start[i]:proto_3$index_end[i]] <-
       rep(i, length = proto_3$duration[i])
@@ -282,6 +286,7 @@ detect_event <- function(data,
     B <- c(NA, B)
     C <- c(NA, C)
   }
+
   mhw_rel_seas_start <- 0.5 * (A + B - C)
 
   events$rate_onset <- ifelse(
