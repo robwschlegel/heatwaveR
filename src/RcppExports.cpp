@@ -20,13 +20,8 @@ BEGIN_RCPP
 END_RCPP
 }
 
-RcppExport SEXP _heatwaveR_rle2_char(SEXP);
-RcppExport SEXP _heatwaveR_rle2_num(SEXP);
-
 static const R_CallMethodDef CallEntries[] = {
     {"_heatwaveR_clim_calc_cpp", (DL_FUNC) &_heatwaveR_clim_calc_cpp, 3},
-    {"_heatwaveR_rle2_char",     (DL_FUNC) &_heatwaveR_rle2_char,     1},
-    {"_heatwaveR_rle2_num",      (DL_FUNC) &_heatwaveR_rle2_num,      1},
     {NULL, NULL, 0}
 };
 
