@@ -53,8 +53,8 @@ test_that("clmOnly = TRUE returns only the clim data", {
   expect_equal(nrow(res), 366)
 })
 
-test_that("robust = TRUE switches to the slower function", {
-  t_1 <- system.time(ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), robust = TRUE))
-  t_2 <- system.time(ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), robust = FALSE))
-  expect_lt(t_2[1], t_1[1])
+test_that("robust = TRUE switches to the slower function but produces same results", {
+  t_1 <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), robust = TRUE)
+  t_2 <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), robust = FALSE)
+  expect_equal(t_1, t_2)
 })
