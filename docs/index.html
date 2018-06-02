@@ -106,7 +106,7 @@
 <a href="#heatwaver" class="anchor"></a>heatwaveR <img src="articles/logo.png" width="200" align="right">
 </h1></div>
 <p><a href="https://cran.r-project.org/package=heatwaveR"><img src="http://www.r-pkg.org/badges/version/heatwaveR" alt="CRAN_Status_Badge"></a> <a href="https://travis-ci.org/robwschlegel/heatwaveR"><img src="https://travis-ci.org/robwschlegel/heatwaveR.svg?branch=master" alt="Travis build status"></a> <a href="https://codecov.io/github/robwschlegel/heatwaveR?branch=master"><img src="https://codecov.io/gh/robwschlegel/heatwaveR/branch/master/graph/badge.svg" alt="Coverage status"></a> <img src="https://cranlogs.r-pkg.org/badges/grand-total/heatwaveR"></p>
-<p>The <strong><code>heatwaveR</code></strong> package is a project-wide update to the <a href="https://github.com/ajsmit/RmarineHeatWaves"><strong><code>RmarineHeatWaves</code></strong></a> package, which is itself a translation of the original <a href="https://github.com/ecjoliver/marineHeatWaves">Python code</a> written by Eric C. J. Oliver.</p>
+<p>The <strong><code>heatwaveR</code></strong> package is a project-wide update to the <a href="https://github.com/ajsmit/RmarineHeatWaves"><strong><code>RmarineHeatWaves</code></strong></a> package, which is itself a translation of the original <a href="https://github.com/ecjoliver/marineHeatWaves">Python code</a> written by Eric C. J. Oliver. The <strong><code>heatwaveR</code></strong> package also uses the same naming conventions for objects, columns, and arguments as the Python code.</p>
 <p>The <strong><code>heatwaveR</code></strong> R package contains the original functions from the <strong><code>RmarineHeatWaves</code></strong> package that calculate and display marine heatwaves (MHWs) according to the definition of Hobday et al. (2016) as well as calculating and visualising marine cold-spells (MCSs) as first introduced in Schlegel et al. (2017a). It also contains the functionality to calculate the categories of MHWs as outlined in Hobday et al. (2018).</p>
 <p>This package does what <strong><code>RmarineHeatWaves</code></strong> does, but faster. The entire package has been deconstructed and modularised, and slow portions of the code are being implemented in C++. C++ has already replaced some of the bottlenecks that slowed down the climatology creation portions of the code, and we will slowly but surely improve the efficiency and speed in other portions of the code too. Currently the R code runs about as fast as the original python functions, at least in as far as applying it to single time series of temperatures. Readers familiar with both languages will know about the ongoing debate around the relative speed of the two languages. In our experience, R can be as fast as python, provided that attention is paid to finding ways to reduce the computational inefficiencies that stem from i) the liberal use of complex and inefficient non-atomic data structures, such as data frames; ii) the reliance on non-vectorised calculations such as loops; and iii) lazy (but convenient) coding that comes from drawing too heavily on the <code>tidyverse</code> suite of packages. We will continue to ensure that <strong><code>heatwaveR</code></strong> becomes more-and-more efficient so that it can be applied to large gridded data products with ease.</p>
 <p>This new package was developed and released in order to better accommodate the inclusion of the definitions of atmospheric heatwaves in addition to MHWs. Additionally, <strong><code>heatwaveR</code></strong> also provides the first implementation of a definition for a ‘compound heatwave’. There are currently multiple different definitions for this type of event and each of which has arguments provided for it within the <code><a href="reference/ts2clm.html">ts2clm()</a></code> and <code><a href="reference/detect_event.html">detect_event()</a></code> functions.</p>
@@ -206,12 +206,12 @@
 <td>Seasonally varying variance (standard deviation) [deg. C].</td>
 </tr>
 <tr class="odd">
-<td><code>thresh_criterion</code></td>
+<td><code>threshCriterion</code></td>
 <td>Boolean indicating if <code>temp</code> exceeds <code>thresh</code>.</td>
 </tr>
 <tr class="even">
-<td><code>duration_criterion</code></td>
-<td>Boolean indicating whether periods of consecutive <code>thresh_criterion</code> are &gt;= <code>min_duration</code>.</td>
+<td><code>durationCriterion</code></td>
+<td>Boolean indicating whether periods of consecutive <code>threshCriterion</code> are &gt;= <code>minDuration</code>.</td>
 </tr>
 <tr class="odd">
 <td><code>event</code></td>
@@ -231,63 +231,66 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td><code>index_start</code></td>
-<td>Start index of event.</td>
-</tr>
-<tr class="even">
-<td><code>index_stop</code></td>
-<td>Stop index of event.</td>
-</tr>
-<tr class="odd">
 <td><code>event_no</code></td>
 <td>A sequential number indicating the ID and order of the events.</td>
 </tr>
 <tr class="even">
+<td><code>index_start</code></td>
+<td>Start index of event.</td>
+</tr>
+<tr class="odd">
+<td><code>index_peak</code></td>
+<td>Peak index of event.</td>
+</tr>
+<tr class="even">
+<td><code>index_end</code></td>
+<td>Index of event peak.</td>
+</tr>
+<tr class="odd">
 <td><code>duration</code></td>
 <td>Duration of event [days].</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>date_start</code></td>
 <td>Start date of event [date].</td>
-</tr>
-<tr class="even">
-<td><code>date_stop</code></td>
-<td>Stop date of event [date].</td>
 </tr>
 <tr class="odd">
 <td><code>date_peak</code></td>
 <td>Date of event peak [date].</td>
 </tr>
 <tr class="even">
+<td><code>date_end</code></td>
+<td>End date of event [date].</td>
+</tr>
+<tr class="odd">
 <td><code>intensity_mean</code></td>
 <td>Mean intensity [deg. C].</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>intensity_max</code></td>
 <td>Maximum (peak) intensity [deg. C].</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>intensity_var</code></td>
 <td>Intensity variability (standard deviation) [deg. C].</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>intensity_cumulative</code></td>
 <td>Cumulative intensity [deg. C x days].</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>rate_onset</code></td>
 <td>Onset rate of event [deg. C / day].</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>rate_decline</code></td>
 <td>Decline rate of event [deg. C / day].</td>
 </tr>
 </tbody>
 </table>
-<p><code>intensity_max_rel_thresh</code>, <code>intensity_mean_rel_thresh</code>, <code>intensity_var_rel_thresh</code>, and <code>intensity_cum_rel_thresh</code> are as above except relative to the threshold (e.g., 90th percentile) rather than the seasonal climatology.</p>
-<p><code>intensity_max_abs</code>, <code>intensity_mean_abs</code>, <code>intensity_var_abs</code>, and <code>intensity_cum_abs</code> are as above except as absolute magnitudes rather than relative to the seasonal climatology or threshold.</p>
-<p><code>intensity_max_norm</code> and <code>intensity_mean_norm</code> are as above except units are in multiples of threshold exceedances, i.e., a value of 1.5 indicates the event intensity (relative to the climatology) was 1.5 times the value of the threshold (relative to climatology, i.e., threshold - climatology.)</p>
-<p>Note that <code>rate_onset</code> and <code>rate_decline</code> will return <code>NA</code> when the event begins/ends on the first/last day of the time series. This may be particularly evident when the function is applied to large gridded data sets. Although the other metrics do not contain any errors and provide sensible values, please take this into account in its interpretation.</p>
+<p><code>intensity_max_relThresh</code>, <code>intensity_mean_relThresh</code>, <code>intensity_var_relThresh</code>, and <code>intensity_cumulative_relThresh</code> are as above except relative to the threshold (e.g., 90th percentile) rather than the seasonal climatology.</p>
+<p><code>intensity_max_abs</code>, <code>intensity_mean_abs</code>, <code>intensity_var_abs</code>, and <code>intensity_cumulative_abs</code> are as above except as absolute magnitudes rather than relative to the seasonal climatology or threshold.</p>
+<p>Note that <code>rate_onset</code> and <code>rate_decline</code> will return <code>NA</code> when the event begins/ends on the first/last day of the time series. This may be particularly evident when the function is applied to large gridded data sets. Although the other metrics do not contain any errors and provide sensible values, please take this into account in the interpretation of the output.</p>
 </div>
 <div id="examples-of-detection-and-graphing" class="section level2">
 <h2 class="hasAnchor">

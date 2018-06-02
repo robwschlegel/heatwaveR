@@ -3,7 +3,7 @@ heatwaveR <img src="vignettes/logo.png" width=200 align="right" />
 
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/heatwaveR)](https://cran.r-project.org/package=heatwaveR) [![Travis build status](https://travis-ci.org/robwschlegel/heatwaveR.svg?branch=master)](https://travis-ci.org/robwschlegel/heatwaveR) [![Coverage status](https://codecov.io/gh/robwschlegel/heatwaveR/branch/master/graph/badge.svg)](https://codecov.io/github/robwschlegel/heatwaveR?branch=master) ![](https://cranlogs.r-pkg.org/badges/grand-total/heatwaveR)
 
-The **`heatwaveR`** package is a project-wide update to the [**`RmarineHeatWaves`**](https://github.com/ajsmit/RmarineHeatWaves) package, which is itself a translation of the original [Python code](https://github.com/ecjoliver/marineHeatWaves) written by Eric C. J. Oliver.
+The **`heatwaveR`** package is a project-wide update to the [**`RmarineHeatWaves`**](https://github.com/ajsmit/RmarineHeatWaves) package, which is itself a translation of the original [Python code](https://github.com/ecjoliver/marineHeatWaves) written by Eric C. J. Oliver. The **`heatwaveR`** package also uses the same naming conventions for objects, columns, and arguments as the Python code.
 
 The **`heatwaveR`** R package contains the original functions from the **`RmarineHeatWaves`** package that calculate and display marine heatwaves (MHWs) according to the definition of Hobday et al. (2016) as well as calculating and visualising marine cold-spells (MCSs) as first introduced in Schlegel et al. (2017a). It also contains the functionality to calculate the categories of MHWs as outlined in Hobday et al. (2018).
 
@@ -117,12 +117,12 @@ The function will return a list of two tibbles (see the ‘tidyverse’), `clim`
 <td>Seasonally varying variance (standard deviation) [deg. C].</td>
 </tr>
 <tr class="odd">
-<td><code>thresh_criterion</code></td>
+<td><code>threshCriterion</code></td>
 <td>Boolean indicating if <code>temp</code> exceeds <code>thresh</code>.</td>
 </tr>
 <tr class="even">
-<td><code>duration_criterion</code></td>
-<td>Boolean indicating whether periods of consecutive <code>thresh_criterion</code> are &gt;= <code>min_duration</code>.</td>
+<td><code>durationCriterion</code></td>
+<td>Boolean indicating whether periods of consecutive <code>threshCriterion</code> are &gt;= <code>minDuration</code>.</td>
 </tr>
 <tr class="odd">
 <td><code>event</code></td>
@@ -139,13 +139,14 @@ The events are summarised using a range of event metrics:
 
 | Event metric           | Description                                                    |
 |------------------------|----------------------------------------------------------------|
-| `index_start`          | Start index of event.                                          |
-| `index_stop`           | Stop index of event.                                           |
 | `event_no`             | A sequential number indicating the ID and order of the events. |
+| `index_start`          | Start index of event.                                          |
+| `index_peak`           | Peak index of event.                                           |
+| `index_end`            | Index of event peak.                                           |
 | `duration`             | Duration of event \[days\].                                    |
 | `date_start`           | Start date of event \[date\].                                  |
-| `date_stop`            | Stop date of event \[date\].                                   |
 | `date_peak`            | Date of event peak \[date\].                                   |
+| `date_end`             | End date of event \[date\].                                    |
 | `intensity_mean`       | Mean intensity \[deg. C\].                                     |
 | `intensity_max`        | Maximum (peak) intensity \[deg. C\].                           |
 | `intensity_var`        | Intensity variability (standard deviation) \[deg. C\].         |
@@ -153,13 +154,11 @@ The events are summarised using a range of event metrics:
 | `rate_onset`           | Onset rate of event \[deg. C / day\].                          |
 | `rate_decline`         | Decline rate of event \[deg. C / day\].                        |
 
-`intensity_max_rel_thresh`, `intensity_mean_rel_thresh`, `intensity_var_rel_thresh`, and `intensity_cum_rel_thresh` are as above except relative to the threshold (e.g., 90th percentile) rather than the seasonal climatology.
+`intensity_max_relThresh`, `intensity_mean_relThresh`, `intensity_var_relThresh`, and `intensity_cumulative_relThresh` are as above except relative to the threshold (e.g., 90th percentile) rather than the seasonal climatology.
 
-`intensity_max_abs`, `intensity_mean_abs`, `intensity_var_abs`, and `intensity_cum_abs` are as above except as absolute magnitudes rather than relative to the seasonal climatology or threshold.
+`intensity_max_abs`, `intensity_mean_abs`, `intensity_var_abs`, and `intensity_cumulative_abs` are as above except as absolute magnitudes rather than relative to the seasonal climatology or threshold.
 
-`intensity_max_norm` and `intensity_mean_norm` are as above except units are in multiples of threshold exceedances, i.e., a value of 1.5 indicates the event intensity (relative to the climatology) was 1.5 times the value of the threshold (relative to climatology, i.e., threshold - climatology.)
-
-Note that `rate_onset` and `rate_decline` will return `NA` when the event begins/ends on the first/last day of the time series. This may be particularly evident when the function is applied to large gridded data sets. Although the other metrics do not contain any errors and provide sensible values, please take this into account in its interpretation.
+Note that `rate_onset` and `rate_decline` will return `NA` when the event begins/ends on the first/last day of the time series. This may be particularly evident when the function is applied to large gridded data sets. Although the other metrics do not contain any errors and provide sensible values, please take this into account in the interpretation of the output.
 
 Examples of detection and graphing
 ----------------------------------
