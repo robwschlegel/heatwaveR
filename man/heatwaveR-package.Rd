@@ -12,6 +12,8 @@ The different methods of defining and detecting extreme events, known as heatwav
 Useful links:
 \itemize{
   \item \url{https://robwschlegel.github.io/heatwaveR/index.html}
+  \item \url{https://github.com/robwschlegel/heatwaveR}
+  \item Report bugs at \url{https://github.com/robwschlegel/heatwaveR/issues}
 }
 
 }

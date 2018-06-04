@@ -1,17 +1,21 @@
 heatwaveR <img src="vignettes/logo.png" width=200 align="right" />
 ==================================================================
 
-[![Travis build status](https://travis-ci.org/robwschlegel/heatwaveR.svg?branch=master)](https://travis-ci.org/robwschlegel/heatwaveR) [![Coverage status](https://codecov.io/gh/robwschlegel/heatwaveR/branch/master/graph/badge.svg)](https://codecov.io/github/robwschlegel/heatwaveR?branch=master)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/heatwaveR)](https://cran.r-project.org/package=heatwaveR) [![Travis build status](https://travis-ci.org/robwschlegel/heatwaveR.svg?branch=master)](https://travis-ci.org/robwschlegel/heatwaveR) [![Coverage status](https://codecov.io/gh/robwschlegel/heatwaveR/branch/master/graph/badge.svg)](https://codecov.io/github/robwschlegel/heatwaveR?branch=master) ![](https://cranlogs.r-pkg.org/badges/grand-total/heatwaveR)
 
-The **`heatwaveR`** package is a project-wide update to the [**`RmarineHeatWaves`**](https://github.com/ajsmit/RmarineHeatWaves) package, which is itself a translation of the original [Python code](https://github.com/ecjoliver/marineHeatWaves) written by Eric C. J. Oliver.
+The **`heatwaveR`** package is a project-wide update to the [**`RmarineHeatWaves`**](https://github.com/ajsmit/RmarineHeatWaves) package, which is itself a translation of the original [Python code](https://github.com/ecjoliver/marineHeatWaves) written by Eric C. J. Oliver. The **`heatwaveR`** package also uses the same naming conventions for objects, columns, and arguments as the Python code.
 
-The **`heatwaveR`** R package contains the original functions from the **`RmarineHeatWaves`** package that calculate and display marine heatwaves (MHWs) according to the definition of Hobday et al. (2016) as well as calculating and visualising marine cold-spells (MCSs) as first introduced in Schlegel et al. (2017a).
+The **`heatwaveR`** R package contains the original functions from the **`RmarineHeatWaves`** package that calculate and display marine heatwaves (MHWs) according to the definition of Hobday et al. (2016) as well as calculating and visualising marine cold-spells (MCSs) as first introduced in Schlegel et al. (2017a). It also contains the functionality to calculate the categories of MHWs as outlined in Hobday et al. (2018).
 
-This package does what **`RmarineHeatWaves`** does, but faster. The entire package has been deconstructed and modularised, and slow portions of the code are being implemented in C++. C++ has already replaced some of the bottlenecks that slowed down the climatology creation portions of the code, and we will slowly but surely improve the efficiency and speed in other portions of the code too. Currently the R code runs about as fast as the original python functions, at least in as far as applying it to single time series of temperatures. Readers familiar with both languages will know about the ongoing debate around the relative speed of the two languages. In our experience, R can be as fast as python, provided that attention is paid the finding ways to reduce the computational inefficiencies that stem from i) the liberal use of complex and inefficient non-atomic data structures, such as data frames; ii) the reliance on non-vectorised calculations such as loops; and iii) lazy (but convenient) coding that comes from drawing too heavily on the tidyverse suite of packages. We will continue to ensure that **`heatwaveR`** becomes more-and-more efficient so that it can be applied to large gridded data products with ease.
+This package does what **`RmarineHeatWaves`** does, but faster. The entire package has been deconstructed and modularised, and slow portions of the code are being implemented in C++. C++ has already replaced some of the bottlenecks that slowed down the climatology creation portions of the code, and we will slowly but surely improve the efficiency and speed in other portions of the code too. Currently the R code runs about as fast as the original python functions, at least in as far as applying it to single time series of temperatures. Readers familiar with both languages will know about the ongoing debate around the relative speed of the two languages. In our experience, R can be as fast as python, provided that attention is paid to finding ways to reduce the computational inefficiencies that stem from i) the liberal use of complex and inefficient non-atomic data structures, such as data frames; ii) the reliance on non-vectorised calculations such as loops; and iii) lazy (but convenient) coding that comes from drawing too heavily on the `tidyverse` suite of packages. We will continue to ensure that **`heatwaveR`** becomes more-and-more efficient so that it can be applied to large gridded data products with ease.
 
-A new package was developed and released in order to better accommodate the inclusion of the definitions of atmospheric heatwaves in addition to MHWs. Additionally, **`heatwaveR`** also provides the first implementation of a definition for a ‘compound heatwave’. There are currently multiple different definitions for this type of event and each of which has an algorithm provided for it in the output of the `detect_event()` function.
+This new package was developed and released in order to better accommodate the inclusion of the definitions of atmospheric heatwaves in addition to MHWs. Additionally, **`heatwaveR`** also provides the first implementation of a definition for a ‘compound heatwave’. There are currently multiple different definitions for this type of event and each of which has arguments provided for it within the `ts2clm()` and `detect_event()` functions.
 
-This package is not yet available on CRAN, but may be installed from GitHub by issuing the following command:
+This package may be installed from CRAN by typing the following command into the console:
+
+`install.packages("heatwaveR")`
+
+Or the development version may be installed from GitHub with:
 
 `devtools::install_github("robwschlegel/heatwaveR")`
 
@@ -71,10 +75,10 @@ The functions
 
 The package also provides data of observed SST records for three historical MHWs: the 2011 Western Australia event, the 2012 Northwest Atlantic event and the 2003 Mediterranean event.
 
-The heat wave metrics
----------------------
+The heatwave metrics
+--------------------
 
-The function will return a list of two tibbles (see the ‘tidyverse’), `clim` and `event`, which are the climatology and MHW (or MCS) events, respectively. The climatology contains the full time series of daily temperatures, as well as the the seasonal climatology, the threshold and various aspects of the events that were detected. The software was designed for detecting extreme thermal events, and the units specified below reflect that intended purpose. However, the various other kinds of extreme events may be detected according to the ‘marine heat wave’ specifications, and if that is the case, the appropriate units need to be determined by the user.
+The function will return a list of two tibbles (see the ‘tidyverse’), `clim` and `event`, which are the climatology and MHW (or MCS) events, respectively. The climatology contains the full time series of daily temperatures, as well as the the seasonal climatology, the threshold and various aspects of the events that were detected. The software was designed for detecting extreme thermal events, and the units specified below reflect that intended purpose. However, the various other kinds of extreme events may be detected according to the ‘marine heatwave’ specifications, and if that is the case, the appropriate units need to be determined by the user.
 
 <table>
 <colgroup>
@@ -113,12 +117,12 @@ The function will return a list of two tibbles (see the ‘tidyverse’), `clim`
 <td>Seasonally varying variance (standard deviation) [deg. C].</td>
 </tr>
 <tr class="odd">
-<td><code>thresh_criterion</code></td>
+<td><code>threshCriterion</code></td>
 <td>Boolean indicating if <code>temp</code> exceeds <code>thresh</code>.</td>
 </tr>
 <tr class="even">
-<td><code>duration_criterion</code></td>
-<td>Boolean indicating whether periods of consecutive <code>thresh_criterion</code> are &gt;= <code>min_duration</code>.</td>
+<td><code>durationCriterion</code></td>
+<td>Boolean indicating whether periods of consecutive <code>threshCriterion</code> are &gt;= <code>minDuration</code>.</td>
 </tr>
 <tr class="odd">
 <td><code>event</code></td>
@@ -135,13 +139,14 @@ The events are summarised using a range of event metrics:
 
 | Event metric           | Description                                                    |
 |------------------------|----------------------------------------------------------------|
-| `index_start`          | Start index of event.                                          |
-| `index_stop`           | Stop index of event.                                           |
 | `event_no`             | A sequential number indicating the ID and order of the events. |
+| `index_start`          | Start index of event.                                          |
+| `index_peak`           | Peak index of event.                                           |
+| `index_end`            | Index of event peak.                                           |
 | `duration`             | Duration of event \[days\].                                    |
 | `date_start`           | Start date of event \[date\].                                  |
-| `date_stop`            | Stop date of event \[date\].                                   |
 | `date_peak`            | Date of event peak \[date\].                                   |
+| `date_end`             | End date of event \[date\].                                    |
 | `intensity_mean`       | Mean intensity \[deg. C\].                                     |
 | `intensity_max`        | Maximum (peak) intensity \[deg. C\].                           |
 | `intensity_var`        | Intensity variability (standard deviation) \[deg. C\].         |
@@ -149,13 +154,11 @@ The events are summarised using a range of event metrics:
 | `rate_onset`           | Onset rate of event \[deg. C / day\].                          |
 | `rate_decline`         | Decline rate of event \[deg. C / day\].                        |
 
-`intensity_max_rel_thresh`, `intensity_mean_rel_thresh`, `intensity_var_rel_thresh`, and `intensity_cum_rel_thresh` are as above except relative to the threshold (e.g., 90th percentile) rather than the seasonal climatology.
+`intensity_max_relThresh`, `intensity_mean_relThresh`, `intensity_var_relThresh`, and `intensity_cumulative_relThresh` are as above except relative to the threshold (e.g., 90th percentile) rather than the seasonal climatology.
 
-`intensity_max_abs`, `intensity_mean_abs`, `intensity_var_abs`, and `intensity_cum_abs` are as above except as absolute magnitudes rather than relative to the seasonal climatology or threshold.
+`intensity_max_abs`, `intensity_mean_abs`, `intensity_var_abs`, and `intensity_cumulative_abs` are as above except as absolute magnitudes rather than relative to the seasonal climatology or threshold.
 
-`intensity_max_norm` and `intensity_mean_norm` are as above except units are in multiples of threshold exceedances, i.e., a value of 1.5 indicates the event intensity (relative to the climatology) was 1.5 times the value of the threshold (relative to climatology, i.e., threshold - climatology.)
-
-Note that `rate_onset` and `rate_decline` will return `NA` when the event begins/ends on the first/last day of the time series. This may be particularly evident when the function is applied to large gridded data sets. Although the other metrics do not contain any errors and provide sensible values, please take this into account in its interpretation.
+Note that `rate_onset` and `rate_decline` will return `NA` when the event begins/ends on the first/last day of the time series. This may be particularly evident when the function is applied to large gridded data sets. Although the other metrics do not contain any errors and provide sensible values, please take this into account in the interpretation of the output.
 
 Examples of detection and graphing
 ----------------------------------
@@ -506,7 +509,7 @@ Schlegel, R. W., Oliver, E. C. J., Wernberg, T. W., Smit, A. J. (2017a). Nearsho
 
 Schlegel, R. W., Oliver, E. C., Perkins-Kirkpatrick, S., Kruger, A., Smit, A. J. (2017b). Predominant atmospheric and oceanic patterns during coastal marine heatwaves. Frontiers in Marine Science, 4, 323.
 
-Hobday et al. (in review). Categorizing and Naming Marine Heatwaves. Oceanography.
+Hobday, A. J., Oliver, E. C. J., Sen Gupta, A., Benthuysen, J. A., Burrows, M. T., Donat, M. G., Holbrook, N. J., Moore, P. J., Thomsen, M. S., Wernberg, T., Smale, D. A. (2018). Categorizing and naming marine heatwaves. Oceanography 31(2).
 
 Acknowledgements
 ----------------

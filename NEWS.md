@@ -1,3 +1,16 @@
+# heatwaveR 0.2.7.900 (2018-06-02)
+
+* Unused Rcpp code removed from master branch
+* Logo changed slightly
+* Codecov back up to 100%
+* Addressed one testthat issue that was causing the OSX CRAN build to fail
+* Added CRAN link to pkgdown site
+* Added Bug Report link to pkgdown site
+
+# heatwaveR 0.2.7 (2018-05-30)
+
+* Accepted on CRAN
+
 # heatwaveR 0.2.7 (2018-05-28)
 
 * Submitted to CRAN
