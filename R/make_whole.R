@@ -26,7 +26,7 @@
 #' ordered. The function constructs a complete time series from the start date
 #' to the end date, and fills in the regions in the time series where temperature
 #' data are missing with NAs in the temperature vector. There must only be one
-#' temperature value per day otherwise the function take the mean of multiple
+#' temperature value per day otherwise the function takes the mean of multiple
 #' values. It is up to the user to calculate daily data from sub-daily
 #' measurements. Leap years are automatically accommodated by this function.
 #'
@@ -42,13 +42,6 @@
 #'
 #' \item It is recommended that a climatology period of at least 30 years is
 #' specified in order to capture any decadal thermal periodicities.
-#'
-#' \item Previous versions of \code{make_whole} tested to see if some rows are
-#' duplicated, or if replicate temperature readings are present per day, but this
-#' has now been disabled. Should the user be concerned about such repeated
-#' measurements, we suggest that the necessary checks and fixes are implemented
-#' prior to feeding the time series to \code{make_whole} (this is usually done
-#' via \code{\link{ts2clm}}).
 #'
 #' \item A faster version of this function called \code{make_whole_fast}
 #' is enabled by default in \code{ts2clm}, and we assume (hopefully correctly)

@@ -202,9 +202,11 @@ detect_event <- function(data,
   rm(ts_x); rm(ts_y); rm(ts_seas); rm(ts_thresh)
 
   if (coldSpells) {
+
     t_series$ts_y <- -t_series$ts_y
     t_series$ts_seas <- -t_series$ts_seas
     t_series$ts_thresh <- -t_series$ts_thresh
+
   }
 
   t_series$ts_y[is.na(t_series$ts_y)] <- t_series$ts_seas[is.na(t_series$ts_y)]
@@ -228,13 +230,17 @@ detect_event <- function(data,
     joinAcrossGaps <- FALSE
 
   if (joinAcrossGaps) {
+
     t_series$event <- t_series$durationCriterion
     for (i in 1:nrow(proto_2)) {
       t_series$event[proto_2$index_start[i]:proto_2$index_end[i]] <-
         rep(TRUE, length = proto_2$duration[i])
     }
+
   } else {
+
     t_series$event <- t_series$durationCriterion
+
   }
 
   proto_3 <- proto_event(t_series, criterion_column = 7,

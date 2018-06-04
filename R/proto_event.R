@@ -29,7 +29,6 @@ proto_event <- function(t_series,
 
   index_start <- index_end <- duration <- NULL
 
-  t_series <- as.data.frame(t_series) ###
   ex <- rle(as.vector(t_series[, criterion_column]))
   ind <- rep(seq_along(ex$lengths), ex$lengths)
   s <- split(1:nrow(t_series), ind)

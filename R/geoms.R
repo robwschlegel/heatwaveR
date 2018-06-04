@@ -1,4 +1,4 @@
-#' Create 'flame' ploygons.
+#' Create 'flame' polygons.
 #'
 #' This function will create polygons between two lines. If given a
 #' temperature and theshold time series, like that produced by
