@@ -58,20 +58,20 @@ can be detected.
 
 \item The original \code{make_whole} tests to see if some rows are
 duplicated, or if replicate temperature measurements are present per day. In
-\code{make_whole_fast} (this function) this has been disabled; also
+\code{make_whole_fast} (this function) this has been disabled; also,
 the latter function lacks the facility to check if the time series is complete
 and regular (i.e. no missing values in the date vector). Effectively,
 we now only set up the day-of-year (doy) vector in \code{make_whole_fast}.
-Should the user be concerned about the potential for such repeated measurements
+Should the user be concerned about the potential for repeated measurements
 or worry that the time series is irregular, we suggest that the necessary
 checks and fixes are implemented prior to feeding the time series to \code{ts2clim}
 via \code{make_whole_fast}, or to use \code{make_whole} instead. For very large
 gridded temperature records it probably makes a measurable difference if the
-'fast' version is used, and it might also prevent \code{\link{detect_event}}
+'fast' version is used, but it might prevent \code{\link{detect_event}}
 from failing should some gridded cells contain missing rows or some duplicated
-values. We assume that the user has done all the necessary work to ensure that
-the time vector is regular and without repeated measurements beforehand, and
-the fast version (this one) is therefore enabled by default.
+values. When using the fast algorithm, we assume that the user has done all
+the necessary work to ensure that the time vector is regular and without
+repeated measurements beforehand.
 
 \item It is recommended that a climatology period of at least 30 years is specified
 in order to capture any decadal thermal periodicities.
