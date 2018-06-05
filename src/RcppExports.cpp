@@ -19,22 +19,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// rep_vec
-NumericVector rep_vec(const NumericVector& x, const IntegerVector& times);
-RcppExport SEXP _heatwaveR_rep_vec(SEXP xSEXP, SEXP timesSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const NumericVector& >::type x(xSEXP);
-    Rcpp::traits::input_parameter< const IntegerVector& >::type times(timesSEXP);
-    rcpp_result_gen = Rcpp::wrap(rep_vec(x, times));
-    return rcpp_result_gen;
-END_RCPP
-}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_heatwaveR_clim_calc_cpp", (DL_FUNC) &_heatwaveR_clim_calc_cpp, 3},
-    {"_heatwaveR_rep_vec", (DL_FUNC) &_heatwaveR_rep_vec, 2},
     {NULL, NULL, 0}
 };
 

@@ -5,7 +5,3 @@ clim_calc_cpp <- function(x, windowHalfWidth, pctile) {
     .Call('_heatwaveR_clim_calc_cpp', PACKAGE = 'heatwaveR', x, windowHalfWidth, pctile)
 }
 
-rep_vec <- function(x, times) {
-    .Call('_heatwaveR_rep_vec', PACKAGE = 'heatwaveR', x, times)
-}
-

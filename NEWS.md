@@ -1,4 +1,8 @@
-# heatwaveR 0.2.7.900 (2018-06-02)
+# heatwaveR 0.2.7.9001 (2018-06-05)
+
+* Tweaks to `detect_event` and `exceedance`
+
+# heatwaveR 0.2.7.9000 (2018-06-02)
 
 * Unused Rcpp code removed from master branch
 * Logo changed slightly

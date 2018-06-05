@@ -1,4 +1,3 @@
 heatwaveR.so
 clim_calc.o
 RcppExports.o
-rep_vec.o
