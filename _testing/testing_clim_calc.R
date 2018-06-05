@@ -61,3 +61,13 @@ microbenchmark(
 proto_event(t_series, criterion_column = 5,
                        minDuration = minDuration, maxGap = maxGap)
 )
+
+
+library(heatwaveR); library(dplyr); library(ggplot2)
+ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+mhw <- detect_event(ts)
+mhw$event %>%
+  dplyr::ungroup() %>%
+  dplyr::select(event_no, duration, date_start, date_peak, intensity_mean, intensity_max, intensity_cumulative) %>%
+  dplyr::arrange(-intensity_cumulative) %>%
+  head(5)
