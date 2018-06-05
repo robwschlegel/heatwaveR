@@ -6,7 +6,7 @@ test_that("proto_event() returns the correct output", {
   colnames(ts_xy) <- c("ts_x", "ts_y", "ts_seas", "ts_thresh")
   ts_xy$ts_y[is.na(ts_xy$ts_y)] <- ts_xy$ts_seas[is.na(ts_xy$ts_y)]
   ts_xy$threshCriterion <- ts_xy$ts_y > ts_xy$ts_thresh
-  res <- heatwaveR:::proto_event(ts_xy, criterion_column = 5,
+  res <- heatwaveR:::proto_event(ts_xy, criterion_column = threshCriterion,
                                  minDuration = 5, maxGap = 2)
   expect_is(res, "data.frame")
   expect_equal(ncol(res), 6)
@@ -19,7 +19,7 @@ test_that("gaps = TRUE returns a different output", {
   colnames(ts_xy) <- c("ts_x", "ts_y", "ts_seas", "ts_thresh")
   ts_xy$ts_y[is.na(ts_xy$ts_y)] <- ts_xy$ts_seas[is.na(ts_xy$ts_y)]
   ts_xy$threshCriterion <- ts_xy$ts_y > ts_xy$ts_thresh
-  res <- heatwaveR:::proto_event(ts_xy, criterion_column = 5,
+  res <- heatwaveR:::proto_event(ts_xy, criterion_column = threshCriterion,
                                  minDuration = 5, maxGap = 2, gaps = TRUE)
   expect_is(res, "data.frame")
   expect_equal(ncol(res), 6)

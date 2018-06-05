@@ -134,7 +134,7 @@ exceedance <-
            maxGap = 2,
            maxPadLength = 3) {
 
-    temp <- NULL
+    temp <- threshCriterion <- durationCriterion <- event <- NULL
 
     ts_x <- eval(substitute(x), data)
     ts_y <- eval(substitute(y), data)
@@ -164,8 +164,8 @@ exceedance <-
     t_series$ts_thresh <- rep(threshold, nrow(t_series))
     t_series$threshCriterion <- t_series$ts_y > t_series$ts_thresh
 
-    proto_1 <- proto_event(t_series, criterion_column = 4, minDuration = minDuration,
-                           maxGap = maxGap)
+    proto_1 <- proto_event(t_series, criterion_column = threshCriterion,
+                           minDuration = minDuration,  maxGap = maxGap)
 
     if (length(proto_1$index_start) == 0 & below == FALSE) {
       stop(paste0("Not enough consecutive days above ", threshold, " to detect an event."))
@@ -180,8 +180,9 @@ exceedance <-
         rep(TRUE, length = proto_1$duration[i])
     }
 
-    proto_2 <- proto_event(t_series, criterion_column = 5, minDuration = minDuration,
-                           gaps = TRUE, maxGap = maxGap)
+    proto_2 <- proto_event(t_series, criterion_column = durationCriterion,
+                           minDuration = minDuration, maxGap = maxGap,
+                           gaps = TRUE)
 
     if (ncol(proto_2) == 4)
       joinAcrossGaps <- FALSE
@@ -196,8 +197,8 @@ exceedance <-
       t_series$event <- t_series$durationCriterion
     }
 
-    proto_3 <- proto_event(t_series, criterion_column = 6, minDuration = minDuration,
-                           maxGap = maxGap)
+    proto_3 <- proto_event(t_series, criterion_column = event,
+                           minDuration = minDuration, maxGap = maxGap)
 
     t_series$exceedance_no <- rep(NA, nrow(t_series))
     for (i in 1:nrow(proto_3)) {
@@ -275,10 +276,8 @@ exceedance <-
       )
     }
 
-    names(t_series)[names(t_series) == "ts_x"] <- paste(substitute(x))
-    names(t_series)[names(t_series) == "ts_y"] <- paste(substitute(y))
-    names(t_series)[names(t_series) == "ts_thresh"] <- "thresh"
+    data_thresh <- cbind(data, t_series[,3:7])
 
-    list(threshold = tibble::as_tibble(t_series),
+    list(threshold = tibble::as_tibble(data_thresh),
          exceedance = tibble::as_tibble(exceedances))
   }

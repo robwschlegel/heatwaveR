@@ -192,7 +192,7 @@ detect_event <- function(data,
   if(!(is.numeric(maxGap)))
     stop("Please ensure that 'maxGap' is a numeric/integer value.")
 
-  temp <- seas <- thresh <- NULL
+  temp <- seas <- thresh <- threshCriterion <- durationCriterion <- event <- NULL
 
   ts_x <- eval(substitute(x), data)
   ts_y <- eval(substitute(y), data)
@@ -212,8 +212,7 @@ detect_event <- function(data,
   t_series$ts_y[is.na(t_series$ts_y)] <- t_series$ts_seas[is.na(t_series$ts_y)]
   t_series$threshCriterion <- t_series$ts_y > t_series$ts_thresh
 
-  # quoted name necessary for data.table# quoted name necessary for data.table
-  proto_1 <- proto_event(t_series, criterion_column = "threshCriterion",
+  proto_1 <- proto_event(t_series, criterion_column = threshCriterion,
                          minDuration = minDuration, maxGap = maxGap)
 
   t_series$durationCriterion <- rep(FALSE, nrow(t_series))
@@ -223,7 +222,7 @@ detect_event <- function(data,
       rep(TRUE, length = proto_1$duration[i])
   }
 
-  proto_2 <- proto_event(t_series, criterion_column = "durationCriterion",
+  proto_2 <- proto_event(t_series, criterion_column = durationCriterion,
                          minDuration = minDuration, gaps = TRUE,
                          maxGap = maxGap)
 
@@ -244,7 +243,7 @@ detect_event <- function(data,
 
   }
 
-  proto_3 <- proto_event(t_series, criterion_column = "event",
+  proto_3 <- proto_event(t_series, criterion_column = event,
                          minDuration = minDuration, maxGap = maxGap)
 
   t_series$event_no <- rep(NA, nrow(t_series))
