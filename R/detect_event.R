@@ -198,7 +198,7 @@ detect_event <- function(data,
   ts_y <- eval(substitute(y), data)
   ts_seas <- eval(substitute(seasClim), data)
   ts_thresh <- eval(substitute(threshClim), data)
-  t_series <- data.frame(ts_x, ts_y, ts_seas, ts_thresh)
+  t_series <- data.table(ts_x, ts_y, ts_seas, ts_thresh)
   rm(ts_x); rm(ts_y); rm(ts_seas); rm(ts_thresh)
 
   if (coldSpells) {
@@ -212,7 +212,8 @@ detect_event <- function(data,
   t_series$ts_y[is.na(t_series$ts_y)] <- t_series$ts_seas[is.na(t_series$ts_y)]
   t_series$threshCriterion <- t_series$ts_y > t_series$ts_thresh
 
-  proto_1 <- proto_event(t_series, criterion_column = 5,
+  # quoted name necessary for data.table# quoted name necessary for data.table
+  proto_1 <- proto_event(t_series, criterion_column = "threshCriterion",
                          minDuration = minDuration, maxGap = maxGap)
 
   t_series$durationCriterion <- rep(FALSE, nrow(t_series))
@@ -222,7 +223,7 @@ detect_event <- function(data,
       rep(TRUE, length = proto_1$duration[i])
   }
 
-  proto_2 <- proto_event(t_series, criterion_column = 6,
+  proto_2 <- proto_event(t_series, criterion_column = "durationCriterion",
                          minDuration = minDuration, gaps = TRUE,
                          maxGap = maxGap)
 
@@ -243,7 +244,7 @@ detect_event <- function(data,
 
   }
 
-  proto_3 <- proto_event(t_series, criterion_column = 7,
+  proto_3 <- proto_event(t_series, criterion_column = "event",
                          minDuration = minDuration, maxGap = maxGap)
 
   t_series$event_no <- rep(NA, nrow(t_series))
