@@ -9,4 +9,6 @@ heatwaveR.code-workspace
 src/RcppExports.o
 src/clim_calc.o
 src/heatwaveR.so
+src/rep_vec.cpp
+src/rep_vec.so
 .vscode
