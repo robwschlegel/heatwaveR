@@ -17,7 +17,7 @@ clim_end <- "2012-12-31"
 minDuration <- 5
 maxGap <- 2
 joinAcrossGaps <- TRUE
-criterion_column <- 5
+criterion_column <- "threshCriterion"
 minDuration <- 3
 gaps <- FALSE
 
@@ -33,9 +33,8 @@ t_series <- data.table(ts_x, ts_y, ts_seas, ts_thresh)
 t_series$ts_y[is.na(t_series$ts_y)] <- t_series$ts_seas[is.na(t_series$ts_y)]
 t_series$threshCriterion <- t_series$ts_y > t_series$ts_thresh
 
-ex <- rle(as.vector(as.data.frame(t_series)[, criterion_column]))
-ind <- rep(seq_along(ex$lengths), ex$lengths)
-s <- split(1:nrow(t_series), ind)
+proto_1 <- proto_event(t_series, criterion_column = "threshCriterion", # quoted name necessary for data.table
+                       minDuration = minDuration, maxGap = maxGap)
 
 
 
@@ -53,6 +52,8 @@ mhw$event %>%
 
 
 res_climF <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), robust = FALSE)
+profvis(detect_event(res_climF))
+
 profvis(detect_event(ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), robust = FALSE)))
 microbenchmark(detect_event(ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), robust = TRUE)))
 
