@@ -58,3 +58,8 @@ test_that("robust = TRUE switches to the slower function but produces same resul
   t_2 <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), robust = FALSE)
   expect_equal(t_1, t_2)
 })
+
+test_that("climatologyPeriod less than three years is rejected", {
+  expect_error(ts2clm(sst_WA, climatologyPeriod = c("2011-01-01", "2012-12-31")),
+               "The climatologyPeriod must be at least three years to calculate thresholds")
+})

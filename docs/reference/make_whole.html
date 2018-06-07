@@ -76,7 +76,7 @@ missing dates and fills correpsonding temperatures with NAs." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.7.900</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.7.9002</span>
       </span>
     </div>
 
@@ -199,7 +199,7 @@ specified as either <code>POSIXct</code> or <code>Date</code> (e.g. "1982-01-01 
 ordered. The function constructs a complete time series from the start date
 to the end date, and fills in the regions in the time series where temperature
 data are missing with NAs in the temperature vector. There must only be one
-temperature value per day otherwise the function take the mean of multiple
+temperature value per day otherwise the function takes the mean of multiple
 values. It is up to the user to calculate daily data from sub-daily
 measurements. Leap years are automatically accommodated by this function.</p></li>
 <li><p>This function can handle some of missing days, but this is not a
@@ -213,12 +213,6 @@ the event metrics can be determined, but also for the number of events that
 can be detected.</p></li>
 <li><p>It is recommended that a climatology period of at least 30 years is
 specified in order to capture any decadal thermal periodicities.</p></li>
-<li><p>Previous versions of <code>make_whole</code> tested to see if some rows are
-duplicated, or if replicate temperature readings are present per day, but this
-has now been disabled. Should the user be concerned about such repeated
-measurements, we suggest that the necessary checks and fixes are implemented
-prior to feeding the time series to <code>make_whole</code> (this is usually done
-via <code><a href='ts2clm.html'>ts2clm</a></code>).</p></li>
 <li><p>A faster version of this function called <code>make_whole_fast</code>
 is enabled by default in <code>ts2clm</code>, and we assume (hopefully correctly)
 that the user is certain that her data do not have missing rows (dates) or

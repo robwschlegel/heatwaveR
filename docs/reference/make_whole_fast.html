@@ -76,7 +76,7 @@ missing dates and fills correpsonding temperatures with NAs." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.7.900</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.7.9002</span>
       </span>
     </div>
 
@@ -208,20 +208,20 @@ the event metrics can be determined, but also for the number of events that
 can be detected.</p></li>
 <li><p>The original <code>make_whole</code> tests to see if some rows are
 duplicated, or if replicate temperature measurements are present per day. In
-<code>make_whole_fast</code> (this function) this has been disabled; also
+<code>make_whole_fast</code> (this function) this has been disabled; also,
 the latter function lacks the facility to check if the time series is complete
 and regular (i.e. no missing values in the date vector). Effectively,
 we now only set up the day-of-year (doy) vector in <code>make_whole_fast</code>.
-Should the user be concerned about the potential for such repeated measurements
+Should the user be concerned about the potential for repeated measurements
 or worry that the time series is irregular, we suggest that the necessary
 checks and fixes are implemented prior to feeding the time series to <code>ts2clim</code>
 via <code>make_whole_fast</code>, or to use <code>make_whole</code> instead. For very large
 gridded temperature records it probably makes a measurable difference if the
-'fast' version is used, and it might also prevent <code><a href='detect_event.html'>detect_event</a></code>
+'fast' version is used, but it might prevent <code><a href='detect_event.html'>detect_event</a></code>
 from failing should some gridded cells contain missing rows or some duplicated
-values. We assume that the user has done all the necessary work to ensure that
-the time vector is regular and without repeated measurements beforehand, and
-the fast version (this one) is therefore enabled by default.</p></li>
+values. When using the fast algorithm, we assume that the user has done all
+the necessary work to ensure that the time vector is regular and without
+repeated measurements beforehand.</p></li>
 <li><p>It is recommended that a climatology period of at least 30 years is specified
 in order to capture any decadal thermal periodicities.</p></li>
 </ol>

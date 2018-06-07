@@ -75,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.7.900</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.7.9002</span>
       </span>
     </div>
 
@@ -298,18 +298,19 @@ Feb 2015, and is documented by Hobday et al. (2016).</p>
     <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>exceedance</span>(<span class='no'>sst_WA</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>25</span>)
 <span class='co'># show first ten days of daily data:</span>
 <span class='no'>res</span>$<span class='no'>threshold</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt; # A tibble: 10 x 7
-#&gt;    t           temp thresh threshCriterion durationCriteri… event exceedance_no
-#&gt;    &lt;date&gt;     &lt;dbl&gt;  &lt;dbl&gt; &lt;lgl&gt;           &lt;lgl&gt;            &lt;lgl&gt;         &lt;int&gt;
-#&gt;  1 1982-01-01  20.9     25 FALSE           FALSE            FALSE            NA
-#&gt;  2 1982-01-02  21.2     25 FALSE           FALSE            FALSE            NA
-#&gt;  3 1982-01-03  21.4     25 FALSE           FALSE            FALSE            NA
-#&gt;  4 1982-01-04  21.2     25 FALSE           FALSE            FALSE            NA
-#&gt;  5 1982-01-05  21.3     25 FALSE           FALSE            FALSE            NA
-#&gt;  6 1982-01-06  21.6     25 FALSE           FALSE            FALSE            NA
-#&gt;  7 1982-01-07  21.7     25 FALSE           FALSE            FALSE            NA
-#&gt;  8 1982-01-08  21.5     25 FALSE           FALSE            FALSE            NA
-#&gt;  9 1982-01-09  21.4     25 FALSE           FALSE            FALSE            NA
-#&gt; 10 1982-01-10  21.4     25 FALSE           FALSE            FALSE            NA</div><div class='input'><span class='co'># show first five exceedances:</span>
+#&gt;    t           temp ts_thresh threshCriterion durationCriterion event
+#&gt;    &lt;date&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;lgl&gt;           &lt;lgl&gt;             &lt;lgl&gt;
+#&gt;  1 1982-01-01  20.9        25 FALSE           FALSE             FALSE
+#&gt;  2 1982-01-02  21.2        25 FALSE           FALSE             FALSE
+#&gt;  3 1982-01-03  21.4        25 FALSE           FALSE             FALSE
+#&gt;  4 1982-01-04  21.2        25 FALSE           FALSE             FALSE
+#&gt;  5 1982-01-05  21.3        25 FALSE           FALSE             FALSE
+#&gt;  6 1982-01-06  21.6        25 FALSE           FALSE             FALSE
+#&gt;  7 1982-01-07  21.7        25 FALSE           FALSE             FALSE
+#&gt;  8 1982-01-08  21.5        25 FALSE           FALSE             FALSE
+#&gt;  9 1982-01-09  21.4        25 FALSE           FALSE             FALSE
+#&gt; 10 1982-01-10  21.4        25 FALSE           FALSE             FALSE
+#&gt; # ... with 1 more variable: exceedance_no &lt;int&gt;</div><div class='input'><span class='co'># show first five exceedances:</span>
 <span class='no'>res</span>$<span class='no'>exceedance</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, ]</div><div class='output co'>#&gt; # A tibble: 5 x 18
 #&gt;   exceedance_no index_start index_peak index_end duration date_start date_peak 
 #&gt;           &lt;int&gt;       &lt;dbl&gt;      &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt; &lt;date&gt;     &lt;date&gt;    

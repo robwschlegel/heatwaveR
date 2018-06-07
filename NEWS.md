@@ -1,3 +1,7 @@
+# heatwaveR 0.2.7.9002 (2018-06-07)
+
+* Tweak to `ts2clm()`
+
 # heatwaveR 0.2.7.9001 (2018-06-05)
 
 * Tweaks to `detect_event` and `exceedance`

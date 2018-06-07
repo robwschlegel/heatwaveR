@@ -184,6 +184,9 @@ ts2clm <-
       stop(paste("The specified end date follows the last day of series, which is",
                  ts_whole$ts_x[nrow(ts_whole)]))
 
+    if(as.Date(clim_end) - as.Date(clim_start) < 1095)
+      stop("The climatologyPeriod must be at least three years to calculate thresholds")
+
     ts_wide <- clim_spread(ts_whole, clim_start, clim_end, windowHalfWidth)
     ts_mat <- clim_calc_cpp(ts_wide, windowHalfWidth, pctile)
 
