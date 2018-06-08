@@ -92,6 +92,13 @@ test_that("lolli_plot() xaxis must be spelled correctly", {
                "Please ensure you have spelled the desired xaxis correctly.")
 })
 
+test_that("lolli_plot() may not be asked to highlight more events than there are", {
+  res <- detect_event(data = ts2clm(sst_Med,
+                                    climatologyPeriod = c("1983-01-01", "2012-12-31")))
+  expect_error(lolli_plot(res, event_count = 666),
+               "Please ensure that event_count is less than the total number of events in your results.")
+})
+
 test_that("lolli_plot() may create MCS output", {
   res <- detect_event(data = ts2clm(sst_Med, pctile = 10,
                 climatologyPeriod = c("1983-01-01", "2012-12-31")), coldSpells = TRUE)

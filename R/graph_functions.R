@@ -297,6 +297,10 @@ lolli_plot <- function(data,
     stop("Please ensure you have spelled the desired xaxis correctly.")
   }
 
+  if (event_count > nrow(data$event)) {
+    stop("Please ensure that event_count is less than the total number of events in your results.")
+  }
+
   event <- data$event %>%
     dplyr::select(metric, xaxis)
 

@@ -1,6 +1,11 @@
+# heatwaveR 0.2.7.9003 (2018-06-08)
+
+* Logic catch for `lolli_plot` being asked to highlight more events than are present
+* New vignette that looks at calculating more complex climatologies
+
 # heatwaveR 0.2.7.9002 (2018-06-07)
 
-* Tweak to `ts2clm()`
+* Tweak to `ts2clm`
 
 # heatwaveR 0.2.7.9001 (2018-06-05)
 

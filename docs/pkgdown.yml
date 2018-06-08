@@ -3,6 +3,7 @@ pkgdown: 1.0.0
 pkgdown_sha: ~
 articles:
   OISST_preparation: OISST_preparation.html
+  complex_clims: complex_clims.html
   gridded_event_detection: gridded_event_detection.html
 urls:
   reference: https://robwschlegel.github.io/heatwaveR/index.html/reference
