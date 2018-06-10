@@ -12,7 +12,7 @@ authors:
   name: Robert W. Schlegel
   orcid: 0000-0002-0705-1287
 - affiliation: 1
-  name: Author Albertus J. Smit
+  name: Albertus J. Smit
   orcid: 0000-0002-3799-6126
 date: "5 June 2018"
 output: pdf_document
