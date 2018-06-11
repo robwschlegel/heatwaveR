@@ -49,3 +49,17 @@ test_that("detect_event() does not joinAcrossGaps if conditions are not met", {
   res_2 <- detect_event(ts)
   expect_lt(nrow(res_2$event), nrow(res_1$event))
 })
+
+test_that("detect_event() utilises the second threshold correctly", {
+  ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  ts2 <- exceedance(sst_WA, threshold = 25)
+  second_threshold <- ts2$threshold$threshCriterion
+  res_1 <- detect_event(ts, threshClim2 = second_threshold)
+  res_2 <- detect_event(ts)
+  expect_gt(nrow(res_2$event), nrow(res_1$event))
+})
+
+test_that("threshClim2 must be logic values", {
+  ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  expect_error(detect_event(ts, threshClim2 = "aaa"))
+})

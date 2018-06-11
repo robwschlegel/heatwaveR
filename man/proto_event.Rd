@@ -4,7 +4,7 @@
 \alias{proto_event}
 \title{Detect proto-events based on a chosen criterion (column).}
 \usage{
-proto_event(t_series, criterion_column, minDuration, gaps = FALSE, maxGap)
+proto_event(t_series, criterion_column, minDuration, joinAcrossGaps, maxGap)
 }
 \arguments{
 \item{t_series}{A dataframe of the correct dimensions inherited
@@ -14,9 +14,9 @@ from \code{\link{detect_event}} within which this runs.}
 
 \item{minDuration}{Minimum duration for acceptance of detected events.}
 
-\item{gaps}{This logic gate tells this internal function if it should be
-calculating the lengths of events, or rather the gaps in between them.
-The default is \code{FALSE}.}
+\item{joinAcrossGaps}{This logic gate tells this internal function if
+it should connect events across the \code{maxGap} (see below). The
+default it inherits is \code{TRUE}.}
 
 \item{maxGap}{This is the number of rows (days) across which distinct
 events will be combined into one event if \code{joinAcrossGaps = TRUE}.}
@@ -31,5 +31,5 @@ time above a threshold, but without necessarily considering a minimum
 duration or joining across gaps.
 }
 \author{
-Smit, A. J.
+Albertus J. Smit, Robert W. Schlegel
 }

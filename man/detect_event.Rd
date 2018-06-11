@@ -5,8 +5,9 @@
 \title{Detect heatwaves and cold-spells.}
 \usage{
 detect_event(data, x = t, y = temp, seasClim = seas,
-  threshClim = thresh, minDuration = 5, joinAcrossGaps = TRUE,
-  maxGap = 2, coldSpells = FALSE)
+  threshClim = thresh, threshClim2 = NA, minDuration = 5,
+  minDuration2 = minDuration, joinAcrossGaps = TRUE, maxGap = 2,
+  maxGap2 = maxGap, coldSpells = FALSE)
 }
 \arguments{
 \item{data}{A data frame with at least four columns. In the default setting
@@ -23,7 +24,7 @@ If the column names of \code{data} match those outlined here, the following
 four arguments may be ignored.}
 
 \item{x}{This column is expected to contain a vector of dates as per the
-specification of \code{ts2clm}. If a column headed \code{t} is present in
+specification of \code{\link{ts2clm}}. If a column headed \code{t} is present in
 the dataframe, this argument may be ommitted; otherwise, specify the name of
 the column with dates here.}
 
@@ -37,8 +38,18 @@ If the column name for the seasonal climatology is different, provide that here.
 \item{threshClim}{The threshold climatology column should be called
 \code{thresh}. If it is not, provide the name of the threshold column here.}
 
+\item{threshClim2}{If one wishes to provide a second threshold for a more
+rigorous detection of events, it may be provided here as a vector or column
+of logical values (i.e. TRUE FALSE). By default this argument is ignored. It's
+primary purpose is to allow for the inclusion of tMin and tMax thresholds.}
+
 \item{minDuration}{The minimum duration for acceptance of detected events.
 The default is \code{5} days.}
+
+\item{minDuration2}{The minimum duration for acceptance of events after
+filtering by \code{threshClim} and \code{threshClim}. By default
+\code{minDuration2 = minDuration} and is ignored if \code{threshClim2} has not
+been specified.}
 
 \item{joinAcrossGaps}{Boolean switch indicating whether to join events which
 occur before/after a short gap as specified by \code{maxGap}. The default
@@ -46,6 +57,10 @@ is \code{TRUE}.}
 
 \item{maxGap}{The maximum length of gap allowed for the joining of MHWs. The
 default is \code{2} days.}
+
+\item{maxGap2}{The maximum gap length after applying both thresholds.
+By default \code{maxGap2 = maxGap} and is ignored if \code{threshClim2} has not
+been specified.}
 
 \item{coldSpells}{Boolean specifying if the code should detect cold events
 instead of warm events. The default is \code{FALSE}. Please note that the

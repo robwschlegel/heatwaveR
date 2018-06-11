@@ -21,7 +21,7 @@
 #' If the column names of \code{data} match those outlined here, the following
 #' four arguments may be ignored.
 #' @param x This column is expected to contain a vector of dates as per the
-#' specification of \code{ts2clm}. If a column headed \code{t} is present in
+#' specification of \code{\link{ts2clm}}. If a column headed \code{t} is present in
 #' the dataframe, this argument may be ommitted; otherwise, specify the name of
 #' the column with dates here.
 #' @param y This is a column containing the measurement variable. If the column
@@ -31,13 +31,24 @@
 #' If the column name for the seasonal climatology is different, provide that here.
 #' @param threshClim The threshold climatology column should be called
 #' \code{thresh}. If it is not, provide the name of the threshold column here.
+#' @param threshClim2 If one wishes to provide a second threshold for a more
+#' rigorous detection of events, it may be provided here as a vector or column
+#' of logical values (i.e. TRUE FALSE). By default this argument is ignored. It's
+#' primary purpose is to allow for the inclusion of tMin and tMax thresholds.
 #' @param minDuration The minimum duration for acceptance of detected events.
 #' The default is \code{5} days.
+#' @param minDuration2 The minimum duration for acceptance of events after
+#' filtering by \code{threshClim} and \code{threshClim}. By default
+#' \code{minDuration2 = minDuration} and is ignored if \code{threshClim2} has not
+#' been specified.
 #' @param joinAcrossGaps Boolean switch indicating whether to join events which
 #' occur before/after a short gap as specified by \code{maxGap}. The default
 #' is \code{TRUE}.
 #' @param maxGap The maximum length of gap allowed for the joining of MHWs. The
 #' default is \code{2} days.
+#' @param maxGap2 The maximum gap length after applying both thresholds.
+#' By default \code{maxGap2 = maxGap} and is ignored if \code{threshClim2} has not
+#' been specified.
 #' @param coldSpells Boolean specifying if the code should detect cold events
 #' instead of warm events. The default is \code{FALSE}. Please note that the
 #' climatological thresholds for cold-spells are considered to be the inverse
@@ -180,9 +191,12 @@ detect_event <- function(data,
                          y = temp,
                          seasClim = seas,
                          threshClim = thresh,
+                         threshClim2 = NA,
                          minDuration = 5,
+                         minDuration2 = minDuration,
                          joinAcrossGaps = TRUE,
                          maxGap = 2,
+                         maxGap2 = maxGap,
                          coldSpells = FALSE) {
 
   if(!(is.numeric(minDuration)))
@@ -212,45 +226,20 @@ detect_event <- function(data,
   t_series$ts_y[is.na(t_series$ts_y)] <- t_series$ts_seas[is.na(t_series$ts_y)]
   t_series$threshCriterion <- t_series$ts_y > t_series$ts_thresh
 
-  proto_1 <- proto_event(t_series, criterion_column = threshCriterion,
-                         minDuration = minDuration, maxGap = maxGap)
+  events_clim <- proto_event(t_series,
+                             criterion_column = t_series$threshCriterion,
+                             minDuration = minDuration,
+                             joinAcrossGaps = joinAcrossGaps,
+                             maxGap = maxGap)
 
-  t_series$durationCriterion <- rep(FALSE, nrow(t_series))
-
-  for (i in 1:nrow(proto_1)) {
-    t_series$durationCriterion[proto_1$index_start[i]:proto_1$index_end[i]] <-
-      rep(TRUE, length = proto_1$duration[i])
-  }
-
-  proto_2 <- proto_event(t_series, criterion_column = durationCriterion,
-                         minDuration = minDuration, gaps = TRUE,
-                         maxGap = maxGap)
-
-  if (ncol(proto_2) == 4)
-    joinAcrossGaps <- FALSE
-
-  if (joinAcrossGaps) {
-
-    t_series$event <- t_series$durationCriterion
-    for (i in 1:nrow(proto_2)) {
-      t_series$event[proto_2$index_start[i]:proto_2$index_end[i]] <-
-        rep(TRUE, length = proto_2$duration[i])
-    }
-
-  } else {
-
-    t_series$event <- t_series$durationCriterion
-
-  }
-
-  proto_3 <- proto_event(t_series, criterion_column = event,
-                         minDuration = minDuration, maxGap = maxGap)
-
-  t_series$event_no <- rep(NA, nrow(t_series))
-
-  for (i in 1:nrow(proto_3)) {
-    t_series$event_no[proto_3$index_start[i]:proto_3$index_end[i]] <-
-      rep(i, length = proto_3$duration[i])
+  if (!is.na(threshClim2[1])) {
+    if (!is.logical(threshClim2[1]))
+      stop("Please ensure 'threshClim2' contains logical values (e.g. TRUE and/or FALSE)")
+    events_clim <- proto_event(t_series,
+                               criterion_column = events_clim$event & threshClim2,
+                               minDuration = minDuration2,
+                               joinAcrossGaps = joinAcrossGaps,
+                               maxGap = maxGap2)
   }
 
   intensity_mean <- intensity_max <- intensity_cumulative <- intensity_mean_relThresh <-
@@ -258,8 +247,8 @@ detect_event <- function(data,
     intensity_max_abs <- intensity_cumulative_abs <- rate_onset <- rate_decline <-
     mhw_rel_thresh <- mhw_rel_seas <- event_no <- row_index <- index_peak <-  NULL
 
-  events <- t_series %>%
-    dplyr::mutate(row_index = 1:nrow(t_series),
+  events <- events_clim %>%
+    dplyr::mutate(row_index = 1:nrow(events_clim),
                   mhw_rel_seas = ts_y - ts_seas,
                   mhw_rel_thresh = ts_y - ts_thresh) %>%
     dplyr::filter(stats::complete.cases(event_no)) %>%
@@ -330,7 +319,7 @@ detect_event <- function(data,
     )
   }
 
-  data_clim <- cbind(data, t_series[,5:8])
+  data_clim <- cbind(data, events_clim[,5:8])
 
   list(climatology = tibble::as_tibble(data_clim),
        event = tibble::as_tibble(events))

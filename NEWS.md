@@ -1,3 +1,8 @@
+# heatwaveR 0.3.0.9000 (2018-06-11)
+
+* `proto_event` now handles all event calculations 'in house'
+* This allows `detect_event` to now be given a theoretically limitless number of thresholds
+
 # heatwaveR 0.2.7.9003 (2018-06-08)
 
 * Logic catch for `lolli_plot` being asked to highlight more events than are present

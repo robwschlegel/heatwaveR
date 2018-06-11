@@ -134,14 +134,22 @@ exceedance <-
            maxGap = 2,
            maxPadLength = 3) {
 
-    temp <- threshCriterion <- durationCriterion <- event <- NULL
+    message("exceedance() is deprecated and will not be included in the next release of heatwaveR")
+    message("please use detecet_event() directly and set 'threshClim =' whatever your static threshold is")
+
+    temp <- threshCriterion <- durationCriterion <- event <- event_no <- NULL
 
     ts_x <- eval(substitute(x), data)
     ts_y <- eval(substitute(y), data)
-    t_series <- tibble::tibble(ts_x, ts_y)
+    ts_xy <- tibble::tibble(ts_x, ts_y)
     rm(ts_x); rm(ts_y)
 
-    t_series$ts_y <- zoo::na.approx(t_series$ts_y, maxgap = maxPadLength)
+    ts_whole <- make_whole(ts_xy, x = ts_x, y = ts_y)
+
+    t_series <- na_interp(doy = ts_whole$doy,
+                          x = ts_whole$ts_x,
+                          y = ts_whole$ts_y,
+                          maxPadLength = maxPadLength)
 
     if (missing(threshold))
       stop("Oh no! Please provide a threshold against which to calculate exceedances.")
@@ -164,54 +172,27 @@ exceedance <-
     t_series$ts_thresh <- rep(threshold, nrow(t_series))
     t_series$threshCriterion <- t_series$ts_y > t_series$ts_thresh
 
-    proto_1 <- proto_event(t_series, criterion_column = threshCriterion,
-                           minDuration = minDuration,  maxGap = maxGap)
 
-    if (length(proto_1$index_start) == 0 & below == FALSE) {
+    if (sum(t_series$threshCriterion) < minDuration & below == FALSE) {
       stop(paste0("Not enough consecutive days above ", threshold, " to detect an event."))
     }
-    if (length(proto_1$index_start) == 0 & below == TRUE) {
+    if (sum(t_series$threshCriterion) < minDuration & below == TRUE) {
       stop(paste0("Not enough consecutive days below ", abs(threshold), " to detect an event."))
     }
 
-    t_series$durationCriterion <- rep(FALSE, nrow(t_series))
-    for (i in 1:nrow(proto_1)) {
-      t_series$durationCriterion[proto_1$index_start[i]:proto_1$index_end[i]] <-
-        rep(TRUE, length = proto_1$duration[i])
-    }
-
-    proto_2 <- proto_event(t_series, criterion_column = durationCriterion,
-                           minDuration = minDuration, maxGap = maxGap,
-                           gaps = TRUE)
-
-    if (ncol(proto_2) == 4)
-      joinAcrossGaps <- FALSE
-
-    if (joinAcrossGaps) {
-      t_series$event <- t_series$durationCriterion
-      for (i in 1:nrow(proto_2)) {
-        t_series$event[proto_2$index_start[i]:proto_2$index_end[i]] <-
-          rep(TRUE, length = proto_2$duration[i])
-      }
-    } else {
-      t_series$event <- t_series$durationCriterion
-    }
-
-    proto_3 <- proto_event(t_series, criterion_column = event,
-                           minDuration = minDuration, maxGap = maxGap)
-
-    t_series$exceedance_no <- rep(NA, nrow(t_series))
-    for (i in 1:nrow(proto_3)) {
-      t_series$exceedance_no[proto_3$index_start[i]:proto_3$index_end[i]] <-
-        rep(i, length = proto_3$duration[i])
-    }
+    exceedances_clim <- proto_event(t_series,
+                                    criterion_column = t_series$threshCriterion,
+                                    minDuration = minDuration,
+                                    joinAcrossGaps = joinAcrossGaps,
+                                    maxGap = maxGap) %>%
+      dplyr::rename(exceedance_no = event_no)
 
     ts_thresh <- intensity_mean <- intensity_max <- intensity_cumulative <-
       exceedance_rel_thresh <- intensity_mean_abs <- intensity_max_abs <-
       intensity_cum_abs <- ts_y <- exceedance_no <- row_index <- index_peak <-  NULL
 
-    exceedances <- t_series %>%
-      dplyr::mutate(row_index = 1:nrow(t_series),
+    exceedances <- exceedances_clim %>%
+      dplyr::mutate(row_index = 1:nrow(exceedances_clim),
                     exceedance_rel_thresh = ts_y - ts_thresh) %>%
       dplyr::filter(stats::complete.cases(exceedance_no)) %>%
       dplyr::group_by(exceedance_no) %>%
@@ -276,7 +257,7 @@ exceedance <-
       )
     }
 
-    data_thresh <- cbind(data, t_series[,3:7])
+    data_thresh <- cbind(data, exceedances_clim[,3:7])
 
     list(threshold = tibble::as_tibble(data_thresh),
          exceedance = tibble::as_tibble(exceedances))

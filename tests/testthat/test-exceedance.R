@@ -32,8 +32,8 @@ test_that("below argument creates negative values", {
 test_that("threshold must be exceeded by enough to be able to detect events", {
   expect_error(exceedance(sst_Med, threshold = 28),
                "Not enough consecutive days above 28 to detect an event.")
-  expect_error(exceedance(sst_Med, threshold = 12, below = T),
-               "Not enough consecutive days below 12 to detect an event.")
+  expect_error(exceedance(sst_Med, threshold = 11.5, below = T),
+               "Not enough consecutive days below 11.5 to detect an event.")
 })
 
 test_that("joinAcrossGaps = F creates more events", {
