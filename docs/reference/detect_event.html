@@ -79,7 +79,7 @@ other means." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.7.9003</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0.9000</span>
       </span>
     </div>
 
@@ -159,8 +159,9 @@ other means.</p>
     </div>
 
     <pre class="usage"><span class='fu'>detect_event</span>(<span class='no'>data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='kw'>seasClim</span> <span class='kw'>=</span> <span class='no'>seas</span>,
-  <span class='kw'>threshClim</span> <span class='kw'>=</span> <span class='no'>thresh</span>, <span class='kw'>minDuration</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>joinAcrossGaps</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>maxGap</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>coldSpells</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>threshClim</span> <span class='kw'>=</span> <span class='no'>thresh</span>, <span class='kw'>threshClim2</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>minDuration</span> <span class='kw'>=</span> <span class='fl'>5</span>,
+  <span class='kw'>minDuration2</span> <span class='kw'>=</span> <span class='no'>minDuration</span>, <span class='kw'>joinAcrossGaps</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>maxGap</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>maxGap2</span> <span class='kw'>=</span> <span class='no'>maxGap</span>, <span class='kw'>coldSpells</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -183,7 +184,7 @@ four arguments may be ignored.</p></td>
     <tr>
       <th>x</th>
       <td><p>This column is expected to contain a vector of dates as per the
-specification of <code>ts2clm</code>. If a column headed <code>t</code> is present in
+specification of <code><a href='ts2clm.html'>ts2clm</a></code>. If a column headed <code>t</code> is present in
 the dataframe, this argument may be ommitted; otherwise, specify the name of
 the column with dates here.</p></td>
     </tr>
@@ -204,9 +205,24 @@ If the column name for the seasonal climatology is different, provide that here.
 <code>thresh</code>. If it is not, provide the name of the threshold column here.</p></td>
     </tr>
     <tr>
+      <th>threshClim2</th>
+      <td><p>If one wishes to provide a second climatology threshold
+filter for the more rigorous detection of events, a vector or column conataining
+logical values (i.e. TRUE FALSE) should be provided here. By default this
+argument is ignored. It's primary purpose is to allow for the inclusion of
+tMin and tMax thresholds.</p></td>
+    </tr>
+    <tr>
       <th>minDuration</th>
       <td><p>The minimum duration for acceptance of detected events.
 The default is <code>5</code> days.</p></td>
+    </tr>
+    <tr>
+      <th>minDuration2</th>
+      <td><p>The minimum duration for acceptance of events after
+filtering by <code>threshClim</code> and <code>threshClim</code>. By default
+<code>minDuration2 = minDuration</code> and is ignored if <code>threshClim2</code> has not
+been specified.</p></td>
     </tr>
     <tr>
       <th>joinAcrossGaps</th>
@@ -218,6 +234,12 @@ is <code>TRUE</code>.</p></td>
       <th>maxGap</th>
       <td><p>The maximum length of gap allowed for the joining of MHWs. The
 default is <code>2</code> days.</p></td>
+    </tr>
+    <tr>
+      <th>maxGap2</th>
+      <td><p>The maximum gap length after applying both thresholds.
+By default <code>maxGap2 = maxGap</code> and is ignored if <code>threshClim2</code> has not
+been specified.</p></td>
     </tr>
     <tr>
       <th>coldSpells</th>

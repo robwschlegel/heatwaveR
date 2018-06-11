@@ -31,10 +31,11 @@
 #' If the column name for the seasonal climatology is different, provide that here.
 #' @param threshClim The threshold climatology column should be called
 #' \code{thresh}. If it is not, provide the name of the threshold column here.
-#' @param threshClim2 If one wishes to provide a second threshold for a more
-#' rigorous detection of events, it may be provided here as a vector or column
-#' of logical values (i.e. TRUE FALSE). By default this argument is ignored. It's
-#' primary purpose is to allow for the inclusion of tMin and tMax thresholds.
+#' @param threshClim2 If one wishes to provide a second climatology threshold
+#' filter for the more rigorous detection of events, a vector or column conataining
+#' logical values (i.e. TRUE FALSE) should be provided here. By default this
+#' argument is ignored. It's primary purpose is to allow for the inclusion of
+#' tMin and tMax thresholds.
 #' @param minDuration The minimum duration for acceptance of detected events.
 #' The default is \code{5} days.
 #' @param minDuration2 The minimum duration for acceptance of events after

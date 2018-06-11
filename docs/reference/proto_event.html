@@ -77,7 +77,7 @@ duration or joining across gaps." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.7.9003</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0.9000</span>
       </span>
     </div>
 
@@ -154,7 +154,7 @@ duration or joining across gaps.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>proto_event</span>(<span class='no'>t_series</span>, <span class='no'>criterion_column</span>, <span class='no'>minDuration</span>, <span class='kw'>gaps</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>maxGap</span>)</pre>
+    <pre class="usage"><span class='fu'>proto_event</span>(<span class='no'>t_series</span>, <span class='no'>criterion_column</span>, <span class='no'>minDuration</span>, <span class='no'>joinAcrossGaps</span>, <span class='no'>maxGap</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -173,10 +173,10 @@ from <code><a href='detect_event.html'>detect_event</a></code> within which this
       <td><p>Minimum duration for acceptance of detected events.</p></td>
     </tr>
     <tr>
-      <th>gaps</th>
-      <td><p>This logic gate tells this internal function if it should be
-calculating the lengths of events, or rather the gaps in between them.
-The default is <code>FALSE</code>.</p></td>
+      <th>joinAcrossGaps</th>
+      <td><p>This logic gate tells this internal function if
+it should connect events across the <code>maxGap</code> (see below). The
+default it inherits is <code>TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>maxGap</th>
@@ -202,7 +202,7 @@ events will be combined into one event if <code>joinAcrossGaps = TRUE</code>.</p
 
     <h2>Author</h2>
     
-Smit, A. J.
+Albertus J. Smit, Robert W. Schlegel
 
   </div>
 </div>
