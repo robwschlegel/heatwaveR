@@ -28,7 +28,4 @@ As the world continues to warm, we see not only a steady increase in mean temper
 
 The __`heatwaveR`__ package was developed and released in order to provide one central repository for the definition and visualisation of atmospheric and marine heatwaves and cold-spells. It also contains the functionality to calculate and visualise the categories of events as outlined in @Hobday2018. The __`heatwaveR`__ package is a project-wide update to the [__`RmarineHeatWaves`__](https://github.com/ajsmit/RmarineHeatWaves) package, which is itself a translation of the original [Python code](https://github.com/ecjoliver/marineHeatWaves) written by Eric C. J. Oliver. The __`heatwaveR`__ package has brought the inputs and outputs of the R code more in line with the Python code while also introducing substantial speed improvements over the previous R version by deconstructing and modularising it. The slow portions of the code have now been implemented in C++. The modular nature of the code allows for the use of custom baselines and climatologies in the calculations of events. This means that as the techniques for the detection of events change and improve over time, this package will be able to grow with them.
 
-# Acknowledgements
-(RWS: I've not acknowledge Eric here as that is done in the main body of the text)
-
 # References
