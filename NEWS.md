@@ -1,6 +1,8 @@
-# heatwaveR 0.3.0.9000 (2018-06-11)
+# heatwaveR 0.3.0 (2018-06-22)
 
-* `proto_event` now handles all event calculations 'in house'
+* Re-submitted to CRAN in anticipation of __`ggplot2`__ changes
+
+ `proto_event` now handles all event calculations 'in house'
 * This allows `detect_event` to now be given a theoretically limitless number of thresholds
 
 # heatwaveR 0.2.7.9003 (2018-06-08)
