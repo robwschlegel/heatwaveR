@@ -1,9 +1,16 @@
+# heatwaveR 0.3.1 (2018-07-10)
+
+* BUG FIX: corrected issue with `make_whole_fast` which did not create a whole,
+  complete time series (i.e. missing dates were still present); the missing dates
+  caused `clim_calc_cpp` to fail
+
 # heatwaveR 0.3.0 (2018-06-22)
 
 * Re-submitted to CRAN in anticipation of __`ggplot2`__ changes
 
  `proto_event` now handles all event calculations 'in house'
-* This allows `detect_event` to now be given a theoretically limitless number of thresholds
+* This allows `detect_event` to now be given a theoretically limitless number of
+  thresholds
 
 # heatwaveR 0.2.7.9003 (2018-06-08)
 

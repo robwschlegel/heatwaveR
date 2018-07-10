@@ -152,6 +152,8 @@ ts2clm <-
     if(!(is.logical(clmOnly)))
       stop("Please ensure that 'clmOnly' is either TRUE or FALSE.")
 
+    clim_start <- climatologyPeriod[1]
+    clim_end <- climatologyPeriod[2]
     doy <- temp <- NULL
 
     ts_x <- eval(substitute(x), data)
@@ -174,12 +176,10 @@ ts2clm <-
                           y = ts_whole$ts_y,
                           maxPadLength = maxPadLength)
 
-    clim_start <- climatologyPeriod[1]
     if (ts_whole$ts_x[1] > clim_start)
       stop(paste("The specified start date precedes the first day of series, which is",
                  ts_whole$ts_x[1]))
 
-    clim_end <- climatologyPeriod[2]
     if (clim_end > ts_whole$ts_x[nrow(ts_whole)])
       stop(paste("The specified end date follows the last day of series, which is",
                  ts_whole$ts_x[nrow(ts_whole)]))

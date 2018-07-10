@@ -2,8 +2,8 @@
 .Rhistory
 .RData
 inst/doc
-_private
-_testing
+_private/**
+_testing/**
 heatwaveR.code-workspace
 .DS_Store
 src/RcppExports.o

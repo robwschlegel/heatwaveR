@@ -29,9 +29,10 @@ clim_spread <- function(data, clim_start, clim_end, windowHalfWidth) {
 
   ts_x <- ts_y <- NULL
 
-  ts_whole <- data[ts_x %between% c(clim_start, clim_end)]
-  data.table::setDT(ts_whole)[, ts_x := format(as.Date(ts_x), "%Y") ]
-  ts_spread <- data.table::dcast(ts_whole, doy ~ ts_x, value.var = "ts_y")
+  ts_clim <- data[ts_x %between% c(clim_start, clim_end)]
+  data.table::setDT(ts_clim)[, ts_x := format(as.Date(ts_x), "%Y") ]
+  # data.table::setDT(ts_clim)
+  ts_spread <- data.table::dcast(ts_clim, doy ~ ts_x, value.var = "ts_y")
   ts_spread_filled <- data.table::data.table((sapply(ts_spread[59:61, ],
                                                      function(x) .NA2mean(x))))
   ts_spread[60, ] <- ts_spread_filled[2, ]

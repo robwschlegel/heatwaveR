@@ -1,3 +1,4 @@
+library(data.table)
 library(tidyverse)
 library(profvis)
 library(heatwaveR)
@@ -21,38 +22,39 @@ criterion_column <- "threshCriterion"
 minDuration <- 3
 gaps <- FALSE
 
-res_clim <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-data <- res_clim
+sst <- fread("/Users/ajsmit/Dropbox/R/Benguela_MUR/sst_test.csv")
+# data <- sst_WA
+data <- sst
 ts_x <- data$t
 ts_y <- data$temp
-ts_seas <- data$seas
-ts_thresh <- data$thresh
-# t_series <- data.frame(ts_x, ts_y, ts_seas, ts_thresh)
+ts_xy <- data.table::data.table(ts_x, ts_y)
 
-t_series <- data.table(ts_x, ts_y, ts_seas, ts_thresh)
-t_series$ts_y[is.na(t_series$ts_y)] <- t_series$ts_seas[is.na(t_series$ts_y)]
-t_series$threshCriterion <- t_series$ts_y > t_series$ts_thresh
+source("R/make_whole_fast.R")
+ts_whole <- make_whole_fast(ts_xy, x = ts_x, y = ts_y)
 
-proto_1 <- proto_event(t_series, criterion_column = "threshCriterion", # quoted name necessary for data.table
-                       minDuration = minDuration, maxGap = maxGap)
+source("R/na_interp.R")
+ts_interped <- na_interp(doy = ts_whole$doy,
+                      x = ts_whole$ts_x,
+                      y = ts_whole$ts_y,
+                      maxPadLength = maxPadLength)
 
+### begin test
+ts_interped %>%
+  dplyr::filter(ts_x >= "2006-01-01" & ts_x <= "2006-01-10")
+### end test
 
+clim_start <- climatologyPeriod[1]
+clim_end <- climatologyPeriod[2]
 
+source("R/clim_spread.R") # <-- introduces NAs
+ts_wide <- clim_spread(ts_interped, clim_start, clim_end, windowHalfWidth)
+
+# source("src/clim_calc.cpp") # does not work
+# source("R/clim_calc.R") # works
+ts_mat <- clim_calc_cpp(ts_wide, windowHalfWidth, pctile)
+ts_mat <- clim_calc(ts_wide, windowHalfWidth, pctile)
 
 # benchmarks --------------------------------------------------------------
-
-library(heatwaveR); library(dplyr); library(ggplot2)
-ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-mhw <- detect_event(ts)
-mhw$event %>%
-  dplyr::ungroup() %>%
-  dplyr::select(event_no, duration, date_start, date_peak, intensity_mean, intensity_max, intensity_cumulative) %>%
-  dplyr::arrange(-intensity_cumulative) %>%
-  head(5)
-
-
-res_climF <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), robust = FALSE)
-profvis(detect_event(res_climF))
 
 profvis(detect_event(ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), robust = FALSE)))
 microbenchmark(detect_event(ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), robust = TRUE)))
@@ -61,13 +63,3 @@ microbenchmark(
 proto_event(t_series, criterion_column = 5,
                        minDuration = minDuration, maxGap = maxGap)
 )
-
-
-library(heatwaveR); library(dplyr); library(ggplot2)
-ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-mhw <- detect_event(ts)
-mhw$event %>%
-  dplyr::ungroup() %>%
-  dplyr::select(event_no, duration, date_start, date_peak, intensity_mean, intensity_max, intensity_cumulative) %>%
-  dplyr::arrange(-intensity_cumulative) %>%
-  head(5)
