@@ -30,17 +30,25 @@ clim_spread <- function(data, clim_start, clim_end, windowHalfWidth) {
   ts_x <- ts_y <- NULL
 
   ts_clim <- data[ts_x %between% c(clim_start, clim_end)]
+  rm(data)
+
   data.table::setDT(ts_clim)[, ts_x := format(as.Date(ts_x), "%Y") ]
   # data.table::setDT(ts_clim)
   ts_spread <- data.table::dcast(ts_clim, doy ~ ts_x, value.var = "ts_y")
+  rm(ts_clim)
+
   ts_spread_filled <- data.table::data.table((sapply(ts_spread[59:61, ],
                                                      function(x) .NA2mean(x))))
   ts_spread[60, ] <- ts_spread_filled[2, ]
+  rm(ts_spread_filled)
 
   begin_pad <- utils::tail(ts_spread, windowHalfWidth)
   end_pad <- utils::head(ts_spread, windowHalfWidth)
   l <- list(begin_pad, ts_spread, end_pad)
+  rm(begin_pad); rm(end_pad)
+
   ts_spread <- data.table::rbindlist(l)
+  rm(l)
 
   len_yr <- length(lubridate::year(clim_start):lubridate::year(clim_end))
 

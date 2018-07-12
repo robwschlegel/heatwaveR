@@ -20,6 +20,7 @@ smooth_percentile <- function(data, smoothPercentileWidth) {
   clim <- rbind(utils::tail(data[,2:4], smoothPercentileWidth),
                 data[,2:4],
                 utils::head(data[,2:4], smoothPercentileWidth))
+  rm(data)
 
   len_clim_year <- 366
 

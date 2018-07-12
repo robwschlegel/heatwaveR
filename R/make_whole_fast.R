@@ -78,6 +78,7 @@ make_whole_fast <- function(data, x = t, y = temp) {
 
   ts_x <- eval(substitute(x), data) # this line and the next might not be needed
   ts_y <- eval(substitute(y), data)
+  rm(data)
 
   # create full, complete time series for joing against
   date_strt <- lubridate::ymd(utils::head(ts_x, 1))
@@ -92,6 +93,7 @@ make_whole_fast <- function(data, x = t, y = temp) {
 
   # left join
   ts_merged <- dplyr::left_join(ts_full, ts_xy)
+  rm(ts_full); rm(ts_xy)
 
   v_date <- as.Date(ts_merged$ts_x)
   v_doy <- lubridate::yday(v_date)
@@ -105,6 +107,7 @@ make_whole_fast <- function(data, x = t, y = temp) {
   t_series <- data.table::data.table(doy = v_doy,
                                      date = v_date,
                                      ts_y = v_ts_y)
+  rm(v_date); rm(v_doy); rm(v_ts_y)
 
   names(t_series)[2] <- paste(substitute(x))
   names(t_series)[3] <- paste(substitute(y))

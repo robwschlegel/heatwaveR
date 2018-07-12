@@ -158,6 +158,8 @@ ts2clm <-
 
     ts_x <- eval(substitute(x), data)
     ts_y <- eval(substitute(y), data)
+    rm(data)
+
     ts_xy <- data.table::data.table(ts_x, ts_y)
     rm(ts_x); rm(ts_y)
 
@@ -188,7 +190,9 @@ ts2clm <-
       stop("The climatologyPeriod must be at least three years to calculate thresholds")
 
     ts_wide <- clim_spread(ts_whole, clim_start, clim_end, windowHalfWidth)
+
     ts_mat <- clim_calc_cpp(ts_wide, windowHalfWidth, pctile)
+    rm(ts_wide)
 
     if (smoothPercentile) {
 
@@ -199,6 +203,7 @@ ts2clm <-
       ts_clim <- data.table::data.table(ts_mat)
 
     }
+    rm(ts_mat)
 
     if (clmOnly) {
 
@@ -209,6 +214,7 @@ ts2clm <-
       data.table::setkey(ts_whole, doy)
       data.table::setkey(ts_clim, doy)
       ts_res <- merge(ts_whole, ts_clim, all = TRUE)
+      rm(ts_whole); rm(ts_clim)
       data.table::setorder(ts_res, ts_x)
       names(ts_res)[2] <- paste(substitute(x))
       names(ts_res)[3] <- paste(substitute(y))

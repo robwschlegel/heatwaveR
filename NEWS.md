@@ -1,3 +1,8 @@
+# heatwaveR 0.3.2 (2018-07-12)
+
+* Remove unneeded copies of data from functions to improve memory-use
+  efficiency.
+
 # heatwaveR 0.3.1 (2018-07-10)
 
 * BUG FIX: corrected issue with `make_whole_fast` which did not create a whole,

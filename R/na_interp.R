@@ -30,6 +30,7 @@ na_interp <- function(doy = doy,
     naruns <- rle(is.na(x))
     naruns$values[naruns$lengths > maxPadLength] <- FALSE
     naok <- inverse.rle(naruns)
+    rm(naruns)
     ifelse(naok, fill, x)
   }
 
