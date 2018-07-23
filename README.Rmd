@@ -139,7 +139,7 @@ For detailed explanations and walkthroughs on the use of the __`heatwaveR`__ pac
 
 ## Contributing to __`heatwaveR`__ 
 
-To contribute to the package please follow the guidelines [here](https://github.com/robwschlegel/heatwaveR/blob/master/CONTRIBUTING.md).
+To contribute to the package please follow the guidelines [here](ttps://robwschlegel.github.io/heatwaveR/CONTRIBUTING.html).
 
 Please use this [link](https://github.com/robwschlegel/heatwaveR/issues) to report any bugs found.
 
@@ -163,7 +163,8 @@ The translation from Python to R was done by A. J. Smit and the graphing functio
 
 ## Contact
 
-Robert W. Schlegel
-Department for Biodiversity & Conservation Biology, University of the Western Cape,
-Private Bag X17,  Bellville 7535, South Africa,  E-mail: robwschlegel@gmail.com,
+Robert W. Schlegel  
+Department for Biodiversity & Conservation Biology, University of the Western Cape  
+Private Bag X17,  Bellville 7535, South Africa  
+E-mail: robwschlegel@gmail.com
 <!-- Work tel.: +27 (0)21 959 3783 -->
