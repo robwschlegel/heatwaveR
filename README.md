@@ -175,7 +175,7 @@ For detailed explanations and walkthroughs on the use of the **`heatwaveR`** pac
 Contributing to **`heatwaveR`**
 -------------------------------
 
-To contribute to the package please follow the guidelines [here](ttps://robwschlegel.github.io/heatwaveR/CONTRIBUTING.html).
+To contribute to the package please follow the guidelines [here](https://robwschlegel.github.io/heatwaveR/CONTRIBUTING.html).
 
 Please use this [link](https://github.com/robwschlegel/heatwaveR/issues) to report any bugs found.
 
