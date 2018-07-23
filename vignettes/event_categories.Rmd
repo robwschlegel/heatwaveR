@@ -26,6 +26,7 @@ The classification of MHWs under the naming scheme first proposed by Hobday et a
 ```{r category-example1}
 # Load libraries
 library(heatwaveR)
+library(dplyr)
 
 # Calculate events
 ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))

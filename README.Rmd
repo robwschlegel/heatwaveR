@@ -128,17 +128,18 @@ Note that `rate_onset` and `rate_decline` will return `NA` when the event begins
 
 ## Vignettes
 
-For more detailed explanations on the use of the __`heatwaveR`__ package please follow the links below:
+For detailed explanations and walkthroughs on the use of the __`heatwaveR`__ package please click on the articles tab above, or follow the links below:
+
   * For a basic introduction to the [detection and visualisation](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html) of events.
   * For an explanation on the use of the [exceedence](https://robwschlegel.github.io/heatwaveR/articles/exceedence.html) function.
-  * For a walkthrough on the calculation and visualisation of [event categories](https://robwschlegel.github.io/heatwaveR/articles/event_categories.html)
+  * For a walkthrough on the calculation and visualisation of [event categories](https://robwschlegel.github.io/heatwaveR/articles/event_categories.html).
   * For examples on the calculation of [complex climatologies](https://robwschlegel.github.io/heatwaveR/articles/complex_clims.html).
   * For a demonstration on how to [download and prepare OISST data](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html).
-  * Which may then have the `detect_event()` function [applied to the 3D gridded data](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html), and then fit a GLM and plot the results.
+  * Which may then have the `detect_event()` function applied to the [3D gridded data](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html), and then fit a GLM and plot the results.
 
 ## Contributing to __`heatwaveR`__ 
 
-To contribute to the package please follow the guidelines [here](CONTRIBUTING.md).
+To contribute to the package please follow the guidelines [here](https://github.com/robwschlegel/heatwaveR/blob/master/CONTRIBUTING.md).
 
 Please use this [link](https://github.com/robwschlegel/heatwaveR/issues) to report any bugs found.
 

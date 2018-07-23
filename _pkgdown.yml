@@ -10,12 +10,18 @@ navbar:
     href: reference/index.html
   - text: "Articles"
     menu:
+    - text: "Basic detection and visualisation"
+      href: articles/detection_and_visualisation.html
+    - text: "Calculating exceedances"
+      href: articles/exceedance.html
+    - text: "Calculating categories"
+      href: articles/event_categories.html
+    - text: "Complex climatologies"
+      href: articles/complex_clims.html
     - text: "OISST preparation"
       href: articles/OISST_preparation.html
     - text: "Extreme event detection in gridded data"
       href: articles/gridded_event_detection.html
-    - text: "Complex climatologies"
-      href: articles/complex_clims.html
   - text: News
     href: news/index.html
   right:

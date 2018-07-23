@@ -1,9 +1,12 @@
 pandoc: 1.19.2.1
-pkgdown: 1.0.0
+pkgdown: 1.1.0
 pkgdown_sha: ~
 articles:
   OISST_preparation: OISST_preparation.html
   complex_clims: complex_clims.html
+  detection_and_visualisation: detection_and_visualisation.html
+  event_categories: event_categories.html
+  exceedance: exceedance.html
   gridded_event_detection: gridded_event_detection.html
 urls:
   reference: https://robwschlegel.github.io/heatwaveR/index.html/reference
