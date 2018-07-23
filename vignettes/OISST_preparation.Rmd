@@ -249,4 +249,3 @@ remove(events); remove(sst.dat)
 ```
 
 Please let me know if there are issues with the scripts, or if you have suggesations about how to improve them.
-

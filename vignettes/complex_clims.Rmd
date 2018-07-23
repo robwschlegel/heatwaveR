@@ -97,7 +97,7 @@ ts_clims <- left_join(tMax_event_climatology, tMin_exc_threshold, by = c("t"))
 
 # Remove all days that did not qualify for exceddence()
 ts_clims_filtered <- ts_clims %>%
-  filter(event.y == TRUE)
+  filter(exceedance == TRUE)
 ```
 
 With our two different filtering indices combined into one dataframe we only need one more ingredient before we can create our final product. We have already decided that we want to screen out events that dipped below a given static bottom threshold. Presumably this is a biologically relevant value that has been determined _a priori_ through some other research. But how many days must the `tMin` values during the event go below this threshold before it must be excluded from our research? The following chunk of code shows how to calculate the number of days during each event that `tMin` went below the bottom threshold. What one chooses to do with that information is shown in the following chunk.

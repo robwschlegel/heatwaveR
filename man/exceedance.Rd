@@ -80,15 +80,16 @@ The information shown in the \code{threshold} component is:
   occurence of exceedances.}
 
 The individual exceedances are summarised using the following metrics:
-  \item{index_start}{Row number on which exceedance starts.}
-  \item{index_end}{Row number on which exceedance ends.}
   \item{exceedance_no}{The same sequential number indicating the ID and
   order of the exceedance as found in the \code{threshold} component of the
   output list.}
+  \item{index_start}{Row number on which exceedance starts.}
+  \item{index_peak}{Row number on which exceedance peaks.}
+  \item{index_end}{Row number on which exceedance ends.}
   \item{duration}{Duration of exceedance [days].}
   \item{date_start}{Start date of exceedance [date].}
-  \item{date_end}{End date of exceedance [date].}
   \item{date_peak}{Date of exceedance peak [date].}
+  \item{date_end}{End date of exceedance [date].}
   \item{intensity_mean}{Mean intensity [deg. C].}
   \item{intensity_max}{Maximum (peak) intensity [deg. C].}
   \item{intensity_var}{Intensity standard deviation [deg. C].}

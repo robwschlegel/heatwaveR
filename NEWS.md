@@ -1,3 +1,7 @@
+# heatwaveR 0.3.2 (2018-07-23)
+
+* Edits suggested through JOSS review
+
 # heatwaveR 0.3.2 (2018-07-12)
 
 * Remove unneeded copies of data from functions to improve memory-use
