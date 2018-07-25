@@ -12,7 +12,7 @@
 <script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css">
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Complex Climatologies">
-<meta property="og:description" content="This vignette walks the user through a case study on the application of a more complex climatology calculation.">
+<meta property="og:description" content="This vignette walks the user through a case study on the application of more complex climatology calculations.">
 <meta property="og:image" content="https://robwschlegel.github.io/heatwaveR/index.html/logo.png">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.2</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.3</span>
       </span>
     </div>
 
@@ -113,7 +113,7 @@
       <h1>Complex Climatologies</h1>
                         <h4 class="author">Robert W Schlegel</h4>
             
-            <h4 class="date">2018-07-23</h4>
+            <h4 class="date">2018-07-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/complex_clims.Rmd"><code>vignettes/complex_clims.Rmd</code></a></small>
       <div class="hidden name"><code>complex_clims.Rmd</code></div>
@@ -126,19 +126,20 @@
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
 <p>One of the long term goals of <strong><code>heatwaveR</code></strong> is the inclusion of many different methods for the creation of climatologies for the use of detecting heatwaves and cold-spells in time series data. To this end we have made a very large change in the event detection pipeline, which is why we moved from the <strong><code>RmarineHeatWaves</code></strong> package to <strong><code>heatwaveR</code></strong>. This change was the inclusion of the <code><a href="../reference/ts2clm.html">ts2clm()</a></code> function and the removal of climatology generating found in <code><a href="http://www.rdocumentation.org/packages/RmarineHeatWaves/topics/detect">RmarineHeatWaves::detect()</a></code> in favour of <code><a href="../reference/detect_event.html">detect_event()</a></code>, which does not calculate climatologies. In this way we have allowed for the introduction of a multitude of more complex climatology calculation and event detection methods. It is our overarching goal to provide one package that allows climate scientists to calculate these events in both the atmosphere and oceans. But rather than talking about it, let’s walk through a case study on how this shift in the main pipeline of this package can be used for diverse applications.</p>
-<p>Brought to our attention by Mr. Haouari from the IHFR institute of meteorology in Algeria was the concept of using a flat 25<span class="math inline">\(^\circ\)</span>C <code>tMin</code> bottom boundary to screen out events calculated from <code>tMax</code> with the standard 90th percentile upper threshold. As the authors of the <strong><code>heatwaveR</code></strong> package are admittedly marine oriented, we tend to work with daily time series that have only one mean value per day. The use of <code>tMin</code> and <code>tMax</code> is therefore not accommodated explicitly in the arguments that one gives to the <code><a href="../reference/ts2clm.html">ts2clm()</a></code> and <code><a href="../reference/detect_event.html">detect_event()</a></code> functions, but that does not mean that one cannot do so. Below we will work through the steps one would take to calculate (atmospheric) heatwaves, as per the definition for them laid out in <span class="citation">Perkins and Alexander (2013)</span>, but excluding the calculation of EHF, and with the additional step proposed by Mr. Haouari. In the interest of reproducibility, we will be creating a <code>tMin</code> and <code>tMax</code> time series from the <code>sst_WA</code> data that is installed with <strong><code>heatwaveR</code></strong>. This is not technically correct to do, but will allow us to illustrate the methodology.</p>
+<p>Brought to our attention by Mr. Haouari from the IHFR institute of meteorology in Algeria was the concept of using a flat 25<span class="math inline">\(^\circ\)</span>C <code>tMin</code> bottom boundary to screen out events calculated from <code>tMax</code> with the standard 90th percentile upper threshold. As the authors of the <strong><code>heatwaveR</code></strong> package are admittedly marine oriented, we tend to work with daily time series that have only one mean value per day. The use of <code>tMin</code> and <code>tMax</code> is therefore not accommodated explicitly in the arguments that one gives to the <code><a href="../reference/ts2clm.html">ts2clm()</a></code> and <code><a href="../reference/detect_event.html">detect_event()</a></code> functions, but that does not mean that one cannot do so. Below we will work through the steps one would take to calculate (atmospheric) heatwaves, as per their definition in <span class="citation">Perkins and Alexander (2013)</span>, but excluding the calculation of EHF, and with the additional step proposed by Mr. Haouari. In the interest of reproducibility, we will be creating a <code>tMin</code> and <code>tMax</code> time series from the <code>sst_WA</code> data that is installed with <strong><code>heatwaveR</code></strong>. This is not technically correct to do, but will allow us to illustrate the methodology.</p>
 </div>
 <div id="the-methodology" class="section level2">
 <h2 class="hasAnchor">
 <a href="#the-methodology" class="anchor"></a>The methodology</h2>
-<p>In the following sub-sections we will walk through the step-by-step approach needed to calculate atmospheric heatwaves using a 90th percentile threshold created from the <code>tMax</code> time series for a location, and then filter the events based on the <code>tMin</code> series also needing to exceed 25<span class="math inline">\(^\circ\)</span>C on the same days. We will finish by showing how to then convert these results back into a format that <code><a href="../reference/event_line.html">event_line()</a></code> and <code>lolli_plot</code> like so that one may still use these convenient functions to visualise the results.</p>
+<p>In the following sub-sections we will walk through the step-by-step approach needed to calculate atmospheric heatwaves using a 90th percentile threshold created from the <code>tMax</code> time series for a location, and then filter the events based on the <code>tMin</code> series also needing to exceed 25<span class="math inline">\(^\circ\)</span>C on the same days. We will finish by showing how to then convert these results back into a format that <code><a href="../reference/event_line.html">event_line()</a></code> and <code>lolli_plot</code> like so that one may still use these convenient functions to visualise the results. After we have shown this we will also demonstrate how to detect events with two different percentile thresholds at the same time.</p>
 <div id="data-prep" class="section level3">
 <h3 class="hasAnchor">
 <a href="#data-prep" class="anchor"></a>Data prep</h3>
 <p>The first step with any analysis in R should be the loading of the packages to be used.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
+<span class="kw">library</span>(ggpubr)
 <span class="kw">library</span>(heatwaveR)</code></pre></div>
-<p>With our libraries loaded, we will now go about creating artificial <code>tMin</code> and <code>tMax</code> time series from <code>sst_WA</code>. Again, please note that this is not actually something that one should do. We only do so here to illustrate how one would go about doing this. Real <code>tMin</code> and <code>tMax</code> time series should be used when one is executing this methodology for proper research.</p>
+<p>With our libraries loaded, we will now go about creating artificial <code>tMin</code> and <code>tMax</code> time series from <code>sst_WA</code>. Again, please note that this is not actually something that one should do. We only do so here as <strong><code>heatwaveR</code></strong> does not have any built-in atmospheric data. Real <code>tMin</code> and <code>tMax</code> time series should be used when one is executing this methodology for proper research.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create tMin time series</span>
 tMin &lt;-<span class="st"> </span>sst_WA <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">temp =</span> temp <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)
@@ -150,7 +151,7 @@ tMax &lt;-<span class="st"> </span>sst_WA <span class="op">%&gt;%</span><span cl
 <div id="climatology-calculation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#climatology-calculation" class="anchor"></a>Climatology calculation</h3>
-<p>With our artificial time series created, we will now calculate the two ‘climatologies’ we need to correctly detect and filter the heatwaves. The first is the 90th percentile threshold based on the <code>tMax</code> time series. The second is the exceedance of 25<span class="math inline">\(^\circ\)</span>C based on the <code>tMin</code> data.</p>
+<p>With our artificial time series created, we will now calculate the two thresholds we need to correctly detect and filter the heatwaves. The first is the 90th percentile threshold based on the <code>tMax</code> time series. The second is the exceedance of 25<span class="math inline">\(^\circ\)</span>C based on the <code>tMin</code> data.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The tMax threshold</span>
 <span class="co"># The WMO standard climatology period 0f 1981-01-01 to 2010-12-31 should be used where possible.</span>
 <span class="co"># Unfortunately, the OISST data, from which these data were drawn, only begin in 1982-01-01</span>
@@ -180,7 +181,7 @@ tMax_event_climatology &lt;-<span class="st"> </span>tMax_event<span class="op">
 <div id="filtering-events" class="section level3">
 <h3 class="hasAnchor">
 <a href="#filtering-events" class="anchor"></a>Filtering events</h3>
-<p>This is where things may get tricky for some users, and where the default use of the functions in the <strong><code>heatwaveR</code></strong> package ends. We are now going ‘off-road’ so to speak. But do not despair! The <strong><code>tidyverse</code></strong> suite of packages makes data wrangling like this much more user friendly than it was in the dark days of Base R coding. In order to more thoroughly illustrate the following steps we will further break them down into sub-sub-sections.</p>
+<p>This is where things may get tricky for some users, and where the default use of the functions in the <strong><code>heatwaveR</code></strong> package ends. We are now going ‘off-road’ so to speak. But do not despair! The <strong><code>tidyverse</code></strong> suite of packages makes data wrangling like this much more user friendly than it was in the dark days of Base R coding.</p>
 <p>In order to make the filtering of events easier, we will combine the two different dataframes that we are using as guides to chose the events that meet all of our selection criteria.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Join the climatology outputs of detect_event() and exceedence()</span>
 ts_clims &lt;-<span class="st"> </span><span class="kw">left_join</span>(tMax_event_climatology, tMin_exc_threshold, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">"t"</span>))
@@ -210,7 +211,7 @@ ts_events_filtered</code></pre></div>
 ## #   intensity_mean_abs &lt;dbl&gt;, intensity_max_abs &lt;dbl&gt;,
 ## #   intensity_var_abs &lt;dbl&gt;, intensity_cumulative_abs &lt;dbl&gt;,
 ## #   rate_onset &lt;dbl&gt;, rate_decline &lt;dbl&gt;, event_duration_thresh &lt;int&gt;</code></pre>
-<p>Above we see that the result of all of our filtering is that no events occurred within the time series that meet our criteria. We therefore need to loosen up a bit. We may do this by not requiring that the <code>tMin</code> for the events not be above the bottom threshold for their <em>entire</em> duration. T0 do so we will change the way in which we filter for <code>ts_events_filtered</code>. The following code chunk shows how to screen out events that did not exceed the bottom threshold for more than 3 days.</p>
+<p>Above we see that the result of all of our filtering is that no events occurred within the time series that meet our criteria. We therefore need to loosen up a bit. We may do this by not requiring that the <code>tMin</code> for the events not be above the bottom threshold for their <em>entire</em> duration. To do so we will change the way in which we filter for <code>ts_events_filtered</code>. The following code chunk shows how to screen out events that did not exceed the bottom threshold for more than 3 days.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ts_events_filtered &lt;-<span class="st"> </span><span class="kw">left_join</span>(tMax_event_event, ts_event_duration_thresh, <span class="dt">by =</span> <span class="st">"event_no"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">na.omit</span>() <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">filter</span>(event_duration_thresh <span class="op">&gt;=</span><span class="st"> </span>duration <span class="op">-</span><span class="st"> </span><span class="dv">3</span>)
@@ -278,11 +279,52 @@ ts_category</code></pre></div>
 ## # ... with 4 more variables: p_strong &lt;dbl&gt;, p_severe &lt;dbl&gt;,
 ## #   p_extreme &lt;dbl&gt;, season &lt;chr&gt;</code></pre>
 </div>
+<div id="double-climatologies" class="section level2">
+<h2 class="hasAnchor">
+<a href="#double-climatologies" class="anchor"></a>Double climatologies</h2>
+<p>The methodology outlined above for the detection/filtering of events with multiple climatologies/thresholds is somewhat cumbersome. Another issue with this technique is that the multiple filters do not affect the calculation of the event metrics (e.g. cumulative intensity), only the primary threshold given to <code><a href="../reference/detect_event.html">detect_event()</a></code> is used. If one want to calculate events based on two different thresholds, one must use the arguments built into <code><a href="../reference/detect_event.html">detect_event()</a></code>. Below we will show two examples of how to do this with the <code>sst_Med</code> data.</p>
+<div id="static-second-threshold" class="section level3">
+<h3 class="hasAnchor">
+<a href="#static-second-threshold" class="anchor"></a>Static second threshold</h3>
+<p>First up we will look at how to calculate event metrics based on a flat bottom threshold of 19<span class="math inline">\(^\circ\)</span>C and a normal upper threshold of the 90th percentile. To spice things up we are also going to require that the bottom threshold of 19<span class="math inline">\(^\circ\)</span>C be exceeded for at least 10 days, and we will not allow for any gaps during this time. We will use the default duration and gaps for the 90th percentile threshold.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># First we calculate the exceedance as desired</span>
+thresh_<span class="dv">19</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/exceedance.html">exceedance</a></span>(sst_Med, <span class="dt">threshold =</span> <span class="dv">19</span>, <span class="dt">minDuration =</span> <span class="dv">10</span>, <span class="dt">maxGap =</span> <span class="dv">0</span>)<span class="op">$</span>threshold
+
+<span class="co"># Then we use that output when detecting our events</span>
+events_<span class="dv">19</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/detect_event.html">detect_event</a></span>(<span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(sst_Med, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span>)), 
+                                 <span class="dt">threshClim2 =</span> thresh_<span class="dv">19</span><span class="op">$</span>exceedance, <span class="dt">minDuration2 =</span> <span class="dv">10</span>, <span class="dt">maxGap2 =</span> <span class="dv">0</span>)</code></pre></div>
+<p>And that’s all there is to it. Let’s visualise these results against the a standard output to see how they differ. Another benefit of performing complex calculations this way is that the output is already in the format that <code><a href="../reference/event_line.html">event_line()</a></code>, <code><a href="../reference/lolli_plot.html">lolli_plot()</a></code>, and <code><a href="../reference/category.html">category()</a></code> already want.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The default output</span>
+events_default &lt;-<span class="st"> </span><span class="kw"><a href="../reference/detect_event.html">detect_event</a></span>(<span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(sst_Med, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span>)))
+
+<span class="kw"><a href="http://www.rdocumentation.org/packages/ggpubr/topics/ggarrange">ggarrange</a></span>(<span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events_<span class="dv">19</span>), <span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events_default), <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">"Two thresholds"</span>, <span class="st">"One threshold"</span>))</code></pre></div>
+<p><img src="complex_clims_files/figure-html/unnamed-chunk-3-1.png" width="768"></p>
+<p>We may see in the right hand panel that all of the smaller events, many of the larger events, and even two of the largest events were all screened out by our inclusion of the 19<span class="math inline">\(^\circ\)</span>C static threshold. Please note however that even though the use of the second threshold in this way does allow for the calculation of the event metrics to differ, the values themselves are still being calculated against the seasonal climatology and so using a second threshold won’t generally have much of an effect on the event metric. Rather it mostly screens out smaller or larger events depending on how one chooses to set the threshold.</p>
+</div>
+<div id="percentile-second-hreshold" class="section level3">
+<h3 class="hasAnchor">
+<a href="#percentile-second-hreshold" class="anchor"></a>Percentile second hreshold</h3>
+<p>Using a percentile threshold is not much different than using a static threshold. Rather than using <code><a href="../reference/exceedance.html">exceedance()</a></code> to get our second threshold we will use <code><a href="../reference/detect_event.html">detect_event()</a></code>. Below we will look at how to calculate normal events (5 day minimum duration above the 90th percentile with a 2 day max gap) while also giving a second threshold set for events that exceed the 95th percentile for at least 2 days, with a 0 day gap. In this way we may screen out smaller events without being to proscriptive about other criteria.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># First we calculate the second threshold</span>
+thresh_<span class="dv">95</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/detect_event.html">detect_event</a></span>(<span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(sst_Med, <span class="dt">pctile =</span> <span class="dv">95</span>,
+                                 <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span>)), 
+                          <span class="dt">minDuration =</span> <span class="dv">2</span>, <span class="dt">maxGap =</span> <span class="dv">0</span>)<span class="op">$</span>climatology
+
+<span class="co"># Then we use that output when detecting our events</span>
+events_<span class="dv">95</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/detect_event.html">detect_event</a></span>(<span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(sst_Med, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span>)), 
+                          <span class="dt">threshClim2 =</span> thresh_<span class="dv">95</span><span class="op">$</span>event, <span class="dt">minDuration2 =</span> <span class="dv">2</span>, <span class="dt">maxGap2 =</span> <span class="dv">0</span>)</code></pre></div>
+<p>And again let’s look at the results in lolliplot format.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggpubr/topics/ggarrange">ggarrange</a></span>(<span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events_<span class="dv">95</span>), <span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events_default), <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">"Two thresholds"</span>, <span class="st">"One threshold"</span>))</code></pre></div>
+<p><img src="complex_clims_files/figure-html/unnamed-chunk-5-1.png" width="768"></p>
+<p>If we look closely at these results we see that we have actually created more events than we have filtered out. This is because whenever the temperatures dip above the 95th percentile and then back down below it <code><a href="../reference/detect_event.html">detect_event()</a></code> is classifying that as a new event because we have set <code>maxGap = 0</code>. This method allows for a lot of flexibility, but users should also be cautious that they understand what exactly they are asking their machines to do.</p>
+</div>
+</div>
 <div id="summary" class="section level2">
 <h2 class="hasAnchor">
 <a href="#summary" class="anchor"></a>Summary</h2>
-<p>To be quite honest, I didn’t think it was going to work out to just use SST data in place of atmospheric temperature and just create <code>tMin</code> and <code>tMax</code> time series through static subtraction and addition of values. Marine temperatures exhibit much more temporal auto-correlation than atmospheric data, which is why the default minimum length for marine heatwaves is 5 days, and 3 for atmospheric heatwaves, which allows them to be detected with th atmospheric definition, but it tends not to work at all the other way around. That being said, I think that the results of this vignette are clear enough to serve as a guideline for how to implement this methodology with proper atmospheric <code>tMin</code> and <code>tMax</code> data. Indeed, I have run real atmospheric data through this methodology myself and so do know that it works.</p>
-<p>That concludes this vignette. I hope this will be useful both technically and theoretically. The authors of <strong><code>heatwaveR</code></strong> are very happy to receive any further input on the development of the package as well as other potential methods for calculating heatwaves and cold-spells. We see that the methodology outlined above is very useful and we are currently thinking about how best to incorporate these techniques ‘natively’ into the event detection pipeline. Until this has been made available in a later version, we hope that this will suffice.</p>
+<p>To be quite honest, I didn’t think it was going to work out to just use SST data in place of atmospheric temperature and just create <code>tMin</code> and <code>tMax</code> time series through static subtraction and addition of values. Marine temperatures exhibit much more temporal auto-correlation than atmospheric data, which is why the default minimum length for marine heatwaves is 5 days, and 3 for atmospheric heatwaves. This allows marine events to be detected with the atmospheric definition, but it tends not to work the other way around. That being said, I think that the results of this vignette are clear enough to serve as a guideline for how to implement this methodology with proper atmospheric <code>tMin</code> and <code>tMax</code> data. Indeed, I have run real atmospheric data through this methodology myself and so do know that it works.</p>
+<p>We also showed in this vignette a more straight forward approach to using a second threshold through the built-in arguments in <code><a href="../reference/detect_event.html">detect_event()</a></code>. The use of a second threshold in this way, whether it be based on a static threshold or one derived from a percentile, is useful for the consideration of events that may be more specifically relevant to an organism in question.</p>
+<p>I hope the techniques shown in this vignette will be useful both technically and theoretically. The authors of <strong><code>heatwaveR</code></strong> are very happy to receive any further input on the development of the package as well as other potential methods for calculating heatwaves and cold-spells.</p>
 </div>
 <div id="references" class="section level2 unnumbered">
 <h2 class="hasAnchor">
@@ -307,6 +349,7 @@ ts_category</code></pre></div>
       <li><a href="#the-methodology">The methodology</a></li>
       <li><a href="#visuals">Visuals</a></li>
       <li><a href="#categories">Categories</a></li>
+      <li><a href="#double-climatologies">Double climatologies</a></li>
       <li><a href="#summary">Summary</a></li>
       <li><a href="#references">References</a></li>
       </ul>

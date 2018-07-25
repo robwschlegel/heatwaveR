@@ -83,7 +83,7 @@ other means." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.2</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.3</span>
       </span>
     </div>
 
@@ -436,7 +436,21 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
 #&gt; 5        5         672        681       685       14 1983-11-03 1983-11-12
 #&gt; # ... with 3 more variables: date_end &lt;date&gt;, intensity_mean &lt;dbl&gt;,
 #&gt; #   intensity_max &lt;dbl&gt;</div><div class='input'>
-</div></pre>
+<span class='co'># It is also possible to give two separate sets of threshold criteria</span>
+
+<span class='co'># To use a second static threshold we first use the exceedance function</span>
+<span class='no'>thresh_19</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='exceedance.html'>exceedance</a></span>(<span class='no'>sst_Med</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>19</span>, <span class='kw'>minDuration</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>maxGap</span> <span class='kw'>=</span> <span class='fl'>0</span>)$<span class='no'>threshold</span>
+<span class='co'># Then we use that output when detecting our events</span>
+<span class='no'>events_19</span> <span class='kw'>&lt;-</span> <span class='fu'>detect_event</span>(<span class='fu'><a href='ts2clm.html'>ts2clm</a></span>(<span class='no'>sst_Med</span>, <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1982-01-01"</span>, <span class='st'>"2011-12-31"</span>)),
+                         <span class='kw'>threshClim2</span> <span class='kw'>=</span> <span class='no'>thresh_19</span>$<span class='no'>exceedance</span>, <span class='kw'>minDuration2</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>maxGap2</span> <span class='kw'>=</span> <span class='fl'>0</span>)
+
+<span class='co'># If we want to use two different percentile thresholds we use detect_event</span>
+<span class='no'>thresh_95</span> <span class='kw'>&lt;-</span> <span class='fu'>detect_event</span>(<span class='fu'><a href='ts2clm.html'>ts2clm</a></span>(<span class='no'>sst_Med</span>, <span class='kw'>pctile</span> <span class='kw'>=</span> <span class='fl'>95</span>,
+                                 <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1982-01-01"</span>, <span class='st'>"2011-12-31"</span>)),
+                          <span class='kw'>minDuration</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>maxGap</span> <span class='kw'>=</span> <span class='fl'>0</span>)$<span class='no'>climatology</span>
+<span class='co'># Then we use that output when detecting our events</span>
+<span class='no'>events_95</span> <span class='kw'>&lt;-</span> <span class='fu'>detect_event</span>(<span class='fu'><a href='ts2clm.html'>ts2clm</a></span>(<span class='no'>sst_Med</span>, <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1982-01-01"</span>, <span class='st'>"2011-12-31"</span>)),
+                          <span class='kw'>threshClim2</span> <span class='kw'>=</span> <span class='no'>thresh_95</span>$<span class='no'>event</span>, <span class='kw'>minDuration2</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>maxGap2</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
