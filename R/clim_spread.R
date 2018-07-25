@@ -33,7 +33,6 @@ clim_spread <- function(data, clim_start, clim_end, windowHalfWidth) {
   rm(data)
 
   data.table::setDT(ts_clim)[, ts_x := format(as.Date(ts_x), "%Y") ]
-  # data.table::setDT(ts_clim)
   ts_spread <- data.table::dcast(ts_clim, doy ~ ts_x, value.var = "ts_y")
   rm(ts_clim)
 
@@ -54,5 +53,11 @@ clim_spread <- function(data, clim_start, clim_end, windowHalfWidth) {
 
   # clim_calc_cpp needs a matrix...
   ts_mat <- as.matrix(ts_spread)[, 2:(len_yr + 1)]
+
+  if (nrow(stats::na.omit(ts_mat)) < nrow(ts_mat)) {
+    plugs <- which(is.na(ts_mat), arr.ind = TRUE)
+    ts_mat[plugs] <- rowMeans(ts_mat, na.rm = TRUE)[plugs[,1]]
+  }
+
   return(ts_mat)
 }

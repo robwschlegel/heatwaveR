@@ -63,3 +63,13 @@ test_that("climatologyPeriod less than three years is rejected", {
   expect_error(ts2clm(sst_WA, climatologyPeriod = c("2011-01-01", "2012-12-31")),
                "The climatologyPeriod must be at least three years to calculate thresholds")
 })
+
+test_that("mssing data causes na_interp() to be used", {
+  sst_WA_NA <- sst_WA
+  sst_WA_NA$temp[c(1, 400, 1000)] <- NA
+  ts_1 <- ts2clm(sst_WA_NA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  ts_2 <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  expect_condition(ts_1$temp[1], regexp = NA)
+  expect_lt(ts_2$temp[400], ts_1$temp[400])
+  expect_lt(ts_2$temp[1000], ts_1$temp[1000])
+})

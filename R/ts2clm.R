@@ -173,10 +173,12 @@ ts2clm <-
 
     }
 
-    ts_whole <- na_interp(doy = ts_whole$doy,
-                          x = ts_whole$ts_x,
-                          y = ts_whole$ts_y,
-                          maxPadLength = maxPadLength)
+    if (length(stats::na.omit(ts_whole$ts_y)) < length(ts_whole$ts_y)){
+      ts_whole <- na_interp(doy = ts_whole$doy,
+                            x = ts_whole$ts_x,
+                            y = ts_whole$ts_y,
+                            maxPadLength = maxPadLength)
+    }
 
     if (ts_whole$ts_x[1] > clim_start)
       stop(paste("The specified start date precedes the first day of series, which is",
