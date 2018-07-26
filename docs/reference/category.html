@@ -21,13 +21,16 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
 <!-- docsearch -->
+<script src="../docsearch.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
@@ -40,6 +43,7 @@ accordance with the naming scheme proposed in Hobday et al. (in review)." />
 
 <meta property="og:image" content="https://robwschlegel.github.io/heatwaveR/index.html/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 <!-- mathjax -->
@@ -76,7 +80,7 @@ accordance with the naming scheme proposed in Hobday et al. (in review)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.3</span>
       </span>
     </div>
 
@@ -99,13 +103,22 @@ accordance with the naming scheme proposed in Hobday et al. (in review)." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/detection_and_visualisation.html">Basic detection and visualisation</a>
+    </li>
+    <li>
+      <a href="../articles/exceedance.html">Calculating exceedances</a>
+    </li>
+    <li>
+      <a href="../articles/event_categories.html">Calculating categories</a>
+    </li>
+    <li>
+      <a href="../articles/complex_clims.html">Complex climatologies</a>
+    </li>
+    <li>
       <a href="../articles/OISST_preparation.html">OISST preparation</a>
     </li>
     <li>
       <a href="../articles/gridded_event_detection.html">Extreme event detection in gridded data</a>
-    </li>
-    <li>
-      <a href="../articles/complex_clims.html">Complex climatologies</a>
     </li>
   </ul>
 </li>
@@ -249,14 +262,14 @@ Marine Heatwaves. Oceanography.</p>
 <span class='co'># Note that the name argument expects a character vector</span>
 <span class='no'>cat_WA</span> <span class='kw'>&lt;-</span> <span class='fu'>category</span>(<span class='no'>res_WA</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"WA"</span>)
 <span class='fu'>tail</span>(<span class='no'>cat_WA</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 11
-#&gt;   event_no event_name peak_date  category   i_max duration p_moderate p_strong
-#&gt;      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;dbl&gt;    &lt;int&gt;      &lt;dbl&gt;    &lt;dbl&gt;
-#&gt; 1       38 WA 2010    2010-09-29 II Strong   2.58       18         78       22
-#&gt; 2       40 WA 2010    2010-12-02 II Strong   2.66       15         73       27
-#&gt; 3       31 WA 2008    2008-04-14 III Severe  3.77       34         62       29
-#&gt; 4       22 WA 1999    1999-05-22 II Strong   3.6        95         59       41
-#&gt; 5       58 WA 2014    2014-08-31 II Strong   2.2        12         58       42
-#&gt; 6       42 WA 2011    2011-02-28 IV Extreme  6.51       60         47       32
+#&gt;   event_no event_name peak_date  category i_max duration p_moderate p_strong
+#&gt;      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;    &lt;dbl&gt;    &lt;int&gt;      &lt;dbl&gt;    &lt;dbl&gt;
+#&gt; 1       38 WA 2010    2010-09-29 II Stro…  2.58       18         78       22
+#&gt; 2       40 WA 2010    2010-12-02 II Stro…  2.66       15         73       27
+#&gt; 3       31 WA 2008    2008-04-14 III Sev…  3.77       34         62       29
+#&gt; 4       22 WA 1999    1999-05-22 II Stro…  3.6        95         59       41
+#&gt; 5       58 WA 2014    2014-08-31 II Stro…  2.2        12         58       42
+#&gt; 6       42 WA 2011    2011-02-28 IV Extr…  6.51       60         47       32
 #&gt; # ... with 3 more variables: p_severe &lt;dbl&gt;, p_extreme &lt;dbl&gt;, season &lt;chr&gt;</div><div class='input'>
 <span class='co'># If the data were collected in the northern hemisphere</span>
 <span class='co'># we must let the funciton know this as seen below</span>
@@ -264,14 +277,14 @@ Marine Heatwaves. Oceanography.</p>
                         <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span>)))
 <span class='no'>cat_Med</span> <span class='kw'>&lt;-</span> <span class='fu'>category</span>(<span class='no'>res_Med</span>, <span class='kw'>S</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Med"</span>)
 <span class='fu'>tail</span>(<span class='no'>cat_Med</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 11
-#&gt;   event_no event_name peak_date  category   i_max duration p_moderate p_strong
-#&gt;      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;dbl&gt;    &lt;int&gt;      &lt;dbl&gt;    &lt;dbl&gt;
-#&gt; 1       55 Med 2011   2011-05-25 II Strong   4.05        8         62       38
-#&gt; 2       23 Med 1999   1999-04-06 II Strong   1.88        5         60       40
-#&gt; 3       28 Med 2003   2003-06-20 II Strong   5.02       30         57       43
-#&gt; 4       62 Med 2012   2012-08-20 II Strong   4.22       18         56       44
-#&gt; 5       44 Med 2007   2007-04-25 III Severe  4.02       19         42       53
-#&gt; 6       70 Med 2014   2014-10-18 II Strong   3.31      110         35       65
+#&gt;   event_no event_name peak_date  category i_max duration p_moderate p_strong
+#&gt;      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;    &lt;dbl&gt;    &lt;int&gt;      &lt;dbl&gt;    &lt;dbl&gt;
+#&gt; 1       55 Med 2011   2011-05-25 II Stro…  4.05        8         62       38
+#&gt; 2       23 Med 1999   1999-04-06 II Stro…  1.88        5         60       40
+#&gt; 3       28 Med 2003   2003-06-20 II Stro…  5.02       30         57       43
+#&gt; 4       62 Med 2012   2012-08-20 II Stro…  4.22       18         56       44
+#&gt; 5       44 Med 2007   2007-04-25 III Sev…  4.02       19         42       53
+#&gt; 6       70 Med 2014   2014-10-18 II Stro…  3.31      110         35       65
 #&gt; # ... with 3 more variables: p_severe &lt;dbl&gt;, p_extreme &lt;dbl&gt;, season &lt;chr&gt;</div><div class='input'>
 </div></pre>
   </div>

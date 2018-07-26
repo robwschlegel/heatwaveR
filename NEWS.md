@@ -1,3 +1,15 @@
+# heatwaveR 0.3.3 (2018-07-25)
+
+* BUG FIX: corrected issue with `clim_calc_cpp` not being able to calculate
+  clims from baselines not beginning and ending on the Julian year by making
+  `clim_spread` plug the gaps beforehand with rowwise means.
+* Rebuilt pkgdown site to reflect version increase
+* v0.3.3 submitted to CRAN
+
+# heatwaveR 0.3.2 (2018-07-23)
+
+* Edits suggested through JOSS review
+
 # heatwaveR 0.3.2 (2018-07-12)
 
 * Remove unneeded copies of data from functions to improve memory-use

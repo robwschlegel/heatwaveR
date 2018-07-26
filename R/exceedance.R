@@ -92,15 +92,16 @@
 #'   occurence of exceedances.}
 #'
 #' The individual exceedances are summarised using the following metrics:
-#'   \item{index_start}{Row number on which exceedance starts.}
-#'   \item{index_end}{Row number on which exceedance ends.}
 #'   \item{exceedance_no}{The same sequential number indicating the ID and
 #'   order of the exceedance as found in the \code{threshold} component of the
 #'   output list.}
+#'   \item{index_start}{Row number on which exceedance starts.}
+#'   \item{index_peak}{Row number on which exceedance peaks.}
+#'   \item{index_end}{Row number on which exceedance ends.}
 #'   \item{duration}{Duration of exceedance [days].}
 #'   \item{date_start}{Start date of exceedance [date].}
-#'   \item{date_end}{End date of exceedance [date].}
 #'   \item{date_peak}{Date of exceedance peak [date].}
+#'   \item{date_end}{End date of exceedance [date].}
 #'   \item{intensity_mean}{Mean intensity [deg. C].}
 #'   \item{intensity_max}{Maximum (peak) intensity [deg. C].}
 #'   \item{intensity_var}{Intensity standard deviation [deg. C].}
@@ -134,8 +135,8 @@ exceedance <-
            maxGap = 2,
            maxPadLength = 3) {
 
-    message("exceedance() is deprecated and will not be included in the next release of heatwaveR")
-    message("please use detecet_event() directly and set 'threshClim =' whatever your static threshold is")
+    # message("exceedance() is deprecated and will not be included in the next release of heatwaveR")
+    # message("please use detecet_event() directly and set 'threshClim =' whatever your static threshold is")
 
     temp <- threshCriterion <- durationCriterion <- event <- event_no <- NULL
 
@@ -169,8 +170,8 @@ exceedance <-
       threshold <- -threshold
     }
 
-    t_series$ts_thresh <- rep(threshold, nrow(t_series))
-    t_series$threshCriterion <- t_series$ts_y > t_series$ts_thresh
+    t_series$thresh <- rep(threshold, nrow(t_series))
+    t_series$threshCriterion <- t_series$ts_y > t_series$thresh
 
 
     if (sum(t_series$threshCriterion) < minDuration & below == FALSE) {
@@ -185,15 +186,16 @@ exceedance <-
                                     minDuration = minDuration,
                                     joinAcrossGaps = joinAcrossGaps,
                                     maxGap = maxGap) %>%
-      dplyr::rename(exceedance_no = event_no)
+      dplyr::rename(exceedance = event,
+                    exceedance_no = event_no)
 
-    ts_thresh <- intensity_mean <- intensity_max <- intensity_cumulative <-
+    thresh <- intensity_mean <- intensity_max <- intensity_cumulative <-
       exceedance_rel_thresh <- intensity_mean_abs <- intensity_max_abs <-
       intensity_cum_abs <- ts_y <- exceedance_no <- row_index <- index_peak <-  NULL
 
     exceedances <- exceedances_clim %>%
       dplyr::mutate(row_index = 1:nrow(exceedances_clim),
-                    exceedance_rel_thresh = ts_y - ts_thresh) %>%
+                    exceedance_rel_thresh = ts_y - thresh) %>%
       dplyr::filter(stats::complete.cases(exceedance_no)) %>%
       dplyr::group_by(exceedance_no) %>%
       dplyr::summarise(index_start = min(row_index),
@@ -213,10 +215,10 @@ exceedance <-
                        intensity_cum_abs = max(cumsum(ts_y)))
 
 
-    exceedance_rel_thresh <- t_series$ts_y - t_series$ts_thresh
+    exceedance_rel_thresh <- t_series$ts_y - t_series$thresh
     A <- exceedance_rel_thresh[exceedances$index_start]
     B <- t_series$ts_y[exceedances$index_start - 1]
-    C <- t_series$ts_thresh[exceedances$index_start - 1]
+    C <- t_series$thresh[exceedances$index_start - 1]
     if (length(B) + 1 == length(A)) {
       B <- c(NA, B)
       C <- c(NA, C)
@@ -232,7 +234,7 @@ exceedance <-
 
     D <- exceedance_rel_thresh[exceedances$index_end]
     E <- t_series$ts_y[exceedances$index_end + 1]
-    F <- t_series$ts_thresh[exceedances$index_end + 1]
+    F <- t_series$thresh[exceedances$index_end + 1]
     exceedance_rel_thresh_end <- 0.5 * (D + E - F)
 
     exceedances$rate_decline <- ifelse(
@@ -251,13 +253,13 @@ exceedance <-
         intensity_max_abs = -intensity_max_abs,
         intensity_cum_abs = -intensity_cum_abs
       )
-      t_series <- t_series %>% dplyr::mutate(
+      exceedances_clim <- exceedances_clim %>% dplyr::mutate(
         ts_y = -ts_y,
-        ts_thresh = -ts_thresh
+        thresh = -thresh
       )
     }
 
-    data_thresh <- cbind(data, exceedances_clim[,3:7])
+    data_thresh <- cbind(data, exceedances_clim[,4:8])
 
     list(threshold = tibble::as_tibble(data_thresh),
          exceedance = tibble::as_tibble(exceedances))

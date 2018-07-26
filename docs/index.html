@@ -8,8 +8,8 @@
 <title>Detect Heatwaves and Cold-Spells • heatwaveR</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/spacelab/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><!-- docsearch --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<script src="pkgdown.js"></script><!-- docsearch --><script src="docsearch.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css">
 <link href="docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Detect Heatwaves and Cold-Spells">
 <meta property="og:description" content="The different methods of defining and detecting extreme events, known as heatwaves or cold-spells in both air and water temperature data are encompassed within this package. These detection algorithms may be used on non-temperature data as well however, this is not catered for explicitly here as no use of this technique in the literature currently exists.">
@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.3</span>
       </span>
     </div>
 
@@ -61,13 +61,22 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="articles/detection_and_visualisation.html">Basic detection and visualisation</a>
+    </li>
+    <li>
+      <a href="articles/exceedance.html">Calculating exceedances</a>
+    </li>
+    <li>
+      <a href="articles/event_categories.html">Calculating categories</a>
+    </li>
+    <li>
+      <a href="articles/complex_clims.html">Complex climatologies</a>
+    </li>
+    <li>
       <a href="articles/OISST_preparation.html">OISST preparation</a>
     </li>
     <li>
       <a href="articles/gridded_event_detection.html">Extreme event detection in gridded data</a>
-    </li>
-    <li>
-      <a href="articles/complex_clims.html">Complex climatologies</a>
     </li>
   </ul>
 </li>
@@ -295,284 +304,25 @@
 <p><code>intensity_max_abs</code>, <code>intensity_mean_abs</code>, <code>intensity_var_abs</code>, and <code>intensity_cumulative_abs</code> are as above except as absolute magnitudes rather than relative to the seasonal climatology or threshold.</p>
 <p>Note that <code>rate_onset</code> and <code>rate_decline</code> will return <code>NA</code> when the event begins/ends on the first/last day of the time series. This may be particularly evident when the function is applied to large gridded data sets. Although the other metrics do not contain any errors and provide sensible values, please take this into account in the interpretation of the output.</p>
 </div>
-<div id="examples-of-detection-and-graphing" class="section level2">
+<div id="vignettes" class="section level2">
 <h2 class="hasAnchor">
-<a href="#examples-of-detection-and-graphing" class="anchor"></a>Examples of detection and graphing</h2>
-<p>The <code><a href="reference/detect_event.html">detect_event()</a></code> function is the package’s core function. Here is the <code><a href="reference/detect_event.html">detect_event()</a></code> function applied to the Western Australian test data, which are also discussed by Hobday et al. (2016):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(heatwaveR); <span class="kw">library</span>(dplyr); <span class="kw">library</span>(ggplot2)
-ts &lt;-<span class="st"> </span><span class="kw"><a href="reference/ts2clm.html">ts2clm</a></span>(sst_WA, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>))
-mhw &lt;-<span class="st"> </span><span class="kw"><a href="reference/detect_event.html">detect_event</a></span>(ts)
-mhw<span class="op">$</span>event <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span>() <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(event_no, duration, date_start, date_peak, intensity_mean, intensity_max, intensity_cumulative) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(<span class="op">-</span>intensity_cumulative) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">head</span>(<span class="dv">5</span>)
-<span class="co">#&gt; # A tibble: 5 x 7</span>
-<span class="co">#&gt;   event_no duration date_start date_peak  intensity_mean intensity_max</span>
-<span class="co">#&gt;      &lt;int&gt;    &lt;int&gt; &lt;date&gt;     &lt;date&gt;              &lt;dbl&gt;         &lt;dbl&gt;</span>
-<span class="co">#&gt; 1       22       95 1999-05-13 1999-05-22           2.50          3.60</span>
-<span class="co">#&gt; 2       42       60 2011-02-06 2011-02-28           3.21          6.51</span>
-<span class="co">#&gt; 3       49       47 2012-01-11 2012-01-27           2.23          3.30</span>
-<span class="co">#&gt; 4       50       46 2012-03-01 2012-04-10           1.99          2.96</span>
-<span class="co">#&gt; 5       41       40 2010-12-24 2011-01-28           2.16          3.27</span>
-<span class="co">#&gt; # ... with 1 more variable: intensity_cumulative &lt;dbl&gt;</span></code></pre></div>
-<p>The corresponding <code><a href="reference/event_line.html">event_line()</a></code> and <code><a href="reference/lolli_plot.html">lolli_plot()</a></code>, which represent the massive Western Australian heatwave of 2011, look like this:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/event_line.html">event_line</a></span>(mhw, <span class="dt">spread =</span> <span class="dv">100</span>, <span class="dt">metric =</span> <span class="st">"intensity_cumulative"</span>, <span class="dt">start_date =</span> <span class="st">"2010-11-01"</span>, <span class="dt">end_date =</span> <span class="st">"2011-06-30"</span>)</code></pre></div>
-<div class="figure">
-<img src="articles/fig-example1-1.png">
+<a href="#vignettes" class="anchor"></a>Vignettes</h2>
+<p>For detailed explanations and walkthroughs on the use of the <strong><code>heatwaveR</code></strong> package please click on the articles tab above, or follow the links below:</p>
+<ul>
+<li>For a basic introduction to the <a href="https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html">detection and visualisation</a> of events.</li>
+<li>For an explanation on the use of the <a href="https://robwschlegel.github.io/heatwaveR/articles/exceedance.html">exceedance</a> function.</li>
+<li>For a walkthrough on the calculation and visualisation of <a href="https://robwschlegel.github.io/heatwaveR/articles/event_categories.html">event categories</a>.</li>
+<li>For examples on the calculation of <a href="https://robwschlegel.github.io/heatwaveR/articles/complex_clims.html">complex climatologies</a>.</li>
+<li>For a demonstration on how to <a href="https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html">download and prepare OISST data</a>.</li>
+<li>Which may then have the <code><a href="reference/detect_event.html">detect_event()</a></code> function applied to the <a href="https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html">gridded data</a>, and then fit a GLM and plot the results.</li>
+</ul>
 </div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/lolli_plot.html">lolli_plot</a></span>(mhw)</code></pre></div>
-<div class="figure">
-<img src="articles/fig-example2-1.png">
-</div>
-<p>The <code><a href="reference/event_line.html">event_line()</a></code> and <code><a href="reference/lolli_plot.html">lolli_plot()</a></code> functions were designed to work directly on one of the dataframes in the list returned by <code><a href="reference/detect_event.html">detect_event()</a></code>. If more control over the figures is required, it may be useful to create them in <strong><code>ggplot2</code></strong> by stacking <code>geoms</code>. We specifically created two new <strong><code>ggplot2</code></strong> <code>geoms</code> to reproduce the functionality of <code><a href="reference/event_line.html">event_line()</a></code> and <code><a href="reference/lolli_plot.html">lolli_plot()</a></code>. These functions are more general in their functionality and can be used outside of the <strong><code>heatwaveR</code></strong> package too. To apply them to MHWs and MCSs first requires that we access the <code>clim</code> or <code>event</code> dataframes within the list that is produced by <code><a href="reference/detect_event.html">detect_event()</a></code>. Here is how:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mhw2 &lt;-<span class="st"> </span>mhw<span class="op">$</span>clim <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">10580</span><span class="op">:</span><span class="dv">10690</span>) <span class="co"># select the region of the time series of interest</span>
-
-<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(mhw2, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> t, <span class="dt">y =</span> temp, <span class="dt">y2 =</span> thresh)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="reference/geom_flame.html">geom_flame</a></span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_text">geom_text</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> <span class="kw">as.Date</span>(<span class="st">"2011-02-26"</span>), <span class="dt">y =</span> <span class="fl">25.8</span>, <span class="dt">label =</span> <span class="st">"the Destroyer</span><span class="ch">\n</span><span class="st">of Kelps"</span>))
-
-<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(mhw<span class="op">$</span>event, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> date_start, <span class="dt">y =</span> intensity_max)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="reference/geom_lolli.html">geom_lolli</a></span>(<span class="dt">colour =</span> <span class="st">"salmon"</span>, <span class="dt">colour_n =</span> <span class="st">"red"</span>, <span class="dt">n =</span> <span class="dv">3</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_text">geom_text</a></span>(<span class="dt">colour =</span> <span class="st">"black"</span>, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> <span class="kw">as.Date</span>(<span class="st">"2006-08-01"</span>), <span class="dt">y =</span> <span class="dv">5</span>,
-                <span class="dt">label =</span> <span class="st">"The marine heatwaves</span><span class="ch">\n</span><span class="st">Tend to be left skewed in a</span><span class="ch">\n</span><span class="st">Given time series"</span>))</code></pre></div>
-<p><img src="articles/fig-example3-1.png"><img src="articles/fig-example3-2.png"></p>
-<p>The default output of these function may not be to your liking. If so, not to worry. As <strong><code>ggplot2</code></strong> <code>geoms</code>, they are highly malleable. For example, if we were to choose to reproduce the format of the MHWs as seen in Hobday et al. (2016), the code would look something like this:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># It is necessary to give geom_flame() at least one row on either side of the event in order to calculate the polygon corners smoothly</span>
-mhw_top &lt;-<span class="st"> </span>mhw2 <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">49</span><span class="op">:</span><span class="dv">110</span>)
-
-<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> mhw2, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> t)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="reference/geom_flame.html">geom_flame</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> temp, <span class="dt">y2 =</span> thresh, <span class="dt">fill =</span> <span class="st">"all"</span>), <span class="dt">show.legend =</span> T) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="reference/geom_flame.html">geom_flame</a></span>(<span class="dt">data =</span> mhw_top, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> temp, <span class="dt">y2 =</span> thresh, <span class="dt">fill =</span> <span class="st">"top"</span>), <span class="dt">show.legend =</span> T) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> temp, <span class="dt">colour =</span> <span class="st">"temp"</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> thresh, <span class="dt">colour =</span> <span class="st">"thresh"</span>), <span class="dt">size =</span> <span class="fl">1.0</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> seas, <span class="dt">colour =</span> <span class="st">"seas"</span>), <span class="dt">size =</span> <span class="fl">1.2</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_manual">scale_colour_manual</a></span>(<span class="dt">name =</span> <span class="st">"Line Colour"</span>,
-                      <span class="dt">values =</span> <span class="kw">c</span>(<span class="st">"temp"</span> =<span class="st"> "black"</span>, <span class="st">"thresh"</span> =<span class="st">  "forestgreen"</span>, <span class="st">"seas"</span> =<span class="st"> "grey80"</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_manual">scale_fill_manual</a></span>(<span class="dt">name =</span> <span class="st">"Event Colour"</span>, <span class="dt">values =</span> <span class="kw">c</span>(<span class="st">"all"</span> =<span class="st"> "salmon"</span>, <span class="st">"top"</span> =<span class="st"> "red"</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_date">scale_x_date</a></span>(<span class="dt">date_labels =</span> <span class="st">"%b %Y"</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/guides">guides</a></span>(<span class="dt">colour =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/guide_legend">guide_legend</a></span>(<span class="dt">override.aes =</span> <span class="kw">list</span>(<span class="dt">fill =</span> <span class="ot">NA</span>))) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">y =</span> <span class="kw">expression</span>(<span class="kw">paste</span>(<span class="st">"Temperature ["</span>, degree, <span class="st">"C]"</span>)), <span class="dt">x =</span> <span class="ot">NULL</span>)</code></pre></div>
-<div class="figure">
-<img src="articles/fig-example4-1.png">
-</div>
-<p>Should we not wish to highlight any events with <code><a href="reference/geom_lolli.html">geom_lolli()</a></code>, it would look like this:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(mhw<span class="op">$</span>event, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> date_start, <span class="dt">y =</span> intensity_cumulative)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="reference/geom_lolli.html">geom_lolli</a></span>(<span class="dt">colour =</span> <span class="st">"salmon"</span>)</code></pre></div>
-<div class="figure">
-<img src="articles/fig-example5-1.png">
-</div>
-<p>The calculation and visualisation of cold-spells is also accommodated within this package. Here is a cold spell detected in the OISST data for Western Australia:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ts_10th &lt;-<span class="st"> </span><span class="kw"><a href="reference/ts2clm.html">ts2clm</a></span>(sst_WA, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>), <span class="dt">pctile =</span> <span class="dv">10</span>)
-mcs &lt;-<span class="st"> </span><span class="kw"><a href="reference/detect_event.html">detect_event</a></span>(ts_10th, <span class="dt">coldSpells =</span> <span class="ot">TRUE</span>)
-mcs<span class="op">$</span>event <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span>() <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(event_no, duration, date_start,
-                date_peak, intensity_mean, intensity_max, intensity_cumulative) <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(intensity_cumulative) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">head</span>(<span class="dv">5</span>)
-<span class="co">#&gt; # A tibble: 5 x 7</span>
-<span class="co">#&gt;   event_no duration date_start date_peak  intensity_mean intensity_max</span>
-<span class="co">#&gt;      &lt;int&gt;    &lt;int&gt; &lt;date&gt;     &lt;date&gt;              &lt;dbl&gt;         &lt;dbl&gt;</span>
-<span class="co">#&gt; 1       16       76 1990-04-13 1990-05-11          -2.54         -3.22</span>
-<span class="co">#&gt; 2       54       58 2003-12-19 2004-01-23          -1.80         -2.66</span>
-<span class="co">#&gt; 3       71       52 2014-04-14 2014-05-05          -1.82         -2.57</span>
-<span class="co">#&gt; 4        8       38 1986-06-24 1986-07-17          -2.01         -2.95</span>
-<span class="co">#&gt; 5       51       32 2003-09-08 2003-09-16          -1.56         -2.12</span>
-<span class="co">#&gt; # ... with 1 more variable: intensity_cumulative &lt;dbl&gt;</span></code></pre></div>
-<p>The plots showing the cold-spells look like this:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/event_line.html">event_line</a></span>(mcs, <span class="dt">spread =</span> <span class="dv">200</span>, <span class="dt">metric =</span> <span class="st">"intensity_cumulative"</span>,
-           <span class="dt">start_date =</span> <span class="st">"1990-01-01"</span>, <span class="dt">end_date =</span> <span class="st">"1990-08-30"</span>)
-
-<span class="kw"><a href="reference/lolli_plot.html">lolli_plot</a></span>(mcs)</code></pre></div>
-<p><img src="articles/fig-example6-1.png"><img src="articles/fig-example6-2.png"></p>
-<p>Cold spell figures may be created as <code>geoms</code> in <strong><code>ggplot2</code></strong>, too:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mcs2 &lt;-<span class="st"> </span>mcs<span class="op">$</span>clim <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">2990</span><span class="op">:</span><span class="dv">3190</span>)
-
-<span class="co"># # Note that the plot centres on the polygons, so it may be necessary to manually zoom out a bit</span>
-<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> mcs2, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> t)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="reference/geom_flame.html">geom_flame</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> thresh, <span class="dt">y2 =</span> temp), <span class="dt">fill =</span> <span class="st">"steelblue3"</span>, <span class="dt">show.legend =</span> F) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> temp, <span class="dt">colour =</span> <span class="st">"temp"</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> thresh, <span class="dt">colour =</span> <span class="st">"thresh"</span>), <span class="dt">size =</span> <span class="fl">1.0</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> seas, <span class="dt">colour =</span> <span class="st">"seas"</span>), <span class="dt">size =</span> <span class="fl">1.2</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_manual">scale_colour_manual</a></span>(<span class="dt">name =</span> <span class="st">"Line Colour"</span>,
-                      <span class="dt">values =</span> <span class="kw">c</span>(<span class="st">"temp"</span> =<span class="st"> "black"</span>, <span class="st">"thresh"</span> =<span class="st">  "forestgreen"</span>, <span class="st">"seas"</span> =<span class="st"> "grey80"</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_continuous">scale_y_continuous</a></span>(<span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">18</span>, <span class="fl">23.5</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_date">scale_x_date</a></span>(<span class="dt">date_labels =</span> <span class="st">"%b %Y"</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">y =</span> <span class="kw">expression</span>(<span class="kw">paste</span>(<span class="st">"Temperature ["</span>, degree, <span class="st">"C]"</span>)), <span class="dt">x =</span> <span class="ot">NULL</span>)
-
-<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(mcs<span class="op">$</span>event, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> date_start, <span class="dt">y =</span> intensity_cumulative)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="reference/geom_lolli.html">geom_lolli</a></span>(<span class="dt">colour =</span> <span class="st">"steelblue3"</span>, <span class="dt">colour_n =</span> <span class="st">"navy"</span>, <span class="dt">n =</span> <span class="dv">7</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">xlab</a></span>(<span class="st">"Date"</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">ylab</a></span>(<span class="kw">expression</span>(<span class="kw">paste</span>(<span class="st">"Cumulative intensity [days x "</span>, degree, <span class="st">"C]"</span>)))</code></pre></div>
-<p><img src="articles/fig-example7-1.png"><img src="articles/fig-example7-2.png"></p>
-</div>
-<div id="the-exceedance-function" class="section level2">
+<div id="contributing-to-heatwaver" class="section level2">
 <h2 class="hasAnchor">
-<a href="#the-exceedance-function" class="anchor"></a>The exceedance function</h2>
-<p>In addition to the calculation of extreme events, consecutive days over a given static threshold may be calculated with the <code><a href="reference/exceedance.html">exceedance()</a></code> function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">exc_<span class="dv">25</span> &lt;-<span class="st"> </span><span class="kw"><a href="reference/exceedance.html">exceedance</a></span>(ts, <span class="dt">threshold =</span> <span class="dv">25</span>)
-exc_<span class="dv">25</span><span class="op">$</span>exceedance <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(exceedance_no, duration, date_start, date_peak, intensity_mean, intensity_cumulative) <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(<span class="op">-</span>intensity_cumulative) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">head</span>(<span class="dv">5</span>)
-<span class="co">#&gt; # A tibble: 5 x 6</span>
-<span class="co">#&gt;   exceedance_no duration date_start date_peak  intensity_mean</span>
-<span class="co">#&gt;           &lt;int&gt;    &lt;int&gt; &lt;date&gt;     &lt;date&gt;              &lt;dbl&gt;</span>
-<span class="co">#&gt; 1             7       52 2011-02-08 2011-02-28          1.67 </span>
-<span class="co">#&gt; 2             6       25 2008-04-03 2008-04-14          0.980</span>
-<span class="co">#&gt; 3            10       41 2012-03-03 2012-04-10          0.439</span>
-<span class="co">#&gt; 4             2       17 1999-05-13 1999-05-22          0.856</span>
-<span class="co">#&gt; 5             5       10 2000-05-03 2000-05-04          0.697</span>
-<span class="co">#&gt; # ... with 1 more variable: intensity_cumulative &lt;dbl&gt;</span></code></pre></div>
-<p>Which, when plotted with <strong><code>ggplot2</code></strong> code would look like this:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">exc_25_thresh &lt;-<span class="st"> </span>exc_<span class="dv">25</span><span class="op">$</span>threshold <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">9500</span><span class="op">:</span><span class="dv">9866</span>)
-
-<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> exc_25_thresh, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> t)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="reference/geom_flame.html">geom_flame</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> temp, <span class="dt">y2 =</span> thresh, <span class="dt">fill =</span> <span class="st">"all"</span>), <span class="dt">show.legend =</span> F) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> temp, <span class="dt">colour =</span> <span class="st">"temp"</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> thresh, <span class="dt">colour =</span> <span class="st">"thresh"</span>), <span class="dt">size =</span> <span class="fl">1.0</span>) <span class="op">+</span>
-<span class="st">  </span><span class="co"># geom_line(aes(y = seas, colour = "seas"), size = 1.2) +</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_manual">scale_colour_manual</a></span>(<span class="dt">name =</span> <span class="st">"Line Colour"</span>,
-                      <span class="dt">values =</span> <span class="kw">c</span>(<span class="st">"temp"</span> =<span class="st"> "black"</span>, <span class="st">"thresh"</span> =<span class="st">  "forestgreen"</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_manual">scale_fill_manual</a></span>(<span class="dt">name =</span> <span class="st">"Event Colour"</span>, <span class="dt">values =</span> <span class="kw">c</span>(<span class="st">"all"</span> =<span class="st"> "salmon"</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/guides">guides</a></span>(<span class="dt">colour =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/guide_legend">guide_legend</a></span>(<span class="dt">override.aes =</span> <span class="kw">list</span>(<span class="dt">fill =</span> <span class="ot">NA</span>))) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_date">scale_x_date</a></span>(<span class="dt">date_labels =</span> <span class="st">"%b %Y"</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">y =</span> <span class="kw">expression</span>(<span class="kw">paste</span>(<span class="st">"Temperature ["</span>, degree, <span class="st">"C]"</span>)), <span class="dt">x =</span> <span class="ot">NULL</span>)</code></pre></div>
-<div class="figure">
-<img src="articles/fig-example8-1.png">
-</div>
-<p>The same function may be used to calculate consecutive days below a threshold, too.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">exc_<span class="dv">19</span> &lt;-<span class="st"> </span><span class="kw"><a href="reference/exceedance.html">exceedance</a></span>(ts, <span class="dt">threshold =</span> <span class="dv">19</span>, <span class="dt">below =</span> <span class="ot">TRUE</span>)
-exc_<span class="dv">19</span><span class="op">$</span>exceedance <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span>() <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(exceedance_no, duration, date_start, date_peak, intensity_mean, intensity_cumulative) <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(intensity_cumulative) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">head</span>(<span class="dv">5</span>)
-<span class="co">#&gt; # A tibble: 5 x 6</span>
-<span class="co">#&gt;   exceedance_no duration date_start date_peak  intensity_mean</span>
-<span class="co">#&gt;           &lt;int&gt;    &lt;int&gt; &lt;date&gt;     &lt;date&gt;              &lt;dbl&gt;</span>
-<span class="co">#&gt; 1            17       46 2003-09-06 2003-09-16         -0.601</span>
-<span class="co">#&gt; 2            16       31 2002-09-08 2002-09-25         -0.848</span>
-<span class="co">#&gt; 3            13       24 1997-09-03 1997-09-15         -0.769</span>
-<span class="co">#&gt; 4            20       25 2005-09-26 2005-10-12         -0.542</span>
-<span class="co">#&gt; 5            12       18 1997-08-13 1997-08-22         -0.694</span>
-<span class="co">#&gt; # ... with 1 more variable: intensity_cumulative &lt;dbl&gt;</span></code></pre></div>
-<p>And were one to desire a visualisation of these data it could be produced with the following code:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">exc_19_thresh &lt;-<span class="st"> </span>exc_<span class="dv">19</span><span class="op">$</span>threshold <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">1500</span><span class="op">:</span><span class="dv">1866</span>)
-
-<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> exc_19_thresh, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> t)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="reference/geom_flame.html">geom_flame</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> thresh, <span class="dt">y2 =</span> temp), <span class="dt">fill =</span> <span class="st">"steelblue3"</span>, <span class="dt">show.legend =</span> F) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> temp, <span class="dt">colour =</span> <span class="st">"temp"</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> thresh, <span class="dt">colour =</span> <span class="st">"thresh"</span>), <span class="dt">size =</span> <span class="fl">1.0</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_manual">scale_colour_manual</a></span>(<span class="dt">name =</span> <span class="st">"Line Colour"</span>,
-                      <span class="dt">values =</span> <span class="kw">c</span>(<span class="st">"temp"</span> =<span class="st"> "black"</span>, <span class="st">"thresh"</span> =<span class="st">  "forestgreen"</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_continuous">scale_y_continuous</a></span>(<span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">18</span>, <span class="fl">23.5</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_date">scale_x_date</a></span>(<span class="dt">date_labels =</span> <span class="st">"%b %Y"</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">y =</span> <span class="kw">expression</span>(<span class="kw">paste</span>(<span class="st">"Temperature ["</span>, degree, <span class="st">"C]"</span>)), <span class="dt">x =</span> <span class="ot">NULL</span>)</code></pre></div>
-<div class="figure">
-<img src="articles/fig-example9-1.png">
-</div>
-</div>
-<div id="working-with-gridded-sst-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#working-with-gridded-sst-data" class="anchor"></a>Working with gridded SST data</h2>
-<p>We can also load the gridded 0.25 degree Reynolds <a href="https://www.ncei.noaa.gov/thredds/blended-global/oisst-catalog.html">OISST data</a> and apply the function pixel by pixel over all of the days of data. The example data used here have 93 longitude steps, 43 latitude steps, and cover 12797 days (1981 to 2016). We apply the <code><a href="reference/detect_event.html">detect_event()</a></code> function to these data, fit a generalised linear model (GLM), and then plot the trend per decade of the marine heatwave count. In other words, have marine heatwaves become more or less frequent in recent years? Under climate change we can expect that extreme events would tend to occur more frequently and be of greater intensity. Indeed, we can clearly see in the figure below of the result of the GLM, how the Agulhas Current has been experiencing marine heatwaves more frequently in recent decades. But there are two smaller areas, one along the western side of the Cape Peninsula in the Benguela Upwelling system and another around the Eastern Cape Province near Algoa Bay, where the frequency of marine heatwaves seems to have actually been decreasing – although the <em>P</em>-value of the decreasing trend is &gt; 0.05, and therefore not significant.</p>
-<!-- ![Count-trend](vignettes/README-grid-example1.png) -->
-<!-- ![P-of-trend](vignettes/README-grid-example2.png) -->
-<p>Please read the package <a href="https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html">vignette</a> to see how to load a netCDF file with the OISST data, apply the <code><a href="reference/detect_event.html">detect_event()</a></code> function to the whole 3D array of data, and then fit the GLM and plot the data.</p>
-</div>
-<div id="categories" class="section level2">
-<h2 class="hasAnchor">
-<a href="#categories" class="anchor"></a>Categories</h2>
-<p>The classification of MHWs under the naming scheme first proposed by Hobday et al. (in review) may also be calculated and visualised with the <strong><code>heatwaveR</code></strong> package using the <code><a href="reference/category.html">category()</a></code> function on the output of the <code><a href="reference/detect_event.html">detect_event()</a></code> function. Note that one may control the output for the names of the events by providing ones own character string for the <code>name</code> argument. Because we have calculated MHWs on the Western Australia data, we provide the name “WA” below.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tail</span>(<span class="kw"><a href="reference/category.html">category</a></span>(mhw, <span class="dt">S =</span> <span class="ot">TRUE</span>, <span class="dt">name =</span> <span class="st">"WA"</span>))
-<span class="co">#&gt; # A tibble: 6 x 11</span>
-<span class="co">#&gt;   event_no event_name peak_date  category   i_max duration p_moderate</span>
-<span class="co">#&gt;      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;dbl&gt;    &lt;int&gt;      &lt;dbl&gt;</span>
-<span class="co">#&gt; 1       38 WA 2010    2010-09-29 II Strong   2.58       18         78</span>
-<span class="co">#&gt; 2       40 WA 2010    2010-12-02 II Strong   2.66       15         73</span>
-<span class="co">#&gt; 3       31 WA 2008    2008-04-14 III Severe  3.77       34         62</span>
-<span class="co">#&gt; 4       22 WA 1999    1999-05-22 II Strong   3.6        95         59</span>
-<span class="co">#&gt; 5       58 WA 2014    2014-08-31 II Strong   2.2        12         58</span>
-<span class="co">#&gt; 6       42 WA 2011    2011-02-28 IV Extreme  6.51       60         47</span>
-<span class="co">#&gt; # ... with 4 more variables: p_strong &lt;dbl&gt;, p_severe &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   p_extreme &lt;dbl&gt;, season &lt;chr&gt;</span></code></pre></div>
-<p>Note that this functions expects the data to have been collected in the southern hemisphere, hence the argument <code>S = TRUE</code>. If they were not, one must set <code>S = FALSE</code> as seen in the example below. This ensures that the correct seasons are attributed to the event.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">res_Med &lt;-<span class="st"> </span><span class="kw"><a href="reference/detect_event.html">detect_event</a></span>(<span class="kw"><a href="reference/ts2clm.html">ts2clm</a></span>(sst_Med, <span class="dt">climatologyPeriod =</span> <span class="kw">c</span>(<span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span>)))
-<span class="kw">tail</span>(<span class="kw"><a href="reference/category.html">category</a></span>(res_Med, <span class="dt">S =</span> <span class="ot">FALSE</span>, <span class="dt">name =</span> <span class="st">"Med"</span>))
-<span class="co">#&gt; # A tibble: 6 x 11</span>
-<span class="co">#&gt;   event_no event_name peak_date  category   i_max duration p_moderate</span>
-<span class="co">#&gt;      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;dbl&gt;    &lt;int&gt;      &lt;dbl&gt;</span>
-<span class="co">#&gt; 1       55 Med 2011   2011-05-25 II Strong   4.05        8         62</span>
-<span class="co">#&gt; 2       23 Med 1999   1999-04-06 II Strong   1.88        5         60</span>
-<span class="co">#&gt; 3       28 Med 2003   2003-06-20 II Strong   5.02       30         57</span>
-<span class="co">#&gt; 4       62 Med 2012   2012-08-20 II Strong   4.22       18         56</span>
-<span class="co">#&gt; 5       44 Med 2007   2007-04-25 III Severe  4.02       19         42</span>
-<span class="co">#&gt; 6       70 Med 2014   2014-10-18 II Strong   3.31      110         35</span>
-<span class="co">#&gt; # ... with 4 more variables: p_strong &lt;dbl&gt;, p_severe &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   p_extreme &lt;dbl&gt;, season &lt;chr&gt;</span></code></pre></div>
-<p>A quick and easy visualisation of the categories of a MHW may be accomplished with <code><a href="reference/event_line.html">event_line()</a></code> by setting the <code>category</code> argument to <code>TRUE</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/event_line.html">event_line</a></span>(mhw, <span class="dt">spread =</span> <span class="dv">100</span>, <span class="dt">start_date =</span> <span class="st">"2010-11-01"</span>, <span class="dt">end_date =</span> <span class="st">"2011-06-30"</span>, <span class="dt">category =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<div class="figure">
-<img src="articles/fig-example-10-1.png">
-</div>
-<p>Were one to want to visualise the categories of a MHW ‘by hand’, the following code will provide a good starting point.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create category breaks and select slice of data.frame</span>
-clim_cat &lt;-<span class="st"> </span>mhw<span class="op">$</span>clim <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">diff =</span> thresh <span class="op">-</span><span class="st"> </span>seas,
-                <span class="dt">thresh_2x =</span> thresh <span class="op">+</span><span class="st"> </span>diff,
-                <span class="dt">thresh_3x =</span> thresh_2x <span class="op">+</span><span class="st"> </span>diff,
-                <span class="dt">thresh_4x =</span> thresh_3x <span class="op">+</span><span class="st"> </span>diff) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">10580</span><span class="op">:</span><span class="dv">10690</span>)
-
-<span class="co"># Set line colours</span>
-lineColCat &lt;-<span class="st"> </span><span class="kw">c</span>(
-  <span class="st">"Temperature"</span> =<span class="st"> "black"</span>,
-  <span class="st">"Climatology"</span> =<span class="st"> "gray20"</span>,
-  <span class="st">"Threshold"</span> =<span class="st"> "darkgreen"</span>,
-  <span class="st">"2x Threshold"</span> =<span class="st"> "darkgreen"</span>,
-  <span class="st">"3x Threshold"</span> =<span class="st"> "darkgreen"</span>,
-  <span class="st">"4x Threshold"</span> =<span class="st"> "darkgreen"</span>
-  )
-
-<span class="co"># Set category fill colours</span>
-fillColCat &lt;-<span class="st"> </span><span class="kw">c</span>(
-  <span class="st">"Moderate"</span> =<span class="st"> "#ffc866"</span>,
-  <span class="st">"Strong"</span> =<span class="st"> "#ff6900"</span>,
-  <span class="st">"Severe"</span> =<span class="st"> "#9e0000"</span>,
-  <span class="st">"Extreme"</span> =<span class="st"> "#2d0000"</span>
-  )
-
-<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="dt">data =</span> clim_cat, <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> t, <span class="dt">y =</span> temp)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="reference/geom_flame.html">geom_flame</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y2 =</span> thresh, <span class="dt">fill =</span> <span class="st">"Moderate"</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="reference/geom_flame.html">geom_flame</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y2 =</span> thresh_2x, <span class="dt">fill =</span> <span class="st">"Strong"</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="reference/geom_flame.html">geom_flame</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y2 =</span> thresh_3x, <span class="dt">fill =</span> <span class="st">"Severe"</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="reference/geom_flame.html">geom_flame</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y2 =</span> thresh_4x, <span class="dt">fill =</span> <span class="st">"Extreme"</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> thresh_2x, <span class="dt">col =</span> <span class="st">"2x Threshold"</span>), <span class="dt">size =</span> <span class="fl">0.7</span>, <span class="dt">linetype =</span> <span class="st">"dashed"</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> thresh_3x, <span class="dt">col =</span> <span class="st">"3x Threshold"</span>), <span class="dt">size =</span> <span class="fl">0.7</span>, <span class="dt">linetype =</span> <span class="st">"dotdash"</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> thresh_4x, <span class="dt">col =</span> <span class="st">"4x Threshold"</span>), <span class="dt">size =</span> <span class="fl">0.7</span>, <span class="dt">linetype =</span> <span class="st">"dotted"</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> seas, <span class="dt">col =</span> <span class="st">"Climatology"</span>), <span class="dt">size =</span> <span class="fl">0.7</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> thresh, <span class="dt">col =</span> <span class="st">"Threshold"</span>), <span class="dt">size =</span> <span class="fl">0.7</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">y =</span> temp, <span class="dt">col =</span> <span class="st">"Temperature"</span>), <span class="dt">size =</span> <span class="fl">0.6</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_manual">scale_colour_manual</a></span>(<span class="dt">name =</span> <span class="ot">NULL</span>, <span class="dt">values =</span> lineColCat,
-                      <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="st">"Temperature"</span>, <span class="st">"Climatology"</span>, <span class="st">"Threshold"</span>,
-                                 <span class="st">"2x Threshold"</span>, <span class="st">"3x Threshold"</span>, <span class="st">"4x Threshold"</span>)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_manual">scale_fill_manual</a></span>(<span class="dt">name =</span> <span class="ot">NULL</span>, <span class="dt">values =</span> fillColCat, <span class="dt">guide =</span> <span class="ot">FALSE</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/scale_date">scale_x_date</a></span>(<span class="dt">date_labels =</span> <span class="st">"%b %Y"</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/guides">guides</a></span>(<span class="dt">colour =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/guide_legend">guide_legend</a></span>(<span class="dt">override.aes =</span> <span class="kw">list</span>(<span class="dt">linetype =</span> <span class="kw">c</span>(<span class="st">"solid"</span>, <span class="st">"solid"</span>, <span class="st">"solid"</span>,
-                                                                <span class="st">"dashed"</span>, <span class="st">"dotdash"</span>, <span class="st">"dotted"</span>)))) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggplot2/topics/labs">labs</a></span>(<span class="dt">y =</span> <span class="kw">expression</span>(<span class="kw">paste</span>(<span class="st">"Temperature ["</span>, degree, <span class="st">"C]"</span>)), <span class="dt">x =</span> <span class="ot">NULL</span>)</code></pre></div>
-<div class="figure">
-<img src="articles/fig-example-11-1.png">
-</div>
-<p>Presently the functionality for the detection of categories for MCSs has not been introduced into <strong><code>heatwaveR</code></strong>, but it is inbound.</p>
+<a href="#contributing-to-heatwaver" class="anchor"></a>Contributing to <strong><code>heatwaveR</code></strong>
+</h2>
+<p>To contribute to the package please follow the guidelines <a href="https://robwschlegel.github.io/heatwaveR/CONTRIBUTING.html">here</a>.</p>
+<p>Please use this <a href="https://github.com/robwschlegel/heatwaveR/issues">link</a> to report any bugs found.</p>
 </div>
 <div id="references" class="section level2">
 <h2 class="hasAnchor">
@@ -592,7 +342,10 @@ fillColCat &lt;-<span class="st"> </span><span class="kw">c</span>(
 <div id="contact" class="section level2">
 <h2 class="hasAnchor">
 <a href="#contact" class="anchor"></a>Contact</h2>
-<p>Robert W. Schlegel Department for Biodiversity &amp; Conservation Biology, University of the Western Cape, Private Bag X17, Bellville 7535, South Africa, E-mail: <a href="mailto:robwschlegel@gmail.com">robwschlegel@gmail.com</a>, <!-- Work tel.: +27 (0)21 959 3783 --></p>
+<p>Robert W. Schlegel<br>
+Department for Biodiversity &amp; Conservation Biology, University of the Western Cape<br>
+Private Bag X17, Bellville 7535, South Africa<br>
+E-mail: <a href="mailto:robwschlegel@gmail.com">robwschlegel@gmail.com</a> <!-- Work tel.: +27 (0)21 959 3783 --></p>
 </div>
 </div>
   </div>

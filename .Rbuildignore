@@ -8,11 +8,11 @@
 ^_pkgdown\.yml$
 ^docs$
 ^README.Rmd
+^CONTRIBUTING.md
 ^TODO.txt
 ^_testing$
 ^_private$
 ^heatwaveR.code-workspace
 ^hex_sticker.R
-^paper.md
 ^\.vscode
 ^logo.png

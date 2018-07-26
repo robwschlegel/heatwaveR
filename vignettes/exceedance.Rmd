@@ -1,0 +1,90 @@
+---
+title: "The Exceedance Function"
+author: "Robert W Schlegel"
+date: "`r Sys.Date()`"
+description: "This vignette demonstrates the use of the exceedence function."
+output: 
+  rmarkdown::html_vignette:
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: bibliography.bib
+---
+
+```{r global_options, include = FALSE}
+knitr::opts_chunk$set(fig.width = 8, fig.height = 3, fig.align = 'centre',
+                      echo = TRUE, warning = FALSE, message = FALSE,
+                      eval = TRUE, tidy = FALSE)
+```
+
+## Overview
+
+In addition to the calculation of events, consecutive days over a given static threshold may be calculated with the `exceedance()` function.
+
+```{r exceedance-example1}
+# Activate libraries
+library(heatwaveR)
+library(dplyr)
+
+# Calculate exceedence
+exc_25 <- exceedance(sst_WA, threshold = 25)
+
+# Look at a few metrics
+exc_25$exceedance %>%
+  ungroup() %>%
+  select(exceedance_no, duration, date_start, date_peak, intensity_mean, intensity_cumulative) %>%
+  dplyr::arrange(-intensity_cumulative) %>%
+  head(5)
+```
+
+Which, when plotted with __`ggplot2`__ code would look like this:
+
+```{r fig-example8, echo = TRUE, eval = TRUE}
+exc_25_thresh <- exc_25$threshold %>% 
+  slice(9500:9866)
+
+ggplot(data = exc_25_thresh, aes(x = t)) +
+  geom_flame(aes(y = temp, y2 = thresh, fill = "all"), show.legend = F) +
+  geom_line(aes(y = temp, colour = "temp")) +
+  geom_line(aes(y = thresh, colour = "thresh"), size = 1.0) +
+  scale_colour_manual(name = "Line Colour",
+                      values = c("temp" = "black", "thresh" =  "forestgreen")) +
+  scale_fill_manual(name = "Event Colour", values = c("all" = "salmon")) +
+  guides(colour = guide_legend(override.aes = list(fill = NA))) +
+  scale_x_date(date_labels = "%b %Y") +
+  labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
+```
+
+<!-- ![](vignettes/fig-example8-1.png) -->
+
+The same function may be used to calculate consecutive days below a threshold, too.
+
+```{r exceedance-example2}
+exc_19 <- exceedance(sst_WA, threshold = 19, below = TRUE)
+exc_19$exceedance %>%
+  dplyr::ungroup() %>%
+  dplyr::select(exceedance_no, duration, date_start, date_peak, intensity_mean, intensity_cumulative) %>%
+  dplyr::arrange(intensity_cumulative) %>%
+  head(5)
+```
+
+And were one to desire a visualisation of these data it could be produced with the following code:
+
+```{r fig-example9, echo = TRUE, eval = TRUE}
+exc_19_thresh <- exc_19$threshold %>% 
+  slice(1500:1866)
+
+ggplot(data = exc_19_thresh, aes(x = t)) +
+  geom_flame(aes(y = thresh, y2 = temp), fill = "steelblue3", show.legend = F) +
+  geom_line(aes(y = temp, colour = "temp")) +
+  geom_line(aes(y = thresh, colour = "thresh"), size = 1.0) +
+  scale_colour_manual(name = "Line Colour",
+                      values = c("temp" = "black", "thresh" =  "forestgreen")) +
+  scale_y_continuous(limits = c(18, 23.5)) +
+  scale_x_date(date_labels = "%b %Y") +
+  labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
+```
+
+<!-- ![](vignettes/fig-example9-1.png) -->

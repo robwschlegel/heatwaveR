@@ -1,0 +1,106 @@
+---
+title: "Event Categories"
+author: "Robert W Schlegel"
+date: "`r Sys.Date()`"
+description: "This vignette deomonstrates how to calculate and visualise the categories for events."
+output: 
+  rmarkdown::html_vignette:
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: bibliography.bib
+---
+
+```{r global_options, include = FALSE}
+knitr::opts_chunk$set(fig.width = 8, fig.height = 3, fig.align = 'centre',
+                      echo = TRUE, warning = FALSE, message = FALSE,
+                      eval = TRUE, tidy = FALSE)
+```
+
+## Overview
+
+The classification of MHWs under the naming scheme first proposed by Hobday et al. (2018) may also be calculated and visualised with the __`heatwaveR`__ package using the `category()` function on the output of the `detect_event()` function. Note that one may control the output for the names of the events by providing ones own character string for the `name` argument. Because we have calculated MHWs on the Western Australia data, we provide the name "WA" below.
+
+```{r category-example1}
+# Load libraries
+library(heatwaveR)
+library(dplyr)
+
+# Calculate events
+ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+mhw <- detect_event(ts)
+
+# Look at the top few events
+tail(category(mhw, S = TRUE, name = "WA"))
+```
+
+Note that this functions expects the data to have been collected in the southern hemisphere, hence the argument `S = TRUE`. If they were not, one must set `S = FALSE` as seen in the example below. This ensures that the correct seasons are attributed to the event.
+
+```{r category-example2}
+res_Med <- detect_event(ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31")))
+tail(category(res_Med, S = FALSE, name = "Med"))
+```
+
+A quick and easy visualisation of the categories of a MHW may be accomplished with `event_line()` by setting the `category` argument to `TRUE`.
+
+```{r fig-example-10, echo = TRUE, eval = TRUE}
+event_line(mhw, spread = 100, start_date = "2010-11-01", end_date = "2011-06-30", category = TRUE)
+```
+
+<!-- ![](vignettes/fig-example-10-1.png) -->
+
+Were one to want to visualise the categories of a MHW 'by hand', the following code will provide a good starting point.
+
+```{r fig-example-11, echo = TRUE, eval = TRUE}
+# Create category breaks and select slice of data.frame
+clim_cat <- mhw$clim %>%
+  dplyr::mutate(diff = thresh - seas,
+                thresh_2x = thresh + diff,
+                thresh_3x = thresh_2x + diff,
+                thresh_4x = thresh_3x + diff) %>% 
+  dplyr::slice(10580:10690)
+
+# Set line colours
+lineColCat <- c(
+  "Temperature" = "black",
+  "Climatology" = "gray20",
+  "Threshold" = "darkgreen",
+  "2x Threshold" = "darkgreen",
+  "3x Threshold" = "darkgreen",
+  "4x Threshold" = "darkgreen"
+  )
+
+# Set category fill colours
+fillColCat <- c(
+  "Moderate" = "#ffc866",
+  "Strong" = "#ff6900",
+  "Severe" = "#9e0000",
+  "Extreme" = "#2d0000"
+  )
+
+ggplot(data = clim_cat, aes(x = t, y = temp)) +
+  geom_flame(aes(y2 = thresh, fill = "Moderate")) +
+  geom_flame(aes(y2 = thresh_2x, fill = "Strong")) +
+  geom_flame(aes(y2 = thresh_3x, fill = "Severe")) +
+  geom_flame(aes(y2 = thresh_4x, fill = "Extreme")) +
+  geom_line(aes(y = thresh_2x, col = "2x Threshold"), size = 0.7, linetype = "dashed") +
+  geom_line(aes(y = thresh_3x, col = "3x Threshold"), size = 0.7, linetype = "dotdash") +
+  geom_line(aes(y = thresh_4x, col = "4x Threshold"), size = 0.7, linetype = "dotted") +
+  geom_line(aes(y = seas, col = "Climatology"), size = 0.7) +
+  geom_line(aes(y = thresh, col = "Threshold"), size = 0.7) +
+  geom_line(aes(y = temp, col = "Temperature"), size = 0.6) +
+  scale_colour_manual(name = NULL, values = lineColCat,
+                      breaks = c("Temperature", "Climatology", "Threshold",
+                                 "2x Threshold", "3x Threshold", "4x Threshold")) +
+  scale_fill_manual(name = NULL, values = fillColCat, guide = FALSE) +
+  scale_x_date(date_labels = "%b %Y") +
+  guides(colour = guide_legend(override.aes = list(linetype = c("solid", "solid", "solid",
+                                                                "dashed", "dotdash", "dotted")))) + 
+  labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
+```
+
+<!-- ![](vignettes/fig-example-11-1.png) -->
+
+Presently the functionality for the detection of categories for MCSs has not been introduced into __`heatwaveR`__, but it is inbound.
