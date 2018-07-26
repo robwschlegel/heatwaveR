@@ -33,7 +33,6 @@ clim_spread <- function(data, clim_start, clim_end, windowHalfWidth) {
   rm(data)
 
   data.table::setDT(ts_clim)[, ts_x := format(as.Date(ts_x), "%Y") ]
-  # data.table::setDT(ts_clim)
   ts_spread <- data.table::dcast(ts_clim, doy ~ ts_x, value.var = "ts_y")
   rm(ts_clim)
 

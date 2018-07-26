@@ -85,8 +85,8 @@ make_whole <- function(data, x = t, y = temp) {
   t_series <- merge(ser, t_series)[, 2]
 
   t_series <- data.table::data.table(doy = lubridate::yday(t_series),
-                                 date = as.Date(as.POSIXct(t_series)),
-                                 ts_y = as.numeric(t_series))
+                                     date = as.Date(as.POSIXct(t_series)),
+                                     ts_y = as.numeric(t_series))
 
   t_series$doy <- as.integer(ifelse(
     lubridate::leap_year(lubridate::year(t_series$date)) == FALSE,

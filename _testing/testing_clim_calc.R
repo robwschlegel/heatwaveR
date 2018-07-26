@@ -63,3 +63,6 @@ microbenchmark(
 proto_event(t_series, criterion_column = 5,
                        minDuration = minDuration, maxGap = maxGap)
 )
+
+
+ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), robust = FALSE)
