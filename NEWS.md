@@ -2,6 +2,7 @@
 
 * Added Zenodo DOI badge
 * JOSS review process complete
+* Added JOSS DOI badge
 
 # heatwaveR 0.3.3 (2018-07-25)
 
@@ -29,8 +30,7 @@
 # heatwaveR 0.3.0 (2018-06-22)
 
 * Re-submitted to CRAN in anticipation of __`ggplot2`__ changes
-
- `proto_event` now handles all event calculations 'in house'
+* `proto_event` now handles all event calculations 'in house'
 * This allows `detect_event` to now be given a theoretically limitless number of
   thresholds
 
