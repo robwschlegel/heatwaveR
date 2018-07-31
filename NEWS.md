@@ -1,3 +1,8 @@
+# heatwaveR 0.3.3 (2018-07-31)
+
+* Added Zenodo DOI badge
+* JOSS review process complete
+
 # heatwaveR 0.3.3 (2018-07-25)
 
 * BUG FIX: corrected issue with `clim_calc_cpp` not being able to calculate
