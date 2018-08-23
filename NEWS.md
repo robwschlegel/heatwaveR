@@ -1,3 +1,7 @@
+# heatwaveR 0.3.3 (2018-08-23)
+
+* Added CITATION file so that package citation is now set to JOSS article
+
 # heatwaveR 0.3.3 (2018-07-31)
 
 * Added Zenodo DOI badge
