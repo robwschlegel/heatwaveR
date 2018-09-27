@@ -21,4 +21,7 @@ A dataset containing the sea surface temperature temperature
 (in degrees Celsius) and date for the Western Australian region
 for the period 1982-01-01 to 2014-12-31.
 }
+\details{
+lon/lat: 112.5/-29.5
+}
 \keyword{datasets}

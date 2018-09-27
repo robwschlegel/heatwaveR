@@ -5,6 +5,7 @@
 * Added argument to `category()` that allows one to have the function also 
   output the day-to-day (long) category values, rather than just the
   summary (wide) output.
+* Added lon/lat values to documentation for built-in time series
 
 # heatwaveR 0.3.3 (2018-08-23)
 
