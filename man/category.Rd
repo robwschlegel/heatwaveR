@@ -77,7 +77,8 @@ The first dataframe, \code{climatology}, will contain the same columns passed to
   \item{intensity}{The total exceedance (dfault is degrees C) above the 90th
   percentile threshold.}
   \item{category}{The category classification per day.}
-The second dataframe, \code{event}, contains the default output od this function,
+
+The second dataframe, \code{event}, contains the default output of this function,
 as detailed above.
 }
 \description{
@@ -87,12 +88,12 @@ accordance with the naming scheme proposed in Hobday et al. (2018).
 \details{
 An explanation for the categories is as follows:
 \enumerate{
-  \item{Moderate}{Events that have been detected, but with a maximum intensity that does not
+  \item{I Moderate-}{Events that have been detected, but with a maximum intensity that does not
   double the distance between the seasonal climatology and the threshold value.}
-  \item{Strong}{Events with a maximum intensity that doubles the distance from the seasonal
+  \item{II Strong-}{Events with a maximum intensity that doubles the distance from the seasonal
   climatology and the threshold, but do not triple it.}
-  \item{Severe}{Events that triple the aforementioned distance, but do not quadruple it.}
-  \item{Extreme}{Events with a maximum intensity that is four times or greater the
+  \item{III Severe-}{Events that triple the aforementioned distance, but do not quadruple it.}
+  \item{IV Extreme-}{Events with a maximum intensity that is four times or greater the
   aforementioned distance. Scary stuff...}
   }
 }
@@ -127,7 +128,7 @@ cat_WA_ts <- dplyr::left_join(res_WA$climatology,
 }
 \references{
 Hobday et al. (2018). Categorizing and Naming
-Marine Heatwaves. Oceanography.
+Marine Heatwaves. Oceanography 31(2).
 }
 \author{
 Robert W. Schlegel

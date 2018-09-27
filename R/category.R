@@ -23,17 +23,6 @@
 #' intensity and category values. The second dataframe, \code{event}, is the summary results that
 #' this function produces by default.
 #'
-#' @details An explanation for the categories is as follows:
-#' \enumerate{
-#'   \item{Moderate}{Events that have been detected, but with a maximum intensity that does not
-#'   double the distance between the seasonal climatology and the threshold value.}
-#'   \item{Strong}{Events with a maximum intensity that doubles the distance from the seasonal
-#'   climatology and the threshold, but do not triple it.}
-#'   \item{Severe}{Events that triple the aforementioned distance, but do not quadruple it.}
-#'   \item{Extreme}{Events with a maximum intensity that is four times or greater the
-#'   aforementioned distance. Scary stuff...}
-#'   }
-#'
 #' @return The function will return a tibble with results similar to those seen in
 #' Table 2 of Hobday et al. (2018). This provides the information necessary to
 #' appraise the extent of the events in the output of \code{\link{detect_event}} based on the
@@ -81,13 +70,25 @@
 #'   \item{intensity}{The total exceedance (dfault is degrees C) above the 90th
 #'   percentile threshold.}
 #'   \item{category}{The category classification per day.}
-#' The second dataframe, \code{event}, contains the default output od this function,
+#'
+#' The second dataframe, \code{event}, contains the default output of this function,
 #' as detailed above.
+#'
+#' @details An explanation for the categories is as follows:
+#' \enumerate{
+#'   \item{I Moderate-}{Events that have been detected, but with a maximum intensity that does not
+#'   double the distance between the seasonal climatology and the threshold value.}
+#'   \item{II Strong-}{Events with a maximum intensity that doubles the distance from the seasonal
+#'   climatology and the threshold, but do not triple it.}
+#'   \item{III Severe-}{Events that triple the aforementioned distance, but do not quadruple it.}
+#'   \item{IV Extreme-}{Events with a maximum intensity that is four times or greater the
+#'   aforementioned distance. Scary stuff...}
+#'   }
 #'
 #' @author Robert W. Schlegel
 #'
 #' @references Hobday et al. (2018). Categorizing and Naming
-#' Marine Heatwaves. Oceanography.
+#' Marine Heatwaves. Oceanography 31(2).
 #'
 #' @export
 #'
