@@ -1,3 +1,11 @@
+# heatwaveR 0.3.4 (2018-09-27)
+
+* Fixed bug in `ts2clm()` that prevented calculation of clims with large
+  contiguous missing periods of data (e.g. ice coverage).
+* Added argument to `category()` that allows one to have the function also 
+  output the day-to-day (long) category values, rather than just the
+  summary (wide) output.
+
 # heatwaveR 0.3.3 (2018-08-23)
 
 * Added CITATION file so that package citation is now set to JOSS article

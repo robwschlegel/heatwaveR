@@ -1,13 +1,13 @@
 #' Calculate the categories of events.
 #'
 #' Calculates the categories of a series of events as produced by \code{\link{detect_event}} in
-#' accordance with the naming scheme proposed in Hobday et al. (in review).
+#' accordance with the naming scheme proposed in Hobday et al. (2018).
 #'
 #' @importFrom dplyr n %>%
 #'
 #' @param data The function receives the full (list) output from the
 #' \code{\link{detect_event}} function.
-#' @param y This is a column containing the measurement variable. If the column
+#' @param y The column containing the measurement variable. If the column
 #' name differs from the default (i.e. \code{temp}), specify the name here.
 #' @param S This argument informs the function if the data were collected in the
 #' southern hemisphere (TRUE, default) or the northern hemisphere (FALSE) so that it may correctly
@@ -15,6 +15,13 @@
 #' @param name If a character string (e.g. "Bohai Sea") is provide here it will be used
 #' to name the events in the \code{event_name} column (see below) of the output.
 #' If no value is provided the default output is "Event".
+#' @param climatology  The default setting of \code{FALSE} will tell this function to output only
+#' the summary (wide) results for the individual events as seen in Hobday et al. (2018). If set
+#' to \code{TRUE}, this function will rather return a list of two data frames, same
+#' as \code{\link{detect_event}}. The first dataframe \code{climatology}, contains the same
+#' information as found in \code{\link{detect_event}}, but with the addition of the daily
+#' intensity and category values. The second dataframe, \code{event}, is the summary results that
+#' this function produces by default.
 #'
 #' @details An explanation for the categories is as follows:
 #' \enumerate{
@@ -28,20 +35,19 @@
 #'   }
 #'
 #' @return The function will return a tibble with results similar to those seen in
-#' Table 2 of Hobday et al. (in review). This provides the information necessary to
+#' Table 2 of Hobday et al. (2018). This provides the information necessary to
 #' appraise the extent of the events in the output of \code{\link{detect_event}} based on the
 #' category ranking scale. The category thresholds are calculated based on the difference
-#' between the seasonal climatology and threshold climatology produced by
-#' \code{\link{detect_event}}. The four category levels are then the difference
-#' multiplied by the category level.
+#' between the given seasonal climatology and threshold climatology. The four category levels
+#' are then the difference multiplied by the category level.
 #'
-#' The definitions for the output columns are as follows:
+#' The definitions for the default output columns are as follows:
 #'   \item{event_no}{The number of the event as determined by \code{\link{detect_event}}
 #'   for reference between the outputs.}
 #'   \item{event_name}{The name of the event. Generated from the \code{\link{name}}
 #'   value provided and the year of the \code{peak_date} (see following) of
 #'   the event. If no \code{\link{name}} value is provided the default "Event" is used.
-#'   As proposed in Hobday et al. (in review), \code{Moderate} events are not given a name
+#'   As proposed in Hobday et al. (2018), \code{Moderate} events are not given a name
 #'   so as to prevent multiple repeat names within the same year. If two or more events
 #'   ranked greater than Moderate are reported withiin the same year, they will be
 #'   differentiated with the addition of a trailing letter
@@ -54,7 +60,7 @@
 #'   any possible days when the measurement value \code{\link{y}}) may have dropped below the
 #'   threshold value. Therefore, the proportion of the event duration (days) spent above
 #'   certain thresholds may not add up to 100\% (see following four items).}
-#'   \item{p_moderate}{The proportion of the total duration (days) spent above at or
+#'   \item{p_moderate}{The proportion of the total duration (days) spent at or above
 #'   the first threshold, but below any further thresholds.}
 #'   \item{p_strong}{The proportion of the total duration (days) spent at or above
 #'   the second threshold, but below any further thresholds.}
@@ -69,9 +75,18 @@
 #'   seasons are listed as "Year-round". December (June) is used here as the start of
 #'   Austral (Boreal) summer.}
 #'
+#' If \code{climatology = TRUE}, this function will output a list of two dataframes.
+#' The first dataframe, \code{climatology}, will contain the same columns passed to
+#' \code{\link{detect_event}}, with the addition of:
+#'   \item{intensity}{The total exceedance (dfault is degrees C) above the 90th
+#'   percentile threshold.}
+#'   \item{category}{The category classification per day.}
+#' The second dataframe, \code{event}, contains the default output od this function,
+#' as detailed above.
+#'
 #' @author Robert W. Schlegel
 #'
-#' @references Hobday et al. (in review). Categorizing and Naming
+#' @references Hobday et al. (2018). Categorizing and Naming
 #' Marine Heatwaves. Oceanography.
 #'
 #' @export
@@ -84,17 +99,32 @@
 #' tail(cat_WA)
 #'
 #' # If the data were collected in the northern hemisphere
-#' # we must let the funciton know this as seen below
+#' # we must let the funciton know this, as seen below
 #' res_Med <- detect_event(ts2clm(sst_Med,
 #'                         climatologyPeriod = c("1983-01-01", "2012-12-31")))
 #' cat_Med <- category(res_Med, S = FALSE, name = "Med")
 #' tail(cat_Med)
 #'
+#' # One may also choose to have this function output the daily
+#' # category classifications as well by setting: climatology = TRUE
+#' cat_WA_daily <- category(res_WA, name = "WA", climatology =TRUE)
+#' head(cat_WA_daily$climatology)
+#'
+#' # Note that this will not return the complete time series, only the
+#' # days during which events were detected.
+#' # This was done to reduce the size of the output for those working
+#' # with gridded data.
+#' # Should one want a complete time series, the daily category results
+#' # may simply be left_join() with the detect_event() results
+#' cat_WA_ts <- dplyr::left_join(res_WA$climatology,
+#'                               cat_WA_daily$climatology)
+#'
 category <-
   function(data,
            y = temp,
            S = TRUE,
-           name = "Event") {
+           name = "Event",
+           climatology = FALSE) {
 
     temp <- NULL
 
@@ -224,5 +254,21 @@ category <-
 
     cat_res <- tibble::as.tibble(cat_join) %>%
       dplyr::arrange(-p_moderate, -p_strong, -p_severe, -p_extreme)
-    return(cat_res)
+
+    if (climatology ) {
+
+      doy <- intensity <- NULL
+
+      clim_res <- clim_diff %>%
+        dplyr::mutate(category = ifelse(ts_y >= thresh_4x, "IV Extreme",
+                                        ifelse(ts_y >= thresh_3x, "III Severe",
+                                               ifelse(ts_y >= thresh_2x, "II Strong", "I Moderate")))) %>%
+        dplyr::rename(intensity = diff) %>%
+        dplyr::select(doy:event_no, intensity, category)
+
+      list(climatology = tibble::as_tibble(clim_res),
+           event = cat_res)
+    } else {
+      return(cat_res)
+    }
 }
