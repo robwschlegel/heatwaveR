@@ -1,3 +1,7 @@
+# heatwaveR 0.3.4 (2018-09-28)
+
+* Removed several unnecessary columns from category climatology output
+
 # heatwaveR 0.3.4 (2018-09-27)
 
 * Fixed bug in `ts2clm()` that prevented calculation of clims with large
@@ -21,7 +25,7 @@
 
 * BUG FIX: corrected issue with `clim_calc_cpp` not being able to calculate
   clims from baselines not beginning and ending on the Julian year by making
-  `clim_spread` plug the gaps beforehand with rowwise means.
+  `clim_spread` plug the gaps beforehand with row-wise means.
 * Rebuilt pkgdown site to reflect version increase
 * v0.3.3 submitted to CRAN
 
@@ -131,7 +135,7 @@
 
 # heatwaveR 0.2.3.9000 (2018-05-16)
 
-* Major spead-up in the climatology creation function. `clim_spread()` now returns
+* Major speed-up in the climatology creation function. `clim_spread()` now returns
   a matrix, not a data frame. This makes the loop in `clim_calc()` much faster.
   In testing with the sst_WA data, it leads to a 3.7 fold speed improvement
   (520 ms down to 140 ms).

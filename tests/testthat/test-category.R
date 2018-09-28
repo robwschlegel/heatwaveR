@@ -58,6 +58,6 @@ test_that("climatology = T causes a list output with the time series category da
   expect_is(cat, "list")
   expect_is(cat$climatology, "tbl_df")
   expect_is(cat$event, "tbl_df")
-  expect_equal(ncol(cat$climatology), 12)
+  expect_equal(ncol(cat$climatology), 4)
   expect_equal(nrow(cat$climatology), 900)
 })

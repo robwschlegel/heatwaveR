@@ -72,9 +72,10 @@ The definitions for the default output columns are as follows:
   Austral (Boreal) summer.}
 
 If \code{climatology = TRUE}, this function will output a list of two dataframes.
-The first dataframe, \code{climatology}, will contain the same columns passed to
-\code{\link{detect_event}}, with the addition of:
-  \item{intensity}{The total exceedance (dfault is degrees C) above the 90th
+The first dataframe, \code{climatology}, will contain only the following columns:
+  \item{t}{The column containing the daily date values.}
+  \item{event_no}{The numeric event number label.}
+  \item{intensity}{The total exceedance (default is degrees C) above the 90th
   percentile threshold.}
   \item{category}{The category classification per day.}
 
@@ -124,6 +125,7 @@ head(cat_WA_daily$climatology)
 # may simply be left_join() with the detect_event() results
 cat_WA_ts <- dplyr::left_join(res_WA$climatology,
                               cat_WA_daily$climatology)
+head(cat_WA_ts)
 
 }
 \references{

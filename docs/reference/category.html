@@ -247,9 +247,10 @@ are then the difference multiplied by the category level.</p>
   Austral (Boreal) summer.</p></dd>
 
 If climatology = TRUE, this function will output a list of two dataframes.
-The first dataframe, climatology, will contain the same columns passed to
-<a href='detect_event.html'>detect_event</a>, with the addition of:
-  <dt>intensity</dt><dd><p>The total exceedance (dfault is degrees C) above the 90th
+The first dataframe, climatology, will contain only the following columns:
+  <dt>t</dt><dd><p>The column containing the daily date values.</p></dd>
+  <dt>event_no</dt><dd><p>The numeric event number label.</p></dd>
+  <dt>intensity</dt><dd><p>The total exceedance (default is degrees C) above the 90th
   percentile threshold.</p></dd>
   <dt>category</dt><dd><p>The category classification per day.</p></dd>
 
@@ -308,25 +309,33 @@ Marine Heatwaves. Oceanography 31(2).</p>
 <span class='co'># One may also choose to have this function output the daily</span>
 <span class='co'># category classifications as well by setting: climatology = TRUE</span>
 <span class='no'>cat_WA_daily</span> <span class='kw'>&lt;-</span> <span class='fu'>category</span>(<span class='no'>res_WA</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"WA"</span>, <span class='kw'>climatology</span> <span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='fu'>head</span>(<span class='no'>cat_WA_daily</span>$<span class='no'>climatology</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 12
-#&gt;     doy t           temp  seas thresh   var threshCriterion durationCriteri…
-#&gt;   &lt;int&gt; &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;           &lt;lgl&gt;           
-#&gt; 1   155 1984-06-03  23.9  22.4   23.7  1.16 TRUE            TRUE            
-#&gt; 2   156 1984-06-04  24.1  22.3   23.7  1.16 TRUE            TRUE            
-#&gt; 3   157 1984-06-05  24.2  22.3   23.7  1.16 TRUE            TRUE            
-#&gt; 4   158 1984-06-06  23.9  22.3   23.6  1.16 TRUE            TRUE            
-#&gt; 5   159 1984-06-07  23.8  22.2   23.6  1.16 TRUE            TRUE            
-#&gt; 6   169 1984-06-17  23.9  21.9   23.3  1.17 TRUE            TRUE            
-#&gt; # ... with 4 more variables: event &lt;lgl&gt;, event_no &lt;int&gt;, intensity &lt;dbl&gt;,
-#&gt; #   category &lt;chr&gt;</div><div class='input'>
+<span class='fu'>head</span>(<span class='no'>cat_WA_daily</span>$<span class='no'>climatology</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 4
+#&gt;   t          event_no intensity category  
+#&gt;   &lt;date&gt;        &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;     
+#&gt; 1 1984-06-03        1      1.35 I Moderate
+#&gt; 2 1984-06-04        1      1.34 I Moderate
+#&gt; 3 1984-06-05        1      1.34 I Moderate
+#&gt; 4 1984-06-06        1      1.35 I Moderate
+#&gt; 5 1984-06-07        1      1.36 I Moderate
+#&gt; 6 1984-06-17        2      1.46 I Moderate</div><div class='input'>
 <span class='co'># Note that this will not return the complete time series, only the</span>
 <span class='co'># days during which events were detected.</span>
 <span class='co'># This was done to reduce the size of the output for those working</span>
 <span class='co'># with gridded data.</span>
 <span class='co'># Should one want a complete time series, the daily category results</span>
 <span class='co'># may simply be left_join() with the detect_event() results</span>
-<span class='no'>cat_WA_ts</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/join'>left_join</a></span>(<span class='no'>res_WA</span>$<span class='no'>climatology</span>,
-                              <span class='no'>cat_WA_daily</span>$<span class='no'>climatology</span>)</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("doy", "t", "temp", "seas", "thresh", "var", "threshCriterion", "durationCriterion", "event", "event_no")</span></div><div class='input'>
+<span class='no'>cat_WA_ts</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/join.html'>left_join</a></span>(<span class='no'>res_WA</span>$<span class='no'>climatology</span>,
+                              <span class='no'>cat_WA_daily</span>$<span class='no'>climatology</span>)</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("t", "event_no")</span></div><div class='input'><span class='fu'>head</span>(<span class='no'>cat_WA_ts</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 12
+#&gt;     doy t           temp  seas thresh   var threshCriterion durationCriteri…
+#&gt;   &lt;int&gt; &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;           &lt;lgl&gt;           
+#&gt; 1     1 1982-01-01  20.9  21.6   23.0 0.959 FALSE           FALSE           
+#&gt; 2     2 1982-01-02  21.2  21.6   23.0 0.964 FALSE           FALSE           
+#&gt; 3     3 1982-01-03  21.4  21.7   23.0 0.968 FALSE           FALSE           
+#&gt; 4     4 1982-01-04  21.2  21.7   23.1 0.973 FALSE           FALSE           
+#&gt; 5     5 1982-01-05  21.3  21.7   23.1 0.976 FALSE           FALSE           
+#&gt; 6     6 1982-01-06  21.6  21.7   23.1 0.980 FALSE           FALSE           
+#&gt; # ... with 4 more variables: event &lt;lgl&gt;, event_no &lt;int&gt;, intensity &lt;dbl&gt;,
+#&gt; #   category &lt;chr&gt;</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
