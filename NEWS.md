@@ -1,3 +1,7 @@
+# heatwaveR 0.3.4 (2018-10-01)
+
+* Minor tweak to `make)whole_fast()` to provide a cleaner internal output
+
 # heatwaveR 0.3.4 (2018-09-28)
 
 * Removed several unnecessary columns from category climatology output
