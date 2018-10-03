@@ -1,6 +1,12 @@
+# heatwaveR 0.3.4 (2018-10-03)
+
+* Changed error handling in `proto_event()` to return no events
+  than to stop message with an error.
+* This change was picked up by `detect_event()` without any required changes
+
 # heatwaveR 0.3.4 (2018-10-01)
 
-* Minor tweak to `make)whole_fast()` to provide a cleaner internal output
+* Minor tweak to `make_whole_fast()` to provide a cleaner internal output
 
 # heatwaveR 0.3.4 (2018-09-28)
 
