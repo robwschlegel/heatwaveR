@@ -3,6 +3,7 @@
 * Changed error handling in `proto_event()` to return no events
   than to stop message with an error.
 * This change was picked up by `detect_event()` without any required changes
+* `category()` required a bit of cajoling to also output a blank dataframe
 
 # heatwaveR 0.3.4 (2018-10-01)
 

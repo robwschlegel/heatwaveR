@@ -137,6 +137,31 @@ category <-
 
     event_no <- event_name <- peak_date <- category <- duration <- season <- NULL
 
+    if(nrow(data$event) == 0) {
+      cat_res <- tibble::as_tibble(data.frame(event_no = data$event$event_no,
+                                              event_name = data$event$event_no,
+                                              peak_date = data$event$event_no,
+                                              category = data$event$event_no,
+                                              i_max = data$event$event_no,
+                                              duration = data$event$event_no,
+                                              p_moderate = data$event$event_no,
+                                              p_strong = data$event$event_no,
+                                              p_severe = data$event$event_no,
+                                              p_extreme = data$event$event_no,
+                                              season = data$event$event_no))
+      if(climatology){
+        clim_res <- tibble::as_tibble(data.frame(t = data$event$event_no,
+                                                 event_no = data$event$event_no,
+                                                 intensity = data$event$event_no,
+                                                 category = data$event$event_no))
+        res <- list(climatology = clim_res,
+                    event = cat_res)
+        return(res)
+      } else {
+        return(cat_res)
+        }
+      }
+
     cat_frame <- data.frame(event_no = data$event$event_no,
                             event_name = paste0(as.character(name), " ", lubridate::year(data$event$date_peak)),
                             peak_date = data$event$date_peak,
@@ -255,7 +280,7 @@ category <-
     #
     # }
 
-    cat_res <- tibble::as.tibble(cat_join) %>%
+    cat_res <- tibble::as_tibble(cat_join) %>%
       dplyr::arrange(-p_moderate, -p_strong, -p_severe, -p_extreme)
 
     if (climatology ) {
