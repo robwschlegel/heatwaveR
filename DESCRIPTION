@@ -21,7 +21,8 @@ Suggests:
     ggpubr,
     testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    covr
 Imports:
     tibble,
     lubridate,
