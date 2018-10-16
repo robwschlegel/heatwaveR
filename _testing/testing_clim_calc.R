@@ -22,9 +22,13 @@ criterion_column <- "threshCriterion"
 minDuration <- 3
 gaps <- FALSE
 
-sst <- fread("/Users/ajsmit/Dropbox/R/Benguela_MUR/sst_test.csv")
-# data <- sst_WA
-data <- sst
+# sst <- fread("/Users/ajsmit/Dropbox/R/Benguela_MUR/sst_test.csv")
+data <- sst_WA
+# data <- sst
+data <- sst_WA %>%
+  dplyr::mutate(month = month(t)) %>%
+  dplyr::filter(month != 1) %>%
+  dplyr::select(-month)
 ts_x <- data$t
 ts_y <- data$temp
 ts_xy <- data.table::data.table(ts_x, ts_y)
@@ -48,11 +52,13 @@ clim_end <- climatologyPeriod[2]
 
 source("R/clim_spread.R") # <-- introduces NAs
 ts_wide <- clim_spread(ts_interped, clim_start, clim_end, windowHalfWidth)
+# ts_wide[15,2] <- NA
+# ts_wide[15,] <- NA
 
 # source("src/clim_calc.cpp") # does not work
-# source("R/clim_calc.R") # works
-ts_mat <- clim_calc_cpp(ts_wide, windowHalfWidth, pctile)
-ts_mat <- clim_calc(ts_wide, windowHalfWidth, pctile)
+source("R/clim_calc.R") # works
+ts_mat_cpp <- heatwaveR:::clim_calc_cpp(ts_wide, windowHalfWidth, pctile)
+ts_mat_r <- clim_calc(ts_wide, windowHalfWidth, pctile)
 
 # benchmarks --------------------------------------------------------------
 

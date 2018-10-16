@@ -35,12 +35,23 @@ proto_event <- function(t_series,
 
   proto_events <- do.call(rbind,
                           lapply(s1[ex1$values == TRUE], function(x)
-                            data.table::data.table(index_start = min(x), index_end = max(x))))
-  proto_events$duration <- proto_events$index_end - proto_events$index_start + 1
-  proto_events <- proto_events[duration >= minDuration, ]
+                            data.table::data.table(index_start = min(x),
+                                                   index_end = max(x))))
+  duration <- proto_events$index_end - proto_events$index_start + 1
 
-  if (length(proto_events$index_start) == 0)
-    stop("not enough consecutive days above the threshold(s) to detect any events")
+  suppressWarnings(
+  if (is.null(proto_events) | max(duration) < minDuration){
+    res <- data.frame(t_series,
+                        durationCriterion = FALSE,
+                        event = FALSE,
+                        event_no = NA)
+      return(res)
+  } else {
+    proto_events$duration <- duration
+  }
+  )
+
+  proto_events <- proto_events[duration >= minDuration, ]
 
   durationCriterion <- rep(FALSE, nrow(t_series))
   for (i in 1:nrow(proto_events)) {

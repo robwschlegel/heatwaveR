@@ -9,18 +9,6 @@ TODO
 * define events and climatologies as S3 classes
 * maybe change the names 'smooth_percentile_width' and 'smooth_percentile' as they actually have nothing to do with percentiles; in the documentation, make clear how the new names used relate back to the same (but differently named) arguments in the python code
 
-* Add category metric for 'size' of heatwave
-* (from Hobday et al. in review) Multiples of this local difference [range from seasonal clim to 90th percentile] will describe different categories of MHWs. Descriptors of magnitude of scale, defined as 
-- moderate (1-2×, Category I)
-- strong (2-3×, Category II)
-- severe (3-4×, Category III) 
-- extreme (>4×, Category IV)
-* See table 2 in Hobday et al. in review for an example of how the categories may be tabulated
-* (from Hobday et al. in review) The Mediterranean Sea 2006 MHW was classified as strong for 21% of the 33-day duration, with an maximum intensity of 3.99°C 
-* The important bits in a written output would be:
-** EVENT_NAME CLASSIFCATION PERCENTAGE_AT_HIGHEST DURATION MAXIMUM_INTENSITY
-** The event name should be based on the area it occurered in, and the year during I-max
-*** e.g. Tasman Sea 2015
 
 * Perhaps a function for real time monitoring use
 * (from Hobday et al. in review) Based on this criterion, MHW duration, mean intensity, rate of onset and rate of decline are not suitable measures, as they are not known until the MHW has concluded.
@@ -31,30 +19,6 @@ TODO
 * Add block_average metric() 'intensity_max_max'
 * Possibly create a mhw_block() function
 * If so, also give it a qualitative score as in the python version
-
-* Possible compound hw qualities from Baldwin et al. (in review)
-** 1) a minimum number of hot days occurring consecutively to start a heat wave
-** 2) a maximum number of cooler (below threshold) days that can occur consecutively for the heat wave to continue
-** 3) a minimum number of hot days occurring consecutively that can add onto a heat wave after a break
-** For quick reference, we denote a temporal structure definition with three numbers, for example 321 where 3 indicates a minimum initial event
-length of three hot days, 2 indicates a maximum break length of two cooler days, and 1 indicates a minimum length of a set of consecutive hot days that can compound on after a break.
-** The quantity of interest here is the cumulative annual compound days as a proportion of total heat wave days (hereafter “compound proportion”).
-** Once the mean signal in a time series begins to raise, this proportion will increase, to a point
-** It will then deminish down to zero as every day becomes greter than the 90th percentile threshold
-
-Text added to `detect()` and repeated here (to be deleted from the function later)
-## 1. if a custom baseline is supplied it will be used to derive a climatology and threshold using the calculations below;
-## this custom baseline will share the same climatology_start and climatology_end as the main data
-## 2. i can also imagine a scenario where one might want to provide a precalculated custom baseline and threshold
-## relative to which the events will be detected--in this instance they will not be subject to the calcs below, and they
-## will cover the dull duration of the main data where the events will be detected in; this baseline and threshold might
-## be one (e.g.) from which the long-term trend had been removed beforehand, etc.; also, the interannual variation might
-## not necessarily be constant and the time series might be evolving throughout time, unlike a climatology (see below)
-## 3. lastly, i can also foresee the use of custom climatologies (of the mean or median, and threshold--i.e. a daily
-## climatology of 365 or 366 days; it will replicated for as many times as is necessary to fit between climatology_start
-## and climatology_end; a climatology is therefore a constant annual signal that will repeat year after year
-## ...we need to provide proper documentation of these options, and talk about the differences between baselines and
-## climatologies, and in the paper give example applications of the various use scenarios.
 
 
 Friday, May 11th, 2018 Skype meeting:
@@ -77,6 +41,17 @@ Friday, May 11th, 2018 Skype meeting:
 *** Including how to determine the correct baselines and climatologies to use
 * Round it out with case studies and pitfalls
 
-Submit package to onboarding process with rOpenSci
 
 Correct maxPadLength to match Python
+
+
+Wednesday, August 22nd, 2018 additional MHW indeces ideas from Russo et al. 2015
+* The Europeans here use the same HW definition as Sarah
+* The magnitude is calculated differently
+** Uses the 25th and 75th percentiles (inter-qaurtile range; IQR) in the calculation
+** So magnitude of 5 means that the HW on a certain day was five times the IQR of the base period
+* Uses self-made 'extRemes' package
+* Specifically investigated/visualised HWs covered in newspaper articles
+* Percent of land area over a certain magnitude seems like a good idea
+
+

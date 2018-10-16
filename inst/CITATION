@@ -1,0 +1,20 @@
+bibentry(bibtype = "Article",
+    	 title   = "{heatwaveR}: A central algorithm for the detection of heatwaves and cold-spells",
+    	 author  = c(person(given = c("Robert", "W."),
+                            family = "Schlegel",
+                            email = "robwschlegel@gmail.com"),
+                     person(given = c("Albertus", "J."),
+                            family = "Smit")),
+    	 journal = "Journal of Open Source Software",
+    	 year    = "2018",
+    	 volume  = "3",
+    	 number  = "27",
+    	 pages   = "821", 
+    	 doi     = "10.21105/joss.00821",
+  	 header  = "Please cite the heatwaveR package in publications as:",
+    	 textVersion  = paste("Robert W. Schlegel and Albertus J. Smit (2018). heatwaveR: A central", 
+		              "algorithm for the detection of heatwaves and",
+		              "cold-spells. Journal of Open Source Software,", 
+		              "3(27), 821, https://doi.org/10.21105/joss.00821")
+)
+

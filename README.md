@@ -1,7 +1,7 @@
 heatwaveR <img src="vignettes/logo.png" width=200 align="right" />
 ==================================================================
 
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/heatwaveR)](https://cran.r-project.org/package=heatwaveR) [![Travis build status](https://travis-ci.org/robwschlegel/heatwaveR.svg?branch=master)](https://travis-ci.org/robwschlegel/heatwaveR) [![Coverage status](https://codecov.io/gh/robwschlegel/heatwaveR/branch/master/graph/badge.svg)](https://codecov.io/github/robwschlegel/heatwaveR?branch=master) ![](https://cranlogs.r-pkg.org/badges/grand-total/heatwaveR)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/heatwaveR)](https://cran.r-project.org/package=heatwaveR) [![Travis build status](https://travis-ci.org/robwschlegel/heatwaveR.svg?branch=master)](https://travis-ci.org/robwschlegel/heatwaveR) [![Coverage status](https://codecov.io/gh/robwschlegel/heatwaveR/branch/master/graph/badge.svg)](https://codecov.io/github/robwschlegel/heatwaveR?branch=master) [![JOSS](http://joss.theoj.org/papers/10.21105/joss.00821/status.svg)](https://doi.org/10.21105/joss.00821) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1324309.svg)](https://doi.org/10.5281/zenodo.1324309) ![](https://cranlogs.r-pkg.org/badges/grand-total/heatwaveR)
 
 The **`heatwaveR`** package is a project-wide update to the [**`RmarineHeatWaves`**](https://github.com/ajsmit/RmarineHeatWaves) package, which is itself a translation of the original [Python code](https://github.com/ecjoliver/marineHeatWaves) written by Eric C. J. Oliver. The **`heatwaveR`** package also uses the same naming conventions for objects, columns, and arguments as the Python code.
 
@@ -165,7 +165,7 @@ Vignettes
 
 For detailed explanations and walkthroughs on the use of the **`heatwaveR`** package please click on the articles tab above, or follow the links below:
 
--   For a basic introduction to the [detection and visualisation](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html) of events.
+-   For a basic introduction to the [detection and visualisation](https://robwschlegel.github.io/heatwaveR/articles/detection_and_visualisation.html) of events.
 -   For an explanation on the use of the [exceedance](https://robwschlegel.github.io/heatwaveR/articles/exceedance.html) function.
 -   For a walkthrough on the calculation and visualisation of [event categories](https://robwschlegel.github.io/heatwaveR/articles/event_categories.html).
 -   For examples on the calculation of [complex climatologies](https://robwschlegel.github.io/heatwaveR/articles/complex_clims.html).

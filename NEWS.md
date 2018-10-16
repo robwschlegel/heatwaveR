@@ -1,8 +1,47 @@
+# heatwaveR 0.3.4 (2018-10-16)
+
+* Clarified some information on the basic detection vignette
+* Corrected a link that went to the wrong page
+
+# heatwaveR 0.3.4 (2018-10-03)
+
+* Changed error handling in `proto_event()` to return no events
+  than to stop message with an error.
+* This change was picked up by `detect_event()` without any required changes
+* `category()` required a bit of cajoling to also output a blank dataframe
+
+# heatwaveR 0.3.4 (2018-10-01)
+
+* Minor tweak to `make_whole_fast()` to provide a cleaner internal output
+
+# heatwaveR 0.3.4 (2018-09-28)
+
+* Removed several unnecessary columns from category climatology output
+
+# heatwaveR 0.3.4 (2018-09-27)
+
+* Fixed bug in `ts2clm()` that prevented calculation of clims with large
+  contiguous missing periods of data (e.g. ice coverage).
+* Added argument to `category()` that allows one to have the function also 
+  output the day-to-day (long) category values, rather than just the
+  summary (wide) output.
+* Added lon/lat values to documentation for built-in time series
+
+# heatwaveR 0.3.3 (2018-08-23)
+
+* Added CITATION file so that package citation is now set to JOSS article
+
+# heatwaveR 0.3.3 (2018-07-31)
+
+* Added Zenodo DOI badge
+* JOSS review process complete
+* Added JOSS DOI badge
+
 # heatwaveR 0.3.3 (2018-07-25)
 
 * BUG FIX: corrected issue with `clim_calc_cpp` not being able to calculate
   clims from baselines not beginning and ending on the Julian year by making
-  `clim_spread` plug the gaps beforehand with rowwise means.
+  `clim_spread` plug the gaps beforehand with row-wise means.
 * Rebuilt pkgdown site to reflect version increase
 * v0.3.3 submitted to CRAN
 
@@ -24,8 +63,7 @@
 # heatwaveR 0.3.0 (2018-06-22)
 
 * Re-submitted to CRAN in anticipation of __`ggplot2`__ changes
-
- `proto_event` now handles all event calculations 'in house'
+* `proto_event` now handles all event calculations 'in house'
 * This allows `detect_event` to now be given a theoretically limitless number of
   thresholds
 
@@ -113,7 +151,7 @@
 
 # heatwaveR 0.2.3.9000 (2018-05-16)
 
-* Major spead-up in the climatology creation function. `clim_spread()` now returns
+* Major speed-up in the climatology creation function. `clim_spread()` now returns
   a matrix, not a data frame. This makes the loop in `clim_calc()` much faster.
   In testing with the sst_WA data, it leads to a 3.7 fold speed improvement
   (520 ms down to 140 ms).

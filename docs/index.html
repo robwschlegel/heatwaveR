@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.3</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.4</span>
       </span>
     </div>
 
@@ -117,7 +117,7 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#heatwaver" class="anchor"></a>heatwaveR <img src="articles/logo.png" width="200" align="right">
 </h1></div>
-<p><a href="https://cran.r-project.org/package=heatwaveR"><img src="http://www.r-pkg.org/badges/version/heatwaveR" alt="CRAN_Status_Badge"></a> <a href="https://travis-ci.org/robwschlegel/heatwaveR"><img src="https://travis-ci.org/robwschlegel/heatwaveR.svg?branch=master" alt="Travis build status"></a> <a href="https://codecov.io/github/robwschlegel/heatwaveR?branch=master"><img src="https://codecov.io/gh/robwschlegel/heatwaveR/branch/master/graph/badge.svg" alt="Coverage status"></a> <img src="https://cranlogs.r-pkg.org/badges/grand-total/heatwaveR"></p>
+<p><a href="https://cran.r-project.org/package=heatwaveR"><img src="http://www.r-pkg.org/badges/version/heatwaveR" alt="CRAN_Status_Badge"></a> <a href="https://travis-ci.org/robwschlegel/heatwaveR"><img src="https://travis-ci.org/robwschlegel/heatwaveR.svg?branch=master" alt="Travis build status"></a> <a href="https://codecov.io/github/robwschlegel/heatwaveR?branch=master"><img src="https://codecov.io/gh/robwschlegel/heatwaveR/branch/master/graph/badge.svg" alt="Coverage status"></a> <a href="https://doi.org/10.21105/joss.00821"><img src="http://joss.theoj.org/papers/10.21105/joss.00821/status.svg" alt="JOSS"></a> <a href="https://doi.org/10.5281/zenodo.1324309"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.1324309.svg" alt="DOI"></a> <img src="https://cranlogs.r-pkg.org/badges/grand-total/heatwaveR"></p>
 <p>The <strong><code>heatwaveR</code></strong> package is a project-wide update to the <a href="https://github.com/ajsmit/RmarineHeatWaves"><strong><code>RmarineHeatWaves</code></strong></a> package, which is itself a translation of the original <a href="https://github.com/ecjoliver/marineHeatWaves">Python code</a> written by Eric C. J. Oliver. The <strong><code>heatwaveR</code></strong> package also uses the same naming conventions for objects, columns, and arguments as the Python code.</p>
 <p>The <strong><code>heatwaveR</code></strong> R package contains the original functions from the <strong><code>RmarineHeatWaves</code></strong> package that calculate and display marine heatwaves (MHWs) according to the definition of Hobday et al. (2016) as well as calculating and visualising marine cold-spells (MCSs) as first introduced in Schlegel et al. (2017a). It also contains the functionality to calculate the categories of MHWs as outlined in Hobday et al. (2018).</p>
 <p>This package does what <strong><code>RmarineHeatWaves</code></strong> does, but faster. The entire package has been deconstructed and modularised, and slow portions of the code are being implemented in C++. C++ has already replaced some of the bottlenecks that slowed down the climatology creation portions of the code, and we will slowly but surely improve the efficiency and speed in other portions of the code too. Currently the R code runs about as fast as the original python functions, at least in as far as applying it to single time series of temperatures. Readers familiar with both languages will know about the ongoing debate around the relative speed of the two languages. In our experience, R can be as fast as python, provided that attention is paid to finding ways to reduce the computational inefficiencies that stem from i) the liberal use of complex and inefficient non-atomic data structures, such as data frames; ii) the reliance on non-vectorised calculations such as loops; and iii) lazy (but convenient) coding that comes from drawing too heavily on the <code>tidyverse</code> suite of packages. We will continue to ensure that <strong><code>heatwaveR</code></strong> becomes more-and-more efficient so that it can be applied to large gridded data products with ease.</p>
@@ -309,7 +309,7 @@
 <a href="#vignettes" class="anchor"></a>Vignettes</h2>
 <p>For detailed explanations and walkthroughs on the use of the <strong><code>heatwaveR</code></strong> package please click on the articles tab above, or follow the links below:</p>
 <ul>
-<li>For a basic introduction to the <a href="https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html">detection and visualisation</a> of events.</li>
+<li>For a basic introduction to the <a href="https://robwschlegel.github.io/heatwaveR/articles/detection_and_visualisation.html">detection and visualisation</a> of events.</li>
 <li>For an explanation on the use of the <a href="https://robwschlegel.github.io/heatwaveR/articles/exceedance.html">exceedance</a> function.</li>
 <li>For a walkthrough on the calculation and visualisation of <a href="https://robwschlegel.github.io/heatwaveR/articles/event_categories.html">event categories</a>.</li>
 <li>For examples on the calculation of <a href="https://robwschlegel.github.io/heatwaveR/articles/complex_clims.html">complex climatologies</a>.</li>
@@ -367,6 +367,12 @@ E-mail: <a href="mailto:robwschlegel@gmail.com">robwschlegel@gmail.com</a> <!-- 
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
 <li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
+</ul>
+</div>
+<div class="citation">
+<h2>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html">Citing heatwaveR</a></li>
 </ul>
 </div>
 <div class="developers">
