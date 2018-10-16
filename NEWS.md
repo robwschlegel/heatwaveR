@@ -1,3 +1,8 @@
+# heatwaveR 0.3.4 (2018-10-16)
+
+* Clarified some information on the basic detection vignette
+* Corrected a link that went to the wrong page
+
 # heatwaveR 0.3.4 (2018-10-03)
 
 * Changed error handling in `proto_event()` to return no events

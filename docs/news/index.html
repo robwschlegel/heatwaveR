@@ -154,6 +154,42 @@
       <small>Source: <a href='https://github.com/robwschlegel/heatwaveR/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="heatwaver-0-3-4-2018-10-16" class="section level1">
+<h1 class="page-header">
+<a href="#heatwaver-0-3-4-2018-10-16" class="anchor"></a>heatwaveR 0.3.4 (2018-10-16)<small> Unreleased </small>
+</h1>
+<ul>
+<li>Clarified some information on the basic detection vignette</li>
+<li>Corrected a link that went to the wrong page</li>
+</ul>
+</div>
+    <div id="heatwaver-0-3-4-2018-10-03" class="section level1">
+<h1 class="page-header">
+<a href="#heatwaver-0-3-4-2018-10-03" class="anchor"></a>heatwaveR 0.3.4 (2018-10-03)<small> Unreleased </small>
+</h1>
+<ul>
+<li>Changed error handling in <code><a href="../reference/proto_event.html">proto_event()</a></code> to return no events than to stop message with an error.</li>
+<li>This change was picked up by <code><a href="../reference/detect_event.html">detect_event()</a></code> without any required changes</li>
+<li>
+<code><a href="../reference/category.html">category()</a></code> required a bit of cajoling to also output a blank dataframe</li>
+</ul>
+</div>
+    <div id="heatwaver-0-3-4-2018-10-01" class="section level1">
+<h1 class="page-header">
+<a href="#heatwaver-0-3-4-2018-10-01" class="anchor"></a>heatwaveR 0.3.4 (2018-10-01)<small> Unreleased </small>
+</h1>
+<ul>
+<li>Minor tweak to <code><a href="../reference/make_whole_fast.html">make_whole_fast()</a></code> to provide a cleaner internal output</li>
+</ul>
+</div>
+    <div id="heatwaver-0-3-4-2018-09-28" class="section level1">
+<h1 class="page-header">
+<a href="#heatwaver-0-3-4-2018-09-28" class="anchor"></a>heatwaveR 0.3.4 (2018-09-28)<small> Unreleased </small>
+</h1>
+<ul>
+<li>Removed several unnecessary columns from category climatology output</li>
+</ul>
+</div>
     <div id="heatwaver-0-3-4-2018-09-27" class="section level1">
 <h1 class="page-header">
 <a href="#heatwaver-0-3-4-2018-09-27" class="anchor"></a>heatwaveR 0.3.4 (2018-09-27)<small> Unreleased </small>
@@ -161,6 +197,7 @@
 <ul>
 <li>Fixed bug in <code><a href="../reference/ts2clm.html">ts2clm()</a></code> that prevented calculation of clims with large contiguous missing periods of data (e.g. ice coverage).</li>
 <li>Added argument to <code><a href="../reference/category.html">category()</a></code> that allows one to have the function also output the day-to-day (long) category values, rather than just the summary (wide) output.</li>
+<li>Added lon/lat values to documentation for built-in time series</li>
 </ul>
 </div>
     <div id="heatwaver-0-3-3-2018-08-23" class="section level1">
@@ -186,7 +223,7 @@
 <a href="#heatwaver-0-3-3-2018-07-25" class="anchor"></a>heatwaveR 0.3.3 (2018-07-25)<small> 2018-08-02 </small>
 </h1>
 <ul>
-<li>BUG FIX: corrected issue with <code>clim_calc_cpp</code> not being able to calculate clims from baselines not beginning and ending on the Julian year by making <code>clim_spread</code> plug the gaps beforehand with rowwise means.</li>
+<li>BUG FIX: corrected issue with <code>clim_calc_cpp</code> not being able to calculate clims from baselines not beginning and ending on the Julian year by making <code>clim_spread</code> plug the gaps beforehand with row-wise means.</li>
 <li>Rebuilt pkgdown site to reflect version increase</li>
 <li>v0.3.3 submitted to CRAN</li>
 </ul>
@@ -373,7 +410,7 @@
 <a href="#heatwaver-0-2-3-9000-2018-05-16" class="anchor"></a>heatwaveR 0.2.3.9000 (2018-05-16)<small> Unreleased </small>
 </h1>
 <ul>
-<li>Major spead-up in the climatology creation function. <code><a href="../reference/clim_spread.html">clim_spread()</a></code> now returns a matrix, not a data frame. This makes the loop in <code><a href="../reference/clim_calc.html">clim_calc()</a></code> much faster. In testing with the sst_WA data, it leads to a 3.7 fold speed improvement (520 ms down to 140 ms).</li>
+<li>Major speed-up in the climatology creation function. <code><a href="../reference/clim_spread.html">clim_spread()</a></code> now returns a matrix, not a data frame. This makes the loop in <code><a href="../reference/clim_calc.html">clim_calc()</a></code> much faster. In testing with the sst_WA data, it leads to a 3.7 fold speed improvement (520 ms down to 140 ms).</li>
 <li>Speed-up of <code><a href="../reference/make_whole.html">make_whole()</a></code> (60 ms down to 40 ms)</li>
 </ul>
 </div>
@@ -562,6 +599,10 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#heatwaver-0-3-4-2018-10-16">0.3.4</a></li>
+        <li><a href="#heatwaver-0-3-4-2018-10-03">0.3.4</a></li>
+        <li><a href="#heatwaver-0-3-4-2018-10-01">0.3.4</a></li>
+        <li><a href="#heatwaver-0-3-4-2018-09-28">0.3.4</a></li>
         <li><a href="#heatwaver-0-3-4-2018-09-27">0.3.4</a></li>
         <li><a href="#heatwaver-0-3-3-2018-08-23">0.3.3</a></li>
         <li><a href="#heatwaver-0-3-3-2018-07-31">0.3.3</a></li>

@@ -21,7 +21,9 @@ knitr::opts_chunk$set(fig.width = 8, fig.height = 3, fig.align = 'centre',
 
 ## Overview
 
-The `detect_event()` function is the package's core function. Here is the `detect_event()` function applied to the Western Australian test data, which are also discussed by Hobday et al. (2016):
+The `detect_event()` function is the core of this package. It expects to be fed the output of the second core function, `ts2clm()`. By default, `ts2clm()` wants to receive a two-column data frame with one column labelled `t` containing all of the date values, and a second column `temp` containing all of the temperature values. Loading these data from a `.csv` file or other text based format is the easiest approach, assuming one is not working with gridded data. Please see [this vignette](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html) for a detailed walkthrough on using the functions in this package with gridded data.
+
+Here are the `ts2clm()` and `detect_event()` function applied to the Western Australian test data included with this package, which are also discussed by Hobday et al. (2016):
 
 ```{r detect-example1}
 # Load libraries

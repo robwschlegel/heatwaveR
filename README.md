@@ -165,7 +165,7 @@ Vignettes
 
 For detailed explanations and walkthroughs on the use of the **`heatwaveR`** package please click on the articles tab above, or follow the links below:
 
--   For a basic introduction to the [detection and visualisation](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html) of events.
+-   For a basic introduction to the [detection and visualisation](https://robwschlegel.github.io/heatwaveR/articles/detection_and_visualisation.html) of events.
 -   For an explanation on the use of the [exceedance](https://robwschlegel.github.io/heatwaveR/articles/exceedance.html) function.
 -   For a walkthrough on the calculation and visualisation of [event categories](https://robwschlegel.github.io/heatwaveR/articles/event_categories.html).
 -   For examples on the calculation of [complex climatologies](https://robwschlegel.github.io/heatwaveR/articles/complex_clims.html).
