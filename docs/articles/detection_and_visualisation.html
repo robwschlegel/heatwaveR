@@ -125,7 +125,7 @@
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
-<p>The <code><a href="../reference/detect_event.html">detect_event()</a></code> function is the core of this package. It expects to be fed the output of the second core function, <code><a href="../reference/ts2clm.html">ts2clm()</a></code>. By default, <code><a href="../reference/ts2clm.html">ts2clm()</a></code> wants to receive a two-column data frame with one column labelled <code>t</code> containing all of the date values, and a second column <code>temp</code> containing all of the temperature values. For example, please see the top five rows of one of the datasets included with the <strong><code>heatwaveR</code></strong> package:</p>
+<p>The <code><a href="../reference/detect_event.html">detect_event()</a></code> function is the core of this package. It expects to be fed the output of the second core function, <code><a href="../reference/ts2clm.html">ts2clm()</a></code>. By default, <code><a href="../reference/ts2clm.html">ts2clm()</a></code> wants to receive a two-column data frame with one column labelled <code>t</code> containing all of the date values, and a second column <code>temp</code> containing all of the temperature values. Please note that the date format it expects is “YYYY-MM-DD”. For example, please see the top five rows of one of the datasets included with the <strong><code>heatwaveR</code></strong> package:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(heatwaveR<span class="op">::</span>sst_WA)</code></pre></div>
 <pre><code>##            t  temp
 ## 1 1982-01-01 20.94

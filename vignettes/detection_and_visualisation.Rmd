@@ -21,7 +21,7 @@ knitr::opts_chunk$set(fig.width = 8, fig.height = 3, fig.align = 'centre',
 
 ## Overview
 
-The `detect_event()` function is the core of this package. It expects to be fed the output of the second core function, `ts2clm()`. By default, `ts2clm()` wants to receive a two-column data frame with one column labelled `t` containing all of the date values, and a second column `temp` containing all of the temperature values. For example, please see the top five rows of one of the datasets included with the __`heatwaveR`__ package:
+The `detect_event()` function is the core of this package. It expects to be fed the output of the second core function, `ts2clm()`. By default, `ts2clm()` wants to receive a two-column data frame with one column labelled `t` containing all of the date values, and a second column `temp` containing all of the temperature values. Please note that the date format it expects is "YYYY-MM-DD". For example, please see the top five rows of one of the datasets included with the __`heatwaveR`__ package:
 
 ```{r file-structure}
 head(heatwaveR::sst_WA)
