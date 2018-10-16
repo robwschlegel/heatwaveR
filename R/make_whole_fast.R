@@ -91,11 +91,6 @@ make_whole_fast <- function(data, x = t, y = temp) {
   # left join
   data.table::setkey(ts_full, ts_x)
   data.table::setkey(ts_xy, ts_x)
-
-<<<<<<< HEAD
-=======
-  # left join
->>>>>>> b8171aa7eb1ea943449843581fe8af5784078845
   ts_merged <- dplyr::left_join(ts_full, ts_xy, by = "ts_x")
   rm(ts_full); rm(ts_xy)
 
