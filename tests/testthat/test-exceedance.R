@@ -54,3 +54,8 @@ test_that("gaps are not joined if none exist", {
   res <- exceedance(ts, threshold = 20)
   expect_equal(nrow(res$exceedance), 1)
 })
+
+test_that("decimal places are rounded to the fourth place", {
+  res <- exceedance(data = sst_Med, threshold = 20)
+  expect_equal(nchar(strsplit(as.character(res$exceedance$intensity_var[1]), "\\.")[[1]][2]), 4)
+})
