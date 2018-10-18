@@ -154,7 +154,7 @@ ts2clm <-
 
     clim_start <- climatologyPeriod[1]
     clim_end <- climatologyPeriod[2]
-    doy <- temp <- NULL
+    doy <- temp <- .SD <-  NULL
 
     ts_x <- eval(substitute(x), data)
     ts_y <- eval(substitute(y), data)
@@ -210,6 +210,9 @@ ts2clm <-
       ts_clim <- data.table::data.table(ts_mat)
 
     }
+
+    cols <- names(ts_clim)
+    ts_clim[,(cols) := round(.SD, 4), .SDcols = cols]
     rm(ts_mat)
 
     if (clmOnly) {

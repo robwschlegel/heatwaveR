@@ -6,7 +6,7 @@
 #' climatologies, which may either be created with \code{\link{ts2clm}} or some
 #' other means.
 #'
-#' @importFrom dplyr n %>%
+#' @importFrom dplyr mutate_if n %>%
 #'
 #' @param data A data frame with at least four columns. In the default setting
 #' (i.e. ommitting the arguments \code{x}, \code{y}, \code{seas}, and \code{thresh};
@@ -335,6 +335,9 @@ detect_event <- function(data,
       rate_decline = -rate_decline
     )
   }
+
+  events <- dplyr::mutate_if(events, is.numeric, round, 4)
+  events_clim <- dplyr::mutate_if(events_clim, is.numeric, round, 4)
 
   data_clim <- cbind(data, events_clim[,5:8])
 

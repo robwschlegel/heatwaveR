@@ -1,6 +1,6 @@
 #' Detect consecutive days in exceedance of a given threshold.
 #'
-#' @importFrom dplyr %>%
+#' @importFrom dplyr mutate_if %>%
 #'
 #' @param data A data frame with at least the two following columns:
 #' a \code{t} column which is a vector of dates of class \code{Date},
@@ -258,6 +258,8 @@ exceedance <-
         thresh = -thresh
       )
     }
+
+    exceedances <- dplyr::mutate_if(exceedances, is.numeric, round, 4)
 
     data_thresh <- cbind(data, exceedances_clim[,4:8])
 

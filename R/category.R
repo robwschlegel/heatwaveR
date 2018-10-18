@@ -3,7 +3,7 @@
 #' Calculates the categories of a series of events as produced by \code{\link{detect_event}} in
 #' accordance with the naming scheme proposed in Hobday et al. (2018).
 #'
-#' @importFrom dplyr n %>%
+#' @importFrom dplyr mutate_if n %>%
 #'
 #' @param data The function receives the full (list) output from the
 #' \code{\link{detect_event}} function.
@@ -281,9 +281,10 @@ category <-
     # }
 
     cat_res <- tibble::as_tibble(cat_join) %>%
-      dplyr::arrange(-p_moderate, -p_strong, -p_severe, -p_extreme)
+      dplyr::arrange(-p_moderate, -p_strong, -p_severe, -p_extreme) %>%
+      dplyr::mutate_if(is.numeric, round, 4)
 
-    if (climatology ) {
+    if (climatology) {
 
       doy <- intensity <- NULL
 
@@ -292,7 +293,8 @@ category <-
                                         ifelse(ts_y >= thresh_3x, "III Severe",
                                                ifelse(ts_y >= thresh_2x, "II Strong", "I Moderate")))) %>%
         dplyr::rename(intensity = diff) %>%
-        dplyr::select(t, event_no, intensity, category)
+        dplyr::select(t, event_no, intensity, category) %>%
+        dplyr::mutate_if(is.numeric, round, 4)
 
       list(climatology = tibble::as_tibble(clim_res),
            event = cat_res)

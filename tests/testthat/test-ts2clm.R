@@ -84,3 +84,8 @@ test_that("contiguous mssing data causes clim_calc() to be used", {
   expect_equal(ncol(res), 6)
   expect_equal(nrow(res), 12022)
 })
+
+test_that("decimal places are rounded to the fourth place", {
+  res <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  expect_equal(nchar(strsplit(as.character(res$seas[2]), "\\.")[[1]][2]), 4)
+})

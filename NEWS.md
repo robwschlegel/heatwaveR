@@ -1,3 +1,7 @@
+# heatwaveR 0.3.4 (2018-10-17)
+
+* All major functions now produce results only up to the fourth decimal place
+
 # heatwaveR 0.3.4 (2018-10-16)
 
 * Clarified some information on the basic detection vignette
