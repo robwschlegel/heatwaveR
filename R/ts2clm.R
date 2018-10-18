@@ -193,11 +193,11 @@ ts2clm <-
 
     ts_wide <- clim_spread(ts_whole, clim_start, clim_end, windowHalfWidth)
 
-    if (nrow(stats::na.omit(ts_wide)) < nrow(ts_wide)) {
-      ts_mat <- clim_calc(ts_wide, windowHalfWidth, pctile)
+    if (nrow(stats::na.omit(ts_wide)) < nrow(ts_wide)) { # what happens here?
+      ts_mat <- clim_calc(ts_wide, windowHalfWidth, pctile) # ???
       ts_mat[is.nan(ts_mat)] <- NA
     } else {
-      ts_mat <- clim_calc_cpp(ts_wide, windowHalfWidth, pctile)
+      ts_mat <- clim_calc_cpp(ts_wide, windowHalfWidth, pctile) # ???
     }
     rm(ts_wide)
 
@@ -221,9 +221,10 @@ ts2clm <-
 
     } else {
 
-      data.table::setkey(ts_whole, doy)
-      data.table::setkey(ts_clim, doy)
-      ts_res <- merge(ts_whole, ts_clim, all = TRUE)
+      data.table::setkey(ts_whole, doy) # is this necessary, considering that merge, below, is not a data.table function?
+      data.table::setkey(ts_clim, doy) # is this necessary, considering that merge, below, is not a data.table function?
+      ts_res <- merge(ts_whole, ts_clim, all = TRUE) # or make this a data.table merge, e.g., ts_whole[ts_clim, on = "doy"]
+      # ts_whole[ts_clim, on = "doy"]
       rm(ts_whole); rm(ts_clim)
       data.table::setorder(ts_res, ts_x)
       names(ts_res)[2] <- paste(substitute(x))

@@ -89,9 +89,9 @@ make_whole_fast <- function(data, x = t, y = temp) {
   ts_full <- data.table::data.table(ts_x = seq.Date(date_strt, date_end, "day"))
 
   # left join
-  data.table::setkey(ts_full, ts_x)
-  data.table::setkey(ts_xy, ts_x)
-  ts_merged <- dplyr::left_join(ts_full, ts_xy, by = "ts_x")
+  data.table::setkey(ts_full, ts_x) # seems redundant, unless data.table is used for merge in l.94
+  data.table::setkey(ts_xy, ts_x) # seems redundant, unless data.table is used for merge in l.94
+  ts_merged <- dplyr::left_join(ts_full, ts_xy, by = "ts_x") # or change this to a data.table function
   rm(ts_full); rm(ts_xy)
 
   v_date <- ts_merged$ts_x
