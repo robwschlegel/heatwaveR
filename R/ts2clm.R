@@ -201,8 +201,6 @@ ts2clm <-
     if (nrow(stats::na.omit(ts_wide)) < nrow(ts_wide) | var) {
       ts_mat <- clim_calc(ts_wide, windowHalfWidth, pctile)
       ts_mat[is.nan(ts_mat)] <- NA
-    # } else if (var) {
-    #   ts_mat <- clim_calc(ts_wide, windowHalfWidth, pctile)
     } else {
       ts_mat <- clim_calc_cpp(ts_wide, windowHalfWidth, pctile)
     }
@@ -224,8 +222,9 @@ ts2clm <-
 
     } else {
 
-      data.table::setkey(ts_whole, doy)
-      data.table::setkey(ts_clim, doy)
+      # data.table::setkey(ts_whole, doy)
+      # data.table::setkey(ts_clim, doy)
+      # ts_res <- ts_whole[ts_clim, on = "doy"]
       ts_res <- merge(ts_whole, ts_clim, all = TRUE)
       rm(ts_whole); rm(ts_clim)
       data.table::setorder(ts_res, ts_x)

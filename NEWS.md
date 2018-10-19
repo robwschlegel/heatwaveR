@@ -1,7 +1,7 @@
 # heatwaveR 0.3.4 (2018-10-19)
 
 * `ts2clm()` no longer calculates variance column by default
-* `make_whole()` has been deprecated
+* `make_whole()` has been deprecated in favour of `make_whole_fast()`
 
 # heatwaveR 0.3.4 (2018-10-17)
 

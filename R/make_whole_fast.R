@@ -79,23 +79,22 @@ make_whole_fast <- function(data, x = t, y = temp) {
   ts_x <- eval(substitute(x), data) # this line and the next might not be needed
   ts_y <- eval(substitute(y), data)
   rm(data)
+  ts_xy <- data.table::data.table(ts_x = as.Date(fasttime::fastPOSIXct(ts_x, tz = NULL)),
+                                  ts_y = ts_y)
+  rm(ts_x); rm(ts_y)
 
   # create full, complete time series for joing against
-  date_strt <- lubridate::ymd(utils::head(ts_x, 1))
-  date_end <- lubridate::ymd(utils::tail(ts_x, 1))
+  date_strt <- lubridate::ymd(utils::head(ts_xy$ts_x, 1))
+  date_end <- lubridate::ymd(utils::tail(ts_xy$ts_x, 1))
   ts_full <- data.table::data.table(ts_x = seq.Date(date_strt, date_end, "day"))
-  data.table::setkey(ts_full, ts_x)
-
-  # reassemble the data.table
-  ts_xy <- data.table::data.table(ts_x = as.Date(ts_x),
-                                  ts_y = ts_y)
-  data.table::setkey(ts_xy, ts_x)
 
   # left join
-  ts_merged <- dplyr::left_join(ts_full, ts_xy, by = "ts_x")
+  data.table::setkey(ts_full, ts_x) # seems redundant, unless data.table is used for merge in l.94
+  data.table::setkey(ts_xy, ts_x) # seems redundant, unless data.table is used for merge in l.94
+  ts_merged <- dplyr::left_join(ts_full, ts_xy, by = "ts_x") # or change this to a data.table function
   rm(ts_full); rm(ts_xy)
 
-  v_date <- as.Date(ts_merged$ts_x)
+  v_date <- ts_merged$ts_x
   v_doy <- lubridate::yday(v_date)
   v_doy <- as.integer(ifelse(
     lubridate::leap_year(lubridate::year(ts_merged$ts_x)) == FALSE,
