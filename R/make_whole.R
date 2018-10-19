@@ -79,8 +79,8 @@ make_whole <- function(data, x = t, y = temp) {
     dplyr::summarise(ts_y = mean(ts_y, na.rm = TRUE)) %>%
     dplyr::ungroup()
   t_series <- zoo::zoo(dat$ts_y, dat$ts_x)
-  ser <-
-    data.frame(ts_x = seq(stats::start(t_series), stats::end(t_series), by = "1 day"))
+  ser <- data.frame(ts_x = seq(stats::start(t_series),
+                               stats::end(t_series), by = "1 day"))
   ser <- zoo::zoo(rep(NA, length(ser$ts_x)), order.by = ser$ts_x)
   t_series <- merge(ser, t_series)[, 2]
 

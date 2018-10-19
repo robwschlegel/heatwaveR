@@ -23,13 +23,8 @@
 #' the climatology period, and the second value the end date of said period. This
 #' chosen period (preferably 30 years in length) is then used to calculate the
 #' seasonal cycle and the extreme value threshold.
-#' @param robust This switch selects between a slower, but more robust (default is
-#' \code{TRUE}), function that checks for the completeness of the date vector (i.e.
-#' it must be regular and with no duplicates), or a faster one, which assumes that
-#' the user has verified that no missing dates are present in the time series or
-#' whether or not some measurements are replicated (in which case it takes the mean).
-#' Internally, this decides whether \code{make_whole} or \code{make_whole_fast}
-#' will be used.
+#' @param robust This argument has been deprecated and no longer has affects how
+#' the function operates.
 #' @param maxPadLength Specifies the maximum length of days over which to
 #' interpolate (pad) missing data (specified as \code{NA}) in the input
 #' temperature time series; i.e., any consecutive blocks of NAs with length
@@ -50,6 +45,12 @@
 #' climatology and threshold. The default is \code{31} days.
 #' @param clmOnly Choose to calculate and return only the climatologies.
 #' The default is \code{FALSE}.
+#' @param var This argument has been introduced to allow the user to choose if
+#' the variance of the seasonal signal per doy should be calculated. The default of
+#' \code{FALSE} will prevent the calculation, potentially increasing speed of calculations
+#' on gridded data and reducing the size of the output. The variance was initially
+#' introduced as part of the standard output from Hobday et al. (2016), but few
+#' researchers use it and so it is generally regarded now as unnecessary.
 #'
 #' @details
 #' \enumerate{
@@ -96,11 +97,12 @@
 #'   \item{temp}{The measurement vector as per the the original \code{data} supplied
 #'   to the function. If a different column was given to the \code{y} argument that
 #'   will be shown here.}
-#'   \item{seasClim}{Climatological seasonal cycle [deg. C].}
-#'   \item{threshClim}{Seasonally varying threshold (e.g., 90th
+#'   \item{seas}{Climatological seasonal cycle [deg. C].}
+#'   \item{thresh}{Seasonally varying threshold (e.g., 90th
 #'   percentile) [deg. C]. This is used in \code{\link{detect_event}} for the
 #'   detection/calculation of events (MHWs).}
-#'   \item{varClim}{Seasonally varying variance (standard deviation) [deg. C].}
+#'   \item{var}{Seasonally varying variance (standard deviation) [deg. C]. This
+#'   column is not returned if \code{var = FALSE} (defaut).}
 #' Should \code{clmOnly} be enabled, only the 365 or 366 day climatology will be
 #' returned.
 #'
@@ -121,35 +123,45 @@
 #'                    clmOnly = TRUE)
 #' res_clim[1:10, ]
 #'
+#' # Or if one wants the variance column included in the results
+#' res_var <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
+#'                   var = TRUE)
+#' res_var[1:10, ]
+#'
 ts2clm <-
   function(data,
            x = t,
            y = temp,
            climatologyPeriod,
-           robust = TRUE,
+           robust = FALSE,
            maxPadLength = 3,
            windowHalfWidth = 5,
            pctile = 90,
            smoothPercentile = TRUE,
            smoothPercentileWidth = 31,
-           clmOnly = FALSE
+           clmOnly = FALSE,
+           var = FALSE
   ) {
 
     if (missing(climatologyPeriod))
       stop("Oops! Please provide a period (two dates) for calculating the climatology.")
     if (length(climatologyPeriod) != 2)
       stop("Bummer! Please provide BOTH start and end dates for the climatology period.")
-    if(!(is.numeric(maxPadLength)))
+    if (!(is.logical(robust)))
+      stop("Please ensure that 'robust' is either TRUE or FALSE.")
+    if (robust)
+      message("The 'robust' argument has been deprecated and will be removed from future versions.")
+    if (!(is.numeric(maxPadLength)))
       stop("Please ensure that 'maxPadLength' is a numeric/integer value.")
-    if(!(is.numeric(pctile)))
+    if (!(is.numeric(pctile)))
       stop("Please ensure that 'pctile' is a numeric/integer value.")
-    if(!(is.numeric(windowHalfWidth)))
+    if (!(is.numeric(windowHalfWidth)))
       stop("Please ensure that 'windowHalfWidth' is a numeric/integer value.")
-    if(!(is.logical(smoothPercentile)))
+    if (!(is.logical(smoothPercentile)))
       stop("Please ensure that 'smoothPercentile' is either TRUE or FALSE.")
-    if(!(is.numeric(smoothPercentileWidth)))
+    if (!(is.numeric(smoothPercentileWidth)))
       stop("Please ensure that 'smoothPercentileWidth' is a numeric/integer value.")
-    if(!(is.logical(clmOnly)))
+    if (!(is.logical(clmOnly)))
       stop("Please ensure that 'clmOnly' is either TRUE or FALSE.")
 
     clim_start <- climatologyPeriod[1]
@@ -163,15 +175,8 @@ ts2clm <-
     ts_xy <- data.table::data.table(ts_x, ts_y)
     rm(ts_x); rm(ts_y)
 
-    if (robust) {
 
-      ts_whole <- make_whole(ts_xy, x = ts_x, y = ts_y)
-
-    } else {
-
-      ts_whole <- make_whole_fast(ts_xy, x = ts_x, y = ts_y)
-
-    }
+    ts_whole <- make_whole_fast(ts_xy, x = ts_x, y = ts_y)
 
     if (length(stats::na.omit(ts_whole$ts_y)) < length(ts_whole$ts_y)){
       ts_whole <- na_interp(doy = ts_whole$doy,
@@ -193,22 +198,20 @@ ts2clm <-
 
     ts_wide <- clim_spread(ts_whole, clim_start, clim_end, windowHalfWidth)
 
-    if (nrow(stats::na.omit(ts_wide)) < nrow(ts_wide)) {
+    if (nrow(stats::na.omit(ts_wide)) < nrow(ts_wide) | var) {
       ts_mat <- clim_calc(ts_wide, windowHalfWidth, pctile)
       ts_mat[is.nan(ts_mat)] <- NA
+    # } else if (var) {
+    #   ts_mat <- clim_calc(ts_wide, windowHalfWidth, pctile)
     } else {
       ts_mat <- clim_calc_cpp(ts_wide, windowHalfWidth, pctile)
     }
     rm(ts_wide)
 
     if (smoothPercentile) {
-
-      ts_clim <- smooth_percentile(ts_mat, smoothPercentileWidth)
-
+      ts_clim <- smooth_percentile(ts_mat, smoothPercentileWidth, var)
     } else {
-
       ts_clim <- data.table::data.table(ts_mat)
-
     }
 
     cols <- names(ts_clim)

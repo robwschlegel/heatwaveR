@@ -3,7 +3,7 @@ context("Test ts2clm.R")
 test_that("ts2clm() returns the correct output", {
   res <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   expect_is(res, "data.frame")
-  expect_equal(ncol(res), 6)
+  expect_equal(ncol(res), 5)
   expect_equal(nrow(res), 12053)
 })
 
@@ -11,6 +11,9 @@ test_that("all starting error checks flag correctly", {
   expect_error(ts2clm(sst_WA)) # Specific error not supplied as R sees them as different some how...
   expect_error(ts2clm(sst_WA, climatologyPeriod = "1983-01-01"),
                "Bummer! Please provide BOTH start and end dates for the climatology period.")
+  expect_error(ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
+                      robust = "TRUE"),
+               "Please ensure that 'robust' is either TRUE or FALSE.")
   expect_error(ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
                       maxPadLength = "2"),
                "Please ensure that 'maxPadLength' is a numeric/integer value.")
@@ -47,16 +50,15 @@ test_that("smooth_percentile = FALSE prevents smoothing", {
 
 test_that("clmOnly = TRUE returns only the clim data", {
   res <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
-                clmOnly = TRUE)
+                clmOnly = TRUE, var = TRUE)
   expect_is(res, "data.frame")
   expect_equal(ncol(res), 4)
   expect_equal(nrow(res), 366)
 })
 
-test_that("robust = TRUE switches to the slower function but produces same results", {
-  t_1 <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), robust = TRUE)
-  t_2 <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), robust = FALSE)
-  expect_equal(t_1, t_2)
+test_that("robust = TRUE notifies the user that the 'robust' argument has been deprecated", {
+  expect_message(ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), robust = TRUE),
+                 "The 'robust' argument has been deprecated and will be removed from future versions.")
 })
 
 test_that("climatologyPeriod less than three years is rejected", {
@@ -81,7 +83,7 @@ test_that("contiguous mssing data causes clim_calc() to be used", {
     dplyr::select(-month)
   res <- ts2clm(sst_WA_cont, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   expect_is(res, "data.frame")
-  expect_equal(ncol(res), 6)
+  expect_equal(ncol(res), 5)
   expect_equal(nrow(res), 12022)
 })
 

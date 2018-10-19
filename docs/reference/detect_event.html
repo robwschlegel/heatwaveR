@@ -272,27 +272,16 @@ MCSs in Schlegel et al. (2017a).</p></td>
 
     <p>The function will return a list of two tibbles (see the <code>tidyverse</code>),
 <code>climatology</code> and <code>event</code>, which are, surprisingly, the climatology
-and events, respectively. The climatology contains the full time series of
+and event results, respectively. The climatology contains the full time series of
 daily temperatures, as well as the the seasonal climatology, the threshold
 and various aspects of the events that were detected. The software was
 designed for detecting extreme thermal events, and the units specified below
 reflect that intended purpose. However, various other kinds of extreme
 events may be detected according to the specifications, and if that is the
 case, the appropriate units need to be determined by the user.</p>
-<dt>doy</dt><dd><p>Julian day (day-of-year). For non-leap years it runs 1...59 and
-  61...366, while leap years run 1...366. This column will be named differently if
-  another name was specified to the <code>doy</code> argument.</p></dd>
-  <dt>t</dt><dd><p>The date of the temperature measurement. This column will be
-  named differently if another name was specified to the <code>x</code> argument.</p></dd>
-  <dt>temp</dt><dd><p>If the software was used for the purpose for which it was designed,
-  seawater temperature [deg. C] on the specified date will be returned. This
-  column will of course be named differently if another kind of measurement was
-  specified to the <code>y</code> argument.</p></dd>
-  <dt>seas</dt><dd><p>Daily climatological seasonal cycle [deg. C].</p></dd>
-  <dt>thresh</dt><dd><p>Daily climatological threshold cycle (e.g., 90th
-  percentile) [deg. C].</p></dd>
-  <dt>var</dt><dd><p>Seasonally varying standard deviation [deg. C].</p></dd>
-  <dt>threshCriterion</dt><dd><p>Boolean indicating if <code>temp</code> exceeds
+<p>The <code>climatology</code> results will contain the same column produced by
+<code><a href='ts2clm.html'>ts2clm</a></code> as well as the following:</p>
+<dt>threshCriterion</dt><dd><p>Boolean indicating if <code>temp</code> exceeds
   <code>thresh</code>.</p></dd>
   <dt>durationCriterion</dt><dd><p>Boolean indicating whether periods of consecutive
   <code>threshCriterion</code> are &gt;= <code>min_duration</code>.</p></dd>
@@ -301,7 +290,7 @@ case, the appropriate units need to be determined by the user.</p>
   <dt>event_no</dt><dd><p>A sequential number indicating the ID and order of
   occurence of the events.</p></dd>
 
-The events are summarised using a range of event metrics:
+The event results are summarised using a range of event metrics:
   <dt>event_no</dt><dd><p>A sequential number indicating the ID and order of
   the events.</p></dd>
   <dt>index_start</dt><dd><p>Start index of event.</p></dd>
@@ -383,23 +372,23 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
     <pre class="examples"><div class='input'><span class='no'>res_clim</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ts2clm.html'>ts2clm</a></span>(<span class='no'>sst_WA</span>, <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span>))
 <span class='no'>out</span> <span class='kw'>&lt;-</span> <span class='fu'>detect_event</span>(<span class='no'>res_clim</span>)
 <span class='co'># show a portion of the climatology:</span>
-<span class='no'>out</span>$<span class='no'>climatology</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt; # A tibble: 10 x 10
-#&gt;      doy t           temp  seas thresh   var threshCriterion durationCriteri…
-#&gt;    &lt;int&gt; &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;           &lt;lgl&gt;           
-#&gt;  1     1 1982-01-01  20.9  21.6   23.0 0.959 FALSE           FALSE           
-#&gt;  2     2 1982-01-02  21.2  21.6   23.0 0.964 FALSE           FALSE           
-#&gt;  3     3 1982-01-03  21.4  21.7   23.0 0.968 FALSE           FALSE           
-#&gt;  4     4 1982-01-04  21.2  21.7   23.1 0.973 FALSE           FALSE           
-#&gt;  5     5 1982-01-05  21.3  21.7   23.1 0.976 FALSE           FALSE           
-#&gt;  6     6 1982-01-06  21.6  21.7   23.1 0.980 FALSE           FALSE           
-#&gt;  7     7 1982-01-07  21.7  21.8   23.2 0.983 FALSE           FALSE           
-#&gt;  8     8 1982-01-08  21.5  21.8   23.2 0.986 FALSE           FALSE           
-#&gt;  9     9 1982-01-09  21.4  21.8   23.2 0.988 FALSE           FALSE           
-#&gt; 10    10 1982-01-10  21.4  21.8   23.3 0.991 FALSE           FALSE           
-#&gt; # ... with 2 more variables: event &lt;lgl&gt;, event_no &lt;int&gt;</div><div class='input'><span class='co'># show some of the heat waves:</span>
+<span class='no'>out</span>$<span class='no'>climatology</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt; # A tibble: 10 x 9
+#&gt;      doy t           temp  seas thresh threshCriterion durationCriteri… event
+#&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;lgl&gt;           &lt;lgl&gt;            &lt;lgl&gt;
+#&gt;  1     1 1982-01-01  20.9  21.6   23.0 FALSE           FALSE            FALSE
+#&gt;  2     2 1982-01-02  21.2  21.6   23.0 FALSE           FALSE            FALSE
+#&gt;  3     3 1982-01-03  21.4  21.7   23.0 FALSE           FALSE            FALSE
+#&gt;  4     4 1982-01-04  21.2  21.7   23.1 FALSE           FALSE            FALSE
+#&gt;  5     5 1982-01-05  21.3  21.7   23.1 FALSE           FALSE            FALSE
+#&gt;  6     6 1982-01-06  21.6  21.7   23.1 FALSE           FALSE            FALSE
+#&gt;  7     7 1982-01-07  21.7  21.8   23.2 FALSE           FALSE            FALSE
+#&gt;  8     8 1982-01-08  21.5  21.8   23.2 FALSE           FALSE            FALSE
+#&gt;  9     9 1982-01-09  21.4  21.8   23.2 FALSE           FALSE            FALSE
+#&gt; 10    10 1982-01-10  21.4  21.8   23.3 FALSE           FALSE            FALSE
+#&gt; # ... with 1 more variable: event_no &lt;dbl&gt;</div><div class='input'><span class='co'># show some of the heat waves:</span>
 <span class='no'>out</span>$<span class='no'>event</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='fl'>1</span>:<span class='fl'>10</span>]</div><div class='output co'>#&gt; # A tibble: 5 x 10
 #&gt;   event_no index_start index_peak index_end duration date_start date_peak 
-#&gt;      &lt;int&gt;       &lt;dbl&gt;      &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt; &lt;date&gt;     &lt;date&gt;    
+#&gt;      &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;    
 #&gt; 1        1         885        887       889        5 1984-06-03 1984-06-05
 #&gt; 2        2         899        901       904        6 1984-06-17 1984-06-19
 #&gt; 3        3         908        922       926       19 1984-06-26 1984-07-10
@@ -412,23 +401,23 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
                    <span class='kw'>pctile</span> <span class='kw'>=</span> <span class='fl'>10</span>)
 <span class='no'>out</span> <span class='kw'>&lt;-</span> <span class='fu'>detect_event</span>(<span class='no'>res_clim</span>, <span class='kw'>coldSpells</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='co'># show a portion of the climatology:</span>
-<span class='no'>out</span>$<span class='no'>climatology</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt; # A tibble: 10 x 10
-#&gt;      doy t           temp  seas thresh   var threshCriterion durationCriteri…
-#&gt;    &lt;int&gt; &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;           &lt;lgl&gt;           
-#&gt;  1     1 1982-01-01  20.9  21.6   20.5 0.959 FALSE           FALSE           
-#&gt;  2     2 1982-01-02  21.2  21.6   20.6 0.964 FALSE           FALSE           
-#&gt;  3     3 1982-01-03  21.4  21.7   20.6 0.968 FALSE           FALSE           
-#&gt;  4     4 1982-01-04  21.2  21.7   20.6 0.973 FALSE           FALSE           
-#&gt;  5     5 1982-01-05  21.3  21.7   20.6 0.976 FALSE           FALSE           
-#&gt;  6     6 1982-01-06  21.6  21.7   20.7 0.980 FALSE           FALSE           
-#&gt;  7     7 1982-01-07  21.7  21.8   20.7 0.983 FALSE           FALSE           
-#&gt;  8     8 1982-01-08  21.5  21.8   20.7 0.986 FALSE           FALSE           
-#&gt;  9     9 1982-01-09  21.4  21.8   20.8 0.988 FALSE           FALSE           
-#&gt; 10    10 1982-01-10  21.4  21.8   20.8 0.991 FALSE           FALSE           
-#&gt; # ... with 2 more variables: event &lt;lgl&gt;, event_no &lt;int&gt;</div><div class='input'><span class='co'># show some of the cold-spells:</span>
+<span class='no'>out</span>$<span class='no'>climatology</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt; # A tibble: 10 x 9
+#&gt;      doy t           temp  seas thresh threshCriterion durationCriteri… event
+#&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;lgl&gt;           &lt;lgl&gt;            &lt;lgl&gt;
+#&gt;  1     1 1982-01-01  20.9  21.6   20.5 FALSE           FALSE            FALSE
+#&gt;  2     2 1982-01-02  21.2  21.6   20.6 FALSE           FALSE            FALSE
+#&gt;  3     3 1982-01-03  21.4  21.7   20.6 FALSE           FALSE            FALSE
+#&gt;  4     4 1982-01-04  21.2  21.7   20.6 FALSE           FALSE            FALSE
+#&gt;  5     5 1982-01-05  21.3  21.7   20.6 FALSE           FALSE            FALSE
+#&gt;  6     6 1982-01-06  21.6  21.7   20.7 FALSE           FALSE            FALSE
+#&gt;  7     7 1982-01-07  21.7  21.8   20.7 FALSE           FALSE            FALSE
+#&gt;  8     8 1982-01-08  21.5  21.8   20.7 FALSE           FALSE            FALSE
+#&gt;  9     9 1982-01-09  21.4  21.8   20.8 FALSE           FALSE            FALSE
+#&gt; 10    10 1982-01-10  21.4  21.8   20.8 FALSE           FALSE            FALSE
+#&gt; # ... with 1 more variable: event_no &lt;dbl&gt;</div><div class='input'><span class='co'># show some of the cold-spells:</span>
 <span class='no'>out</span>$<span class='no'>event</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='fl'>1</span>:<span class='fl'>10</span>]</div><div class='output co'>#&gt; # A tibble: 5 x 10
 #&gt;   event_no index_start index_peak index_end duration date_start date_peak 
-#&gt;      &lt;int&gt;       &lt;dbl&gt;      &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt; &lt;date&gt;     &lt;date&gt;    
+#&gt;      &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;    
 #&gt; 1        1          83         83        87        5 1982-03-24 1982-03-24
 #&gt; 2        2         194        199       207       14 1982-07-13 1982-07-18
 #&gt; 3        3         270        272       277        8 1982-09-27 1982-09-29

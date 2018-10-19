@@ -3,7 +3,7 @@
 #' Calculates the categories of a series of events as produced by \code{\link{detect_event}} in
 #' accordance with the naming scheme proposed in Hobday et al. (2018).
 #'
-#' @importFrom dplyr mutate_if n %>%
+#' @importFrom dplyr n %>%
 #'
 #' @param data The function receives the full (list) output from the
 #' \code{\link{detect_event}} function.

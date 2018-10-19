@@ -6,7 +6,7 @@ test_that("detect() returns the correct lists, tibbles, and columns", {
   expect_is(res, "list")
   expect_is(res$climatology, "tbl_df")
   expect_is(res$event, "tbl_df")
-  expect_equal(ncol(res$climatology), 10)
+  expect_equal(ncol(res$climatology),9)
   expect_equal(ncol(res$event), 22)
 })
 
@@ -71,7 +71,7 @@ test_that("no detected events returns an empty event dataframe and not an error"
   expect_is(res, "list")
   expect_is(res$climatology, "tbl_df")
   expect_is(res$event, "tbl_df")
-  expect_equal(ncol(res$climatology), 10)
+  expect_equal(ncol(res$climatology), 9)
   expect_equal(ncol(res$event), 22)
   expect_equal(nrow(res$event), 0)
 })

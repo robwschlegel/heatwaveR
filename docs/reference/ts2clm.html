@@ -167,9 +167,10 @@ by an optional moving average smoother as used by Hobday et al. (2016).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ts2clm</span>(<span class='no'>data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='no'>climatologyPeriod</span>, <span class='kw'>robust</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+    <pre class="usage"><span class='fu'>ts2clm</span>(<span class='no'>data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='no'>climatologyPeriod</span>, <span class='kw'>robust</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>maxPadLength</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>windowHalfWidth</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>pctile</span> <span class='kw'>=</span> <span class='fl'>90</span>,
-  <span class='kw'>smoothPercentile</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>smoothPercentileWidth</span> <span class='kw'>=</span> <span class='fl'>31</span>, <span class='kw'>clmOnly</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>smoothPercentile</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>smoothPercentileWidth</span> <span class='kw'>=</span> <span class='fl'>31</span>, <span class='kw'>clmOnly</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>var</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -203,13 +204,8 @@ seasonal cycle and the extreme value threshold.</p></td>
     </tr>
     <tr>
       <th>robust</th>
-      <td><p>This switch selects between a slower, but more robust (default is
-<code>TRUE</code>), function that checks for the completeness of the date vector (i.e.
-it must be regular and with no duplicates), or a faster one, which assumes that
-the user has verified that no missing dates are present in the time series or
-whether or not some measurements are replicated (in which case it takes the mean).
-Internally, this decides whether <code>make_whole</code> or <code>make_whole_fast</code>
-will be used.</p></td>
+      <td><p>This argument has been deprecated and no longer has affects how
+the function operates.</p></td>
     </tr>
     <tr>
       <th>maxPadLength</th>
@@ -249,6 +245,15 @@ climatology and threshold. The default is <code>31</code> days.</p></td>
       <td><p>Choose to calculate and return only the climatologies.
 The default is <code>FALSE</code>.</p></td>
     </tr>
+    <tr>
+      <th>var</th>
+      <td><p>This argument has been introduced to allow the user to choose if
+the variance of the seasonal signal per doy should be calculated. The default of
+<code>FALSE</code> will prevent the calculation, potentially increasing speed of calculations
+on gridded data and reducing the size of the output. The variance was initially
+introduced as part of the standard output from Hobday et al. (2016), but few
+researchers use it and so it is generally regarded now as unnecessary.</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -268,11 +273,12 @@ units need to be determined by the user.</p>
   <dt>temp</dt><dd><p>The measurement vector as per the the original <code>data</code> supplied
   to the function. If a different column was given to the <code>y</code> argument that
   will be shown here.</p></dd>
-  <dt>seasClim</dt><dd><p>Climatological seasonal cycle [deg. C].</p></dd>
-  <dt>threshClim</dt><dd><p>Seasonally varying threshold (e.g., 90th
+  <dt>seas</dt><dd><p>Climatological seasonal cycle [deg. C].</p></dd>
+  <dt>thresh</dt><dd><p>Seasonally varying threshold (e.g., 90th
   percentile) [deg. C]. This is used in <code><a href='detect_event.html'>detect_event</a></code> for the
   detection/calculation of events (MHWs).</p></dd>
-  <dt>varClim</dt><dd><p>Seasonally varying variance (standard deviation) [deg. C].</p></dd>
+  <dt>var</dt><dd><p>Seasonally varying variance (standard deviation) [deg. C]. This
+  column is not returned if <code>var = FALSE</code> (defaut).</p></dd>
 Should clmOnly be enabled, only the 365 or 366 day climatology will be
 returned.
 
@@ -316,31 +322,45 @@ doi:10.1016/j.pocean.2015.12.014</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>ts2clm</span>(<span class='no'>sst_WA</span>, <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span>))
-<span class='no'>res</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt;     doy          t  temp     seas   thresh       var
-#&gt;  1:   1 1982-01-01 20.94 21.60802 22.96048 0.9585132
-#&gt;  2:   2 1982-01-02 21.25 21.63485 22.99871 0.9635519
-#&gt;  3:   3 1982-01-03 21.38 21.66207 23.03758 0.9683574
-#&gt;  4:   4 1982-01-04 21.16 21.68951 23.07713 0.9728437
-#&gt;  5:   5 1982-01-05 21.26 21.71686 23.11297 0.9764199
-#&gt;  6:   6 1982-01-06 21.61 21.74365 23.14603 0.9796998
-#&gt;  7:   7 1982-01-07 21.74 21.76988 23.17748 0.9828467
-#&gt;  8:   8 1982-01-08 21.50 21.79576 23.20800 0.9859535
-#&gt;  9:   9 1982-01-09 21.40 21.82165 23.23658 0.9884492
-#&gt; 10:  10 1982-01-10 21.36 21.84782 23.26493 0.9905627</div><div class='input'>
+<span class='no'>res</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt;     doy          t  temp    seas  thresh
+#&gt;  1:   1 1982-01-01 20.94 21.6080 22.9605
+#&gt;  2:   2 1982-01-02 21.25 21.6348 22.9987
+#&gt;  3:   3 1982-01-03 21.38 21.6621 23.0376
+#&gt;  4:   4 1982-01-04 21.16 21.6895 23.0771
+#&gt;  5:   5 1982-01-05 21.26 21.7169 23.1130
+#&gt;  6:   6 1982-01-06 21.61 21.7436 23.1460
+#&gt;  7:   7 1982-01-07 21.74 21.7699 23.1775
+#&gt;  8:   8 1982-01-08 21.50 21.7958 23.2080
+#&gt;  9:   9 1982-01-09 21.40 21.8217 23.2366
+#&gt; 10:  10 1982-01-10 21.36 21.8478 23.2649</div><div class='input'>
 <span class='co'># Or if one only wants the 366 day climatology</span>
 <span class='no'>res_clim</span> <span class='kw'>&lt;-</span> <span class='fu'>ts2clm</span>(<span class='no'>sst_WA</span>, <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span>),
                    <span class='kw'>clmOnly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>res_clim</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt;     doy     seas   thresh       var
-#&gt;  1:   1 21.60802 22.96048 0.9585132
-#&gt;  2:   2 21.63485 22.99871 0.9635519
-#&gt;  3:   3 21.66207 23.03758 0.9683574
-#&gt;  4:   4 21.68951 23.07713 0.9728437
-#&gt;  5:   5 21.71686 23.11297 0.9764199
-#&gt;  6:   6 21.74365 23.14603 0.9796998
-#&gt;  7:   7 21.76988 23.17748 0.9828467
-#&gt;  8:   8 21.79576 23.20800 0.9859535
-#&gt;  9:   9 21.82165 23.23658 0.9884492
-#&gt; 10:  10 21.84782 23.26493 0.9905627</div><div class='input'>
+<span class='no'>res_clim</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt;     doy    seas  thresh
+#&gt;  1:   1 21.6080 22.9605
+#&gt;  2:   2 21.6348 22.9987
+#&gt;  3:   3 21.6621 23.0376
+#&gt;  4:   4 21.6895 23.0771
+#&gt;  5:   5 21.7169 23.1130
+#&gt;  6:   6 21.7436 23.1460
+#&gt;  7:   7 21.7699 23.1775
+#&gt;  8:   8 21.7958 23.2080
+#&gt;  9:   9 21.8217 23.2366
+#&gt; 10:  10 21.8478 23.2649</div><div class='input'>
+<span class='co'># Or if one wants the variance column included in the results</span>
+<span class='no'>res_var</span> <span class='kw'>&lt;-</span> <span class='fu'>ts2clm</span>(<span class='no'>sst_WA</span>, <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span>),
+                  <span class='kw'>var</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>res_var</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt;     doy          t  temp    seas  thresh    var
+#&gt;  1:   1 1982-01-01 20.94 21.6080 22.9605 0.9585
+#&gt;  2:   2 1982-01-02 21.25 21.6348 22.9987 0.9636
+#&gt;  3:   3 1982-01-03 21.38 21.6621 23.0376 0.9684
+#&gt;  4:   4 1982-01-04 21.16 21.6895 23.0771 0.9728
+#&gt;  5:   5 1982-01-05 21.26 21.7169 23.1130 0.9764
+#&gt;  6:   6 1982-01-06 21.61 21.7436 23.1460 0.9797
+#&gt;  7:   7 1982-01-07 21.74 21.7699 23.1775 0.9828
+#&gt;  8:   8 1982-01-08 21.50 21.7958 23.2080 0.9860
+#&gt;  9:   9 1982-01-09 21.40 21.8217 23.2366 0.9884
+#&gt; 10:  10 1982-01-10 21.36 21.8478 23.2649 0.9906</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

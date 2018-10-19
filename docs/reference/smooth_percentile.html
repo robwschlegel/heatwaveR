@@ -165,7 +165,7 @@ accordance with the Hobday et al. (2016) standard.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>smooth_percentile</span>(<span class='no'>data</span>, <span class='no'>smoothPercentileWidth</span>)</pre>
+    <pre class="usage"><span class='fu'>smooth_percentile</span>(<span class='no'>data</span>, <span class='no'>smoothPercentileWidth</span>, <span class='no'>var_calc</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -179,6 +179,11 @@ performed by <code><a href='ts2clm.html'>ts2clm</a></code>.</p></td>
       <th>smoothPercentileWidth</th>
       <td><p>The width of the smoothing window
 to be applied. The default is <code>31</code> days.</p></td>
+    </tr>
+    <tr>
+      <th>var_calc</th>
+      <td><p>This is passed from the ts2clm argument <code>var</code>
+and tells the function if a var column exists that needs to be smoothed.</p></td>
     </tr>
     </table>
     

@@ -4,9 +4,10 @@
 \alias{ts2clm}
 \title{Make a climatology from a daily time series.}
 \usage{
-ts2clm(data, x = t, y = temp, climatologyPeriod, robust = TRUE,
+ts2clm(data, x = t, y = temp, climatologyPeriod, robust = FALSE,
   maxPadLength = 3, windowHalfWidth = 5, pctile = 90,
-  smoothPercentile = TRUE, smoothPercentileWidth = 31, clmOnly = FALSE)
+  smoothPercentile = TRUE, smoothPercentileWidth = 31, clmOnly = FALSE,
+  var = FALSE)
 }
 \arguments{
 \item{data}{A data frame with two columns. In the default setting (i.e. ommitting
@@ -28,13 +29,8 @@ the climatology period, and the second value the end date of said period. This
 chosen period (preferably 30 years in length) is then used to calculate the
 seasonal cycle and the extreme value threshold.}
 
-\item{robust}{This switch selects between a slower, but more robust (default is
-\code{TRUE}), function that checks for the completeness of the date vector (i.e.
-it must be regular and with no duplicates), or a faster one, which assumes that
-the user has verified that no missing dates are present in the time series or
-whether or not some measurements are replicated (in which case it takes the mean).
-Internally, this decides whether \code{make_whole} or \code{make_whole_fast}
-will be used.}
+\item{robust}{This argument has been deprecated and no longer has affects how
+the function operates.}
 
 \item{maxPadLength}{Specifies the maximum length of days over which to
 interpolate (pad) missing data (specified as \code{NA}) in the input
@@ -61,6 +57,13 @@ climatology and threshold. The default is \code{31} days.}
 
 \item{clmOnly}{Choose to calculate and return only the climatologies.
 The default is \code{FALSE}.}
+
+\item{var}{This argument has been introduced to allow the user to choose if
+the variance of the seasonal signal per doy should be calculated. The default of
+\code{FALSE} will prevent the calculation, potentially increasing speed of calculations
+on gridded data and reducing the size of the output. The variance was initially
+introduced as part of the standard output from Hobday et al. (2016), but few
+researchers use it and so it is generally regarded now as unnecessary.}
 }
 \value{
 The function will return a tibble (see the \code{tidyverse}) with the
@@ -78,11 +81,12 @@ units need to be determined by the user.
   \item{temp}{The measurement vector as per the the original \code{data} supplied
   to the function. If a different column was given to the \code{y} argument that
   will be shown here.}
-  \item{seasClim}{Climatological seasonal cycle [deg. C].}
-  \item{threshClim}{Seasonally varying threshold (e.g., 90th
+  \item{seas}{Climatological seasonal cycle [deg. C].}
+  \item{thresh}{Seasonally varying threshold (e.g., 90th
   percentile) [deg. C]. This is used in \code{\link{detect_event}} for the
   detection/calculation of events (MHWs).}
-  \item{varClim}{Seasonally varying variance (standard deviation) [deg. C].}
+  \item{var}{Seasonally varying variance (standard deviation) [deg. C]. This
+  column is not returned if \code{var = FALSE} (defaut).}
 Should \code{clmOnly} be enabled, only the 365 or 366 day climatology will be
 returned.
 }
@@ -129,6 +133,11 @@ res[1:10, ]
 res_clim <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
                    clmOnly = TRUE)
 res_clim[1:10, ]
+
+# Or if one wants the variance column included in the results
+res_var <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
+                  var = TRUE)
+res_var[1:10, ]
 
 }
 \references{

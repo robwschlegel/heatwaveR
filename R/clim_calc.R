@@ -43,6 +43,7 @@ clim_calc <- function(data, windowHalfWidth, pctile) {
 
   len_clim_year <- 366
   doy <- 1:366
+
   seas <- seas[(windowHalfWidth + 1):((windowHalfWidth) + len_clim_year)]
   thresh <- thresh[(windowHalfWidth + 1):((windowHalfWidth) + len_clim_year)]
   var <- var[(windowHalfWidth + 1):((windowHalfWidth) + len_clim_year)]

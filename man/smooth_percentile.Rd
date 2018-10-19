@@ -4,7 +4,7 @@
 \alias{smooth_percentile}
 \title{Detect the climatology for a time series.}
 \usage{
-smooth_percentile(data, smoothPercentileWidth)
+smooth_percentile(data, smoothPercentileWidth, var_calc)
 }
 \arguments{
 \item{data}{The data given to this function during the calculations
@@ -12,6 +12,9 @@ performed by \code{\link{ts2clm}}.}
 
 \item{smoothPercentileWidth}{The width of the smoothing window
 to be applied. The default is \code{31} days.}
+
+\item{var_calc}{This is passed from the ts2clm argument \code{var}
+and tells the function if a var column exists that needs to be smoothed.}
 }
 \value{
 The function returns the data in the same format it was
