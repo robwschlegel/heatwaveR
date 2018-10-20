@@ -4,7 +4,8 @@
 \alias{proto_event}
 \title{Detect proto-events based on a chosen criterion (column).}
 \usage{
-proto_event(t_series, criterion_column, minDuration, joinAcrossGaps, maxGap)
+proto_event(t_series, criterion_column, minDuration, joinAcrossGaps,
+  maxGap)
 }
 \arguments{
 \item{t_series}{A dataframe of the correct dimensions inherited

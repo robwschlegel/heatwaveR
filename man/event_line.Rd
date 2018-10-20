@@ -5,7 +5,8 @@
 \title{Create a line plot of heatwaves or cold-spells.}
 \usage{
 event_line(data, x = t, y = temp, min_duration = 5, spread = 150,
-  metric = "intensity_cumulative", start_date, end_date, category = FALSE)
+  metric = "intensity_cumulative", start_date, end_date,
+  category = FALSE)
 }
 \arguments{
 \item{data}{The function receives the full (list) output from the

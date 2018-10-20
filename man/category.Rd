@@ -4,7 +4,8 @@
 \alias{category}
 \title{Calculate the categories of events.}
 \usage{
-category(data, y = temp, S = TRUE, name = "Event", climatology = FALSE)
+category(data, y = temp, S = TRUE, name = "Event",
+  climatology = FALSE)
 }
 \arguments{
 \item{data}{The function receives the full (list) output from the

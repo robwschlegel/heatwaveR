@@ -4,7 +4,7 @@
 \alias{smooth_percentile}
 \title{Detect the climatology for a time series.}
 \usage{
-smooth_percentile(data, smoothPercentileWidth, var_calc)
+smooth_percentile(data, smoothPercentileWidth)
 }
 \arguments{
 \item{data}{The data given to this function during the calculations

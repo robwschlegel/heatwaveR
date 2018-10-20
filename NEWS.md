@@ -1,3 +1,10 @@
+# heatwaveR 0.3.5 (2018-10-20)
+
+* `ts2clm()` no longer calls `clim_calc()`, but `clim_calc_cpp()` only 
+* `smooth_percentile()` no longer provides option to create variance 
+  climatology (the need to no longer create var seemed to not be fully
+  implemented in 0.3.4)
+
 # heatwaveR 0.3.4 (2018-10-19)
 
 * `ts2clm()` no longer calculates variance column by default

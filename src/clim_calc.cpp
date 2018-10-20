@@ -30,14 +30,14 @@ Rcpp::NumericMatrix clim_calc_cpp(arma::mat x, int windowHalfWidth, double pctil
   // allocate receiving vectors
   arma::vec s_raw(ydim); // climatology
   arma::vec t_raw(ydim); // threshold
-  // arma::vec v_raw(ydim); // variance
 
   for(int i = windowHalfWidth; i < ydim - windowHalfWidth; i++) {
     arma::mat window = x.submat(i - windowHalfWidth, 0, i + windowHalfWidth, xdim - 1);
-    arma::vec v = sort(vectorise(window));
-    s_raw[i] = mean(v);
-    t_raw[i] = hlo * v[id[lo]] + hhi * v[id[hi]];
-    // v_raw[i] = stddev(v);
+    arma::vec v1 = vectorise(window);
+    arma::vec v2 = v1.elem( find_finite(v1) ); // handle missing values
+    arma::vec v3 = sort(v2);
+    s_raw[i] = mean(v3);
+    t_raw[i] = hlo * v3[id[lo]] + hhi * v3[id[hi]];
   }
 
   // trim tops and bottoms (return 366 day climatology)
@@ -45,10 +45,8 @@ Rcpp::NumericMatrix clim_calc_cpp(arma::mat x, int windowHalfWidth, double pctil
   std::iota(doy.begin(), doy.end(), 1);
   arma::vec seas = s_raw.subvec(windowHalfWidth, ydim - windowHalfWidth - 1);
   arma::vec thresh = t_raw.subvec(windowHalfWidth, ydim - windowHalfWidth - 1);
-  // arma::vec var = v_raw.subvec(windowHalfWidth, ydim - windowHalfWidth - 1);
 
   // place vectors into a matrix
-  // arma::mat ret(seas.n_elem, 4);
   arma::mat ret(seas.n_elem, 3);
   ret.col(0) = doy;
   ret.col(1) = seas;
@@ -59,7 +57,6 @@ Rcpp::NumericMatrix clim_calc_cpp(arma::mat x, int windowHalfWidth, double pctil
   Rcpp::NumericMatrix ans(Rcpp::wrap(ret));
 
   // and name the columns
-  // colnames(ans) = Rcpp::CharacterVector::create("doy", "seas", "thresh", "var");
   colnames(ans) = Rcpp::CharacterVector::create("doy", "seas", "thresh");
 
   return ans;

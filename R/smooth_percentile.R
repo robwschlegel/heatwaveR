@@ -15,7 +15,7 @@
 #'
 #' @author Smit, A. J.
 #'
-smooth_percentile <- function(data, smoothPercentileWidth, var_calc) {
+smooth_percentile <- function(data, smoothPercentileWidth) { # removed var_calc argument
 
   seas <- thresh <- NULL
 
@@ -33,13 +33,13 @@ smooth_percentile <- function(data, smoothPercentileWidth, var_calc) {
                                  seas = seas[(smoothPercentileWidth/2 + 2):((smoothPercentileWidth/2 + 1) + len_clim_year)],
                                  thresh = thresh[(smoothPercentileWidth/2 + 2):((smoothPercentileWidth/2 + 1) + len_clim_year)])
 
-  if (var_calc){
-    var <- NULL
-
-    var <- RcppRoll::roll_mean(as.numeric(prep[,3]), n = smoothPercentileWidth, na.rm = FALSE)
-
-    clim$var <- var[(smoothPercentileWidth/2 + 2):((smoothPercentileWidth/2 + 1) + len_clim_year)]
-  }
+  # if (var_calc) {
+  #   var <- NULL
+  #
+  #   var <- RcppRoll::roll_mean(as.numeric(prep[,3]), n = smoothPercentileWidth, na.rm = FALSE)
+  #
+  #   clim$var <- var[(smoothPercent  ileWidth/2 + 2):((smoothPercentileWidth/2 + 1) + len_clim_year)]
+  # }
 
   return(clim)
 }

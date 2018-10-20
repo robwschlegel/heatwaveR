@@ -6,8 +6,8 @@
 \usage{
 ts2clm(data, x = t, y = temp, climatologyPeriod, robust = FALSE,
   maxPadLength = 3, windowHalfWidth = 5, pctile = 90,
-  smoothPercentile = TRUE, smoothPercentileWidth = 31, clmOnly = FALSE,
-  var = FALSE)
+  smoothPercentile = TRUE, smoothPercentileWidth = 31,
+  clmOnly = FALSE, var = FALSE)
 }
 \arguments{
 \item{data}{A data frame with two columns. In the default setting (i.e. ommitting

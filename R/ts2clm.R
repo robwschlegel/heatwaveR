@@ -198,16 +198,18 @@ ts2clm <-
 
     ts_wide <- clim_spread(ts_whole, clim_start, clim_end, windowHalfWidth)
 
-    if (nrow(stats::na.omit(ts_wide)) < nrow(ts_wide) | var) {
-      ts_mat <- clim_calc(ts_wide, windowHalfWidth, pctile)
-      ts_mat[is.nan(ts_mat)] <- NA
-    } else {
-      ts_mat <- clim_calc_cpp(ts_wide, windowHalfWidth, pctile)
-    }
+    # delete once certain that it's not needed...
+    # if (nrow(stats::na.omit(ts_wide)) < nrow(ts_wide) | var) {
+    #   ts_mat <- clim_calc(ts_wide, windowHalfWidth, pctile)
+    #   ts_mat[is.nan(ts_mat)] <- NA
+    # } else {
+    #   ts_mat <- clim_calc_cpp(ts_wide, windowHalfWidth, pctile)
+    # }
+    ts_mat <- clim_calc_cpp(ts_wide, windowHalfWidth, pctile)
     rm(ts_wide)
 
     if (smoothPercentile) {
-      ts_clim <- smooth_percentile(ts_mat, smoothPercentileWidth, var)
+      ts_clim <- smooth_percentile(ts_mat, smoothPercentileWidth)
     } else {
       ts_clim <- data.table::data.table(ts_mat)
     }
