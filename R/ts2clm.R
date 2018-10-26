@@ -123,6 +123,10 @@
 #'                    clmOnly = TRUE)
 #' res_clim[1:10, ]
 #'
+#' # Or if one wants the variance column included in the results
+#' res_var <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
+#'                   var = TRUE)
+#' res_var[1:10, ]
 #'
 ts2clm <-
   function(data,
@@ -171,6 +175,7 @@ ts2clm <-
     ts_xy <- data.table::data.table(ts_x, ts_y)
     rm(ts_x); rm(ts_y)
 
+
     ts_whole <- make_whole_fast(ts_xy, x = ts_x, y = ts_y)
 
     if (length(stats::na.omit(ts_whole$ts_y)) < length(ts_whole$ts_y)){
@@ -193,18 +198,18 @@ ts2clm <-
 
     ts_wide <- clim_spread(ts_whole, clim_start, clim_end, windowHalfWidth)
 
-    # delete once certain that it's not needed...
-    if (nrow(stats::na.omit(ts_wide)) < nrow(ts_wide)) {
+    if (nrow(stats::na.omit(ts_wide)) < nrow(ts_wide) | var) {
       ts_mat <- clim_calc(ts_wide, windowHalfWidth, pctile)
       ts_mat[is.nan(ts_mat)] <- NA
+      # } else if (var) {
+      #   ts_mat <- clim_calc(ts_wide, windowHalfWidth, pctile)
     } else {
       ts_mat <- clim_calc_cpp(ts_wide, windowHalfWidth, pctile)
     }
-    # ts_mat <- clim_calc_cpp(ts_wide, windowHalfWidth, pctile)
     rm(ts_wide)
 
     if (smoothPercentile) {
-      ts_clim <- smooth_percentile(ts_mat, smoothPercentileWidth)
+      ts_clim <- smooth_percentile(ts_mat, smoothPercentileWidth, var)
     } else {
       ts_clim <- data.table::data.table(ts_mat)
     }
@@ -219,9 +224,8 @@ ts2clm <-
 
     } else {
 
-      # data.table::setkey(ts_whole, doy)
-      # data.table::setkey(ts_clim, doy)
-      # ts_res <- ts_whole[ts_clim, on = "doy"]
+      data.table::setkey(ts_whole, doy)
+      data.table::setkey(ts_clim, doy)
       ts_res <- merge(ts_whole, ts_clim, all = TRUE)
       rm(ts_whole); rm(ts_clim)
       data.table::setorder(ts_res, ts_x)

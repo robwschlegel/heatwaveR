@@ -1,3 +1,8 @@
+# heatwaveR 0.3.5 (2018-10-26)
+
+* `clim_calc()` reinstated to allow for calculation of clims with missing data
+* `var` calculations reinstated for documentation issues
+
 # heatwaveR 0.3.5 (2018-10-20)
 
 * `ts2clm()` no longer calls `clim_calc()`, but `clim_calc_cpp()` only 
