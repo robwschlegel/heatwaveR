@@ -83,15 +83,16 @@ make_whole_fast <- function(data, x = t, y = temp) {
                                   ts_y = ts_y)
   rm(ts_x); rm(ts_y)
 
-  # create full, complete time series for joing against
+  # create full, complete time series for joining against
   date_strt <- lubridate::ymd(utils::head(ts_xy$ts_x, 1))
   date_end <- lubridate::ymd(utils::tail(ts_xy$ts_x, 1))
   ts_full <- data.table::data.table(ts_x = seq.Date(date_strt, date_end, "day"))
 
   # left join
-  data.table::setkey(ts_full, ts_x) # seems redundant, unless data.table is used for merge in l.94
-  data.table::setkey(ts_xy, ts_x) # seems redundant, unless data.table is used for merge in l.94
-  ts_merged <- dplyr::left_join(ts_full, ts_xy, by = "ts_x") # or change this to a data.table function
+  # data.table::setkey(ts_full, ts_x) # seems redundant, unless data.table is used for merge in l.94
+  # data.table::setkey(ts_xy, ts_x) # seems redundant, unless data.table is used for merge in l.94
+  # ts_merged <- dplyr::left_join(ts_full, ts_xy, by = "ts_x") # or change this to a data.table function
+  ts_merged <- merge(ts_full, ts_xy, all = TRUE)
   rm(ts_full); rm(ts_xy)
 
   v_date <- ts_merged$ts_x

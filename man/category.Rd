@@ -115,7 +115,7 @@ tail(cat_Med)
 
 # One may also choose to have this function output the daily
 # category classifications as well by setting: climatology = TRUE
-cat_WA_daily <- category(res_WA, name = "WA", climatology =TRUE)
+cat_WA_daily <- category(res_WA, name = "WA", climatology = TRUE)
 head(cat_WA_daily$climatology)
 
 # Note that this will not return the complete time series, only the

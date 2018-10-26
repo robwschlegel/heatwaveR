@@ -50,9 +50,9 @@ test_that("smooth_percentile = FALSE prevents smoothing", {
 
 test_that("clmOnly = TRUE returns only the clim data", {
   res <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
-                clmOnly = TRUE, var = TRUE)
+                clmOnly = TRUE)
   expect_is(res, "data.frame")
-  expect_equal(ncol(res), 4)
+  expect_equal(ncol(res), 3)
   expect_equal(nrow(res), 366)
 })
 

@@ -80,7 +80,7 @@ accordance with the naming scheme proposed in Hobday et al. (2018)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.5</span>
       </span>
     </div>
 
@@ -165,7 +165,8 @@ accordance with the naming scheme proposed in Hobday et al. (2018).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>category</span>(<span class='no'>data</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='kw'>S</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Event"</span>, <span class='kw'>climatology</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>category</span>(<span class='no'>data</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='kw'>S</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Event"</span>,
+  <span class='kw'>climatology</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -283,7 +284,7 @@ Marine Heatwaves. Oceanography 31(2).</p>
 <span class='no'>cat_WA</span> <span class='kw'>&lt;-</span> <span class='fu'>category</span>(<span class='no'>res_WA</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"WA"</span>)
 <span class='fu'>tail</span>(<span class='no'>cat_WA</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 11
 #&gt;   event_no event_name peak_date  category i_max duration p_moderate p_strong
-#&gt;      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;    &lt;dbl&gt;    &lt;int&gt;      &lt;dbl&gt;    &lt;dbl&gt;
+#&gt;      &lt;dbl&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
 #&gt; 1       38 WA 2010    2010-09-29 II Stro…  2.58       18         78       22
 #&gt; 2       40 WA 2010    2010-12-02 II Stro…  2.66       15         73       27
 #&gt; 3       31 WA 2008    2008-04-14 III Sev…  3.77       34         62       29
@@ -298,7 +299,7 @@ Marine Heatwaves. Oceanography 31(2).</p>
 <span class='no'>cat_Med</span> <span class='kw'>&lt;-</span> <span class='fu'>category</span>(<span class='no'>res_Med</span>, <span class='kw'>S</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Med"</span>)
 <span class='fu'>tail</span>(<span class='no'>cat_Med</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 11
 #&gt;   event_no event_name peak_date  category i_max duration p_moderate p_strong
-#&gt;      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;    &lt;dbl&gt;    &lt;int&gt;      &lt;dbl&gt;    &lt;dbl&gt;
+#&gt;      &lt;dbl&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
 #&gt; 1       55 Med 2011   2011-05-25 II Stro…  4.05        8         62       38
 #&gt; 2       23 Med 1999   1999-04-06 II Stro…  1.88        5         60       40
 #&gt; 3       28 Med 2003   2003-06-20 II Stro…  5.02       30         57       43
@@ -308,10 +309,10 @@ Marine Heatwaves. Oceanography 31(2).</p>
 #&gt; # ... with 3 more variables: p_severe &lt;dbl&gt;, p_extreme &lt;dbl&gt;, season &lt;chr&gt;</div><div class='input'>
 <span class='co'># One may also choose to have this function output the daily</span>
 <span class='co'># category classifications as well by setting: climatology = TRUE</span>
-<span class='no'>cat_WA_daily</span> <span class='kw'>&lt;-</span> <span class='fu'>category</span>(<span class='no'>res_WA</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"WA"</span>, <span class='kw'>climatology</span> <span class='kw'>=</span><span class='fl'>TRUE</span>)
+<span class='no'>cat_WA_daily</span> <span class='kw'>&lt;-</span> <span class='fu'>category</span>(<span class='no'>res_WA</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"WA"</span>, <span class='kw'>climatology</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='fu'>head</span>(<span class='no'>cat_WA_daily</span>$<span class='no'>climatology</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 4
 #&gt;   t          event_no intensity category  
-#&gt;   &lt;date&gt;        &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;     
+#&gt;   &lt;date&gt;        &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;     
 #&gt; 1 1984-06-03        1      1.35 I Moderate
 #&gt; 2 1984-06-04        1      1.34 I Moderate
 #&gt; 3 1984-06-05        1      1.34 I Moderate
@@ -325,17 +326,16 @@ Marine Heatwaves. Oceanography 31(2).</p>
 <span class='co'># Should one want a complete time series, the daily category results</span>
 <span class='co'># may simply be left_join() with the detect_event() results</span>
 <span class='no'>cat_WA_ts</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/join.html'>left_join</a></span>(<span class='no'>res_WA</span>$<span class='no'>climatology</span>,
-                              <span class='no'>cat_WA_daily</span>$<span class='no'>climatology</span>)</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("t", "event_no")</span></div><div class='input'><span class='fu'>head</span>(<span class='no'>cat_WA_ts</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 12
-#&gt;     doy t           temp  seas thresh   var threshCriterion durationCriteri…
-#&gt;   &lt;int&gt; &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;lgl&gt;           &lt;lgl&gt;           
-#&gt; 1     1 1982-01-01  20.9  21.6   23.0 0.959 FALSE           FALSE           
-#&gt; 2     2 1982-01-02  21.2  21.6   23.0 0.964 FALSE           FALSE           
-#&gt; 3     3 1982-01-03  21.4  21.7   23.0 0.968 FALSE           FALSE           
-#&gt; 4     4 1982-01-04  21.2  21.7   23.1 0.973 FALSE           FALSE           
-#&gt; 5     5 1982-01-05  21.3  21.7   23.1 0.976 FALSE           FALSE           
-#&gt; 6     6 1982-01-06  21.6  21.7   23.1 0.980 FALSE           FALSE           
-#&gt; # ... with 4 more variables: event &lt;lgl&gt;, event_no &lt;int&gt;, intensity &lt;dbl&gt;,
-#&gt; #   category &lt;chr&gt;</div><div class='input'>
+                              <span class='no'>cat_WA_daily</span>$<span class='no'>climatology</span>)</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("t", "event_no")</span></div><div class='input'><span class='fu'>head</span>(<span class='no'>cat_WA_ts</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 11
+#&gt;     doy t           temp  seas thresh threshCriterion durationCriteri… event
+#&gt;   &lt;dbl&gt; &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;lgl&gt;           &lt;lgl&gt;            &lt;lgl&gt;
+#&gt; 1     1 1982-01-01  20.9  21.6   23.0 FALSE           FALSE            FALSE
+#&gt; 2     2 1982-01-02  21.2  21.6   23.0 FALSE           FALSE            FALSE
+#&gt; 3     3 1982-01-03  21.4  21.7   23.0 FALSE           FALSE            FALSE
+#&gt; 4     4 1982-01-04  21.2  21.7   23.1 FALSE           FALSE            FALSE
+#&gt; 5     5 1982-01-05  21.3  21.7   23.1 FALSE           FALSE            FALSE
+#&gt; 6     6 1982-01-06  21.6  21.7   23.1 FALSE           FALSE            FALSE
+#&gt; # ... with 3 more variables: event_no &lt;dbl&gt;, intensity &lt;dbl&gt;, category &lt;chr&gt;</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

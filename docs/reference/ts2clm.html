@@ -81,7 +81,7 @@ by an optional moving average smoother as used by Hobday et al. (2016)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.5</span>
       </span>
     </div>
 
@@ -169,8 +169,8 @@ by an optional moving average smoother as used by Hobday et al. (2016).</p>
 
     <pre class="usage"><span class='fu'>ts2clm</span>(<span class='no'>data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='no'>climatologyPeriod</span>, <span class='kw'>robust</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>maxPadLength</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>windowHalfWidth</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>pctile</span> <span class='kw'>=</span> <span class='fl'>90</span>,
-  <span class='kw'>smoothPercentile</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>smoothPercentileWidth</span> <span class='kw'>=</span> <span class='fl'>31</span>, <span class='kw'>clmOnly</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>var</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>smoothPercentile</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>smoothPercentileWidth</span> <span class='kw'>=</span> <span class='fl'>31</span>,
+  <span class='kw'>clmOnly</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>var</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -347,20 +347,7 @@ doi:10.1016/j.pocean.2015.12.014</p>
 #&gt;  8:   8 21.7958 23.2080
 #&gt;  9:   9 21.8217 23.2366
 #&gt; 10:  10 21.8478 23.2649</div><div class='input'>
-<span class='co'># Or if one wants the variance column included in the results</span>
-<span class='no'>res_var</span> <span class='kw'>&lt;-</span> <span class='fu'>ts2clm</span>(<span class='no'>sst_WA</span>, <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span>),
-                  <span class='kw'>var</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>res_var</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt;     doy          t  temp    seas  thresh    var
-#&gt;  1:   1 1982-01-01 20.94 21.6080 22.9605 0.9585
-#&gt;  2:   2 1982-01-02 21.25 21.6348 22.9987 0.9636
-#&gt;  3:   3 1982-01-03 21.38 21.6621 23.0376 0.9684
-#&gt;  4:   4 1982-01-04 21.16 21.6895 23.0771 0.9728
-#&gt;  5:   5 1982-01-05 21.26 21.7169 23.1130 0.9764
-#&gt;  6:   6 1982-01-06 21.61 21.7436 23.1460 0.9797
-#&gt;  7:   7 1982-01-07 21.74 21.7699 23.1775 0.9828
-#&gt;  8:   8 1982-01-08 21.50 21.7958 23.2080 0.9860
-#&gt;  9:   9 1982-01-09 21.40 21.8217 23.2366 0.9884
-#&gt; 10:  10 1982-01-10 21.36 21.8478 23.2649 0.9906</div><div class='input'>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

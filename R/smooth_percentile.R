@@ -15,7 +15,7 @@
 #'
 #' @author Smit, A. J.
 #'
-smooth_percentile <- function(data, smoothPercentileWidth) { # removed var_calc argument
+smooth_percentile <- function(data, smoothPercentileWidth, var_calc) { # removed var_calc argument
 
   seas <- thresh <- NULL
 

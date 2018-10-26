@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.5</span>
       </span>
     </div>
 
@@ -164,7 +164,8 @@
     </div>
 
     <pre class="usage"><span class='fu'>exceedance</span>(<span class='no'>data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='no'>threshold</span>, <span class='kw'>below</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>minDuration</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>joinAcrossGaps</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>maxGap</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>maxPadLength</span> <span class='kw'>=</span> <span class='fl'>3</span>)</pre>
+  <span class='kw'>minDuration</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>joinAcrossGaps</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>maxGap</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>maxPadLength</span> <span class='kw'>=</span> <span class='fl'>3</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -330,7 +331,7 @@ Feb 2015, and is documented by Hobday et al. (2016).</p>
 #&gt; # ... with 1 more variable: exceedance_no &lt;int&gt;</div><div class='input'><span class='co'># show first five exceedances:</span>
 <span class='no'>res</span>$<span class='no'>exceedance</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, ]</div><div class='output co'>#&gt; # A tibble: 5 x 18
 #&gt;   exceedance_no index_start index_peak index_end duration date_start date_peak 
-#&gt;           &lt;int&gt;       &lt;dbl&gt;      &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt; &lt;date&gt;     &lt;date&gt;    
+#&gt;           &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;    
 #&gt; 1             1        2682       2683      2686        5 1989-05-05 1989-05-06
 #&gt; 2             2        6342       6351      6358       17 1999-05-13 1999-05-22
 #&gt; 3             3        6362       6363      6368        7 1999-06-02 1999-06-03

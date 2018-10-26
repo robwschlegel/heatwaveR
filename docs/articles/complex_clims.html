@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.4</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.5</span>
       </span>
     </div>
 
@@ -113,7 +113,7 @@
       <h1>Complex Climatologies</h1>
                         <h4 class="author">Robert W Schlegel</h4>
             
-            <h4 class="date">2018-09-27</h4>
+            <h4 class="date">2018-10-26</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/complex_clims.Rmd"><code>vignettes/complex_clims.Rmd</code></a></small>
       <div class="hidden name"><code>complex_clims.Rmd</code></div>
@@ -142,11 +142,11 @@
 <p>With our libraries loaded, we will now go about creating artificial <code>tMin</code> and <code>tMax</code> time series from <code>sst_WA</code>. Again, please note that this is not actually something that one should do. We only do so here as <strong><code>heatwaveR</code></strong> does not have any built-in atmospheric data. Real <code>tMin</code> and <code>tMax</code> time series should be used when one is executing this methodology for proper research.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Create tMin time series</span>
 tMin &lt;-<span class="st"> </span>sst_WA <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">temp =</span> temp <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggpubr/topics/reexports">mutate</a></span>(<span class="dt">temp =</span> temp <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)
 
 <span class="co"># Create tMax time series</span>
 tMax &lt;-<span class="st"> </span>sst_WA <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">temp =</span> temp <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</code></pre></div>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggpubr/topics/reexports">mutate</a></span>(<span class="dt">temp =</span> temp <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</code></pre></div>
 </div>
 <div id="climatology-calculation" class="section level3">
 <h3 class="hasAnchor">
@@ -192,7 +192,7 @@ ts_clims_filtered &lt;-<span class="st"> </span>ts_clims <span class="op">%&gt;%
 <p>With our two different filtering indices combined into one dataframe we only need one more ingredient before we can create our final product. We have already decided that we want to screen out events that dipped below a given static bottom threshold. Presumably this is a biologically relevant value that has been determined <em>a priori</em> through some other research. But how many days must the <code>tMin</code> values during the event go below this threshold before it must be excluded from our research? The following chunk of code shows how to calculate the number of days during each event that <code>tMin</code> went below the bottom threshold. What one chooses to do with that information is shown in the following chunk.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Calculate number of days for each event above the 25C threshold</span>
 ts_event_duration_thresh &lt;-<span class="st"> </span>ts_clims_filtered <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">group_by</span>(event_no) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/ggpubr/topics/reexports">group_by</a></span>(event_no) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">summarise</span>(<span class="dt">event_duration_thresh =</span> <span class="kw">n</span>()) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">na.omit</span>()</code></pre></div>
 <p>Now that we have a third and final filtering index we may extract the events that meet all of the criteria we haven chosen to impose on them.</p>
@@ -202,8 +202,8 @@ ts_events_filtered &lt;-<span class="st"> </span><span class="kw">left_join</spa
 <span class="st">  </span><span class="kw">filter</span>(event_duration_thresh <span class="op">==</span><span class="st"> </span>duration)
 ts_events_filtered</code></pre></div>
 <pre><code>## # A tibble: 0 x 23
-## # ... with 23 variables: event_no &lt;int&gt;, index_start &lt;dbl&gt;,
-## #   index_peak &lt;int&gt;, index_end &lt;dbl&gt;, duration &lt;int&gt;, date_start &lt;date&gt;,
+## # ... with 23 variables: event_no &lt;dbl&gt;, index_start &lt;dbl&gt;,
+## #   index_peak &lt;dbl&gt;, index_end &lt;dbl&gt;, duration &lt;dbl&gt;, date_start &lt;date&gt;,
 ## #   date_peak &lt;date&gt;, date_end &lt;date&gt;, intensity_mean &lt;dbl&gt;,
 ## #   intensity_max &lt;dbl&gt;, intensity_var &lt;dbl&gt;, intensity_cumulative &lt;dbl&gt;,
 ## #   intensity_mean_relThresh &lt;dbl&gt;, intensity_max_relThresh &lt;dbl&gt;,
@@ -217,8 +217,8 @@ ts_events_filtered</code></pre></div>
 <span class="st">  </span><span class="kw">filter</span>(event_duration_thresh <span class="op">&gt;=</span><span class="st"> </span>duration <span class="op">-</span><span class="st"> </span><span class="dv">3</span>)
 ts_events_filtered</code></pre></div>
 <pre><code>## # A tibble: 0 x 23
-## # ... with 23 variables: event_no &lt;int&gt;, index_start &lt;dbl&gt;,
-## #   index_peak &lt;int&gt;, index_end &lt;dbl&gt;, duration &lt;int&gt;, date_start &lt;date&gt;,
+## # ... with 23 variables: event_no &lt;dbl&gt;, index_start &lt;dbl&gt;,
+## #   index_peak &lt;dbl&gt;, index_end &lt;dbl&gt;, duration &lt;dbl&gt;, date_start &lt;date&gt;,
 ## #   date_peak &lt;date&gt;, date_end &lt;date&gt;, intensity_mean &lt;dbl&gt;,
 ## #   intensity_max &lt;dbl&gt;, intensity_var &lt;dbl&gt;, intensity_cumulative &lt;dbl&gt;,
 ## #   intensity_mean_relThresh &lt;dbl&gt;, intensity_max_relThresh &lt;dbl&gt;,
@@ -233,7 +233,7 @@ ts_events_filtered</code></pre></div>
 ts_events_filtered</code></pre></div>
 <pre><code>## # A tibble: 2 x 23
 ##   event_no index_start index_peak index_end duration date_start date_peak 
-##      &lt;int&gt;       &lt;dbl&gt;      &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt; &lt;date&gt;     &lt;date&gt;    
+##      &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;    
 ## 1       80        9581       9601      9615       35 2008-03-25 2008-04-14
 ## 2       92       10585      10651     10689      105 2010-12-24 2011-02-28
 ## # ... with 16 more variables: date_end &lt;date&gt;, intensity_mean &lt;dbl&gt;,
@@ -273,7 +273,7 @@ ts_filtered_list &lt;-<span class="st"> </span><span class="kw">list</span>(<spa
 ts_category</code></pre></div>
 <pre><code>## # A tibble: 2 x 11
 ##   event_no event_name peak_date  category i_max duration p_moderate
-##      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;    &lt;dbl&gt;    &lt;int&gt;      &lt;dbl&gt;
+##      &lt;dbl&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;
 ## 1       80 WA 2008    2008-04-14 III Sev…  3.83       35         57
 ## 2       92 WA 2011    2011-02-28 IV Extr…  6.58      105         52
 ## # ... with 4 more variables: p_strong &lt;dbl&gt;, p_severe &lt;dbl&gt;,
