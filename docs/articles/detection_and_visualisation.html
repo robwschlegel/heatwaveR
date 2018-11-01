@@ -113,7 +113,7 @@
       <h1>Detection and Visualisation</h1>
                         <h4 class="author">AJ Smit and Robert W Schlegel</h4>
             
-            <h4 class="date">2018-10-26</h4>
+            <h4 class="date">2018-11-01</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/detection_and_visualisation.Rmd"><code>vignettes/detection_and_visualisation.Rmd</code></a></small>
       <div class="hidden name"><code>detection_and_visualisation.Rmd</code></div>
@@ -178,7 +178,8 @@ mhw2 &lt;-<span class="st"> </span>mhw<span class="op">$</span>clim <span class=
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(mhw<span class="op">$</span>event, <span class="kw">aes</span>(<span class="dt">x =</span> date_start, <span class="dt">y =</span> intensity_max)) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="../reference/geom_lolli.html">geom_lolli</a></span>(<span class="dt">colour =</span> <span class="st">"salmon"</span>, <span class="dt">colour_n =</span> <span class="st">"red"</span>, <span class="dt">n =</span> <span class="dv">3</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_text</span>(<span class="dt">colour =</span> <span class="st">"black"</span>, <span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">as.Date</span>(<span class="st">"2006-08-01"</span>), <span class="dt">y =</span> <span class="dv">5</span>,
-                <span class="dt">label =</span> <span class="st">"The marine heatwaves</span><span class="ch">\n</span><span class="st">Tend to be left skewed in a</span><span class="ch">\n</span><span class="st">Given time series"</span>))</code></pre></div>
+                <span class="dt">label =</span> <span class="st">"The marine heatwaves</span><span class="ch">\n</span><span class="st">Tend to be left skewed in a</span><span class="ch">\n</span><span class="st">Given time series"</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="kw">expression</span>(<span class="kw">paste</span>(<span class="st">"Max. intensity ["</span>, degree, <span class="st">"C]"</span>)), <span class="dt">x =</span> <span class="ot">NULL</span>)</code></pre></div>
 <p><img src="detection_and_visualisation_files/figure-html/fig-example3-2.png" width="768"><!-- ![](vignettes/fig-example3-1.png) --><!-- ![](vignettes/fig-example3-2.png) --></p>
 <p>The default output of these function may not be to your liking. If so, not to worry. As <strong><code>ggplot2</code></strong> <code>geoms</code>, they are highly malleable. For example, if we were to choose to reproduce the format of the MHWs as seen in Hobday et al. (2016), the code would look something like this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># It is necessary to give geom_flame() at least one row on either side of the event in order to calculate the polygon corners smoothly</span>

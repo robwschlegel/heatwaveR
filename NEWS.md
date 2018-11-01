@@ -1,3 +1,7 @@
+# heatwaveR 0.3.5 (2018-11-01)
+
+* Updated one figure in a vignette
+
 # heatwaveR 0.3.5 (2018-10-26)
 
 * `clim_calc()` reinstated to allow for calculation of clims with missing data

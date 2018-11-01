@@ -76,7 +76,8 @@ ggplot(mhw2, aes(x = t, y = temp, y2 = thresh)) +
 ggplot(mhw$event, aes(x = date_start, y = intensity_max)) +
   geom_lolli(colour = "salmon", colour_n = "red", n = 3) +
   geom_text(colour = "black", aes(x = as.Date("2006-08-01"), y = 5,
-                label = "The marine heatwaves\nTend to be left skewed in a\nGiven time series"))
+                label = "The marine heatwaves\nTend to be left skewed in a\nGiven time series")) +
+  labs(y = expression(paste("Max. intensity [", degree, "C]")), x = NULL)
 ```
 <!-- ![](vignettes/fig-example3-1.png) -->
 <!-- ![](vignettes/fig-example3-2.png) -->
