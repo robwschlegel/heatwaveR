@@ -18,3 +18,12 @@ test_that("block_average() report argument behaves as expected", {
   expect_lt(nrow(res_partial), nrow(res_full))
   expect_error(block_average(res, report = "part"), "Oops, 'report' must be either 'full' or 'partial'!")
 })
+
+test_that("block_average() works with the output of detect_event() and exceedence()", {
+  res_de <- detect_event(ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31")))
+  res_e <- exceedance(sst_WA, threshold = 25)
+  block_de <- block_average(res_de)
+  block_e <- block_average(res_e)
+  expect_is(block_de, "tbl_df")
+  expect_is(block_e, "tbl_df")
+})

@@ -1,3 +1,7 @@
+# heatwaveR 0.3.5 (2018-12-03)
+
+* Increased functionality of `block_average()`
+
 # heatwaveR 0.3.5 (2018-11-01)
 
 * Updated one figure in a vignette
