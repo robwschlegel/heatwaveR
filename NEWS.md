@@ -1,3 +1,8 @@
+# heatwaveR 0.3.5.9000 (2018-12-05)
+
+* Added 'duration_max' to `block_average()` output
+* Resumed correct version numbering
+
 # heatwaveR 0.3.5 (2018-12-03)
 
 * Increased functionality of `block_average()`

@@ -5,7 +5,7 @@ test_that("block_average() returns the correct tibble and columns", {
   res <- detect_event(ts)
   out <- block_average(res)
   expect_is(out, "tbl_df")
-  expect_equal(ncol(out), 20)
+  expect_equal(ncol(out), 21)
 })
 
 test_that("block_average() report argument behaves as expected", {

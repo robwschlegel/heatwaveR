@@ -32,11 +32,9 @@
 #' @return The function will return a data frame of the averaged (or aggregate)
 #' metrics. It includes the following:
 #'   \item{year}{The year over which the metrics were averaged.}
-#'   \item{temp_mean}{Seawater temperature for the specified year [deg. C].}
-#'   \item{temp_min}{The minimum temperature for the specified year [deg. C].}
-#'   \item{temp_max}{The maximum temperature for the specified year [deg. C].}
 #'   \item{count}{The number of events per year.}
 #'   \item{duration}{The average duration of events per year [days].}
+#'   \item{duration_max}{The maximum duration of an event in each year [days].}
 #'   \item{intensity_mean}{The average event "mean intensity" in each year [deg. C].}
 #'   \item{intensity_max}{The average event "maximum (peak) intensity" in each year
 #'   [deg. C].}
@@ -109,7 +107,7 @@ block_average <- function(data,
     dplyr::group_by(year = lubridate::year(t)) %>%
     dplyr::summarise()
 
-  duration <- count <- intensity_mean <- intensity_max <- intensity_var <- intensity_cumulative <-
+  duration <- duration_max <- count <- intensity_mean <- intensity_max <- intensity_var <- intensity_cumulative <-
     intensity_mean_relThresh <- intensity_max_relThresh <- intensity_var_relThresh <-
     intensity_cumulative_relThresh <- intensity_mean_abs <- intensity_max_abs <- intensity_var_abs <-
     intensity_cumulative_abs <- rate_onset <- rate_decline <- total_days <- total_icum <-
@@ -120,6 +118,7 @@ block_average <- function(data,
       dplyr::group_by(year = lubridate::year(date_start)) %>%
       dplyr::summarise(count = length(duration),
                        duration_mean = mean(duration, na.rm = T),
+                       duration_max = max(duration, na.rm = T),
                        intensity_mean = mean(intensity_mean, na.rm = T),
                        intensity_max_mean = mean(intensity_max, na.rm = T),
                        intensity_max_max = max(intensity_max, na.rm = T),

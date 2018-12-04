@@ -26,11 +26,9 @@ reports only the years wherein events were detected. The default is \code{full}.
 The function will return a data frame of the averaged (or aggregate)
 metrics. It includes the following:
   \item{year}{The year over which the metrics were averaged.}
-  \item{temp_mean}{Seawater temperature for the specified year [deg. C].}
-  \item{temp_min}{The minimum temperature for the specified year [deg. C].}
-  \item{temp_max}{The maximum temperature for the specified year [deg. C].}
   \item{count}{The number of events per year.}
   \item{duration}{The average duration of events per year [days].}
+  \item{duration_max}{The maximum duration of an event in each year [days].}
   \item{intensity_mean}{The average event "mean intensity" in each year [deg. C].}
   \item{intensity_max}{The average event "maximum (peak) intensity" in each year
   [deg. C].}
