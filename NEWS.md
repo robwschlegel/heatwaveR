@@ -1,3 +1,8 @@
+# heatwaveR 0.3.5.9001 (2018-12-06)
+
+* Fixed bug caused by R not liking dates older than 1970-01-01
+* Changed `maxPadLength` behaviour in `ts2clm()` to match the Python default settings
+
 # heatwaveR 0.3.5.9000 (2018-12-05)
 
 * Added 'duration_max' to `block_average()` output

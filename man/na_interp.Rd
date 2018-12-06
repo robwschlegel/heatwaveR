@@ -4,7 +4,7 @@
 \alias{na_interp}
 \title{Pad NA gaps of user-defined width with interpolated values.}
 \usage{
-na_interp(doy = doy, x = ts_x, y = ts_y, maxPadLength = 3)
+na_interp(doy = doy, x = ts_x, y = ts_y, maxPadLength)
 }
 \arguments{
 \item{doy}{Date-of-year as per \code{make_whole} or \code{make_whole_fast}.}
@@ -17,7 +17,7 @@ na_interp(doy = doy, x = ts_x, y = ts_y, maxPadLength = 3)
 interpolate (pad) missing data (specified as \code{NA}) in the input
 temperature time series; i.e., any consecutive blocks of NAs with length
 greater than \code{maxPadLength} will be left as \code{NA}. Set as an
-integer. The default is \code{3} days.}
+integer.}
 }
 \value{
 The function returns the data (a data.table) in a long format.
