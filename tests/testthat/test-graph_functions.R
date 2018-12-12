@@ -14,6 +14,15 @@ test_that("event_line() doesn't fall over", {
   expect_is(tp, "ggplot")
 })
 
+test_that("event_line() requires start and end dates to be provided", {
+  res <- detect_event(data = ts2clm(sst_Med,
+                                    climatologyPeriod = c("1983-01-01", "2012-12-31")))
+  expect_error(event_line(data = res),
+               "Please provide a 'start_date' so the function knows where you would like it to begin looking for events.")
+  expect_error(event_line(data = res, start_date = "2010-01-01"),
+               "Please provide an 'end_date' so the function knows where you would like it to stop looking for events.")
+})
+
 test_that("data fed to event_line() is a list with correct dataframes", {
   res <- detect_event(data = ts2clm(sst_Med,
                                     climatologyPeriod = c("1983-01-01", "2012-12-31")))
