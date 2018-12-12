@@ -24,6 +24,8 @@ test_that("block_average() works with the output of detect_event() and exceedenc
   res_e <- exceedance(sst_WA, threshold = 25)
   block_de <- block_average(res_de)
   block_e <- block_average(res_e)
+  res_false <- exceedance(sst_WA, threshold = 25)$exceedance
   expect_is(block_de, "tbl_df")
   expect_is(block_e, "tbl_df")
+  expect_error(block_average(res_false))
 })

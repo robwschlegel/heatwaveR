@@ -1,6 +1,7 @@
 # heatwaveR 0.3.5.9002 (2018-12-12)
 
 * Fixed bug in `event_line()` that caused it to graph events outside of the `spread` range
+* Expanded testing back up to 100%
 
 # heatwaveR 0.3.5.9001 (2018-12-06)
 
