@@ -142,10 +142,10 @@ exceedance <-
 
     ts_x <- eval(substitute(x), data)
     ts_y <- eval(substitute(y), data)
-    ts_xy <- tibble::tibble(ts_x, ts_y)
+    ts_xy <- data.table::data.table(ts_x = ts_x, ts_y = ts_y)
     rm(ts_x); rm(ts_y)
 
-    ts_whole <- make_whole(ts_xy, x = ts_x, y = ts_y)
+    ts_whole <- make_whole_fast(ts_xy)
 
     t_series <- na_interp(doy = ts_whole$doy,
                           x = ts_whole$ts_x,

@@ -1,5 +1,9 @@
 # heatwaveR 0.3.5.9002 (2018-12-12)
 
+* Changed time series checking behaviour of `exceedance()` so that it is the same as `ts2clm()`
+
+# heatwaveR 0.3.5.9002 (2018-12-12)
+
 * Fixed bug in `event_line()` that caused it to graph events outside of the `spread` range
 * Expanded testing back up to 100%
 
