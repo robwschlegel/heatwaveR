@@ -1,5 +1,5 @@
 ---
-title: "Calculating exceedances"
+title: "Calculating Exceedances"
 author: "Robert W Schlegel"
 date: "`r Sys.Date()`"
 description: "This vignette demonstrates the use of the exceedence function."

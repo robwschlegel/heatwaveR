@@ -1,5 +1,5 @@
 ---
-title: "Detection and Visualisation"
+title: "Detection and Visualisation of Events"
 author: "AJ Smit and Robert W Schlegel"
 date: "`r Sys.Date()`"
 description: "This vignette demonstrates the basic use of the heatwaveR package for the detection and visualisation of events."
@@ -41,7 +41,7 @@ library(heatwaveR)
 library(dplyr)
 
 # Detect the events in a time series
-ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+ts <- ts2clm(sst_WA, climatologyPeriod = c("1982-01-01", "2011-12-31"))
 mhw <- detect_event(ts)
 
 # View just a few metrics
@@ -131,7 +131,7 @@ The calculation and visualisation of cold-spells is also provided for within thi
 
 ```{r detect-example2}
 # First calculate the cold-spells
-ts_10th <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), pctile = 10)
+ts_10th <- ts2clm(sst_WA, climatologyPeriod = c("1982-01-01", "2011-12-31"), pctile = 10)
 mcs <- detect_event(ts_10th, coldSpells = TRUE)
 
 # Then look at the top few events
