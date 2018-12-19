@@ -158,7 +158,7 @@ event_line <- function(data,
     clim_top$y2 <- clim_top$ts.y
   }
 
-  ylabel <- expression(paste("Temperautre [", degree, "C]"))
+  ylabel <- expression(paste("Temperature [", degree, "C]"))
 
   ep <- ggplot(data = clim_spread, aes(x = ts.x, y = ts.y)) +
     scale_x_date(expand = c(0, 0), date_labels = "%b %Y", name = NULL) +

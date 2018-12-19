@@ -1,6 +1,8 @@
 # heatwaveR 0.3.5.9003 (2018-12-19)
 
 * Updated text on the landing page to better reflect the updates that have been made over the past few months
+* Fixed typo in `event_line()` output
+* Updated text for the detection and visualisation vignette
 
 # heatwaveR 0.3.5.9003 (2018-12-18)
 
