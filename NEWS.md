@@ -1,4 +1,8 @@
-# heatwaveR 0.3.5.9002 (2018-12-12)
+# heatwaveR 0.3.5.9003 (2018-12-19)
+
+* Updated text on the landing page to better reflect the updates that have been made over the past few months
+
+# heatwaveR 0.3.5.9003 (2018-12-18)
 
 * Changed time series checking behaviour of `exceedance()` so that it is the same as `ts2clm()`
 
