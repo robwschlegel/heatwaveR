@@ -197,7 +197,7 @@ ggplot(data = mcs2, aes(x = t)) +
   geom_line(aes(y = seas, colour = "seas"), size = 1.2) +
   scale_colour_manual(name = "Line Colour",
                       values = c("temp" = "black", "thresh" =  "forestgreen", "seas" = "grey80")) +
-    scale_fill_manual(name = "Event Colour", values = c("all" = "steelblue3", "top" = "navy")) +
+  scale_fill_manual(name = "Event Colour", values = c("all" = "steelblue3", "top" = "navy")) +
   scale_x_date(date_labels = "%b %Y") +
   guides(colour = guide_legend(override.aes = list(fill = NA))) +
   labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)

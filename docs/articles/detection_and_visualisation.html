@@ -114,7 +114,7 @@
       <h1>Detection and Visualisation of Events</h1>
                         <h4 class="author">AJ Smit and Robert W Schlegel</h4>
             
-            <h4 class="date">2018-12-19</h4>
+            <h4 class="date">2018-12-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/detection_and_visualisation.Rmd"><code>vignettes/detection_and_visualisation.Rmd</code></a></small>
       <div class="hidden name"><code>detection_and_visualisation.Rmd</code></div>
@@ -152,9 +152,9 @@ mhw &lt;-<span class="st"> </span><span class="kw"><a href="../reference/detect_
 
 <span class="co"># View just a few metrics</span>
 mhw<span class="op">$</span>event <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/group_by">ungroup</a></span>() <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(event_no, duration, date_start, date_peak, intensity_max, intensity_cumulative) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/arrange">arrange</a></span>(<span class="op">-</span>intensity_max) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span>() <span class="op">%&gt;%</span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(event_no, duration, date_start, date_peak, intensity_max, intensity_cumulative) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(<span class="op">-</span>intensity_max) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="dv">5</span>)</code></pre></div>
 <pre><code>## # A tibble: 5 x 6
 ##   event_no duration date_start date_peak  intensity_max intensity_cumulati…
@@ -184,7 +184,7 @@ mhw<span class="op">$</span>event <span class="op">%&gt;%</span><span class="st"
 <p>The <code><a href="../reference/event_line.html">event_line()</a></code> and <code><a href="../reference/lolli_plot.html">lolli_plot()</a></code> functions were designed to work directly on the list returned by <code><a href="../reference/detect_event.html">detect_event()</a></code>. If more control over the figures is required, it may be useful to create them in <strong><code>ggplot2</code></strong> by stacking <code>geoms</code>. We specifically created two new <strong><code>ggplot2</code></strong> <code>geoms</code> to reproduce the functionality of <code><a href="../reference/event_line.html">event_line()</a></code> and <code><a href="../reference/lolli_plot.html">lolli_plot()</a></code>. These functions are more general in their functionality and can be used outside of the <strong><code>heatwaveR</code></strong> package, too. To apply them to MHWs and MCSs first requires that we access the <code>climatology</code> or <code>event</code> dataframes within the list that is produced by <code><a href="../reference/detect_event.html">detect_event()</a></code>. Here is how:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Select the region of the time series of interest</span>
 mhw2 &lt;-<span class="st"> </span>mhw<span class="op">$</span>climatology <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/slice">slice</a></span>(<span class="dv">10580</span><span class="op">:</span><span class="dv">10720</span>)
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">10580</span><span class="op">:</span><span class="dv">10720</span>)
 
 <span class="kw">ggplot</span>(mhw2, <span class="kw">aes</span>(<span class="dt">x =</span> t, <span class="dt">y =</span> temp, <span class="dt">y2 =</span> thresh)) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="../reference/geom_flame.html">geom_flame</a></span>() <span class="op">+</span>
@@ -204,7 +204,7 @@ mhw2 &lt;-<span class="st"> </span>mhw<span class="op">$</span>climatology <span
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># It is necessary to give geom_flame() at least one row on either side of </span>
 <span class="co"># the event in order to calculate the polygon corners smoothly</span>
 mhw_top &lt;-<span class="st"> </span>mhw2 <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/slice">slice</a></span>(<span class="dv">49</span><span class="op">:</span><span class="dv">110</span>)
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">49</span><span class="op">:</span><span class="dv">110</span>)
 
 <span class="kw">ggplot</span>(<span class="dt">data =</span> mhw2, <span class="kw">aes</span>(<span class="dt">x =</span> t)) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="../reference/geom_flame.html">geom_flame</a></span>(<span class="kw">aes</span>(<span class="dt">y =</span> temp, <span class="dt">y2 =</span> thresh, <span class="dt">fill =</span> <span class="st">"all"</span>), <span class="dt">show.legend =</span> T) <span class="op">+</span>
@@ -239,10 +239,10 @@ mcs &lt;-<span class="st"> </span><span class="kw"><a href="../reference/detect_
 
 <span class="co"># Then look at the top few events</span>
 mcs<span class="op">$</span>event <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/group_by">ungroup</a></span>() <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(event_no, duration, date_start,
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span>() <span class="op">%&gt;%</span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(event_no, duration, date_start,
                 date_peak, intensity_mean, intensity_max, intensity_cumulative) <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/arrange">arrange</a></span>(intensity_cumulative) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(intensity_cumulative) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="dv">5</span>)</code></pre></div>
 <pre><code>## # A tibble: 5 x 7
 ##   event_no duration date_start date_peak  intensity_mean intensity_max
@@ -274,7 +274,7 @@ mcs<span class="op">$</span>event <span class="op">%&gt;%</span><span class="st"
 <p>Cold spell figures may be created as <code>geoms</code> in <strong><code>ggplot2</code></strong>, too:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Select the region of the time series of interest</span>
 mcs2 &lt;-<span class="st"> </span>mcs<span class="op">$</span>climatology <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/slice">slice</a></span>(<span class="dv">2900</span><span class="op">:</span><span class="dv">3190</span>)
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">2900</span><span class="op">:</span><span class="dv">3190</span>)
 
 <span class="co"># Note that one must specify a colour other than the default 'salmon'</span>
 <span class="kw">ggplot</span>(mcs2, <span class="kw">aes</span>(<span class="dt">x =</span> t, <span class="dt">y =</span> thresh, <span class="dt">y2 =</span> temp)) <span class="op">+</span>
@@ -291,7 +291,7 @@ mcs2 &lt;-<span class="st"> </span>mcs<span class="op">$</span>climatology <span
 <a href="#minty-mcs-visuals" class="anchor"></a>Minty MCS visuals</h3>
 <p>Again, because <code><a href="../reference/geom_flame.html">geom_flame()</a></code> and <code><a href="../reference/geom_lolli.html">geom_lolli()</a></code> are simple <strong><code>ggplot2</code></strong> geoms, one can go completely bananas with them:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mcs_top &lt;-<span class="st"> </span>mcs2 <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/slice">slice</a></span>(<span class="dv">125</span><span class="op">:</span><span class="dv">202</span>)
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">125</span><span class="op">:</span><span class="dv">202</span>)
 
 <span class="kw">ggplot</span>(<span class="dt">data =</span> mcs2, <span class="kw">aes</span>(<span class="dt">x =</span> t)) <span class="op">+</span>
 <span class="st">  </span><span class="kw"><a href="../reference/geom_flame.html">geom_flame</a></span>(<span class="kw">aes</span>(<span class="dt">y =</span> thresh, <span class="dt">y2 =</span> temp, <span class="dt">fill =</span> <span class="st">"all"</span>), <span class="dt">show.legend =</span> T) <span class="op">+</span>
@@ -301,7 +301,7 @@ mcs2 &lt;-<span class="st"> </span>mcs<span class="op">$</span>climatology <span
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> seas, <span class="dt">colour =</span> <span class="st">"seas"</span>), <span class="dt">size =</span> <span class="fl">1.2</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">scale_colour_manual</span>(<span class="dt">name =</span> <span class="st">"Line Colour"</span>,
                       <span class="dt">values =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"temp"</span> =<span class="st"> "black"</span>, <span class="st">"thresh"</span> =<span class="st">  "forestgreen"</span>, <span class="st">"seas"</span> =<span class="st"> "grey80"</span>)) <span class="op">+</span>
-<span class="st">    </span><span class="kw">scale_fill_manual</span>(<span class="dt">name =</span> <span class="st">"Event Colour"</span>, <span class="dt">values =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"all"</span> =<span class="st"> "steelblue3"</span>, <span class="st">"top"</span> =<span class="st"> "navy"</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_fill_manual</span>(<span class="dt">name =</span> <span class="st">"Event Colour"</span>, <span class="dt">values =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"all"</span> =<span class="st"> "steelblue3"</span>, <span class="st">"top"</span> =<span class="st"> "navy"</span>)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">scale_x_date</span>(<span class="dt">date_labels =</span> <span class="st">"%b %Y"</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">guides</span>(<span class="dt">colour =</span> <span class="kw">guide_legend</span>(<span class="dt">override.aes =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">fill =</span> <span class="ot">NA</span>))) <span class="op">+</span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/expression">expression</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="st">"Temperature ["</span>, degree, <span class="st">"C]"</span>)), <span class="dt">x =</span> <span class="ot">NULL</span>)</code></pre></div>

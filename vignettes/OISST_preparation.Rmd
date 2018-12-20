@@ -1,6 +1,6 @@
 ---
 title: "Downloading and preparing OISST data"
-author: "Robert W Schlegel and AJ Smit"
+author: "AJ Smit and Robert W Schlegel"
 date: "`r Sys.Date()`"
 description: "This vignette demonstrates how to download OISST netCDF files and prepare them for the detection of extreme events."
 output: 
