@@ -22,7 +22,9 @@ Suggests:
     testthat,
     knitr,
     rmarkdown,
-    covr
+    covr,
+    rerddap,
+    ncdf4
 Imports:
     tibble,
     lubridate,
@@ -31,7 +33,6 @@ Imports:
     utils,
     zoo,
     grid,
-    fasttime,
     RcppRoll
 LinkingTo: Rcpp (>= 0.12.16), RcppArmadillo
 NeedsCompilation: yes
