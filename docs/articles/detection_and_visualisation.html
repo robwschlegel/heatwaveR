@@ -172,7 +172,8 @@ mhw<span class="op">$</span>event <span class="op">%&gt;%</span><span class="st"
 <h3 class="hasAnchor">
 <a href="#default-mhw-visuals" class="anchor"></a>Default MHW visuals</h3>
 <p>One may use <code><a href="../reference/event_line.html">event_line()</a></code> and <code><a href="../reference/lolli_plot.html">lolli_plot()</a></code> directly on the output of <code><a href="../reference/detect_event.html">detect_event()</a></code> in order to visualise MHWs. Here are the functions being used to visualise the massive Western Australian heatwave of 2011:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/event_line.html">event_line</a></span>(mhw, <span class="dt">spread =</span> <span class="dv">180</span>, <span class="dt">metric =</span> <span class="st">"intensity_max"</span>, <span class="dt">start_date =</span> <span class="st">"1982-01-01"</span>, <span class="dt">end_date =</span> <span class="st">"2014-12-31"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/event_line.html">event_line</a></span>(mhw, <span class="dt">spread =</span> <span class="dv">180</span>, <span class="dt">metric =</span> <span class="st">"intensity_max"</span>, 
+           <span class="dt">start_date =</span> <span class="st">"1982-01-01"</span>, <span class="dt">end_date =</span> <span class="st">"2014-12-31"</span>)</code></pre></div>
 <p><img src="detection_and_visualisation_files/figure-html/fig-example1-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(mhw, <span class="dt">metric =</span> <span class="st">"intensity_max"</span>)</code></pre></div>
 <p><img src="detection_and_visualisation_files/figure-html/fig-example1-2.png" width="768"><!-- ![](vignettes/fig-example1-1.png) --><!-- ![](vignettes/fig-example2-1.png) --></p>
@@ -200,7 +201,8 @@ mhw2 &lt;-<span class="st"> </span>mhw<span class="op">$</span>climatology <span
 <h3 class="hasAnchor">
 <a href="#spicy-mhw-visuals" class="anchor"></a>Spicy MHW visuals</h3>
 <p>The default output of these function may not be to your liking. If so, not to worry. As <strong><code>ggplot2</code></strong> <code>geoms</code>, they are highly malleable. For example, if we were to choose to reproduce the format of the MHWs as seen in Hobday et al. (2016), the code would look something like this:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># It is necessary to give geom_flame() at least one row on either side of the event in order to calculate the polygon corners smoothly</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># It is necessary to give geom_flame() at least one row on either side of </span>
+<span class="co"># the event in order to calculate the polygon corners smoothly</span>
 mhw_top &lt;-<span class="st"> </span>mhw2 <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/dplyr/topics/slice">slice</a></span>(<span class="dv">49</span><span class="op">:</span><span class="dv">110</span>)
 

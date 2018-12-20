@@ -140,6 +140,21 @@
 
 <span class="co"># The information for the NOAA OISST data</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/rerddap/topics/info">info</a></span>(<span class="dt">datasetid =</span> <span class="st">"ncdc_oisst_v2_avhrr_by_time_zlev_lat_lon"</span>, <span class="dt">url =</span> <span class="st">"https://www.ncei.noaa.gov/erddap/"</span>)</code></pre></div>
+<pre><code>## &lt;ERDDAP info&gt; ncdc_oisst_v2_avhrr_by_time_zlev_lat_lon 
+##  Dimensions (range):  
+##      time: (1981-09-01T00:00:00Z, 2018-12-03T00:00:00Z) 
+##      depth: (0.0, 0.0) 
+##      latitude: (-89.875, 89.875) 
+##      longitude: (0.125, 359.875) 
+##  Variables:  
+##      anom: 
+##          Units: Celsius 
+##      err: 
+##          Units: Celsius 
+##      ice: 
+##          Units: % 
+##      sst: 
+##          Units: Celsius</code></pre>
 <p>With our packages loaded and our target dataset identitifed, we may now simply download it with <code><a href="https://www.rdocumentation.org/packages/rerddap/topics/griddap">griddap()</a></code>. While putting this vignette together however I noticed one little hiccup in the work flow. It may be due to my poor internet connection, but it seems that the ERDDAP server does not like it when one tries to access more than nine consecutive years of data in one request. So before we download our data we are going to make a small wrapper function that takes as an input the range of times we want to download. This will reduce the amount of redundant coding we would otherwise need to do.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># This function expects the user to provide it with two values </span>
 <span class="co"># that match the time format of the target OISST dataset</span>
@@ -180,7 +195,7 @@ OISST4 &lt;-<span class="st"> </span><span class="kw">OISST_sub</span>(<span cla
 <span class="st">    </span><span class="kw">mutate</span>(<span class="dt">t =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.Date">as.Date</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct</a></span>(t, <span class="dt">origin =</span> <span class="st">"1970-01-01 00:00:00"</span>)),
            <span class="dt">temp =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(temp, <span class="dv">2</span>))
   
-  <span class="co"># Close the NeCDF connection and finish</span>
+  <span class="co"># Close the NetCDF connection and finish</span>
   <span class="kw"><a href="https://www.rdocumentation.org/packages/ncdf4/topics/nc_close">nc_close</a></span>(nc)
   <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(res)
 }</code></pre></div>

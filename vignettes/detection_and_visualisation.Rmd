@@ -59,7 +59,8 @@ mhw$event %>%
 One may use `event_line()` and `lolli_plot()` directly on the output of `detect_event()` in order to visualise MHWs. Here are the functions being used to visualise the massive Western Australian heatwave of 2011:
 
 ```{r fig-example1, echo = TRUE, eval = TRUE}
-event_line(mhw, spread = 180, metric = "intensity_max", start_date = "1982-01-01", end_date = "2014-12-31")
+event_line(mhw, spread = 180, metric = "intensity_max", 
+           start_date = "1982-01-01", end_date = "2014-12-31")
 
 lolli_plot(mhw, metric = "intensity_max")
 ```
@@ -93,7 +94,8 @@ ggplot(mhw$event, aes(x = date_start, y = intensity_max)) +
 The default output of these function may not be to your liking. If so, not to worry. As **`ggplot2`** `geoms`, they are highly malleable. For example, if we were to choose to reproduce the format of the MHWs as seen in Hobday et al. (2016), the code would look something like this:
 
 ```{r fig-example3, echo = TRUE, eval = TRUE}
-# It is necessary to give geom_flame() at least one row on either side of the event in order to calculate the polygon corners smoothly
+# It is necessary to give geom_flame() at least one row on either side of 
+# the event in order to calculate the polygon corners smoothly
 mhw_top <- mhw2 %>% 
   slice(49:110)
 
