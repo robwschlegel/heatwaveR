@@ -5,5 +5,14 @@ sudo: false
 cache: packages
 r_packages:
   - covr
+addons:
+  apt:
+    packages:
+    - libudunits2-dev
+    - libproj-dev
+    - libgeos-dev
+    - libgdal-dev
+    - libnetcdf-dev
+    - netcdf-bin
 after_success:
   - Rscript -e 'library(covr); codecov()'

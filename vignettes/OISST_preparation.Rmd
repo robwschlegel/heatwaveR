@@ -30,7 +30,7 @@ Thanks to some recent developments in access capabilities to the data generated 
 
 ```{r setup, eval=TRUE}
 # The three packages we will need
-library(tidyverse)
+library(dplyr)
 library(rerddap)
 library(ncdf4)
 
