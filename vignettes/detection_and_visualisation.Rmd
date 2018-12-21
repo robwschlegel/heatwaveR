@@ -1,5 +1,5 @@
 ---
-title: "Detection and Visualisation of Events"
+title: "Basic Detection and Visualisation of Events"
 author: "AJ Smit and Robert W Schlegel"
 date: "`r Sys.Date()`"
 description: "This vignette demonstrates the basic use of the heatwaveR package for the detection and visualisation of events."

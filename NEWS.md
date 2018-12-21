@@ -1,3 +1,8 @@
+# heatwaveR 0.3.5.9003 (2018-12-21)
+
+* Updated text for the OISST preparation vignette
+* Updated text for the gridded event detection vignette
+
 # heatwaveR 0.3.5.9003 (2018-12-19)
 
 * Updated text on the landing page to better reflect the updates that have been made over the past few months
