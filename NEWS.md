@@ -1,3 +1,7 @@
+# heatwaveR 0.3.5.9003 (2018-12-26)
+
+* Boxing day update
+
 # heatwaveR 0.3.5.9003 (2018-12-21)
 
 * Updated text for the OISST preparation vignette
