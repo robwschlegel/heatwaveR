@@ -140,21 +140,6 @@
 
 <span class="co"># The information for the NOAA OISST data</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/rerddap/topics/info">info</a></span>(<span class="dt">datasetid =</span> <span class="st">"ncdc_oisst_v2_avhrr_by_time_zlev_lat_lon"</span>, <span class="dt">url =</span> <span class="st">"https://www.ncei.noaa.gov/erddap/"</span>)</code></pre></div>
-<pre><code>## &lt;ERDDAP info&gt; ncdc_oisst_v2_avhrr_by_time_zlev_lat_lon 
-##  Dimensions (range):  
-##      time: (1981-09-01T00:00:00Z, 2018-12-05T00:00:00Z) 
-##      depth: (0.0, 0.0) 
-##      latitude: (-89.875, 89.875) 
-##      longitude: (0.125, 359.875) 
-##  Variables:  
-##      anom: 
-##          Units: Celsius 
-##      err: 
-##          Units: Celsius 
-##      ice: 
-##          Units: % 
-##      sst: 
-##          Units: Celsius</code></pre>
 <p>With our packages loaded and our target dataset identified, we may now simply download it with <code><a href="https://www.rdocumentation.org/packages/rerddap/topics/griddap">griddap()</a></code>. While putting this vignette together however I noticed one little hiccup in the work flow. It seems that the ERDDAP server does not like it when one tries to access more than nine consecutive years of data in one request, regardless of the spatial extent being requested. So before we download our data we are going to make a small wrapper function that we can tell the range of times we want to download. This will reduce the amount of redundant coding we would otherwise need to do.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># This function expects the user to provide it with two values </span>
 <span class="co"># that match the time format of the target OISST dataset</span>
