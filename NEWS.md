@@ -1,5 +1,12 @@
 # heatwaveR 0.3.5.9003 (2018-12-26)
 
+* First update of 2019
+
+# heatwaveR 0.3.6.9003 (2019-01-02)
+
+* Added 'protoEvents' argument to `detect_events.R()` for returning the proto events rather than 
+  a table for the event metrics
+
 * Boxing day update
 
 # heatwaveR 0.3.5.9003 (2018-12-21)

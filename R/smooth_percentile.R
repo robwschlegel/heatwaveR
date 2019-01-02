@@ -33,7 +33,7 @@ smooth_percentile <- function(data, smoothPercentileWidth, var_calc) {
                                  seas = seas[(smoothPercentileWidth/2 + 2):((smoothPercentileWidth/2 + 1) + len_clim_year)],
                                  thresh = thresh[(smoothPercentileWidth/2 + 2):((smoothPercentileWidth/2 + 1) + len_clim_year)])
 
-  if (var_calc){
+  if (var_calc) {
     var <- NULL
 
     var <- RcppRoll::roll_mean(as.numeric(prep[,3]), n = smoothPercentileWidth, na.rm = FALSE)

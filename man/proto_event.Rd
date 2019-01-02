@@ -23,13 +23,13 @@ default it inherits is \code{TRUE}.}
 events will be combined into one event if \code{joinAcrossGaps = TRUE}.}
 }
 \value{
-A dataframe that will be used within
-\code{\link{detect_event}}.
+A dataframe that will be used within \code{\link{detect_event}},
+or which can be returned by \code{\link{detect_event}} if the switch
+'protoEvent' is specified as TRUE.
 }
 \description{
-An internal function that detects proto-events, which are periods of
-time above a threshold, but without necessarily considering a minimum
-duration or joining across gaps.
+An internal function that detects the events according to the heatwave
+definition, and joins across the gaps if desired.
 }
 \author{
 Albertus J. Smit, Robert W. Schlegel

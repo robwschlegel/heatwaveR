@@ -1,8 +1,7 @@
 #' Detect proto-events based on a chosen criterion (column).
 #'
-#' An internal function that detects proto-events, which are periods of
-#' time above a threshold, but without necessarily considering a minimum
-#' duration or joining across gaps.
+#' An internal function that detects the events according to the heatwave
+#' definition, and joins across the gaps if desired.
 #'
 #' @importFrom dplyr %>%
 #'
@@ -16,8 +15,9 @@
 #' @param maxGap This is the number of rows (days) across which distinct
 #' events will be combined into one event if \code{joinAcrossGaps = TRUE}.
 #'
-#' @return A dataframe that will be used within
-#' \code{\link{detect_event}}.
+#' @return A dataframe that will be used within \code{\link{detect_event}},
+#' or which can be returned by \code{\link{detect_event}} if the switch
+#' 'protoEvent' is specified as TRUE.
 #'
 #' @author Albertus J. Smit, Robert W. Schlegel
 #'

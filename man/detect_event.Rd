@@ -7,7 +7,7 @@
 detect_event(data, x = t, y = temp, seasClim = seas,
   threshClim = thresh, threshClim2 = NA, minDuration = 5,
   minDuration2 = minDuration, joinAcrossGaps = TRUE, maxGap = 2,
-  maxGap2 = maxGap, coldSpells = FALSE)
+  maxGap2 = maxGap, coldSpells = FALSE, protoEvents = FALSE)
 }
 \arguments{
 \item{data}{A data frame with at least four columns. In the default setting
@@ -72,6 +72,13 @@ to use \code{detect_event} for MCSs, this threshold would best be generated
 in \code{\link{ts2clm}} by setting \code{pctile = 10} (see example below).
 Any value may be used, but this is the setting used for the calculation of
 MCSs in Schlegel et al. (2017a).}
+
+\item{protoEvents}{Boolean specifying whether the full time series must be
+returned as a long table, together with columns indicating whether or not the
+threshold criterion (\code{threshCriterion}) and duration criterion (\code{durationCriterion})
+have been exceeded, a column showing if a heatwave is present (i.e. both
+\code{threshCriterion} and \code{durationCriterion} \code{TRUE}), and a
+sequential number uniquely identifying the detected event.}
 }
 \value{
 The function will return a list of two tibbles (see the \code{tidyverse}),

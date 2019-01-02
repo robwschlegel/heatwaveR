@@ -32,7 +32,7 @@ ts_xy <- data.table::data.table(ts_x, ts_y)
 
 source("R/make_whole_fast.R")
 source("R/make_whole.R")
-ts_whole <- make_whole(ts_xy, x = ts_x, y = ts_y)
+ts_whole <- make_whole_fast(ts_xy)
 
 source("R/na_interp.R")
 ts_interped <- na_interp(doy = ts_whole$doy,
@@ -51,16 +51,13 @@ clim_end <- climatologyPeriod[2]
 source("R/clim_spread.R")
 
 ts_wide <- clim_spread(ts_interped, clim_start, clim_end, windowHalfWidth)
-save(ts_wide, file = "/Users/ajsmit/Dropbox/R/Rcpp_test/_test/ts_wide.RData")
-ts_wide_NA <- ts_wide
-ts_wide_NA[15,2] <- NA # <-- introduces NAs
-ts_wide_NA[15,] <- NA # <-- introduces NAs
-save(ts_wide_NA, file = "/Users/ajsmit/Dropbox/R/Rcpp_test/_test/ts_wide_NA.RData")
 
-# source("src/clim_calc.cpp") # does not work with NAs
-source("R/clim_calc.R") # works
-ts_mat_cpp <- heatwaveR:::clim_calc_cpp(ts_wide, windowHalfWidth, pctile)
-ts_mat_r <- clim_calc(ts_wide, windowHalfWidth, pctile)
+source("src/clim_calc.cpp") # does not work with NAs
+# source("R/clim_calc.R") # works
+ts_mat <- heatwaveR:::clim_calc_cpp(ts_wide, windowHalfWidth, pctile)
+
+source("R/smooth_percentile.R")
+ts_clim <- smooth_percentile(ts_mat, smoothPercentileWidth, var = FALSE)
 
 # benchmarks --------------------------------------------------------------
 

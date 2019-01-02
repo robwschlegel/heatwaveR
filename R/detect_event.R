@@ -59,6 +59,12 @@
 #' in \code{\link{ts2clm}} by setting \code{pctile = 10} (see example below).
 #' Any value may be used, but this is the setting used for the calculation of
 #' MCSs in Schlegel et al. (2017a).
+#' @param protoEvents Boolean specifying whether the full time series must be
+#' returned as a long table, together with columns indicating whether or not the
+#' threshold criterion (\code{threshCriterion}) and duration criterion (\code{durationCriterion})
+#' have been exceeded, a column showing if a heatwave is present (i.e. both
+#' \code{threshCriterion} and \code{durationCriterion} \code{TRUE}), and a
+#' sequential number uniquely identifying the detected event.
 #'
 #' @details
 #' \enumerate{
@@ -204,7 +210,7 @@ detect_event <- function(data,
                          joinAcrossGaps = TRUE,
                          maxGap = 2,
                          maxGap2 = maxGap,
-                         coldSpells = FALSE) {
+                         coldSpells = FALSE, protoEvents = FALSE) {
 
   if(!(is.numeric(minDuration)))
     stop("Please ensure that 'minDuration' is a numeric/integer value.")
@@ -248,6 +254,16 @@ detect_event <- function(data,
                                joinAcrossGaps = joinAcrossGaps,
                                maxGap = maxGap2)
   }
+
+  if (protoEvents) {
+    events_clim <- data %>%
+      dplyr::mutate(threshCriterion = events_clim$threshCriterion,
+                    durationCriterion = events_clim$durationCriterion,
+                    event = events_clim$event,
+                    event_no = events_clim$event_no)
+    return(events_clim)
+
+  } else {
 
   intensity_mean <- intensity_max <- intensity_cumulative <- intensity_mean_relThresh <-
     intensity_max_relThresh <- intensity_cumulative_relThresh <- intensity_mean_abs <-
@@ -333,5 +349,6 @@ detect_event <- function(data,
 
   list(climatology = tibble::as_tibble(data_clim),
        event = tibble::as_tibble(events))
+  }
 }
 

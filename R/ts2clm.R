@@ -140,7 +140,8 @@ ts2clm <-
            pctile = 90,
            smoothPercentile = TRUE,
            smoothPercentileWidth = 31,
-           clmOnly = FALSE
+           clmOnly = FALSE,
+           var = FALSE
   ) {
 
     if (missing(climatologyPeriod))
@@ -217,10 +218,10 @@ ts2clm <-
     } else {
       ts_clim <- data.table::data.table(ts_mat)
     }
-    rm(ts_mat)
 
     cols <- names(ts_clim)
     ts_clim[,(cols) := round(.SD, 4), .SDcols = cols]
+    rm(ts_mat)
 
     if (clmOnly) {
 
