@@ -78,8 +78,8 @@ returned as a long table, together with columns indicating whether or not the
 threshold criterion (\code{threshCriterion}) and duration criterion (\code{durationCriterion})
 have been exceeded, a column showing if a heatwave is present (i.e. both
 \code{threshCriterion} and \code{durationCriterion} \code{TRUE}), and a
-sequential number uniquely identifying the detected event. The default is
-\code{FALSE}.}
+sequential number uniquely identifying the detected event. In this case,
+the heatwave metrics will not be reported. The default is \code{FALSE}.}
 }
 \value{
 The function will return a list of two tibbles (see the \code{tidyverse}),
