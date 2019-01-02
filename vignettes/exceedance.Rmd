@@ -1,5 +1,5 @@
 ---
-title: "The Exceedance Function"
+title: "Calculating and Visualising Exceedances"
 author: "Robert W Schlegel"
 date: "`r Sys.Date()`"
 description: "This vignette demonstrates the use of the exceedence function."
@@ -19,9 +19,13 @@ knitr::opts_chunk$set(fig.width = 8, fig.height = 3, fig.align = 'centre',
                       eval = TRUE, tidy = FALSE)
 ```
 
-## Overview
+## Exceedances
 
-In addition to the calculation of events, consecutive days over a given static threshold may be calculated with the `exceedance()` function.
+In addition to the calculation of events based on a given percentile, this package also allows for the calculation of events based on a given static threshold with the `exceedance()` function. This is most useful if one is more interested in testing a time series for events that exceed a pre-determined static threshold that is already known to be of particular significance in a given part of the world. The output of this function may also be used in the calculation of events that may require two thresholds, such as atmospheric events with 'tMin' and 'tMax' daily values. For a detailed explanation for how to do this please see [this vignette](https://robwschlegel.github.io/heatwaveR/articles/complex_clims.html). The data requirements for `exceedance()` are the same as for `ts2clm()` and `detect_event()`. 
+
+## Calculating exceedances
+
+The calculation of exceedances may be done with only one function as seen here:
 
 ```{r exceedance-example1}
 # Activate libraries
@@ -34,14 +38,18 @@ exc_25 <- exceedance(sst_WA, threshold = 25)
 # Look at a few metrics
 exc_25$exceedance %>%
   ungroup() %>%
-  select(exceedance_no, duration, date_start, date_peak, intensity_mean, intensity_cumulative) %>%
+  select(exceedance_no, duration, date_start, date_peak, intensity_max, intensity_cumulative) %>%
   dplyr::arrange(-intensity_cumulative) %>%
   head(5)
 ```
 
-Which, when plotted with __`ggplot2`__ code would look like this:
+Note that the resultant output of `exceedance()` is very similar to `detect_event()`, except that the two dataframes within the list are called `threshold` and `exceedance`, rather than `climatology` and `event`.
 
-```{r fig-example8, echo = TRUE, eval = TRUE}
+## Visualising exceedances
+
+Because `event_line()` and `lolli_plot()` are designed to work on the output of `detect_event()`, if we want to visualise the results of `exceedance()` we will need to do so 'by hand' with __`ggplot2`__. The code below works as an example of how to do so:
+
+```{r fig-example1, echo = TRUE, eval = TRUE}
 exc_25_thresh <- exc_25$threshold %>% 
   slice(9500:9866)
 
@@ -56,10 +64,13 @@ ggplot(data = exc_25_thresh, aes(x = t)) +
   scale_x_date(date_labels = "%b %Y") +
   labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
 ```
+<!-- ![](vignettes/fig-example1-1.png) -->
 
-<!-- ![](vignettes/fig-example8-1.png) -->
+## Calculating negative exceedances
 
-The same function may be used to calculate consecutive days below a threshold, too.
+Unfortunately there is no antonym for exceedance in the English language, which makes talking about exceedances _below_ a static threshold somewhat awkward. For the purposes of clarity here we will refer to these as negative exceedances.
+
+The `exceedance()` function may be used to calculate consecutive days below a threshold as seen here:
 
 ```{r exceedance-example2}
 exc_19 <- exceedance(sst_WA, threshold = 19, below = TRUE)
@@ -70,9 +81,11 @@ exc_19$exceedance %>%
   head(5)
 ```
 
-And were one to desire a visualisation of these data it could be produced with the following code:
+## Visualising negative exceedances
 
-```{r fig-example9, echo = TRUE, eval = TRUE}
+Were one to desire a visualisation of these data it could be produced with the following code:
+
+```{r fig-example2, echo = TRUE, eval = TRUE}
 exc_19_thresh <- exc_19$threshold %>% 
   slice(1500:1866)
 
@@ -86,5 +99,4 @@ ggplot(data = exc_19_thresh, aes(x = t)) +
   scale_x_date(date_labels = "%b %Y") +
   labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
 ```
-
-<!-- ![](vignettes/fig-example9-1.png) -->
+<!-- ![](vignettes/fig-example2-1.png) -->

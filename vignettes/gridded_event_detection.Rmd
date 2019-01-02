@@ -1,8 +1,8 @@
 ---
-title: "Extreme event detection in gridded data"
-author: "AJ Smit"
+title: "Detecting Events in Gridded Data"
+author: "AJ Smit and Robert W Schlegel"
 date: "`r Sys.Date()`"
-description: "This vignette covers the steps one may take to load netCDF data and analyse each pixel as separate time series for the occurrence of extreme events."
+description: "This vignette introduces three good options for detecting marine heatwaves (MHWs) from dataframes of gridded data in which each pixel is a separate time series."
 output: 
   rmarkdown::html_vignette:
     fig_caption: yes
@@ -14,182 +14,232 @@ vignette: >
 
 ```{r global_options, include = FALSE}
 knitr::opts_chunk$set(fig.width = 4, fig.align = 'center',
-                      echo = FALSE, warning = FALSE, 
-                      message = FALSE, tidy = FALSE)
-```
-
-```{r load-pkg, echo = FALSE, eval = FALSE}
-library(RmarineHeatWaves)
-library(ncdf4)
-library(plyr)
-library(dplyr)
-library(tibble)
-library(reshape2)
-library(lubridate)
-library(ggplot2)
-library(doMC); doMC::registerDoMC(cores = 4)
+                      echo = TRUE, warning = FALSE, message = FALSE, 
+                      eval = FALSE, tidy = FALSE)
 ```
 
 ## Overview
 
-Because of human-induced climate change, we anticipate that extreme events would occur more frequently and that they would become greater in intensity. Here I address this question by using some gridded SST data, which is the only way that we can assess if this trend is unfolding across large ocean regions. Using the gridded [0.25 degree Reynolds OISST](http://dx.doi.org/10.1175/2007JCLI1824.1), I will find extreme SST events around South Africa data by applying the `detect()` function pixel-by-pixel. After detecting the events, I will fit a generalised linear model (GLM) to calculate rates of change in some marine heat wave metrics, and then plot the estimated trend. 
+Because of human-induced climate change, we anticipate that extreme events will occur more frequently and that they will become greater in intensity. Here I address this question by using some gridded SST data, which is the only way that we can assess if this trend is unfolding across large ocean regions. Using the gridded [0.25 degree Reynolds OISST](http://dx.doi.org/10.1175/2007JCLI1824.1), I will find extreme SST events (marine heatwaves (MHWs)) around South Africa by applying the `detect_event()` function pixel-by-pixel to the data we downloaded in [the previous vignette](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html). After detecting the events, I will fit a generalised linear model (GLM) to calculate rates of change in some marine heat wave metrics, and then plot the estimated trend. 
 
-## Reading in the netCDF
-
-These instructions assume we start with a netCDF file that contains data for only the region of interest in our study, with all of the daily data in one file. If you start from scratch, it might make sense to rather do the subsetting elsewhere and process the daily netCDF files. If that is the case, see [this vignette](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html).
-
-First, I read in the 0.25 degree [OISST netCDF file](https://www.ncei.noaa.gov/thredds/blended-global/oisst-catalog.html). I save the only variable, **sst**, as a multidimensional array (longitude, latitude and date). To do this, I use the **ncdf4** package. I then construct a list with names and values for each dimension of the SST array. The example data used here cover 93 longitude and 43 latitude steps (i.e. 3999 pixels), and cover 12797 days (1981 to 2016). The names for the three dimensions are simply a list of longitudes, latitudes and dates, which I get directly from the netCDF file. Note that not all netCDF files are created equally, and sometimes vectors of longitudes, latitudes and dates need to be created based on the start values for lat/lon/date in the netCDF, and the 'steps' between sequential lats/lons/dates. To determine out how to approach reading in the netCDF file, use the `print()` function to scrutinise the content of the netCDF.
-
-```{r read-netcdf, echo = TRUE, eval = FALSE}
-nc <- nc_open("/Users/ajsmit/spatial/OISSTv2/daily/OISST-V2-AVHRR_agg.nc")
-# print(nc)
-sst <- ncvar_get(nc, varid = "sst") # reads in the only var in netCDF file
-dimnames(sst) <- list(lon = nc$dim$lon$vals,
-                      lat = nc$dim$lat$vals, 
-                      t = nc$dim$time$vals)
+```{r load-pkg}
+library(tidyverse)
+library(heatwaveR)
 ```
 
-Now I take this array of SST data and convert it into a a data frame using **reshape2**'s `melt()` function. This creates columns named **lon**, **lat** and **t** (the latter is the time vector, with the mandatory name **t**, which is required by **RmarineHeatWave**'s `make_whole()` and `detect()` functions). Now each SST value is indexed by a unique combination of **lon**, **lat** and **t**. Notice too how I use the **tibble** package's `as_tibble()` function together with `melt()`, because I like the way that it neatly creates a very readbale data frame.
+## Gridded data
 
-```{r sst-df, echo = TRUE, eval = FALSE}
-sst <- as_tibble(melt(sst, value.name = "temp"))
-sst$t <- as.Date(sst$t, origin = '1978-01-01')
-```
+In the previous vignette we saw how to [download and prepare OISST data](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html). In this vignette we will use the data we downloaded for our example on how to detect MHWs in gridded data. Because we saved our data as an `.Rda` file in the format, loading it into R is easy:
 
-Since the data frame of SSTs contains some NAs where seawater temperatures are not available due to the presence of land, I remove all cases with NAs.
-
-```{r remove-NA, echo = TRUE, eval = FALSE}
-sst1 <- sst %>%
-  na.omit()
-rm(sst); rm(nc)
+```{r load-data}
+OISST <- read_rds("~/Desktop/OISST_vignette.Rda")
 ```
 
 ## Event detection
 
-Now I make a wrapper function to combine `make_whole()` and `detect()`. This increases the ease of use of this function with **plyr**'s `ddply()` function, but most importantly, it pulls out only the **event** portion of the list of results (i.e. ignoring **clim**).
+### Two good choices: __`purrr`__ vs. __`plyr`__
 
-```{r detect-fun, echo = TRUE, eval = FALSE}
-OISST_detect <- function(dat) {
-  dat <- dat[,3:4]
-  start = "1983-01-01"
-  end = "2012-12-31"
-  whole <- make_whole(dat)
-  mhw <- detect(whole, climatology_start = start, climatology_end = end,
-                min_duration = 5, max_gap = 2, cold_spells = FALSE)
-  events <- mhw$event
-  return(events)
-  }
+When we want to make the same calculation across multiple groups of data within one dataframe we have two good options available to us. The first is to make use of the `map()` suite of functions found in the __`purrr`__ package. This is a very fast __`tidyverse`__ friendly approach to splitting up tasks. The other good option is to go back in time a bit and use the `ddply()` function from the __`plyr`__ package. This is arguably a better approach as it allows us to very easily use multiple cores to detect the MHWs. The problem with this approach is that one must _never_ load the __`plyr`__ library directly as it has some fundamental inconsistencies with the __`tidyverse`__. We will see below how to perform these two different techniques without causing ourselves any headaches.
+
+It is a little clumsy to use multiple functions at once with the two methods we will look at here So we will combine the calculations we want to make in one wrapper function first:
+
+```{r detect-func}
+event_only <- function(df){
+  # First calculate the climatologies
+  clim <- ts2clm(data = df, climatologyPeriod = c("1982-01-01", "2011-01-01"))
+  # Then the events
+  event <- detect_event(data = clim)
+  # Lastly we return only the event dataframe of results
+  return(event$event)
+}
 ```
 
-And now I apply the `OISST_detect()` function to the SST data and save the results as an intermediate .Rdata file.
+Up first we have the __`purrr`__ method:
 
-```{r apply-detect-fun, echo = TRUE, eval = FALSE}
-# it takes a long time...
-system.time(OISST_events <- ddply(sst1, .(lon, lat), OISST_detect, .parallel = TRUE))
- #   user  system elapsed 
- # 1862.3   205.9   704.8 
-save(OISST_events, file = "/Users/ajsmit/spatial/OISSTv2/MHWs/OISST_events.Rdata")
+```{r detect-purrr}
+system.time(
+# First we start by chosing the 'OISST' dataframe
+MHW_purrr <- OISST %>% 
+  # Then we group the data by the 'lon' and 'lat' columns
+  group_by(lon, lat) %>% 
+  # After that we nest each lon/lat pixel into its own little dataframe
+  nest() %>% 
+  # Next we 'map' the event_only() functions we made to the little dataframes
+  mutate(event = map(data, event_only)) %>% 
+  # Lastly we get rid of the column that is not part of the final result before unnesting everything
+  select(-data) %>% 
+  unnest()
+)
 ```
 
-Because I saved the results to a file I can load these rather than rerunning the `OISST_detect()` function, which takes about 11 minutes to execute on my 4 GHz iMac.
+Running the calculations on only one of my 2.1 GHz cores, as seen above, takes ~174 seconds.
 
-```{r load-SST, echo = TRUE, eval = FALSE}
-# in case it was calculated and saved earlier, we can load it here now:
-load("/Users/ajsmit/spatial/OISSTv2/MHWs/OISST_events.Rdata")
+If we want to use multiple cores we will need to use the __`plyr`__ technique:
+
+```{r detect-plyr}
+# First we need to tell R how many cores to use
+  # NB: One should never use ALL available cores, save at least 1 for other essential tasks
+    # The computer I'm writing this vignette on has 4 cores, so I use 3 here
+library(doMC)
+registerDoMC(cores = 3)
+
+system.time(
+MHW_plyr <- plyr::ddply(.data = OISST, .variables = c("lon", "lat"), .fun = event_only, .parallel = TRUE)
+)
 ```
+
+The __`plyr`__ technique takes ~110 seconds on my computer using three cores. This technique is not simply three times faster because when using multiple cores there is a certain amount of loss in efficiency due to the computer needing to remember which results are meant to go where so that it can stitch everything back together again for you. This takes very little memory, but over large jobs it can start to become problematic. Occasionally 'slippage' can occur as well where an entire task can be forgotten. This is very rare but does happen. This is partly what makes 'purrr' a viable option as it does not have this problem. The other reason is that 'purrr' performs much more efficient calculations than 'plyr', But what if we could have the best of both worlds?
+
+### A harmonious third option
+
+As one may see above, running these calculations on a very large (or even global) gridded dataset can quickly become very time consuming. While running these calculations myself on the global OISST dataset I have found that the fastest option is to combine the two options above. I have found that it works best to save each longitude segment of the data as separate files and to use the __`purrr`__ method on each individual file, while using the __`plyr`__ method to be running the multiple calculations on as many files as your core limit will allow. One may not however do this the other way around and use __`purr`__ to run multiple __`plyr`__ calculations at once. This will confuse your computer and likely cause a stack overflow. Which sounds more fun than it actually is... as I have had to learn.
+
+In order to happily combine these two options into one we will need to convert the __`purr`__ code we wrote above into it's own wrapper function, which we will then call on a stack of files using the __`plyr`__ technique. Before we do that we must first create the aforementioned stack of files.
+
+```{r lon-files}
+for(i in 1:length(unique(OISST$lon))){
+  OISST_sub <- OISST %>% 
+    filter(lon == unique(lon)[i])
+  saveRDS(object = OISST_sub, file = paste0("~/Desktop/OISST_lon_",i,".Rda"))
+}
+```
+
+This may initially seem like an unnecessary extra step, but when one is working with time series data it is necessary to have all of the dates at a given pixel loaded at once. Unless one is working from a server/virtual machine/ supercomputer this means that one will often not be able to comfortably hold an entire grid for a study area in memory at once. Having the data accessible as thin strips like this therefore makes life somewhat easier. And as we see in the code chunk below it also (arguably) allows us to perform the most efficient calculations on our data.
+
+```{r detect-both}
+# The 'purrr' wrapper function to pass to 'plyr'
+purrr_wraper <- function(file_name){
+  OISST_file <- readRDS(file_name)
+  MHW_purrr <- OISST_file %>% 
+    group_by(lon, lat) %>% 
+    nest() %>% 
+    mutate(event = map(data, event_only)) %>% 
+    select(-data) %>% 
+    unnest()
+}
+
+# Create a vector of the files we want to use
+OISST_files <- dir("~/Desktop/", pattern = "OISST_lon_*", full.names = T)
+
+# Use 'plyr' technique to run 'purrr' technique with multiple cores
+system.time(
+MHW_result <- plyr::ldply(OISST_files, .fun = purrr_wraper, .parallel = T)
+)
+```
+
+Not only is this technique computationally faster, because it only loads one of our small slice files at a time it is also much lighter on our memory use. To maximise efficiency even further I would recommend writing out his full work flow in a stand-alone script and then using `source()` directly from an R terminal.
 
 ## Trend detection
 
-```{r event-tally, echo = TRUE, eval = FALSE}
+With our calculations made we will now look at how to fit some GLMs to the results in order to determine long-term trends in MHW occurrence.
+
+Up first we see how to calculate the number of events that occurred per pixel:
+
+```{r event-tally}
 # summarise the number of unique longitude, latitude and year combination:
-event_freq <- OISST_events %>% 
+event_freq <- MHW_result %>% 
   mutate(year = year(date_start)) %>% 
   group_by(lon, lat, year) %>% 
   summarise(n = n())
 head(event_freq)
 
 # create complete grid for merging with:
-sst.grid <- sst1 %>% 
+sst_grid <- OISST %>% 
   select(lon, lat, t) %>% 
   mutate(t = lubridate::year(t)) %>% 
-  unique() # slow...
-colnames(sst.grid)[colnames(sst.grid) == 't'] <- 'year'
+  dplyr::rename(year = t) %>% 
+  distinct()
 
 # and merge:
-OISST_n <- left_join(sst.grid, event_freq)
-OISST_n[is.na(OISST_n)] <- 0
+OISST_n <- left_join(sst_grid, event_freq, by = c("lon", "lat", "year")) %>% 
+  mutate(n = ifelse(is.na(n), 0, n))
 ```
 
-```{r trend-fun, echo = TRUE, eval = FALSE}
+Then we specify the particulars of the GLM we are going to use:
+
+```{r trend-fun}
 lin_fun <- function(ev) {
   mod1 <- glm(n ~ year, family = poisson(link = "log"), data = ev)
-  # mod1 <- lm(n ~ year, data = ev)
-  tr <- summary(mod1)$coefficients[2,c(1,4)] # extract slope coefficient and its p-value
+  # extract slope coefficient and its p-value
+  tr <- data.frame(slope = summary(mod1)$coefficients[2,1],
+                   p = summary(mod1)$coefficients[2,4])
   return(tr)
 }
 ```
 
-```{r apply-trend-fun, echo = TRUE, eval = FALSE}
-OISST_nTrend <- ddply(OISST_n, .(lon, lat), lin_fun)
-OISST_nTrend$pval <- cut(OISST_nTrend[,4], breaks = c(0, 0.001, 0.01, 0.05, 1))
+In the following code chunk we will see how to run the GLM on each pixel using the __`purrr`__ technique:
+
+```{r apply-trend-fun-purrr}
+OISST_nTrend <- OISST_n %>% 
+  group_by(lon, lat) %>% 
+  nest() %>% 
+  mutate(res = map(data, lin_fun)) %>% 
+  select(-data) %>%
+  unnest() %>% 
+  mutate(pval = cut(p, breaks = c(0, 0.001, 0.01, 0.05, 1)))
 head(OISST_nTrend)
 ```
 
-```{r load-geography, echo = TRUE, eval = FALSE}
-## Coastline of African continent and some borders:
-load("/Users/ajsmit/Dropbox/repos/Trend_Analysis/graph/africa_coast.RData")
-load("/Users/ajsmit/Dropbox/repos/Trend_Analysis/graph/africa_borders.Rdata")
-load("/Users/ajsmit/Dropbox/repos/Trend_Analysis/graph/south_africa_coast.RData")
-load("/Users/ajsmit/Dropbox/repos/Trend_Analysis/graph/sa_provinces_new.RData")
+Or if one prefers, we may use the __`plyr`__ technique:
+
+```{r apply-trend-fun-plyr}
+OISST_nTrend <- plyr::ddply(OISST_n, c("lon", "lat"), lin_fun)
+OISST_nTrend$pval <- cut(OISST_nTrend$p, breaks = c(0, 0.001, 0.01, 0.05, 1))
+head(OISST_nTrend)
 ```
 
-```{r the-figure, echo = TRUE, eval = FALSE}
-ggplot(OISST_nTrend, aes(x = lon, y = lat)) +
+With small summary statistic calculations there is very little difference in the timing between techniques. Use whichever makes you the happiest! The __`plyr`__ code is certainly shorter, but I personally find the __`purrr`__ code much easier to read. This is particularly important for group projects.
+
+## Visualising the results
+
+Let's finish this vignette by visualising the long-term trends in the annual occurrence of MHWs per pixel in the chosen study area. First we will grab the base global map from the __`maps`__ package:
+
+```{r prep-geography}
+# The base map
+map_base <- ggplot2::fortify(maps::map(fill = TRUE, plot = FALSE)) %>% 
+  dplyr::rename(lon = long)
+```
+
+Then we will create two maps that we will stick together using __`ggpubr`__. The first map will show the slope of the count of events detected per year over time as shades of red, and the second map will show the significance (_p_-value) of these trends.
+
+```{r the-figure}
+map_slope <- ggplot(OISST_nTrend, aes(x = lon, y = lat)) +
   geom_rect(size = 0.2, fill = NA,
        aes(xmin = lon - 0.1, xmax = lon + 0.1, ymin = lat - 0.1, ymax = lat + 0.1,
-           colour = OISST_nTrend[,5])) +
-  geom_raster(aes(fill = Estimate), interpolate = FALSE, alpha = 0.9) +
-  scale_fill_gradient2(name = "Count\n per\n year", high = "red", mid = "white",
-                       low = "darkblue", midpoint = 0) +
+           colour = pval)) +
+  geom_raster(aes(fill = slope), interpolate = FALSE, alpha = 0.9) +
+  scale_fill_gradient2(name = "count/year (slope)", high = "red", mid = "white",
+                       low = "darkblue", midpoint = 0,
+                       guide = guide_colourbar(direction = "horizontal",
+                                               title.position = "top")) +
   scale_colour_manual(breaks = c("(0,0.001]", "(0.001,0.01]", "(0.01,0.05]", "(0.05,1]"),
                       values = c("firebrick1", "firebrick2", "firebrick3", "white"),
                       name = "p-value", guide = FALSE) +
-  geom_polygon(data = south_africa_coast, aes(x = lon, y = lat, group = group), 
+  geom_polygon(data = map_base, aes(group = group), 
                colour = NA, fill = "grey80") +
-  geom_path(data = africa_borders, aes(x = lon, y = lat, group = group), 
-            size = 0.3, colour = "black") +
-  geom_polygon(data = south_africa_coast, aes(x = lon, y = lat, group = group),
-               size = 0.5, colour = "black", fill = NA) +
-  coord_fixed(ratio = 1, xlim = c(12.12, 35.12), ylim = c(-26.88, -37.38), expand = TRUE) +
-  theme_bw()
-ggsave(file = "README-grid-example1.png", width = 6, height = 3.2)
+  coord_fixed(ratio = 1, xlim = c(13.0, 23.0), ylim = c(-33, -42), expand = TRUE) +
+  labs(x = "", y = "") +
+  theme_bw() +
+  theme(legend.position = "bottom")
 
-ggplot(OISST_nTrend, aes(lon, lat)) +
+map_p <- ggplot(OISST_nTrend, aes(x = lon, y = lat)) +
   geom_raster(aes(fill = pval), interpolate = FALSE) +
   scale_fill_manual(breaks = c("(0,0.001]", "(0.001,0.01]", "(0.01,0.05]",
                                "(0.05,0.1]", "(0.1,0.5]", "(0.5,1]"),
                     values = c("black", "grey20", "grey40",
                                "grey80", "grey90", "white"),
-                    name = "p-value") +
-  geom_polygon(data = south_africa_coast, aes(x = lon, y = lat, group = group), 
+                    name = "p-value",
+                    guide = guide_legend(direction = "horizontal",
+                                               title.position = "top")) +
+  geom_polygon(data = map_base, aes(group = group), 
                colour = NA, fill = "grey80") +
-  geom_path(data = africa_borders, aes(x = lon, y = lat, group = group), 
-            size = 0.3, colour = "black") +
-  geom_polygon(data = south_africa_coast, aes(x = lon, y = lat, group = group), 
-               size = 0.5, colour = "black", fill = NA) +
-  coord_fixed(ratio = 1, xlim = c(12.12, 35.12), ylim = c(-26.88, -37.38), expand = TRUE) +
-  theme_bw()
-ggsave(file = "README-grid-example2.png", width = 6, height = 3.2)
+  coord_fixed(ratio = 1, xlim = c(13.0, 23.0), ylim = c(-33, -42), expand = TRUE) +
+  labs(x = "", y = "") +
+  theme_bw() +
+  theme(legend.position = "bottom")
+
+map_both <- ggpubr::ggarrange(map_slope, map_p, align = "hv")
+map_both
 ```
 
-<!-- ```{r, echo = FALSE, include = TRUE, out.width = "580px", fig.cap = "**Figure 1.** Plot of marine heat waves detected in the 0.25 degree Reynold's OISST around South Africa, showing the increase in frequency of marine heat waves within the Agulhas Current. Outlined pixels indicate that the trend is significant at p < 0.05."} -->
-<!-- knitr::include_graphics("README-grid-example1.png") -->
-<!-- ``` -->
-
-<!-- ```{r, echo = FALSE, include = TRUE, out.width = "580px", fig.cap = "**Figure 2.** Plot of marine heat waves found in the 0.25 degree Reynold's OISST around South Africa, showing the significance of the detected trend in frequency of marine heat waves within the Agulhas Current."} -->
-<!-- knitr::include_graphics("README-grid-example2.png") -->
-<!-- ``` -->
-
-<!-- ![](README-grid-example1.png){width=100%} -->
-
-<!-- ![](README-grid-example2.png){width=100%} -->
+From the figure above we may see that the entire study area shows significant (_p_<= 0.05) increases in the count of MHWs per year. This is generally the case for the entire globe. Not shown here is also the significant increase in the intensity of MHWs as well.S

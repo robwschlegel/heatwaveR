@@ -1,5 +1,5 @@
 ---
-title: "Event Categories"
+title: "Calculating and Visualising Event Categories"
 author: "Robert W Schlegel"
 date: "`r Sys.Date()`"
 description: "This vignette deomonstrates how to calculate and visualise the categories for events."
@@ -19,9 +19,20 @@ knitr::opts_chunk$set(fig.width = 8, fig.height = 3, fig.align = 'centre',
                       eval = TRUE, tidy = FALSE)
 ```
 
-## Overview
+## Categories
 
-The classification of MHWs under the naming scheme first proposed by Hobday et al. (2018) may also be calculated and visualised with the __`heatwaveR`__ package using the `category()` function on the output of the `detect_event()` function. Note that one may control the output for the names of the events by providing ones own character string for the `name` argument. Because we have calculated MHWs on the Western Australia data, we provide the name "WA" below.
+In Hobday et al. (2018) a naming convention for MHWs was proposed that divides them into four categories based on their maximum observed intensity. The naming convention and a brief description are as follows:
+
+| Category      | Description |
+|---------------|--------------------------------------------------------------------------------------------------------|
+| I Moderate | Events that have been detected, but with a maximum intensity that does not double the distance between the seasonal climatology and the threshold value. These are common and not terribly worisome. |
+|II Strong | Events with a maximum intensity that doubles the distance from the seasonal climatology to the threshold, but does not triple it. These are not uncommon, but have yet to be shown to cause any long term biological or ecological damage. |
+|III Severe | Thankfully these are relatively uncommon as they have been linked to damaging events. The 2003 Mediterranean MHW was this category. |
+|IV Extreme | Events with a maximum intensity that is four times or greater than the aforementioned distance. These events are currently rare, but are projected to increase with frequency. This is troubling as events in this category are now well documented as causing widespread and lasting ecological damage. The 2011 Western Australia MHW was this category. It is also the logo of this package. |
+
+## Calculating MHW categories
+
+The categories of MHWs under the Hobday et al. (2018) naming scheme may be calculated with the __`heatwaveR`__ package using the `category()` function on the output of the `detect_event()` function. By default this function will order events from most to least intense. Note that one may control the output for the names of the events by providing ones own character string for the `name` argument. Because we have calculated MHWs on the Western Australia data, we provide the name "WA" below:
 
 ```{r category-example1}
 # Load libraries
@@ -29,31 +40,38 @@ library(heatwaveR)
 library(dplyr)
 
 # Calculate events
-ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+ts <- ts2clm(sst_WA, climatologyPeriod = c("1982-01-01", "2011-12-31"))
 mhw <- detect_event(ts)
+MHW_cat <- category(mhw, S = TRUE, name = "WA")
 
 # Look at the top few events
-tail(category(mhw, S = TRUE, name = "WA"))
+tail(MHW_cat)
 ```
 
 Note that this functions expects the data to have been collected in the southern hemisphere, hence the argument `S = TRUE`. If they were not, one must set `S = FALSE` as seen in the example below. This ensures that the correct seasons are attributed to the event.
 
 ```{r category-example2}
-res_Med <- detect_event(ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31")))
-tail(category(res_Med, S = FALSE, name = "Med"))
+res_Med <- detect_event(ts2clm(sst_Med, climatologyPeriod = c("1982-01-01", "2011-12-31")))
+res_Med_cat <- category(res_Med, S = FALSE, name = "Med")
+tail(res_Med_cat)
 ```
+
+## Visualising MHW categories
+
+### Default MHW category visuals
 
 A quick and easy visualisation of the categories of a MHW may be accomplished with `event_line()` by setting the `category` argument to `TRUE`.
 
-```{r fig-example-10, echo = TRUE, eval = TRUE}
+```{r fig-example-1, echo = TRUE, eval = TRUE}
 event_line(mhw, spread = 100, start_date = "2010-11-01", end_date = "2011-06-30", category = TRUE)
 ```
-
 <!-- ![](vignettes/fig-example-10-1.png) -->
+
+### Custom MHW category visuals
 
 Were one to want to visualise the categories of a MHW 'by hand', the following code will provide a good starting point.
 
-```{r fig-example-11, echo = TRUE, eval = TRUE}
+```{r fig-example-2, echo = TRUE, eval = TRUE}
 # Create category breaks and select slice of data.frame
 clim_cat <- mhw$clim %>%
   dplyr::mutate(diff = thresh - seas,
@@ -100,7 +118,8 @@ ggplot(data = clim_cat, aes(x = t, y = temp)) +
                                                                 "dashed", "dotdash", "dotted")))) + 
   labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
 ```
-
 <!-- ![](vignettes/fig-example-11-1.png) -->
 
-Presently the functionality for the detection of categories for MCSs has not been introduced into __`heatwaveR`__, but it is inbound.
+## Calculating/visualising MCS categories
+
+The functionality for the detection and visualisation of categories for MCSs has not yet been implemented in __`heatwaveR`__. There are plans to do so, but it is currently a low priority as no research groups that we are aware of are looking at MCS categories. If your research group is interested in doing so, please contact us and we will bump up the priority of this feature.

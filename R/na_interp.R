@@ -11,7 +11,7 @@
 #' interpolate (pad) missing data (specified as \code{NA}) in the input
 #' temperature time series; i.e., any consecutive blocks of NAs with length
 #' greater than \code{maxPadLength} will be left as \code{NA}. Set as an
-#' integer. The default is \code{3} days.
+#' integer.
 #'
 #' @return The function returns the data (a data.table) in a long format.
 #'
@@ -20,7 +20,7 @@
 na_interp <- function(doy = doy,
                       x = ts_x,
                       y = ts_y,
-                      maxPadLength = 3) {
+                      maxPadLength) {
 
   .na_pad <- function(x, fill, maxPadLength) {
     if (maxPadLength <= 0)

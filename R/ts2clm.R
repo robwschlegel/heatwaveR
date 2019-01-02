@@ -28,8 +28,9 @@
 #' @param maxPadLength Specifies the maximum length of days over which to
 #' interpolate (pad) missing data (specified as \code{NA}) in the input
 #' temperature time series; i.e., any consecutive blocks of NAs with length
-#' greater than \code{maxPadLength} will be left as \code{NA}. Set as an
-#' integer. The default is \code{3} days.
+#' greater than \code{maxPadLength} will be left as \code{NA}. The default is
+#' \code{FALSE}. Set as an integer to interpolate. Setting \code{maxPadLength}
+#' to \code{TRUE} will return an error.
 #' @param windowHalfWidth Width of sliding window about day-of-year (to one
 #' side of the center day-of-year) used for the pooling of values and
 #' calculation of climatology and threshold percentile. Default is \code{5}
@@ -134,7 +135,7 @@ ts2clm <-
            y = temp,
            climatologyPeriod,
            robust = FALSE,
-           maxPadLength = 3,
+           maxPadLength = FALSE,
            windowHalfWidth = 5,
            pctile = 90,
            smoothPercentile = TRUE,
@@ -150,8 +151,8 @@ ts2clm <-
       stop("Please ensure that 'robust' is either TRUE or FALSE.")
     if (robust)
       message("The 'robust' argument has been deprecated and will be removed from future versions.")
-    if (!(is.numeric(maxPadLength)))
-      stop("Please ensure that 'maxPadLength' is a numeric/integer value.")
+    if (maxPadLength != FALSE & !is.numeric(maxPadLength))
+      stop("Please ensure that 'maxPadLength' is either FALSE or a numeric/integer value.")
     if (!(is.numeric(pctile)))
       stop("Please ensure that 'pctile' is a numeric/integer value.")
     if (!(is.numeric(windowHalfWidth)))
@@ -171,12 +172,17 @@ ts2clm <-
     ts_y <- eval(substitute(y), data)
     rm(data)
 
-    ts_xy <- data.table::data.table(ts_x, ts_y)
+    if (!inherits(ts_x[1], "Date"))
+      stop("Please ensure your date values are type 'Date'. This mayy be done with 'as.Date()'.")
+    if (!is.numeric(ts_y[1]))
+      stop("Please ensure the temperature values you are providing are type 'num' for numeric.")
+
+    ts_xy <- data.table::data.table(ts_x = ts_x, ts_y = ts_y)
     rm(ts_x); rm(ts_y)
 
-    ts_whole <- make_whole_fast(ts_xy, x = ts_x, y = ts_y)
+    ts_whole <- make_whole_fast(ts_xy)
 
-    if (length(stats::na.omit(ts_whole$ts_y)) < length(ts_whole$ts_y)){
+    if (length(stats::na.omit(ts_whole$ts_y)) < length(ts_whole$ts_y & is.numeric(maxPadLength))){
       ts_whole <- na_interp(doy = ts_whole$doy,
                             x = ts_whole$ts_x,
                             y = ts_whole$ts_y,
@@ -196,11 +202,18 @@ ts2clm <-
 
     ts_wide <- clim_spread(ts_whole, clim_start, clim_end, windowHalfWidth)
 
-    ts_mat <- clim_calc_cpp(ts_wide, windowHalfWidth, pctile)
+    if (nrow(stats::na.omit(ts_wide)) < nrow(ts_wide) | var) {
+      ts_mat <- clim_calc(ts_wide, windowHalfWidth, pctile)
+      ts_mat[is.nan(ts_mat)] <- NA
+      # } else if (var) {
+      #   ts_mat <- clim_calc(ts_wide, windowHalfWidth, pctile)
+    } else {
+      ts_mat <- clim_calc_cpp(ts_wide, windowHalfWidth, pctile)
+    }
     rm(ts_wide)
 
     if (smoothPercentile) {
-      ts_clim <- smooth_percentile(ts_mat, smoothPercentileWidth)
+      ts_clim <- smooth_percentile(ts_mat, smoothPercentileWidth, var)
     } else {
       ts_clim <- data.table::data.table(ts_mat)
     }
@@ -215,9 +228,8 @@ ts2clm <-
 
     } else {
 
-      # data.table::setkey(ts_whole, doy)
-      # data.table::setkey(ts_clim, doy)
-      # ts_res <- ts_whole[ts_clim, on = "doy"]
+      data.table::setkey(ts_whole, doy)
+      data.table::setkey(ts_clim, doy)
       ts_res <- merge(ts_whole, ts_clim, all = TRUE)
       rm(ts_whole); rm(ts_clim)
       data.table::setorder(ts_res, ts_x)

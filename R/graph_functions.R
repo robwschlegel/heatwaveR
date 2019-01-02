@@ -85,6 +85,10 @@ event_line <- function(data,
 
   date_end <- date_start <- duration <-  temp <-  NULL
 
+  if (missing(start_date))
+    stop("Please provide a 'start_date' so the function knows where you would like it to begin looking for events.")
+  if (missing(end_date))
+    stop("Please provide an 'end_date' so the function knows where you would like it to stop looking for events.")
   if (!(exists("event", data)) | !(exists("climatology", data))) stop("Please ensure you are running this function on the output of 'heatwaveR::detect_event()'")
 
   ts.x <- eval(substitute(x), data$climatology)
@@ -115,6 +119,10 @@ event_line <- function(data,
 
   date_spread <- seq((event_top$date_start - spread), (event_top$date_end + spread), by = "day")
 
+  event_sub <- event %>%
+    dplyr::filter(date_start >= min(date_spread),
+           date_end <= max(date_spread))
+
   thresh_2x <- thresh_3x <- thresh_4x <- NULL
 
   clim_diff <- data$climatology %>%
@@ -124,8 +132,8 @@ event_line <- function(data,
            thresh_4x = thresh_3x + diff)
 
   clim_events <- data.frame()
-  for (i in 1:nrow(event)) {
-    clim_sub <- clim_diff[(event$index_start_fix[i]):(event$index_end_fix[i]),]
+  for (i in 1:nrow(event_sub)) {
+    clim_sub <- clim_diff[(event_sub$index_start_fix[i]):(event_sub$index_end_fix[i]),]
     clim_events <- rbind(clim_events, clim_sub)
   }
 
@@ -150,7 +158,7 @@ event_line <- function(data,
     clim_top$y2 <- clim_top$ts.y
   }
 
-  ylabel <- expression(paste("Temperautre [", degree, "C]"))
+  ylabel <- expression(paste("Temperature [", degree, "C]"))
 
   ep <- ggplot(data = clim_spread, aes(x = ts.x, y = ts.y)) +
     scale_x_date(expand = c(0, 0), date_labels = "%b %Y", name = NULL) +

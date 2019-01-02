@@ -4,34 +4,23 @@
 \alias{make_whole_fast}
 \title{Constructs a continuous, uninterrupted time series of temperatures (faster).}
 \usage{
-make_whole_fast(data, x = t, y = temp)
+make_whole_fast(data)
 }
 \arguments{
-\item{data}{A data frame with columns for date and temperature data.
-Ordered daily data are expected, and although missing values (NA) can be
-accommodated, the function is only recommended when NAs occur infrequently,
-preferably at no more than 3 consecutive days.}
-
-\item{x}{A column with the daily time vector (see details). For backwards
-compatibility, the column is named \code{t} by default.}
-
-\item{y}{A column with the response vector. RmarineHeatWaves version <= 0.15.9
-assumed that this would be daily seawater temperatures, but as of version 0.16.0
-it may be any arbitrary measurement taken at a daily frequency. The default
-remains temperature, and the default column name is therefore \code{temp}, again
-hopefully ensuring backwards compatibility.}
+\item{data}{A data frame with columns for date (\code{ts_x}) and
+temperature (\code{ts_y}) data. Ordered daily data are expected, and
+although missing values (NA) can be accommodated, the function is only
+recommended when NAs occur infrequently, preferably at no more than three
+consecutive days.}
 }
 \value{
 The function will return a data frame with three columns. The column
 headed \code{doy} (day-of-year) is the Julian day running from 1 to 366, but
 modified so that the day-of-year series for non-leap-years runs 1...59 and
-then 61...366. For leap years the 60th day is February 29. See the example,
-below. The other two columns take the names of \code{x} and \code{y}, if supplied,
-or it will be \code{t} and \code{temp} in case the default values were used.
-The \code{x} (or \code{t}) column is a series of dates of class \code{Date},
-while \code{y} (or \code{temp}) is the measured variable. This time series will
-be uninterrupted and continuous daily values between the first and last dates
-of the input data.
+then 61...366. For leap years the 60th day is February 29. The \code{ts_x}
+column is a series of dates of class \code{Date}, while \code{y} is the
+measured variable. This time series will be uninterrupted and continuous daily
+values between the first and last dates of the input data.
 }
 \description{
 Takes a series of dates and temperatures, and if irregular (but ordered), inserts
@@ -40,13 +29,12 @@ missing dates and fills correpsonding temperatures with NAs.
 \details{
 \enumerate{
 \item This function reads in daily data with the time vector specified as
-either \code{POSIXct} or \code{Date} (e.g. "1982-01-01 02:00:00" or
-"1982-01-01").
+ \code{Date} (e.g. "1982-01-01").
 
 \item It is up to the user to calculate daily data from sub-daily measurements.
 Leap years are automatically accommodated by this function.
 
-\item This function can handle some of missing days, but this is not a
+\item This function can handle some missing days, but this is not a
 licence to actually use these data for the detection of anomalous thermal
 events. Hobday et al. (2016) recommend gaps of no more than 3 days, which
 may be adjusted by setting the \code{maxPadLength} argument of the
@@ -72,11 +60,8 @@ from failing should some gridded cells contain missing rows or some duplicated
 values. When using the fast algorithm, we assume that the user has done all
 the necessary work to ensure that the time vector is regular and without
 repeated measurements beforehand.
-
-\item It is recommended that a climatology period of at least 30 years is specified
-in order to capture any decadal thermal periodicities.
 }
 }
 \author{
-Smit, A. J.
+Smit, A. J., Schlegel, R. W.
 }

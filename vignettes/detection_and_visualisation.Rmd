@@ -1,5 +1,5 @@
 ---
-title: "Detection and Visualisation"
+title: "Basic Detection and Visualisation of Events"
 author: "AJ Smit and Robert W Schlegel"
 date: "`r Sys.Date()`"
 description: "This vignette demonstrates the basic use of the heatwaveR package for the detection and visualisation of events."
@@ -19,17 +19,21 @@ knitr::opts_chunk$set(fig.width = 8, fig.height = 3, fig.align = 'centre',
                       eval = TRUE, tidy = FALSE)
 ```
 
-## Overview
+## Data
 
-The `detect_event()` function is the core of this package. It expects to be fed the output of the second core function, `ts2clm()`. By default, `ts2clm()` wants to receive a two-column data frame with one column labelled `t` containing all of the date values, and a second column `temp` containing all of the temperature values. Please note that the date format it expects is "YYYY-MM-DD". For example, please see the top five rows of one of the datasets included with the __`heatwaveR`__ package:
+The `detect_event()` function is the core of this package, and it expects to be fed the output of the second core function, `ts2clm()`. By default, `ts2clm()` wants to receive a two-column dataframe with one column labelled `t` containing all of the date values, and a second column `temp` containing all of the temperature values. Please note that the date format it expects is "YYYY-MM-DD". For example, please see the top five rows of one of the datasets included with the __`heatwaveR`__ package:
 
 ```{r file-structure}
 head(heatwaveR::sst_WA)
 ```
 
-Loading these data from a `.csv` file or other text based format is the easiest approach, assuming one is not working with gridded data. Please see [this vignette](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html) for a detailed walkthrough on using the functions in this package with gridded data.
+It is possible to use different column names other than `t` and `temp` with which to calculate events. Please see the help files for `ts2clm()` or `detect_event()` for a thorough explanation of how to do so.
 
-Here are the `ts2clm()` and `detect_event()` function applied to the Western Australian test data included with this package (`sst_WA`), which are also discussed by Hobday et al. (2016):
+Loading ones data from a `.csv` file or other text based format is the easiest approach for the calculation of events, assuming one is not working with gridded data (e.g. NetCDF). Please see [this vignette](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html) for a detailed walkthrough on using the functions in this package with gridded data.
+
+## Calculating marine heatwaves (MHWs)
+
+Here are the `ts2clm()` and `detect_event()` function applied to the Western Australia test data included with this package (`sst_WA`), which are also discussed by Hobday et al. (2016):
 
 ```{r detect-example1}
 # Load libraries
@@ -37,54 +41,61 @@ library(heatwaveR)
 library(dplyr)
 
 # Detect the events in a time series
-ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+ts <- ts2clm(sst_WA, climatologyPeriod = c("1982-01-01", "2011-12-31"))
 mhw <- detect_event(ts)
 
 # View just a few metrics
 mhw$event %>% 
   dplyr::ungroup() %>%
-  dplyr::select(event_no, duration, date_start, date_peak, intensity_mean, intensity_max, intensity_cumulative) %>% 
-  dplyr::arrange(-intensity_cumulative) %>% 
+  dplyr::select(event_no, duration, date_start, date_peak, intensity_max, intensity_cumulative) %>% 
+  dplyr::arrange(-intensity_max) %>% 
   head(5)
 ```
 
-The corresponding `event_line()` and `lolli_plot()`, which represent the massive Western Australian heatwave of 2011, look like this:
+## Visualising marine heatwaves (MHWs)
+
+### Default MHW visuals
+
+One may use `event_line()` and `lolli_plot()` directly on the output of `detect_event()` in order to visualise MHWs. Here are the functions being used to visualise the massive Western Australian heatwave of 2011:
 
 ```{r fig-example1, echo = TRUE, eval = TRUE}
-event_line(mhw, spread = 100, metric = "intensity_cumulative", start_date = "2010-11-01", end_date = "2011-06-30")
-```
+event_line(mhw, spread = 180, metric = "intensity_max", 
+           start_date = "1982-01-01", end_date = "2014-12-31")
 
+lolli_plot(mhw, metric = "intensity_max")
+```
 <!-- ![](vignettes/fig-example1-1.png) -->
-
-```{r fig-example2, echo = TRUE, eval = TRUE}
-lolli_plot(mhw)
-```
-
 <!-- ![](vignettes/fig-example2-1.png) -->
 
-The `event_line()` and `lolli_plot()` functions were designed to work directly on one of the dataframes in the list returned by `detect_event()`. If more control over the figures is required, it may be useful to create them in **`ggplot2`** by stacking `geoms`. We specifically created two new **`ggplot2`** `geoms` to reproduce the functionality of `event_line()` and `lolli_plot()`. These functions are more general in their functionality and can be used outside of the **`heatwaveR`** package, too. To apply them to MHWs and MCSs first requires that we access the `clim` or `event` dataframes within the list that is produced by `detect_event()`. Here is how:
+### Custom MHW visuals
 
-```{r fig-example3, echo = TRUE, eval = TRUE}
-# select the region of the time series of interest
-mhw2 <- mhw$clim %>% 
-  slice(10580:10690)
+The `event_line()` and `lolli_plot()` functions were designed to work directly on the list returned by `detect_event()`. If more control over the figures is required, it may be useful to create them in **`ggplot2`** by stacking `geoms`. We specifically created two new **`ggplot2`** `geoms` to reproduce the functionality of `event_line()` and `lolli_plot()`. These functions are more general in their functionality and can be used outside of the **`heatwaveR`** package, too. To apply them to MHWs and MCSs first requires that we access the `climatology` or `event` dataframes within the list that is produced by `detect_event()`. Here is how:
+
+```{r fig-example2, echo = TRUE, eval = TRUE}
+# Select the region of the time series of interest
+mhw2 <- mhw$climatology %>% 
+  slice(10580:10720)
 
 ggplot(mhw2, aes(x = t, y = temp, y2 = thresh)) +
   geom_flame() +
-  geom_text(aes(x = as.Date("2011-02-26"), y = 25.8, label = "the Destroyer\nof Kelps"))
+  geom_text(aes(x = as.Date("2011-02-25"), y = 25.8, label = "the Destroyer\nof Kelps"))
 
 ggplot(mhw$event, aes(x = date_start, y = intensity_max)) +
   geom_lolli(colour = "salmon", colour_n = "red", n = 3) +
   geom_text(colour = "black", aes(x = as.Date("2006-08-01"), y = 5,
-                label = "The marine heatwaves\nTend to be left skewed in a\nGiven time series"))
+                label = "The marine heatwaves\nTend to be left skewed in a\nGiven time series")) +
+  labs(y = expression(paste("Max. intensity [", degree, "C]")), x = NULL)
 ```
 <!-- ![](vignettes/fig-example3-1.png) -->
 <!-- ![](vignettes/fig-example3-2.png) -->
 
+### Spicy MHW visuals
+
 The default output of these function may not be to your liking. If so, not to worry. As **`ggplot2`** `geoms`, they are highly malleable. For example, if we were to choose to reproduce the format of the MHWs as seen in Hobday et al. (2016), the code would look something like this:
 
-```{r fig-example4, echo = TRUE, eval = TRUE}
-# It is necessary to give geom_flame() at least one row on either side of the event in order to calculate the polygon corners smoothly
+```{r fig-example3, echo = TRUE, eval = TRUE}
+# It is necessary to give geom_flame() at least one row on either side of 
+# the event in order to calculate the polygon corners smoothly
 mhw_top <- mhw2 %>% 
   slice(49:110)
 
@@ -101,23 +112,28 @@ ggplot(data = mhw2, aes(x = t)) +
   guides(colour = guide_legend(override.aes = list(fill = NA))) +
   labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
 ```
-
 <!-- ![](vignettes/fig-example4-1.png) -->
 
-Should we not wish to highlight any events with `geom_lolli()`, it would look like this:
+Should we not wish to highlight any events with `geom_lolli()`, plot them with a colour other than the default, and use a different theme, it would look like this:
 
-```{r fig-example5, echo = TRUE, eval = TRUE}
-ggplot(mhw$event, aes(x = date_start, y = intensity_cumulative)) +
-  geom_lolli(colour = "salmon")
+```{r fig-example4, echo = TRUE, eval = TRUE}
+ggplot(mhw$event, aes(x = date_peak, y = intensity_max)) +
+  geom_lolli(colour = "firebrick") +
+  labs(x = "Peak Date", 
+       y = expression(paste("Max. intensity [", degree, "C]")), x = NULL) +
+  theme_linedraw()
 ```
-
 <!-- ![](vignettes/fig-example5-1.png) -->
 
-The calculation and visualisation of cold-spells is also accommodated within this package. Here is a cold spell detected in the OISST data for Western Australia:
+Because these are simple **`ggplot2`** geoms possibilities are nearly infinite.
+
+## Calculating marine cold-spells (MCSs)
+
+The calculation and visualisation of cold-spells is also provided for within this package. The data to be fed into the functions is the same as for MHWs. The main difference is that one is now calculating the 10th percentile threshold, rather than the 90th percentile threshold. Here are the top five cold-spells (cumulative intensity) detected in the OISST data for Western Australia:
 
 ```{r detect-example2}
 # First calculate the cold-spells
-ts_10th <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), pctile = 10)
+ts_10th <- ts2clm(sst_WA, climatologyPeriod = c("1982-01-01", "2011-12-31"), pctile = 10)
 mcs <- detect_event(ts_10th, coldSpells = TRUE)
 
 # Then look at the top few events
@@ -129,41 +145,66 @@ mcs$event %>%
   head(5)
 ```
 
-The plots showing the cold-spells look like this:
+## Visualising marine cold-spells (MCSs)
 
-```{r fig-example6, echo = TRUE, eval = TRUE}
+### Default MCS visuals
+
+The default plots showing cold-spells look like this:
+
+```{r fig-example5, echo = TRUE, eval = TRUE}
 event_line(mcs, spread = 200, metric = "intensity_cumulative",
-           start_date = "1990-01-01", end_date = "1990-08-30")
+           start_date = "1982-01-01", end_date = "2014-12-31")
 
-lolli_plot(mcs)
+lolli_plot(mcs, metric = "intensity_cumulative", xaxis = "event_no")
 ```
-
 <!-- ![](vignettes/fig-example6-1.png) -->
 <!-- ![](vignettes/fig-example6-2.png) -->
 
+Note that one does not need to specify that MCSs are to be visualised, the functions are able to understand this on their own.
+
+### Custom MCS visuals
+
 Cold spell figures may be created as `geoms` in **`ggplot2`**, too:
 
-```{r fig-example7, echo = TRUE, eval = FALSE}
-mcs2 <- mcs$clim %>% 
-  slice(2990:3190)
+```{r fig-example6, echo = TRUE, eval = TRUE}
+# Select the region of the time series of interest
+mcs2 <- mcs$climatology %>% 
+  slice(2900:3190)
 
-# # Note that the plot centres on the polygons, so it may be necessary to manually zoom out a bit
+# Note that one must specify a colour other than the default 'salmon'
+ggplot(mcs2, aes(x = t, y = thresh, y2 = temp)) +
+  geom_flame(fill = "steelblue3")
+
+ggplot(mcs$event, aes(x = date_start, y = intensity_max)) +
+  geom_lolli(colour = "steelblue3", colour_n = "navy", n = 3) +
+  labs(x = "Start Date",
+       y = expression(paste("Max. intensity [", degree, "C]")))
+```
+
+### Minty MCS visuals
+
+Again, because `geom_flame()` and `geom_lolli()` are simple **`ggplot2`** geoms, one can go completely bananas with them:
+
+```{r fig-example7, echo = TRUE, eval = TRUE}
+mcs_top <- mcs2 %>% 
+  slice(125:202)
+
 ggplot(data = mcs2, aes(x = t)) +
-  geom_flame(aes(y = thresh, y2 = temp), fill = "steelblue3", show.legend = F) +
+  geom_flame(aes(y = thresh, y2 = temp, fill = "all"), show.legend = T) +
+  geom_flame(data = mcs_top, aes(y = thresh, y2 = temp, fill = "top"), show.legend = T) +
   geom_line(aes(y = temp, colour = "temp")) +
   geom_line(aes(y = thresh, colour = "thresh"), size = 1.0) +
   geom_line(aes(y = seas, colour = "seas"), size = 1.2) +
   scale_colour_manual(name = "Line Colour",
                       values = c("temp" = "black", "thresh" =  "forestgreen", "seas" = "grey80")) +
-  scale_y_continuous(limits = c(18, 23.5)) +
+  scale_fill_manual(name = "Event Colour", values = c("all" = "steelblue3", "top" = "navy")) +
   scale_x_date(date_labels = "%b %Y") +
+  guides(colour = guide_legend(override.aes = list(fill = NA))) +
   labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
 
 ggplot(mcs$event, aes(x = date_start, y = intensity_cumulative)) +
   geom_lolli(colour = "steelblue3", colour_n = "navy", n = 7) +
-  xlab("Date") +
-  ylab(expression(paste("Cumulative intensity [days x ", degree, "C]")))
+  labs( x = "Start Date", y = expression(paste("Cumulative intensity [days x ", degree, "C]")))
 ```
-
 <!-- ![](vignettes/fig-example7-1.png) -->
 <!-- ![](vignettes/fig-example7-2.png) -->

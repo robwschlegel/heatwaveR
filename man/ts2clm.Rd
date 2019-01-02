@@ -5,7 +5,7 @@
 \title{Make a climatology from a daily time series.}
 \usage{
 ts2clm(data, x = t, y = temp, climatologyPeriod, robust = FALSE,
-  maxPadLength = 3, windowHalfWidth = 5, pctile = 90,
+  maxPadLength = FALSE, windowHalfWidth = 5, pctile = 90,
   smoothPercentile = TRUE, smoothPercentileWidth = 31,
   clmOnly = FALSE, var = FALSE)
 }
@@ -35,8 +35,9 @@ the function operates.}
 \item{maxPadLength}{Specifies the maximum length of days over which to
 interpolate (pad) missing data (specified as \code{NA}) in the input
 temperature time series; i.e., any consecutive blocks of NAs with length
-greater than \code{maxPadLength} will be left as \code{NA}. Set as an
-integer. The default is \code{3} days.}
+greater than \code{maxPadLength} will be left as \code{NA}. The default is
+\code{FALSE}. Set as an integer to interpolate. Setting \code{maxPadLength}
+to \code{TRUE} will return an error.}
 
 \item{windowHalfWidth}{Width of sliding window about day-of-year (to one
 side of the center day-of-year) used for the pooling of values and

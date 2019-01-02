@@ -1,3 +1,53 @@
+# heatwaveR 0.3.5.9003 (2018-12-26)
+
+* Boxing day update
+
+# heatwaveR 0.3.5.9003 (2018-12-21)
+
+* Updated text for the OISST preparation vignette
+* Updated text for the gridded event detection vignette
+
+# heatwaveR 0.3.5.9003 (2018-12-19)
+
+* Updated text on the landing page to better reflect the updates that have been made over the past few months
+* Fixed typo in `event_line()` output
+* Updated text for the detection and visualisation vignette
+* Updated text for the exceedance vignette
+* Updated text for the categories vignette
+* Updated text for the OISST preparation vignette
+
+# heatwaveR 0.3.5.9003 (2018-12-18)
+
+* Changed time series checking behaviour of `exceedance()` so that it is the same as `ts2clm()`
+
+# heatwaveR 0.3.5.9002 (2018-12-12)
+
+* Fixed bug in `event_line()` that caused it to graph events outside of the `spread` range
+* Expanded testing back up to 100%
+
+# heatwaveR 0.3.5.9001 (2018-12-06)
+
+* Fixed bug caused by R not liking dates older than 1970-01-01
+* Changed `maxPadLength` behaviour in `ts2clm()` to match the Python default settings
+
+# heatwaveR 0.3.5.9000 (2018-12-05)
+
+* Added 'duration_max' to `block_average()` output
+* Resumed correct version numbering
+
+# heatwaveR 0.3.5 (2018-12-03)
+
+* Increased functionality of `block_average()`
+
+# heatwaveR 0.3.5 (2018-11-01)
+
+* Updated one figure in a vignette
+
+# heatwaveR 0.3.5 (2018-10-26)
+
+* `clim_calc()` reinstated to allow for calculation of clims with missing data
+* `var` calculations reinstated for documentation issues
+
 # heatwaveR 0.3.5 (2018-10-20)
 
 * `ts2clm()` no longer calls `clim_calc()`, but `clim_calc_cpp()` only 

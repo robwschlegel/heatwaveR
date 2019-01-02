@@ -10,7 +10,7 @@ block_average(data, x = t, y = temp, report = "full")
 \item{data}{Accepts the data returned by the \code{\link{detect_event}} function.}
 
 \item{x}{This column is expected to contain a vector of dates as per the
-specification of \code{make_whole}. If a column headed \code{t} is present in
+specification of \code{ts2clm}. If a column headed \code{t} is present in
 the dataframe, this argument may be ommitted; otherwise, specify the name of
 the column with dates here.}
 
@@ -26,15 +26,13 @@ reports only the years wherein events were detected. The default is \code{full}.
 The function will return a data frame of the averaged (or aggregate)
 metrics. It includes the following:
   \item{year}{The year over which the metrics were averaged.}
-  \item{temp_mean}{Seawater temperature for the specified year [deg. C].}
-  \item{temp_min}{The minimum temperature for the specified year [deg. C].}
-  \item{temp_max}{The maximum temperature for the specified year [deg. C].}
   \item{count}{The number of events per year.}
   \item{duration}{The average duration of events per year [days].}
+  \item{duration_max}{The maximum duration of an event in each year [days].}
   \item{intensity_mean}{The average event "mean intensity" in each year [deg. C].}
   \item{intensity_max}{The average event "maximum (peak) intensity" in each year
   [deg. C].}
-  #'   \item{intensity_max_max}{The maximum event "maximum (peak) intensity" in
+  \item{intensity_max_max}{The maximum event "maximum (peak) intensity" in
   each year [deg. C].}
   \item{intensity_var}{The average event "intensity variability" in each year
   [deg. C].}
@@ -58,16 +56,19 @@ rather than relative to the seasonal climatology or threshold.
 Calculate yearly means for event metrics.
 }
 \details{
-This function needs to be provided with the full output from the \code{detect}
-function. Note that the yearly averages are calculted only for complete years
-(i.e. years that start/end part-way through the year at the beginning or end
-of the original time series are removed from the calculations).
+This function needs to be provided with the full output from the \code{detect_event}
+or \code{exceedance} functions. Note that the yearly averages are calculted only for
+complete years (i.e. years that start/end part-way through the year at the beginning
+or end of the original time series are removed from the calculations).
 
 This function differs from the python implementation of the function of the
 same name (i.e., \code{blockAverage}, see \url{https://github.com/ecjoliver/marineHeatWaves})
 in that we only provide the ability to calculate the average (or aggregate)
 event metrics in 'blocks' of one year, while the python version allows
 arbitrary (integer) block sizes.
+
+Note that if this function is used on the output of \code{exceedance}, all of the metrics
+(see below) with \code{relThresh} in the name will be returned as \code{NA} values.
 }
 \examples{
 ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
@@ -89,5 +90,5 @@ marine heatwaves, Progress in Oceanography, 141, pp. 227-238,
 doi: 10.1016/j.pocean.2015.12.014
 }
 \author{
-Albertus J. Smit, Eric C. J. Oliver
+Albertus J. Smit, Eric C. J. Oliver, Robert W. Schlegel
 }
