@@ -139,8 +139,7 @@ ts2clm <-
            pctile = 90,
            smoothPercentile = TRUE,
            smoothPercentileWidth = 31,
-           clmOnly = FALSE,
-           var = FALSE
+           clmOnly = FALSE
   ) {
 
     if (missing(climatologyPeriod))
@@ -175,7 +174,6 @@ ts2clm <-
     ts_xy <- data.table::data.table(ts_x, ts_y)
     rm(ts_x); rm(ts_y)
 
-
     ts_whole <- make_whole_fast(ts_xy, x = ts_x, y = ts_y)
 
     if (length(stats::na.omit(ts_whole$ts_y)) < length(ts_whole$ts_y)){
@@ -198,13 +196,6 @@ ts2clm <-
 
     ts_wide <- clim_spread(ts_whole, clim_start, clim_end, windowHalfWidth)
 
-    # delete once certain that it's not needed...
-    # if (nrow(stats::na.omit(ts_wide)) < nrow(ts_wide) | var) {
-    #   ts_mat <- clim_calc(ts_wide, windowHalfWidth, pctile)
-    #   ts_mat[is.nan(ts_mat)] <- NA
-    # } else {
-    #   ts_mat <- clim_calc_cpp(ts_wide, windowHalfWidth, pctile)
-    # }
     ts_mat <- clim_calc_cpp(ts_wide, windowHalfWidth, pctile)
     rm(ts_wide)
 
@@ -213,10 +204,10 @@ ts2clm <-
     } else {
       ts_clim <- data.table::data.table(ts_mat)
     }
+    rm(ts_mat)
 
     cols <- names(ts_clim)
     ts_clim[,(cols) := round(.SD, 4), .SDcols = cols]
-    rm(ts_mat)
 
     if (clmOnly) {
 

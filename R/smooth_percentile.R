@@ -33,6 +33,7 @@ smooth_percentile <- function(data, smoothPercentileWidth) { # removed var_calc 
                                  seas = seas[(smoothPercentileWidth/2 + 2):((smoothPercentileWidth/2 + 1) + len_clim_year)],
                                  thresh = thresh[(smoothPercentileWidth/2 + 2):((smoothPercentileWidth/2 + 1) + len_clim_year)])
 
+  # Legacy code...
   # if (var_calc) {
   #   var <- NULL
   #
