@@ -38,9 +38,8 @@
 
 <meta property="og:title" content="Detect proto-events based on a chosen criterion (column). — proto_event" />
 
-<meta property="og:description" content="An internal function that detects proto-events, which are periods of
-time above a threshold, but without necessarily considering a minimum
-duration or joining across gaps." />
+<meta property="og:description" content="An internal function that detects the events according to the heatwave
+definition, and joins across the gaps if desired." />
 
 <meta property="og:image" content="https://robwschlegel.github.io/heatwaveR/index.html/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -83,7 +82,7 @@ duration or joining across gaps." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6.9004</span>
       </span>
     </div>
 
@@ -163,9 +162,8 @@ duration or joining across gaps." />
 
     <div class="ref-description">
     
-    <p>An internal function that detects proto-events, which are periods of
-time above a threshold, but without necessarily considering a minimum
-duration or joining across gaps.</p>
+    <p>An internal function that detects the events according to the heatwave
+definition, and joins across the gaps if desired.</p>
     
     </div>
 
@@ -203,8 +201,9 @@ events will be combined into one event if <code>joinAcrossGaps = TRUE</code>.</p
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A dataframe that will be used within
-<code><a href='detect_event.html'>detect_event</a></code>.</p>
+    <p>A dataframe that will be used within <code><a href='detect_event.html'>detect_event</a></code>,
+or which can be returned by <code><a href='detect_event.html'>detect_event</a></code> if the switch
+'protoEvent' is specified as TRUE.</p>
     
 
   </div>

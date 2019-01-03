@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6.9004</span>
       </span>
     </div>
 
@@ -114,7 +114,7 @@
       <h1>Detecting Events in Gridded Data</h1>
                         <h4 class="author">AJ Smit and Robert W Schlegel</h4>
             
-            <h4 class="date">2018-12-26</h4>
+            <h4 class="date">2019-01-03</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/gridded_event_detection.Rmd"><code>vignettes/gridded_event_detection.Rmd</code></a></small>
       <div class="hidden name"><code>gridded_event_detection.Rmd</code></div>
@@ -133,7 +133,7 @@
 <div id="gridded-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#gridded-data" class="anchor"></a>Gridded data</h2>
-<p>In the previous vignette we saw how to <a href="https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html">download and prepare OISST data</a>. In this vignette we will use the data we downloaded for our example on how to detect MHWs in gridded data. Because we saved our data as an <code>.Rda</code> file in the format, loading it into R is easy:</p>
+<p>In the previous vignette we saw how to <a href="https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html">download and prepare OISST data</a>. In this vignette we will use the data we downloaded for our example on how to detect MHWs in gridded data. Because we saved our data as an <code>.Rda</code> file, loading it into R is easy:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">OISST &lt;-<span class="st"> </span><span class="kw">read_rds</span>(<span class="st">"~/Desktop/OISST_vignette.Rda"</span>)</code></pre></div>
 </div>
 <div id="event-detection" class="section level2">
@@ -144,7 +144,7 @@
 <a href="#two-good-choices-purrr-vs--plyr" class="anchor"></a>Two good choices: <strong><code>purrr</code></strong> vs. <strong><code>plyr</code></strong>
 </h3>
 <p>When we want to make the same calculation across multiple groups of data within one dataframe we have two good options available to us. The first is to make use of the <code>map()</code> suite of functions found in the <strong><code>purrr</code></strong> package. This is a very fast <strong><code>tidyverse</code></strong> friendly approach to splitting up tasks. The other good option is to go back in time a bit and use the <code>ddply()</code> function from the <strong><code>plyr</code></strong> package. This is arguably a better approach as it allows us to very easily use multiple cores to detect the MHWs. The problem with this approach is that one must <em>never</em> load the <strong><code>plyr</code></strong> library directly as it has some fundamental inconsistencies with the <strong><code>tidyverse</code></strong>. We will see below how to perform these two different techniques without causing ourselves any headaches.</p>
-<p>It is a little clumsy to use multiple functions at once with the two methods we will look at here So we will combine the calculations we want to make in one wrapper function first:</p>
+<p>It is a little clumsy to use multiple functions at once with the two methods we will look at here so we will combine the calculations we want to make in one wrapper function first:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">event_only &lt;-<span class="st"> </span><span class="cf">function</span>(df){
   <span class="co"># First calculate the climatologies</span>
   clim &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(<span class="dt">data =</span> df, <span class="dt">climatologyPeriod =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"1982-01-01"</span>, <span class="st">"2011-01-01"</span>))
@@ -160,10 +160,12 @@ MHW_purrr &lt;-<span class="st"> </span>OISST <span class="op">%&gt;%</span><spa
 <span class="st">  </span><span class="co"># Then we group the data by the 'lon' and 'lat' columns</span>
 <span class="st">  </span><span class="kw">group_by</span>(lon, lat) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="co"># After that we nest each lon/lat pixel into its own little dataframe</span>
+<span class="st">    </span><span class="co"># The column containing all of these little dataframes is named 'data'</span>
 <span class="st">  </span><span class="kw">nest</span>() <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="co"># Next we 'map' the event_only() functions we made to the little dataframes</span>
+<span class="st">  </span><span class="co"># Next we 'map' the event_only() wrapper function we made to the little dataframes</span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">event =</span> <span class="kw">map</span>(data, event_only)) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="co"># Lastly we get rid of the column that is not part of the final result before unnesting everything</span>
+<span class="st">  </span><span class="co"># Lastly we get rid of the column that is not part of the final result </span>
+<span class="st">    </span><span class="co"># before unnesting everything</span>
 <span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>data) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">unnest</span>()
 )</code></pre></div>
@@ -178,19 +180,19 @@ MHW_purrr &lt;-<span class="st"> </span>OISST <span class="op">%&gt;%</span><spa
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(
 MHW_plyr &lt;-<span class="st"> </span>plyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/plyr/topics/ddply">ddply</a></span>(<span class="dt">.data =</span> OISST, <span class="dt">.variables =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>), <span class="dt">.fun =</span> event_only, <span class="dt">.parallel =</span> <span class="ot">TRUE</span>)
 )</code></pre></div>
-<p>The <strong><code>plyr</code></strong> technique takes ~110 seconds on my computer using three cores. This technique is not simply three times faster because when using multiple cores there is a certain amount of loss in efficiency due to the computer needing to remember which results are meant to go where so that it can stitch everything back together again for you. This takes very little memory, but over large jobs it can start to become problematic. Occasionally ‘slippage’ can occur as well where an entire task can be forgotten. This is very rare but does happen. This is partly what makes ‘purrr’ a viable option as it does not have this problem. The other reason is that ‘purrr’ performs much more efficient calculations than ‘plyr’, But what if we could have the best of both worlds?</p>
+<p>The <strong><code>plyr</code></strong> technique takes ~110 seconds on my computer using three cores. This technique is not simply three times faster because when using multiple cores there is a certain amount of loss in efficiency due to the computer needing to remember which results are meant to go where so that it can stitch everything back together again for you. This takes very little memory, but over large jobs it can start to become problematic. Occasionally ‘slippage’ can occur as well where an entire task can be forgotten. This is very rare but does happen. This is partly what makes <strong><code>purrr</code></strong> a viable option as it does not have this problem. The other reason is that <strong><code>purrr</code></strong> performs much more efficient calculations than <strong><code>plyr</code></strong>, But what if we could have the best of both worlds?</p>
 </div>
 <div id="a-harmonious-third-option" class="section level3">
 <h3 class="hasAnchor">
 <a href="#a-harmonious-third-option" class="anchor"></a>A harmonious third option</h3>
-<p>As one may see above, running these calculations on a very large (or even global) gridded dataset can quickly become very time consuming. While running these calculations myself on the global OISST dataset I have found that the fastest option is to combine the two options above. I have found that it works best to save each longitude segment of the data as separate files and to use the <strong><code>purrr</code></strong> method on each individual file, while using the <strong><code>plyr</code></strong> method to be running the multiple calculations on as many files as your core limit will allow. One may not however do this the other way around and use <strong><code>purr</code></strong> to run multiple <strong><code>plyr</code></strong> calculations at once. This will confuse your computer and likely cause a stack overflow. Which sounds more fun than it actually is… as I have had to learn.</p>
+<p>As one may see above, running these calculations on a very large (or even global) gridded dataset can quickly become very time consuming. While running these calculations myself on the global OISST dataset I have found that the fastest option is to combine the two options above. In my workflow I have saved each longitude segment of the global OISST dataset as separate files and use the <strong><code>purrr</code></strong> method on each individual file, while using the <strong><code>plyr</code></strong> method to be running the multiple calculations on as many files as my core limit will allow. One may not however do this the other way around and use <strong><code>purr</code></strong> to run multiple <strong><code>plyr</code></strong> calculations at once. This will confuse your computer and likely cause a stack overflow. Which sounds more fun than it actually is… as I have had to learn.</p>
 <p>In order to happily combine these two options into one we will need to convert the <strong><code>purr</code></strong> code we wrote above into it’s own wrapper function, which we will then call on a stack of files using the <strong><code>plyr</code></strong> technique. Before we do that we must first create the aforementioned stack of files.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unique">unique</a></span>(OISST<span class="op">$</span>lon))){
   OISST_sub &lt;-<span class="st"> </span>OISST <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(lon <span class="op">==</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unique">unique</a></span>(lon)[i])
   <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readRDS">saveRDS</a></span>(<span class="dt">object =</span> OISST_sub, <span class="dt">file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"~/Desktop/OISST_lon_"</span>,i,<span class="st">".Rda"</span>))
 }</code></pre></div>
-<p>This may initially seem like an unnecessary extra step, but when one is working with time series data it is necessary to have all of the dates at a given pixel loaded at once. Unless one is working from a server/virtual machine/ supercomputer this means that one will often not be able to comfortably hold an entire grid for a study area in memory at once. Having the data accessible as thin strips like this therefore makes life somewhat easier. And as we see in the code chunk below it also (arguably) allows us to perform the most efficient calculations on our data.</p>
+<p>This may initially seem like an unnecessary extra step, but when one is working with time series data it is necessary to have all of the dates at a given pixel loaded at once. Unless one is working from a server/virtual machine/supercomputer this means that one will often not be able to comfortably hold an entire grid for a study area in memory at once. Having the data accessible as thin strips like this therefore makes life somewhat easier. And as we see in the code chunk below it also (arguably) allows us to perform the most efficient calculations on our data.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The 'purrr' wrapper function to pass to 'plyr'</span>
 purrr_wraper &lt;-<span class="st"> </span><span class="cf">function</span>(file_name){
   OISST_file &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readRDS">readRDS</a></span>(file_name)
@@ -209,7 +211,7 @@ OISST_files &lt;-<span class="st"> </span><span class="kw"><a href="https://www.
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(
 MHW_result &lt;-<span class="st"> </span>plyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/plyr/topics/ldply">ldply</a></span>(OISST_files, <span class="dt">.fun =</span> purrr_wraper, <span class="dt">.parallel =</span> T)
 )</code></pre></div>
-<p>Not only is this technique computationally faster, because it only loads one of our small slice files at a time it is also much lighter on our memory use. To maximise efficiency even further I would recommend writing out his full work flow in a stand-alone script and then using <code><a href="https://www.rdocumentation.org/packages/base/topics/source">source()</a></code> directly from an R terminal.</p>
+<p>Not only is this technique computationally faster, because it only loads one of our small slice files at a time it is also much lighter on our memory use. To maximise efficiency even further I would recommend writing out this full work flow in a stand-alone script and then running it using <code><a href="https://www.rdocumentation.org/packages/base/topics/source">source()</a></code> directly from an R terminal.</p>
 </div>
 </div>
 <div id="trend-detection" class="section level2">
@@ -264,7 +266,7 @@ OISST_nTrend<span class="op">$</span>pval &lt;-<span class="st"> </span><span cl
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The base map</span>
 map_base &lt;-<span class="st"> </span>ggplot2<span class="op">::</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/fortify.html">fortify</a></span>(maps<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/maps/topics/map">map</a></span>(<span class="dt">fill =</span> <span class="ot">TRUE</span>, <span class="dt">plot =</span> <span class="ot">FALSE</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">rename</a></span>(<span class="dt">lon =</span> long)</code></pre></div>
-<p>Then we will create two maps that we will stick together using <strong><code>ggpubr</code></strong>. The first map will show the slope of the count of events detected per year over time as shades of red, and the second map will show the significance (<em>p</em>-value) of these trends.</p>
+<p>Then we will create two maps that we will stick together using <strong><code>ggpubr</code></strong>. The first map will show the slope of the count of events detected per year over time as shades of red, and the second map will show the significance (<em>p</em>-value) of these trends in shades of grey.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">map_slope &lt;-<span class="st"> </span><span class="kw">ggplot</span>(OISST_nTrend, <span class="kw">aes</span>(<span class="dt">x =</span> lon, <span class="dt">y =</span> lat)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_rect</span>(<span class="dt">size =</span> <span class="fl">0.2</span>, <span class="dt">fill =</span> <span class="ot">NA</span>,
        <span class="kw">aes</span>(<span class="dt">xmin =</span> lon <span class="op">-</span><span class="st"> </span><span class="fl">0.1</span>, <span class="dt">xmax =</span> lon <span class="op">+</span><span class="st"> </span><span class="fl">0.1</span>, <span class="dt">ymin =</span> lat <span class="op">-</span><span class="st"> </span><span class="fl">0.1</span>, <span class="dt">ymax =</span> lat <span class="op">+</span><span class="st"> </span><span class="fl">0.1</span>,
@@ -302,7 +304,7 @@ map_p &lt;-<span class="st"> </span><span class="kw">ggplot</span>(OISST_nTrend,
 
 map_both &lt;-<span class="st"> </span>ggpubr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggpubr/topics/ggarrange">ggarrange</a></span>(map_slope, map_p, <span class="dt">align =</span> <span class="st">"hv"</span>)
 map_both</code></pre></div>
-<p>From the figure above we may see that the entire study area shows significant (<em>p</em>&lt;= 0.05) increases in the count of MHWs per year. This is generally the case for the entire globe. Not shown here is also the significant increase in the intensity of MHWs as well.S</p>
+<p>From the figure above we may see that the entire study area shows significant (<em>p</em>&lt;= 0.05) increases in the count of MHWs per year. This is generally the case for the entire globe. Not shown here is also the significant increase in the intensity of MHWs as well.</p>
 </div>
   </div>
 

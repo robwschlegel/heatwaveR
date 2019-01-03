@@ -1,11 +1,14 @@
-# heatwaveR 0.3.5.9003 (2018-12-26)
+# heatwaveR 0.3.6.9004 (2019-01-03)
+
+* Corrected some typos in the gridded event detection vignette
+
+# heatwaveR 0.3.6.9004 (2019-01-02)
 
 * First update of 2019
-
-# heatwaveR 0.3.6.9003 (2019-01-02)
-
 * Added 'protoEvents' argument to `detect_events.R()` for returning the proto events rather than 
   a table for the event metrics
+
+# heatwaveR 0.3.5.9003 (2018-12-26)
 
 * Boxing day update
 
