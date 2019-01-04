@@ -29,7 +29,7 @@ library(heatwaveR)
 
 ## Gridded data
 
-In the previous vignette we saw how to [download and prepare OISST data](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html). In this vignette we will use the data we downloaded for our example on how to detect MHWs in gridded data. Because we saved our data as an `.Rda` file in the format, loading it into R is easy:
+In the previous vignette we saw how to [download and prepare OISST data](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html). In this vignette we will use the data we downloaded for our example on how to detect MHWs in gridded data. Because we saved our data as an `.Rda` file, loading it into R is easy:
 
 ```{r load-data}
 OISST <- read_rds("~/Desktop/OISST_vignette.Rda")
@@ -41,7 +41,7 @@ OISST <- read_rds("~/Desktop/OISST_vignette.Rda")
 
 When we want to make the same calculation across multiple groups of data within one dataframe we have two good options available to us. The first is to make use of the `map()` suite of functions found in the __`purrr`__ package. This is a very fast __`tidyverse`__ friendly approach to splitting up tasks. The other good option is to go back in time a bit and use the `ddply()` function from the __`plyr`__ package. This is arguably a better approach as it allows us to very easily use multiple cores to detect the MHWs. The problem with this approach is that one must _never_ load the __`plyr`__ library directly as it has some fundamental inconsistencies with the __`tidyverse`__. We will see below how to perform these two different techniques without causing ourselves any headaches.
 
-It is a little clumsy to use multiple functions at once with the two methods we will look at here So we will combine the calculations we want to make in one wrapper function first:
+It is a little clumsy to use multiple functions at once with the two methods we will look at here so we will combine the calculations we want to make in one wrapper function first:
 
 ```{r detect-func}
 event_only <- function(df){
@@ -63,10 +63,12 @@ MHW_purrr <- OISST %>%
   # Then we group the data by the 'lon' and 'lat' columns
   group_by(lon, lat) %>% 
   # After that we nest each lon/lat pixel into its own little dataframe
+    # The column containing all of these little dataframes is named 'data'
   nest() %>% 
-  # Next we 'map' the event_only() functions we made to the little dataframes
+  # Next we 'map' the event_only() wrapper function we made to the little dataframes
   mutate(event = map(data, event_only)) %>% 
-  # Lastly we get rid of the column that is not part of the final result before unnesting everything
+  # Lastly we get rid of the column that is not part of the final result 
+    # before unnesting everything
   select(-data) %>% 
   unnest()
 )
@@ -88,11 +90,11 @@ MHW_plyr <- plyr::ddply(.data = OISST, .variables = c("lon", "lat"), .fun = even
 )
 ```
 
-The __`plyr`__ technique takes ~110 seconds on my computer using three cores. This technique is not simply three times faster because when using multiple cores there is a certain amount of loss in efficiency due to the computer needing to remember which results are meant to go where so that it can stitch everything back together again for you. This takes very little memory, but over large jobs it can start to become problematic. Occasionally 'slippage' can occur as well where an entire task can be forgotten. This is very rare but does happen. This is partly what makes 'purrr' a viable option as it does not have this problem. The other reason is that 'purrr' performs much more efficient calculations than 'plyr', But what if we could have the best of both worlds?
+The __`plyr`__ technique takes ~110 seconds on my computer using three cores. This technique is not simply three times faster because when using multiple cores there is a certain amount of loss in efficiency due to the computer needing to remember which results are meant to go where so that it can stitch everything back together again for you. This takes very little memory, but over large jobs it can start to become problematic. Occasionally 'slippage' can occur as well where an entire task can be forgotten. This is very rare but does happen. This is partly what makes __`purrr`__ a viable option as it does not have this problem. The other reason is that __`purrr`__ performs much more efficient calculations than __`plyr`__, But what if we could have the best of both worlds?
 
 ### A harmonious third option
 
-As one may see above, running these calculations on a very large (or even global) gridded dataset can quickly become very time consuming. While running these calculations myself on the global OISST dataset I have found that the fastest option is to combine the two options above. I have found that it works best to save each longitude segment of the data as separate files and to use the __`purrr`__ method on each individual file, while using the __`plyr`__ method to be running the multiple calculations on as many files as your core limit will allow. One may not however do this the other way around and use __`purr`__ to run multiple __`plyr`__ calculations at once. This will confuse your computer and likely cause a stack overflow. Which sounds more fun than it actually is... as I have had to learn.
+As one may see above, running these calculations on a very large (or even global) gridded dataset can quickly become very time consuming. While running these calculations myself on the global OISST dataset I have found that the fastest option is to combine the two options above. In my workflow I have saved each longitude segment of the global OISST dataset as separate files and use the __`purrr`__ method on each individual file, while using the __`plyr`__ method to be running the multiple calculations on as many files as my core limit will allow. One may not however do this the other way around and use __`purr`__ to run multiple __`plyr`__ calculations at once. This will confuse your computer and likely cause a stack overflow. Which sounds more fun than it actually is... as I have had to learn.
 
 In order to happily combine these two options into one we will need to convert the __`purr`__ code we wrote above into it's own wrapper function, which we will then call on a stack of files using the __`plyr`__ technique. Before we do that we must first create the aforementioned stack of files.
 
@@ -104,7 +106,7 @@ for(i in 1:length(unique(OISST$lon))){
 }
 ```
 
-This may initially seem like an unnecessary extra step, but when one is working with time series data it is necessary to have all of the dates at a given pixel loaded at once. Unless one is working from a server/virtual machine/ supercomputer this means that one will often not be able to comfortably hold an entire grid for a study area in memory at once. Having the data accessible as thin strips like this therefore makes life somewhat easier. And as we see in the code chunk below it also (arguably) allows us to perform the most efficient calculations on our data.
+This may initially seem like an unnecessary extra step, but when one is working with time series data it is necessary to have all of the dates at a given pixel loaded at once. Unless one is working from a server/virtual machine/supercomputer this means that one will often not be able to comfortably hold an entire grid for a study area in memory at once. Having the data accessible as thin strips like this therefore makes life somewhat easier. And as we see in the code chunk below it also (arguably) allows us to perform the most efficient calculations on our data.
 
 ```{r detect-both}
 # The 'purrr' wrapper function to pass to 'plyr'
@@ -127,7 +129,7 @@ MHW_result <- plyr::ldply(OISST_files, .fun = purrr_wraper, .parallel = T)
 )
 ```
 
-Not only is this technique computationally faster, because it only loads one of our small slice files at a time it is also much lighter on our memory use. To maximise efficiency even further I would recommend writing out his full work flow in a stand-alone script and then using `source()` directly from an R terminal.
+Not only is this technique computationally faster, because it only loads one of our small slice files at a time it is also much lighter on our memory use. To maximise efficiency even further I would recommend writing out this full work flow in a stand-alone script and then running it using `source()` directly from an R terminal.
 
 ## Trend detection
 
@@ -200,7 +202,7 @@ map_base <- ggplot2::fortify(maps::map(fill = TRUE, plot = FALSE)) %>%
   dplyr::rename(lon = long)
 ```
 
-Then we will create two maps that we will stick together using __`ggpubr`__. The first map will show the slope of the count of events detected per year over time as shades of red, and the second map will show the significance (_p_-value) of these trends.
+Then we will create two maps that we will stick together using __`ggpubr`__. The first map will show the slope of the count of events detected per year over time as shades of red, and the second map will show the significance (_p_-value) of these trends in shades of grey.
 
 ```{r the-figure}
 map_slope <- ggplot(OISST_nTrend, aes(x = lon, y = lat)) +
@@ -242,4 +244,4 @@ map_both <- ggpubr::ggarrange(map_slope, map_p, align = "hv")
 map_both
 ```
 
-From the figure above we may see that the entire study area shows significant (_p_<= 0.05) increases in the count of MHWs per year. This is generally the case for the entire globe. Not shown here is also the significant increase in the intensity of MHWs as well.S
+From the figure above we may see that the entire study area shows significant (_p_<= 0.05) increases in the count of MHWs per year. This is generally the case for the entire globe. Not shown here is also the significant increase in the intensity of MHWs as well.
