@@ -174,7 +174,7 @@ ts2clm <-
     rm(data)
 
     if (!inherits(ts_x[1], "Date"))
-      stop("Please ensure your date values are type 'Date'. This mayy be done with 'as.Date()'.")
+      stop("Please ensure your date values are type 'Date'. This may be done with 'as.Date()'.")
     if (!is.numeric(ts_y[1]))
       stop("Please ensure the temperature values you are providing are type 'num' for numeric.")
 
