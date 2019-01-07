@@ -38,7 +38,7 @@ test_that("all starting error checks flag correctly", {
   sst_WA_dummy1 <- sst_WA %>%
     dplyr::mutate(t = as.POSIXct(t))
   expect_error(ts2clm(sst_WA_dummy1, climatologyPeriod = c("1983-01-01", "2012-12-31")),
-               "Please ensure your date values are type 'Date'. This mayy be done with 'as.Date()")
+               "Please ensure your date values are type 'Date'. This may be done with 'as.Date()")
   sst_WA_dummy2 <- sst_WA %>%
     dplyr::mutate(temp = as.character(temp))
   expect_error(ts2clm(sst_WA_dummy2, climatologyPeriod = c("1983-01-01", "2012-12-31")),
