@@ -133,7 +133,7 @@ exceedance <-
            minDuration = 5,
            joinAcrossGaps = TRUE,
            maxGap = 2,
-           maxPadLength = 3) {
+           maxPadLength = FALSE) {
 
     # message("exceedance() is deprecated and will not be included in the next release of heatwaveR")
     # message("please use detecet_event() directly and set 'threshClim =' whatever your static threshold is")
@@ -147,42 +147,46 @@ exceedance <-
 
     ts_whole <- make_whole_fast(ts_xy)
 
-    t_series <- na_interp(doy = ts_whole$doy,
-                          x = ts_whole$ts_x,
-                          y = ts_whole$ts_y,
-                          maxPadLength = maxPadLength)
+    if (length(stats::na.omit(ts_whole$ts_y)) < length(ts_whole$ts_y) & is.numeric(maxPadLength)){
+      ts_whole <- na_interp(doy = ts_whole$doy,
+                            x = ts_whole$ts_x,
+                            y = ts_whole$ts_y,
+                            maxPadLength = maxPadLength)
+    }
 
     if (missing(threshold))
       stop("Oh no! Please provide a threshold against which to calculate exceedances.")
-
-    if (threshold > max(t_series$ts_y, na.rm = T)) {
+    if (threshold > max(ts_whole$ts_y, na.rm = T)) {
       stop(paste("The given threshold value of ", threshold, " is greater than the maximum temperature of ",
-                 round(max(t_series$ts_y, na.rm = T), 2), " present in this time series.", sep = ""))
+                 round(max(ts_whole$ts_y, na.rm = T), 2), " present in this time series.", sep = ""))
     }
-
-    if (threshold < min(t_series$ts_y, na.rm = T)) {
+    if (threshold < min(ts_whole$ts_y, na.rm = T)) {
       stop(paste("The given threshold value of ", threshold, " is less than the minimum temperature of ",
-                 round(min(t_series$ts_y, na.rm = T), 2), " present in this time series.", sep = ""))
+                 round(min(ts_whole$ts_y, na.rm = T), 2), " present in this time series.", sep = ""))
     }
+    if (maxPadLength != FALSE & !is.numeric(maxPadLength))
+      stop("Please ensure that 'maxPadLength' is either FALSE or a numeric/integer value.")
 
     if (below) {
-      t_series$ts_y <- -t_series$ts_y
+      ts_whole$ts_y <- -ts_whole$ts_y
       threshold <- -threshold
     }
 
-    t_series$thresh <- rep(threshold, nrow(t_series))
-    t_series$threshCriterion <- t_series$ts_y > t_series$thresh
+    ts_whole$thresh <- rep(threshold, nrow(ts_whole))
+    ts_whole$threshCriterion <- ts_whole$ts_y > ts_whole$thresh
 
 
-    if (sum(t_series$threshCriterion) < minDuration & below == FALSE) {
+    if (sum(stats::na.omit(ts_whole$threshCriterion)) < minDuration & below == FALSE) {
       stop(paste0("Not enough consecutive days above ", threshold, " to detect an event."))
     }
-    if (sum(t_series$threshCriterion) < minDuration & below == TRUE) {
+    if (sum(stats::na.omit(ts_whole$threshCriterion)) < minDuration & below == TRUE) {
       stop(paste0("Not enough consecutive days below ", abs(threshold), " to detect an event."))
     }
 
-    exceedances_clim <- proto_event(t_series,
-                                    criterion_column = t_series$threshCriterion,
+    ts_whole$threshCriterion[is.na(ts_whole$threshCriterion)] <- FALSE
+
+    exceedances_clim <- proto_event(ts_whole,
+                                    criterion_column = ts_whole$threshCriterion,
                                     minDuration = minDuration,
                                     joinAcrossGaps = joinAcrossGaps,
                                     maxGap = maxGap) %>%
@@ -215,10 +219,10 @@ exceedance <-
                        intensity_cum_abs = max(cumsum(ts_y)))
 
 
-    exceedance_rel_thresh <- t_series$ts_y - t_series$thresh
+    exceedance_rel_thresh <- ts_whole$ts_y - ts_whole$thresh
     A <- exceedance_rel_thresh[exceedances$index_start]
-    B <- t_series$ts_y[exceedances$index_start - 1]
-    C <- t_series$thresh[exceedances$index_start - 1]
+    B <- ts_whole$ts_y[exceedances$index_start - 1]
+    C <- ts_whole$thresh[exceedances$index_start - 1]
     if (length(B) + 1 == length(A)) {
       B <- c(NA, B)
       C <- c(NA, C)
@@ -233,12 +237,12 @@ exceedance <-
     )
 
     D <- exceedance_rel_thresh[exceedances$index_end]
-    E <- t_series$ts_y[exceedances$index_end + 1]
-    F <- t_series$thresh[exceedances$index_end + 1]
+    E <- ts_whole$ts_y[exceedances$index_end + 1]
+    F <- ts_whole$thresh[exceedances$index_end + 1]
     exceedance_rel_thresh_end <- 0.5 * (D + E - F)
 
     exceedances$rate_decline <- ifelse(
-      exceedances$index_end < nrow(t_series),
+      exceedances$index_end < nrow(ts_whole),
       (exceedances$intensity_max - exceedance_rel_thresh_end) / (as.numeric(
         difftime(exceedances$date_end, exceedances$date_peak, units = "days")) + 0.5),
       NA
@@ -261,7 +265,7 @@ exceedance <-
 
     exceedances <- dplyr::mutate_if(exceedances, is.numeric, round, 4)
 
-    data_thresh <- cbind(data, exceedances_clim[,4:8])
+    data_thresh <- dplyr::right_join(data, exceedances_clim[,c(2,4:8)], by = c("t" = "ts_x"))
 
     list(threshold = tibble::as_tibble(data_thresh),
          exceedance = tibble::as_tibble(exceedances))

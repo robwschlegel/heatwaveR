@@ -141,8 +141,7 @@ ts2clm <-
            smoothPercentile = TRUE,
            smoothPercentileWidth = 31,
            clmOnly = FALSE,
-           var = FALSE
-  ) {
+           var = FALSE) {
 
     if (missing(climatologyPeriod))
       stop("Oops! Please provide a period (two dates) for calculating the climatology.")
@@ -183,7 +182,7 @@ ts2clm <-
 
     ts_whole <- make_whole_fast(ts_xy)
 
-    if (length(stats::na.omit(ts_whole$ts_y)) < length(ts_whole$ts_y & is.numeric(maxPadLength))){
+    if (length(stats::na.omit(ts_whole$ts_y)) < length(ts_whole$ts_y) & is.numeric(maxPadLength)){
       ts_whole <- na_interp(doy = ts_whole$doy,
                             x = ts_whole$ts_x,
                             y = ts_whole$ts_y,

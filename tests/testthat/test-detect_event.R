@@ -27,7 +27,7 @@ test_that("coldSpells = TRUE returns MCS calculations", {
   expect_lt(min(res$event$intensity_max), 0)
 })
 
-test_that("joinAcrosGaps = FALSE returns more events", {
+test_that("joinAcrossGaps = FALSE returns more events", {
   ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   res_join <- detect_event(ts)
   res_misanthrope <- detect_event(ts, joinAcrossGaps = FALSE)

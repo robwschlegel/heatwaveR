@@ -34,9 +34,9 @@
 #' @param start_date The start date of a period of time within which the largest
 #' event (as per \code{metric}) is retrieved and plotted. This may not necessarily
 #' correspond to the biggest event of the specified metric within the entire
-#' data set. To plot the biggest event within the whole time series, make sure
-#' \code{start_date} and \code{end_date} straddle this event, or simply specify
-#' the start and end dates of the full time series given to \code{\link{detect_event}}.
+#' time series. To plot the largest event within the whole time series, make sure
+#' \code{start_date} and \code{end_date} straddle this event, or simply leave them both
+#' as NULL (default) and \code{event_line} will use the entire time series date range.
 #' @param end_date The end date of a period of time within which the largest
 #' event (as per \code{metric}) is retrieved and plotted. See \code{start_date}
 #' for additional information.
@@ -79,22 +79,24 @@ event_line <- function(data,
                        min_duration = 5,
                        spread = 150,
                        metric = "intensity_cumulative",
-                       start_date,
-                       end_date,
+                       start_date = NULL,
+                       end_date = NULL,
                        category = FALSE) {
 
   date_end <- date_start <- duration <-  temp <-  NULL
 
-  if (missing(start_date))
-    stop("Please provide a 'start_date' so the function knows where you would like it to begin looking for events.")
-  if (missing(end_date))
-    stop("Please provide an 'end_date' so the function knows where you would like it to stop looking for events.")
-  if (!(exists("event", data)) | !(exists("climatology", data))) stop("Please ensure you are running this function on the output of 'heatwaveR::detect_event()'")
+  if (!(exists("event", data)) | !(exists("climatology", data)))
+    stop("Please ensure you are running this function on the output of 'heatwaveR::detect_event()'")
 
   ts.x <- eval(substitute(x), data$climatology)
   data$climatology$ts.x <- ts.x
   ts.y <- eval(substitute(y), data$climatology)
   data$climatology$ts.y <- ts.y
+
+  if (is.null(start_date))
+    start_date <- min(data$climatology$ts.x)
+  if (is.null(end_date))
+    end_date <- max(data$climatology$ts.x)
 
   event <- data$event %>%
     dplyr::filter(date_end >= start_date & date_start <= end_date)

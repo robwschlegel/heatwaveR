@@ -5,8 +5,8 @@
 \title{Create a line plot of heatwaves or cold-spells.}
 \usage{
 event_line(data, x = t, y = temp, min_duration = 5, spread = 150,
-  metric = "intensity_cumulative", start_date, end_date,
-  category = FALSE)
+  metric = "intensity_cumulative", start_date = NULL,
+  end_date = NULL, category = FALSE)
 }
 \arguments{
 \item{data}{The function receives the full (list) output from the
@@ -41,9 +41,9 @@ supported so please specify the metric name precisely. The default is
 \item{start_date}{The start date of a period of time within which the largest
 event (as per \code{metric}) is retrieved and plotted. This may not necessarily
 correspond to the biggest event of the specified metric within the entire
-data set. To plot the biggest event within the whole time series, make sure
-\code{start_date} and \code{end_date} straddle this event, or simply specify
-the start and end dates of the full time series given to \code{\link{detect_event}}.}
+time series. To plot the largest event within the whole time series, make sure
+\code{start_date} and \code{end_date} straddle this event, or simply leave them both
+as NULL (default) and \code{event_line} will use the entire time series date range.}
 
 \item{end_date}{The end date of a period of time within which the largest
 event (as per \code{metric}) is retrieved and plotted. See \code{start_date}

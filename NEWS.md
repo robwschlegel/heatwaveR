@@ -1,8 +1,16 @@
-# heatwaveR 0.3.6.9004 (2019-01-03)
+# heatwaveR 0.3.6.9002 (2019-01-15)
+
+* Began editing Alternative (Complex) Climatology vignette
+* Changed the default argument for `exceedance(maxPadLength)` from `3` to `FALSE` 
+  to match the new default for `ts2clm()`
+* Changed the default behaviour of `event_line()` to no longer require the user to 
+  provide `start_date` and `end_date` arguments
+
+# heatwaveR 0.3.6.9001 (2019-01-03)
 
 * Corrected some typos in the gridded event detection vignette
 
-# heatwaveR 0.3.6.9004 (2019-01-02)
+# heatwaveR 0.3.6.9000 (2019-01-02)
 
 * First update of 2019
 * Added 'protoEvents' argument to `detect_events.R()` for returning the proto events rather than 

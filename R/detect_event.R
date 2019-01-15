@@ -211,7 +211,8 @@ detect_event <- function(data,
                          joinAcrossGaps = TRUE,
                          maxGap = 2,
                          maxGap2 = maxGap,
-                         coldSpells = FALSE, protoEvents = FALSE) {
+                         coldSpells = FALSE,
+                         protoEvents = FALSE) {
 
   if(!(is.numeric(minDuration)))
     stop("Please ensure that 'minDuration' is a numeric/integer value.")
@@ -239,6 +240,7 @@ detect_event <- function(data,
 
   t_series$ts_y[is.na(t_series$ts_y)] <- t_series$ts_seas[is.na(t_series$ts_y)]
   t_series$threshCriterion <- t_series$ts_y > t_series$ts_thresh
+  t_series$threshCriterion[is.na(t_series$threshCriterion)] <- FALSE
 
   events_clim <- proto_event(t_series,
                              criterion_column = t_series$threshCriterion,

@@ -24,7 +24,8 @@ Suggests:
     rmarkdown,
     covr,
     rerddap,
-    ncdf4
+    ncdf4,
+    weathercan
 Imports:
     tibble,
     lubridate,
