@@ -7,7 +7,7 @@ output:
   rmarkdown::html_vignette:
     fig_caption: yes
 vignette: >
-  %\VignetteIndexEntry{Extreme event detection in gridded data}
+  %\VignetteIndexEntry{Detecting Events in Gridded Data}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---

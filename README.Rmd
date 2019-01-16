@@ -134,7 +134,7 @@ For detailed explanations and walkthroughs on the use of the __`heatwaveR`__ pac
   * For a basic introduction to the [detection and visualisation](https://robwschlegel.github.io/heatwaveR/articles/detection_and_visualisation.html) of events.
   * For an explanation on the use of the [exceedance](https://robwschlegel.github.io/heatwaveR/articles/exceedance.html) function.
   * For a walkthrough on the calculation and visualisation of [event categories](https://robwschlegel.github.io/heatwaveR/articles/event_categories.html).
-  * For examples on the calculation of atmospheric events with [complex climatologies](https://robwschlegel.github.io/heatwaveR/articles/complex_clims.html).
+  * For examples on the calculation of atmospheric events with [alternative thresholds](https://robwschlegel.github.io/heatwaveR/articles/complex_clims.html).
   * For a demonstration on how to [download and prepare OISST data](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html).
   * Which may then have the `detect_event()` function applied to the [gridded data](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html), and then fit a GLM and plot the results.
 
