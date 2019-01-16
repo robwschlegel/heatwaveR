@@ -78,12 +78,9 @@ test_that("climatologyPeriod less than three years is rejected", {
 })
 
 test_that("mssing data causes na_interp() to be used if a value is provided for maxPadLength", {
-  sst_WA_NA <- sst_WA
-  sst_WA_NA$temp[c(1, 400, 1000)] <- NA
-  ts_1 <- ts2clm(sst_WA_NA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-  ts_2 <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), maxPadLength = 2)
-  expect_condition(ts_1$temp[c(1,400,1000)], regexp = NA)
-  expect_is(ts_2$temp[c(1,400,1000)], "numeric")
+  sst_Med_NA <- sst_Med[c(1:20,22:12000),]
+  res <- ts2clm(data = sst_Med_NA, climatologyPeriod = c("1983-01-01", "2012-12-31"), maxPadLength = 2)
+  expect_equal(round(res$temp[21], 2), 13.57)
 })
 
 test_that("contiguous mssing data causes clim_calc() to be used", {
