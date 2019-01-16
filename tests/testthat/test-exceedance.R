@@ -60,9 +60,12 @@ test_that("decimal places are rounded to the fourth place", {
   expect_equal(nchar(strsplit(as.character(res$exceedance$intensity_var[1]), "\\.")[[1]][2]), 4)
 })
 
-test_that("maxPadLength argument must be given correctly", {
+test_that("maxPadLength argument works correctly throughout", {
   expect_error(exceedance(data = sst_Med, threshold = 20, maxPadLength = "2"),
                "Please ensure that 'maxPadLength' is either FALSE or a numeric/integer value.")
   expect_error(exceedance(data = sst_Med, threshold = 20, maxPadLength = TRUE),
                "Please ensure that 'maxPadLength' is either FALSE or a numeric/integer value.")
+  sst_Med_NA <- sst_Med[c(1:20,22:1200),]
+  res <- exceedance(data = sst_Med_NA, threshold = 20, maxPadLength = 2)
+  expect_equal(round(res$threshold$temp[21], 2), 13.57)
 })

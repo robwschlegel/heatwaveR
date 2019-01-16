@@ -1,4 +1,13 @@
-# heatwaveR 0.3.6.9002 (2019-01-15)
+# heatwaveR 0.3.6 (2019-01-16)
+
+* Finished Alternative Thresholds (Complex Climatologies) vignette
+* Bumbed code coverage back up to 100%
+* AN important potential backwards compatibility breaking change is that by default
+  `ts2clm()` and `exceedance()` will no longer produce a `var` column
+    * The argument `var = TRUE` may be given to produce this column
+* Submitted v0.3.6 to CRAN
+
+# heatwaveR 0.3.5.9006 (2019-01-15)
 
 * Began editing Alternative (Complex) Climatology vignette
 * Changed the default argument for `exceedance(maxPadLength)` from `3` to `FALSE` 
@@ -6,11 +15,11 @@
 * Changed the default behaviour of `event_line()` to no longer require the user to 
   provide `start_date` and `end_date` arguments
 
-# heatwaveR 0.3.6.9001 (2019-01-03)
+# heatwaveR 0.3.5.9005 (2019-01-03)
 
 * Corrected some typos in the gridded event detection vignette
 
-# heatwaveR 0.3.6.9000 (2019-01-02)
+# heatwaveR 0.3.5.9004 (2019-01-02)
 
 * First update of 2019
 * Added 'protoEvents' argument to `detect_events.R()` for returning the proto events rather than 

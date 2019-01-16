@@ -138,7 +138,7 @@ exceedance <-
     # message("exceedance() is deprecated and will not be included in the next release of heatwaveR")
     # message("please use detecet_event() directly and set 'threshClim =' whatever your static threshold is")
 
-    temp <- threshCriterion <- durationCriterion <- event <- event_no <- NULL
+    temp <- threshCriterion <- durationCriterion <- event <- event_no <- doy <- NULL
 
     ts_x <- eval(substitute(x), data)
     ts_y <- eval(substitute(y), data)
@@ -191,7 +191,8 @@ exceedance <-
                                     joinAcrossGaps = joinAcrossGaps,
                                     maxGap = maxGap) %>%
       dplyr::rename(exceedance = event,
-                    exceedance_no = event_no)
+                    exceedance_no = event_no) %>%
+      dplyr::select(-doy)
 
     thresh <- intensity_mean <- intensity_max <- intensity_cumulative <-
       exceedance_rel_thresh <- intensity_mean_abs <- intensity_max_abs <-
@@ -264,9 +265,9 @@ exceedance <-
     }
 
     exceedances <- dplyr::mutate_if(exceedances, is.numeric, round, 4)
+    names(exceedances_clim)[1] <- paste(substitute(x))
+    names(exceedances_clim)[2] <- paste(substitute(y))
 
-    data_thresh <- dplyr::right_join(data, exceedances_clim[,c(2,4:8)], by = c("t" = "ts_x"))
-
-    list(threshold = tibble::as_tibble(data_thresh),
+    list(threshold = tibble::as_tibble(exceedances_clim),
          exceedance = tibble::as_tibble(exceedances))
   }

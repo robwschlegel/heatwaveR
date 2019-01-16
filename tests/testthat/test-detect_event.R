@@ -81,3 +81,8 @@ test_that("decimal places are rounded to the fourth place", {
   expect_equal(nchar(strsplit(as.character(res$climatology$thresh[1]), "\\.")[[1]][2]), 4)
   expect_equal(nchar(strsplit(as.character(res$event$intensity_max[1]), "\\.")[[1]][2]), 4)
 })
+
+test_that("protoEvents argument functions correctly", {
+  res <- detect_event(ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31")), protoEvents = T)
+  expect_is(res, "data.frame")
+})

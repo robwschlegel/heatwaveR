@@ -82,7 +82,7 @@ accordance with the naming scheme proposed in Hobday et al. (2018)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
       </span>
     </div>
 
@@ -120,7 +120,7 @@ accordance with the naming scheme proposed in Hobday et al. (2018)." />
       <a href="../articles/gridded_event_detection.html">Detecting Events in Gridded Data</a>
     </li>
     <li>
-      <a href="../articles/complex_clims.html">Complex Climatologies</a>
+      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
     </li>
   </ul>
 </li>
@@ -327,7 +327,7 @@ Marine Heatwaves. Oceanography 31(2).</p>
 <span class='co'># with gridded data.</span>
 <span class='co'># Should one want a complete time series, the daily category results</span>
 <span class='co'># may simply be left_join() with the detect_event() results</span>
-<span class='no'>cat_WA_ts</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/join.html'>left_join</a></span>(<span class='no'>res_WA</span>$<span class='no'>climatology</span>,
+<span class='no'>cat_WA_ts</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/join.html'>left_join</a></span>(<span class='no'>res_WA</span>$<span class='no'>climatology</span>,
                               <span class='no'>cat_WA_daily</span>$<span class='no'>climatology</span>)</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("t", "event_no")</span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/head'>head</a></span>(<span class='no'>cat_WA_ts</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 6 x 11</span><span>
 #&gt;     doy t           temp  seas thresh threshCriterion durationCriteri… event
 #&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>

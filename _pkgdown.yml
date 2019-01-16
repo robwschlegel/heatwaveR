@@ -20,7 +20,7 @@ navbar:
       href: articles/OISST_preparation.html
     - text: "Detecting Events in Gridded Data"
       href: articles/gridded_event_detection.html
-    - text: "Complex Climatologies"
+    - text: "Alternative Thresholds"
       href: articles/complex_clims.html
   - text: News
     href: news/index.html

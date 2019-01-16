@@ -82,7 +82,7 @@ Hobday et al. (2016)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
       </span>
     </div>
 
@@ -120,7 +120,7 @@ Hobday et al. (2016)." />
       <a href="../articles/gridded_event_detection.html">Detecting Events in Gridded Data</a>
     </li>
     <li>
-      <a href="../articles/complex_clims.html">Complex Climatologies</a>
+      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
     </li>
   </ul>
 </li>
@@ -168,8 +168,8 @@ Hobday et al. (2016).</p>
     </div>
 
     <pre class="usage"><span class='fu'>event_line</span>(<span class='no'>data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='kw'>min_duration</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>spread</span> <span class='kw'>=</span> <span class='fl'>150</span>,
-  <span class='kw'>metric</span> <span class='kw'>=</span> <span class='st'>"intensity_cumulative"</span>, <span class='no'>start_date</span>, <span class='no'>end_date</span>,
-  <span class='kw'>category</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>metric</span> <span class='kw'>=</span> <span class='st'>"intensity_cumulative"</span>, <span class='kw'>start_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>end_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>category</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -220,9 +220,9 @@ supported so please specify the metric name precisely. The default is
       <td><p>The start date of a period of time within which the largest
 event (as per <code>metric</code>) is retrieved and plotted. This may not necessarily
 correspond to the biggest event of the specified metric within the entire
-data set. To plot the biggest event within the whole time series, make sure
-<code>start_date</code> and <code>end_date</code> straddle this event, or simply specify
-the start and end dates of the full time series given to <code><a href='detect_event.html'>detect_event</a></code>.</p></td>
+time series. To plot the largest event within the whole time series, make sure
+<code>start_date</code> and <code>end_date</code> straddle this event, or simply leave them both
+as NULL (default) and <code>event_line</code> will use the entire time series date range.</p></td>
     </tr>
     <tr>
       <th>end_date</th>

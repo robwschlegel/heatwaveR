@@ -1,5 +1,5 @@
 Package: heatwaveR
-Version: 0.3.6.9004
+Version: 0.3.6
 Date: 2019-01-03
 Title: Detect Heatwaves and Cold-Spells
 Description: The different methods of defining and detecting extreme events, known as heatwaves or cold-spells in both air and water temperature data are encompassed within this package. These detection algorithms may be used on non-temperature data as well however, this is not catered for explicitly here as no use of this technique in the literature currently exists.
