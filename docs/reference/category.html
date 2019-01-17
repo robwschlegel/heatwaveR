@@ -293,7 +293,7 @@ Marine Heatwaves. Oceanography 31(2).</p>
 #&gt; </span><span style='color: #BCBCBC;'>4</span><span>       22 WA 1999    1999-05-22 II Stro…  3.6        95         59       41
 #&gt; </span><span style='color: #BCBCBC;'>5</span><span>       58 WA 2014    2014-08-31 II Stro…  2.2        12         58       42
 #&gt; </span><span style='color: #BCBCBC;'>6</span><span>       42 WA 2011    2011-02-28 IV Extr…  6.51       60         47       32
-#&gt; </span><span style='color: #949494;'># ... with 3 more variables: p_severe </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, p_extreme </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, season </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'>
+#&gt; </span><span style='color: #949494;'># … with 3 more variables: p_severe </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, p_extreme </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, season </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'>
 <span class='co'># If the data were collected in the northern hemisphere</span>
 <span class='co'># we must let the funciton know this, as seen below</span>
 <span class='no'>res_Med</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='detect_event.html'>detect_event</a></span>(<span class='fu'><a href='ts2clm.html'>ts2clm</a></span>(<span class='no'>sst_Med</span>,
@@ -308,7 +308,7 @@ Marine Heatwaves. Oceanography 31(2).</p>
 #&gt; </span><span style='color: #BCBCBC;'>4</span><span>       62 Med 2012   2012-08-20 II Stro…  4.22       18         56       44
 #&gt; </span><span style='color: #BCBCBC;'>5</span><span>       44 Med 2007   2007-04-25 III Sev…  4.02       19         42       53
 #&gt; </span><span style='color: #BCBCBC;'>6</span><span>       70 Med 2014   2014-10-18 II Stro…  3.31      110         35       65
-#&gt; </span><span style='color: #949494;'># ... with 3 more variables: p_severe </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, p_extreme </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, season </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'>
+#&gt; </span><span style='color: #949494;'># … with 3 more variables: p_severe </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, p_extreme </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, season </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'>
 <span class='co'># One may also choose to have this function output the daily</span>
 <span class='co'># category classifications as well by setting: climatology = TRUE</span>
 <span class='no'>cat_WA_daily</span> <span class='kw'>&lt;-</span> <span class='fu'>category</span>(<span class='no'>res_WA</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"WA"</span>, <span class='kw'>climatology</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
@@ -337,7 +337,7 @@ Marine Heatwaves. Oceanography 31(2).</p>
 #&gt; </span><span style='color: #BCBCBC;'>4</span><span>     4 1982-01-04  21.2  21.7   23.1 FALSE           FALSE            FALSE
 #&gt; </span><span style='color: #BCBCBC;'>5</span><span>     5 1982-01-05  21.3  21.7   23.1 FALSE           FALSE            FALSE
 #&gt; </span><span style='color: #BCBCBC;'>6</span><span>     6 1982-01-06  21.6  21.7   23.1 FALSE           FALSE            FALSE
-#&gt; </span><span style='color: #949494;'># ... with 3 more variables: event_no </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, intensity </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, category </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'>
+#&gt; </span><span style='color: #949494;'># … with 3 more variables: event_no </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, intensity </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, category </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

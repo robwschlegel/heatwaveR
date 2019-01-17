@@ -114,7 +114,7 @@
       <h1>Alternative Thresholds</h1>
                         <h4 class="author">Robert W Schlegel</h4>
             
-            <h4 class="date">2019-01-16</h4>
+            <h4 class="date">2019-01-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/complex_clims.Rmd"><code>vignettes/complex_clims.Rmd</code></a></small>
       <div class="hidden name"><code>complex_clims.Rmd</code></div>
@@ -212,9 +212,9 @@
 <a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co"># Second threshold based on tMax</span></a>
 <a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co"># Be careful here that you put the arguments within the correct brackets</span></a>
 <a class="sourceLine" id="cb6-10" data-line-number="10">thresh_tMax &lt;-<span class="st"> </span><span class="kw"><a href="../reference/detect_event.html">detect_event</a></span>(<span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(<span class="dt">data =</span> halifax, <span class="dt">y =</span> tMax, <span class="dt">pctile =</span> <span class="dv">90</span>, </a>
-<a class="sourceLine" id="cb6-11" data-line-number="11">                                <span class="dt">climatologyPeriod =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"1981-01-01"</span>, <span class="st">"2010-12-31"</span>)),</a>
+<a class="sourceLine" id="cb6-11" data-line-number="11">                                   <span class="dt">climatologyPeriod =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"1981-01-01"</span>, <span class="st">"2010-12-31"</span>)),</a>
 <a class="sourceLine" id="cb6-12" data-line-number="12">                         <span class="co"># These arguments are passed to detect_event()</span></a>
-<a class="sourceLine" id="cb6-13" data-line-number="13">                                <span class="dt">minDuration =</span> <span class="dv">3</span>, <span class="dt">maxGap =</span> <span class="dv">0</span>, <span class="dt">y =</span> tMax)<span class="op">$</span>climatology</a>
+<a class="sourceLine" id="cb6-13" data-line-number="13">                                <span class="dt">minDuration =</span> <span class="dv">3</span>, <span class="dt">maxGap =</span> <span class="dv">0</span>, <span class="dt">y =</span> tMax, <span class="dt">protoEvents =</span> T)</a>
 <a class="sourceLine" id="cb6-14" data-line-number="14"></a>
 <a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co"># Detect/calculate events using the two precalculated thresholds</span></a>
 <a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co"># Because detect_event() is not able to deduce which arguments we used above,</span></a>
@@ -238,7 +238,7 @@
 ## 4        4        8334       8341      8344       11 1983-04-25 1983-05-02
 ## 5        5       10538      10544     10547       10 1989-05-07 1989-05-13
 ## 6        6       12437      12441     12454       18 1994-07-19 1994-07-23
-## # ... with 15 more variables: date_end &lt;date&gt;, intensity_mean &lt;dbl&gt;,
+## # … with 15 more variables: date_end &lt;date&gt;, intensity_mean &lt;dbl&gt;,
 ## #   intensity_max &lt;dbl&gt;, intensity_var &lt;dbl&gt;, intensity_cumulative &lt;dbl&gt;,
 ## #   intensity_mean_relThresh &lt;dbl&gt;, intensity_max_relThresh &lt;dbl&gt;,
 ## #   intensity_var_relThresh &lt;dbl&gt;, intensity_cumulative_relThresh &lt;dbl&gt;,
@@ -255,7 +255,7 @@
 ## 4        4       12617      12618     12619        3 1995-01-15 1995-01-16
 ## 5        5       17943      17950     17950        8 2009-08-15 2009-08-22
 ## 6        6       18172      18176     18177        6 2010-04-01 2010-04-05
-## # ... with 15 more variables: date_end &lt;date&gt;, intensity_mean &lt;dbl&gt;,
+## # … with 15 more variables: date_end &lt;date&gt;, intensity_mean &lt;dbl&gt;,
 ## #   intensity_max &lt;dbl&gt;, intensity_var &lt;dbl&gt;, intensity_cumulative &lt;dbl&gt;,
 ## #   intensity_mean_relThresh &lt;dbl&gt;, intensity_max_relThresh &lt;dbl&gt;,
 ## #   intensity_var_relThresh &lt;dbl&gt;, intensity_cumulative_relThresh &lt;dbl&gt;,
@@ -304,7 +304,7 @@
 ## 4        6       12437      12441     12454       18 1994-07-19 1994-07-23
 ## 5        7       12615      12618     12626       12 1995-01-13 1995-01-16
 ## 6        8       13818      13824     13827       10 1998-04-30 1998-05-06
-## # ... with 15 more variables: date_end &lt;date&gt;, intensity_mean &lt;dbl&gt;,
+## # … with 15 more variables: date_end &lt;date&gt;, intensity_mean &lt;dbl&gt;,
 ## #   intensity_max &lt;dbl&gt;, intensity_var &lt;dbl&gt;, intensity_cumulative &lt;dbl&gt;,
 ## #   intensity_mean_relThresh &lt;dbl&gt;, intensity_max_relThresh &lt;dbl&gt;,
 ## #   intensity_var_relThresh &lt;dbl&gt;, intensity_cumulative_relThresh &lt;dbl&gt;,
@@ -321,7 +321,7 @@
 ## 4        4       12617      12618     12619        3 1995-01-15 1995-01-16
 ## 5        5       17943      17950     17950        8 2009-08-15 2009-08-22
 ## 6        6       18172      18176     18177        6 2010-04-01 2010-04-05
-## # ... with 15 more variables: date_end &lt;date&gt;, intensity_mean &lt;dbl&gt;,
+## # … with 15 more variables: date_end &lt;date&gt;, intensity_mean &lt;dbl&gt;,
 ## #   intensity_max &lt;dbl&gt;, intensity_var &lt;dbl&gt;, intensity_cumulative &lt;dbl&gt;,
 ## #   intensity_mean_relThresh &lt;dbl&gt;, intensity_max_relThresh &lt;dbl&gt;,
 ## #   intensity_var_relThresh &lt;dbl&gt;, intensity_cumulative_relThresh &lt;dbl&gt;,
@@ -356,8 +356,7 @@ Difference in cumulative intensity (°C x days) of events given different applic
 <div id="summary" class="section level2">
 <h2 class="hasAnchor">
 <a href="#summary" class="anchor"></a>Summary</h2>
-<p>To be quite honest, I didn’t think it was going to work out to just use SST data in place of atmospheric temperature and just create <code>tMin</code> and <code>tMax</code> time series through static subtraction and addition of values. Marine temperatures exhibit much more temporal auto-correlation than atmospheric data, which is why the default minimum length for marine heatwaves is 5 days, and 3 for atmospheric heatwaves. This allows marine events to be detected with the atmospheric definition, but it tends not to work the other way around. That being said, I think that the results of this vignette are clear enough to serve as a guideline for how to implement this methodology with proper atmospheric <code>tMin</code> and <code>tMax</code> data. Indeed, I have run real atmospheric data through this methodology myself and so do know that it works.</p>
-<p>We also showed in this vignette a more straight forward approach to using a second threshold through the built-in arguments in <code><a href="../reference/detect_event.html">detect_event()</a></code>. The use of a second threshold in this way, whether it be based on a static threshold or one derived from a percentile, is useful for the consideration of events that may be more specifically relevant to an organism in question.</p>
+<p>This vignette serves as a guideline for how to implement multiple methodologies for using two thresholds (<code>tMin</code> and <code>tMax</code>) with atmospheric. We also showed in this vignette a more straight forward approach to using a second threshold through the built-in arguments in <code><a href="../reference/detect_event.html">detect_event()</a></code>. The use of a second threshold in this way, whether it be based on a static threshold or one derived from a percentile, is useful for the consideration of events that may be more specifically relevant to a given organism.</p>
 <p>I hope the techniques shown in this vignette will be useful both technically and theoretically. The authors of <strong><code>heatwaveR</code></strong> are very happy to receive any further input on the development of the package as well as other potential methods for calculating heatwaves and cold-spells.</p>
 </div>
 <div id="references" class="section level2 unnumbered">
