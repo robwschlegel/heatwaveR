@@ -1,5 +1,9 @@
 # heatwaveR 0.3.6 (2019-01-16)
 
+* Updated Zenodo badge to reflect the upload of v0.3.6
+
+# heatwaveR 0.3.6 (2019-01-16)
+
 * Finished Alternative Thresholds (Complex Climatologies) vignette
 * Bumbed code coverage back up to 100%
 * AN important potential backwards compatibility breaking change is that by default
