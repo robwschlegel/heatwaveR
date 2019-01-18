@@ -39,9 +39,9 @@ definition of Hobday et al. (2016) as well as calculating and visualising marine
 cold-spells (MCSs) as first introduced in Schlegel et al. (2017a). It also contains the 
 functionality to calculate the categories of MHWs as outlined in Hobday et al. (2018).
 
-This package does what __`RmarineHeatWaves`__ does, but faster. The entire package has been
-deconstructed and modularised, and slow portions of the code have been implemented in C++. 
-This has alleviated the bottlenecks that slowed down the climatology creation 
+This package does what **`RmarineHeatWaves`** does, but faster. The entire package has
+been deconstructed and modularised, and we are continuing to implement slow portions of the
+code in C++. This has alleviated the bottlenecks that slowed down the climatology creation 
 portions of the code as well as generally creating an overall increase in the speed of the 
 calculations. Currently the R code runs about as fast as the original
 python functions, at least in as far as applying it to single time series of temperatures.
@@ -146,7 +146,7 @@ Please use this [link](https://github.com/robwschlegel/heatwaveR/issues) to repo
 
 ## References
 
-Hobday, A.J. et al. (2016). A hierarchical approach to defining marine heatwaves, Progress in Oceanography, 141, pp. 227-238.
+Hobday, A.J. et al. (2016). A hierarchical approach to defining marine heatwaves. Progress in Oceanography, 141, pp. 227-238.
 
 Schlegel, R. W., Oliver, E. C. J., Wernberg, T. W., Smit, A. J. (2017a). Nearshore and offshore co-occurrences of marine heatwaves and cold-spells. Progress in Oceanography, 151, pp. 189-205.
 
