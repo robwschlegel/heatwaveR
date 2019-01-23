@@ -73,43 +73,18 @@ geom2trace.GeomFlame <- function (data,
   ids <- cumsum(missing_pos) + 1
   ids[missing_pos] <- NA
 
+  # Get the correct positions
   positions <- data.frame(x = c(data3$x, rev(data3$x)),
                           y = c(data3$y, rev(data3$y2)),
                           ids = c(ids, rev(ids)))
 
+  # Convert to a format geom2trace is happy with
   positions <- plotly::group2NA(positions, groupNames = "ids")
   positions <- positions[stats::complete.cases(positions$ids),]
   positions <- dplyr::left_join(positions, data[,-c(2,3)], by = "x")
-  # positions$PANEL <- 1
-  # positions$group <- -1
   positions$PANEL <- positions$PANEL[stats::complete.cases(positions$PANEL)][1]
   positions$group <- positions$group[stats::complete.cases(positions$group)][1]
+
+  # Run the plotly polygon code
   getFromNamespace("geom2trace.GeomPolygon", asNamespace("plotly"))(positions)
-
-
-  # L <- list(x = positions$x, y = positions$y, text = plotly:::uniq(data[["hovertext"]]),
-  #           key = data[["key"]], customdata = data[["customdata"]],
-  #           frame = data[["frame"]], ids = positions$ids, type = "scatter",
-  #           mode = "lines", line = list(width = plotly:::aes2plotly(data, params, "size"),
-  #                                       color = plotly::toRGB(plotly:::aes2plotly(data, params, "colour"),
-  #                                                     plotly:::aes2plotly(data, params, "alpha")),
-  #                                       dash = plotly:::aes2plotly(data, params, "linetype")),
-  #           fill = "toself", fillcolor = plotly::toRGB(plotly:::aes2plotly(data, params, "fill"),
-  #                                              plotly:::aes2plotly(data, params, "alpha")),
-  #           hoveron = plotly:::hover_on(data))
-  # plotly:::compact(L)
-
-
-
-  # data$data <- as.list(positions)
-  # positions <- as.list(positions)
-  # positions$hovertext <- data[["hovertext"]]
-  # positions$key <- data[["key"]]
-  # positions$custom <- data[["frame"]]
-  # positions$frame <- data[["frame"]]
-  # data[["x"]] <- positions$x
-  # data[["y"]] <- positions$y
-  # data[["ids"]] <- positions$ids
-  # data$hovertext <- paste0(data$hovertext, "<br>Frequency: ", data[[".wt"]])
-  # data$key <- strsplit(data$label, "\\n")
 }
