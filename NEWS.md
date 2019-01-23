@@ -1,3 +1,8 @@
+# heatwaveR 0.3.6.9000 (2019-01-23)
+
+* Added S3 object `geom2trace.GeomFlame` that now allows `geom_flame()` to be
+  converted to an interactive plotly object via `plotly::ggplotly()`
+
 # heatwaveR 0.3.6 (2019-01-16)
 
 * Updated Zenodo badge to reflect the upload of v0.3.6

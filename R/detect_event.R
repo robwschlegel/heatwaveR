@@ -289,15 +289,15 @@ detect_event <- function(data,
                      intensity_mean = mean(mhw_rel_seas),
                      intensity_max = max(mhw_rel_seas),
                      intensity_var = sqrt(stats::var(mhw_rel_seas)),
-                     intensity_cumulative = max(cumsum(mhw_rel_seas)),
+                     intensity_cumulative = sum(mhw_rel_seas),
                      intensity_mean_relThresh = mean(mhw_rel_thresh),
                      intensity_max_relThresh = max(mhw_rel_thresh),
                      intensity_var_relThresh = sqrt(stats::var(mhw_rel_thresh)),
-                     intensity_cumulative_relThresh = max(cumsum(mhw_rel_thresh)),
+                     intensity_cumulative_relThresh = sum(mhw_rel_thresh),
                      intensity_mean_abs = mean(ts_y),
                      intensity_max_abs = max(ts_y),
                      intensity_var_abs = sqrt(stats::var(ts_y)),
-                     intensity_cumulative_abs = max(cumsum(ts_y)))
+                     intensity_cumulative_abs = sum(ts_y))
 
   mhw_rel_seas <- t_series$ts_y - t_series$ts_seas
   A <- mhw_rel_seas[events$index_start]

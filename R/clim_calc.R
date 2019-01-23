@@ -51,8 +51,5 @@ clim_calc <- function(data, windowHalfWidth, pctile) {
   clim <- matrix(c(doy, seas, thresh, var), ncol = 4, byrow = FALSE,
                  dimnames = list(NULL, c("doy", "seas", "thresh", "var")))
 
-  # clim <- matrix(c(doy, seas, thresh), ncol = 3, byrow = FALSE,
-  #                dimnames = list(NULL, c("doy", "seas", "thresh")))
-
   return(clim)
 }

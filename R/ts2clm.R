@@ -205,8 +205,6 @@ ts2clm <-
     if (nrow(stats::na.omit(ts_wide)) < nrow(ts_wide) | var) {
       ts_mat <- clim_calc(ts_wide, windowHalfWidth, pctile)
       ts_mat[is.nan(ts_mat)] <- NA
-      # } else if (var) {
-      #   ts_mat <- clim_calc(ts_wide, windowHalfWidth, pctile)
     } else {
       ts_mat <- clim_calc_cpp(ts_wide, windowHalfWidth, pctile)
     }

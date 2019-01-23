@@ -141,7 +141,7 @@ GeomFlame <- ggplot2::ggproto("GeomFlame", ggplot2::Geom,
                                 x.points <- intersect.points + ((x2[intersect.points] - x1[intersect.points]) / (x1.slopes - x2.slopes))
                                 y.points <- x1[intersect.points] + (x1.slopes * (x.points - intersect.points))
 
-                                # Coerece x.points to the same scale as x
+                                # Coerce x.points to the same scale as x
                                 x_gap <- data$x[2] - data$x[1]
                                 x.points <- data$x[intersect.points] + (x_gap*(x.points - intersect.points))
 
