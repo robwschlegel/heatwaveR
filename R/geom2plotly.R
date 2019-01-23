@@ -1,14 +1,32 @@
 #' @name plotly_helpers
 #' @title Plotly helpers
 #' @description This S3 method for GeomFlame allows it to be implemented with plotly::ggplotly()
+#'
 #' @importFrom utils getFromNamespace
 #' @importFrom plotly geom2trace
+#'
 #' @param data This is a data.frame of information passed to this function
 #' from plotly:::layers2traces
 #' @param params This is a packet of specific information also passed to this
 #' functions from plotly:::layers2traces
 #' @param p This is the base plot created by calling ggplot, but is still passed
 #' to this functions from plotly:::layers2traces
+#'
+#' @examples
+#' ts_res <- ts2clm(data = sst_WA, climatologyPeriod = c("1982-01-01", "2011-12-31"))
+#' ts_res_sub <- ts_res[10500:10800,]
+#'
+#' library(ggplot2)
+#' library(plotly)
+#'
+#' p <- ggplot(data = ts_res_sub, aes(x = t, y = temp)) +
+#'   geom_flame(aes(y2 = thresh), fill = "salmon") +
+#'   geom_line(aes(y = temp)) +
+#'   geom_line(aes(y = seas), colour = "green") +
+#'   geom_line(aes(y = thresh), colour = "red") +
+#'   labs(x = "", y = "Temperature (°C)")
+#'  plotly::ggplotly(p)
+#'
 #' @export
 geom2trace.GeomFlame <- function (data,
                                   params,
