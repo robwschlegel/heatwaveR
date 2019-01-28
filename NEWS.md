@@ -1,3 +1,8 @@
+# heatwaveR 0.3.6.9001 (2019-01-28)
+
+* Added some additional options to `event_line()` to allow users to maniuplate the output
+  more without having to get into the source code.
+
 # heatwaveR 0.3.6.9000 (2019-01-23)
 
 * Added S3 object `geom2trace.GeomFlame` that now allows `geom_flame()` to be

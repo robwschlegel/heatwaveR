@@ -5,7 +5,7 @@
 #'
 #' @importFrom ggplot2 ggplot aes geom_polygon geom_line scale_colour_manual
 #' scale_fill_manual scale_x_date xlab ylab theme theme_grey element_text
-#' element_blank element_rect element_line guides guide_legend
+#' element_blank element_rect element_line guides guide_legend coord_cartesian
 #' @importFrom grid unit
 #'
 #' @param data The function receives the full (list) output from the
@@ -45,6 +45,13 @@
 #' figure showing the different categories of the MHWs in the chosen period, highlighted as
 #' seen in Figure 3 of Hobday et al. (in review), will be produced. If \code{category} = TRUE,
 #' \code{metric} will be ignored as a different colouring scheme is used.
+#' @param x_axis_title If one would like to add a title for the x-axis it may be provided here.
+#' @param x_axis_text_angle If one would like to change the angle of the x-axis text, provide
+#' the angle here as a single numeric value.
+#' @param y_axis_title Provide text here if one would like a title for the y-axis other
+#' than "Temperature °C" (default)
+#' @param y_axis_range If one would like to control the y-axis range, provide the desired limits
+#' here as two numeric values (e.g. c(20, 30)).
 #'
 #' @return The function will return a line plot indicating the climatology,
 #' threshold and temperature, with the hot or cold events that meet the
@@ -81,7 +88,11 @@ event_line <- function(data,
                        metric = "intensity_cumulative",
                        start_date = NULL,
                        end_date = NULL,
-                       category = FALSE) {
+                       category = FALSE,
+                       x_axis_title = NULL,
+                       x_axis_text_angle = NULL,
+                       y_axis_title = NULL,
+                       y_axis_range = NULL) {
 
   date_end <- date_start <- duration <-  temp <-  NULL
 
@@ -160,18 +171,38 @@ event_line <- function(data,
     clim_top$y2 <- clim_top$ts.y
   }
 
-  ylabel <- expression(paste("Temperature [", degree, "C]"))
+  if(!is.null(y_axis_title)){
+    if(!is.character(y_axis_title)) stop("Please ensure that the argument provided to 'y_axis_title' is a character string.")
+    ylabel <- y_axis_title
+  } else {
+    ylabel <- expression(paste("Temperature [", degree, "C]"))
+  }
+
+  if(!is.null(x_axis_title)){
+    if(!is.character(x_axis_title)) stop("Please ensure that the argument provided to 'x_axis_title' is a character string.")
+    xlabel <- x_axis_title
+  } else {
+    xlabel <- NULL
+  }
+
+  if(!is.null(x_axis_text_angle)){
+    if(!is.numeric(x_axis_text_angle)) stop("Please ensure that the argument provided to 'x_axis_text_angle' is a number.")
+    xtangle <- x_axis_text_angle
+  } else {
+    xtangle <- 0
+  }
 
   ep <- ggplot(data = clim_spread, aes(x = ts.x, y = ts.y)) +
-    scale_x_date(expand = c(0, 0), date_labels = "%b %Y", name = NULL) +
-    ylab(ylabel) +
+    scale_x_date(expand = c(0, 0), date_labels = "%b %Y") +
+    labs(x = xlabel, y = ylabel) +
     theme(plot.background = element_blank(),
           panel.background = element_rect(fill = "white"),
           panel.border = element_rect(colour = "black", fill = NA, size = 0.75),
           panel.grid.minor = element_line(colour = NA),
           panel.grid.major = element_line(colour = "black", size = 0.2, linetype = "dotted"),
           axis.text = element_text(colour = "black"),
-          axis.text.x = element_text(margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
+          axis.text.x = element_text(margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"),
+                                     angle = xtangle),
           axis.text.y = element_text(margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
           axis.ticks.length = unit(-0.25, "cm"),
           legend.background = element_rect(colour = "black"),
@@ -251,6 +282,13 @@ event_line <- function(data,
       scale_colour_manual(name = NULL, values = lineCol,
                           breaks = c("Temperature", "Climatology", "Threshold")) +
       scale_fill_manual(name = NULL, values = fillCol, guide = FALSE)
+
+    if(!is.null(y_axis_range)){
+      if(length(y_axis_range)!=2) stop("Please ensure that exactly two numbers are provided to 'y_axis_range' (e.g. c(10, 20)).")
+      if(!is.numeric(y_axis_range[1]) | !is.numeric(y_axis_range[2]))
+        stop("Please ensure that only numeric values are provided to 'y_axis_range'.")
+      ep <- ep + coord_cartesian(ylim = c(y_axis_range[1], y_axis_range[2]))
+    }
     ep
   }
 }

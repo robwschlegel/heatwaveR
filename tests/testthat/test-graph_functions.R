@@ -68,6 +68,32 @@ test_that("event_line() category argument doesn't work for MCSs", {
                "Categories currently only calculated for MHWs, not MCSs. But coming soon!")
 })
 
+test_that("event_line() additional options error traping works", {
+  res <- detect_event(data = ts2clm(sst_Med, pctile = 90,
+                                    climatologyPeriod = c("1982-01-01", "2011-12-31")))
+  expect_error(event_line(data = res, start_date = "2012-01-01", end_date = "2012-12-31", x_axis_title = 12),
+               "Please ensure that the argument provided to 'x_axis_title' is a character string.")
+  expect_error(event_line(data = res, start_date = "2012-01-01", end_date = "2012-12-31", y_axis_title = FALSE),
+               "Please ensure that the argument provided to 'y_axis_title' is a character string.")
+  expect_error(event_line(data = res, start_date = "2012-01-01", end_date = "2012-12-31", x_axis_text_angle = "100"),
+               "Please ensure that the argument provided to 'x_axis_text_angle' is a number.")
+  expect_error(event_line(data = res, start_date = "2012-01-01", end_date = "2012-12-31", y_axis_range = 100))
+  expect_error(event_line(data = res, start_date = "2012-01-01", end_date = "2012-12-31", y_axis_range = c(2, "A")),
+               "Please ensure that only numeric values are provided to 'y_axis_range'.")
+})
+
+test_that("event_line() additional options error traping works", {
+  res <- detect_event(data = ts2clm(sst_Med, climatologyPeriod = c("1982-01-01", "2011-12-31")))
+  p1 <- event_line(data = res, start_date = "2012-01-01", end_date = "2012-12-31", x_axis_title = "Date")
+  expect_equal(p1$labels$x, "Date")
+  p2 <- event_line(data = res, start_date = "2012-01-01", end_date = "2012-12-31", y_axis_title = "Temp.")
+  expect_equal(p2$labels$y, "Temp.")
+  p3 <- event_line(data = res, start_date = "2012-01-01", end_date = "2012-12-31", x_axis_text_angle = 10)
+  expect_equal(p3$theme$axis.text.x$angle, 10)
+  p4 <- event_line(data = res, start_date = "2012-01-01", end_date = "2012-12-31", y_axis_range = c(20, 30))
+  expect_equal(p4$coordinates$limits$y, c(20, 30))
+})
+
 
 # lolli_plot tests --------------------------------------------------------
 

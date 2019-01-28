@@ -6,7 +6,8 @@
 \usage{
 event_line(data, x = t, y = temp, min_duration = 5, spread = 150,
   metric = "intensity_cumulative", start_date = NULL,
-  end_date = NULL, category = FALSE)
+  end_date = NULL, category = FALSE, x_axis_title = NULL,
+  x_axis_text_angle = NULL, y_axis_title = NULL, y_axis_range = NULL)
 }
 \arguments{
 \item{data}{The function receives the full (list) output from the
@@ -54,6 +55,17 @@ produce a figure as per the second row of Figure 3 in Hobday et al. (2016). If s
 figure showing the different categories of the MHWs in the chosen period, highlighted as
 seen in Figure 3 of Hobday et al. (in review), will be produced. If \code{category} = TRUE,
 \code{metric} will be ignored as a different colouring scheme is used.}
+
+\item{x_axis_title}{If one would like to add a title for the x-axis it may be provided here.}
+
+\item{x_axis_text_angle}{If one would like to change the angle of the x-axis text, provide
+the angle here as a single numeric value.}
+
+\item{y_axis_title}{Provide text here if one would like a title for the y-axis other
+than "Temperature °C" (default)}
+
+\item{y_axis_range}{If one would like to control the y-axis range, provide the desired limits
+here as two numeric values (e.g. c(20, 30)).}
 }
 \value{
 The function will return a line plot indicating the climatology,
