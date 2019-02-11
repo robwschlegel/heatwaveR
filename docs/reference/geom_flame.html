@@ -90,7 +90,7 @@ as may be necessary." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6.9002</span>
       </span>
     </div>
 
@@ -184,8 +184,8 @@ as may be necessary.</p>
     </div>
 
     <pre class="usage"><span class='fu'>geom_flame</span>(<span class='kw'>mapping</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"identity"</span>,
-  <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>, <span class='no'>...</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>show.legend</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>inherit.aes</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>, <span class='no'>...</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>n_gap</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>show.legend</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>inherit.aes</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -224,6 +224,22 @@ to a position adjustment function.</p></td>
 often aesthetics, used to set an aesthetic to a fixed value, like
 <code>color = "red"</code> or <code>size = 3</code>. They may also be parameters
 to the paired geom/stat.</p></td>
+    </tr>
+    <tr>
+      <th>n</th>
+      <td><p>The number of steps along the x-axis (i.e. in a daily time series this
+would be days) required before the area between <code>y</code> and <code>y2</code> will be
+filled in. The default of 0 will fill in _all_ of the area between the lines.
+The standard to match Hobday et al. (2016) is <code>n = 5</code>.</p></td>
+    </tr>
+    <tr>
+      <th>n_gap</th>
+      <td><p>The number of steps along the x-axis (i.e. in a daily time series this
+would be days) within which to allow <code>geom_flame()</code> to connect polygons.
+This is useful when one wants to not screen out parts of a polygon that dip
+only briefly below <code>y</code> before coming back up above it. The defauly of 0
+will not connect any of the polygons. The standard to match
+Hobday et al. (2016) is <code>n_gap = 2</code>.</p></td>
     </tr>
     <tr>
       <th>na.rm</th>

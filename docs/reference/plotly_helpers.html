@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Constructs a continuous, uninterrupted time series of temperatures (faster). — make_whole_fast • heatwaveR</title>
+<title>Plotly helpers — plotly_helpers • heatwaveR</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,10 +36,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Constructs a continuous, uninterrupted time series of temperatures (faster). — make_whole_fast" />
+<meta property="og:title" content="Plotly helpers — plotly_helpers" />
 
-<meta property="og:description" content="Takes a series of dates and temperatures, and if irregular (but ordered), inserts
-missing dates and fills correpsonding temperatures with NAs." />
+<meta property="og:description" content="This S3 method for GeomFlame allows it to be implemented with plotly::ggplotly()" />
 
 <meta property="og:image" content="https://robwschlegel.github.io/heatwaveR/index.html/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -155,91 +154,70 @@ missing dates and fills correpsonding temperatures with NAs." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Constructs a continuous, uninterrupted time series of temperatures (faster).</h1>
-    <small class="dont-index">Source: <a href='https://github.com/robwschlegel/heatwaveR/blob/master/R/make_whole_fast.R'><code>R/make_whole_fast.R</code></a></small>
-    <div class="hidden name"><code>make_whole_fast.Rd</code></div>
+    <h1>Plotly helpers</h1>
+    <small class="dont-index">Source: <a href='https://github.com/robwschlegel/heatwaveR/blob/master/R/geom2plotly.R'><code>R/geom2plotly.R</code></a></small>
+    <div class="hidden name"><code>plotly_helpers.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Takes a series of dates and temperatures, and if irregular (but ordered), inserts
-missing dates and fills correpsonding temperatures with NAs.</p>
+    <p>This S3 method for GeomFlame allows it to be implemented with plotly::ggplotly()</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>make_whole_fast</span>(<span class='no'>data</span>)</pre>
+    <pre class="usage"><span class='co'># S3 method for GeomFlame</span>
+<span class='fu'>geom2trace</span>(<span class='no'>data</span>, <span class='no'>params</span>, <span class='no'>p</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>A data frame with columns for date (<code>ts_x</code>) and
-temperature (<code>ts_y</code>) data. Ordered daily data are expected, and
-although missing values (NA) can be accommodated, the function is only
-recommended when NAs occur infrequently, preferably at no more than three
-consecutive days.</p></td>
+      <td><p>This is a data.frame of information passed to this function
+from plotly:::layers2traces</p></td>
+    </tr>
+    <tr>
+      <th>params</th>
+      <td><p>This is a packet of specific information also passed to this
+functions from plotly:::layers2traces</p></td>
+    </tr>
+    <tr>
+      <th>p</th>
+      <td><p>This is the base plot created by calling ggplot, but is still passed
+to this functions from plotly:::layers2traces</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The function will return a data frame with three columns. The column
-headed <code>doy</code> (day-of-year) is the Julian day running from 1 to 366, but
-modified so that the day-of-year series for non-leap-years runs 1...59 and
-then 61...366. For leap years the 60th day is February 29. The <code>ts_x</code>
-column is a series of dates of class <code>Date</code>, while <code>y</code> is the
-measured variable. This time series will be uninterrupted and continuous daily
-values between the first and last dates of the input data.</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>ts_res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ts2clm.html'>ts2clm</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>sst_WA</span>, <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"1982-01-01"</span>, <span class='st'>"2011-12-31"</span>))
+<span class='no'>ts_res_sub</span> <span class='kw'>&lt;-</span> <span class='no'>ts_res</span>[<span class='fl'>10500</span>:<span class='fl'>10800</span>,]
 
-    <ol>
-<li><p>This function reads in daily data with the time vector specified as
- <code>Date</code> (e.g. "1982-01-01").</p></li>
-<li><p>It is up to the user to calculate daily data from sub-daily measurements.
-Leap years are automatically accommodated by this function.</p></li>
-<li><p>This function can handle some missing days, but this is not a
-licence to actually use these data for the detection of anomalous thermal
-events. Hobday et al. (2016) recommend gaps of no more than 3 days, which
-may be adjusted by setting the <code>maxPadLength</code> argument of the
-<code><a href='ts2clm.html'>ts2clm</a></code> function. The longer and more frequent the gaps become
-the lower the fidelity of the annual climatology and threshold that can be
-calculated, which will not only have repercussions for the accuracy at which
-the event metrics can be determined, but also for the number of events that
-can be detected.</p></li>
-<li><p>The original <code>make_whole</code> tests to see if some rows are
-duplicated, or if replicate temperature measurements are present per day. In
-<code>make_whole_fast</code> (this function) this has been disabled; also,
-the latter function lacks the facility to check if the time series is complete
-and regular (i.e. no missing values in the date vector). Effectively,
-we now only set up the day-of-year (doy) vector in <code>make_whole_fast</code>.
-Should the user be concerned about the potential for repeated measurements
-or worry that the time series is irregular, we suggest that the necessary
-checks and fixes are implemented prior to feeding the time series to <code>ts2clim</code>
-via <code>make_whole_fast</code>, or to use <code>make_whole</code> instead. For very large
-gridded temperature records it probably makes a measurable difference if the
-'fast' version is used, but it might prevent <code><a href='detect_event.html'>detect_event</a></code>
-from failing should some gridded cells contain missing rows or some duplicated
-values. When using the fast algorithm, we assume that the user has done all
-the necessary work to ensure that the time vector is regular and without
-repeated measurements beforehand.</p></li>
-</ol>
-    
-
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>ggplot2</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>plotly</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘plotly’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:ggplot2’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    last_plot</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:stats’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    filter</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:graphics’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    layout</span></div><div class='input'>
+<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>ts_res_sub</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>)) +
+  <span class='fu'><a href='geom_flame.html'>geom_flame</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>y2</span> <span class='kw'>=</span> <span class='no'>thresh</span>), <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"salmon"</span>) +
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>)) +
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>seas</span>), <span class='kw'>colour</span> <span class='kw'>=</span> <span class='st'>"green"</span>) +
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>thresh</span>), <span class='kw'>colour</span> <span class='kw'>=</span> <span class='st'>"red"</span>) +
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Temperature (°C)"</span>)
+ <span class='kw pkg'>plotly</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/plotly/topics/ggplotly'>ggplotly</a></span>(<span class='no'>p</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
-      <li><a href="#details">Details</a></li>
-          </ul>
-
-    <h2>Author</h2>
-    <p>Smit, A. J., Schlegel, R. W.</p>
   </div>
 </div>
 

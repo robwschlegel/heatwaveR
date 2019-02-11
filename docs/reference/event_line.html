@@ -82,7 +82,7 @@ Hobday et al. (2016)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6.9002</span>
       </span>
     </div>
 
@@ -169,7 +169,8 @@ Hobday et al. (2016).</p>
 
     <pre class="usage"><span class='fu'>event_line</span>(<span class='no'>data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='kw'>min_duration</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>spread</span> <span class='kw'>=</span> <span class='fl'>150</span>,
   <span class='kw'>metric</span> <span class='kw'>=</span> <span class='st'>"intensity_cumulative"</span>, <span class='kw'>start_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>end_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>category</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>end_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>category</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>x_axis_title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>x_axis_text_angle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y_axis_title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y_axis_range</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -237,6 +238,25 @@ produce a figure as per the second row of Figure 3 in Hobday et al. (2016). If s
 figure showing the different categories of the MHWs in the chosen period, highlighted as
 seen in Figure 3 of Hobday et al. (in review), will be produced. If <code>category</code> = TRUE,
 <code>metric</code> will be ignored as a different colouring scheme is used.</p></td>
+    </tr>
+    <tr>
+      <th>x_axis_title</th>
+      <td><p>If one would like to add a title for the x-axis it may be provided here.</p></td>
+    </tr>
+    <tr>
+      <th>x_axis_text_angle</th>
+      <td><p>If one would like to change the angle of the x-axis text, provide
+the angle here as a single numeric value.</p></td>
+    </tr>
+    <tr>
+      <th>y_axis_title</th>
+      <td><p>Provide text here if one would like a title for the y-axis other
+than "Temperature °C" (default)</p></td>
+    </tr>
+    <tr>
+      <th>y_axis_range</th>
+      <td><p>If one would like to control the y-axis range, provide the desired limits
+here as two numeric values (e.g. c(20, 30)).</p></td>
     </tr>
     </table>
     
