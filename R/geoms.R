@@ -60,6 +60,16 @@
 #'   often aesthetics, used to set an aesthetic to a fixed value, like
 #'   \code{color = "red"} or \code{size = 3}. They may also be parameters
 #'   to the paired geom/stat.
+#' @param n The number of steps along the x-axis (i.e. in a daily time series this
+#' would be days) required before the area between \code{y} and \code{y2} will be
+#' filled in. The default of 0 will fill in _all_ of the area between the lines.
+#' The standard to match Hobday et al. (2016) is \code{n = 5}.
+#' @param n_gap The number of steps along the x-axis (i.e. in a daily time series this
+#' would be days) within which to allow \code{geom_flame()} to connect polygons.
+#' This is useful when one wants to not screen out parts of a polygon that dip
+#' only briefly below \code{y} before coming back up above it. The defauly of 0
+#' will not connect any of the polygons. The standard to match
+#' Hobday et al. (2016) is \code{n_gap = 2}.
 #'
 #' @author Robert W. Schlegel
 #'
@@ -86,6 +96,8 @@
 geom_flame <- function(mapping = NULL, data = NULL,
                        stat = "identity", position = "identity",
                        ...,
+                       n = 0,
+                       n_gap = 0,
                        na.rm = FALSE,
                        show.legend = NA,
                        inherit.aes = TRUE) {
@@ -99,6 +111,8 @@ geom_flame <- function(mapping = NULL, data = NULL,
     inherit.aes = inherit.aes,
     params = list(
       na.rm = na.rm,
+      n = n,
+      n_gap = n_gap,
       ...
     )
   )
@@ -112,7 +126,7 @@ GeomFlame <- ggplot2::ggproto("GeomFlame", ggplot2::Geom,
 
                               draw_key = ggplot2::draw_key_polygon,
 
-                              draw_group = function(data, panel_scales, coord, na.rm = FALSE) {
+                              draw_group = function(data, panel_scales, coord, n, n_gap, na.rm = FALSE) {
                                 if (na.rm) data <- data[stats::complete.cases(data[c("x", "y", "y2")]), ]
 
                                 # Check that aesthetics are constant
@@ -122,9 +136,25 @@ GeomFlame <- ggplot2::ggproto("GeomFlame", ggplot2::Geom,
                                 }
                                 aes <- as.list(aes)
 
+                                # Find events that meet minimum length requirement
+                                data_event <- heatwaveR::detect_event(data, x = x, y = y,
+                                                                      seasClim = y,
+                                                                      threshClim = y2,
+                                                                      minDuration = n,
+                                                                      maxGap = n_gap,
+                                                                      protoEvents = T)
+
+                                # Detect spikes
+                                data_event$screen <- base::ifelse(data_event$threshCriterion == FALSE, FALSE,
+                                                                  ifelse(data_event$event == FALSE, TRUE, FALSE))
+
+                                # Screen out spikes
+                                data <- data[data_event$screen != TRUE,]
+
                                 # Find the ploygon corners
                                 x1 <- data$y
                                 x2 <- data$y2
+
                                 # Find points where x1 is above x2.
                                 above <- x1 > x2
                                 above[above == TRUE] <- 1
@@ -148,7 +178,7 @@ GeomFlame <- ggplot2::ggproto("GeomFlame", ggplot2::Geom,
                                 # Create new data frame and merge to introduce new rows of data
                                 data2 <- data.frame(y = c(data$y, y.points), x = c(data$x, x.points))
                                 data2 <- data2[order(data2$x),]
-                                data <- base::merge(data, data2, by = c("x","y"), all.y = T)
+                                data <- base::merge(data, data2, by = c("x", "y"), all.y = T)
                                 data$y2[is.na(data$y2)] <- data$y[is.na(data$y2)]
 
                                 # Remove missing values for better plotting

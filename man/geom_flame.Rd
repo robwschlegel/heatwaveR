@@ -5,8 +5,8 @@
 \title{Create 'flame' polygons.}
 \usage{
 geom_flame(mapping = NULL, data = NULL, stat = "identity",
-  position = "identity", ..., na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE)
+  position = "identity", ..., n = 0, n_gap = 0, na.rm = FALSE,
+  show.legend = NA, inherit.aes = TRUE)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{aes()} or \code{aes_()}.
@@ -36,6 +36,18 @@ to a position adjustment function.}
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{size = 3}. They may also be parameters
 to the paired geom/stat.}
+
+\item{n}{The number of steps along the x-axis (i.e. in a daily time series this
+would be days) required before the area between \code{y} and \code{y2} will be
+filled in. The default of 0 will fill in _all_ of the area between the lines.
+The standard to match Hobday et al. (2016) is \code{n = 5}.}
+
+\item{n_gap}{The number of steps along the x-axis (i.e. in a daily time series this
+would be days) within which to allow \code{geom_flame()} to connect polygons.
+This is useful when one wants to not screen out parts of a polygon that dip
+only briefly below \code{y} before coming back up above it. The defauly of 0
+will not connect any of the polygons. The standard to match
+Hobday et al. (2016) is \code{n_gap = 2}.}
 
 \item{na.rm}{If \code{FALSE} (the default), removes missing values with
 a warning. If \code{TRUE} silently removes missing values.}

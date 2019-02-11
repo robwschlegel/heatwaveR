@@ -32,10 +32,31 @@ geom2trace.GeomFlame <- function (data,
                                   params,
                                   p) {
 
+  x <- y <- y2 <- NULL
+
   # Create data.frame for ease of use
   data1 <- data.frame(x = data[["x"]],
                       y = data[["y"]],
                       y2 = data[["y2"]])
+
+  # Grab parameters
+  n <- params[["n"]]
+  n_gap <- params[["n_gap"]]
+
+  # Find events that meet minimum length requirement
+  data_event <- heatwaveR::detect_event(data1, x = x, y = y,
+                                        seasClim = y,
+                                        threshClim = y2,
+                                        minDuration = n,
+                                        maxGap = n_gap,
+                                        protoEvents = T)
+
+  # Detect spikes
+  data_event$screen <- base::ifelse(data_event$threshCriterion == FALSE, FALSE,
+                                    ifelse(data_event$event == FALSE, TRUE, FALSE))
+
+  # Screen out spikes
+  data1 <- data1[data_event$screen != TRUE,]
 
   # Prepare to find the ploygon corners
   x1 <- data1$y

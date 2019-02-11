@@ -1,3 +1,8 @@
+# heatwaveR 0.3.6.9002 (2019-02-11)
+
+* Added `n` and `n_gap` arguments to `geom_flame()` to allow proper screening of heatspikes
+* These additions also propogate through to `geom2trace.GeomFlame`
+
 # heatwaveR 0.3.6.9001 (2019-01-28)
 
 * Added some additional options to `event_line()` to allow users to maniuplate the output

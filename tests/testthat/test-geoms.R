@@ -6,9 +6,17 @@ context("Test geoms.R")
 
 test_that("geom_flame() doesn't fall over", {
   ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-  res <- detect_event(ts)$climatology[1300:1500,]
+  res <- detect_event(ts)$climatology[950:1000,]
   tp <- ggplot(data = res, aes(x = t, y = temp)) +
     geom_flame(aes(y2 = thresh))
+  expect_is(tp, "ggplot")
+})
+
+test_that("geom_flame() screns out heat spikes as desired", {
+  ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  res <- detect_event(ts)$climatology[800:950,]
+  tp <- ggplot(data = res, aes(x = t, y = temp)) +
+    geom_flame(aes(y2 = thresh), n = 5, n_gap = 2)
   expect_is(tp, "ggplot")
 })
 
