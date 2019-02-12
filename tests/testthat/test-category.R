@@ -19,16 +19,16 @@ test_that("The seasons by hemisphere come out correctly", {
 
 test_that("The name argument works correctly", {
   ts <- ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-  res <- detect_event(data = ts)
+  res <- detect_event(ts)
   cat_res_banana <- category(res, name = "Banana")
   cat_res_pawpaw <- category(res, name = "Pawpaw")
-  expect_equal(droplevels(cat_res_banana$event_name[70]), as.factor("Banana 2014"))
-  expect_equal(droplevels(cat_res_pawpaw$event_name[70]), as.factor("Pawpaw 2014"))
+  expect_equal(droplevels(cat_res_banana$event_name[90]), as.factor("Banana 2014"))
+  expect_equal(droplevels(cat_res_pawpaw$event_name[90]), as.factor("Pawpaw 2014"))
 })
 
 test_that("y = any existing column", {
   ts <- ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-  res <- detect_event(data = ts)
+  res <- detect_event(ts)
   res$climatology$pawpaw <- res$climatology$temp
   expect_is(category(res, y = pawpaw), "tbl_df")
 })
@@ -40,14 +40,17 @@ test_that("season splits work under all circumstances", {
   ts$temp[4000:4200] <- 22
   res <- detect_event(ts)
   cat_res <- category(res, S = F)
-  expect_equal(cat_res$season[70], "Summer-Winter")
-  expect_equal(cat_res$season[71], "Year-round")
-  expect_equal(cat_res$season[72], "Fall-Spring")
+  expect_equal(cat_res$season[93], "Year-round")
+  expect_equal(cat_res$season[35], "Summer/Fall")
+  expect_equal(cat_res$season[66], "Winter/Spring")
+  expect_equal(cat_res$season[73], "Spring/Summer")
+  expect_equal(cat_res$season[88], "Summer-Winter")
+  expect_equal(cat_res$season[94], "Fall-Spring")
 })
 
 test_that("y = any existing column", {
   ts <- ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-  res <- detect_event(data = ts)
+  res <- detect_event(ts)
   res$climatology$pawpaw <- res$climatology$temp
   expect_is(category(res, y = pawpaw), "tbl_df")
 })
@@ -59,7 +62,7 @@ test_that("climatology = T causes a list output with the time series category da
   expect_is(cat$climatology, "tbl_df")
   expect_is(cat$event, "tbl_df")
   expect_equal(ncol(cat$climatology), 4)
-  expect_equal(nrow(cat$climatology), 900)
+  expect_equal(ncol(cat$event), 11)
 })
 
 test_that("no detected events returns an empty dataframe and not an error", {

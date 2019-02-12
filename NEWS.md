@@ -1,5 +1,9 @@
 # heatwaveR 0.3.6.9002 (2019-02-11)
 
+* Updated the end date for three time series packaged with __`heatwaveR`__ to 2018-12-31  
+
+# heatwaveR 0.3.6.9002 (2019-02-11)
+
 * Added `n` and `n_gap` arguments to `geom_flame()` to allow proper screening of heatspikes
 * These additions also propogate through to `geom2trace.GeomFlame`
 

@@ -16,7 +16,7 @@ test_that("threshold may not be missing", {
 
 test_that("threshold may not exceed the max temperature in the data", {
   expect_error(exceedance(data = sst_Med, threshold = 30),
-               "The given threshold value of 30 is greater than the maximum temperature of 28.15 present in this time series.")
+               "The given threshold value of 30 is greater than the maximum temperature of 28.78 present in this time series.")
 })
 
 test_that("threshold may not exceed the min temperature in the data", {
@@ -30,8 +30,8 @@ test_that("below argument creates negative values", {
 })
 
 test_that("threshold must be exceeded by enough to be able to detect events", {
-  expect_error(exceedance(sst_Med, threshold = 28),
-               "Not enough consecutive days above 28 to detect an event.")
+  expect_error(exceedance(sst_Med, threshold = 28.7),
+               "Not enough consecutive days above 28.7 to detect an event.")
   expect_error(exceedance(sst_Med, threshold = 11.5, below = T),
                "Not enough consecutive days below 11.5 to detect an event.")
 })
@@ -43,10 +43,11 @@ test_that("joinAcrossGaps = F creates more events", {
 })
 
 test_that("conditionals for calculating exceedance_rel_thresh are responsive", {
-  ts <- sst_Med[156:12001, ]
+  ts <- sst_Med[526:988,]
   res <- exceedance(ts, threshold = 20)
-  expect_equal(is.na(res$exceedance$rate_onset[1]), TRUE)
-  expect_equal(is.na(res$exceedance$rate_decline[53]), TRUE)
+  res_exc <- res$exceedance
+  expect_equal(is.na(res_exc$rate_onset[1]), TRUE)
+  expect_equal(is.na(res_exc$rate_decline[53]), TRUE)
 })
 
 test_that("gaps are not joined if none exist", {

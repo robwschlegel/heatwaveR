@@ -23,7 +23,7 @@ test_that("all starting error checks flag correctly", {
 test_that("coldSpells = TRUE returns MCS calculations", {
   ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), pctile = 10)
   res <- detect_event(ts, coldSpells = TRUE)
-  expect_equal(nrow(res$event), 71)
+  expect_equal(ncol(res$event), 22)
   expect_lt(min(res$event$intensity_max), 0)
 })
 
@@ -34,13 +34,13 @@ test_that("joinAcrossGaps = FALSE returns more events", {
   expect_lt(nrow(res_join$event), nrow(res_misanthrope$event))
 })
 
-test_that("events starting/ending before/after the time series dates aredealt with", {
+test_that("events starting/ending before/after the time series dates are dealt with", {
   ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-  ts_sub <- ts[900:11950, ]
+  ts_sub <- ts[885:926, ]
   res <- detect_event(ts_sub)
   res_event <- res$event
   expect_equal(is.na(res_event$rate_onset[1]), TRUE)
-  expect_equal(is.na(res_event$rate_decline[58]), TRUE)
+  expect_equal(is.na(res_event$rate_decline[3]), TRUE)
 })
 
 test_that("detect_event() does not joinAcrossGaps if conditions are not met", {
