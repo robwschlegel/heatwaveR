@@ -1,4 +1,8 @@
-# heatwaveR 0.3.6.9002 (2019-02-11)
+# heatwaveR 0.3.6.9004 (2019-05-29)
+
+* Added the ability to choose the number of digits rounded to for the output of `ts2clm()`
+
+# heatwaveR 0.3.6.9003 (2019-02-11)
 
 * Updated the end date for three time series packaged with __`heatwaveR`__ to 2018-12-31  
 

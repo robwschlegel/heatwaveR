@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6.9004</span>
       </span>
     </div>
 
@@ -114,7 +114,7 @@
       <h1>Calculating and Visualising Event Categories</h1>
                         <h4 class="author">Robert W Schlegel</h4>
             
-            <h4 class="date">2019-02-12</h4>
+            <h4 class="date">2019-05-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/event_categories.Rmd"><code>vignettes/event_categories.Rmd</code></a></small>
       <div class="hidden name"><code>event_categories.Rmd</code></div>
@@ -174,12 +174,12 @@
 <pre><code>## # A tibble: 6 x 11
 ##   event_no event_name peak_date  category i_max duration p_moderate
 ##      &lt;dbl&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;
-## 1       66 WA 2012    2012-12-31 II Stro…  3.29       14         64
-## 2       65 WA 2012    2012-01-27 II Stro…  3.25      101         59
-## 3       37 WA 1999    1999-05-22 II Stro…  3.61       95         57
-## 4       46 WA 2008    2008-04-14 III Sev…  3.8        35         57
-## 5       58 WA 2011    2011-02-28 IV Extr…  6.51      105         45
-## 6       76 WA 2015    2015-10-02 II Stro…  2.3         7         43
+## 1       60 WA 2012    2012-12-31 II Stro…  3.42       14         64
+## 2       29 WA 1999    1999-05-22 II Stro…  3.64       95         63
+## 3       47 WA 2009    2009-03-25 II Stro…  2.38        7         57
+## 4       72 WA 2015    2015-10-02 II Stro…  2.46        7         57
+## 5       41 WA 2008    2008-04-14 III Sev…  3.83       35         57
+## 6       52 WA 2011    2011-02-28 IV Extr…  6.58      105         52
 ## # … with 4 more variables: p_strong &lt;dbl&gt;, p_severe &lt;dbl&gt;,
 ## #   p_extreme &lt;dbl&gt;, season &lt;chr&gt;</code></pre>
 <p>Note that this functions expects the data to have been collected in the southern hemisphere, hence the argument <code>S = TRUE</code>. If they were not, one must set <code>S = FALSE</code> as seen in the example below. This ensures that the correct seasons are attributed to the event.</p>
@@ -189,12 +189,12 @@
 <pre><code>## # A tibble: 6 x 11
 ##   event_no event_name peak_date  category i_max duration p_moderate
 ##      &lt;dbl&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;
-## 1       78 Med 2012   2012-08-20 III Sev…  4.28       22         41
-## 2       89 Med 2014   2014-10-18 III Sev…  3.41      144         28
-## 3       91 Med 2015   2015-06-06 III Sev…  5.13       12         25
-## 4       93 Med 2015   2015-07-21 III Sev…  5.47       32         25
-## 5       88 Med 2014   2014-06-14 II Stro…  4.14        6         17
-## 6      109 Med 2018   2018-04-21 III Sev…  3.38       14         14
+## 1       60 Med 2011   2011-09-15 II Stro…  2.94        7         57
+## 2       30 Med 2003   2003-06-20 II Stro…  5.05       30         53
+## 3       67 Med 2012   2012-08-20 II Stro…  4.32       18         44
+## 4       93 Med 2018   2018-04-21 II Stro…  3.34       14         43
+## 5       46 Med 2007   2007-04-25 III Sev…  4.05       19         42
+## 6       75 Med 2014   2014-10-18 II Stro…  3.34      144         39
 ## # … with 4 more variables: p_strong &lt;dbl&gt;, p_severe &lt;dbl&gt;,
 ## #   p_extreme &lt;dbl&gt;, season &lt;chr&gt;</code></pre>
 </div>

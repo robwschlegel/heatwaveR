@@ -52,6 +52,10 @@
 #' on gridded data and reducing the size of the output. The variance was initially
 #' introduced as part of the standard output from Hobday et al. (2016), but few
 #' researchers use it and so it is generally regarded now as unnecessary.
+#' @param roundClm This argument allows the user to choose how many decimal places
+#' the \code{seas} and \code{thresh} outputs will be rounded to. Default is 4. To
+#' precent rounding set \code{roundClm = FALSE}. This argument may only be given
+#' numeric values or FALSE.
 #'
 #' @details
 #' \enumerate{
@@ -141,7 +145,8 @@ ts2clm <-
            smoothPercentile = TRUE,
            smoothPercentileWidth = 31,
            clmOnly = FALSE,
-           var = FALSE) {
+           var = FALSE,
+           roundClm = 4) {
 
     if (missing(climatologyPeriod))
       stop("Oops! Please provide a period (two dates) for calculating the climatology.")
@@ -163,6 +168,11 @@ ts2clm <-
       stop("Please ensure that 'smoothPercentileWidth' is a numeric/integer value.")
     if (!(is.logical(clmOnly)))
       stop("Please ensure that 'clmOnly' is either TRUE or FALSE.")
+    if (!(is.numeric(roundClm))){
+      if(!roundClm == FALSE){
+        stop("Please ensure that 'roundClm' is either a numeric value or FALSE.")
+      }
+    }
 
     clim_start <- climatologyPeriod[1]
     clim_end <- climatologyPeriod[2]
@@ -217,7 +227,9 @@ ts2clm <-
     }
 
     cols <- names(ts_clim)
-    ts_clim[,(cols) := round(.SD, 4), .SDcols = cols]
+    if(is.numeric(roundClm)){
+      ts_clim[,(cols) := round(.SD, roundClm), .SDcols = cols]
+    }
     rm(ts_mat)
 
     if (clmOnly) {

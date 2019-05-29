@@ -70,7 +70,7 @@ test_that("no detected events returns an empty dataframe and not an error", {
   sst_WA_flat$temp <- 1
   # sst_WA_flat$temp[4:6] <- 5
   # ts_xy <- ts2clm(sst_WA_flat, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-  res <- detect_event(ts2clm(sst_WA_flat, climatologyPeriod = c("1983-01-01", "2012-12-31")))
+  suppressWarnings(res <- detect_event(ts2clm(sst_WA_flat, climatologyPeriod = c("1983-01-01", "2012-12-31"))))
   cat_event <- category(res, climatology = F)
   cat_clim <- category(res, climatology = T)
   expect_is(cat_event, "tbl_df")

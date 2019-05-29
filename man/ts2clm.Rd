@@ -7,7 +7,7 @@
 ts2clm(data, x = t, y = temp, climatologyPeriod, robust = FALSE,
   maxPadLength = FALSE, windowHalfWidth = 5, pctile = 90,
   smoothPercentile = TRUE, smoothPercentileWidth = 31,
-  clmOnly = FALSE, var = FALSE)
+  clmOnly = FALSE, var = FALSE, roundClm = 4)
 }
 \arguments{
 \item{data}{A data frame with two columns. In the default setting (i.e. ommitting
@@ -65,6 +65,11 @@ the variance of the seasonal signal per doy should be calculated. The default of
 on gridded data and reducing the size of the output. The variance was initially
 introduced as part of the standard output from Hobday et al. (2016), but few
 researchers use it and so it is generally regarded now as unnecessary.}
+
+\item{roundClm}{This argument allows the user to choose how many decimal places
+the \code{seas} and \code{thresh} outputs will be rounded to. Default is 4. To
+precent rounding set \code{roundClm = FALSE}. This argument may only be given
+numeric values or FALSE.}
 }
 \value{
 The function will return a tibble (see the \code{tidyverse}) with the

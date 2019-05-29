@@ -35,6 +35,12 @@ test_that("all starting error checks flag correctly", {
   expect_error(ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
                       clmOnly = "FALSE"),
                "Please ensure that 'clmOnly' is either TRUE or FALSE.")
+  expect_error(ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
+                      roundClm = "2"),
+               "Please ensure that 'roundClm' is either a numeric value or FALSE.")
+  expect_error(ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
+                      roundClm = TRUE),
+               "Please ensure that 'roundClm' is either a numeric value or FALSE.")
   sst_WA_dummy1 <- sst_WA %>%
     dplyr::mutate(t = as.POSIXct(t))
   expect_error(ts2clm(sst_WA_dummy1, climatologyPeriod = c("1983-01-01", "2012-12-31")),
@@ -104,4 +110,13 @@ test_that("var argument functions correctly", {
   expect_is(res, "data.frame")
   expect_equal(ncol(res), 6)
   expect_equal(nrow(res), 13514)
+})
+
+test_that("roundClm argument functions correctly", {
+  res <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), roundClm = 4)
+  expect_equal(res$seas[1], 21.6080)
+  res <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), roundClm = 0)
+  expect_equal(res$seas[1], 22)
+  res <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), roundClm = F)
+  expect_gt(res$seas[1], 21.60802)
 })

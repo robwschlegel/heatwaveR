@@ -67,7 +67,7 @@ test_that("threshClim2 must be logic values", {
 test_that("no detected events returns an empty event dataframe and not an error", {
   sst_WA_flat <- sst_WA
   sst_WA_flat$temp <- 1
-  res <- detect_event(ts2clm(sst_WA_flat, climatologyPeriod = c("1983-01-01", "2012-12-31")))
+  suppressWarnings(res <- detect_event(ts2clm(sst_WA_flat, climatologyPeriod = c("1983-01-01", "2012-12-31"))))
   expect_is(res, "list")
   expect_is(res$climatology, "tbl_df")
   expect_is(res$event, "tbl_df")
