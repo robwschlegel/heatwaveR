@@ -91,7 +91,7 @@ test_that("mssing data causes na_interp() to be used if a value is provided for 
 
 test_that("contiguous mssing data causes clim_calc() to be used", {
   sst_WA_cont <- sst_WA %>%
-    dplyr::mutate(month = month(t)) %>%
+    dplyr::mutate(month = lubridate::month(t)) %>%
     dplyr::filter(month != 1) %>%
     dplyr::select(-month)
   res <- ts2clm(sst_WA_cont, climatologyPeriod = c("1983-01-01", "2012-12-31"))

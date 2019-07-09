@@ -36,8 +36,8 @@ The categories of MHWs under the Hobday et al. (2018) naming scheme may be calcu
 
 ```{r category-example1}
 # Load libraries
+library(tidyverse)
 library(heatwaveR)
-library(dplyr)
 
 # Calculate events
 ts <- ts2clm(sst_WA, climatologyPeriod = c("1982-01-01", "2011-12-31"))

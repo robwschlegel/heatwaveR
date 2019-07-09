@@ -37,8 +37,8 @@ Here are the `ts2clm()` and `detect_event()` function applied to the Western Aus
 
 ```{r detect-example1}
 # Load libraries
+library(tidyverse)
 library(heatwaveR)
-library(dplyr)
 
 # Detect the events in a time series
 ts <- ts2clm(sst_WA, climatologyPeriod = c("1982-01-01", "2011-12-31"))

@@ -196,7 +196,7 @@ GeomFlame <- ggplot2::ggproto("GeomFlame", ggplot2::Geom,
                                   munched$x, munched$y, id = munched$id,
                                   default.units = "native",
                                   gp = grid::gpar(
-                                    fill = alpha(aes$fill, aes$alpha),
+                                    fill = scales::alpha(aes$fill, aes$alpha),
                                     col = aes$colour,
                                     lwd = aes$size * .pt,
                                     lty = aes$linetype)

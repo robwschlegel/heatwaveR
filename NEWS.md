@@ -1,3 +1,8 @@
+# heatwaveR 0.4.0 (2019-07-09)
+
+* Changed the `data.table` and `ggplot2` dependencies to imports
+* `heatwaveR` is now dependency free
+
 # heatwaveR 0.3.6.9004 (2019-05-29)
 
 * Added the ability to choose the number of digits rounded to for the output of `ts2clm()`

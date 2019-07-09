@@ -3,6 +3,8 @@
 #' Creates a graph of warm or cold events as per the second row of Figure 3 in
 #' Hobday et al. (2016).
 #'
+#' @import ggplot2
+#'
 #' @importFrom ggplot2 ggplot aes geom_polygon geom_line scale_colour_manual
 #' scale_fill_manual scale_x_date xlab ylab theme theme_grey element_text
 #' element_blank element_rect element_line guides guide_legend coord_cartesian

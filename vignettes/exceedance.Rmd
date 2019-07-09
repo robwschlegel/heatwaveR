@@ -29,8 +29,8 @@ The calculation of exceedances may be done with only one function as seen here:
 
 ```{r exceedance-example1}
 # Activate libraries
+library(tidyverse)
 library(heatwaveR)
-library(dplyr)
 
 # Calculate exceedence
 exc_25 <- exceedance(sst_WA, threshold = 25)

@@ -4,8 +4,7 @@
 #' then be used by \code{\link{clim_calc}} within \code{\link{ts2clm}}
 #' to produce a climatology as desired by the user.
 #'
-#' @importFrom data.table :=
-#' @importFrom data.table %between%
+#' @importFrom data.table := %between%
 #'
 #' @param data The data given to this function during the calculations
 #' performed by \code{\link{ts2clm}}.
