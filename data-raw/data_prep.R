@@ -3,7 +3,7 @@
 
 # Libraries ---------------------------------------------------------------
 
-library(dplyr)
+library(tidyverse)
 library(heatwaveR)
 library(rerddap)
 library(ncdf4)
@@ -95,3 +95,17 @@ usethis::use_data(sst_Med, overwrite = T)
 usethis::use_data(sst_NW_Atl, overwrite = T)
 usethis::use_data(sst_WA, overwrite = T)
 
+
+# The Algiers data from Mahmoud -------------------------------------------
+
+# Load the raw file received via e-mail
+load("data-raw/Algiers.RData")
+
+# Combine the year, month, day columns into a date column
+Algiers <- Algiers %>%
+  unite(year, month, day, sep = "-", col = "t") %>%
+  mutate(t = as.Date(t)) %>%
+  rename(tMax = TX, tMin = TN)
+
+# Add to package
+usethis::use_data(Algiers, overwrite = T)

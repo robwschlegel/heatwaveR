@@ -1,3 +1,8 @@
+# heatwaveR 0.4.0 (2019-07-10)
+
+* Introduced the `Algiers` time series for examples on using multiple thresholds for atmospheric data
+* Fixed a bug in `event_line()`
+
 # heatwaveR 0.4.0 (2019-07-09)
 
 * Changed the `data.table` and `ggplot2` dependencies to imports
@@ -14,11 +19,11 @@
 # heatwaveR 0.3.6.9002 (2019-02-11)
 
 * Added `n` and `n_gap` arguments to `geom_flame()` to allow proper screening of heatspikes
-* These additions also propogate through to `geom2trace.GeomFlame`
+* These additions also propagate through to `geom2trace.GeomFlame`
 
 # heatwaveR 0.3.6.9001 (2019-01-28)
 
-* Added some additional options to `event_line()` to allow users to maniuplate the output
+* Added some additional options to `event_line()` to allow users to manipulate the output
   more without having to get into the source code.
 
 # heatwaveR 0.3.6.9000 (2019-01-23)
@@ -33,7 +38,7 @@
 # heatwaveR 0.3.6 (2019-01-16)
 
 * Finished Alternative Thresholds (Complex Climatologies) vignette
-* Bumbed code coverage back up to 100%
+* Bumped code coverage back up to 100%
 * AN important potential backwards compatibility breaking change is that by default
   `ts2clm()` and `exceedance()` will no longer produce a `var` column
     * The argument `var = TRUE` may be given to produce this column

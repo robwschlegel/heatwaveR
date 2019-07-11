@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -114,7 +114,7 @@
       <h1>Basic Detection and Visualisation of Events</h1>
                         <h4 class="author">AJ Smit and Robert W Schlegel</h4>
             
-            <h4 class="date">2019-05-29</h4>
+            <h4 class="date">2019-07-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/detection_and_visualisation.Rmd"><code>vignettes/detection_and_visualisation.Rmd</code></a></small>
       <div class="hidden name"><code>detection_and_visualisation.Rmd</code></div>
@@ -143,8 +143,8 @@
 <a href="#calculating-marine-heatwaves-mhws" class="anchor"></a>Calculating marine heatwaves (MHWs)</h2>
 <p>Here are the <code><a href="../reference/ts2clm.html">ts2clm()</a></code> and <code><a href="../reference/detect_event.html">detect_event()</a></code> function applied to the Western Australia test data included with this package (<code>sst_WA</code>), which are also discussed by Hobday et al. (2016):</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Load libraries</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(heatwaveR)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(heatwaveR)</a>
 <a class="sourceLine" id="cb3-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co"># Detect the events in a time series</span></a>
 <a class="sourceLine" id="cb3-6" data-line-number="6">ts &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(sst_WA, <span class="dt">climatologyPeriod =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span>))</a>
@@ -184,7 +184,7 @@
 <p>The <code><a href="../reference/event_line.html">event_line()</a></code> and <code><a href="../reference/lolli_plot.html">lolli_plot()</a></code> functions were designed to work directly on the list returned by <code><a href="../reference/detect_event.html">detect_event()</a></code>. If more control over the figures is required, it may be useful to create them in <strong><code>ggplot2</code></strong> by stacking <code>geoms</code>. We specifically created two new <strong><code>ggplot2</code></strong> <code>geoms</code> to reproduce the functionality of <code><a href="../reference/event_line.html">event_line()</a></code> and <code><a href="../reference/lolli_plot.html">lolli_plot()</a></code>. These functions are more general in their functionality and can be used outside of the <strong><code>heatwaveR</code></strong> package, too. To apply them to MHWs and MCSs first requires that we access the <code>climatology</code> or <code>event</code> dataframes within the list that is produced by <code><a href="../reference/detect_event.html">detect_event()</a></code>. Here is how:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># Select the region of the time series of interest</span></a>
 <a class="sourceLine" id="cb7-2" data-line-number="2">mhw2 &lt;-<span class="st"> </span>mhw<span class="op">$</span>climatology <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">10580</span><span class="op">:</span><span class="dv">10720</span>)</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">  </span><span class="kw">slice</span>(<span class="dv">10580</span><span class="op">:</span><span class="dv">10720</span>)</a>
 <a class="sourceLine" id="cb7-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb7-5" data-line-number="5"><span class="kw">ggplot</span>(mhw2, <span class="kw">aes</span>(<span class="dt">x =</span> t, <span class="dt">y =</span> temp, <span class="dt">y2 =</span> thresh)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb7-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="../reference/geom_flame.html">geom_flame</a></span>() <span class="op">+</span></a>
@@ -204,7 +204,7 @@
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co"># It is necessary to give geom_flame() at least one row on either side of </span></a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co"># the event in order to calculate the polygon corners smoothly</span></a>
 <a class="sourceLine" id="cb9-3" data-line-number="3">mhw_top &lt;-<span class="st"> </span>mhw2 <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">5</span><span class="op">:</span><span class="dv">111</span>)</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">  </span><span class="kw">slice</span>(<span class="dv">5</span><span class="op">:</span><span class="dv">111</span>)</a>
 <a class="sourceLine" id="cb9-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb9-6" data-line-number="6"><span class="kw">ggplot</span>(<span class="dt">data =</span> mhw2, <span class="kw">aes</span>(<span class="dt">x =</span> t)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb9-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="../reference/geom_flame.html">geom_flame</a></span>(<span class="kw">aes</span>(<span class="dt">y =</span> temp, <span class="dt">y2 =</span> thresh, <span class="dt">fill =</span> <span class="st">"all"</span>), <span class="dt">show.legend =</span> T) <span class="op">+</span></a>
@@ -225,7 +225,7 @@
 <p><img src="detection_and_visualisation_files/figure-html/fig-example3-1.png" width="768"><!-- ![](vignettes/fig-example4-1.png) --></p>
 <p>It is also worth pointing out that when we use <code><a href="../reference/geom_flame.html">geom_flame()</a></code> directly like this, but we don’t want to highlight events greater less than our standard five day length, allowing for a two day gap, we want to use the arguments <code>n</code> and <code>n_gap</code> respectively.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">mhw3 &lt;-<span class="st"> </span>mhw<span class="op">$</span>climatology <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">850</span><span class="op">:</span><span class="dv">950</span>)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw">slice</span>(<span class="dv">850</span><span class="op">:</span><span class="dv">950</span>)</a>
 <a class="sourceLine" id="cb10-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb10-4" data-line-number="4"><span class="kw">ggplot</span>(mhw3, <span class="kw">aes</span>(<span class="dt">x =</span> t, <span class="dt">y =</span> temp, <span class="dt">y2 =</span> thresh)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb10-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/geom_flame.html">geom_flame</a></span>(<span class="dt">fill =</span> <span class="st">"black"</span>, <span class="dt">alpha =</span> <span class="fl">0.5</span>) <span class="op">+</span></a>
@@ -290,7 +290,7 @@
 <p>Cold spell figures may be created as <code>geoms</code> in <strong><code>ggplot2</code></strong>, too:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="co"># Select the region of the time series of interest</span></a>
 <a class="sourceLine" id="cb16-2" data-line-number="2">mcs2 &lt;-<span class="st"> </span>mcs<span class="op">$</span>climatology <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">2900</span><span class="op">:</span><span class="dv">3190</span>)</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="st">  </span><span class="kw">slice</span>(<span class="dv">2900</span><span class="op">:</span><span class="dv">3190</span>)</a>
 <a class="sourceLine" id="cb16-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb16-5" data-line-number="5"><span class="co"># Note that one must specify a colour other than the default 'salmon'</span></a>
 <a class="sourceLine" id="cb16-6" data-line-number="6"><span class="kw">ggplot</span>(mcs2, <span class="kw">aes</span>(<span class="dt">x =</span> t, <span class="dt">y =</span> thresh, <span class="dt">y2 =</span> temp)) <span class="op">+</span></a>
@@ -307,7 +307,7 @@
 <a href="#minty-mcs-visuals" class="anchor"></a>Minty MCS visuals</h3>
 <p>Again, because <code><a href="../reference/geom_flame.html">geom_flame()</a></code> and <code><a href="../reference/geom_lolli.html">geom_lolli()</a></code> are simple <strong><code>ggplot2</code></strong> geoms, one can go completely bananas with them:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">mcs_top &lt;-<span class="st"> </span>mcs2 <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">125</span><span class="op">:</span><span class="dv">202</span>)</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="st">  </span><span class="kw">slice</span>(<span class="dv">125</span><span class="op">:</span><span class="dv">202</span>)</a>
 <a class="sourceLine" id="cb18-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb18-4" data-line-number="4"><span class="kw">ggplot</span>(<span class="dt">data =</span> mcs2, <span class="kw">aes</span>(<span class="dt">x =</span> t)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb18-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/geom_flame.html">geom_flame</a></span>(<span class="kw">aes</span>(<span class="dt">y =</span> thresh, <span class="dt">y2 =</span> temp, <span class="dt">fill =</span> <span class="st">"all"</span>), <span class="dt">show.legend =</span> T) <span class="op">+</span></a>

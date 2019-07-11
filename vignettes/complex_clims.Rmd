@@ -21,13 +21,13 @@ knitr::opts_chunk$set(fig.width = 8, fig.height = 3, fig.align = 'centre',
 
 ## Overview
 
-The __`heatwaveR`__ package was designed to include many different methods for the creation of climatologies and thresholds for detecting extremes events (e.g. heatwaves and cold-spells) in time series data. To this end we made a very large change in the event detection pipeline when we moved from the __`RmarineHeatWaves`__ package to __`heatwaveR`__. This change may primarily be seen with the inclusion of the `ts2clm()` function and the removal of climatology generating found in `RmarineHeatWaves::detect()` in favour of `detect_event()`, which does not calculate climatologies. In this way we have allowed for the introduction of a multitude of more complex climatology calculation and event detection/filtering methods. It is our overarching goal to provide one package that allows climate scientists to calculate these events in both the atmosphere and oceans. But rather than talking about it, let's walk through some case studies on how this package can be used for diverse applications.
+The __`heatwaveR`__ package was designed to include many different methods for the creation of climatologies and thresholds for detecting extremes events (e.g. heatwaves and cold-spells) in time series data. To this end we made a very large change in the event detection pipeline when we moved from the __`RmarineHeatWaves`__ package to __`heatwaveR`__. This change may primarily be seen with the inclusion of the `ts2clm()` function and the removal of the climatology performed in `RmarineHeatWaves::detect()` in favour of `detect_event()`, which does not calculate climatologies. In this way we have allowed for the introduction of a multitude of more complex climatology calculation and event detection/filtering methods. It is our overarching goal to provide one package that allows climate scientists to calculate these events in both the atmosphere and oceans. But rather than talking about it, let's walk through some case studies on how this package can be used for diverse applications.
 
 ## Double thresholds
 
-Brought to our attention by Mr. Haouari from the IHFR institute of meteorology in Algeria was the concept of using a flat (e.g. 25$^\circ$C) `tMin` bottom boundary when calculating events from `tMax` with the standard 90th percentile upper threshold. As the authors of the __`heatwaveR`__ package are admittedly marine oriented, we tend to work with daily time series that have only one mean value per day (`tMean`; `temp`; `sst`). This is why there are not arguments in the __`heatwaveR`__ suite of functions that call on `tMin` and `tMax` explicitly, but that does not mean that one cannot do so. Below we will work through the steps one would take to calculate (atmospheric) heatwaves, as per their definition in @Perkins2013 (but excluding the calculation of EHF), and with the additional step proposed by Mr. Haouari.
+Brought to our attention by Mr. Haouari from the Hydrometeorological Institute of Training and Research (IHFR) in Algeria was the concept of using a flat (e.g. 19$^\circ$C) `tMin` bottom boundary when calculating events from `tMax` with the standard 90th percentile upper threshold. As the authors of the __`heatwaveR`__ package are admittedly marine oriented, we tend to work with daily time series that have only one mean value per day (e.g. `tMean`, `temp`, `sst`). This is why there are not arguments in the __`heatwaveR`__ suite of functions that call on `tMin` and `tMax` explicitly, but that does not mean that one cannot do so. Below we will work through the steps one would take to calculate (atmospheric) heatwaves, as per their definition in @Perkins2013 (but excluding the calculation of EHF), and with the additional step proposed by Mr. Haouari.
 
-The following sub-sections will show the step-by-step process one may use to calculate atmospheric heatwaves using a 90th percentile threshold created from the `tMax` time series for a location, but will only use the days when the corresponding `tMin` also exceeds a pre-determined flat bottom boundary on the same days to quantify the heatwave metric. We will finish by visualising the results with the built-in __`heatwaveR`__ graphing functions `event_line()` and `lolli_plot`. In the following section we will demonstrate how to detect events with only one threshold (the default method) and filter those results with another threshold.
+The following sub-sections will show the step-by-step process one may use to calculate atmospheric heatwaves using a 90th percentile threshold created from the `tMax` time series for a location, but will only use the days when the corresponding `tMin` also exceeds a pre-determined flat bottom boundary on the same days to quantify the heatwave metrics. We will finish by visualising the results with the built-in __`heatwaveR`__ graphing functions of `event_line()` and `lolli_plot` as well as a bubble plot. The data we will use for these examples will be a 45 year time series of daily atmospheric `tMin` and `tMax` temperatures over Algiers, Algeria contributed by Mr. Haouari.
 
 ### Data prep
 
@@ -37,53 +37,33 @@ The first step with any analysis in R should be the loading of the packages to b
 library(tidyverse)
 library(ggpubr)
 library(heatwaveR)
-
-# We will use this package to download atmospheric temperature data
-# Era-interim would be ideal but as of this writing it is still not 
-# possible to downloaded it natively in R
-library(weathercan)
 ```
 
-With our libraries loaded, we will now go about downloading some weather station data. I am using the __`weathercan`__ package for this because I currently live in Halifax, Nova Scotia, Canada. But anyone following along should feel free to use whatever data they would like. So long as the data have a date (`t`), `tMin`, and `tMax` column this code will function as designed. We will download and prepare the Halifax Airport weather data in the following code chunk.
+With our libraries loaded, we will now go about explicitly calling the `Algiers` data into our environment. These data are automatically loaded for us when we load the `heatwaveR` library, but we perform this step here just for clarity. Anyone following along should feel free to use whatever data they would like. As long as the data have a date (`t`), `tMin`, and `tMax` column this code will function as designed.
 
 ```{r data-prep, eval=T}
-# If you'd like to see what stations aare available, run the following line of code:
-# station_ID <- weathercan::stations_dl()
-
-# Download Halifax Airport data
-halifax_raw <- weather_dl(station_ids = c(6358, 50620), interval = "day", quiet = T)
-
-# Prepare for analysis
-halifax <- halifax_raw %>% 
-  dplyr::select(date, min_temp, max_temp) %>% 
-  dplyr::rename(t = date, tMin = min_temp, tMax = max_temp) %>% 
-  dplyr::filter(t >= "1960-01-01") %>%
-  na.omit()
+Algiers <- heatwaveR::Algiers
 ```
-
-<!-- # ```{r data-prep-sneaky, echo=F} -->
-<!-- # # write_csv(halifax, "~/Desktop/halifax.csv") -->
-<!-- # halifax <- read_csv("~/Desktop/halifax.csv") -->
-<!-- # ``` -->
 
 ### Calculating thresholds
 
-With our data downloaded and prepared, we will now calculate the two thresholds we need to correctly detect the heatwaves and accurately quantify their metrics. The first is the 90th percentile threshold based on the `tMax` time series. The second is the flat exceedance of 15$^\circ$C based on the `tMin` data. I've chosen 15$^\circ$C here arbitrarily just from looking at the time series data and seeing that this is a moderately warm summer temperature. Theoretically one would have chosen this flat bottom threshold based on some biologically relevant threshold known *a priori*. For (fake) example, the night-time thermal envelope of the nesting red-crested maple leaf snatcher.
+With our libraries and data loaded, we will now calculate the two thresholds we need to correctly detect the heatwaves and accurately quantify their metrics. The first is the 90th percentile threshold based on the `tMax` time series. The second is the flat exceedance of 19$^\circ$C based on the `tMin` data. We use 19$^\circ$C as the bottom threshold as this is roughly the mean `tMin` for summer temperatures.
 
 ```{r clim-calc}
 # The tMax threshold
 # The current WMO standard climatology period is 1981-01-01 to 2010-12-31 and should be used when possible
-tMax_clim <- ts2clm(data = halifax, y = tMax, climatologyPeriod = c("1981-01-01", "2010-12-31"), pctile = 90)
+# We rather use 1961-01-01 to 1990-01-01 as this is the oldest 30 year period available in the data
+tMax_clim <- ts2clm(data = Algiers, y = tMax, climatologyPeriod = c("1961-01-01", "1990-12-31"), pctile = 90)
 
 # The tMin exceedance
 # Note the use here of 'minDuration = 3' and 'maxGap = 1' as the default atmospheric arguments
-# The default marine arguemnts are 'minDuration = 5' and 'maxGap = 2'
-tMin_exc <- exceedance(data = halifax, y = tMin, threshold = 15, minDuration = 3, maxGap = 1)$threshold
+# The default marine arguments are 'minDuration = 5' and 'maxGap = 2'
+tMin_exc <- exceedance(data = Algiers, y = tMin, threshold = 19, minDuration = 3, maxGap = 1)$threshold
 ```
 
 ### Calculating events
 
-Now that the two thresholds have been calculated we use the `detect_event()` function as usual, but provide the second threshold to the argument `threshClim2` that normally would lay dormant.
+Now that the two thresholds have been calculated we use the `detect_event()` function as usual, but provide the second threshold to the argument `threshClim2` that would normally lay dormant.
 
 ```{r events}
 # Note that because we calculated our 90th percentile threshold on a column named 'tMax' 
@@ -92,18 +72,29 @@ events <- detect_event(data = tMax_clim, y = tMax, # The 90th percentile thresho
                        threshClim2 = tMin_exc$exceedance) # The flat exceedance threshold
 ```
 
-Please note that even though the use of the second threshold does allow for the resultant event metrics to differ, the values themselves are still being calculated against the seasonal climatology and daily temperatures for the time series given to the 90th percentile threshold calculation (in this case `tMax`) and so using a second threshold (in this case `tMin`) won't generally have much of an effect on the event metrics. Rather it mostly screens out smaller or larger events depending on how one chooses to set the threshold. In the case when an exceedance threshold is chosen for a temperature that would typically only occur in summer (e.g. 15$^\circ$C, as used here), one is also effectively screening events by season. There are many use cases where this would be desirable. For example, if one is only interested in events that would occur during a season in which a migrating species may be found in an area, such as our eponymous maple leaf snatcher.
+Please note that even though the use of the second threshold does allow for the resultant event metrics to differ, the values themselves are still being calculated against the seasonal climatology and daily temperatures for the time series given to the 90th percentile threshold calculation (in this case `tMax`) and so using a second threshold (in this case `tMin`) won't generally have much of an effect on the event metrics. Rather it mostly screens out smaller or larger events depending on how one chooses to set the threshold. In the case when an exceedance threshold is chosen for a temperature that would typically only occur in summer (e.g. 19$^\circ$C, as used here), one is also effectively screening events by season. There are many use cases where this would be desirable. For example, if one is only interested in events that would occur during a season in which night time heat stress becomes an issue for the young and elderly.
 
 ### Creating visuals
 
 Even though we have used two thresholds to calculate our events, the results are output the same as though only one threshold (default) were used. This means that we may use the visualisation functions that come with __`heatwaveR`__ without any extra fuss.
 
-```{r visuals}
-# don't forget to set 'event_line(y = tMax)'
+```{r visuals, fig.height=6}
+# The code to create a bubble plot for the heatwave results
+bubble_plot <- ggplot(data = events$event, aes(x = date_peak, y = intensity_max)) +
+  geom_point(aes(size = intensity_cumulative), shape = 21, fill = "salmon", alpha = 0.8) +
+  labs(x = NULL, y = "Maximum Intensity [°C] ", size = "Cumulative Intensity [°C x days]") +
+  scale_size_continuous(range = c(1, 10), 
+                        guide = guide_legend(title.position = "top", direction = "horizontal")) +
+  theme_bw() +
+  theme(legend.position = c(0.3, 0.12),
+        legend.box.background = element_rect(colour = "black"))
+
+# Don't forget to set 'event_line(y = tMax)'
 ggarrange(event_line(events, y = tMax, metric = "intensity_max"),
           event_line(events, y = tMax, metric = "intensity_max", category = T),
           lolli_plot(events),
-          ncol = 1, nrow = 3, align = "v")
+          bubble_plot,
+          ncol = 2, nrow = 2, align = "hv")
 ```
 
 ### Alternative second thresholds
@@ -117,15 +108,15 @@ Below we will look at how to detect/calculate events that meet these rather spec
 # specify the chosen column name twice, once for ts2clm() and again for detect_event()
 
 # First threshold based on tMin
-thresh_tMin <- ts2clm(data = halifax, y = tMin, pctile = 80, 
-                                climatologyPeriod = c("1981-01-01", "2010-12-31"))
+thresh_tMin <- ts2clm(data = Algiers, y = tMin, pctile = 80, 
+                      climatologyPeriod = c("1961-01-01", "1990-12-31"))
 
 # Second threshold based on tMax
 # Be careful here that you put the arguments within the correct brackets
-thresh_tMax <- detect_event(ts2clm(data = halifax, y = tMax, pctile = 90, 
-                                   climatologyPeriod = c("1981-01-01", "2010-12-31")),
-                         # These arguments are passed to detect_event()
-                                minDuration = 3, maxGap = 0, y = tMax, protoEvents = T)
+thresh_tMax <- detect_event(ts2clm(data = Algiers, y = tMax, pctile = 90, 
+                                   climatologyPeriod = c("1961-01-01", "1990-12-31")),
+                            # These arguments are passed to detect_event(), not ts2clm()
+                            minDuration = 3, maxGap = 0, y = tMax, protoEvents = T)
 
 # Detect/calculate events using the two precalculated thresholds
 # Because detect_event() is not able to deduce which arguments we used above,
@@ -150,7 +141,7 @@ head(events_one_thresh$event)
 head(events_two_thresh$event)
 ```
 
-If we look at these results we see that the use of two thresholds created far fewer events than the use of one threshold. This is because the second threshold was much more 'difficult' for the time series to surpass than the first. This method allows for a lot of flexibility, but users should also be cautious that they understand what exactly they are asking their machines to do. In the case above, it is likely that we would actually prefer to calculate our event metrics based entirely on the first threshold, but filter out the events that didn't meet our second threshold criteria. We will see how to do this in the following section.
+If we look at these results we see that the use of two thresholds did not detected fewer events than the use of one threshold. This is because even though the second threshold was much more 'difficult' for the time series to surpass than the first, the heatwaves in the time series are so pronounced that they emerge regardless. This method allows for a lot of flexibility, but users should also be cautious that they understand what exactly they are asking their machines to do. In the case above, it may be that we would actually prefer to calculate our event metrics based entirely on the first threshold, but filter out the events that didn't meet our second threshold criteria. We will see how to do this in the following section.
 
 ## Filtering with a second threshold
 
@@ -161,7 +152,7 @@ The methodology outlined below for the detection and filtering of events with tw
 Because we have already calculated our single threshold events (`events_one_thresh`) and our second threshold (`thresh_tMax`) we may directly begin filtering the results. Before we do so, let's pull out the list components of our results into dataframes for easier use down the line.
 
 ```{r event-data-frame}
-# Pull out each data.frame as there own object for easier use
+# Pull out each data.frame as their own object for easier use
 events_one_event <- events_one_thresh$event
 events_one_climatology <- events_one_thresh$climatology
 ```
@@ -195,7 +186,7 @@ head(events_one_thresh_filtered$event)
 head(events_two_thresh$event)
 ```
 
-The event numbers found in `events_one_thresh_filtered` are similar to the event numbers found in `events_two_thresh` with the important difference that the event metrics in `events_two_thresh` were calculated only on the days that exceeded both thresholds, while the events in `events_one_thresh_filtered` have had their metrics calculated from all of the days that exceeded only the first threshold.
+The event numbers found in `events_one_thresh_filtered` are the same as the event numbers found in `events_two_thresh` with the important difference that the event metrics in `events_two_thresh` were calculated only on the days that exceeded both thresholds, while the events in `events_one_thresh_filtered` have had their metrics calculated from all of the days that exceeded only the first threshold.
 
 ### Visualising filtered events
 
@@ -217,9 +208,9 @@ One may of course visualise the outputs from the events calculated here with `ge
 
 ## Summary
 
-This vignette serves as a guideline for how to implement multiple methodologies for using two thresholds (`tMin` and `tMax`) with atmospheric. We also showed in this vignette a more straight forward approach to using a second threshold through the built-in arguments in `detect_event()`. The use of a second threshold in this way, whether it be based on a static threshold or one derived from a percentile, is useful for the consideration of events that may be more specifically relevant to a given organism.
+This vignette serves as a guideline for how to implement multiple methodologies for using two thresholds (`tMin` and `tMax`) with atmospheric data. We also showed in this vignette a more straight forward approach to using a second threshold through the built-in arguments in `detect_event()`. The use of a second threshold in this way, whether it be based on a static threshold or one derived from a percentile, is useful for the consideration of events that may be more specifically relevant to a given season or organism.
 
-I hope the techniques shown in this vignette will be useful both technically and theoretically. The authors of __`heatwaveR`__ are very happy to receive any further input on the development of the package as well as other potential methods for calculating heatwaves and cold-spells.
+I hope the techniques shown in this vignette will be useful both technically and theoretically. The authors of __`heatwaveR`__ are very happy to receive any further input on the development of the package as well as other potential methods for calculating heatwaves and cold-spells in air or sea.
 
 ## References
 

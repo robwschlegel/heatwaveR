@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -114,7 +114,7 @@
       <h1>Calculating and Visualising Exceedances</h1>
                         <h4 class="author">Robert W Schlegel</h4>
             
-            <h4 class="date">2019-05-29</h4>
+            <h4 class="date">2019-07-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/exceedance.Rmd"><code>vignettes/exceedance.Rmd</code></a></small>
       <div class="hidden name"><code>exceedance.Rmd</code></div>
@@ -133,16 +133,16 @@
 <a href="#calculating-exceedances" class="anchor"></a>Calculating exceedances</h2>
 <p>The calculation of exceedances may be done with only one function as seen here:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># Activate libraries</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(heatwaveR)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(heatwaveR)</a>
 <a class="sourceLine" id="cb1-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co"># Calculate exceedence</span></a>
 <a class="sourceLine" id="cb1-6" data-line-number="6">exc_<span class="dv">25</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/exceedance.html">exceedance</a></span>(sst_WA, <span class="dt">threshold =</span> <span class="dv">25</span>)</a>
 <a class="sourceLine" id="cb1-7" data-line-number="7"></a>
 <a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co"># Look at a few metrics</span></a>
 <a class="sourceLine" id="cb1-9" data-line-number="9">exc_<span class="dv">25</span><span class="op">$</span>exceedance <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(exceedance_no, duration, date_start, date_peak, intensity_max, intensity_cumulative) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="st">  </span><span class="kw">select</span>(exceedance_no, duration, date_start, date_peak, intensity_max, intensity_cumulative) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb1-12" data-line-number="12"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(<span class="op">-</span>intensity_cumulative) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb1-13" data-line-number="13"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="dv">5</span>)</a></code></pre></div>
 <pre><code>## # A tibble: 5 x 6
@@ -161,7 +161,7 @@
 <a href="#visualising-exceedances" class="anchor"></a>Visualising exceedances</h2>
 <p>Because <code><a href="../reference/event_line.html">event_line()</a></code> and <code><a href="../reference/lolli_plot.html">lolli_plot()</a></code> are designed to work on the output of <code><a href="../reference/detect_event.html">detect_event()</a></code>, if we want to visualise the results of <code><a href="../reference/exceedance.html">exceedance()</a></code> we will need to do so ‘by hand’ with <strong><code>ggplot2</code></strong>. The code below works as an example of how to do so:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">exc_<span class="dv">25</span>_thresh &lt;-<span class="st"> </span>exc_<span class="dv">25</span><span class="op">$</span>threshold <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">9500</span><span class="op">:</span><span class="dv">9866</span>)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="st">  </span><span class="kw">slice</span>(<span class="dv">9500</span><span class="op">:</span><span class="dv">9866</span>)</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb3-4" data-line-number="4"><span class="kw">ggplot</span>(<span class="dt">data =</span> exc_<span class="dv">25</span>_thresh, <span class="kw">aes</span>(<span class="dt">x =</span> t)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/geom_flame.html">geom_flame</a></span>(<span class="kw">aes</span>(<span class="dt">y =</span> temp, <span class="dt">y2 =</span> thresh, <span class="dt">fill =</span> <span class="st">"all"</span>), <span class="dt">show.legend =</span> F) <span class="op">+</span></a>
@@ -201,7 +201,7 @@
 <a href="#visualising-negative-exceedances" class="anchor"></a>Visualising negative exceedances</h2>
 <p>Were one to desire a visualisation of these data it could be produced with the following code:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">exc_<span class="dv">19</span>_thresh &lt;-<span class="st"> </span>exc_<span class="dv">19</span><span class="op">$</span>threshold <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span>(<span class="dv">1500</span><span class="op">:</span><span class="dv">1866</span>)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw">slice</span>(<span class="dv">1500</span><span class="op">:</span><span class="dv">1866</span>)</a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb6-4" data-line-number="4"><span class="kw">ggplot</span>(<span class="dt">data =</span> exc_<span class="dv">19</span>_thresh, <span class="kw">aes</span>(<span class="dt">x =</span> t)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb6-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/geom_flame.html">geom_flame</a></span>(<span class="kw">aes</span>(<span class="dt">y =</span> thresh, <span class="dt">y2 =</span> temp), <span class="dt">fill =</span> <span class="st">"steelblue3"</span>, <span class="dt">show.legend =</span> F) <span class="op">+</span></a>

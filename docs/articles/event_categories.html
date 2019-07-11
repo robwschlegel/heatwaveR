@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -114,7 +114,7 @@
       <h1>Calculating and Visualising Event Categories</h1>
                         <h4 class="author">Robert W Schlegel</h4>
             
-            <h4 class="date">2019-05-29</h4>
+            <h4 class="date">2019-07-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/event_categories.Rmd"><code>vignettes/event_categories.Rmd</code></a></small>
       <div class="hidden name"><code>event_categories.Rmd</code></div>
@@ -161,8 +161,8 @@
 <a href="#calculating-mhw-categories" class="anchor"></a>Calculating MHW categories</h2>
 <p>The categories of MHWs under the Hobday et al. (2018) naming scheme may be calculated with the <strong><code>heatwaveR</code></strong> package using the <code><a href="../reference/category.html">category()</a></code> function on the output of the <code><a href="../reference/detect_event.html">detect_event()</a></code> function. By default this function will order events from most to least intense. Note that one may control the output for the names of the events by providing ones own character string for the <code>name</code> argument. Because we have calculated MHWs on the Western Australia data, we provide the name “WA” below:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># Load libraries</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(heatwaveR)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(heatwaveR)</a>
 <a class="sourceLine" id="cb1-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co"># Calculate events</span></a>
 <a class="sourceLine" id="cb1-6" data-line-number="6">ts &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(sst_WA, <span class="dt">climatologyPeriod =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span>))</a>
