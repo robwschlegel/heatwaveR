@@ -127,7 +127,7 @@ The events are summarised using a range of event metrics:
 
 Note that `rate_onset` and `rate_decline` will return `NA` when the event begins/ends on the first/last day of the time series. This may be particularly evident when the function is applied to large gridded data sets. Although the other metrics do not contain any errors and provide sensible values, please take this into account in the interpretation of the output. It must also be noted that events whose `date_peak` occur on the same day as the `date_start` or `date_end` of the event will return small negative values. This tends to only occur in areas with persistent ice cover. The authors are currently thinking about how best to handle this exception.
 
-## Vignettes
+## The Vignettes
 
 For detailed explanations and walkthroughs on the use of the __`heatwaveR`__ package please click on the articles tab in the toolbar above, or follow the links below:
 
@@ -137,6 +137,10 @@ For detailed explanations and walkthroughs on the use of the __`heatwaveR`__ pac
   * For examples on the calculation of atmospheric events with [alternative thresholds](https://robwschlegel.github.io/heatwaveR/articles/complex_clims.html).
   * For a demonstration on how to [download and prepare OISST data](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html).
   * Which may then have the `detect_event()` function applied to the [gridded data](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html), and then fit a GLM and plot the results.
+
+## The Marine Heatwave Tracker
+
+To see the __`heatwaveR`__ package in action, check out the [Marine Heatwave Tracker](http://www.marineheatwaves.org/tracker.html) website. This is a daily updating global analysis of where in the world marine heatwaves are occurring. It has near real-time information as well as historic data going back to January 1st, 1982 and uses the Hobday et al. (2018) colour scheme to show how intense the MHWs are.
 
 ## Contributing to __`heatwaveR`__ 
 

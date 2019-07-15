@@ -309,9 +309,9 @@
 <p><code>intensity_max_abs</code>, <code>intensity_mean_abs</code>, <code>intensity_var_abs</code>, and <code>intensity_cumulative_abs</code> are as above except as absolute magnitudes rather than relative to the seasonal climatology or threshold.</p>
 <p>Note that <code>rate_onset</code> and <code>rate_decline</code> will return <code>NA</code> when the event begins/ends on the first/last day of the time series. This may be particularly evident when the function is applied to large gridded data sets. Although the other metrics do not contain any errors and provide sensible values, please take this into account in the interpretation of the output. It must also be noted that events whose <code>date_peak</code> occur on the same day as the <code>date_start</code> or <code>date_end</code> of the event will return small negative values. This tends to only occur in areas with persistent ice cover. The authors are currently thinking about how best to handle this exception.</p>
 </div>
-<div id="vignettes" class="section level2">
+<div id="the-vignettes" class="section level2">
 <h2 class="hasAnchor">
-<a href="#vignettes" class="anchor"></a>Vignettes</h2>
+<a href="#the-vignettes" class="anchor"></a>The Vignettes</h2>
 <p>For detailed explanations and walkthroughs on the use of the <strong><code>heatwaveR</code></strong> package please click on the articles tab in the toolbar above, or follow the links below:</p>
 <ul>
 <li>For a basic introduction to the <a href="https://robwschlegel.github.io/heatwaveR/articles/detection_and_visualisation.html">detection and visualisation</a> of events.</li>
@@ -321,6 +321,11 @@
 <li>For a demonstration on how to <a href="https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html">download and prepare OISST data</a>.</li>
 <li>Which may then have the <code><a href="reference/detect_event.html">detect_event()</a></code> function applied to the <a href="https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html">gridded data</a>, and then fit a GLM and plot the results.</li>
 </ul>
+</div>
+<div id="the-marine-heatwave-tracker" class="section level2">
+<h2 class="hasAnchor">
+<a href="#the-marine-heatwave-tracker" class="anchor"></a>The Marine Heatwave Tracker</h2>
+<p>To see the <strong><code>heatwaveR</code></strong> package in action, check out the <a href="http://www.marineheatwaves.org/tracker.html">Marine Heatwave Tracker</a> website. This is a daily updating global analysis of where in the world marine heatwaves are occurring. It has near real-time information as well as historic data going back to January 1st, 1982 and uses the Hobday et al. (2018) colour scheme to show how intense the MHWs are.</p>
 </div>
 <div id="contributing-to-heatwaver" class="section level2">
 <h2 class="hasAnchor">

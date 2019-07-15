@@ -42,7 +42,7 @@ library(heatwaveR)
 With our libraries loaded, we will now go about explicitly calling the `Algiers` data into our environment. These data are automatically loaded for us when we load the `heatwaveR` library, but we perform this step here just for clarity. Anyone following along should feel free to use whatever data they would like. As long as the data have a date (`t`), `tMin`, and `tMax` column this code will function as designed.
 
 ```{r data-prep, eval=T}
-Algiers <- heatwaveR::Algiers
+Algiers <- Algiers
 ```
 
 ### Calculating thresholds
