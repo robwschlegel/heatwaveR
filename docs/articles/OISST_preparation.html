@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Downloading and Preparing OISST Data • heatwaveR</title>
+<title>Downloading and Preparing NOAA OISST Data • heatwaveR</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/spacelab/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Downloading and Preparing OISST Data">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Downloading and Preparing NOAA OISST Data">
 <meta property="og:description" content="This vignette demonstrates how to download OISST netCDF files and prepare them for the detection of marine heatwaves.">
 <meta property="og:image" content="https://robwschlegel.github.io/heatwaveR/index.html/logo.png">
 <meta name="twitter:card" content="summary">
@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0.9000</span>
       </span>
     </div>
 
@@ -111,10 +111,10 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Downloading and Preparing OISST Data</h1>
-                        <h4 class="author">AJ Smit and Robert W Schlegel</h4>
+      <h1>Downloading and Preparing NOAA OISST Data</h1>
+                        <h4 class="author">Robert W Schlegel and AJ Smit</h4>
             
-            <h4 class="date">2019-07-15</h4>
+            <h4 class="date">2019-07-22</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/OISST_preparation.Rmd"><code>vignettes/OISST_preparation.Rmd</code></a></small>
       <div class="hidden name"><code>OISST_preparation.Rmd</code></div>
@@ -127,80 +127,93 @@
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
 <p>In this vignette we will see how to retrieve and prepare <a href="https://journals.ametsoc.org/doi/full/10.1175/2007JCLI1824.1">Reynolds optimally interpolated sea surface temperature</a> (OISST) data for calculating marine heatwaves (MHWs). The OISST product is a global 1/4 degree gridded dataset of Advanced Very High Resolution Radiometer (AVHRR) derived SSTs at a daily resolution, starting on 1 September 1981. The source of the data is currently the <a href="https://www.ncdc.noaa.gov/oisst">NOAA NCDC</a>.</p>
-<p>Each global, daily file is around 8.3 MB, so they add up to a large amount of data when a time series of at least 30 years duration is downloaded. Remember that a time series of at least 30 years is needed for heatwave detection. If one were to download all of the data currently available it would now be much larger than 100 GB of total disk space. So it is therefore advantageous to download only a a subset of data. Thanks to the <strong><code>rerddap</code></strong> package this is now easy to do.</p>
+<p>Each global, daily file is around 8.3 MB, so they add up to a large amount of data when a time series of at least 30 years duration is downloaded. Remember that a time series of at least 30 years is recommended for heatwave detection. If one were to download all of the data currently available it would be much larger than 100 GB of total disk space. So it is usually preferable to download only a a subset of data. Thanks to the <strong><code>rerddap</code></strong> package this is now very easy to do in <code>R</code>.</p>
 </div>
-<div id="downloading-data" class="section level2">
+<div id="downloading-and-preparing-data" class="section level2">
 <h2 class="hasAnchor">
-<a href="#downloading-data" class="anchor"></a>Downloading data</h2>
-<p>Thanks to some recent developments in access capabilities to the data generated by the environmental observation organisations in the United States it is now much easier to access their data. For the purposes of this vignette we will be accessing the NOAA OISST data hosted on this <a href="https://www.ncei.noaa.gov/erddap/griddap/ncdc_oisst_v2_avhrr_by_time_zlev_lat_lon.html">ERDDAP web interface</a>. One may download the data there manually using the remarkably user friendly web interface, or use the <strong><code>rerddap</code></strong> package to do the same through R.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># The three packages we will need</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(rerddap)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ncdf4)</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co"># The information for the NOAA OISST data</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/rerddap/topics/info">info</a></span>(<span class="dt">datasetid =</span> <span class="st">"ncdc_oisst_v2_avhrr_by_time_zlev_lat_lon"</span>, <span class="dt">url =</span> <span class="st">"https://www.ncei.noaa.gov/erddap/"</span>)</a></code></pre></div>
+<a href="#downloading-and-preparing-data" class="anchor"></a>Downloading and preparing data</h2>
+<div id="the-packages" class="section level3">
+<h3 class="hasAnchor">
+<a href="#the-packages" class="anchor"></a>The packages</h3>
+<p>The data generated by the environmental observation organisations in the United States are now rather easy to download. For the purposes of this vignette we will be accessing the NOAA OISST data hosted on this <a href="https://www.ncei.noaa.gov/erddap/griddap/ncdc_oisst_v2_avhrr_by_time_zlev_lat_lon.html">ERDDAP web interface</a>. One may download the data there manually with the user friendly web interface, or use the <strong><code>rerddap</code></strong> package to do the same through <code>R</code>. Due to some recent developments, the <strong><code>rerddap</code></strong> package on CRAN may provide an unstable interface to the NOAA ERDDAP servers. This issue has already been addressed in the development version of the package and so we will begin by installing the package from there. Please note that this package has quite a few dependencies and so may take some time to install. If any errors are encountered during this process please consult the GitHub page <a href="https://github.com/ropensci/rerddap">here</a>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># Install the development version of the rerddap package from GitHub</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co"># NB: Only need to run this once</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co"># devtools::install_github("ropensci/rerddap")</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co"># The two packages we will need</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(rerddap)</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co"># The information for the NOAA OISST data</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="kw"><a href="https://www.rdocumentation.org/packages/rerddap/topics/info">info</a></span>(<span class="dt">datasetid =</span> <span class="st">"ncdc_oisst_v2_avhrr_by_time_zlev_lat_lon"</span>, <span class="dt">url =</span> <span class="st">"https://www.ncei.noaa.gov/erddap/"</span>)</a></code></pre></div>
 <p>With our packages loaded and our target dataset identified, we may now simply download it with <code><a href="https://www.rdocumentation.org/packages/rerddap/topics/griddap">griddap()</a></code>. While putting this vignette together however I noticed one little hiccup in the work flow. It seems that the ERDDAP server does not like it when one tries to access more than nine consecutive years of data in one request, regardless of the spatial extent being requested. So before we download our data we are going to make a small wrapper function that we can tell the range of times we want to download. This will reduce the amount of redundant coding we would otherwise need to do.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># This function expects the user to provide it with two values </span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co"># that match the time format of the target OISST dataset</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">OISST_sub &lt;-<span class="st"> </span><span class="cf">function</span>(times){</a>
+</div>
+<div id="the-function" class="section level3">
+<h3 class="hasAnchor">
+<a href="#the-function" class="anchor"></a>The function</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># This function expects the user to provide it with a start and end date</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co"># It then downloads and prepares the data</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">OISST_sub &lt;-<span class="st"> </span><span class="cf">function</span>(time_df){</a>
 <a class="sourceLine" id="cb2-4" data-line-number="4">  oisst_res &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/rerddap/topics/griddap">griddap</a></span>(<span class="dt">x =</span> <span class="st">"ncdc_oisst_v2_avhrr_by_time_zlev_lat_lon"</span>, </a>
 <a class="sourceLine" id="cb2-5" data-line-number="5">                       <span class="dt">url =</span> <span class="st">"https://www.ncei.noaa.gov/erddap/"</span>, </a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">                        <span class="dt">time =</span> times, </a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">                        <span class="dt">depth =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">0</span>),</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">                        <span class="dt">latitude =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="op">-</span><span class="dv">40</span>, <span class="dv">-35</span>),</a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">                        <span class="dt">longitude =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">15</span>, <span class="dv">21</span>),</a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">                        <span class="dt">fields =</span> <span class="st">"sst"</span>)</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11">}</a></code></pre></div>
+<a class="sourceLine" id="cb2-6" data-line-number="6">                       <span class="dt">time =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(time_df<span class="op">$</span>start, time_df<span class="op">$</span>end), </a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">                       <span class="dt">depth =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">0</span>),</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">                       <span class="dt">latitude =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="op">-</span><span class="dv">40</span>, <span class="dv">-35</span>),</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9">                       <span class="dt">longitude =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">15</span>, <span class="dv">21</span>),</a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">                       <span class="dt">fields =</span> <span class="st">"sst"</span>)<span class="op">$</span>data <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">time =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.Date">as.Date</a></span>(<span class="kw">str_remove</span>(time, <span class="st">"T00:00:00Z"</span>))) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="st">    </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">rename</a></span>(<span class="dt">t =</span> time, <span class="dt">temp =</span> sst) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="st">    </span><span class="kw">select</span>(lon, lat, t, temp) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/na.fail">na.omit</a></span>()</a>
+<a class="sourceLine" id="cb2-15" data-line-number="15">}</a></code></pre></div>
 <p>In the wrapper function above we see that we have chosen to download only the ‘sst’ data out of the several variables available to us. We also see that we have chosen the spatial extent of latitude -40 to -35 and longitude 15 to 21. This a small window over some of the Agulhas Retroflection to the south west of the coastline of South Africa. A larger area is not being chosen here simply due to the speed constraints of downloading the data and detecting the events therein. One may change the lon/lat values above as is necessary to match a desired study area.</p>
-<p>With our wrapper function written we now run it a few times in order to grab all of the available OISST data as of the writing of this vignette. Each one of the files below is ~7.0 MB. Regardless of the size of the file, the overall download time doesn’t differ by much. It appears that the bottle neck is somewhere on the ERDDAP server.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">OISST1 &lt;-<span class="st"> </span><span class="kw">OISST_sub</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"1981-09-01T00:00:00Z"</span>, <span class="st">"1990-12-31T00:00:00Z"</span>))</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">OISST2 &lt;-<span class="st"> </span><span class="kw">OISST_sub</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"1991-01-01T00:00:00Z"</span>, <span class="st">"1999-12-31T00:00:00Z"</span>))</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">OISST3 &lt;-<span class="st"> </span><span class="kw">OISST_sub</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"2000-01-01T00:00:00Z"</span>, <span class="st">"2008-12-31T00:00:00Z"</span>))</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">OISST4 &lt;-<span class="st"> </span><span class="kw">OISST_sub</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"2009-01-01T00:00:00Z"</span>, <span class="st">"2013-12-03T00:00:00Z"</span>))</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">OISST5 &lt;-<span class="st"> </span><span class="kw">OISST_sub</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"2014-01-01T00:00:00Z"</span>, <span class="st">"2018-12-03T00:00:00Z"</span>))</a></code></pre></div>
-<p>It is worth pointing out here that these data are downloaded as cached files on the users computer by using the <strong><code>hoardr</code></strong> package. This means that if one runs the same command again, it will not re-download the data again because it first looks in the folder where it has automatically cached the data for you and sees that it may simply draw the data from there. This is remarkably convenient as it means that re-running this same code will load the data that have already been downloaded. No need to change anything or write a second script for loading data.</p>
+<p>The wrapper function above will also be re-labelling the ‘time’ column as ‘t’, and the ‘sst’ column as ‘temp’. We do this so that they match the default column names that are expected for calculating MHWs and we won’t have to do any extra work later on.</p>
+<p>One must note here that depending on the RAM available on ones machine, it may not be possible to handle all of the data downloaded at once if they are very large (e.g. &gt; 5 GB). The discussion on the limitations of the R language due to its dependence on virtual memory is beyond the scope of this vignette, but if one has chosen to only download the spatial extent laid out above one should not encounter any RAM issues.</p>
 </div>
-<div id="preparing-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#preparing-data" class="anchor"></a>Preparing data</h2>
-<p>With our data downloaded we now want to pull the data out of their native NetCDF format and save them as R data files for ease of use later on. One must note here that depending on the RAM available on ones machine, it may not be possible to access all of the data within a NetCDF file at once if it is very large (e.g. &gt; 5 GB). The discussion on the limitations of the R language due to its dependence on virtual memory is beyond the scope of this vignette, but if one has chosen to only download the spatial extent laid out above one should not encounter any RAM issues.</p>
-<p>As we have downloaded our data in four separate pieces we will want to create another wrapper function to easily pull out the data before stitching the dataframes together and saving them as a single file.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">OISST_prep &lt;-<span class="st"> </span><span class="cf">function</span>(nc_file){</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">  </a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="co"># Open the NetCDF connection</span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">  nc &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ncdf4/topics/nc_open">nc_open</a></span>(nc_file<span class="op">$</span>summary<span class="op">$</span>filename)</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">  </a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">  <span class="co"># Extract the SST values and add the lon/lat/time dimension names</span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7">  res &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ncdf4/topics/ncvar_get">ncvar_get</a></span>(nc, <span class="dt">varid =</span> <span class="st">"sst"</span>)</a>
-<a class="sourceLine" id="cb4-8" data-line-number="8">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/dimnames">dimnames</a></span>(res) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">lon =</span> nc<span class="op">$</span>dim<span class="op">$</span>longitude<span class="op">$</span>vals,</a>
-<a class="sourceLine" id="cb4-9" data-line-number="9">                        <span class="dt">lat =</span> nc<span class="op">$</span>dim<span class="op">$</span>latitude<span class="op">$</span>vals,</a>
-<a class="sourceLine" id="cb4-10" data-line-number="10">                        <span class="dt">t =</span> nc<span class="op">$</span>dim<span class="op">$</span>time<span class="op">$</span>vals)</a>
-<a class="sourceLine" id="cb4-11" data-line-number="11">  </a>
-<a class="sourceLine" id="cb4-12" data-line-number="12">  <span class="co"># Convert the data into a 'long' dataframe for use in the 'tidyverse' ecosystem</span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13">  res &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.data.frame">as.data.frame</a></span>(reshape2<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/reshape2/topics/melt">melt</a></span>(res, <span class="dt">value.name =</span> <span class="st">"temp"</span>), <span class="dt">row.names =</span> <span class="ot">NULL</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="st">    </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">t =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.Date">as.Date</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.POSIXlt">as.POSIXct</a></span>(t, <span class="dt">origin =</span> <span class="st">"1970-01-01 00:00:00"</span>)),</a>
-<a class="sourceLine" id="cb4-15" data-line-number="15">           <span class="dt">temp =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Round">round</a></span>(temp, <span class="dv">2</span>))</a>
-<a class="sourceLine" id="cb4-16" data-line-number="16">  </a>
-<a class="sourceLine" id="cb4-17" data-line-number="17">  <span class="co"># Close the NetCDF connection and finish</span></a>
-<a class="sourceLine" id="cb4-18" data-line-number="18">  <span class="kw"><a href="https://www.rdocumentation.org/packages/ncdf4/topics/nc_close">nc_close</a></span>(nc)</a>
-<a class="sourceLine" id="cb4-19" data-line-number="19">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(res)</a>
-<a class="sourceLine" id="cb4-20" data-line-number="20">}</a></code></pre></div>
-<p>With our wrapper function for preparing our data written we must now run it on our downloaded data. Once that has been done we will simply <code><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind()</a></code> the prepared data together and save them. Note that in the wrapper function above we will be re-labelling the ‘time’ column as ‘t’, and the ‘sst’ column as ‘temp’. We do this so that they match the default column names that are expected for calculating MHWs and we won’t have to do any extra work later on.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># Prep the data</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">OISST1_prep &lt;-<span class="st"> </span><span class="kw">OISST_prep</span>(OISST1)</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">OISST2_prep &lt;-<span class="st"> </span><span class="kw">OISST_prep</span>(OISST2)</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">OISST3_prep &lt;-<span class="st"> </span><span class="kw">OISST_prep</span>(OISST3)</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">OISST4_prep &lt;-<span class="st"> </span><span class="kw">OISST_prep</span>(OISST4)</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">OISST5_prep &lt;-<span class="st"> </span><span class="kw">OISST_prep</span>(OISST5)</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co"># Bind them together</span></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9">OISST_all &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(OISST1_prep, OISST2_prep, OISST3_prep, OISST4_prep, OISST5_prep)</a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co"># Save the data as an .Rda file</span></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readRDS">saveRDS</a></span>(OISST_all, <span class="dt">file =</span> <span class="st">"~/Desktop/OISST_vignette.Rda"</span>)</a></code></pre></div>
+<div id="the-date-range" class="section level3">
+<h3 class="hasAnchor">
+<a href="#the-date-range" class="anchor"></a>The date range</h3>
+<p>With our wrapper function written we would now need to run it several times in order to grab all of the available OISST data for the range of the full available years. As of the writing of this vignette this is from 1982 – 2018. Even though each year of data for the extent used in this vignette is only ~1.0 MB, the server does not like it when more than 9 years of consecutive data are requested. The server will also end a users connection after ~17 individual files have been requested. Because we can’t download all of the dat in one request, and we can’t download the data one year at a time, we will need to make requests for multiple batches of data. To accomplish this we will create a dataframe of start and end dates that will allow us to automate the entire download while meeting the areforementioned criteria.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Date download range by start and end dates per year</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">dl_years&lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="dt">date_index =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>,</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">                      <span class="dt">start =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.Date">as.Date</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"1982-01-01"</span>, <span class="st">"1990-01-01"</span>, </a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">                                        <span class="st">"1998-01-01"</span>, <span class="st">"2006-01-01"</span>, <span class="st">"2014-01-01"</span>)),</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">                      <span class="dt">end =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.Date">as.Date</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"1989-12-31"</span>, <span class="st">"1997-12-31"</span>, </a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">                                      <span class="st">"2005-12-31"</span>, <span class="st">"2013-12-31"</span>, <span class="st">"2018-12-31"</span>)))</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co"># dl_years &lt;- data.frame(year = seq(1982, 2018)) %&gt;% </span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#   mutate(start = as.Date(paste(year, "01-01", sep = "-")),</span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#          end = as.Date(paste(year, "12-31", sep = "-"))) %&gt;% </span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#   arrange(start) %&gt;% </span></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#   mutate(date_index = 1:n()) %&gt;%</span></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#   select(date_index, start, end)</span></a></code></pre></div>
+</div>
+<div id="the-data" class="section level3">
+<h3 class="hasAnchor">
+<a href="#the-data" class="anchor"></a>The data</h3>
+<p>With the download index complete we now use <strong><code>purrr</code></strong> to map our wrapper function to the date range dataframe. One could also use the <strong><code>plyr</code></strong> suite of functions to automate this process, but I’ve chosen here to stick with the <strong><code>tidyverse</code></strong> native approach. If the below chunk of code fails or times out, simply re-run it until all of the data have been downloaded.</p>
+<p>It is worth pointing out here that these data are downloaded as cached files on the users computer by using the <strong><code>hoardr</code></strong> package. This means that if one runs the same command again, it will not re-download the data again because it first looks in the folder where it has automatically cached the data for you and sees that it may simply draw the data from there. This is convenient as it means that re-running this same code will load the data that have already been downloaded. No need to change anything or write a second script for loading data.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Download all of the data with one nested request</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co"># Speed results may vary based on internet strength</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">  OISST_data &lt;-<span class="st"> </span>dl_years <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">    </span><span class="kw">group_by</span>(date_index) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="st">    </span><span class="kw">nest</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">dl_data =</span> <span class="kw">map</span>(data, OISST_sub)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="st">    </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="st">    </span><span class="kw">select</span>(<span class="op">-</span>date_index, <span class="op">-</span>data) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="st">    </span><span class="kw">unnest</span>()</a>
+<a class="sourceLine" id="cb4-11" data-line-number="11">) <span class="co"># 560 seconds, ~112 seconds per batch</span></a></code></pre></div>
+</div>
+<div id="the-result" class="section level3">
+<h3 class="hasAnchor">
+<a href="#the-result" class="anchor"></a>The result</h3>
+<p>With the data downloaded and prepared for furhter use, all that’s left to do is save them.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># Save the data as an .Rda file</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readRDS">saveRDS</a></span>(OISST_data, <span class="dt">file =</span> <span class="st">"~/Desktop/OISST_vignette.Rda"</span>)</a></code></pre></div>
 <p>Note above that I have chosen to save the file to my desktop. This is not normally where one (hopefully!) would save such a file. Rather one would be saving these data into the project folder out of which one is working.</p>
 <p>And that is all there is to it. Download, prep, save. In the next vignette we will see how to <a href="https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html">detect MHWs in gridded data</a>.</p>
+</div>
 </div>
   </div>
 
@@ -210,8 +223,7 @@
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#overview">Overview</a></li>
-      <li><a href="#downloading-data">Downloading data</a></li>
-      <li><a href="#preparing-data">Preparing data</a></li>
+      <li><a href="#downloading-and-preparing-data">Downloading and preparing data</a></li>
       </ul>
 </div>
       </div>
