@@ -77,18 +77,11 @@ With our wrapper function written we would now need to run it several times in o
 
 ```{r year-index}
 # Date download range by start and end dates per year
-dl_years<- data.frame(date_index = 1:5,
-                      start = as.Date(c("1982-01-01", "1990-01-01", 
-                                        "1998-01-01", "2006-01-01", "2014-01-01")),
-                      end = as.Date(c("1989-12-31", "1997-12-31", 
-                                      "2005-12-31", "2013-12-31", "2018-12-31")))
-
-# dl_years <- data.frame(year = seq(1982, 2018)) %>% 
-#   mutate(start = as.Date(paste(year, "01-01", sep = "-")),
-#          end = as.Date(paste(year, "12-31", sep = "-"))) %>% 
-#   arrange(start) %>% 
-#   mutate(date_index = 1:n()) %>%
-#   select(date_index, start, end)
+dl_years <- data.frame(date_index = 1:5,
+                       start = as.Date(c("1982-01-01", "1990-01-01", 
+                                         "1998-01-01", "2006-01-01", "2014-01-01")),
+                       end = as.Date(c("1989-12-31", "1997-12-31", 
+                                       "2005-12-31", "2013-12-31", "2018-12-31")))
 ```
 
 ### The data
