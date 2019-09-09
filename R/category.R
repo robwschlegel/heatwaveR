@@ -15,13 +15,18 @@
 #' @param name If a character string (e.g. "Bohai Sea") is provide here it will be used
 #' to name the events in the \code{event_name} column (see below) of the output.
 #' If no value is provided the default output is "Event".
-#' @param climatology  The default setting of \code{FALSE} will tell this function to output only
+#' @param climatology The default setting of \code{FALSE} will tell this function to output only
 #' the summary (wide) results for the individual events as seen in Hobday et al. (2018). If set
-#' to \code{TRUE}, this function will rather return a list of two data frames, same
+#' to \code{TRUE}, this function will return a list of two dataframes, same
 #' as \code{\link{detect_event}}. The first dataframe \code{climatology}, contains the same
 #' information as found in \code{\link{detect_event}}, but with the addition of the daily
-#' intensity and category values. The second dataframe, \code{event}, is the summary results that
-#' this function produces by default.
+#' intensity (anomaly above seasonal doy threshold) and category values. The second dataframe,
+#' \code{event}, is the summary results that this function produces by default.
+#' @param season This argument allows the user to decide how the season(s) of occurrence for
+#' the MHWs are labelled. The default setting of \code{"range"} will return the range of seasons
+#' over which the MHW occurred, as seen in Hobday et al. (2018). One may chose to rather have
+#' this function return only the season during the "start", "peak", or "end" of the MHW by giving
+#' the corresponding character vector.
 #'
 #' @return The function will return a tibble with results similar to those seen in
 #' Table 2 of Hobday et al. (2018). This provides the information necessary to
@@ -62,7 +67,8 @@
 #'   occurred across two seasons this will be displayed as "Winter/Spring".
 #'   Across three seasons as "Winter-Summer". Events lasting across four or more
 #'   seasons are listed as "Year-round". December (June) is used here as the start of
-#'   Austral (Boreal) summer.}
+#'   Austral (Boreal) summer. If "start", "peak", or "end" was given to the \code{season}
+#'   argument then only the one season during that chosen period will be given.}
 #'
 #' If \code{climatology = TRUE}, this function will output a list of two dataframes.
 #' The first dataframe, \code{climatology}, will contain only the following columns:
@@ -127,7 +133,8 @@ category <-
            y = temp,
            S = TRUE,
            name = "Event",
-           climatology = FALSE) {
+           climatology = FALSE,
+           season = "range") {
 
     temp <- NULL
 
@@ -135,7 +142,7 @@ category <-
     data$climatology$ts_y <- ts_y
     rm(ts_y)
 
-    event_no <- event_name <- peak_date <- category <- duration <- season <- NULL
+    event_no <- event_name <- peak_date <- category <- duration <- NULL
 
     if(nrow(data$event) == 0) {
       cat_res <- tibble::as_tibble(data.frame(event_no = data$event$event_no,
@@ -171,6 +178,7 @@ category <-
 
     seasons <- data.frame(event_no = data$event$event_no,
                           date_start = data$event$date_start,
+                          date_peak = data$event$date_peak,
                           date_end = data$event$date_end,
                           duration = data$event$duration,
                           season = NA)
@@ -179,38 +187,55 @@ category <-
     ss$day <- 1
     ss$mo <- ss$mo + 1
 
+    sp <- as.POSIXlt(data$event$date_peak)
+    sp$day <- 1
+    sp$mo <- sp$mo + 1
+
     se <- as.POSIXlt(data$event$date_end)
     se$day <- 1
     se$mo <- se$mo + 1
 
-    start_season <- end_season <- NULL
+    start_season <- peak_season <- end_season <- NULL
 
     if (S) {
       seasons$start_season <- factor(quarters(ss, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
+                                     labels = c("Summer", "Fall", "Winter", "Spring"))
+      seasons$peak_season <- factor(quarters(sp, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
                                      labels = c("Summer", "Fall", "Winter", "Spring"))
       seasons$end_season <- factor(quarters(se, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
                                     labels = c("Summer", "Fall", "Winter", "Spring"))
     } else {
       seasons$start_season <- factor(quarters(ss, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
                                      labels = c("Winter", "Spring", "Summer", "Fall"))
+      seasons$peak_season <- factor(quarters(sp, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
+                                     labels = c("Winter", "Spring", "Summer", "Fall"))
       seasons$end_season <- factor(quarters(se, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
                                     labels = c("Winter", "Spring", "Summer", "Fall"))
       }
 
-    seasons <- seasons %>%
-      dplyr::mutate(diff_season = as.integer(start_season) - as.integer(end_season))
-
-    for (i in 1:nrow(seasons)) {
-      if (seasons$diff_season[i] == 0 & seasons$duration[i] < 100) {
-        seasons$season[i] <- paste0(seasons$start_season[i])
-      } else if (seasons$diff_season[i] %in% c(-1, 3) & seasons$duration[i] < 180) {
-        seasons$season[i] <- paste0(seasons$start_season[i], "/", seasons$end_season[i])
-      } else if (seasons$diff_season[i] %in% c(-3, -2, 2)) {
-        seasons$season[i] <- paste0(seasons$start_season[i], "-", seasons$end_season[i])
+    if (season == "range") {
+      seasons <- seasons %>%
+        dplyr::mutate(diff_season = as.integer(start_season) - as.integer(end_season))
+      for (i in 1:nrow(seasons)) {
+        if (seasons$diff_season[i] == 0 & seasons$duration[i] < 100) {
+          seasons$season[i] <- paste0(seasons$start_season[i])
+        } else if (seasons$diff_season[i] %in% c(-1, 3) & seasons$duration[i] < 180) {
+          seasons$season[i] <- paste0(seasons$start_season[i], "/", seasons$end_season[i])
+        } else if (seasons$diff_season[i] %in% c(-3, -2, 2)) {
+          seasons$season[i] <- paste0(seasons$start_season[i], "-", seasons$end_season[i])
+        }
+        if (seasons$duration[i] > 270) {
+          seasons$season[i] <- "Year-round"
+        }
       }
-      if (seasons$duration[i] > 270) {
-        seasons$season[i] <- "Year-round"
-      }
+    } else if (season == "start") {
+      seasons$season <- as.character(seasons$start_season)
+    } else if (season == "peak") {
+      seasons$season <- as.character(seasons$peak_season)
+    } else if (season == "end") {
+      seasons$season <- as.character(seasons$end_season)
+    } else{
+      stop("Please provide one of the following to the `season` argument: 'range', 'start', 'peak', 'end'.")
     }
 
     seas <- thresh <- thresh_2x <- thresh_3x <- thresh_4x <- NULL
@@ -261,7 +286,7 @@ category <-
                                       ifelse(p_strong > 0, "II Strong", "I Moderate"))),
              event_name = replace(event_name, which(category == "I Moderate"), NA)) %>%
       dplyr::arrange(event_no) %>%
-      dplyr::left_join(seasons[, c(1,5)], by = "event_no") %>%
+      dplyr::left_join(seasons[, c("event_no", "season")], by = "event_no") %>%
       dplyr::select(event_no:duration, p_moderate:season) %>%
       droplevels()
 

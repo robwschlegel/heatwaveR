@@ -2,7 +2,12 @@
 
 * Updated the `OISST Preparation` vignette to match the improvements to the `rerddap` package
 * Also updated the vignette to be more clear to contact NOAA about data retrieval issues
-
+* Added `season` argument to `category()`, which allows the user to specify which season of the MHWs they are interested in:
+  * 'range' - The beginning and ending season of the MHW
+  * 'start' - The season during the start of the MHW
+  * 'peak' - The season during the peak of the MHW
+  * 'end' - The season during the end of the MHW
+      
 # heatwaveR 0.4.0.9000 (2019-07-22)
 
 * Updated NOAA OISST data downloading tutorial to account for minor changes to NOAA ERDDAP servers

@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -114,7 +114,7 @@
       <h1>Detecting Events in Gridded Data</h1>
                         <h4 class="author">AJ Smit and Robert W Schlegel</h4>
             
-            <h4 class="date">2019-07-15</h4>
+            <h4 class="date">2019-09-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/gridded_event_detection.Rmd"><code>vignettes/gridded_event_detection.Rmd</code></a></small>
       <div class="hidden name"><code>gridded_event_detection.Rmd</code></div>
@@ -139,79 +139,75 @@
 <div id="event-detection" class="section level2">
 <h2 class="hasAnchor">
 <a href="#event-detection" class="anchor"></a>Event detection</h2>
-<div id="two-good-choices-purrr-vs--plyr" class="section level3">
+<div id="two-good-choices-dplyr-vs--plyr" class="section level3">
 <h3 class="hasAnchor">
-<a href="#two-good-choices-purrr-vs--plyr" class="anchor"></a>Two good choices: <strong><code>purrr</code></strong> vs. <strong><code>plyr</code></strong>
+<a href="#two-good-choices-dplyr-vs--plyr" class="anchor"></a>Two good choices: <strong><code>dplyr</code></strong> vs. <strong><code>plyr</code></strong>
 </h3>
-<p>When we want to make the same calculation across multiple groups of data within one dataframe we have two good options available to us. The first is to make use of the <code>map()</code> suite of functions found in the <strong><code>purrr</code></strong> package. This is a very fast <strong><code>tidyverse</code></strong> friendly approach to splitting up tasks. The other good option is to go back in time a bit and use the <code>ddply()</code> function from the <strong><code>plyr</code></strong> package. This is arguably a better approach as it allows us to very easily use multiple cores to detect the MHWs. The problem with this approach is that one must <em>never</em> load the <strong><code>plyr</code></strong> library directly as it has some fundamental inconsistencies with the <strong><code>tidyverse</code></strong>. We will see below how to perform these two different techniques without causing ourselves any headaches.</p>
-<p>It is a little clumsy to use multiple functions at once with the two methods we will look at here so we will combine the calculations we want to make in one wrapper function first:</p>
+<p>When we want to make the same calculation across multiple groups of data within one dataframe we have two good options available to us. The first is to make use of the <code>map()</code> suite of functions found in the <strong><code>purrr</code></strong> package, and now implemented in <strong><code>dplyr</code></strong>. This is a very fast <strong><code>tidyverse</code></strong> friendly approach to splitting up tasks. The other good option is to go back in time a bit and use the <code>ddply()</code> function from the <strong><code>plyr</code></strong> package. This is arguably a better approach as it allows us to very easily use multiple cores to detect the MHWs. The problem with this approach is that one must <em>never</em> load the <strong><code>plyr</code></strong> library directly as it has some fundamental inconsistencies with the <strong><code>tidyverse</code></strong>. We will see below how to perform these two different techniques without causing ourselves any headaches.</p>
+<p>It is a little clumsy to use multiple functions at once with the two methods so we will combine the calculations we want to make in one wrapper function first:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">event_only &lt;-<span class="st"> </span><span class="cf">function</span>(df){</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="co"># First calculate the climatologies</span></a>
 <a class="sourceLine" id="cb3-3" data-line-number="3">  clim &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(<span class="dt">data =</span> df, <span class="dt">climatologyPeriod =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"1982-01-01"</span>, <span class="st">"2011-01-01"</span>))</a>
 <a class="sourceLine" id="cb3-4" data-line-number="4">  <span class="co"># Then the events</span></a>
 <a class="sourceLine" id="cb3-5" data-line-number="5">  event &lt;-<span class="st"> </span><span class="kw"><a href="../reference/detect_event.html">detect_event</a></span>(<span class="dt">data =</span> clim)</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">  <span class="co"># Lastly we return only the event dataframe of results</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">  <span class="co"># Return only the event metric dataframe of results</span></a>
 <a class="sourceLine" id="cb3-7" data-line-number="7">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(event<span class="op">$</span>event)</a>
 <a class="sourceLine" id="cb3-8" data-line-number="8">}</a></code></pre></div>
-<p>Up first we have the <strong><code>purrr</code></strong> method:</p>
+<div id="the-dplyr-method" class="section level4">
+<h4 class="hasAnchor">
+<a href="#the-dplyr-method" class="anchor"></a>The <strong><code>dplyr</code></strong> method</h4>
+<p>This method requires no special consideration and is performed just as any other <strong><code>tidyverse</code></strong> friendly code chunk would be.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co"># First we start by chosing the 'OISST' dataframe</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">MHW_purrr &lt;-<span class="st"> </span>OISST <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">MHW_dplyr &lt;-<span class="st"> </span>OISST <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">  </span><span class="co"># Then we group the data by the 'lon' and 'lat' columns</span></a>
 <a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">  </span><span class="kw">group_by</span>(lon, lat) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="st">  </span><span class="co"># After that we nest each lon/lat pixel into its own little dataframe</span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="st">    </span><span class="co"># The column containing all of these little dataframes is named 'data'</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="st">  </span><span class="kw">nest</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="st">  </span><span class="co"># Next we 'map' the event_only() wrapper function we made to the little dataframes</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">event =</span> <span class="kw">map</span>(data, event_only)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="st">  </span><span class="co"># Lastly we get rid of the column that is not part of the final result </span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="st">    </span><span class="co"># before unnesting everything</span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>data) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="st">  </span><span class="kw">unnest</span>()</a>
-<a class="sourceLine" id="cb4-15" data-line-number="15">)</a></code></pre></div>
-<p>Running the calculations on only one of my 2.1 GHz cores, as seen above, takes ~174 seconds.</p>
-<p>If we want to use multiple cores we will need to use the <strong><code>plyr</code></strong> technique:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># First we need to tell R how many cores to use</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">  <span class="co"># NB: One should never use ALL available cores, save at least 1 for other essential tasks</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">    <span class="co"># The computer I'm writing this vignette on has 4 cores, so I use 3 here</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(doMC)</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/doMC/topics/registerDoMC">registerDoMC</a></span>(<span class="dt">cores =</span> <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(</a>
-<a class="sourceLine" id="cb5-8" data-line-number="8">MHW_plyr &lt;-<span class="st"> </span>plyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/plyr/topics/ddply">ddply</a></span>(<span class="dt">.data =</span> OISST, <span class="dt">.variables =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>), <span class="dt">.fun =</span> event_only, <span class="dt">.parallel =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb5-9" data-line-number="9">)</a></code></pre></div>
-<p>The <strong><code>plyr</code></strong> technique takes ~110 seconds on my computer using three cores. This technique is not simply three times faster because when using multiple cores there is a certain amount of loss in efficiency due to the computer needing to remember which results are meant to go where so that it can stitch everything back together again for you. This takes very little memory, but over large jobs it can start to become problematic. Occasionally ‘slippage’ can occur as well where an entire task can be forgotten. This is very rare but does happen. This is partly what makes <strong><code>purrr</code></strong> a viable option as it does not have this problem. The other reason is that <strong><code>purrr</code></strong> performs much more efficient calculations than <strong><code>plyr</code></strong>, But what if we could have the best of both worlds?</p>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="st">  </span><span class="co"># Then we run our MHW calculating function on each group</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="st">  </span><span class="kw">group_modify</span>(<span class="op">~</span><span class="kw">event_only</span>(.x))</a>
+<a class="sourceLine" id="cb4-8" data-line-number="8">) <span class="co"># 214 seconds</span></a></code></pre></div>
+<p>Running the above calculations with only one of the 2.1 GHz cores on an old laptop took 214 seconds.</p>
+</div>
+<div id="the-plyr-technique" class="section level4">
+<h4 class="hasAnchor">
+<a href="#the-plyr-technique" class="anchor"></a>The <strong><code>plyr</code></strong> technique</h4>
+<p>This method requires that we first tell our machine how many of its processor cores to give us for our calculation.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># NB: One should never use ALL available cores, save at least 1 for other essential tasks</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co"># The computer I'm writing this vignette on has 4 cores, so I use 3 here</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(doMC)</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/doMC/topics/registerDoMC">registerDoMC</a></span>(<span class="dt">cores =</span> <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">MHW_plyr &lt;-<span class="st"> </span>plyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/plyr/topics/ddply">ddply</a></span>(<span class="dt">.data =</span> OISST, <span class="dt">.variables =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>), <span class="dt">.fun =</span> event_only, <span class="dt">.parallel =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">) <span class="co"># 129 seconds</span></a></code></pre></div>
+<p>The <strong><code>plyr</code></strong> technique took 129 seconds using three cores. This technique is not three times faster because when using multiple cores there is a certain amount of loss in efficiency due to the computer needing to remember which results are meant to go where so that it can stitch everything back together again for you. This takes very little memory, but over large jobs it can start to become problematic. Occasionally ‘slippage’ can occur as well where an entire task can be forgotten. This is very rare but does happen. This is partly what makes <strong><code>dplyr</code></strong> a viable option as it does not have this problem. The other reason is that <strong><code>dplyr</code></strong> performs more efficient calculations than <strong><code>plyr</code></strong>. But what if we could have the best of both worlds?</p>
+</div>
 </div>
 <div id="a-harmonious-third-option" class="section level3">
 <h3 class="hasAnchor">
 <a href="#a-harmonious-third-option" class="anchor"></a>A harmonious third option</h3>
-<p>As one may see above, running these calculations on a very large (or even global) gridded dataset can quickly become very time consuming. While running these calculations myself on the global OISST dataset I have found that the fastest option is to combine the two options above. In my workflow I have saved each longitude segment of the global OISST dataset as separate files and use the <strong><code>purrr</code></strong> method on each individual file, while using the <strong><code>plyr</code></strong> method to be running the multiple calculations on as many files as my core limit will allow. One may not however do this the other way around and use <strong><code>purr</code></strong> to run multiple <strong><code>plyr</code></strong> calculations at once. This will confuse your computer and likely cause a stack overflow. Which sounds more fun than it actually is… as I have had to learn.</p>
-<p>In order to happily combine these two options into one we will need to convert the <strong><code>purr</code></strong> code we wrote above into it’s own wrapper function, which we will then call on a stack of files using the <strong><code>plyr</code></strong> technique. Before we do that we must first create the aforementioned stack of files.</p>
+<p>As one may see above, running these calculations on a very large (or even global) gridded dataset can quickly become very time consuming. While running these calculations myself on the global OISST dataset I have found that the fastest option is to combine the two options above. In my workflow I have saved each longitude segment of the global OISST dataset as separate files and use the <strong><code>dplyr</code></strong> method on each individual file, while using the <strong><code>plyr</code></strong> method to be running the multiple calculations on as many files as my core limit will allow. One may not however do this the other way around and use <strong><code>dplyr</code></strong> to run multiple <strong><code>plyr</code></strong> calculations at once. This will confuse your computer and likely cause a stack overflow. Which sounds more fun than it actually is… as I have had to learn.</p>
+<p>In order to happily combine these two options into one we will need to convert the <strong><code>dplyr</code></strong> code we wrote above into it’s own wrapper function, which we will then call on a stack of files using the <strong><code>plyr</code></strong> technique. Before we do that we must first create the aforementioned stack of files.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unique">unique</a></span>(OISST<span class="op">$</span>lon))){</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2">  OISST_sub &lt;-<span class="st"> </span>OISST <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(lon <span class="op">==</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unique">unique</a></span>(lon)[i])</a>
 <a class="sourceLine" id="cb6-4" data-line-number="4">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readRDS">saveRDS</a></span>(<span class="dt">object =</span> OISST_sub, <span class="dt">file =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"~/Desktop/OISST_lon_"</span>,i,<span class="st">".Rda"</span>))</a>
 <a class="sourceLine" id="cb6-5" data-line-number="5">}</a></code></pre></div>
-<p>This may initially seem like an unnecessary extra step, but when one is working with time series data it is necessary to have all of the dates at a given pixel loaded at once. Unless one is working from a server/virtual machine/supercomputer this means that one will often not be able to comfortably hold an entire grid for a study area in memory at once. Having the data accessible as thin strips like this therefore makes life somewhat easier. And as we see in the code chunk below it also (arguably) allows us to perform the most efficient calculations on our data.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># The 'purrr' wrapper function to pass to 'plyr'</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">purrr_wraper &lt;-<span class="st"> </span><span class="cf">function</span>(file_name){</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">  OISST_file &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readRDS">readRDS</a></span>(file_name)</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">  MHW_purrr &lt;-<span class="st"> </span>OISST_file <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="st">    </span><span class="kw">group_by</span>(lon, lat) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="st">    </span><span class="kw">nest</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">event =</span> <span class="kw">map</span>(data, event_only)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="st">    </span><span class="kw">select</span>(<span class="op">-</span>data) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="st">    </span><span class="kw">unnest</span>()</a>
-<a class="sourceLine" id="cb7-10" data-line-number="10">}</a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co"># Create a vector of the files we want to use</span></a>
-<a class="sourceLine" id="cb7-13" data-line-number="13">OISST_files &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list.files">dir</a></span>(<span class="st">"~/Desktop/"</span>, <span class="dt">pattern =</span> <span class="st">"OISST_lon_*"</span>, <span class="dt">full.names =</span> T)</a>
-<a class="sourceLine" id="cb7-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co"># Use 'plyr' technique to run 'purrr' technique with multiple cores</span></a>
-<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(</a>
-<a class="sourceLine" id="cb7-17" data-line-number="17">MHW_result &lt;-<span class="st"> </span>plyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/plyr/topics/ldply">ldply</a></span>(OISST_files, <span class="dt">.fun =</span> purrr_wraper, <span class="dt">.parallel =</span> T)</a>
-<a class="sourceLine" id="cb7-18" data-line-number="18">)</a></code></pre></div>
-<p>Not only is this technique computationally faster, because it only loads one of our small slice files at a time it is also much lighter on our memory use. To maximise efficiency even further I would recommend writing out this full work flow in a stand-alone script and then running it using <code><a href="https://www.rdocumentation.org/packages/base/topics/source">source()</a></code> directly from an R terminal.</p>
+<p>This may initially seem like an unnecessary extra step, but when one is working with time series data it is necessary to have all of the dates at a given pixel loaded at once. Unless one is working from a server/virtual machine/supercomputer this means that one will often not be able to comfortably hold an entire grid for a study area in memory at once. Having the data accessible as thin strips like this makes life asier. And as we see in the code chunk below it also (arguably) allows us to perform the most efficient calculations on our data.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># The 'dplyr' wrapper function to pass to 'plyr'</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">dplyr_wraper &lt;-<span class="st"> </span><span class="cf">function</span>(file_name){</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">  MHW_dplyr &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readRDS">readRDS</a></span>(file_name) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="st">    </span><span class="kw">group_by</span>(lon, lat) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="st">    </span><span class="kw">group_modify</span>(<span class="op">~</span><span class="kw">event_only</span>(.x))</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">}</a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co"># Create a vector of the files we want to use</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9">OISST_files &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list.files">dir</a></span>(<span class="st">"~/Desktop"</span>, <span class="dt">pattern =</span> <span class="st">"OISST_lon_*"</span>, <span class="dt">full.names =</span> T)</a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co"># Use 'plyr' technique to run 'dplyr' technique with multiple cores</span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.time">system.time</a></span>(</a>
+<a class="sourceLine" id="cb7-13" data-line-number="13">MHW_result &lt;-<span class="st"> </span>plyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/plyr/topics/ldply">ldply</a></span>(OISST_files, <span class="dt">.fun =</span> dplyr_wraper, <span class="dt">.parallel =</span> T)</a>
+<a class="sourceLine" id="cb7-14" data-line-number="14">)<span class="co"># 128</span></a></code></pre></div>
+<p>Not only is this technique computationally faster, it is also much lighter on our memory (RAM) as it only loads one longitude slice of our data at a time. To maximise efficiency even further I would recommend writing out this full work flow in a stand-alone script and then running it using <code><a href="https://www.rdocumentation.org/packages/base/topics/source">source()</a></code> directly from an R terminal. The gain in speed here appears nominal, but as one scales this up the speed boost becomes apparent.</p>
 </div>
 </div>
 <div id="trend-detection" class="section level2">
@@ -221,7 +217,7 @@
 <p>Up first we see how to calculate the number of events that occurred per pixel:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># summarise the number of unique longitude, latitude and year combination:</span></a>
 <a class="sourceLine" id="cb8-2" data-line-number="2">event_freq &lt;-<span class="st"> </span>MHW_result <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">year =</span> <span class="kw">year</span>(date_start)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">year =</span> lubridate<span class="op">::</span><span class="kw"><a href="http://lubridate.tidyverse.org/reference/year.html">year</a></span>(date_start)) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-4" data-line-number="4"><span class="st">  </span><span class="kw">group_by</span>(lon, lat, year) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-5" data-line-number="5"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">n =</span> <span class="kw">n</span>())</a>
 <a class="sourceLine" id="cb8-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(event_freq)</a>
@@ -244,20 +240,17 @@
 <a class="sourceLine" id="cb9-5" data-line-number="5">                   <span class="dt">p =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(mod1)<span class="op">$</span>coefficients[<span class="dv">2</span>,<span class="dv">4</span>])</a>
 <a class="sourceLine" id="cb9-6" data-line-number="6">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/function">return</a></span>(tr)</a>
 <a class="sourceLine" id="cb9-7" data-line-number="7">}</a></code></pre></div>
-<p>In the following code chunk we will see how to run the GLM on each pixel using the <strong><code>purrr</code></strong> technique:</p>
+<p>In the following code chunk we will see how to run the GLM on each pixel using the <strong><code>dplyr</code></strong> technique:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">OISST_nTrend &lt;-<span class="st"> </span>OISST_n <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw">group_by</span>(lon, lat) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">  </span><span class="kw">nest</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">res =</span> <span class="kw">map</span>(data, lin_fun)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>data) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="st">  </span><span class="kw">unnest</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pval =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cut">cut</a></span>(p, <span class="dt">breaks =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="fl">0.001</span>, <span class="fl">0.01</span>, <span class="fl">0.05</span>, <span class="dv">1</span>)))</a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(OISST_nTrend)</a></code></pre></div>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">  </span><span class="kw">group_modify</span>(<span class="op">~</span><span class="kw">lin_fun</span>(.x)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pval =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cut">cut</a></span>(p, <span class="dt">breaks =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="fl">0.001</span>, <span class="fl">0.01</span>, <span class="fl">0.05</span>, <span class="dv">1</span>)))</a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(OISST_nTrend)</a></code></pre></div>
 <p>Or if one prefers, we may use the <strong><code>plyr</code></strong> technique:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">OISST_nTrend &lt;-<span class="st"> </span>plyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/plyr/topics/ddply">ddply</a></span>(OISST_n, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>), lin_fun)</a>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">OISST_nTrend &lt;-<span class="st"> </span>plyr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/plyr/topics/ddply">ddply</a></span>(OISST_n, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"lon"</span>, <span class="st">"lat"</span>), lin_fun, <span class="dt">.parallel =</span> T)</a>
 <a class="sourceLine" id="cb11-2" data-line-number="2">OISST_nTrend<span class="op">$</span>pval &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cut">cut</a></span>(OISST_nTrend<span class="op">$</span>p, <span class="dt">breaks =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="fl">0.001</span>, <span class="fl">0.01</span>, <span class="fl">0.05</span>, <span class="dv">1</span>))</a>
 <a class="sourceLine" id="cb11-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(OISST_nTrend)</a></code></pre></div>
-<p>With small summary statistic calculations there is very little difference in the timing between techniques. Use whichever makes you the happiest! The <strong><code>plyr</code></strong> code is certainly shorter, but I personally find the <strong><code>purrr</code></strong> code much easier to read. This is particularly important for group projects.</p>
+<p>With small summary statistic calculations there is very little difference in the timing between techniques. Use whichever makes you the happiest! The <strong><code>plyr</code></strong> code is certainly shorter, but I personally find the <strong><code>dplyr</code></strong> code more human friendly. This is particularly important for group projects.</p>
 </div>
 <div id="visualising-the-results" class="section level2">
 <h2 class="hasAnchor">
@@ -302,13 +295,14 @@
 <a class="sourceLine" id="cb13-33" data-line-number="33"><span class="st">  </span><span class="kw">theme_bw</span>() <span class="op">+</span></a>
 <a class="sourceLine" id="cb13-34" data-line-number="34"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">"bottom"</span>)</a>
 <a class="sourceLine" id="cb13-35" data-line-number="35"></a>
-<a class="sourceLine" id="cb13-36" data-line-number="36">map_both &lt;-<span class="st"> </span>ggpubr<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggpubr/topics/ggarrange">ggarrange</a></span>(map_slope, map_p, <span class="dt">align =</span> <span class="st">"hv"</span>)</a>
+<a class="sourceLine" id="cb13-36" data-line-number="36">map_both &lt;-<span class="st"> </span>ggpubr<span class="op">::</span><span class="kw"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span>(map_slope, map_p, <span class="dt">align =</span> <span class="st">"hv"</span>)</a>
 <a class="sourceLine" id="cb13-37" data-line-number="37">map_both</a></code></pre></div>
-<p>From the figure above we may see that the entire study area shows significant (<em>p</em>&lt;= 0.05) increases in the count of MHWs per year. This is generally the case for the entire globe. Not shown here is also the significant increase in the intensity of MHWs as well.</p>
+<p>From the figure above we may see that the entire study area shows significant (<em>p</em>&lt;= 0.05) increases in the count of MHWs per year. This is generally the case for the entire globe. Not shown here is the significant increase in the intensity of MHWs as well.</p>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
         <div id="tocnav">
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>

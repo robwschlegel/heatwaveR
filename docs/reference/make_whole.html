@@ -8,10 +8,12 @@
 
 <title>Constructs a continuous, uninterrupted time series of temperatures. — make_whole • heatwaveR</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/spacelab/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -36,13 +38,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Constructs a continuous, uninterrupted time series of temperatures. — make_whole" />
 
+<meta property="og:title" content="Constructs a continuous, uninterrupted time series of temperatures. — make_whole" />
 <meta property="og:description" content="Takes a series of dates and temperatures, and if irregular (but ordered), inserts
 missing dates and fills correpsonding temperatures with NAs." />
-
 <meta property="og:image" content="https://robwschlegel.github.io/heatwaveR/index.html/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -82,7 +84,7 @@ missing dates and fills correpsonding temperatures with NAs." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -128,7 +130,6 @@ missing dates and fills correpsonding temperatures with NAs." />
   <a href="../news/index.html">News</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/robwschlegel/heatwaveR">
@@ -161,14 +162,12 @@ missing dates and fills correpsonding temperatures with NAs." />
     </div>
 
     <div class="ref-description">
-    
     <p>Takes a series of dates and temperatures, and if irregular (but ordered), inserts
 missing dates and fills correpsonding temperatures with NAs.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>make_whole</span>(<span class='no'>data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -193,7 +192,7 @@ remains temperature, and the default column name is therefore <code>temp</code>,
 hopefully ensuring backwards compatibility.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The function will return a data frame with three columns. The column
@@ -206,7 +205,6 @@ The <code>x</code> (or <code>t</code>) column is a series of dates of class <cod
 while <code>y</code> (or <code>temp</code>) is the measured variable. This time series will
 be uninterrupted and continuous daily values between the first and last dates
 of the input data.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <ol>
@@ -238,18 +236,15 @@ duplicated values. This slower but more robust function (i.e. <code>make_whole</
 may be selected as an argument to <code>ts2clm</code> in case the data may have some
 issues.</p></li>
 </ol>
-    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-          </ul>
+    </ul>
 
     <h2>Author</h2>
     <p>Smit, A. J.</p>

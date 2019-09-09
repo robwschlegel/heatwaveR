@@ -37,11 +37,11 @@ OISST <- read_rds("~/Desktop/OISST_vignette.Rda")
 
 ## Event detection
 
-### Two good choices: __`purrr`__ vs. __`plyr`__
+### Two good choices: __`dplyr`__ vs. __`plyr`__
 
-When we want to make the same calculation across multiple groups of data within one dataframe we have two good options available to us. The first is to make use of the `map()` suite of functions found in the __`purrr`__ package. This is a very fast __`tidyverse`__ friendly approach to splitting up tasks. The other good option is to go back in time a bit and use the `ddply()` function from the __`plyr`__ package. This is arguably a better approach as it allows us to very easily use multiple cores to detect the MHWs. The problem with this approach is that one must _never_ load the __`plyr`__ library directly as it has some fundamental inconsistencies with the __`tidyverse`__. We will see below how to perform these two different techniques without causing ourselves any headaches.
+When we want to make the same calculation across multiple groups of data within one dataframe we have two good options available to us. The first is to make use of the `map()` suite of functions found in the __`purrr`__ package, and now implemented in __`dplyr`__. This is a very fast __`tidyverse`__ friendly approach to splitting up tasks. The other good option is to go back in time a bit and use the `ddply()` function from the __`plyr`__ package. This is arguably a better approach as it allows us to very easily use multiple cores to detect the MHWs. The problem with this approach is that one must _never_ load the __`plyr`__ library directly as it has some fundamental inconsistencies with the __`tidyverse`__. We will see below how to perform these two different techniques without causing ourselves any headaches.
 
-It is a little clumsy to use multiple functions at once with the two methods we will look at here so we will combine the calculations we want to make in one wrapper function first:
+It is a little clumsy to use multiple functions at once with the two methods so we will combine the calculations we want to make in one wrapper function first:
 
 ```{r detect-func}
 event_only <- function(df){
@@ -49,54 +49,51 @@ event_only <- function(df){
   clim <- ts2clm(data = df, climatologyPeriod = c("1982-01-01", "2011-01-01"))
   # Then the events
   event <- detect_event(data = clim)
-  # Lastly we return only the event dataframe of results
+  # Return only the event metric dataframe of results
   return(event$event)
 }
 ```
 
-Up first we have the __`purrr`__ method:
+
+#### The __`dplyr`__ method
+
+This method requires no special consideration and is performed just as any other __`tidyverse`__ friendly code chunk would be.
 
 ```{r detect-purrr}
 system.time(
 # First we start by chosing the 'OISST' dataframe
-MHW_purrr <- OISST %>% 
+MHW_dplyr <- OISST %>% 
   # Then we group the data by the 'lon' and 'lat' columns
   group_by(lon, lat) %>% 
-  # After that we nest each lon/lat pixel into its own little dataframe
-    # The column containing all of these little dataframes is named 'data'
-  nest() %>% 
-  # Next we 'map' the event_only() wrapper function we made to the little dataframes
-  mutate(event = map(data, event_only)) %>% 
-  # Lastly we get rid of the column that is not part of the final result 
-    # before unnesting everything
-  select(-data) %>% 
-  unnest()
-)
+  # Then we run our MHW calculating function on each group
+  group_modify(~event_only(.x))
+) # 214 seconds
 ```
 
-Running the calculations on only one of my 2.1 GHz cores, as seen above, takes ~174 seconds.
+Running the above calculations with only one of the 2.1 GHz cores on an old laptop took 214 seconds.
 
-If we want to use multiple cores we will need to use the __`plyr`__ technique:
+#### The __`plyr`__ technique
+
+This method requires that we first tell our machine how many of its processor cores to give us for our calculation.
 
 ```{r detect-plyr}
-# First we need to tell R how many cores to use
-  # NB: One should never use ALL available cores, save at least 1 for other essential tasks
-    # The computer I'm writing this vignette on has 4 cores, so I use 3 here
+# NB: One should never use ALL available cores, save at least 1 for other essential tasks
+# The computer I'm writing this vignette on has 4 cores, so I use 3 here
 library(doMC)
 registerDoMC(cores = 3)
 
 system.time(
 MHW_plyr <- plyr::ddply(.data = OISST, .variables = c("lon", "lat"), .fun = event_only, .parallel = TRUE)
-)
+) # 129 seconds
 ```
 
-The __`plyr`__ technique takes ~110 seconds on my computer using three cores. This technique is not simply three times faster because when using multiple cores there is a certain amount of loss in efficiency due to the computer needing to remember which results are meant to go where so that it can stitch everything back together again for you. This takes very little memory, but over large jobs it can start to become problematic. Occasionally 'slippage' can occur as well where an entire task can be forgotten. This is very rare but does happen. This is partly what makes __`purrr`__ a viable option as it does not have this problem. The other reason is that __`purrr`__ performs much more efficient calculations than __`plyr`__, But what if we could have the best of both worlds?
+The __`plyr`__ technique took 129 seconds using three cores. This technique is not three times faster because when using multiple cores there is a certain amount of loss in efficiency due to the computer needing to remember which results are meant to go where so that it can stitch everything back together again for you. This takes very little memory, but over large jobs it can start to become problematic. Occasionally 'slippage' can occur as well where an entire task can be forgotten. This is very rare but does happen. This is partly what makes __`dplyr`__ a viable option as it does not have this problem. The other reason is that __`dplyr`__ performs more efficient calculations than __`plyr`__. But what if we could have the best of both worlds?
 
 ### A harmonious third option
 
-As one may see above, running these calculations on a very large (or even global) gridded dataset can quickly become very time consuming. While running these calculations myself on the global OISST dataset I have found that the fastest option is to combine the two options above. In my workflow I have saved each longitude segment of the global OISST dataset as separate files and use the __`purrr`__ method on each individual file, while using the __`plyr`__ method to be running the multiple calculations on as many files as my core limit will allow. One may not however do this the other way around and use __`purr`__ to run multiple __`plyr`__ calculations at once. This will confuse your computer and likely cause a stack overflow. Which sounds more fun than it actually is... as I have had to learn.
+As one may see above, running these calculations on a very large (or even global) gridded dataset can quickly become very time consuming. While running these calculations myself on the global OISST dataset I have found that the fastest option is to combine the two options above. In my workflow I have saved each longitude segment of the global OISST dataset as separate files and use the __`dplyr`__ method on each individual file, while using the __`plyr`__ method to be running the multiple calculations on as many files as my core limit will allow. One may not however do this the other way around and use __`dplyr`__ to run multiple __`plyr`__ calculations at once. This will confuse your computer and likely cause a stack overflow. Which sounds more fun than it actually is... as I have had to learn.
 
-In order to happily combine these two options into one we will need to convert the __`purr`__ code we wrote above into it's own wrapper function, which we will then call on a stack of files using the __`plyr`__ technique. Before we do that we must first create the aforementioned stack of files.
+In order to happily combine these two options into one we will need to convert the __`dplyr`__ code we wrote above into it's own wrapper function, which we will then call on a stack of files using the __`plyr`__ technique. Before we do that we must first create the aforementioned stack of files.
 
 ```{r lon-files}
 for(i in 1:length(unique(OISST$lon))){
@@ -106,30 +103,26 @@ for(i in 1:length(unique(OISST$lon))){
 }
 ```
 
-This may initially seem like an unnecessary extra step, but when one is working with time series data it is necessary to have all of the dates at a given pixel loaded at once. Unless one is working from a server/virtual machine/supercomputer this means that one will often not be able to comfortably hold an entire grid for a study area in memory at once. Having the data accessible as thin strips like this therefore makes life somewhat easier. And as we see in the code chunk below it also (arguably) allows us to perform the most efficient calculations on our data.
+This may initially seem like an unnecessary extra step, but when one is working with time series data it is necessary to have all of the dates at a given pixel loaded at once. Unless one is working from a server/virtual machine/supercomputer this means that one will often not be able to comfortably hold an entire grid for a study area in memory at once. Having the data accessible as thin strips like this makes life asier. And as we see in the code chunk below it also (arguably) allows us to perform the most efficient calculations on our data.
 
 ```{r detect-both}
-# The 'purrr' wrapper function to pass to 'plyr'
-purrr_wraper <- function(file_name){
-  OISST_file <- readRDS(file_name)
-  MHW_purrr <- OISST_file %>% 
+# The 'dplyr' wrapper function to pass to 'plyr'
+dplyr_wraper <- function(file_name){
+  MHW_dplyr <- readRDS(file_name) %>% 
     group_by(lon, lat) %>% 
-    nest() %>% 
-    mutate(event = map(data, event_only)) %>% 
-    select(-data) %>% 
-    unnest()
+    group_modify(~event_only(.x))
 }
 
 # Create a vector of the files we want to use
-OISST_files <- dir("~/Desktop/", pattern = "OISST_lon_*", full.names = T)
+OISST_files <- dir("~/Desktop", pattern = "OISST_lon_*", full.names = T)
 
-# Use 'plyr' technique to run 'purrr' technique with multiple cores
+# Use 'plyr' technique to run 'dplyr' technique with multiple cores
 system.time(
-MHW_result <- plyr::ldply(OISST_files, .fun = purrr_wraper, .parallel = T)
-)
+MHW_result <- plyr::ldply(OISST_files, .fun = dplyr_wraper, .parallel = T)
+)# 128
 ```
 
-Not only is this technique computationally faster, because it only loads one of our small slice files at a time it is also much lighter on our memory use. To maximise efficiency even further I would recommend writing out this full work flow in a stand-alone script and then running it using `source()` directly from an R terminal.
+Not only is this technique computationally faster, it is also much lighter on our memory (RAM) as it only loads one longitude slice of our data at a time. To maximise efficiency even further I would recommend writing out this full work flow in a stand-alone script and then running it using `source()` directly from an R terminal. The gain in speed here appears nominal, but as one scales this up the speed boost becomes apparent.
 
 ## Trend detection
 
@@ -140,7 +133,7 @@ Up first we see how to calculate the number of events that occurred per pixel:
 ```{r event-tally}
 # summarise the number of unique longitude, latitude and year combination:
 event_freq <- MHW_result %>% 
-  mutate(year = year(date_start)) %>% 
+  mutate(year = lubridate::year(date_start)) %>% 
   group_by(lon, lat, year) %>% 
   summarise(n = n())
 head(event_freq)
@@ -169,15 +162,12 @@ lin_fun <- function(ev) {
 }
 ```
 
-In the following code chunk we will see how to run the GLM on each pixel using the __`purrr`__ technique:
+In the following code chunk we will see how to run the GLM on each pixel using the __`dplyr`__ technique:
 
 ```{r apply-trend-fun-purrr}
 OISST_nTrend <- OISST_n %>% 
   group_by(lon, lat) %>% 
-  nest() %>% 
-  mutate(res = map(data, lin_fun)) %>% 
-  select(-data) %>%
-  unnest() %>% 
+  group_modify(~lin_fun(.x)) %>% 
   mutate(pval = cut(p, breaks = c(0, 0.001, 0.01, 0.05, 1)))
 head(OISST_nTrend)
 ```
@@ -185,12 +175,12 @@ head(OISST_nTrend)
 Or if one prefers, we may use the __`plyr`__ technique:
 
 ```{r apply-trend-fun-plyr}
-OISST_nTrend <- plyr::ddply(OISST_n, c("lon", "lat"), lin_fun)
+OISST_nTrend <- plyr::ddply(OISST_n, c("lon", "lat"), lin_fun, .parallel = T)
 OISST_nTrend$pval <- cut(OISST_nTrend$p, breaks = c(0, 0.001, 0.01, 0.05, 1))
 head(OISST_nTrend)
 ```
 
-With small summary statistic calculations there is very little difference in the timing between techniques. Use whichever makes you the happiest! The __`plyr`__ code is certainly shorter, but I personally find the __`purrr`__ code much easier to read. This is particularly important for group projects.
+With small summary statistic calculations there is very little difference in the timing between techniques. Use whichever makes you the happiest! The __`plyr`__ code is certainly shorter, but I personally find the __`dplyr`__ code more human friendly. This is particularly important for group projects.
 
 ## Visualising the results
 
@@ -244,4 +234,4 @@ map_both <- ggpubr::ggarrange(map_slope, map_p, align = "hv")
 map_both
 ```
 
-From the figure above we may see that the entire study area shows significant (_p_<= 0.05) increases in the count of MHWs per year. This is generally the case for the entire globe. Not shown here is also the significant increase in the intensity of MHWs as well.
+From the figure above we may see that the entire study area shows significant (_p_<= 0.05) increases in the count of MHWs per year. This is generally the case for the entire globe. Not shown here is the significant increase in the intensity of MHWs as well.

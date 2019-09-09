@@ -8,10 +8,12 @@
 
 <title>Calculate the categories of events. — category • heatwaveR</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/spacelab/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -36,13 +38,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Calculate the categories of events. — category" />
 
+<meta property="og:title" content="Calculate the categories of events. — category" />
 <meta property="og:description" content="Calculates the categories of a series of events as produced by detect_event in
 accordance with the naming scheme proposed in Hobday et al. (2018)." />
-
 <meta property="og:image" content="https://robwschlegel.github.io/heatwaveR/index.html/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -82,7 +84,7 @@ accordance with the naming scheme proposed in Hobday et al. (2018)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -128,7 +130,6 @@ accordance with the naming scheme proposed in Hobday et al. (2018)." />
   <a href="../news/index.html">News</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/robwschlegel/heatwaveR">
@@ -161,15 +162,13 @@ accordance with the naming scheme proposed in Hobday et al. (2018)." />
     </div>
 
     <div class="ref-description">
-    
     <p>Calculates the categories of a series of events as produced by <code><a href='detect_event.html'>detect_event</a></code> in
 accordance with the naming scheme proposed in Hobday et al. (2018).</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>category</span>(<span class='no'>data</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='kw'>S</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Event"</span>,
-  <span class='kw'>climatology</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
-    
+  <span class='kw'>climatology</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>season</span> <span class='kw'>=</span> <span class='st'>"range"</span>)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -199,14 +198,22 @@ If no value is provided the default output is "Event".</p></td>
       <th>climatology</th>
       <td><p>The default setting of <code>FALSE</code> will tell this function to output only
 the summary (wide) results for the individual events as seen in Hobday et al. (2018). If set
-to <code>TRUE</code>, this function will rather return a list of two data frames, same
+to <code>TRUE</code>, this function will return a list of two dataframes, same
 as <code><a href='detect_event.html'>detect_event</a></code>. The first dataframe <code>climatology</code>, contains the same
 information as found in <code><a href='detect_event.html'>detect_event</a></code>, but with the addition of the daily
-intensity and category values. The second dataframe, <code>event</code>, is the summary results that
-this function produces by default.</p></td>
+intensity (anomaly above seasonal doy threshold) and category values. The second dataframe,
+<code>event</code>, is the summary results that this function produces by default.</p></td>
+    </tr>
+    <tr>
+      <th>season</th>
+      <td><p>This argument allows the user to decide how the season(s) of occurrence for
+the MHWs are labelled. The default setting of <code>"range"</code> will return the range of seasons
+over which the MHW occurred, as seen in Hobday et al. (2018). One may chose to rather have
+this function return only the season during the "start", "peak", or "end" of the MHW by giving
+the corresponding character vector.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The function will return a tibble with results similar to those seen in
@@ -247,7 +254,8 @@ are then the difference multiplied by the category level.</p>
   occurred across two seasons this will be displayed as "Winter/Spring".
   Across three seasons as "Winter-Summer". Events lasting across four or more
   seasons are listed as "Year-round". December (June) is used here as the start of
-  Austral (Boreal) summer.</p></dd>
+  Austral (Boreal) summer. If "start", "peak", or "end" was given to the <code>season</code>
+  argument then only the one season during that chosen period will be given.</p></dd>
 
 If climatology = TRUE, this function will output a list of two dataframes.
 The first dataframe, climatology, will contain only the following columns:
@@ -260,7 +268,6 @@ The first dataframe, climatology, will contain only the following columns:
 The second dataframe, event, contains the default output of this function,
 as detailed above.
 
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>An explanation for the categories is as follows:</p><ol>
@@ -272,12 +279,10 @@ as detailed above.
 <li><p>IV Extreme-Events with a maximum intensity that is four times or greater the
   aforementioned distance. Scary stuff...</p></li>
 </ol>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Hobday et al. (2018). Categorizing and Naming
 Marine Heatwaves. Oceanography 31(2).</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>res_WA</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='detect_event.html'>detect_event</a></span>(<span class='fu'><a href='ts2clm.html'>ts2clm</a></span>(<span class='no'>sst_WA</span>,
@@ -344,13 +349,9 @@ Marine Heatwaves. Oceanography 31(2).</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#references">References</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

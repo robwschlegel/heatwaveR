@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -114,7 +114,7 @@
       <h1>Alternative Thresholds</h1>
                         <h4 class="author">Robert W Schlegel</h4>
             
-            <h4 class="date">2019-07-15</h4>
+            <h4 class="date">2019-09-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/complex_clims.Rmd"><code>vignettes/complex_clims.Rmd</code></a></small>
       <div class="hidden name"><code>complex_clims.Rmd</code></div>
@@ -182,7 +182,7 @@
 <a class="sourceLine" id="cb5-9" data-line-number="9">        <span class="dt">legend.box.background =</span> <span class="kw">element_rect</span>(<span class="dt">colour =</span> <span class="st">"black"</span>))</a>
 <a class="sourceLine" id="cb5-10" data-line-number="10"></a>
 <a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co"># Don't forget to set 'event_line(y = tMax)'</span></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="kw"><a href="https://www.rdocumentation.org/packages/ggpubr/topics/ggarrange">ggarrange</a></span>(<span class="kw"><a href="../reference/event_line.html">event_line</a></span>(events, <span class="dt">y =</span> tMax, <span class="dt">metric =</span> <span class="st">"intensity_max"</span>),</a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="kw"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span>(<span class="kw"><a href="../reference/event_line.html">event_line</a></span>(events, <span class="dt">y =</span> tMax, <span class="dt">metric =</span> <span class="st">"intensity_max"</span>),</a>
 <a class="sourceLine" id="cb5-13" data-line-number="13">          <span class="kw"><a href="../reference/event_line.html">event_line</a></span>(events, <span class="dt">y =</span> tMax, <span class="dt">metric =</span> <span class="st">"intensity_max"</span>, <span class="dt">category =</span> T),</a>
 <a class="sourceLine" id="cb5-14" data-line-number="14">          <span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events),</a>
 <a class="sourceLine" id="cb5-15" data-line-number="15">          bubble_plot,</a>
@@ -217,7 +217,7 @@
 <a class="sourceLine" id="cb6-21" data-line-number="21"><span class="co"># Or to simply use one threshold</span></a>
 <a class="sourceLine" id="cb6-22" data-line-number="22">events_one_thresh &lt;-<span class="st"> </span><span class="kw"><a href="../reference/detect_event.html">detect_event</a></span>(<span class="dt">data =</span> thresh_tMin, <span class="dt">y =</span> tMin, <span class="dt">minDuration =</span> <span class="dv">10</span>, <span class="dt">maxGap =</span> <span class="dv">2</span>)</a></code></pre></div>
 <p>Here are the differences in lolliplot format:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/ggpubr/topics/ggarrange">ggarrange</a></span>(<span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events_one_thresh), <span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events_two_thresh), <span class="dt">labels =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"One threshold"</span>, <span class="st">"Two thresholds"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span>(<span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events_one_thresh), <span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events_two_thresh), <span class="dt">labels =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"One threshold"</span>, <span class="st">"Two thresholds"</span>))</a></code></pre></div>
 <p><img src="complex_clims_files/figure-html/alt-two-thresh-lollis-1.png" width="768"></p>
 <p>Here is a brief display of the top few events from each method:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(events_one_thresh<span class="op">$</span>event)</a></code></pre></div>
@@ -322,7 +322,7 @@
 <h3 class="hasAnchor">
 <a href="#visualising-filtered-events" class="anchor"></a>Visualising filtered events</h3>
 <p>To better understand how different the results from these two different techniques may be we will use lolliplots to visualise them.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/ggpubr/topics/ggarrange">ggarrange</a></span>(<span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events_two_thresh, <span class="dt">metric =</span> <span class="st">"duration"</span>), </a>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span>(<span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events_two_thresh, <span class="dt">metric =</span> <span class="st">"duration"</span>), </a>
 <a class="sourceLine" id="cb18-2" data-line-number="2">          <span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events_one_thresh_filtered, <span class="dt">metric =</span> <span class="st">"duration"</span>), </a>
 <a class="sourceLine" id="cb18-3" data-line-number="3">          <span class="dt">labels =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Double threshold"</span>, <span class="st">"Filter threshold"</span>))</a></code></pre></div>
 <div class="figure" style="text-align: centre">
@@ -330,7 +330,7 @@
 Difference in duration (days) of events given different applications of thresholds. Note the difference in the y-axes.
 </p>
 </div>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/ggpubr/topics/ggarrange">ggarrange</a></span>(<span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events_two_thresh, <span class="dt">metric =</span> <span class="st">"intensity_cumulative"</span>), </a>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html">ggarrange</a></span>(<span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events_two_thresh, <span class="dt">metric =</span> <span class="st">"intensity_cumulative"</span>), </a>
 <a class="sourceLine" id="cb19-2" data-line-number="2">          <span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events_one_thresh_filtered, <span class="dt">metric =</span> <span class="st">"intensity_cumulative"</span>), </a>
 <a class="sourceLine" id="cb19-3" data-line-number="3">          <span class="dt">labels =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Double threshold"</span>, <span class="st">"Filter threshold"</span>))</a></code></pre></div>
 <div class="figure" style="text-align: centre">
@@ -359,6 +359,7 @@ Difference in cumulative intensity (°C x days) of events given different applic
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
         <div id="tocnav">
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>

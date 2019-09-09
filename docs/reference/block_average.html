@@ -8,10 +8,12 @@
 
 <title>Calculate yearly means for event metrics. — block_average • heatwaveR</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/spacelab/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -36,12 +38,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
+
 <meta property="og:title" content="Calculate yearly means for event metrics. — block_average" />
-
 <meta property="og:description" content="Calculate yearly means for event metrics." />
-
 <meta property="og:image" content="https://robwschlegel.github.io/heatwaveR/index.html/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -81,7 +83,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -127,7 +129,6 @@
   <a href="../news/index.html">News</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/robwschlegel/heatwaveR">
@@ -160,13 +161,11 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Calculate yearly means for event metrics.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>block_average</span>(<span class='no'>data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='kw'>report</span> <span class='kw'>=</span> <span class='st'>"full"</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -194,7 +193,7 @@ the report to contain NAs for any years in which no events were detected
 reports only the years wherein events were detected. The default is <code>full</code>.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The function will return a data frame of the averaged (or aggregate)
@@ -226,7 +225,6 @@ intensity_max_abs, intensity_mean_abs, intensity_var_abs, and
 intensity_cumulative_abs are as above except as absolute magnitudes
 rather than relative to the seasonal climatology or threshold.
 
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This function needs to be provided with the full output from the <code>detect_event</code>
@@ -240,13 +238,11 @@ event metrics in 'blocks' of one year, while the python version allows
 arbitrary (integer) block sizes.</p>
 <p>Note that if this function is used on the output of <code>exceedance</code>, all of the metrics
 (see below) with <code>relThresh</code> in the name will be returned as <code>NA</code> values.</p>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Hobday, A.J. et al. (2016), A hierarchical approach to defining
 marine heatwaves, Progress in Oceanography, 141, pp. 227-238,
 doi: 10.1016/j.pocean.2015.12.014</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>ts</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ts2clm.html'>ts2clm</a></span>(<span class='no'>sst_WA</span>, <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span>))
@@ -287,13 +283,9 @@ doi: 10.1016/j.pocean.2015.12.014</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#references">References</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

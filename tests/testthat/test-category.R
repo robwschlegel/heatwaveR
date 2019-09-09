@@ -81,3 +81,14 @@ test_that("no detected events returns an empty dataframe and not an error", {
   expect_equal(nrow(cat_clim$climatology), 0)
   expect_equal(ncol(cat_clim$climatology), 4)
 })
+
+test_that("the different `season` option function as expected", {
+  ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  res <- detect_event(ts)
+  expect_equal(category(res, season = "range")$season[9], "Fall/Winter")
+  expect_equal(category(res, season = "start")$season[9], "Fall")
+  expect_equal(category(res, season = "peak")$season[9], "Fall")
+  expect_equal(category(res, season = "end")$season[9], "Winter")
+  expect_error(category(res, season = "banana"),
+               "Please provide one of the following to the `season` argument: 'range', 'start', 'peak', 'end'.")
+})

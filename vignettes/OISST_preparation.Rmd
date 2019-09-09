@@ -1,9 +1,5 @@
 ---
-<<<<<<< HEAD
-title: "Downloading and Preparing OISST Data"
-=======
 title: "Downloading and Preparing NOAA OISST Data"
->>>>>>> 570b5edf62cb399f92feb8ed5e827de5ba9247fe
 author: "Robert W Schlegel and AJ Smit"
 date: "`r Sys.Date()`"
 description: "This vignette demonstrates how to download NOAA OISST data and prepare them for the detection of marine heatwaves."
@@ -26,7 +22,7 @@ knitr::opts_chunk$set(fig.width = 8, fig.height = 3, fig.align = 'centre',
 
 In this vignette we will see how to retrieve and prepare [Reynolds optimally interpolated sea surface temperature](https://journals.ametsoc.org/doi/full/10.1175/2007JCLI1824.1) (OISST) data for calculating marine heatwaves (MHWs). The OISST product is a global 1/4 degree gridded dataset of Advanced Very High Resolution Radiometer (AVHRR) derived SSTs at a daily resolution, starting on 1 September 1981. The source of the data is currently the [NOAA NCDC](https://www.ncdc.noaa.gov/oisst). 
 
-Each daily global file is around 8.3 MB, so they add up to a large amount of data when a time series of the recomended 30 year minimum duration for the detection of MHWs is downloaded. If one were to download all of the data currently available it would exceed 100 GB of total disk space. It is therefore best practice to download only a subset of the data as would match one's study area. Thanks to the [__`rerddap`__ package](https://docs.ropensci.org/rerddap/) this is easy to do in `R`.
+Each daily global file is around 8.3 MB, so they add up to a large amount of data when a time series of the recommended 30 year minimum duration for the detection of MHWs is downloaded. If one were to download all of the data currently available it would exceed 100 GB of total disk space. It is therefore best practice to download only a subset of the data as would match one's study area. Thanks to the [__`rerddap`__ package](https://docs.ropensci.org/rerddap/) this is easy to do in `R`.
 
 ## Downloading and preparing data
 
@@ -70,11 +66,11 @@ OISST_sub <- function(time_df){
 
 In the wrapper function above we see that we have chosen to download only the 'sst' data out of the several variables ('fields') available to us. We also see that we have chosen the spatial extent of latitude -40 to -35 and longitude 15 to 21. This a small window over some of the Agulhas Retroflection to the south west of the coastline of South Africa. A larger area is not being chosen here simply due to the speed constraints of downloading the data and detecting the events therein. One may simply change the lon/lat values above as necessary to match the desired study area. The function will also be re-labelling the 'time' column as 't', and the 'sst' column as 'temp'. We do this so that they match the default column names that are expected for calculating MHWs and we won't have to do any extra work later on.
 
-One must note here that depending on the RAM available on ones machine, it may not be possible to handle all of the data downloaded at once if they are very large (e.g. > 5 GB). The discussion on the limitations of the R language due to its dependence on virtual memory is beyond the scope of this vignette, but if one limits one's downloads to no more than several square pixels at a time that should be fine. Were one to try to download the whole Indian Ocean, for example, that may cause issues if being run on a laptop or computer of a similar power.
+One must note here that depending on the RAM available on one's machine, it may not be possible to handle all of the data downloaded at once if they are very large (e.g. > 5 GB). The discussion on the limitations of the R language due to its dependence on virtual memory is beyond the scope of this vignette, but if one limits one's downloads to no more than several square pixels at a time that should be fine. Were one to try to download the whole Indian Ocean, for example, that may cause issues if being run on a laptop or computer of a similar power.
 
 ### The date range
 
-With our wrapper function written we would now need to run it several times in order to grab all of the available OISST data from `1982-01-01` to `2018-12-31`. Even though each year of data for the extent used in this vignette is only ~1.0 MB, the server does not like it when more than 9 years of consecutive data are requested. The server will also end a users connection after ~17 individual files have been requested. Because we can't download all of the dat in one request, and we can't download the data one year at a time, we will need to make requests for multiple batches of data. To accomplish this we will create a dataframe of start and end dates that will allow us to automate the entire download while meeting the aforementioned criteria.
+With our wrapper function written we would now need to run it several times in order to grab all of the OISST data from `1982-01-01` to `2018-12-31`. Even though each year of data for the extent used in this vignette is only ~360 KB, the server does not like it when more than 9 years of consecutive data are requested. The server will also end a users connection after ~17 individual files have been requested. Because we can't download all of the data in one request, and we can't download the data one year at a time, we will need to make requests for multiple batches of data. To accomplish this we will create a dataframe of start and end dates that will allow us to automate the entire download while meeting the aforementioned criteria.
 
 ```{r year-index}
 # Date download range by start and end dates per year
@@ -87,33 +83,31 @@ dl_years <- data.frame(date_index = 1:5,
 
 ### The data
 
-With the download index complete we now use __`purrr`__ to map our wrapper function to the date range dataframe. One could also use the __`plyr`__ suite of functions to automate this process, but I've chosen here to stick with the __`tidyverse`__ native approach. If the below chunk of code fails or times out, simply re-run it until all of the data have been downloaded.
+One could also use the __`plyr`__ suite of functions to automate the process of downloading and processing multiple files, but I've chosen here to stick with the __`tidyverse`__ native approach. If the below chunk of code fails or times out, simply re-run it until all of the data have been downloaded.
 
-It is worth pointing out here that these data are downloaded as cached files on the users computer by using the __`hoardr`__ package. This means that if one runs the same command again, it will not re-download the data again because it first looks in the folder where it has automatically cached the data for you and sees that it may simply draw the data from there. This is convenient as it means that re-running this same code will load the data that have already been downloaded. No need to change anything or write a second script for loading data.
+It is worth pointing out here that these data are downloaded as cached files on the users computer by using the __`hoardr`__ package. This means that if one runs the same command again, it will not re-download the data because it first looks in the folder where it has automatically cached the data for you and sees that it may simply draw the data from there. No need to change anything or write a second script for loading data.
 
 ```{r download-data}
 # Download all of the data with one nested request
-# Speed results may vary based on internet strength
+# The time this takes will vary greatly based on connection speed
 system.time(
   OISST_data <- dl_years %>% 
     group_by(date_index) %>% 
-    nest() %>% 
-    mutate(dl_data = map(data, OISST_sub)) %>% 
+    group_modify(~OISST_sub(.x)) %>% 
     ungroup() %>% 
-    select(-date_index, -data) %>% 
-    unnest()
-) # 560 seconds, ~112 seconds per batch
+    select(lon, lat, t, temp)
+) # 921 seconds, ~184 seconds per batch
 ```
 
-### The result
+If the above code chunk is giving errors it is likely due to either not having the development version of the __`tidyverse`__ installed (see beginning of vignette), or one's Internet connection is timing out. There are also rare instances where the NOAA server is not responding due to an issue on their end. Any connection based issues may be resolved by simply waiting for a few minutes, or by ensuring a stable connection.
 
-With the data downloaded and prepared for furhter use, all that's left to do is save them.
+### The saved file
+
+With the data downloaded and prepared for further use, all that's left to do is save them.
 
 ```{r prep-data}
-# Save the data as an .Rda file
+# Save the data as an .Rda file as it has a much better compression rate than .RData
 saveRDS(OISST_data, file = "~/Desktop/OISST_vignette.Rda")
 ```
 
-Note above that I have chosen to save the file to my desktop. This is not normally where one (hopefully!) would save such a file. Rather one would be saving these data into the project folder out of which one is working.
-
-And that is all there is to it. Download, prep, save. In the next vignette we will see how to [detect MHWs in gridded data](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html).
+Note above that I have chosen to save the file to my desktop. This is not normally where one (hopefully!) would save such a file. Rather one would be saving these data into the project folder out of which one is working. In the next vignette we will see how to [detect MHWs in gridded data](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html).

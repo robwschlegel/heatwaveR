@@ -5,7 +5,7 @@
 \title{Calculate the categories of events.}
 \usage{
 category(data, y = temp, S = TRUE, name = "Event",
-  climatology = FALSE)
+  climatology = FALSE, season = "range")
 }
 \arguments{
 \item{data}{The function receives the full (list) output from the
@@ -24,11 +24,17 @@ If no value is provided the default output is "Event".}
 
 \item{climatology}{The default setting of \code{FALSE} will tell this function to output only
 the summary (wide) results for the individual events as seen in Hobday et al. (2018). If set
-to \code{TRUE}, this function will rather return a list of two data frames, same
+to \code{TRUE}, this function will return a list of two dataframes, same
 as \code{\link{detect_event}}. The first dataframe \code{climatology}, contains the same
 information as found in \code{\link{detect_event}}, but with the addition of the daily
-intensity and category values. The second dataframe, \code{event}, is the summary results that
-this function produces by default.}
+intensity (anomaly above seasonal doy threshold) and category values. The second dataframe,
+\code{event}, is the summary results that this function produces by default.}
+
+\item{season}{This argument allows the user to decide how the season(s) of occurrence for
+the MHWs are labelled. The default setting of \code{"range"} will return the range of seasons
+over which the MHW occurred, as seen in Hobday et al. (2018). One may chose to rather have
+this function return only the season during the "start", "peak", or "end" of the MHW by giving
+the corresponding character vector.}
 }
 \value{
 The function will return a tibble with results similar to those seen in
@@ -70,7 +76,8 @@ The definitions for the default output columns are as follows:
   occurred across two seasons this will be displayed as "Winter/Spring".
   Across three seasons as "Winter-Summer". Events lasting across four or more
   seasons are listed as "Year-round". December (June) is used here as the start of
-  Austral (Boreal) summer.}
+  Austral (Boreal) summer. If "start", "peak", or "end" was given to the \code{season}
+  argument then only the one season during that chosen period will be given.}
 
 If \code{climatology = TRUE}, this function will output a list of two dataframes.
 The first dataframe, \code{climatology}, will contain only the following columns:

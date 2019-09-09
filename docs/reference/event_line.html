@@ -8,10 +8,12 @@
 
 <title>Create a line plot of heatwaves or cold-spells. — event_line • heatwaveR</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/spacelab/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -36,13 +38,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Create a line plot of heatwaves or cold-spells. — event_line" />
 
+<meta property="og:title" content="Create a line plot of heatwaves or cold-spells. — event_line" />
 <meta property="og:description" content="Creates a graph of warm or cold events as per the second row of Figure 3 in
 Hobday et al. (2016)." />
-
 <meta property="og:image" content="https://robwschlegel.github.io/heatwaveR/index.html/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -82,7 +84,7 @@ Hobday et al. (2016)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -128,7 +130,6 @@ Hobday et al. (2016)." />
   <a href="../news/index.html">News</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/robwschlegel/heatwaveR">
@@ -161,17 +162,15 @@ Hobday et al. (2016)." />
     </div>
 
     <div class="ref-description">
-    
     <p>Creates a graph of warm or cold events as per the second row of Figure 3 in
 Hobday et al. (2016).</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>event_line</span>(<span class='no'>data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='kw'>min_duration</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>spread</span> <span class='kw'>=</span> <span class='fl'>150</span>,
   <span class='kw'>metric</span> <span class='kw'>=</span> <span class='st'>"intensity_cumulative"</span>, <span class='kw'>start_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>end_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>category</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>x_axis_title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>x_axis_text_angle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y_axis_title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>y_axis_range</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -259,7 +258,7 @@ than "Temperature °C" (default)</p></td>
 here as two numeric values (e.g. c(20, 30)).</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>The function will return a line plot indicating the climatology,
@@ -270,13 +269,11 @@ The top event detect during the selected time period will be visible in a
 brighter colour. This function differs in use from <code><a href='geom_flame.html'>geom_flame</a></code>
 in that it creates a stand alone figure. The benefit of this being
 that one must not have any prior knowledge of ggplot2 to create the figure.</p>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Hobday, A.J. et al. (2016), A hierarchical approach to defining
 marine heatwaves, Progress in Oceanography, 141, pp. 227-238,
 doi: 10.1016/j.pocean.2015.12.014</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>ts</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ts2clm.html'>ts2clm</a></span>(<span class='no'>sst_WA</span>, <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span>))
@@ -292,11 +289,8 @@ doi: 10.1016/j.pocean.2015.12.014</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#references">References</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
