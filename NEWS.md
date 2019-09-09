@@ -3,6 +3,10 @@
 * Updated the `OISST Preparation` vignette to match the improvements to the `rerddap` package
 * Also updated the vignette to be more clear to contact NOAA about data retrieval issues
 
+# heatwaveR 0.4.0.9000 (2019-07-22)
+
+* Updated NOAA OISST data downloading tutorial to account for minor changes to NOAA ERDDAP servers
+
 # heatwaveR 0.4.0 (2019-07-10)
 
 * Introduced the `Algiers` time series for examples on using multiple thresholds for atmospheric data
