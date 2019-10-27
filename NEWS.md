@@ -1,3 +1,8 @@
+# heatwaveR 0.4.1.9000 (2019-10-26)
+
+* An update to the `ggplot2` package some time back in August, 2019 changed slightly how Geoms work internally
+  * This allowed `geom_lolli()` to fall over in very rare circumstances so this issue has been addressed
+
 # heatwaveR 0.4.1 (2019-09-09)
 
 * Updated the `OISST Preparation` vignette to match the improvements to the `rerddap` package

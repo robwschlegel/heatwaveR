@@ -344,6 +344,11 @@ GeomLolli <- ggplot2::ggproto("GeomLolli", ggplot2::Geom,
                                 small_points$size = data$size/2
                                 small_points$colour = "white"
 
+                                # Check if the user is trying to highlight more points than are in the data
+                                if (n > nrow(data)){
+                                  n = nrow(data)
+                                }
+
                                 if (n == 0) {
                                   grid::gList(
                                     ggplot2::GeomSegment$draw_panel(data, panel_scales, coord),
