@@ -31,7 +31,7 @@ proto_event <- function(t_series,
 
   ex1 <- rle(criterion_column)
   ind1 <- rep(seq_along(ex1$lengths), ex1$lengths)
-  s1 <- split(1:nrow(t_series), ind1)
+  s1 <- split(base::seq_len(nrow(t_series)), ind1)
 
   proto_events <- do.call(rbind,
                           lapply(s1[ex1$values == TRUE], function(x)
@@ -54,7 +54,7 @@ proto_event <- function(t_series,
   proto_events <- proto_events[duration >= minDuration, ]
 
   durationCriterion <- rep(FALSE, nrow(t_series))
-  for (i in 1:nrow(proto_events)) {
+  for (i in base::seq_len(nrow(proto_events))) {
     durationCriterion[proto_events$index_start[i]:proto_events$index_end[i]] <-
       rep(TRUE, length = proto_events$duration[i])
   }
@@ -62,7 +62,7 @@ proto_event <- function(t_series,
   if (joinAcrossGaps) {
     ex2 <- rle(durationCriterion)
     ind2 <- rep(seq_along(ex2$lengths), ex2$lengths)
-    s2 <- split(1:nrow(t_series), ind2)
+    s2 <- split(base::seq_len(nrow(t_series)), ind2)
 
     proto_gaps <- do.call(rbind,
                           lapply(s2[ex2$values == FALSE], function(x)
@@ -73,7 +73,7 @@ proto_event <- function(t_series,
       proto_gaps <- proto_gaps[duration >= 1 & duration <= maxGap, ]
 
       event <- durationCriterion
-      for (i in 1:nrow(proto_gaps)) {
+      for (i in base::seq_len(nrow(proto_gaps))) {
         event[proto_gaps$index_start[i]:proto_gaps$index_end[i]] <-
           rep(TRUE, length = proto_gaps$duration[i])
       }
@@ -92,7 +92,7 @@ proto_event <- function(t_series,
 
   ex3  <- rle(event)
   ind3 <- rep(seq_along(ex3$lengths), ex3$lengths)
-  s3 <- split(1:nrow(t_series), ind3)
+  s3 <- split(base::seq_len(nrow(t_series)), ind3)
 
   proto_final <- do.call(rbind,
                           lapply(s3[ex3$values == TRUE], function(x)
@@ -101,7 +101,7 @@ proto_event <- function(t_series,
 
   event_no <- rep(NA, nrow(t_series))
 
-  for (i in 1:nrow(proto_final)) {
+  for (i in base::seq_len(nrow(proto_final))) {
     event_no[proto_final$index_start[i]:proto_final$index_end[i]] <-
       rep(i, length = proto_final$duration[i])
   }

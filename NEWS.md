@@ -1,3 +1,11 @@
+# heatwaveR 0.4.1.9001 (2019-10-30)
+
+* An update to `data.table` sometime in AUgust, 2019 reduced the packages tolerance for code with `1:n` in it
+  * As this is a potential memmory weakness, when this creates an empty vector in multicore calculations it causes the entire run to fall over
+  * Therefore, all use of `1:n` has been replaced with `seq_len(n)`
+  * This changed the list outputs when no MHWs are detected to be one row of NA values, rather than an empty list 
+  * This may cause backward compatibility issues, but is extreemly unlikely
+
 # heatwaveR 0.4.1.9000 (2019-10-26)
 
 * An update to the `ggplot2` package some time back in August, 2019 changed slightly how Geoms work internally

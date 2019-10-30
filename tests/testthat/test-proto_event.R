@@ -27,7 +27,7 @@ test_that("joinAcrossGaps = FALSE creates more events", {
   expect_gt(max(res2$event_no, na.rm = T), max(res1$event_no, na.rm = T))
 })
 
-test_that("no detected events returns an empty dataframe and not an error", {
+test_that("no detected events returns columns that all say FALSE/NA and not an error", {
   sst_WA_flat <- sst_WA
   sst_WA_flat$temp <- 1
   # sst_WA_flat$temp[4:6] <- 5

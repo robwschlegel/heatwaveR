@@ -29,7 +29,7 @@ smooth_percentile <- function(data, smoothPercentileWidth, var_calc) {
   seas <- RcppRoll::roll_mean(as.numeric(prep[,1]), n = smoothPercentileWidth, na.rm = FALSE)
   thresh <- RcppRoll::roll_mean(as.numeric(prep[,2]), n = smoothPercentileWidth, na.rm = FALSE)
 
-  clim <- data.table::data.table(doy = 1:len_clim_year,
+  clim <- data.table::data.table(doy = seq_len(len_clim_year),
                                  seas = seas[(smoothPercentileWidth/2 + 2):((smoothPercentileWidth/2 + 1) + len_clim_year)],
                                  thresh = thresh[(smoothPercentileWidth/2 + 2):((smoothPercentileWidth/2 + 1) + len_clim_year)])
 

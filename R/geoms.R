@@ -357,10 +357,10 @@ GeomLolli <- ggplot2::ggproto("GeomLolli", ggplot2::Geom,
                                   )
                                 } else {
                                   # Define the top n events
-                                  data_n = data[1:n,]
-                                  data_n$colour = data$colour_n[1:n]
-                                  big_points_n = big_points[1:n,]
-                                  big_points_n$colour = data$colour_n[1:n]
+                                  data_n = data[seq_len(n),]
+                                  data_n$colour = data$colour_n[seq_len(n)]
+                                  big_points_n = big_points[seq_len(n),]
+                                  big_points_n$colour = data$colour_n[seq_len(n)]
 
                                   grid::gList(
                                     ggplot2::GeomSegment$draw_panel(data, panel_scales, coord),

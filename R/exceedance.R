@@ -199,7 +199,7 @@ exceedance <-
       intensity_cum_abs <- ts_y <- exceedance_no <- row_index <- index_peak <-  NULL
 
     exceedances <- exceedances_clim %>%
-      dplyr::mutate(row_index = 1:nrow(exceedances_clim),
+      dplyr::mutate(row_index = seq_len(nrow(exceedances_clim)),
                     exceedance_rel_thresh = ts_y - thresh) %>%
       dplyr::filter(stats::complete.cases(exceedance_no)) %>%
       dplyr::group_by(exceedance_no) %>%

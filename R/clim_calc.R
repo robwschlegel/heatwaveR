@@ -24,11 +24,11 @@ clim_calc <- function(data, windowHalfWidth, pctile) {
   for (i in (windowHalfWidth + 1):((nrow(data) - windowHalfWidth))) {
     seas[i] <-
       mean(
-        c(t(data[(i - (windowHalfWidth)):(i + windowHalfWidth), 1:ncol(data)])),
+        c(t(data[(i - (windowHalfWidth)):(i + windowHalfWidth), seq_len(ncol(data))])),
         na.rm = TRUE)
     thresh[i] <-
       stats::quantile(
-        c(t(data[(i - (windowHalfWidth)):(i + windowHalfWidth), 1:ncol(data)])),
+        c(t(data[(i - (windowHalfWidth)):(i + windowHalfWidth), seq_len(ncol(data))])),
         probs = pctile/100,
         type = 7,
         na.rm = TRUE,
@@ -36,13 +36,13 @@ clim_calc <- function(data, windowHalfWidth, pctile) {
       )
     var[i] <-
       stats::sd(
-        c(t(data[(i - (windowHalfWidth)):(i + windowHalfWidth), 1:ncol(data)])),
+        c(t(data[(i - (windowHalfWidth)):(i + windowHalfWidth), seq_len(ncol(data))])),
         na.rm = TRUE
       )
   }
 
   len_clim_year <- 366
-  doy <- 1:366
+  doy <- seq_len(366)
 
   seas <- seas[(windowHalfWidth + 1):((windowHalfWidth) + len_clim_year)]
   thresh <- thresh[(windowHalfWidth + 1):((windowHalfWidth) + len_clim_year)]

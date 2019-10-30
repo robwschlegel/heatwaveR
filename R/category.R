@@ -128,13 +128,12 @@
 #'                               cat_WA_daily$climatology)
 #' head(cat_WA_ts)
 #'
-category <-
-  function(data,
-           y = temp,
-           S = TRUE,
-           name = "Event",
-           climatology = FALSE,
-           season = "range") {
+category <- function(data,
+                     y = temp,
+                     S = TRUE,
+                     name = "Event",
+                     climatology = FALSE,
+                     season = "range") {
 
     temp <- NULL
 
@@ -144,7 +143,7 @@ category <-
 
     event_no <- event_name <- peak_date <- category <- duration <- NULL
 
-    if(nrow(data$event) == 0) {
+    if(nrow(stats::na.omit(data$event)) == 0) {
       cat_res <- tibble::as_tibble(data.frame(event_no = data$event$event_no,
                                               event_name = data$event$event_no,
                                               peak_date = data$event$event_no,

@@ -67,13 +67,13 @@ test_that("threshClim2 must be logic values", {
 test_that("no detected events returns an empty event dataframe and not an error", {
   sst_WA_flat <- sst_WA
   sst_WA_flat$temp <- 1
-  suppressWarnings(res <- detect_event(ts2clm(sst_WA_flat, climatologyPeriod = c("1983-01-01", "2012-12-31"))))
+  res <- detect_event(ts2clm(sst_WA_flat, climatologyPeriod = c("1983-01-01", "2012-12-31")))
   expect_is(res, "list")
   expect_is(res$climatology, "tbl_df")
   expect_is(res$event, "tbl_df")
   expect_equal(ncol(res$climatology), 9)
   expect_equal(ncol(res$event), 22)
-  expect_equal(nrow(res$event), 0)
+  expect_equal(nrow(res$event), 1)
 })
 
 test_that("decimal places are rounded to the fourth place", {

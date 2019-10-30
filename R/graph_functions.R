@@ -147,7 +147,7 @@ event_line <- function(data,
            thresh_4x = thresh_3x + diff)
 
   clim_events <- data.frame()
-  for (i in 1:nrow(event_sub)) {
+  for (i in seq_len(nrow(event_sub))) {
     clim_sub <- clim_diff[(event_sub$index_start_fix[i]):(event_sub$index_end_fix[i]),]
     clim_events <- rbind(clim_events, clim_sub)
   }
