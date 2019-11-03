@@ -214,11 +214,11 @@ detect_event <- function(data,
                          coldSpells = FALSE,
                          protoEvents = FALSE) {
 
-  if(!(is.numeric(minDuration)))
+  if (!(is.numeric(minDuration)))
     stop("Please ensure that 'minDuration' is a numeric/integer value.")
-  if(!(is.logical(joinAcrossGaps)))
+  if (!(is.logical(joinAcrossGaps)))
     stop("Please ensure that 'joinAcrossGaps' is either TRUE or FALSE.")
-  if(!(is.numeric(maxGap)))
+  if (!(is.numeric(maxGap)))
     stop("Please ensure that 'maxGap' is a numeric/integer value.")
 
   temp <- seas <- thresh <- threshCriterion <- durationCriterion <- event <- NULL
@@ -273,7 +273,7 @@ detect_event <- function(data,
     intensity_max_abs <- intensity_cumulative_abs <- rate_onset <- rate_decline <-
     mhw_rel_thresh <- mhw_rel_seas <- event_no <- row_index <- index_peak <-  NULL
 
-  if(nrow(stats::na.omit(events_clim)) > 0){
+  if (nrow(stats::na.omit(events_clim)) > 0) {
     events <- events_clim %>%
       dplyr::mutate(row_index = base::seq_len(nrow(events_clim)),
                     mhw_rel_seas = ts_y - ts_seas,
@@ -346,7 +346,7 @@ detect_event <- function(data,
         )
     }
 
-  } else{
+  } else {
     events <- data.frame(event_no = NA, index_start = NA, index_peak = NA, index_end = NA,
                          duration = NA, date_start = NA, date_peak = NA, date_end = NA,
                          intensity_mean = NA, intensity_max = NA, intensity_var = NA,
@@ -354,7 +354,8 @@ detect_event <- function(data,
                          intensity_max_relThresh = NA, intensity_var_relThresh = NA,
                          intensity_cumulative_relThresh = NA, intensity_mean_abs = NA,
                          intensity_max_abs = NA, intensity_var_abs = NA,
-                         intensity_cumulative_abs = NA, rate_onset = NA, rate_decline = NA)
+                         intensity_cumulative_abs = NA, rate_onset = NA, rate_decline = NA) %>%
+      stats::na.omit()
   }
 
   events <- dplyr::mutate_if(events, is.numeric, round, 4)

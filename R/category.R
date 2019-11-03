@@ -143,23 +143,25 @@ category <- function(data,
 
     event_no <- event_name <- peak_date <- category <- duration <- NULL
 
-    if(nrow(stats::na.omit(data$event)) == 0) {
-      cat_res <- tibble::as_tibble(data.frame(event_no = data$event$event_no,
-                                              event_name = data$event$event_no,
-                                              peak_date = data$event$event_no,
-                                              category = data$event$event_no,
-                                              i_max = data$event$event_no,
-                                              duration = data$event$event_no,
-                                              p_moderate = data$event$event_no,
-                                              p_strong = data$event$event_no,
-                                              p_severe = data$event$event_no,
-                                              p_extreme = data$event$event_no,
-                                              season = data$event$event_no))
-      if(climatology){
-        clim_res <- tibble::as_tibble(data.frame(t = data$event$event_no,
-                                                 event_no = data$event$event_no,
-                                                 intensity = data$event$event_no,
-                                                 category = data$event$event_no))
+    if (nrow(stats::na.omit(data$event)) == 0) {
+      cat_res <- tibble::as_tibble(data.frame(event_no = NA,
+                                              event_name = NA,
+                                              peak_date = NA,
+                                              category = NA,
+                                              i_max = NA,
+                                              duration = NA,
+                                              p_moderate = NA,
+                                              p_strong = NA,
+                                              p_severe = NA,
+                                              p_extreme = NA,
+                                              season = NA)) %>%
+        stats::na.omit()
+      if (climatology) {
+        clim_res <- tibble::as_tibble(data.frame(t = NA,
+                                                 event_no = NA,
+                                                 intensity = NA,
+                                                 category = NA)) %>%
+          stats::na.omit()
         res <- list(climatology = clim_res,
                     event = cat_res)
         return(res)

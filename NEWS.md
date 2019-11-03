@@ -1,3 +1,9 @@
+# heatwaveR 0.4.1.9003 (2019-11-03)
+
+* The potentially backward compatibility breaking design change to have empty data.frames returned as one row of `NA` values was not as rare of a problem as first thought
+* While still respecting the need to not use `1:n` vector creation, `detect_event()` and `category()` now produce empty data.frames and not one row `NA` dataframe
+* This should ensure continued backwards compatibility
+
 # heatwaveR 0.4.1.9002 (2019-11-03)
 
 * A bug was discovered where the `ts2clm()` function does not first check that the time series being fed to it is in correct chronological order

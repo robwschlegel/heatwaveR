@@ -73,7 +73,7 @@ test_that("no detected events returns an empty event dataframe and not an error"
   expect_is(res$event, "tbl_df")
   expect_equal(ncol(res$climatology), 9)
   expect_equal(ncol(res$event), 22)
-  expect_equal(nrow(res$event), 1)
+  expect_equal(nrow(res$event), 0)
 })
 
 test_that("decimal places are rounded to the fourth place", {

@@ -124,16 +124,15 @@
 #' # show first five exceedances:
 #' res$exceedance[1:5, ]
 #'
-exceedance <-
-  function(data,
-           x = t,
-           y = temp,
-           threshold,
-           below = FALSE,
-           minDuration = 5,
-           joinAcrossGaps = TRUE,
-           maxGap = 2,
-           maxPadLength = FALSE) {
+exceedance <- function(data,
+                       x = t,
+                       y = temp,
+                       threshold,
+                       below = FALSE,
+                       minDuration = 5,
+                       joinAcrossGaps = TRUE,
+                       maxGap = 2,
+                       maxPadLength = FALSE) {
 
     # message("exceedance() is deprecated and will not be included in the next release of heatwaveR")
     # message("please use detecet_event() directly and set 'threshClim =' whatever your static threshold is")
