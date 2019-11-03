@@ -92,7 +92,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1.9003</span>
       </span>
     </div>
 
@@ -169,6 +169,16 @@
       <small>Source: <a href='https://github.com/robwschlegel/heatwaveR/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="heatwaver-0-4-1-9003-2019-11-03" class="section level1">
+<h1 class="page-header">
+<a href="#heatwaver-0-4-1-9003-2019-11-03" class="anchor"></a>heatwaveR 0.4.1.9003 (2019-11-03)<small> Unreleased </small>
+</h1>
+<ul>
+<li>The potentially backward compatibility breaking design change to have empty data.frames returned as one row of <code>NA</code> values was not as rare of a problem as first thought</li>
+<li>While still respecting the need to not use <code>1:n</code> vector creation, <code><a href="../reference/detect_event.html">detect_event()</a></code> and <code><a href="../reference/category.html">category()</a></code> now produce empty data.frames and not one row <code>NA</code> dataframe</li>
+<li>This should ensure continued backwards compatibility</li>
+</ul>
+</div>
     <div id="heatwaver-0-4-1-9002-2019-11-03" class="section level1">
 <h1 class="page-header">
 <a href="#heatwaver-0-4-1-9002-2019-11-03" class="anchor"></a>heatwaveR 0.4.1.9002 (2019-11-03)<small> Unreleased </small>
@@ -919,6 +929,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#heatwaver-0-4-1-9003-2019-11-03">0.4.1.9003</a></li>
         <li><a href="#heatwaver-0-4-1-9002-2019-11-03">0.4.1.9002</a></li>
         <li><a href="#heatwaver-0-4-1-9001-2019-10-30">0.4.1.9001</a></li>
         <li><a href="#heatwaver-0-4-1-9000-2019-10-26">0.4.1.9000</a></li>
