@@ -1,10 +1,15 @@
+# heatwaveR 0.4.1.9002 (2019-11-03)
+
+* A bug was discovered where the `ts2clm()` function does not first check that the time series being fed to it is in correct chronological order
+  * This was fixed by ordering the data being fed to the function before beginning of the further calculations
+
 # heatwaveR 0.4.1.9001 (2019-10-30)
 
-* An update to `data.table` sometime in AUgust, 2019 reduced the packages tolerance for code with `1:n` in it
-  * As this is a potential memmory weakness, when this creates an empty vector in multicore calculations it causes the entire run to fall over
+* An update to `data.table` sometime in August, 2019 reduced the packages tolerance for code with `1:n` in it
+  * As this is a potential memory weakness, when this creates an empty vector in multicore calculations it causes the entire run to fall over
   * Therefore, all use of `1:n` has been replaced with `seq_len(n)`
   * This changed the list outputs when no MHWs are detected to be one row of NA values, rather than an empty list 
-  * This may cause backward compatibility issues, but is extreemly unlikely
+  * This may cause backward compatibility issues, but is extremely unlikely
 
 # heatwaveR 0.4.1.9000 (2019-10-26)
 

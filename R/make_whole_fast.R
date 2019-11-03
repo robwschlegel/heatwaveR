@@ -63,9 +63,9 @@ make_whole_fast <- function(data) {
   feb28 <- 59
 
   # create full, complete time series for joining against
-  date_strt <- lubridate::ymd(utils::head(data$ts_x, 1))
+  date_start <- lubridate::ymd(utils::head(data$ts_x, 1))
   date_end <- lubridate::ymd(utils::tail(data$ts_x, 1))
-  ts_full <- data.table::data.table(ts_x = seq.Date(date_strt, date_end, "day"))
+  ts_full <- data.table::data.table(ts_x = seq.Date(date_start, date_end, "day"))
 
   ts_merged <- merge(ts_full, data, all = TRUE)
   rm(ts_full)
