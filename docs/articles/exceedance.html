@@ -6,9 +6,16 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Calculating and Visualising Exceedances • heatwaveR</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/spacelab/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Calculating and Visualising Exceedances">
@@ -39,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1.9002</span>
       </span>
     </div>
 
@@ -94,7 +101,7 @@
   </a>
 </li>
       </ul>
-<form class="navbar-form navbar-right" role="search">
+<form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
@@ -108,13 +115,14 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Calculating and Visualising Exceedances</h1>
                         <h4 class="author">Robert W Schlegel</h4>
             
-            <h4 class="date">2019-09-09</h4>
+            <h4 class="date">2019-11-03</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/exceedance.Rmd"><code>vignettes/exceedance.Rmd</code></a></small>
       <div class="hidden name"><code>exceedance.Rmd</code></div>
@@ -133,8 +141,8 @@
 <a href="#calculating-exceedances" class="anchor"></a>Calculating exceedances</h2>
 <p>The calculation of exceedances may be done with only one function as seen here:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># Activate libraries</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(heatwaveR)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tidyverse)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(heatwaveR)</a>
 <a class="sourceLine" id="cb1-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co"># Calculate exceedence</span></a>
 <a class="sourceLine" id="cb1-6" data-line-number="6">exc_<span class="dv">25</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/exceedance.html">exceedance</a></span>(sst_WA, <span class="dt">threshold =</span> <span class="dv">25</span>)</a>
@@ -144,7 +152,7 @@
 <a class="sourceLine" id="cb1-10" data-line-number="10"><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb1-11" data-line-number="11"><span class="st">  </span><span class="kw">select</span>(exceedance_no, duration, date_start, date_peak, intensity_max, intensity_cumulative) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb1-12" data-line-number="12"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(<span class="op">-</span>intensity_cumulative) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="dv">5</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="dv">5</span>)</a></code></pre></div>
 <pre><code>## # A tibble: 5 x 6
 ##   exceedance_no duration date_start date_peak  intensity_max
 ##           &lt;dbl&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;             &lt;dbl&gt;
@@ -168,11 +176,11 @@
 <a class="sourceLine" id="cb3-6" data-line-number="6"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> temp, <span class="dt">colour =</span> <span class="st">"temp"</span>)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb3-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> thresh, <span class="dt">colour =</span> <span class="st">"thresh"</span>), <span class="dt">size =</span> <span class="fl">1.0</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb3-8" data-line-number="8"><span class="st">  </span><span class="kw">scale_colour_manual</span>(<span class="dt">name =</span> <span class="st">"Line Colour"</span>,</a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">                      <span class="dt">values =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"temp"</span> =<span class="st"> "black"</span>, <span class="st">"thresh"</span> =<span class="st">  "forestgreen"</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="st">  </span><span class="kw">scale_fill_manual</span>(<span class="dt">name =</span> <span class="st">"Event Colour"</span>, <span class="dt">values =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"all"</span> =<span class="st"> "salmon"</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="st">  </span><span class="kw">guides</span>(<span class="dt">colour =</span> <span class="kw">guide_legend</span>(<span class="dt">override.aes =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">fill =</span> <span class="ot">NA</span>))) <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">                      <span class="dt">values =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"temp"</span> =<span class="st"> "black"</span>, <span class="st">"thresh"</span> =<span class="st">  "forestgreen"</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="st">  </span><span class="kw">scale_fill_manual</span>(<span class="dt">name =</span> <span class="st">"Event Colour"</span>, <span class="dt">values =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"all"</span> =<span class="st"> "salmon"</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="st">  </span><span class="kw">guides</span>(<span class="dt">colour =</span> <span class="kw">guide_legend</span>(<span class="dt">override.aes =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">fill =</span> <span class="ot">NA</span>))) <span class="op">+</span></a>
 <a class="sourceLine" id="cb3-12" data-line-number="12"><span class="st">  </span><span class="kw">scale_x_date</span>(<span class="dt">date_labels =</span> <span class="st">"%b %Y"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/expression">expression</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="st">"Temperature ["</span>, degree, <span class="st">"C]"</span>)), <span class="dt">x =</span> <span class="ot">NULL</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="kw"><a href="https://rdrr.io/r/base/expression.html">expression</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"Temperature ["</span>, degree, <span class="st">"C]"</span>)), <span class="dt">x =</span> <span class="ot">NULL</span>)</a></code></pre></div>
 <p><img src="exceedance_files/figure-html/fig-example1-1.png" width="768"><!-- ![](vignettes/fig-example1-1.png) --></p>
 </div>
 <div id="calculating-negative-exceedances" class="section level2">
@@ -185,7 +193,7 @@
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span>() <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(exceedance_no, duration, date_start, date_peak, intensity_mean, intensity_cumulative) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(intensity_cumulative) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(<span class="dv">5</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="dv">5</span>)</a></code></pre></div>
 <pre><code>## # A tibble: 5 x 6
 ##   exceedance_no duration date_start date_peak  intensity_mean
 ##           &lt;dbl&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;              &lt;dbl&gt;
@@ -208,10 +216,10 @@
 <a class="sourceLine" id="cb6-6" data-line-number="6"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> temp, <span class="dt">colour =</span> <span class="st">"temp"</span>)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb6-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> thresh, <span class="dt">colour =</span> <span class="st">"thresh"</span>), <span class="dt">size =</span> <span class="fl">1.0</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb6-8" data-line-number="8"><span class="st">  </span><span class="kw">scale_colour_manual</span>(<span class="dt">name =</span> <span class="st">"Line Colour"</span>,</a>
-<a class="sourceLine" id="cb6-9" data-line-number="9">                      <span class="dt">values =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"temp"</span> =<span class="st"> "black"</span>, <span class="st">"thresh"</span> =<span class="st">  "forestgreen"</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">limits =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">18</span>, <span class="fl">23.5</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9">                      <span class="dt">values =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"temp"</span> =<span class="st"> "black"</span>, <span class="st">"thresh"</span> =<span class="st">  "forestgreen"</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">limits =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">18</span>, <span class="fl">23.5</span>)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb6-11" data-line-number="11"><span class="st">  </span><span class="kw">scale_x_date</span>(<span class="dt">date_labels =</span> <span class="st">"%b %Y"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/expression">expression</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="st">"Temperature ["</span>, degree, <span class="st">"C]"</span>)), <span class="dt">x =</span> <span class="ot">NULL</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="kw"><a href="https://rdrr.io/r/base/expression.html">expression</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"Temperature ["</span>, degree, <span class="st">"C]"</span>)), <span class="dt">x =</span> <span class="ot">NULL</span>)</a></code></pre></div>
 <p><img src="exceedance_files/figure-html/fig-example2-1.png" width="768"><!-- ![](vignettes/fig-example2-1.png) --></p>
 </div>
   </div>
@@ -234,13 +242,15 @@
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Robert W. Schlegel, Albertus J. Smit.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 

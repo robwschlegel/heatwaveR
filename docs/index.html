@@ -6,9 +6,16 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Detect Heatwaves and Cold-Spells • heatwaveR</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/spacelab/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><!-- docsearch --><script src="docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Detect Heatwaves and Cold-Spells">
@@ -27,7 +34,7 @@
 </script>
 </head>
 <body>
-    <div class="container template-article">
+    <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -39,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1.9002</span>
       </span>
     </div>
 
@@ -94,7 +101,7 @@
   </a>
 </li>
       </ul>
-<form class="navbar-form navbar-right" role="search">
+<form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
@@ -108,12 +115,9 @@
 <!--/.navbar -->
 
       
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    
 
-    
-    
+      </header><div class="row">
+  <div class="contents col-md-9">
 <div id="heatwaver" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#heatwaver" class="anchor"></a>heatwaveR <img src="articles/logo.png" width="200" align="right">
@@ -121,19 +125,20 @@
 <p><a href="https://cran.r-project.org/package=heatwaveR"><img src="http://www.r-pkg.org/badges/version/heatwaveR" alt="CRAN_Status_Badge"></a> <a href="https://travis-ci.org/robwschlegel/heatwaveR"><img src="https://travis-ci.org/robwschlegel/heatwaveR.svg?branch=master" alt="Travis build status"></a> <a href="https://codecov.io/github/robwschlegel/heatwaveR?branch=master"><img src="https://codecov.io/gh/robwschlegel/heatwaveR/branch/master/graph/badge.svg" alt="Coverage status"></a> <a href="https://doi.org/10.21105/joss.00821"><img src="http://joss.theoj.org/papers/10.21105/joss.00821/status.svg" alt="JOSS"></a> <a href="https://doi.org/10.5281/zenodo.1324308"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.1324308.svg" alt="DOI"></a> <img src="https://cranlogs.r-pkg.org/badges/grand-total/heatwaveR"></p>
 <p>The <strong><code>heatwaveR</code></strong> package is a project-wide update to the <a href="https://github.com/ajsmit/RmarineHeatWaves"><strong><code>RmarineHeatWaves</code></strong></a> package, which is itself a translation of the original <a href="https://github.com/ecjoliver/marineHeatWaves">Python code</a> written by Eric C. J. Oliver. The <strong><code>heatwaveR</code></strong> package also uses the same naming conventions for objects, columns, and arguments as the Python code.</p>
 <p>The <strong><code>heatwaveR</code></strong> R package contains the original functions from the <strong><code>RmarineHeatWaves</code></strong> package that calculate and display marine heatwaves (MHWs) according to the definition of Hobday et al. (2016) as well as calculating and visualising marine cold-spells (MCSs) as first introduced in Schlegel et al. (2017a). It also contains the functionality to calculate the categories of MHWs as outlined in Hobday et al. (2018).</p>
-<p>This package does what <strong><code>RmarineHeatWaves</code></strong> does, but faster. The entire package has been deconstructed and modularised, and we are continuing to implement slow portions of the code in C++. This has alleviated the bottlenecks that slowed down the climatology creation portions of the code as well as generally creating an overall increase in the speed of the calculations. Currently the R code runs about as fast as the original python functions, at least in as far as applying it to single time series of temperatures. Readers familiar with both languages will know about the ongoing debate around the relative speed of the two languages. In our experience, R can be as fast as python, provided that attention is paid to finding ways to reduce the computational inefficiencies that stem from i) the liberal use of complex and inefficient non-atomic data structures, such as data frames; ii) the reliance on non-vectorised calculations such as loops; and iii) lazy (but convenient) coding that comes from drawing too heavily on the <code>tidyverse</code> suite of packages. We will continue to ensure that <strong><code>heatwaveR</code></strong> becomes more-and-more efficient so that it can be applied to large gridded data products with ease.</p>
+<p>This package does what <strong><code>RmarineHeatWaves</code></strong> does, but faster. The entire package has been deconstructed and modularised, and we are continuing to implement slow portions of the code in C++. This has alleviated the bottlenecks that slowed down the climatology creation portions of the code as well as generally creating an overall increase in the speed of the calculations. Currently the R code runs about as fast as the original python functions, at least in as far as applying it to single time series of temperatures. Readers familiar with both languages will know about the ongoing debate around the relative speed of the two languages. In our experience, R can be as fast as python, provided that attention is paid to finding ways to reduce the computational inefficiencies that stem from i) the liberal use of complex and inefficient non-atomic data structures, such as data frames;</p>
+<p>ii) the reliance on non-vectorised calculations such as loops; and iii) lazy (but convenient) coding that comes from drawing too heavily on the <code>tidyverse</code> suite of packages. We will continue to ensure that <strong><code>heatwaveR</code></strong> becomes more-and-more efficient so that it can be applied to large gridded data products with ease.</p>
 <p>This new package was developed and released in order to better accommodate the inclusion of the definitions of atmospheric heatwaves in addition to MHWs. Additionally, <strong><code>heatwaveR</code></strong> also provides the first implementation of a definition for a ‘compound heatwave’. There are currently multiple different definitions for this type of event and each of which has arguments provided for it within the <code><a href="reference/ts2clm.html">ts2clm()</a></code> and <code><a href="reference/detect_event.html">detect_event()</a></code> functions.</p>
 <p>This package may be installed from CRAN by typing the following command into the console:</p>
-<p><code><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages("heatwaveR")</a></code></p>
+<p><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("heatwaveR")</a></code></p>
 <p>Or the development version may be installed from GitHub with:</p>
-<p><code><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">devtools::install_github("robwschlegel/heatwaveR")</a></code></p>
+<p><code><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">devtools::install_github("robwschlegel/heatwaveR")</a></code></p>
 <div id="the-functions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#the-functions" class="anchor"></a>The functions</h2>
-<table class="table table">
+<table class="table">
 <colgroup>
-<col width="16%">
-<col width="83%">
+<col style="width: 16%">
+<col style="width: 83%">
 </colgroup>
 <thead><tr class="header">
 <th>Function</th>
@@ -184,10 +189,10 @@
 <h2 class="hasAnchor">
 <a href="#the-heatwave-metrics" class="anchor"></a>The heatwave metrics</h2>
 <p>The <code><a href="reference/detect_event.html">detect_event()</a></code> function will return a list of two tibbles (see the <strong><code>tidyverse</code></strong>), <code>climatology</code> and <code>event</code>, which are the time series climatology and MHW (or MCS) events, respectively. The climatology contains the full time series of daily temperatures, as well as the the seasonal climatology, the threshold and various aspects of the events that were detected. The software was designed for detecting extreme thermal events, and the units specified below reflect that intended purpose. However, various other kinds of extreme events (e.g. rainfall) may be detected according to the ‘heatwave’ specifications, and if that is the case, the appropriate <code>minDuration</code> etc. and units of measurement need to be determined by the user.</p>
-<table class="table table">
+<table class="table">
 <colgroup>
-<col width="16%">
-<col width="83%">
+<col style="width: 16%">
+<col style="width: 83%">
 </colgroup>
 <thead><tr class="header">
 <th>Climatology metric</th>
@@ -237,10 +242,10 @@
 </tbody>
 </table>
 <p>The events are summarised using a range of event metrics:</p>
-<table class="table table">
+<table class="table">
 <colgroup>
-<col width="11%">
-<col width="88%">
+<col style="width: 11%">
+<col style="width: 88%">
 </colgroup>
 <thead><tr class="header">
 <th>Event metric</th>
@@ -325,7 +330,8 @@
 <div id="the-marine-heatwave-tracker" class="section level2">
 <h2 class="hasAnchor">
 <a href="#the-marine-heatwave-tracker" class="anchor"></a>The Marine Heatwave Tracker</h2>
-<p>To see the <strong><code>heatwaveR</code></strong> package in action, check out the <a href="http://www.marineheatwaves.org/tracker.html">Marine Heatwave Tracker</a> website. This is a daily updating global analysis of where in the world marine heatwaves are occurring. It has near real-time information as well as historic data going back to January 1st, 1982 and uses the Hobday et al. (2018) colour scheme to show how intense the MHWs are.</p>
+<p>To see the <strong><code>heatwaveR</code></strong> package in action, check out the <a href="http://www.marineheatwaves.org/tracker.html">Marine Heatwave Tracker</a> website. This is a daily updating global analysis of where in the world marine heatwaves are occurring. It has near real-time information as well as historic data going back to January 1st, 1982 and uses the Hobday et al.</p>
+<p>(2018) colour scheme to show how intense the MHWs are.</p>
 </div>
 <div id="contributing-to-heatwaver" class="section level2">
 <h2 class="hasAnchor">
@@ -352,8 +358,11 @@
 <div id="contact" class="section level2">
 <h2 class="hasAnchor">
 <a href="#contact" class="anchor"></a>Contact</h2>
-<p>Robert W. Schlegel<br>
-Postdoctoral Fellow Ocean Frontier Institute Dalhousie University <a href="mailto:robwschlegel@gmail.com" class="email">robwschlegel@gmail.com</a> <!-- Work tel.: +27 (0)21 959 3783 --></p>
+<p>Robert W. Schlegel</p>
+<p>Postdoctoral Fellow</p>
+<p>Ocean Frontier Institute</p>
+<p>Woods Hole Oceanographic Institute</p>
+<p><a href="mailto:rschlegel@whoi.edu" class="email">rschlegel@whoi.edu</a><br><!-- Work tel.: +27 (0)21 959 3783 --></p>
 </div>
 </div>
   </div>
@@ -377,6 +386,13 @@ Postdoctoral Fellow Ocean Frontier Institute Dalhousie University <a href="mailt
 <li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
+<div class="community">
+<h2>Community</h2>
+<ul class="list-unstyled">
+<li><a href="CONTRIBUTING.html">Contributing guide</a></li>
+<li><a href="CODE_OF_CONDUCT.html">Code of conduct</a></li>
+</ul>
+</div>
 <div class="citation">
 <h2>Citation</h2>
 <ul class="list-unstyled">
@@ -386,14 +402,12 @@ Postdoctoral Fellow Ocean Frontier Institute Dalhousie University <a href="mailt
 <div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Robert W. Schlegel <br><small class="roles"> Author, maintainer, contributor </small> <a href="https://orcid.org/0000-0002-0705-1287" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
-<li>Albertus J. Smit <br><small class="roles"> Author, contributor </small> <a href="https://orcid.org/0000-0002-3799-6126" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
+<li>Robert W. Schlegel <br><small class="roles"> Author, maintainer, contributor </small> <a href="https://orcid.org/0000-0002-0705-1287" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID"></a> </li>
+<li>Albertus J. Smit <br><small class="roles"> Author, contributor </small> <a href="https://orcid.org/0000-0002-3799-6126" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID"></a> </li>
 </ul>
 </div>
 
-
-      </div>
-
+  </div>
 </div>
 
 
@@ -402,8 +416,9 @@ Postdoctoral Fellow Ocean Frontier Institute Dalhousie University <a href="mailt
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 

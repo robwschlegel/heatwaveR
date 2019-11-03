@@ -8,6 +8,13 @@
 
 <title>Changelog • heatwaveR</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -85,7 +92,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1.9002</span>
       </span>
     </div>
 
@@ -162,6 +169,34 @@
       <small>Source: <a href='https://github.com/robwschlegel/heatwaveR/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="heatwaver-0-4-1-9002-2019-11-03" class="section level1">
+<h1 class="page-header">
+<a href="#heatwaver-0-4-1-9002-2019-11-03" class="anchor"></a>heatwaveR 0.4.1.9002 (2019-11-03)<small> Unreleased </small>
+</h1>
+<ul>
+<li>A bug was discovered where the <code><a href="../reference/ts2clm.html">ts2clm()</a></code> function does not first check that the time series being fed to it is in correct chronological order
+<ul>
+<li>This was fixed by ordering the data being fed to the function before beginning of the further calculations</li>
+</ul>
+</li>
+</ul>
+</div>
+    <div id="heatwaver-0-4-1-9001-2019-10-30" class="section level1">
+<h1 class="page-header">
+<a href="#heatwaver-0-4-1-9001-2019-10-30" class="anchor"></a>heatwaveR 0.4.1.9001 (2019-10-30)<small> Unreleased </small>
+</h1>
+<ul>
+<li>An update to <code>data.table</code> sometime in August, 2019 reduced the packages tolerance for code with <code>1:n</code> in it
+<ul>
+<li>As this is a potential memory weakness, when this creates an empty vector in multicore calculations it causes the entire run to fall over</li>
+<li>Therefore, all use of <code>1:n</code> has been replaced with <code><a href="https://rdrr.io/r/base/seq.html">seq_len(n)</a></code>
+</li>
+<li>This changed the list outputs when no MHWs are detected to be one row of NA values, rather than an empty list</li>
+<li>This may cause backward compatibility issues, but is extremely unlikely</li>
+</ul>
+</li>
+</ul>
+</div>
     <div id="heatwaver-0-4-1-9000-2019-10-26" class="section level1">
 <h1 class="page-header">
 <a href="#heatwaver-0-4-1-9000-2019-10-26" class="anchor"></a>heatwaveR 0.4.1.9000 (2019-10-26)<small> Unreleased </small>
@@ -884,6 +919,8 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#heatwaver-0-4-1-9002-2019-11-03">0.4.1.9002</a></li>
+        <li><a href="#heatwaver-0-4-1-9001-2019-10-30">0.4.1.9001</a></li>
         <li><a href="#heatwaver-0-4-1-9000-2019-10-26">0.4.1.9000</a></li>
         <li><a href="#heatwaver-0-4-1-2019-09-09">0.4.1</a></li>
         <li><a href="#heatwaver-0-4-0-9000-2019-07-22">0.4.0.9000</a></li>

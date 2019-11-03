@@ -4,7 +4,7 @@ output:
     variant: markdown_github
     fig_width: 8
     fig_height: 3
-    pandoc_args: ["--smart"]
+    # pandoc_args: ["--smart"]
 ---
 
 ```{r, echo = FALSE}
@@ -169,8 +169,12 @@ The translation from Python to R was done by A. J. Smit and the graphing functio
 ## Contact
 
 Robert W. Schlegel  
-Postdoctoral Fellow
-Ocean Frontier Institute
-Dalhousie University
-robwschlegel@gmail.com
+  
+Postdoctoral Fellow  
+  
+Ocean Frontier Institute  
+  
+Woods Hole Oceanographic Institute  
+  
+rschlegel@whoi.edu  
 <!-- Work tel.: +27 (0)21 959 3783 -->
