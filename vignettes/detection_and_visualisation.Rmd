@@ -36,8 +36,8 @@ Loading ones data from a `.csv` file or other text based format is the easiest a
 Here are the `ts2clm()` and `detect_event()` function applied to the Western Australia test data included with this package (`sst_WA`), which are also discussed by Hobday et al. (2016):
 
 ```{r detect-example1}
-# Load libraries
-library(tidyverse)
+library(dplyr)
+library(ggplot2)
 library(heatwaveR)
 
 # Detect the events in a time series

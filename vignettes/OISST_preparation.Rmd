@@ -35,7 +35,7 @@ For this vignette we will be accessing the NOAA OISST data hosted on this [ERDDA
 # devtools::install_github("ropensci/rerddap")
 
 # Load the packages once they have been downloaded and installed
-library(tidyverse)
+library(dplyr)
 library(rerddap)
 
 # The information for the NOAA OISST data
@@ -57,7 +57,7 @@ OISST_sub <- function(time_df){
                        latitude = c(-40, -35),
                        longitude = c(15, 21),
                        fields = "sst")$data %>% 
-    mutate(time = as.Date(str_remove(time, "T00:00:00Z"))) %>% 
+    mutate(time = as.Date(stringr::str_remove(time, "T00:00:00Z"))) %>% 
     dplyr::rename(t = time, temp = sst) %>% 
     select(lon, lat, t, temp) %>% 
     na.omit()

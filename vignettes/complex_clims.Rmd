@@ -34,7 +34,7 @@ The following sub-sections will show the step-by-step process one may use to cal
 The first step with any analysis in R should be the loading of the packages to be used.
 
 ```{r load-libs}
-library(tidyverse)
+library(dplyr)
 library(ggpubr)
 library(heatwaveR)
 ```

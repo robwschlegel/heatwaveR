@@ -36,7 +36,8 @@ The categories of MHWs under the Hobday et al. (2018) naming scheme may be calcu
 
 ```{r category-example1}
 # Load libraries
-library(tidyverse)
+library(dplyr)
+library(ggplot2)
 library(heatwaveR)
 
 # Calculate events

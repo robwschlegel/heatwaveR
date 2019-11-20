@@ -23,7 +23,8 @@ knitr::opts_chunk$set(fig.width = 4, fig.align = 'center',
 Because of human-induced climate change, we anticipate that extreme events will occur more frequently and that they will become greater in intensity. Here I address this question by using some gridded SST data, which is the only way that we can assess if this trend is unfolding across large ocean regions. Using the gridded [0.25 degree Reynolds OISST](http://dx.doi.org/10.1175/2007JCLI1824.1), I will find extreme SST events (marine heatwaves (MHWs)) around South Africa by applying the `detect_event()` function pixel-by-pixel to the data we downloaded in [the previous vignette](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html). After detecting the events, I will fit a generalised linear model (GLM) to calculate rates of change in some marine heat wave metrics, and then plot the estimated trend. 
 
 ```{r load-pkg}
-library(tidyverse)
+library(dplyr)
+library(ggplot2)
 library(heatwaveR)
 ```
 
@@ -32,7 +33,7 @@ library(heatwaveR)
 In the previous vignette we saw how to [download and prepare OISST data](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html). In this vignette we will use the data we downloaded for our example on how to detect MHWs in gridded data. Because we saved our data as an `.Rda` file, loading it into R is easy:
 
 ```{r load-data}
-OISST <- read_rds("~/Desktop/OISST_vignette.Rda")
+OISST <- readRDS("~/Desktop/OISST_vignette.Rda")
 ```
 
 ## Event detection
@@ -57,7 +58,7 @@ event_only <- function(df){
 
 #### The __`dplyr`__ method
 
-This method requires no special consideration and is performed just as any other __`tidyverse`__ friendly code chunk would be.
+This method requires no special consideration and is performed just as any other friendly __`tidyverse`__ code chunk would be.
 
 ```{r detect-purrr}
 system.time(
@@ -65,12 +66,12 @@ system.time(
 MHW_dplyr <- OISST %>% 
   # Then we group the data by the 'lon' and 'lat' columns
   group_by(lon, lat) %>% 
-  # Then we run our MHW calculating function on each group
+  # Then we run our MHW detecting function on each group
   group_modify(~event_only(.x))
-) # 214 seconds
+) # 90 seconds
 ```
 
-Running the above calculations with only one of the 2.1 GHz cores on an old laptop took 214 seconds.
+Running the above calculations with only one of the 2.8 GHz cores on a modern laptop took ~90 seconds. It must be noted however that a recent update to the __`dplyr`__ package now allows it to interrogate one's computer to determine how many cores it has at it's disposal. It then uses one core at full capacity and the other cores usually at half capacity.
 
 #### The __`plyr`__ technique
 
@@ -78,16 +79,16 @@ This method requires that we first tell our machine how many of its processor co
 
 ```{r detect-plyr}
 # NB: One should never use ALL available cores, save at least 1 for other essential tasks
-# The computer I'm writing this vignette on has 4 cores, so I use 3 here
+# The computer I'm writing this vignette on has 8 cores, so I use 7 here
 library(doMC)
-registerDoMC(cores = 3)
+registerDoMC(cores = 7)
 
 system.time(
 MHW_plyr <- plyr::ddply(.data = OISST, .variables = c("lon", "lat"), .fun = event_only, .parallel = TRUE)
-) # 129 seconds
+) # 25 seconds
 ```
 
-The __`plyr`__ technique took 129 seconds using three cores. This technique is not three times faster because when using multiple cores there is a certain amount of loss in efficiency due to the computer needing to remember which results are meant to go where so that it can stitch everything back together again for you. This takes very little memory, but over large jobs it can start to become problematic. Occasionally 'slippage' can occur as well where an entire task can be forgotten. This is very rare but does happen. This is partly what makes __`dplyr`__ a viable option as it does not have this problem. The other reason is that __`dplyr`__ performs more efficient calculations than __`plyr`__. But what if we could have the best of both worlds?
+The __`plyr`__ technique took 25 seconds using seven cores. This technique is not seven times faster because when using multiple cores there is a certain amount of loss in efficiency due to the computer needing to remember which results are meant to go where so that it can stitch everything back together again for you. This takes very little memory, but over large jobs it can start to become problematic. Occasionally 'slippage' can occur as well where an entire task can be forgotten. This is very rare but does happen. This is partly what makes __`dplyr`__ a viable option as it does not have this problem. The other reason is that __`dplyr`__ performs more efficient calculations than __`plyr`__. But what if we could have the best of both worlds?
 
 ### A harmonious third option
 
@@ -103,7 +104,7 @@ for(i in 1:length(unique(OISST$lon))){
 }
 ```
 
-This may initially seem like an unnecessary extra step, but when one is working with time series data it is necessary to have all of the dates at a given pixel loaded at once. Unless one is working from a server/virtual machine/supercomputer this means that one will often not be able to comfortably hold an entire grid for a study area in memory at once. Having the data accessible as thin strips like this makes life asier. And as we see in the code chunk below it also (arguably) allows us to perform the most efficient calculations on our data.
+This may initially seem like an unnecessary extra step, but when one is working with time series data it is necessary to have all of the dates at a given pixel loaded at once. Unless one is working from a server/virtual machine/supercomputer this means that one will often not be able to comfortably hold an entire grid for a study area in memory at once. Having the data accessible as thin strips like this makes life easier. And as we see in the code chunk below it also (arguably) allows us to perform the most efficient calculations on our data.
 
 ```{r detect-both}
 # The 'dplyr' wrapper function to pass to 'plyr'
@@ -119,10 +120,12 @@ OISST_files <- dir("~/Desktop", pattern = "OISST_lon_*", full.names = T)
 # Use 'plyr' technique to run 'dplyr' technique with multiple cores
 system.time(
 MHW_result <- plyr::ldply(OISST_files, .fun = dplyr_wraper, .parallel = T)
-)# 128
+) # 24 seconds
 ```
 
-Not only is this technique computationally faster, it is also much lighter on our memory (RAM) as it only loads one longitude slice of our data at a time. To maximise efficiency even further I would recommend writing out this full work flow in a stand-alone script and then running it using `source()` directly from an R terminal. The gain in speed here appears nominal, but as one scales this up the speed boost becomes apparent.
+Even though this technique is not much faster computationally, it is much lighter on our memory (RAM) as it only loads one longitude slice of our data at a time. To maximise efficiency even further I would recommend writing out this full workflow in a stand-alone script and then running it using `source()` directly from an R terminal. The gain in speed here appears nominal, but as one scales this up the speed boost becomes apparent.
+
+As mentioned above, recent changes to how __`dplyr`__ interacts with one's computer has perhaps slowed down the __`plyr`__ + __`dplyr`__ workflow shown here. It may be now that simply using __`plyr`__ by itself is the better option.
 
 ## Trend detection
 

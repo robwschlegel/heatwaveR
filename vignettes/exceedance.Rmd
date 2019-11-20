@@ -29,7 +29,8 @@ The calculation of exceedances may be done with only one function as seen here:
 
 ```{r exceedance-example1}
 # Activate libraries
-library(tidyverse)
+library(dplyr)
+library(ggplot2)
 library(heatwaveR)
 
 # Calculate exceedence

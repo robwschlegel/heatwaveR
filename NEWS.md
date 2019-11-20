@@ -1,3 +1,7 @@
+# heatwaveR 0.4.1.9004 (2019-11-19)
+
+* Removed __`tidyverse`__ from the list of suggested packages
+
 # heatwaveR 0.4.1.9003 (2019-11-03)
 
 * The potentially backward compatibility breaking design change to have empty data.frames returned as one row of `NA` values was not as rare of a problem as first thought
