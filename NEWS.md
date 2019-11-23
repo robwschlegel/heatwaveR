@@ -1,3 +1,7 @@
+# heatwaveR 0.4.1.9004 (2019-11-23)
+
+* Tripled the resolution of the logo in anticipation of creating hex stickers
+
 # heatwaveR 0.4.1.9004 (2019-11-19)
 
 * Removed __`tidyverse`__ from the list of suggested packages

@@ -3,11 +3,16 @@
 # Robert Schlegel
 # May 3rd, 2018
 
+
 # Load libraries ----------------------------------------------------------
 
 library(hexSticker)
 library(heatwaveR)
 library(tidyverse)
+library(showtext)
+# library(extrafont)
+# font_import() # Shouldn't need to be run more than once
+
 
 # Create logo -------------------------------------------------------------
 
@@ -59,12 +64,21 @@ gf3
 
 # I prefer the geom_flame
 
+
 # Place it on a sticker ---------------------------------------------------
 
-sticker(gf3, package = "heatwaveR", p_size = 22, s_x = 1.06, s_y = 1.1, s_width = 1.6, s_height = 1.6,
-        h_fill = "royalblue4", h_color = "#9e0000", p_family = "OperatorMono-MediumItalic", filename = "logo.png")
+# OperatorMono download location
+# https://www.cufonfonts.com/font/operator-mono
+# Then put the file in the ~/.fonts folder and unzip
+font_add(family = "OperatorMono-MediumItalic", regular = ".fonts/OperatorMono-MediumItalic.otf")
+
+# Create hex sticker
+sticker(gf3, package = "heatwaveR", p_size = 66, s_x = 1.06, s_y = 1.1, s_width = 1.6, s_height = 1.6,
+        h_fill = "royalblue4", h_color = "#9e0000", p_family = "OperatorMono-MediumItalic", filename = "~/heatwaveR/logo.png",
+        dpi = 900)
 
 # sticker(gf2, package = "heatwaveR", p_size = 8, s_x = 1.05, s_y = 0.8, s_width = 1.4, s_height = 1.0,
 #         h_fill = "navy", h_color = "white", p_family = "UbuntuMono-BI", filename = "logo.png")
 # devtools::check() creates notes when there are things in the root that it doesn't expect
 # This includes any .png files that are not labeled "logo.png"
+
