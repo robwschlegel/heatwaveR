@@ -4,10 +4,21 @@
 \alias{event_line}
 \title{Create a line plot of heatwaves or cold-spells.}
 \usage{
-event_line(data, x = t, y = temp, min_duration = 5, spread = 150,
-  metric = "intensity_cumulative", start_date = NULL,
-  end_date = NULL, category = FALSE, x_axis_title = NULL,
-  x_axis_text_angle = NULL, y_axis_title = NULL, y_axis_range = NULL)
+event_line(
+  data,
+  x = t,
+  y = temp,
+  min_duration = 5,
+  spread = 150,
+  metric = "intensity_cumulative",
+  start_date = NULL,
+  end_date = NULL,
+  category = FALSE,
+  x_axis_title = NULL,
+  x_axis_text_angle = NULL,
+  y_axis_title = NULL,
+  y_axis_range = NULL
+)
 }
 \arguments{
 \item{data}{The function receives the full (list) output from the

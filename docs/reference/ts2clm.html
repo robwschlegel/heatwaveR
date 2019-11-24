@@ -95,7 +95,7 @@ by an optional moving average smoother as used by Hobday et al. (2016)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -179,10 +179,21 @@ user-specified sliding window for the mean and threshold calculation, followed
 by an optional moving average smoother as used by Hobday et al. (2016).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ts2clm</span>(<span class='no'>data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='no'>climatologyPeriod</span>, <span class='kw'>robust</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>maxPadLength</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>windowHalfWidth</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>pctile</span> <span class='kw'>=</span> <span class='fl'>90</span>,
-  <span class='kw'>smoothPercentile</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>smoothPercentileWidth</span> <span class='kw'>=</span> <span class='fl'>31</span>,
-  <span class='kw'>clmOnly</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>var</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>roundClm</span> <span class='kw'>=</span> <span class='fl'>4</span>)</pre>
+    <pre class="usage"><span class='fu'>ts2clm</span>(
+  <span class='no'>data</span>,
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>,
+  <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>,
+  <span class='no'>climatologyPeriod</span>,
+  <span class='kw'>robust</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>maxPadLength</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>windowHalfWidth</span> <span class='kw'>=</span> <span class='fl'>5</span>,
+  <span class='kw'>pctile</span> <span class='kw'>=</span> <span class='fl'>90</span>,
+  <span class='kw'>smoothPercentile</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>smoothPercentileWidth</span> <span class='kw'>=</span> <span class='fl'>31</span>,
+  <span class='kw'>clmOnly</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>var</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>roundClm</span> <span class='kw'>=</span> <span class='fl'>4</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

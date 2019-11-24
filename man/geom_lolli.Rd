@@ -4,8 +4,15 @@
 \alias{geom_lolli}
 \title{Visualise a timeline of several event metrics as 'lollipops'.}
 \usage{
-geom_lolli(mapping = NULL, data = NULL, ..., n = 0, na.rm = FALSE,
-  show.legend = NA, inherit.aes = TRUE)
+geom_lolli(
+  mapping = NULL,
+  data = NULL,
+  ...,
+  n = 0,
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{aes()} or \code{aes_()}. If

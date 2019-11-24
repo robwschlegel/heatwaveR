@@ -1,3 +1,7 @@
+# heatwaveR 0.4.2 (2019-11-23)
+
+* Publishing new stable version to CRAN due to removal of __`tidyverse`__ from the list of suggested packages
+
 # heatwaveR 0.4.1.9004 (2019-11-23)
 
 * Tripled the resolution of the logo in anticipation of creating hex stickers

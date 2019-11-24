@@ -18,11 +18,11 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Robert W. Schlegel \email{robwschlegel@gmail.com} (0000-0002-0705-1287) [contributor]
+\strong{Maintainer}: Robert W. Schlegel \email{robwschlegel@gmail.com} (\href{https://orcid.org/0000-0002-0705-1287}{ORCID}) [contributor]
 
 Authors:
 \itemize{
-  \item Albertus J. Smit (0000-0002-3799-6126) [contributor]
+  \item Albertus J. Smit (\href{https://orcid.org/0000-0002-3799-6126}{ORCID}) [contributor]
 }
 
 }

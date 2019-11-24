@@ -4,9 +4,17 @@
 \alias{exceedance}
 \title{Detect consecutive days in exceedance of a given threshold.}
 \usage{
-exceedance(data, x = t, y = temp, threshold, below = FALSE,
-  minDuration = 5, joinAcrossGaps = TRUE, maxGap = 2,
-  maxPadLength = FALSE)
+exceedance(
+  data,
+  x = t,
+  y = temp,
+  threshold,
+  below = FALSE,
+  minDuration = 5,
+  joinAcrossGaps = TRUE,
+  maxGap = 2,
+  maxPadLength = FALSE
+)
 }
 \arguments{
 \item{data}{A data frame with at least the two following columns:

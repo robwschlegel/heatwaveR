@@ -4,8 +4,12 @@
 \alias{lolli_plot}
 \title{Create a timeline of selected event metrics as 'lollipops'.}
 \usage{
-lolli_plot(data, xaxis = "date_peak", metric = "intensity_max",
-  event_count = 3)
+lolli_plot(
+  data,
+  xaxis = "date_peak",
+  metric = "intensity_max",
+  event_count = 3
+)
 }
 \arguments{
 \item{data}{Output from the \code{\link{detect_event}} function.}

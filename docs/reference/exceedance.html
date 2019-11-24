@@ -93,7 +93,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -175,9 +175,17 @@
     <p>Detect consecutive days in exceedance of a given threshold.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>exceedance</span>(<span class='no'>data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='no'>threshold</span>, <span class='kw'>below</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>minDuration</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>joinAcrossGaps</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>maxGap</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>maxPadLength</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>exceedance</span>(
+  <span class='no'>data</span>,
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>,
+  <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>,
+  <span class='no'>threshold</span>,
+  <span class='kw'>below</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>minDuration</span> <span class='kw'>=</span> <span class='fl'>5</span>,
+  <span class='kw'>joinAcrossGaps</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>maxGap</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>maxPadLength</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

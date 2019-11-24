@@ -4,10 +4,21 @@
 \alias{detect_event}
 \title{Detect heatwaves and cold-spells.}
 \usage{
-detect_event(data, x = t, y = temp, seasClim = seas,
-  threshClim = thresh, threshClim2 = NA, minDuration = 5,
-  minDuration2 = minDuration, joinAcrossGaps = TRUE, maxGap = 2,
-  maxGap2 = maxGap, coldSpells = FALSE, protoEvents = FALSE)
+detect_event(
+  data,
+  x = t,
+  y = temp,
+  seasClim = seas,
+  threshClim = thresh,
+  threshClim2 = NA,
+  minDuration = 5,
+  minDuration2 = minDuration,
+  joinAcrossGaps = TRUE,
+  maxGap = 2,
+  maxGap2 = maxGap,
+  coldSpells = FALSE,
+  protoEvents = FALSE
+)
 }
 \arguments{
 \item{data}{A data frame with at least four columns. In the default setting

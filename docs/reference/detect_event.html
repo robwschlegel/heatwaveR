@@ -97,7 +97,7 @@ other means." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -183,10 +183,21 @@ climatologies, which may either be created with <code><a href='ts2clm.html'>ts2c
 other means.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>detect_event</span>(<span class='no'>data</span>, <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>, <span class='kw'>seasClim</span> <span class='kw'>=</span> <span class='no'>seas</span>,
-  <span class='kw'>threshClim</span> <span class='kw'>=</span> <span class='no'>thresh</span>, <span class='kw'>threshClim2</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>minDuration</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>minDuration2</span> <span class='kw'>=</span> <span class='no'>minDuration</span>, <span class='kw'>joinAcrossGaps</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>maxGap</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>maxGap2</span> <span class='kw'>=</span> <span class='no'>maxGap</span>, <span class='kw'>coldSpells</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>protoEvents</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>detect_event</span>(
+  <span class='no'>data</span>,
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>,
+  <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>,
+  <span class='kw'>seasClim</span> <span class='kw'>=</span> <span class='no'>seas</span>,
+  <span class='kw'>threshClim</span> <span class='kw'>=</span> <span class='no'>thresh</span>,
+  <span class='kw'>threshClim2</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>minDuration</span> <span class='kw'>=</span> <span class='fl'>5</span>,
+  <span class='kw'>minDuration2</span> <span class='kw'>=</span> <span class='no'>minDuration</span>,
+  <span class='kw'>joinAcrossGaps</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>maxGap</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>maxGap2</span> <span class='kw'>=</span> <span class='no'>maxGap</span>,
+  <span class='kw'>coldSpells</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>protoEvents</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
