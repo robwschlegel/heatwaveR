@@ -27,6 +27,10 @@
 #' over which the MHW occurred, as seen in Hobday et al. (2018). One may chose to rather have
 #' this function return only the season during the "start", "peak", or "end" of the MHW by giving
 #' the corresponding character vector.
+#' @param roundVal This argument allows the user to choose how many decimal places
+#' the outputs will be rounded to. Default is 4. To
+#' precent rounding set \code{roundClm = FALSE}. This argument may only be given
+#' numeric values or FALSE.
 #'
 #' @return The function will return a tibble with results similar to those seen in
 #' Table 2 of Hobday et al. (2018). This provides the information necessary to
@@ -133,7 +137,8 @@ category <- function(data,
                      S = TRUE,
                      name = "Event",
                      climatology = FALSE,
-                     season = "range") {
+                     season = "range",
+                     roundVal = 4) {
 
     temp <- NULL
 
@@ -174,7 +179,7 @@ category <- function(data,
                             event_name = paste0(as.character(name), " ", lubridate::year(data$event$date_peak)),
                             peak_date = data$event$date_peak,
                             category = NA,
-                            i_max = round(data$event$intensity_max, 2),
+                            i_max = round(data$event$intensity_max, roundVal),
                             duration = data$event$duration)
 
     seasons <- data.frame(event_no = data$event$event_no,
@@ -301,8 +306,7 @@ category <- function(data,
       dplyr::select(-event_count, -event_name_letter)
 
     cat_res <- tibble::as_tibble(cat_join) %>%
-      dplyr::arrange(-p_moderate, -p_strong, -p_severe, -p_extreme) %>%
-      dplyr::mutate_if(is.numeric, round, 4)
+      dplyr::arrange(-p_moderate, -p_strong, -p_severe, -p_extreme)
 
     if (climatology) {
 
@@ -311,10 +315,10 @@ category <- function(data,
       clim_res <- clim_diff %>%
         dplyr::mutate(category = ifelse(ts_y >= thresh_4x, "IV Extreme",
                                         ifelse(ts_y >= thresh_3x, "III Severe",
-                                               ifelse(ts_y >= thresh_2x, "II Strong", "I Moderate"))),
-                      intensity = ts_y-seas) %>%
-        dplyr::select(t, event_no, intensity, category) %>%
-        dplyr::mutate_if(is.numeric, round, 4)
+                                               ifelse(ts_y >= thresh_2x, "II Strong",
+                                                      ifelse(ts_y > thresh, "I Moderate", NA)))),
+                      intensity = round(ts_y-seas, roundVal)) %>%
+        dplyr::select(t, event_no, intensity, category)
 
       list(climatology = tibble::as_tibble(clim_res),
            event = cat_res)

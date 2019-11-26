@@ -1,10 +1,13 @@
 # heatwaveR 0.4.2.9000 (2019-11-26)
 
 * Fixed bug in `category()` that incorrectly returned the difference between `seas` and `thresh` 
-  as the daily intensity value, rather than the actual temperature anomaly  
+  as the daily intensity value, rather than the actual temperature anomaly above `seas`   
+    * Also fixed the labelling of days below `thresh` as `Moderate`, they are now `NA` 
 * `category()` now adds lower case letters to the ends of event names if there were multiple
   large events within the same year
     * This may cause backwards compatibility issues in very rare cases, but is a necessary change
+* Added `roundVal` argument to `category()` to allow users to decide the rounding precision of 
+  the returned results
 
 # heatwaveR 0.4.2 (2019-11-23)
 

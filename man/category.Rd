@@ -10,7 +10,8 @@ category(
   S = TRUE,
   name = "Event",
   climatology = FALSE,
-  season = "range"
+  season = "range",
+  roundVal = 4
 )
 }
 \arguments{
@@ -41,6 +42,11 @@ the MHWs are labelled. The default setting of \code{"range"} will return the ran
 over which the MHW occurred, as seen in Hobday et al. (2018). One may chose to rather have
 this function return only the season during the "start", "peak", or "end" of the MHW by giving
 the corresponding character vector.}
+
+\item{roundVal}{This argument allows the user to choose how many decimal places
+the outputs will be rounded to. Default is 4. To
+precent rounding set \code{roundClm = FALSE}. This argument may only be given
+numeric values or FALSE.}
 }
 \value{
 The function will return a tibble with results similar to those seen in

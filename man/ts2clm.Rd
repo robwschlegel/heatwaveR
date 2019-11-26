@@ -79,7 +79,7 @@ researchers use it and so it is generally regarded now as unnecessary.}
 
 \item{roundClm}{This argument allows the user to choose how many decimal places
 the \code{seas} and \code{thresh} outputs will be rounded to. Default is 4. To
-precent rounding set \code{roundClm = FALSE}. This argument may only be given
+prevent rounding set \code{roundClm = FALSE}. This argument may only be given
 numeric values or FALSE.}
 }
 \value{

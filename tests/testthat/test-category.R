@@ -69,6 +69,16 @@ test_that("climatology intensity values are correct", {
   expect_equal(min(cat_daily$intensity), 0.519)
 })
 
+test_that("roundVal works as expected", {
+  res <- detect_event(ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31")))
+  cat_2 <- category(res, climatology = T, roundVal = 2)
+  cat_4 <- category(res, climatology = T, roundVal = 4)
+  expect_equal(as.character(max(cat_2$event$i_max)), "5.35")
+  expect_equal(as.character(max(cat_4$event$i_max)), "5.3546")
+  expect_equal(as.character(min(cat_2$climatology$intensity)), "0.52")
+  expect_equal(as.character(min(cat_4$climatology$intensity)), "0.519")
+})
+
 test_that("no detected events returns an empty dataframe and not an error", {
   sst_WA_flat <- sst_WA
   sst_WA_flat$temp <- 1
