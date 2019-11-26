@@ -89,8 +89,8 @@ If \code{climatology = TRUE}, this function will output a list of two dataframes
 The first dataframe, \code{climatology}, will contain only the following columns:
   \item{t}{The column containing the daily date values.}
   \item{event_no}{The numeric event number label.}
-  \item{intensity}{The total exceedance (default is degrees C) above the 90th
-  percentile threshold.}
+  \item{intensity}{The daily exceedance (default is degrees C) above the
+  seasonal climatology.}
   \item{category}{The category classification per day.}
 
 The second dataframe, \code{event}, contains the default output of this function,

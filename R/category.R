@@ -3,7 +3,7 @@
 #' Calculates the categories of a series of events as produced by \code{\link{detect_event}} in
 #' accordance with the naming scheme proposed in Hobday et al. (2018).
 #'
-#' @importFrom dplyr n %>%
+#' @importFrom dplyr %>%
 #'
 #' @param data The function receives the full (list) output from the
 #' \code{\link{detect_event}} function.
@@ -74,8 +74,8 @@
 #' The first dataframe, \code{climatology}, will contain only the following columns:
 #'   \item{t}{The column containing the daily date values.}
 #'   \item{event_no}{The numeric event number label.}
-#'   \item{intensity}{The total exceedance (default is degrees C) above the 90th
-#'   percentile threshold.}
+#'   \item{intensity}{The daily exceedance (default is degrees C) above the
+#'   seasonal climatology.}
 #'   \item{category}{The category classification per day.}
 #'
 #' The second dataframe, \code{event}, contains the default output of this function,
@@ -253,29 +253,29 @@ category <- function(data,
     moderate_n <- clim_diff %>%
       dplyr::filter(ts_y >= thresh) %>%
       dplyr::group_by(event_no) %>%
-      dplyr::summarise(moderate = n()) %>%
+      dplyr::summarise(moderate = dplyr::n()) %>%
       dplyr::ungroup()
     strong_n <- clim_diff %>%
       dplyr::filter(ts_y >= thresh_2x) %>%
       dplyr::group_by(event_no) %>%
-      dplyr::summarise(strong = n()) %>%
+      dplyr::summarise(strong = dplyr::n()) %>%
       dplyr::ungroup()
     severe_n <- clim_diff %>%
       dplyr::filter(ts_y >= thresh_3x) %>%
       dplyr::group_by(event_no) %>%
-      dplyr::summarise(severe = n()) %>%
+      dplyr::summarise(severe = dplyr::n()) %>%
       dplyr::ungroup()
     extreme_n <- clim_diff %>%
       dplyr::filter(ts_y >= thresh_4x) %>%
       dplyr::group_by(event_no) %>%
-      dplyr::summarise(extreme = n()) %>%
+      dplyr::summarise(extreme = dplyr::n()) %>%
       dplyr::ungroup()
     cat_n <- dplyr::left_join(moderate_n, strong_n, by = "event_no") %>%
       dplyr::left_join(severe_n, by = "event_no") %>%
       dplyr::left_join(extreme_n, by = "event_no")
     cat_n[is.na(cat_n)] <- 0
 
-    p_moderate <- p_strong <- p_severe <- p_extreme <- NULL
+    p_moderate <- p_strong <- p_severe <- p_extreme <- event_count <- event_name_letter <- NULL
 
     cat_join <- dplyr::left_join(cat_frame, cat_n, by = "event_no") %>%
       dplyr::mutate(p_moderate = round(((moderate - strong) / duration * 100), 0),
@@ -285,26 +285,20 @@ category <- function(data,
              category = ifelse(p_extreme > 0, "IV Extreme",
                                ifelse(p_severe > 0, "III Severe",
                                       ifelse(p_strong > 0, "II Strong", "I Moderate"))),
-             event_name = replace(event_name, which(category == "I Moderate"), NA)) %>%
+             event_name = replace(event_name, which(category == "I Moderate"), NA),
+             event_name = as.character(event_name)) %>%
       dplyr::arrange(event_no) %>%
       dplyr::left_join(seasons[, c("event_no", "season")], by = "event_no") %>%
       dplyr::select(event_no:duration, p_moderate:season) %>%
-      droplevels()
-
-    # RWS: Still need to polish this off
-    # Event column touch-ups
-    # The idea is to find repeated event names
-    # and apend an a, b, c, etc. to the ends
-    # in order to make each name unique
-    # remove cat 1 names
-    # search for duplicates
-    # add letter after for all duplicates
-    # for(i in 1:levels(unique(cat_res$event_name))){
-    #   if(length(levels(cat_res$event_name)[i]) > 1){
-    #     for(j in length())
-    #   }
-    #
-    # }
+      droplevels() %>%
+      dplyr::group_by(event_name) %>%
+      dplyr::mutate(event_count = dplyr::row_number()) %>%
+      dplyr::mutate(event_name_letter = dplyr::case_when(max(event_count) > 1 &
+                                                           !is.na(event_name) ~ letters[event_count])) %>%
+      dplyr::ungroup() %>%
+      dplyr::mutate(event_name = dplyr::case_when(!is.na(event_name_letter) ~ paste0(event_name, event_name_letter), TRUE  ~  event_name),
+                    event_name = as.factor(event_name)) %>%
+      dplyr::select(-event_count, -event_name_letter)
 
     cat_res <- tibble::as_tibble(cat_join) %>%
       dplyr::arrange(-p_moderate, -p_strong, -p_severe, -p_extreme) %>%
@@ -317,8 +311,8 @@ category <- function(data,
       clim_res <- clim_diff %>%
         dplyr::mutate(category = ifelse(ts_y >= thresh_4x, "IV Extreme",
                                         ifelse(ts_y >= thresh_3x, "III Severe",
-                                               ifelse(ts_y >= thresh_2x, "II Strong", "I Moderate")))) %>%
-        dplyr::rename(intensity = diff) %>%
+                                               ifelse(ts_y >= thresh_2x, "II Strong", "I Moderate"))),
+                      intensity = ts_y-seas) %>%
         dplyr::select(t, event_no, intensity, category) %>%
         dplyr::mutate_if(is.numeric, round, 4)
 

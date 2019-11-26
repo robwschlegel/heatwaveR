@@ -20,10 +20,12 @@ test_that("The seasons by hemisphere come out correctly", {
 test_that("The name argument works correctly", {
   ts <- ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   res <- detect_event(ts)
+  cat_res <- category(res)
   cat_res_banana <- category(res, name = "Banana")
   cat_res_pawpaw <- category(res, name = "Pawpaw")
+  expect_equal(droplevels(cat_res$event_name[89]), as.factor("Event 2012b"))
   expect_equal(droplevels(cat_res_banana$event_name[90]), as.factor("Banana 2014"))
-  expect_equal(droplevels(cat_res_pawpaw$event_name[90]), as.factor("Pawpaw 2014"))
+  expect_equal(droplevels(cat_res_pawpaw$event_name[91]), as.factor("Pawpaw 2018a"))
 })
 
 test_that("y = any existing column", {
@@ -56,6 +58,15 @@ test_that("climatology = T causes a list output with the time series category da
   expect_is(cat$event, "tbl_df")
   expect_equal(ncol(cat$climatology), 4)
   expect_equal(ncol(cat$event), 11)
+})
+
+test_that("climatology intensity values are correct", {
+  res <- detect_event(ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31")))
+  cat_daily <- category(res, climatology = T)$climatology
+  expect_is(cat_daily, "tbl_df")
+  expect_equal(ncol(cat_daily), 4)
+  expect_equal(max(cat_daily$intensity), 5.3546)
+  expect_equal(min(cat_daily$intensity), 0.519)
 })
 
 test_that("no detected events returns an empty dataframe and not an error", {

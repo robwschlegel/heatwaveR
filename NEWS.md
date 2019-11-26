@@ -1,3 +1,11 @@
+# heatwaveR 0.4.2.9000 (2019-11-26)
+
+* Fixed bug in `category()` that incorrectly returned the difference between `seas` and `thresh` 
+  as the daily intensity value, rather than the actual temperature anomaly  
+* `category()` now adds lower case letters to the ends of event names if there were multiple
+  large events within the same year
+    * This may cause backwards compatibility issues in very rare cases, but is a necessary change
+
 # heatwaveR 0.4.2 (2019-11-23)
 
 * Publishing new stable version to CRAN due to removal of __`tidyverse`__ from the list of suggested packages
