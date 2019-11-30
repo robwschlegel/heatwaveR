@@ -92,7 +92,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -109,7 +109,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Vignettes
      
     <span class="caret"></span>
   </a>
@@ -133,6 +133,9 @@
       <a href="../articles/complex_clims.html">Alternative Thresholds</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../CITATIONS.html">Citations</a>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -169,12 +172,25 @@
       <small>Source: <a href='https://github.com/robwschlegel/heatwaveR/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="heatwaver-0-4-2-9000-2019-11-26" class="section level1">
+    <div id="heatwaver-0-4-2-2019-11-29" class="section level1">
 <h1 class="page-header">
-<a href="#heatwaver-0-4-2-9000-2019-11-26" class="anchor"></a>heatwaveR 0.4.2.9000 (2019-11-26)<small> Unreleased </small>
+<a href="#heatwaver-0-4-2-2019-11-29" class="anchor"></a>heatwaveR 0.4.2 (2019-11-29)<small> Unreleased </small>
 </h1>
 <ul>
-<li>Fixed bug in <code><a href="../reference/category.html">category()</a></code> that incorrectly returned the difference between <code>seas</code> and <code>thresh</code> as the daily intensity value, rather than the actual temperature anomaly<br>
+<li>Publishing new stable version to CRAN due to removal of <strong><code>tidyverse</code></strong> from the list of suggested packages and the important bug fixes to <code><a href="../reference/category.html">category()</a></code>
+</li>
+</ul>
+</div>
+    <div id="heatwaver-0-4-2-2019-11-26" class="section level1">
+<h1 class="page-header">
+<a href="#heatwaver-0-4-2-2019-11-26" class="anchor"></a>heatwaveR 0.4.2 (2019-11-26)<small> Unreleased </small>
+</h1>
+<ul>
+<li>Fixed bug in <code><a href="../reference/category.html">category()</a></code> that incorrectly returned the difference between <code>seas</code> and <code>thresh</code> as the daily intensity value, rather than the actual temperature anomaly above <code>seas</code>
+<ul>
+<li>Also fixed the labelling of days below <code>thresh</code> as <code>Moderate</code>, they are now <code>NA</code>
+</li>
+</ul>
 </li>
 <li>
 <code><a href="../reference/category.html">category()</a></code> now adds lower case letters to the ends of event names if there were multiple large events within the same year
@@ -182,14 +198,7 @@
 <li>This may cause backwards compatibility issues in very rare cases, but is a necessary change</li>
 </ul>
 </li>
-</ul>
-</div>
-    <div id="heatwaver-0-4-2-2019-11-23" class="section level1">
-<h1 class="page-header">
-<a href="#heatwaver-0-4-2-2019-11-23" class="anchor"></a>heatwaveR 0.4.2 (2019-11-23)<small> Unreleased </small>
-</h1>
-<ul>
-<li>Publishing new stable version to CRAN due to removal of <strong><code>tidyverse</code></strong> from the list of suggested packages</li>
+<li>Added <code>roundVal</code> argument to <code><a href="../reference/category.html">category()</a></code> to allow users to decide the rounding precision of the returned results</li>
 </ul>
 </div>
     <div id="heatwaver-0-4-1-9004-2019-11-23" class="section level1">
@@ -968,8 +977,8 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#heatwaver-0-4-2-9000-2019-11-26">0.4.2.9000</a></li>
-        <li><a href="#heatwaver-0-4-2-2019-11-23">0.4.2</a></li>
+        <li><a href="#heatwaver-0-4-2-2019-11-29">0.4.2</a></li>
+        <li><a href="#heatwaver-0-4-2-2019-11-26">0.4.2</a></li>
         <li><a href="#heatwaver-0-4-1-9004-2019-11-23">0.4.1.9004</a></li>
         <li><a href="#heatwaver-0-4-1-9004-2019-11-19">0.4.1.9004</a></li>
         <li><a href="#heatwaver-0-4-1-9003-2019-11-03">0.4.1.9003</a></li>

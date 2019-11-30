@@ -8,7 +8,7 @@ navbar:
     href: index.html
   - text: "Reference"
     href: reference/index.html
-  - text: "Articles"
+  - text: "Vignettes"
     menu:
     - text: "Basic Detection and Visualisation of Events"
       href: articles/detection_and_visualisation.html
@@ -22,7 +22,9 @@ navbar:
       href: articles/gridded_event_detection.html
     - text: "Alternative Thresholds"
       href: articles/complex_clims.html
-  - text: News
+  - text: "Citations"
+    href: CITATIONS.html
+  - text: "News"
     href: news/index.html
   right:
   - icon: fa-github fa-lg
@@ -45,6 +47,7 @@ reference:
 - title: Data
   desc: ~
   contents:
+  - '`Algiers`'
   - '`sst_Med`'
   - '`sst_NW_Atl`'
   - '`sst_WA`'
