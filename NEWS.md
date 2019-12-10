@@ -1,3 +1,7 @@
+# heatwaveR 0.4.2 (2019-12-10)
+
+* Minor change to `ts2clm()` that does not alter any functionality
+
 # heatwaveR 0.4.2 (2019-11-29)
 
 * Publishing new stable version to CRAN due to removal of __`tidyverse`__ from the list of suggested packages
