@@ -94,7 +94,7 @@ accordance with the naming scheme proposed in Hobday et al. (2018)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -111,7 +111,7 @@ accordance with the naming scheme proposed in Hobday et al. (2018)." />
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Vignettes
      
     <span class="caret"></span>
   </a>
@@ -135,6 +135,9 @@ accordance with the naming scheme proposed in Hobday et al. (2018)." />
       <a href="../articles/complex_clims.html">Alternative Thresholds</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../CITATIONS.html">Citations</a>
 </li>
 <li>
   <a href="../news/index.html">News</a>
@@ -183,7 +186,8 @@ accordance with the naming scheme proposed in Hobday et al. (2018).</p>
   <span class='kw'>S</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Event"</span>,
   <span class='kw'>climatology</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>season</span> <span class='kw'>=</span> <span class='st'>"range"</span>
+  <span class='kw'>season</span> <span class='kw'>=</span> <span class='st'>"range"</span>,
+  <span class='kw'>roundVal</span> <span class='kw'>=</span> <span class='fl'>4</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -228,6 +232,13 @@ the MHWs are labelled. The default setting of <code>"range"</code> will return t
 over which the MHW occurred, as seen in Hobday et al. (2018). One may chose to rather have
 this function return only the season during the "start", "peak", or "end" of the MHW by giving
 the corresponding character vector.</p></td>
+    </tr>
+    <tr>
+      <th>roundVal</th>
+      <td><p>This argument allows the user to choose how many decimal places
+the outputs will be rounded to. Default is 4. To
+precent rounding set <code>roundClm = FALSE</code>. This argument may only be given
+numeric values or FALSE.</p></td>
     </tr>
     </table>
 
@@ -312,8 +323,8 @@ Marine Heatwaves. Oceanography 31(2).</p>
 #&gt;      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #BCBCBC;'>1</span><span>       40 WA 2010c   2010-12-02 II Stro…  2.66       15         73       27
 #&gt; </span><span style='color: #BCBCBC;'>2</span><span>       31 WA 2008a   2008-04-14 III Sev…  3.77       34         62       29
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span>       22 WA 1999    1999-05-22 II Stro…  3.6        95         59       41
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span>       58 WA 2014    2014-08-31 II Stro…  2.2        12         58       42
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span>       22 WA 1999    1999-05-22 II Stro…  3.60       95         59       41
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span>       58 WA 2014    2014-08-31 II Stro…  2.20       12         58       42
 #&gt; </span><span style='color: #BCBCBC;'>5</span><span>       61 WA 2015    2015-10-02 II Stro…  2.43        7         57       43
 #&gt; </span><span style='color: #BCBCBC;'>6</span><span>       42 WA 2011b   2011-02-28 IV Extr…  6.51       60         47       32
 #&gt; </span><span style='color: #949494;'># … with 3 more variables: p_severe </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, p_extreme </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, season </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'>
@@ -325,7 +336,7 @@ Marine Heatwaves. Oceanography 31(2).</p>
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='no'>cat_Med</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 6 x 11</span><span>
 #&gt;   event_no event_name peak_date  category i_max duration p_moderate p_strong
 #&gt;      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span>       84 Med 2017a  2017-04-12 II Stro…  2.6        24         58       42
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span>       84 Med 2017a  2017-04-12 II Stro…  2.60       24         58       42
 #&gt; </span><span style='color: #BCBCBC;'>2</span><span>       28 Med 2003a  2003-06-20 II Stro…  5.02       30         57       43
 #&gt; </span><span style='color: #BCBCBC;'>3</span><span>       62 Med 2012b  2012-08-20 II Stro…  4.22       18         56       44
 #&gt; </span><span style='color: #BCBCBC;'>4</span><span>       70 Med 2014   2014-10-18 II Stro…  3.31      144         49       50

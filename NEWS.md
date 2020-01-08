@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # heatwaveR 0.4.2.9001 (2020-01-07)
 
 * Beginning to phase out __`dplyr`__ and __`tibble`__ dependencies
@@ -7,6 +8,18 @@
   the returned results
   
 # heatwaveR 0.4.2.9000 (2019-11-26)
+=======
+# heatwaveR 0.4.2 (2019-12-10)
+
+* Minor change to `ts2clm()` that does not alter any functionality
+
+# heatwaveR 0.4.2 (2019-11-29)
+
+* Publishing new stable version to CRAN due to removal of __`tidyverse`__ from the list of suggested packages
+  and the important bug fixes to `category()`
+
+# heatwaveR 0.4.2 (2019-11-26)
+>>>>>>> 3335cd0889d1922ee50b4d897b2d1788815b20b4
 
 * Fixed bug in `category()` that incorrectly returned the difference between `seas` and `thresh` 
   as the daily intensity value, rather than the actual temperature anomaly above `seas`   
@@ -16,10 +29,6 @@
     * This may cause backwards compatibility issues in very rare cases, but is a necessary change
 * Added `roundVal` argument to `category()` to allow users to decide the rounding precision of 
   the returned results
-
-# heatwaveR 0.4.2 (2019-11-23)
-
-* Publishing new stable version to CRAN due to removal of __`tidyverse`__ from the list of suggested packages
 
 # heatwaveR 0.4.1.9004 (2019-11-23)
 

@@ -29,7 +29,7 @@
 #' the corresponding character vector.
 #' @param roundVal This argument allows the user to choose how many decimal places
 #' the outputs will be rounded to. Default is 4. To
-#' precent rounding set \code{roundClm = FALSE}. This argument may only be given
+#' prevent rounding set \code{roundClm = FALSE}. This argument may only be given
 #' numeric values or FALSE.
 #'
 #' @return The function will return a tibble with results similar to those seen in

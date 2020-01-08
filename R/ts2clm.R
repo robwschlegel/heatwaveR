@@ -201,7 +201,7 @@ ts2clm <- function(data,
       stop(paste("The specified start date precedes the first day of series, which is",
                  ts_whole$ts_x[1]))
 
-    if (clim_end > ts_whole$ts_x[nrow(ts_whole)])
+    if (clim_end > utils::tail(ts_whole$ts_x, 1))
       stop(paste("The specified end date follows the last day of series, which is",
                  ts_whole$ts_x[nrow(ts_whole)]))
 
