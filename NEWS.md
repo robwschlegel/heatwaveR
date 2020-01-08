@@ -1,3 +1,11 @@
+# heatwaveR 0.4.2.9001 (2020-01-07)
+
+* Beginning to phase out __`dplyr`__ and __`tibble`__ dependencies
+* Replacing some __`dplyr`__ functions with __`plyr`__ as they appear to be slightly faster
+  and also don't have the same multicore issues that more recent __`dplyr`__ developments have created
+* Added `roundRes` argument to `detect_event()` to allow users to decide the rounding precision of 
+  the returned results
+  
 # heatwaveR 0.4.2.9000 (2019-11-26)
 
 * Fixed bug in `category()` that incorrectly returned the difference between `seas` and `thresh` 

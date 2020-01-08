@@ -1,11 +1,11 @@
 context("Test detect_event.R")
 
-test_that("detect() returns the correct lists, tibbles, and columns", {
+test_that("detect() returns the correct lists, data.table, and columns", {
   ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   res <- detect_event(ts)
   expect_is(res, "list")
-  expect_is(res$climatology, "tbl_df")
-  expect_is(res$event, "tbl_df")
+  expect_is(res$climatology, "data.table")
+  expect_is(res$event, "data.table")
   expect_equal(ncol(res$climatology),9)
   expect_equal(ncol(res$event), 22)
 })
@@ -69,8 +69,8 @@ test_that("no detected events returns an empty event dataframe and not an error"
   sst_WA_flat$temp <- 1
   res <- detect_event(ts2clm(sst_WA_flat, climatologyPeriod = c("1983-01-01", "2012-12-31")))
   expect_is(res, "list")
-  expect_is(res$climatology, "tbl_df")
-  expect_is(res$event, "tbl_df")
+  expect_is(res$climatology, "data.table")
+  expect_is(res$event, "data.table")
   expect_equal(ncol(res$climatology), 9)
   expect_equal(ncol(res$event), 22)
   expect_equal(nrow(res$event), 0)
@@ -86,3 +86,14 @@ test_that("protoEvents argument functions correctly", {
   res <- detect_event(ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31")), protoEvents = T)
   expect_is(res, "data.frame")
 })
+
+test_that("roundRes argument functions correctly", {
+  ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  res <- detect_event(ts, roundRes = 4)
+  expect_equal(res$climatology$seas[1], 21.6080)
+  res <- detect_event(ts, roundRes = 0)
+  expect_equal(res$event$intensity_max[1], 2)
+  res <- detect_event(ts, roundRes = F)
+  expect_gt(res$event$rate_decline[1], 0.17824)
+})
+
