@@ -94,7 +94,7 @@ accordance with the naming scheme proposed in Hobday et al. (2018)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9001</span>
       </span>
     </div>
 
@@ -237,7 +237,7 @@ the corresponding character vector.</p></td>
       <th>roundVal</th>
       <td><p>This argument allows the user to choose how many decimal places
 the outputs will be rounded to. Default is 4. To
-precent rounding set <code>roundClm = FALSE</code>. This argument may only be given
+prevent rounding set <code>roundClm = FALSE</code>. This argument may only be given
 numeric values or FALSE.</p></td>
     </tr>
     </table>
@@ -320,7 +320,7 @@ Marine Heatwaves. Oceanography 31(2).</p>
 <span class='no'>cat_WA</span> <span class='kw'>&lt;-</span> <span class='fu'>category</span>(<span class='no'>res_WA</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"WA"</span>)
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='no'>cat_WA</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 11</span><span>
 #&gt;   event_no event_name peak_date  category i_max duration p_moderate p_strong
-#&gt;      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt;      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #BCBCBC;'>1</span><span>       40 WA 2010c   2010-12-02 II Stro…  2.66       15         73       27
 #&gt; </span><span style='color: #BCBCBC;'>2</span><span>       31 WA 2008a   2008-04-14 III Sev…  3.77       34         62       29
 #&gt; </span><span style='color: #BCBCBC;'>3</span><span>       22 WA 1999    1999-05-22 II Stro…  3.60       95         59       41
@@ -335,7 +335,7 @@ Marine Heatwaves. Oceanography 31(2).</p>
 <span class='no'>cat_Med</span> <span class='kw'>&lt;-</span> <span class='fu'>category</span>(<span class='no'>res_Med</span>, <span class='kw'>S</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Med"</span>)
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='no'>cat_Med</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 6 x 11</span><span>
 #&gt;   event_no event_name peak_date  category i_max duration p_moderate p_strong
-#&gt;      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt;      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #BCBCBC;'>1</span><span>       84 Med 2017a  2017-04-12 II Stro…  2.60       24         58       42
 #&gt; </span><span style='color: #BCBCBC;'>2</span><span>       28 Med 2003a  2003-06-20 II Stro…  5.02       30         57       43
 #&gt; </span><span style='color: #BCBCBC;'>3</span><span>       62 Med 2012b  2012-08-20 II Stro…  4.22       18         56       44
@@ -348,7 +348,7 @@ Marine Heatwaves. Oceanography 31(2).</p>
 <span class='no'>cat_WA_daily</span> <span class='kw'>&lt;-</span> <span class='fu'>category</span>(<span class='no'>res_WA</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"WA"</span>, <span class='kw'>climatology</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>cat_WA_daily</span>$<span class='no'>climatology</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 6 x 4</span><span>
 #&gt;   t          event_no intensity category  
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     
 #&gt; </span><span style='color: #BCBCBC;'>1</span><span> 1984-06-03        1      1.56 I Moderate
 #&gt; </span><span style='color: #BCBCBC;'>2</span><span> 1984-06-04        1      1.79 I Moderate
 #&gt; </span><span style='color: #BCBCBC;'>3</span><span> 1984-06-05        1      1.92 I Moderate
@@ -362,16 +362,20 @@ Marine Heatwaves. Oceanography 31(2).</p>
 <span class='co'># Should one want a complete time series, the daily category results</span>
 <span class='co'># may simply be left_join() with the detect_event() results</span>
 <span class='no'>cat_WA_ts</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/join.html'>left_join</a></span>(<span class='no'>res_WA</span>$<span class='no'>climatology</span>,
-                              <span class='no'>cat_WA_daily</span>$<span class='no'>climatology</span>)</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("t", "event_no")</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>cat_WA_ts</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 6 x 11</span><span>
-#&gt;     doy t           temp  seas thresh threshCriterion durationCriteri… event
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span>     1 1982-01-01  20.9  21.6   23.0 FALSE           FALSE            FALSE
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span>     2 1982-01-02  21.2  21.6   23.0 FALSE           FALSE            FALSE
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span>     3 1982-01-03  21.4  21.7   23.0 FALSE           FALSE            FALSE
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span>     4 1982-01-04  21.2  21.7   23.1 FALSE           FALSE            FALSE
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span>     5 1982-01-05  21.3  21.7   23.1 FALSE           FALSE            FALSE
-#&gt; </span><span style='color: #BCBCBC;'>6</span><span>     6 1982-01-06  21.6  21.7   23.1 FALSE           FALSE            FALSE
-#&gt; </span><span style='color: #949494;'># … with 3 more variables: event_no </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, intensity </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, category </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'>
+                              <span class='no'>cat_WA_daily</span>$<span class='no'>climatology</span>)</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("t", "event_no")</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>cat_WA_ts</span>)</div><div class='output co'>#&gt;   doy          t  temp    seas  thresh threshCriterion durationCriterion event
+#&gt; 1   1 1982-01-01 20.94 21.6080 22.9605           FALSE             FALSE FALSE
+#&gt; 2   2 1982-01-02 21.25 21.6348 22.9987           FALSE             FALSE FALSE
+#&gt; 3   3 1982-01-03 21.38 21.6621 23.0376           FALSE             FALSE FALSE
+#&gt; 4   4 1982-01-04 21.16 21.6895 23.0771           FALSE             FALSE FALSE
+#&gt; 5   5 1982-01-05 21.26 21.7169 23.1130           FALSE             FALSE FALSE
+#&gt; 6   6 1982-01-06 21.61 21.7436 23.1460           FALSE             FALSE FALSE
+#&gt;   event_no intensity category
+#&gt; 1       NA        NA     &lt;NA&gt;
+#&gt; 2       NA        NA     &lt;NA&gt;
+#&gt; 3       NA        NA     &lt;NA&gt;
+#&gt; 4       NA        NA     &lt;NA&gt;
+#&gt; 5       NA        NA     &lt;NA&gt;
+#&gt; 6       NA        NA     &lt;NA&gt;</div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

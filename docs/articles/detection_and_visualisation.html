@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9001</span>
       </span>
     </div>
 
@@ -125,7 +125,7 @@
       <h1>Basic Detection and Visualisation of Events</h1>
                         <h4 class="author">AJ Smit and Robert W Schlegel</h4>
             
-            <h4 class="date">2019-11-29</h4>
+            <h4 class="date">2020-01-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/detection_and_visualisation.Rmd"><code>vignettes/detection_and_visualisation.Rmd</code></a></small>
       <div class="hidden name"><code>detection_and_visualisation.Rmd</code></div>
@@ -167,14 +167,12 @@
 <a class="sourceLine" id="cb3-12" data-line-number="12"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(event_no, duration, date_start, date_peak, intensity_max, intensity_cumulative) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb3-13" data-line-number="13"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(<span class="op">-</span>intensity_max) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb3-14" data-line-number="14"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="dv">5</span>)</a></code></pre></div>
-<pre><code>## # A tibble: 5 x 6
-##   event_no duration date_start date_peak  intensity_max intensity_cumulative
-##      &lt;dbl&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;             &lt;dbl&gt;                &lt;dbl&gt;
-## 1       52      105 2010-12-24 2011-02-28          6.58                293. 
-## 2       41       35 2008-03-25 2008-04-14          3.83                 79.3
-## 3       29       95 1999-05-13 1999-05-22          3.64                240. 
-## 4       60       14 2012-12-27 2012-12-31          3.42                 32.3
-## 5       59      101 2012-01-10 2012-01-27          3.38                214.</code></pre>
+<pre><code>##   event_no duration date_start  date_peak intensity_max intensity_cumulative
+## 1       52      105 2010-12-24 2011-02-28        6.5798             293.2107
+## 2       41       35 2008-03-25 2008-04-14        3.8299              79.3307
+## 3       29       95 1999-05-13 1999-05-22        3.6390             240.2994
+## 4       60       14 2012-12-27 2012-12-31        3.4230              32.2560
+## 5       59      101 2012-01-10 2012-01-27        3.3804             214.0509</code></pre>
 </div>
 <div id="visualising-marine-heatwaves-mhws" class="section level2">
 <h2 class="hasAnchor">
@@ -271,15 +269,18 @@
 <a class="sourceLine" id="cb12-9" data-line-number="9">                date_peak, intensity_mean, intensity_max, intensity_cumulative) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb12-10" data-line-number="10"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(intensity_cumulative) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb12-11" data-line-number="11"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="dv">5</span>)</a></code></pre></div>
-<pre><code>## # A tibble: 5 x 7
-##   event_no duration date_start date_peak  intensity_mean intensity_max
-##      &lt;dbl&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;              &lt;dbl&gt;         &lt;dbl&gt;
-## 1       15       76 1990-04-13 1990-05-11          -2.50         -3.19
-## 2       80       63 2018-07-30 2018-08-15          -2.14         -2.90
-## 3       49       58 2003-12-19 2004-01-23          -1.73         -2.59
-## 4       64       52 2014-04-14 2014-05-05          -1.78         -2.54
-## 5        7       37 1986-06-24 1986-07-17          -2.00         -2.91
-## # … with 1 more variable: intensity_cumulative &lt;dbl&gt;</code></pre>
+<pre><code>##   event_no duration date_start  date_peak intensity_mean intensity_max
+## 1       15       76 1990-04-13 1990-05-11        -2.5027       -3.1883
+## 2       80       63 2018-07-30 2018-08-15        -2.1416       -2.8950
+## 3       49       58 2003-12-19 2004-01-23        -1.7341       -2.5865
+## 4       64       52 2014-04-14 2014-05-05        -1.7824       -2.5358
+## 5        7       37 1986-06-24 1986-07-17        -1.9963       -2.9087
+##   intensity_cumulative
+## 1            -190.2043
+## 2            -134.9190
+## 3            -100.5806
+## 4             -92.6844
+## 5             -73.8635</code></pre>
 </div>
 <div id="visualising-marine-cold-spells-mcss" class="section level2">
 <h2 class="hasAnchor">
