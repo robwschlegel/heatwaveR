@@ -1,3 +1,7 @@
+# heatwaveR 0.4.2.9001 (2020-01-13)
+
+* Added one small test to get codecov back up to 100%
+
 # heatwaveR 0.4.2.9001 (2020-01-08)
 
 * Beginning to phase out __`dplyr`__ and __`tibble`__ dependencies
