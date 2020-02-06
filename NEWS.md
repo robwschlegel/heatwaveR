@@ -1,14 +1,15 @@
-<<<<<<< HEAD
-# heatwaveR 0.4.2.9001 (2020-01-07)
+# heatwaveR 0.4.2.9001 (2020-01-13)
+
+* Added one small test to get codecov back up to 100%
+
+# heatwaveR 0.4.2.9001 (2020-01-08)
 
 * Beginning to phase out __`dplyr`__ and __`tibble`__ dependencies
 * Replacing some __`dplyr`__ functions with __`plyr`__ as they appear to be slightly faster
   and also don't have the same multicore issues that more recent __`dplyr`__ developments have created
 * Added `roundRes` argument to `detect_event()` to allow users to decide the rounding precision of 
   the returned results
-  
-# heatwaveR 0.4.2.9000 (2019-11-26)
-=======
+
 # heatwaveR 0.4.2 (2019-12-10)
 
 * Minor change to `ts2clm()` that does not alter any functionality
@@ -19,7 +20,6 @@
   and the important bug fixes to `category()`
 
 # heatwaveR 0.4.2 (2019-11-26)
->>>>>>> 3335cd0889d1922ee50b4d897b2d1788815b20b4
 
 * Fixed bug in `category()` that incorrectly returned the difference between `seas` and `thresh` 
   as the daily intensity value, rather than the actual temperature anomaly above `seas`   
