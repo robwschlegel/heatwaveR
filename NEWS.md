@@ -1,3 +1,7 @@
+# heatwaveR 0.4.2.9001 (2020-02-05)
+
+* Minor internal tweak to exceedance function
+
 # heatwaveR 0.4.2.9001 (2020-01-13)
 
 * Added one small test to get codecov back up to 100%
