@@ -1,3 +1,7 @@
+# heatwaveR 0.4.2.9001 (2020-02-13)
+
+* Added a new citation that used the `heatwaveR` package
+
 # heatwaveR 0.4.2.9001 (2020-02-05)
 
 * Minor internal tweak to exceedance function
