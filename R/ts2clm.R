@@ -7,13 +7,13 @@
 #' @importFrom data.table %between%
 #' @useDynLib heatwaveR
 #'
-#' @param data A data frame with two columns. In the default setting (i.e. ommitting
+#' @param data A data frame with two columns. In the default setting (i.e. omitting
 #' the arguments \code{x} and \code{y}; see immediately below), the data set is
 #' expected to have the headers \code{t} and \code{temp}. The \code{t} column is a
 #' vector of dates of class \code{Date}, while \code{temp} is the measured variable
 #' (by default it is assumed to be temperature).
 #' @param x This column is expected to contain a vector of dates. If a column
-#' headed \code{t} is present in the dataframe, this argument may be ommitted;
+#' headed \code{t} is present in the dataframe, this argument may be omitted;
 #' otherwise, specify the name of the column with dates here.
 #' @param y This is a column containing the measurement variable. If the column
 #' name differs from the default (i.e. \code{temp}), specify the name here.
@@ -33,7 +33,7 @@
 #' @param windowHalfWidth Width of sliding window about day-of-year (to one
 #' side of the center day-of-year) used for the pooling of values and
 #' calculation of climatology and threshold percentile. Default is \code{5}
-#' days, which gives a window width of 11 days centered on the 6th day of the
+#' days, which gives a window width of 11 days centred on the 6th day of the
 #' series of 11 days.
 #' @param pctile Threshold percentile (\%) for detection of events (MHWs).
 #' Default is \code{90}th percentile. Should the intent be to use these
@@ -106,7 +106,7 @@
 #'   percentile) [deg. C]. This is used in \code{\link{detect_event}} for the
 #'   detection/calculation of events (MHWs).}
 #'   \item{var}{Seasonally varying variance (standard deviation) [deg. C]. This
-#'   column is not returned if \code{var = FALSE} (defaut).}
+#'   column is not returned if \code{var = FALSE} (default).}
 #' Should \code{clmOnly} be enabled, only the 365 or 366 day climatology will be
 #' returned.
 #'

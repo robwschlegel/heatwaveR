@@ -67,7 +67,7 @@ make_whole_fast <- function(data) {
   date_end <- lubridate::ymd(utils::tail(data$ts_x, 1))
   ts_full <- data.table::data.table(ts_x = seq.Date(date_start, date_end, "day"))
 
-  ts_merged <- merge(ts_full, data, all = TRUE)
+  ts_merged <- merge(ts_full, data, all.x = TRUE)
   rm(ts_full)
 
   v_date <- ts_merged$ts_x
