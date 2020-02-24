@@ -1,3 +1,8 @@
+# heatwaveR 0.4.2.9001 (2020-02-24)
+
+* Minor spelling error fixes
+* Minor tweek to `make_whole_fast()`
+
 # heatwaveR 0.4.2.9001 (2020-02-13)
 
 * Added a new citation that used the `heatwaveR` package
