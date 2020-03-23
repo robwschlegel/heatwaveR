@@ -1,7 +1,12 @@
 # heatwaveR 0.4.2.9001 (2020-02-24)
 
+* Improvement to legend appearance for `event_line()`
+* Improvement to plotting in category vignette
+
+# heatwaveR 0.4.2.9001 (2020-02-24)
+
 * Minor spelling error fixes
-* Minor tweek to `make_whole_fast()`
+* Minor tweak to `make_whole_fast()`
 
 # heatwaveR 0.4.2.9001 (2020-02-13)
 

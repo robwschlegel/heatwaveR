@@ -259,7 +259,8 @@ event_line <- function(data,
                                      "2x Threshold", "3x Threshold", "4x Threshold")) +
       scale_fill_manual(name = NULL, values = fillColCat, guide = FALSE) +
       guides(colour = guide_legend(override.aes = list(linetype = c("solid", "solid", "solid",
-                                                                    "dashed", "dotdash", "dotted")))) +
+                                                                    "dashed", "dotdash", "dotted"),
+                                                       size = c(0.6, 0.7, 0.7, 0.7, 0.7, 0.7)))) +
       theme(legend.direction = "vertical")
     ep
 

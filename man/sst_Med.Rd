@@ -4,12 +4,14 @@
 \name{sst_Med}
 \alias{sst_Med}
 \title{Optimally interpolated 0.25 degree SST for the Mediterranean region.}
-\format{A data frame with 13514 rows and 2 variables:
+\format{
+A data frame with 13514 rows and 2 variables:
 \describe{
   \item{t}{date, as.Date() format}
   \item{temp}{SST, in degrees Celsius}
   ...
-}}
+}
+}
 \source{
 \url{https://www.ncdc.noaa.gov/oisst}
 }

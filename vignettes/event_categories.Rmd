@@ -116,7 +116,8 @@ ggplot(data = clim_cat, aes(x = t, y = temp)) +
   scale_fill_manual(name = NULL, values = fillColCat, guide = FALSE) +
   scale_x_date(date_labels = "%b %Y") +
   guides(colour = guide_legend(override.aes = list(linetype = c("solid", "solid", "solid",
-                                                                "dashed", "dotdash", "dotted")))) + 
+                                                                "dashed", "dotdash", "dotted"),
+                                                   size = c(0.6, 0.7, 0.7, 0.7, 0.7, 0.7)))) +
   labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
 ```
 <!-- ![](vignettes/fig-example-11-1.png) -->
