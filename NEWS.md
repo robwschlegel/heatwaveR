@@ -1,4 +1,4 @@
-# heatwaveR 0.4.2.9001 (2020-02-24)
+# heatwaveR 0.4.2.9002 (2020-03-23)
 
 * Improvement to legend appearance for `event_line()`
 * Improvement to plotting in category vignette

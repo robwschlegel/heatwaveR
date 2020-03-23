@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9002</span>
       </span>
     </div>
 
@@ -121,20 +121,20 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="heatwaver" class="section level1">
+<div id="heatwaver-" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#heatwaver" class="anchor"></a>heatwaveR <img src="articles/logo.png" width="200" align="right">
+<a href="#heatwaver-" class="anchor"></a>heatwaveR <img src="articles/logo.png" width="200" align="right">
 </h1></div>
 <p><a href="https://cran.r-project.org/package=heatwaveR"><img src="http://www.r-pkg.org/badges/version/heatwaveR" alt="CRAN_Status_Badge"></a> <a href="https://travis-ci.org/robwschlegel/heatwaveR"><img src="https://travis-ci.org/robwschlegel/heatwaveR.svg?branch=master" alt="Travis build status"></a> <a href="https://codecov.io/github/robwschlegel/heatwaveR?branch=master"><img src="https://codecov.io/gh/robwschlegel/heatwaveR/branch/master/graph/badge.svg" alt="Coverage status"></a> <a href="https://doi.org/10.21105/joss.00821"><img src="http://joss.theoj.org/papers/10.21105/joss.00821/status.svg" alt="JOSS"></a> <a href="https://doi.org/10.5281/zenodo.1324308"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.1324308.svg" alt="DOI"></a> <img src="https://cranlogs.r-pkg.org/badges/grand-total/heatwaveR"></p>
 <p>The <strong><code>heatwaveR</code></strong> package is a project-wide update to the <a href="https://github.com/ajsmit/RmarineHeatWaves"><strong><code>RmarineHeatWaves</code></strong></a> package, which is itself a translation of the original <a href="https://github.com/ecjoliver/marineHeatWaves">Python code</a> written by Eric C. J. Oliver. The <strong><code>heatwaveR</code></strong> package also uses the same naming conventions for objects, columns, and arguments as the Python code.</p>
-<p>The <strong><code>heatwaveR</code></strong> R package contains the original functions from the <strong><code>RmarineHeatWaves</code></strong> package that calculate and display marine heatwaves (MHWs) according to the definition of Hobday et al. (2016) as well as calculating and visualising marine cold-spells (MCSs) as first introduced in Schlegel et al. (2017a). It also contains the functionality to calculate the categories of MHWs as outlined in Hobday et al. (2018).</p>
+<p>The <strong><code>heatwaveR</code></strong> R package contains the original functions from the <strong><code>RmarineHeatWaves</code></strong> package that calculate and display marine heatwaves (MHWs) according to the definition of Hobday et al. (2016) as well as calculating and visualising marine cold-spells (MCSs) as first introduced in Schlegel et al. (2017a). It also contains the functionality to calculate the categories of MHWs as outlined in Hobday et al. (2018).</p>
 <p>This package does what <strong><code>RmarineHeatWaves</code></strong> does, but faster. The entire package has been deconstructed and modularised, and we are continuing to implement slow portions of the code in C++. This has alleviated the bottlenecks that slowed down the climatology creation portions of the code as well as generally creating an overall increase in the speed of the calculations. Currently the R code runs about as fast as the original python functions, at least in as far as applying it to single time series of temperatures. Readers familiar with both languages will know about the ongoing debate around the relative speed of the two languages. In our experience, R can be as fast as python, provided that attention is paid to finding ways to reduce the computational inefficiencies that stem from i) the liberal use of complex and inefficient non-atomic data structures, such as data frames;</p>
 <p>ii) the reliance on non-vectorised calculations such as loops; and iii) lazy (but convenient) coding that comes from drawing too heavily on the <code>tidyverse</code> suite of packages. We will continue to ensure that <strong><code>heatwaveR</code></strong> becomes more-and-more efficient so that it can be applied to large gridded data products with ease.</p>
 <p>This new package was developed and released in order to better accommodate the inclusion of the definitions of atmospheric heatwaves in addition to MHWs. Additionally, <strong><code>heatwaveR</code></strong> also provides the first implementation of a definition for a ‘compound heatwave’. There are currently multiple different definitions for this type of event and each of which has arguments provided for it within the <code><a href="reference/ts2clm.html">ts2clm()</a></code> and <code><a href="reference/detect_event.html">detect_event()</a></code> functions.</p>
 <p>This package may be installed from CRAN by typing the following command into the console:</p>
 <p><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("heatwaveR")</a></code></p>
 <p>Or the development version may be installed from GitHub with:</p>
-<p><code><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">devtools::install_github("robwschlegel/heatwaveR")</a></code></p>
+<p><code><a href="https://devtools.r-lib.org//reference/remote-reexports.html">devtools::install_github("robwschlegel/heatwaveR")</a></code></p>
 <div id="the-functions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#the-functions" class="anchor"></a>The functions</h2>
@@ -150,11 +150,11 @@
 <tbody>
 <tr class="odd">
 <td><code><a href="reference/ts2clm.html">ts2clm()</a></code></td>
-<td>Constructs seasonal and threshold climatologies as per the definition of Hobday et al. (2016).</td>
+<td>Constructs seasonal and threshold climatologies as per the definition of Hobday et al. (2016).</td>
 </tr>
 <tr class="even">
 <td><code><a href="reference/detect_event.html">detect_event()</a></code></td>
-<td>The main function which detects the events as per the definition of Hobday et al. (2016).</td>
+<td>The main function which detects the events as per the definition of Hobday et al. (2016).</td>
 </tr>
 <tr class="odd">
 <td><code><a href="reference/block_average.html">block_average()</a></code></td>
@@ -162,7 +162,7 @@
 </tr>
 <tr class="even">
 <td><code><a href="reference/category.html">category()</a></code></td>
-<td>Applies event categories to the output of <code><a href="reference/detect_event.html">detect_event()</a></code> based on Hobday et al. (2018).</td>
+<td>Applies event categories to the output of <code><a href="reference/detect_event.html">detect_event()</a></code> based on Hobday et al. (2018).</td>
 </tr>
 <tr class="odd">
 <td><code><a href="reference/exceedance.html">exceedance()</a></code></td>
@@ -356,7 +356,7 @@
 <div id="references" class="section level2">
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h2>
-<p>Hobday, A.J. et al. (2016). A hierarchical approach to defining marine heatwaves. Progress in Oceanography, 141, pp. 227-238.</p>
+<p>Hobday, A.J. et al. (2016). A hierarchical approach to defining marine heatwaves. Progress in Oceanography, 141, pp. 227-238.</p>
 <p>Schlegel, R. W., Oliver, E. C. J., Wernberg, T. W., Smit, A. J. (2017a). Nearshore and offshore co-occurrences of marine heatwaves and cold-spells. Progress in Oceanography, 151, pp. 189-205.</p>
 <p>Schlegel, R. W., Oliver, E. C., Perkins-Kirkpatrick, S., Kruger, A., Smit, A. J. (2017b). Predominant atmospheric and oceanic patterns during coastal marine heatwaves. Frontiers in Marine Science, 4, 323.</p>
 <p>Hobday, A. J., Oliver, E. C. J., Sen Gupta, A., Benthuysen, J. A., Burrows, M. T., Donat, M. G., Holbrook, N. J., Moore, P. J., Thomsen, M. S., Wernberg, T., Smale, D. A. (2018). Categorizing and naming marine heatwaves. Oceanography 31(2).</p>

@@ -95,7 +95,7 @@ by an optional moving average smoother as used by Hobday et al. (2016)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9002</span>
       </span>
     </div>
 
@@ -203,7 +203,7 @@ by an optional moving average smoother as used by Hobday et al. (2016).</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>A data frame with two columns. In the default setting (i.e. ommitting
+      <td><p>A data frame with two columns. In the default setting (i.e. omitting
 the arguments <code>x</code> and <code>y</code>; see immediately below), the data set is
 expected to have the headers <code>t</code> and <code>temp</code>. The <code>t</code> column is a
 vector of dates of class <code>Date</code>, while <code>temp</code> is the measured variable
@@ -212,7 +212,7 @@ vector of dates of class <code>Date</code>, while <code>temp</code> is the measu
     <tr>
       <th>x</th>
       <td><p>This column is expected to contain a vector of dates. If a column
-headed <code>t</code> is present in the dataframe, this argument may be ommitted;
+headed <code>t</code> is present in the dataframe, this argument may be omitted;
 otherwise, specify the name of the column with dates here.</p></td>
     </tr>
     <tr>
@@ -247,7 +247,7 @@ to <code>TRUE</code> will return an error.</p></td>
       <td><p>Width of sliding window about day-of-year (to one
 side of the center day-of-year) used for the pooling of values and
 calculation of climatology and threshold percentile. Default is <code>5</code>
-days, which gives a window width of 11 days centered on the 6th day of the
+days, which gives a window width of 11 days centred on the 6th day of the
 series of 11 days.</p></td>
     </tr>
     <tr>
@@ -312,7 +312,7 @@ units need to be determined by the user.</p>
   percentile) [deg. C]. This is used in <code><a href='detect_event.html'>detect_event</a></code> for the
   detection/calculation of events (MHWs).</p></dd>
   <dt>var</dt><dd><p>Seasonally varying variance (standard deviation) [deg. C]. This
-  column is not returned if <code>var = FALSE</code> (defaut).</p></dd>
+  column is not returned if <code>var = FALSE</code> (default).</p></dd>
 Should clmOnly be enabled, only the 365 or 366 day climatology will be
 returned.
 

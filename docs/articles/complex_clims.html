@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9002</span>
       </span>
     </div>
 
@@ -125,7 +125,7 @@
       <h1>Alternative Thresholds</h1>
                         <h4 class="author">Robert W Schlegel</h4>
             
-            <h4 class="date">2020-02-13</h4>
+            <h4 class="date">2020-03-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/complex_clims.Rmd"><code>vignettes/complex_clims.Rmd</code></a></small>
       <div class="hidden name"><code>complex_clims.Rmd</code></div>
@@ -142,62 +142,62 @@
 <div id="double-thresholds" class="section level2">
 <h2 class="hasAnchor">
 <a href="#double-thresholds" class="anchor"></a>Double thresholds</h2>
-<p>Brought to our attention by Mr. Haouari from the Hydrometeorological Institute of Training and Research (IHFR) in Algeria was the concept of using a flat (e.g. 19<span class="math inline">\(^\circ\)</span>C) <code>tMin</code> bottom boundary when calculating events from <code>tMax</code> with the standard 90th percentile upper threshold. As the authors of the <strong><code>heatwaveR</code></strong> package are admittedly marine oriented, we tend to work with daily time series that have only one mean value per day (e.g. <code>tMean</code>, <code>temp</code>, <code>sst</code>). This is why there are not arguments in the <strong><code>heatwaveR</code></strong> suite of functions that call on <code>tMin</code> and <code>tMax</code> explicitly, but that does not mean that one cannot do so. Below we will work through the steps one would take to calculate (atmospheric) heatwaves, as per their definition in <span class="citation">Perkins and Alexander (2013)</span> (but excluding the calculation of EHF), and with the additional step proposed by Mr. Haouari.</p>
+<p>Brought to our attention by Mr. Haouari from the Hydrometeorological Institute of Training and Research (IHFR) in Algeria was the concept of using a flat (e.g. 19<span class="math inline">\(^\circ\)</span>C) <code>tMin</code> bottom boundary when calculating events from <code>tMax</code> with the standard 90th percentile upper threshold. As the authors of the <strong><code>heatwaveR</code></strong> package are admittedly marine oriented, we tend to work with daily time series that have only one mean value per day (e.g. <code>tMean</code>, <code>temp</code>, <code>sst</code>). This is why there are not arguments in the <strong><code>heatwaveR</code></strong> suite of functions that call on <code>tMin</code> and <code>tMax</code> explicitly, but that does not mean that one cannot do so. Below we will work through the steps one would take to calculate (atmospheric) heatwaves, as per their definition in <span class="citation">Perkins and Alexander (2013)</span> (but excluding the calculation of EHF), and with the additional step proposed by Mr. Haouari.</p>
 <p>The following sub-sections will show the step-by-step process one may use to calculate atmospheric heatwaves using a 90th percentile threshold created from the <code>tMax</code> time series for a location, but will only use the days when the corresponding <code>tMin</code> also exceeds a pre-determined flat bottom boundary on the same days to quantify the heatwave metrics. We will finish by visualising the results with the built-in <strong><code>heatwaveR</code></strong> graphing functions of <code><a href="../reference/event_line.html">event_line()</a></code> and <code>lolli_plot</code> as well as a bubble plot. The data we will use for these examples will be a 45 year time series of daily atmospheric <code>tMin</code> and <code>tMax</code> temperatures over Algiers, Algeria contributed by Mr. Haouari.</p>
 <div id="data-prep" class="section level3">
 <h3 class="hasAnchor">
 <a href="#data-prep" class="anchor"></a>Data prep</h3>
 <p>The first step with any analysis in R should be the loading of the packages to be used.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggpubr)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(heatwaveR)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggpubr)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(heatwaveR)</span></code></pre></div>
 <p>With our libraries loaded, we will now go about explicitly calling the <code>Algiers</code> data into our environment. These data are automatically loaded for us when we load the <code>heatwaveR</code> library, but we perform this step here just for clarity. Anyone following along should feel free to use whatever data they would like. As long as the data have a date (<code>t</code>), <code>tMin</code>, and <code>tMax</code> column this code will function as designed.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">Algiers &lt;-<span class="st"> </span>Algiers</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>Algiers &lt;-<span class="st"> </span>Algiers</span></code></pre></div>
 </div>
 <div id="calculating-thresholds" class="section level3">
 <h3 class="hasAnchor">
 <a href="#calculating-thresholds" class="anchor"></a>Calculating thresholds</h3>
 <p>With our libraries and data loaded, we will now calculate the two thresholds we need to correctly detect the heatwaves and accurately quantify their metrics. The first is the 90th percentile threshold based on the <code>tMax</code> time series. The second is the flat exceedance of 19<span class="math inline">\(^\circ\)</span>C based on the <code>tMin</code> data. We use 19<span class="math inline">\(^\circ\)</span>C as the bottom threshold as this is roughly the mean <code>tMin</code> for summer temperatures.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># The tMax threshold</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co"># The current WMO standard climatology period is 1981-01-01 to 2010-12-31 and should be used when possible</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co"># We rather use 1961-01-01 to 1990-01-01 as this is the oldest 30 year period available in the data</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">tMax_clim &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(<span class="dt">data =</span> Algiers, <span class="dt">y =</span> tMax, <span class="dt">climatologyPeriod =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"1961-01-01"</span>, <span class="st">"1990-12-31"</span>), <span class="dt">pctile =</span> <span class="dv">90</span>)</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co"># The tMin exceedance</span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co"># Note the use here of 'minDuration = 3' and 'maxGap = 1' as the default atmospheric arguments</span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co"># The default marine arguments are 'minDuration = 5' and 'maxGap = 2'</span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">tMin_exc &lt;-<span class="st"> </span><span class="kw"><a href="../reference/exceedance.html">exceedance</a></span>(<span class="dt">data =</span> Algiers, <span class="dt">y =</span> tMin, <span class="dt">threshold =</span> <span class="dv">19</span>, <span class="dt">minDuration =</span> <span class="dv">3</span>, <span class="dt">maxGap =</span> <span class="dv">1</span>)<span class="op">$</span>threshold</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># The tMax threshold</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="co"># The current WMO standard climatology period is 1981-01-01 to 2010-12-31 and should be used when possible</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="co"># We rather use 1961-01-01 to 1990-01-01 as this is the oldest 30 year period available in the data</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>tMax_clim &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(<span class="dt">data =</span> Algiers, <span class="dt">y =</span> tMax, <span class="dt">climatologyPeriod =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"1961-01-01"</span>, <span class="st">"1990-12-31"</span>), <span class="dt">pctile =</span> <span class="dv">90</span>)</span>
+<span id="cb3-5"><a href="#cb3-5"></a></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="co"># The tMin exceedance</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="co"># Note the use here of 'minDuration = 3' and 'maxGap = 1' as the default atmospheric arguments</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="co"># The default marine arguments are 'minDuration = 5' and 'maxGap = 2'</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>tMin_exc &lt;-<span class="st"> </span><span class="kw"><a href="../reference/exceedance.html">exceedance</a></span>(<span class="dt">data =</span> Algiers, <span class="dt">y =</span> tMin, <span class="dt">threshold =</span> <span class="dv">19</span>, <span class="dt">minDuration =</span> <span class="dv">3</span>, <span class="dt">maxGap =</span> <span class="dv">1</span>)<span class="op">$</span>threshold</span></code></pre></div>
 </div>
 <div id="calculating-events" class="section level3">
 <h3 class="hasAnchor">
 <a href="#calculating-events" class="anchor"></a>Calculating events</h3>
 <p>Now that the two thresholds have been calculated we use the <code><a href="../reference/detect_event.html">detect_event()</a></code> function as usual, but provide the second threshold to the argument <code>threshClim2</code> that would normally lay dormant.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Note that because we calculated our 90th percentile threshold on a column named 'tMax' </span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co"># and not the default column name 'temp', we must specify this below with 'y = tMax'</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">events &lt;-<span class="st"> </span><span class="kw"><a href="../reference/detect_event.html">detect_event</a></span>(<span class="dt">data =</span> tMax_clim, <span class="dt">y =</span> tMax, <span class="co"># The 90th percentile threshold</span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">                       <span class="dt">threshClim2 =</span> tMin_exc<span class="op">$</span>exceedance) <span class="co"># The flat exceedance threshold</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># Note that because we calculated our 90th percentile threshold on a column named 'tMax' </span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co"># and not the default column name 'temp', we must specify this below with 'y = tMax'</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a>events &lt;-<span class="st"> </span><span class="kw"><a href="../reference/detect_event.html">detect_event</a></span>(<span class="dt">data =</span> tMax_clim, <span class="dt">y =</span> tMax, <span class="co"># The 90th percentile threshold</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>                       <span class="dt">threshClim2 =</span> tMin_exc<span class="op">$</span>exceedance) <span class="co"># The flat exceedance threshold</span></span></code></pre></div>
 <p>Please note that even though the use of the second threshold does allow for the resultant event metrics to differ, the values themselves are still being calculated against the seasonal climatology and daily temperatures for the time series given to the 90th percentile threshold calculation (in this case <code>tMax</code>) and so using a second threshold (in this case <code>tMin</code>) won’t generally have much of an effect on the event metrics. Rather it mostly screens out smaller or larger events depending on how one chooses to set the threshold. In the case when an exceedance threshold is chosen for a temperature that would typically only occur in summer (e.g. 19<span class="math inline">\(^\circ\)</span>C, as used here), one is also effectively screening events by season. There are many use cases where this would be desirable. For example, if one is only interested in events that would occur during a season in which night time heat stress becomes an issue for the young and elderly.</p>
 </div>
 <div id="creating-visuals" class="section level3">
 <h3 class="hasAnchor">
 <a href="#creating-visuals" class="anchor"></a>Creating visuals</h3>
 <p>Even though we have used two thresholds to calculate our events, the results are output the same as though only one threshold (default) were used. This means that we may use the visualisation functions that come with <strong><code>heatwaveR</code></strong> without any extra fuss.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># The code to create a bubble plot for the heatwave results</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">bubble_plot &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">data =</span> events<span class="op">$</span>event, <span class="kw">aes</span>(<span class="dt">x =</span> date_peak, <span class="dt">y =</span> intensity_max)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">size =</span> intensity_cumulative), <span class="dt">shape =</span> <span class="dv">21</span>, <span class="dt">fill =</span> <span class="st">"salmon"</span>, <span class="dt">alpha =</span> <span class="fl">0.8</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="st">"Maximum Intensity [°C] "</span>, <span class="dt">size =</span> <span class="st">"Cumulative Intensity [°C x days]"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="st">  </span><span class="kw">scale_size_continuous</span>(<span class="dt">range =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>, <span class="dv">10</span>), </a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">                        <span class="dt">guide =</span> <span class="kw">guide_legend</span>(<span class="dt">title.position =</span> <span class="st">"top"</span>, <span class="dt">direction =</span> <span class="st">"horizontal"</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="st">  </span><span class="kw">theme_bw</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.3</span>, <span class="fl">0.12</span>),</a>
-<a class="sourceLine" id="cb5-9" data-line-number="9">        <span class="dt">legend.box.background =</span> <span class="kw">element_rect</span>(<span class="dt">colour =</span> <span class="st">"black"</span>))</a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co"># Don't forget to set 'event_line(y = tMax)'</span></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="kw"><a href="https://rdrr.io/pkg/ggpubr/man/ggarrange.html">ggarrange</a></span>(<span class="kw"><a href="../reference/event_line.html">event_line</a></span>(events, <span class="dt">y =</span> tMax, <span class="dt">metric =</span> <span class="st">"intensity_max"</span>),</a>
-<a class="sourceLine" id="cb5-13" data-line-number="13">          <span class="kw"><a href="../reference/event_line.html">event_line</a></span>(events, <span class="dt">y =</span> tMax, <span class="dt">metric =</span> <span class="st">"intensity_max"</span>, <span class="dt">category =</span> T),</a>
-<a class="sourceLine" id="cb5-14" data-line-number="14">          <span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events),</a>
-<a class="sourceLine" id="cb5-15" data-line-number="15">          bubble_plot,</a>
-<a class="sourceLine" id="cb5-16" data-line-number="16">          <span class="dt">ncol =</span> <span class="dv">2</span>, <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">align =</span> <span class="st">"hv"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># The code to create a bubble plot for the heatwave results</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>bubble_plot &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">data =</span> events<span class="op">$</span>event, <span class="kw">aes</span>(<span class="dt">x =</span> date_peak, <span class="dt">y =</span> intensity_max)) <span class="op">+</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">size =</span> intensity_cumulative), <span class="dt">shape =</span> <span class="dv">21</span>, <span class="dt">fill =</span> <span class="st">"salmon"</span>, <span class="dt">alpha =</span> <span class="fl">0.8</span>) <span class="op">+</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="st">"Maximum Intensity [°C] "</span>, <span class="dt">size =</span> <span class="st">"Cumulative Intensity [°C x days]"</span>) <span class="op">+</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="st">  </span><span class="kw">scale_size_continuous</span>(<span class="dt">range =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>, <span class="dv">10</span>), </span>
+<span id="cb5-6"><a href="#cb5-6"></a>                        <span class="dt">guide =</span> <span class="kw">guide_legend</span>(<span class="dt">title.position =</span> <span class="st">"top"</span>, <span class="dt">direction =</span> <span class="st">"horizontal"</span>)) <span class="op">+</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="st">  </span><span class="kw">theme_bw</span>() <span class="op">+</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.3</span>, <span class="fl">0.12</span>),</span>
+<span id="cb5-9"><a href="#cb5-9"></a>        <span class="dt">legend.box.background =</span> <span class="kw">element_rect</span>(<span class="dt">colour =</span> <span class="st">"black"</span>))</span>
+<span id="cb5-10"><a href="#cb5-10"></a></span>
+<span id="cb5-11"><a href="#cb5-11"></a><span class="co"># Don't forget to set 'event_line(y = tMax)'</span></span>
+<span id="cb5-12"><a href="#cb5-12"></a><span class="kw"><a href="https://rdrr.io/pkg/ggpubr/man/ggarrange.html">ggarrange</a></span>(<span class="kw"><a href="../reference/event_line.html">event_line</a></span>(events, <span class="dt">y =</span> tMax, <span class="dt">metric =</span> <span class="st">"intensity_max"</span>),</span>
+<span id="cb5-13"><a href="#cb5-13"></a>          <span class="kw"><a href="../reference/event_line.html">event_line</a></span>(events, <span class="dt">y =</span> tMax, <span class="dt">metric =</span> <span class="st">"intensity_max"</span>, <span class="dt">category =</span> T),</span>
+<span id="cb5-14"><a href="#cb5-14"></a>          <span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events),</span>
+<span id="cb5-15"><a href="#cb5-15"></a>          bubble_plot,</span>
+<span id="cb5-16"><a href="#cb5-16"></a>          <span class="dt">ncol =</span> <span class="dv">2</span>, <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">align =</span> <span class="st">"hv"</span>)</span></code></pre></div>
 <p><img src="complex_clims_files/figure-html/visuals-1.png" width="768"></p>
 </div>
 <div id="alternative-second-thresholds" class="section level3">
@@ -205,33 +205,33 @@
 <a href="#alternative-second-thresholds" class="anchor"></a>Alternative second thresholds</h3>
 <p>Using a percentile based second threshold is not much different than using a static second threshold. Rather than using <code><a href="../reference/exceedance.html">exceedance()</a></code> to get our second threshold we can use <code>ts2clm</code> nested within <code><a href="../reference/detect_event.html">detect_event()</a></code>. It must also be pointed out that in addition to using multiple thresholds, we can adjust the minimum duration (<code>minDuration</code>) and maximum gap (<code>maxGap</code>) arguments for our multiple thresholds, too. This allows us to provide different ‘flavours’ of criteria for our events. For example, let’s say we are interested in night-time events (<code>tMin</code>) when the temperatures remain above the 80th percentile threshold (<code>pctile = 80</code>) for 10 or more days (<code>minDuration = 10</code>) without dipping below that threshold for more than 2 consecutive days (<code>maxGap = 2</code>). But on top of that, we are also only interested in those parts of the event when the daytime temperatures exceed the 90th percentile threshold (<code>pctile = 90</code>) for 3 or more days (<code>minDuration = 3</code>) non-stop (<code>maxGap = 0</code>).</p>
 <p>Below we will look at how to detect/calculate events that meet these rather specific criteria. We will also calculate events with just the first threshold and compare the results visually. It must be noted here that whichever criteria is the most strict, in this case <code>minDuration = 3</code> and <code>maxGap = 0</code>, will be the predominant filter through which the event metrics are quantified.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># Note that because we are not using the standard column name 'temp' we must</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co"># specify the chosen column name twice, once for ts2clm() and again for detect_event()</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co"># First threshold based on tMin</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">thresh_tMin &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(<span class="dt">data =</span> Algiers, <span class="dt">y =</span> tMin, <span class="dt">pctile =</span> <span class="dv">80</span>, </a>
-<a class="sourceLine" id="cb6-6" data-line-number="6">                      <span class="dt">climatologyPeriod =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"1961-01-01"</span>, <span class="st">"1990-12-31"</span>))</a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co"># Second threshold based on tMax</span></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co"># Be careful here that you put the arguments within the correct brackets</span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10">thresh_tMax &lt;-<span class="st"> </span><span class="kw"><a href="../reference/detect_event.html">detect_event</a></span>(<span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(<span class="dt">data =</span> Algiers, <span class="dt">y =</span> tMax, <span class="dt">pctile =</span> <span class="dv">90</span>, </a>
-<a class="sourceLine" id="cb6-11" data-line-number="11">                                   <span class="dt">climatologyPeriod =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"1961-01-01"</span>, <span class="st">"1990-12-31"</span>)),</a>
-<a class="sourceLine" id="cb6-12" data-line-number="12">                            <span class="co"># These arguments are passed to detect_event(), not ts2clm()</span></a>
-<a class="sourceLine" id="cb6-13" data-line-number="13">                            <span class="dt">minDuration =</span> <span class="dv">3</span>, <span class="dt">maxGap =</span> <span class="dv">0</span>, <span class="dt">y =</span> tMax, <span class="dt">protoEvents =</span> T)</a>
-<a class="sourceLine" id="cb6-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co"># Detect/calculate events using the two precalculated thresholds</span></a>
-<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co"># Because detect_event() is not able to deduce which arguments we used above,</span></a>
-<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co"># we must again tell it explicitly here</span></a>
-<a class="sourceLine" id="cb6-18" data-line-number="18">events_two_thresh &lt;-<span class="st"> </span><span class="kw"><a href="../reference/detect_event.html">detect_event</a></span>(<span class="dt">data =</span> thresh_tMin, <span class="dt">y =</span> tMin, <span class="dt">minDuration =</span> <span class="dv">10</span>, <span class="dt">maxGap =</span> <span class="dv">2</span>,</a>
-<a class="sourceLine" id="cb6-19" data-line-number="19">                                  <span class="dt">threshClim2 =</span> thresh_tMax<span class="op">$</span>event, <span class="dt">minDuration2 =</span> <span class="dv">3</span>, <span class="dt">maxGap2 =</span> <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb6-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb6-21" data-line-number="21"><span class="co"># Or to simply use one threshold</span></a>
-<a class="sourceLine" id="cb6-22" data-line-number="22">events_one_thresh &lt;-<span class="st"> </span><span class="kw"><a href="../reference/detect_event.html">detect_event</a></span>(<span class="dt">data =</span> thresh_tMin, <span class="dt">y =</span> tMin, <span class="dt">minDuration =</span> <span class="dv">10</span>, <span class="dt">maxGap =</span> <span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Note that because we are not using the standard column name 'temp' we must</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="co"># specify the chosen column name twice, once for ts2clm() and again for detect_event()</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="co"># First threshold based on tMin</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>thresh_tMin &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(<span class="dt">data =</span> Algiers, <span class="dt">y =</span> tMin, <span class="dt">pctile =</span> <span class="dv">80</span>, </span>
+<span id="cb6-6"><a href="#cb6-6"></a>                      <span class="dt">climatologyPeriod =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"1961-01-01"</span>, <span class="st">"1990-12-31"</span>))</span>
+<span id="cb6-7"><a href="#cb6-7"></a></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="co"># Second threshold based on tMax</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="co"># Be careful here that you put the arguments within the correct brackets</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a>thresh_tMax &lt;-<span class="st"> </span><span class="kw"><a href="../reference/detect_event.html">detect_event</a></span>(<span class="kw"><a href="../reference/ts2clm.html">ts2clm</a></span>(<span class="dt">data =</span> Algiers, <span class="dt">y =</span> tMax, <span class="dt">pctile =</span> <span class="dv">90</span>, </span>
+<span id="cb6-11"><a href="#cb6-11"></a>                                   <span class="dt">climatologyPeriod =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"1961-01-01"</span>, <span class="st">"1990-12-31"</span>)),</span>
+<span id="cb6-12"><a href="#cb6-12"></a>                            <span class="co"># These arguments are passed to detect_event(), not ts2clm()</span></span>
+<span id="cb6-13"><a href="#cb6-13"></a>                            <span class="dt">minDuration =</span> <span class="dv">3</span>, <span class="dt">maxGap =</span> <span class="dv">0</span>, <span class="dt">y =</span> tMax, <span class="dt">protoEvents =</span> T)</span>
+<span id="cb6-14"><a href="#cb6-14"></a></span>
+<span id="cb6-15"><a href="#cb6-15"></a><span class="co"># Detect/calculate events using the two precalculated thresholds</span></span>
+<span id="cb6-16"><a href="#cb6-16"></a><span class="co"># Because detect_event() is not able to deduce which arguments we used above,</span></span>
+<span id="cb6-17"><a href="#cb6-17"></a><span class="co"># we must again tell it explicitly here</span></span>
+<span id="cb6-18"><a href="#cb6-18"></a>events_two_thresh &lt;-<span class="st"> </span><span class="kw"><a href="../reference/detect_event.html">detect_event</a></span>(<span class="dt">data =</span> thresh_tMin, <span class="dt">y =</span> tMin, <span class="dt">minDuration =</span> <span class="dv">10</span>, <span class="dt">maxGap =</span> <span class="dv">2</span>,</span>
+<span id="cb6-19"><a href="#cb6-19"></a>                                  <span class="dt">threshClim2 =</span> thresh_tMax<span class="op">$</span>event, <span class="dt">minDuration2 =</span> <span class="dv">3</span>, <span class="dt">maxGap2 =</span> <span class="dv">0</span>)</span>
+<span id="cb6-20"><a href="#cb6-20"></a></span>
+<span id="cb6-21"><a href="#cb6-21"></a><span class="co"># Or to simply use one threshold</span></span>
+<span id="cb6-22"><a href="#cb6-22"></a>events_one_thresh &lt;-<span class="st"> </span><span class="kw"><a href="../reference/detect_event.html">detect_event</a></span>(<span class="dt">data =</span> thresh_tMin, <span class="dt">y =</span> tMin, <span class="dt">minDuration =</span> <span class="dv">10</span>, <span class="dt">maxGap =</span> <span class="dv">2</span>)</span></code></pre></div>
 <p>Here are the differences in lolliplot format:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/ggpubr/man/ggarrange.html">ggarrange</a></span>(<span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events_one_thresh), <span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events_two_thresh), <span class="dt">labels =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"One threshold"</span>, <span class="st">"Two thresholds"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw"><a href="https://rdrr.io/pkg/ggpubr/man/ggarrange.html">ggarrange</a></span>(<span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events_one_thresh), <span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events_two_thresh), <span class="dt">labels =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"One threshold"</span>, <span class="st">"Two thresholds"</span>))</span></code></pre></div>
 <p><img src="complex_clims_files/figure-html/alt-two-thresh-lollis-1.png" width="768"></p>
 <p>Here is a brief display of the top few events from each method:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(events_one_thresh<span class="op">$</span>event)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(events_one_thresh<span class="op">$</span>event)</span></code></pre></div>
 <pre><code>##    event_no index_start index_peak index_end duration date_start  date_peak
 ## 1:        1        6135       6137      6144       10 1977-10-18 1977-10-20
 ## 2:        2       10844      10845     10856       13 1990-09-09 1990-09-10
@@ -262,7 +262,7 @@
 ## 3:            1.2169                    248.7     0.5665       2.5287
 ## 4:            1.5284                    184.4     0.6922       3.4156
 ## 5:            1.5737                    307.0     0.6559       1.2658</code></pre>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(events_two_thresh<span class="op">$</span>event)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(events_two_thresh<span class="op">$</span>event)</span></code></pre></div>
 <pre><code>##    event_no index_start index_peak index_end duration date_start  date_peak
 ## 1:        1        6135       6137      6137        3 1977-10-18 1977-10-20
 ## 2:        2       10851      10851     10856        6 1990-09-16 1990-09-16
@@ -299,33 +299,33 @@
 <div id="filtering-with-a-second-threshold" class="section level2">
 <h2 class="hasAnchor">
 <a href="#filtering-with-a-second-threshold" class="anchor"></a>Filtering with a second threshold</h2>
-<p>The methodology outlined below for the detection and filtering of events with two thresholds is somewhat cumbersome. A potential issue with this technique is that the multiple filters do not affect the calculation of the event metrics (e.g. <code>intensity_cumulative</code>), as only the primary threshold given to <code><a href="../reference/detect_event.html">detect_event()</a></code> is used when calculating event metrics. This may however be the desired case if one is still interested in knowing the cumulative intensity above the given percentile threshold, but only wants to filter the full event based on some other threshold criteria. I can imagine real-world use cases for both scenarios, which is why this seemingly less sophisticated approach is detailed below.</p>
+<p>The methodology outlined below for the detection and filtering of events with two thresholds is somewhat cumbersome. A potential issue with this technique is that the multiple filters do not affect the calculation of the event metrics (e.g. <code>intensity_cumulative</code>), as only the primary threshold given to <code><a href="../reference/detect_event.html">detect_event()</a></code> is used when calculating event metrics. This may however be the desired case if one is still interested in knowing the cumulative intensity above the given percentile threshold, but only wants to filter the full event based on some other threshold criteria. I can imagine real-world use cases for both scenarios, which is why this seemingly less sophisticated approach is detailed below.</p>
 <div id="filtering-events" class="section level3">
 <h3 class="hasAnchor">
 <a href="#filtering-events" class="anchor"></a>Filtering events</h3>
 <p>Because we have already calculated our single threshold events (<code>events_one_thresh</code>) and our second threshold (<code>thresh_tMax</code>) we may directly begin filtering the results. Before we do so, let’s pull out the list components of our results into dataframes for easier use down the line.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co"># Pull out each data.frame as their own object for easier use</span></a>
-<a class="sourceLine" id="cb12-2" data-line-number="2">events_one_event &lt;-<span class="st"> </span>events_one_thresh<span class="op">$</span>event</a>
-<a class="sourceLine" id="cb12-3" data-line-number="3">events_one_climatology &lt;-<span class="st"> </span>events_one_thresh<span class="op">$</span>climatology</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># Pull out each data.frame as their own object for easier use</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>events_one_event &lt;-<span class="st"> </span>events_one_thresh<span class="op">$</span>event</span>
+<span id="cb12-3"><a href="#cb12-3"></a>events_one_climatology &lt;-<span class="st"> </span>events_one_thresh<span class="op">$</span>climatology</span></code></pre></div>
 <p>This is where things may get tricky for some users, and where the default use of the functions in the <strong><code>heatwaveR</code></strong> package ends. We are now going ‘off-road’ so to speak. But do not despair! The <strong><code>tidyverse</code></strong> suite of packages makes data wrangling like this much more user friendly than it was in the dark days of Base R coding.</p>
 <p>In order to make the filtering of events easier, we will combine the two different dataframes that we are using as threshold/filtering guides to chose the events that meet all of our selection criteria.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co"># Join the two threshold dataframes</span></a>
-<a class="sourceLine" id="cb13-2" data-line-number="2">two_thresh &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(events_one_climatology, thresh_tMax, <span class="dt">by =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"t"</span>))</a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co"># Remove all days that did not qualify as events in both thresholds</span></a>
-<a class="sourceLine" id="cb13-5" data-line-number="5">two_thresh_filtered &lt;-<span class="st"> </span>two_thresh <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(event.x <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb13-7" data-line-number="7">         event.y <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># Join the two threshold dataframes</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>two_thresh &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(events_one_climatology, thresh_tMax, <span class="dt">by =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"t"</span>))</span>
+<span id="cb13-3"><a href="#cb13-3"></a></span>
+<span id="cb13-4"><a href="#cb13-4"></a><span class="co"># Remove all days that did not qualify as events in both thresholds</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a>two_thresh_filtered &lt;-<span class="st"> </span>two_thresh <span class="op">%&gt;%</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(event.x <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>,</span>
+<span id="cb13-7"><a href="#cb13-7"></a>         event.y <span class="op">==</span><span class="st"> </span><span class="ot">TRUE</span>)</span></code></pre></div>
 <p>With our filtering guide created, we may now apply it to <code>events_one_thresh</code> to get our filtered results.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co"># Copy data with a new name</span></a>
-<a class="sourceLine" id="cb14-2" data-line-number="2">events_one_thresh_filtered &lt;-<span class="st"> </span>events_one_thresh</a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co"># Then filter</span></a>
-<a class="sourceLine" id="cb14-5" data-line-number="5">events_one_thresh_filtered<span class="op">$</span>event &lt;-<span class="st"> </span>events_one_thresh_filtered<span class="op">$</span>event <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(event_no <span class="op">%in%</span><span class="st"> </span>two_thresh_filtered<span class="op">$</span>event_no.x)</a>
-<a class="sourceLine" id="cb14-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="co"># Compare results</span></a>
-<a class="sourceLine" id="cb14-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(events_one_thresh_filtered<span class="op">$</span>event)</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># Copy data with a new name</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>events_one_thresh_filtered &lt;-<span class="st"> </span>events_one_thresh</span>
+<span id="cb14-3"><a href="#cb14-3"></a></span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="co"># Then filter</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a>events_one_thresh_filtered<span class="op">$</span>event &lt;-<span class="st"> </span>events_one_thresh_filtered<span class="op">$</span>event <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb14-6"><a href="#cb14-6"></a><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(event_no <span class="op">%in%</span><span class="st"> </span>two_thresh_filtered<span class="op">$</span>event_no.x)</span>
+<span id="cb14-7"><a href="#cb14-7"></a></span>
+<span id="cb14-8"><a href="#cb14-8"></a><span class="co"># Compare results</span></span>
+<span id="cb14-9"><a href="#cb14-9"></a><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(events_one_thresh_filtered<span class="op">$</span>event)</span></code></pre></div>
 <pre><code>##   event_no index_start index_peak index_end duration date_start  date_peak
 ## 1        1        6135       6137      6144       10 1977-10-18 1977-10-20
 ## 2        2       10844      10845     10856       13 1990-09-09 1990-09-10
@@ -356,7 +356,7 @@
 ## 3            1.2169                    248.7     0.5665       2.5287
 ## 4            1.5284                    184.4     0.6922       3.4156
 ## 5            1.5737                    307.0     0.6559       1.2658</code></pre>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(events_two_thresh<span class="op">$</span>event)</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(events_two_thresh<span class="op">$</span>event)</span></code></pre></div>
 <pre><code>##    event_no index_start index_peak index_end duration date_start  date_peak
 ## 1:        1        6135       6137      6137        3 1977-10-18 1977-10-20
 ## 2:        2       10851      10851     10856        6 1990-09-16 1990-09-16
@@ -393,17 +393,17 @@
 <h3 class="hasAnchor">
 <a href="#visualising-filtered-events" class="anchor"></a>Visualising filtered events</h3>
 <p>To better understand how different the results from these two different techniques may be we will use lolliplots to visualise them.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/ggpubr/man/ggarrange.html">ggarrange</a></span>(<span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events_two_thresh, <span class="dt">metric =</span> <span class="st">"duration"</span>), </a>
-<a class="sourceLine" id="cb18-2" data-line-number="2">          <span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events_one_thresh_filtered, <span class="dt">metric =</span> <span class="st">"duration"</span>), </a>
-<a class="sourceLine" id="cb18-3" data-line-number="3">          <span class="dt">labels =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Double threshold"</span>, <span class="st">"Filter threshold"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="kw"><a href="https://rdrr.io/pkg/ggpubr/man/ggarrange.html">ggarrange</a></span>(<span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events_two_thresh, <span class="dt">metric =</span> <span class="st">"duration"</span>), </span>
+<span id="cb18-2"><a href="#cb18-2"></a>          <span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events_one_thresh_filtered, <span class="dt">metric =</span> <span class="st">"duration"</span>), </span>
+<span id="cb18-3"><a href="#cb18-3"></a>          <span class="dt">labels =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Double threshold"</span>, <span class="st">"Filter threshold"</span>))</span></code></pre></div>
 <div class="figure" style="text-align: centre">
 <img src="complex_clims_files/figure-html/lolliplot-duration-1.png" alt="Difference in duration (days) of events given different applications of thresholds. Note the difference in the y-axes." width="768"><p class="caption">
 Difference in duration (days) of events given different applications of thresholds. Note the difference in the y-axes.
 </p>
 </div>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/ggpubr/man/ggarrange.html">ggarrange</a></span>(<span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events_two_thresh, <span class="dt">metric =</span> <span class="st">"intensity_cumulative"</span>), </a>
-<a class="sourceLine" id="cb19-2" data-line-number="2">          <span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events_one_thresh_filtered, <span class="dt">metric =</span> <span class="st">"intensity_cumulative"</span>), </a>
-<a class="sourceLine" id="cb19-3" data-line-number="3">          <span class="dt">labels =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Double threshold"</span>, <span class="st">"Filter threshold"</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="kw"><a href="https://rdrr.io/pkg/ggpubr/man/ggarrange.html">ggarrange</a></span>(<span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events_two_thresh, <span class="dt">metric =</span> <span class="st">"intensity_cumulative"</span>), </span>
+<span id="cb19-2"><a href="#cb19-2"></a>          <span class="kw"><a href="../reference/lolli_plot.html">lolli_plot</a></span>(events_one_thresh_filtered, <span class="dt">metric =</span> <span class="st">"intensity_cumulative"</span>), </span>
+<span id="cb19-3"><a href="#cb19-3"></a>          <span class="dt">labels =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Double threshold"</span>, <span class="st">"Filter threshold"</span>))</span></code></pre></div>
 <div class="figure" style="text-align: centre">
 <img src="complex_clims_files/figure-html/lolliplot-int-cum-1.png" alt="Difference in cumulative intensity (°C x days) of events given different applications of thresholds. Note the difference in the y-axes." width="768"><p class="caption">
 Difference in cumulative intensity (°C x days) of events given different applications of thresholds. Note the difference in the y-axes.
