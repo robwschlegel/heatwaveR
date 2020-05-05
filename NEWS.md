@@ -1,3 +1,7 @@
+# heatwaveR 0.4.2.9002 (2020-05-05)
+
+* Cleaned up the CITATION file
+
 # heatwaveR 0.4.2.9002 (2020-03-23)
 
 * Improvement to legend appearance for `event_line()`
