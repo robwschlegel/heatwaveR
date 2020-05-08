@@ -1,3 +1,7 @@
+# heatwaveR 0.4.2.9003 (2020-05-08)
+
+* Fixed bug in `event_line()` caused by __`data.table`__
+
 # heatwaveR 0.4.2.9002 (2020-05-05)
 
 * Cleaned up the CITATION file

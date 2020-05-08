@@ -112,7 +112,8 @@ event_line <- function(data,
     end_date <- max(data$climatology$ts.x)
 
   event <- data$event %>%
-    dplyr::filter(date_end >= start_date & date_start <= end_date)
+    dplyr::filter(date_end >= start_date & date_start <= end_date) %>%
+    data.frame()
 
   if (nrow(event) == 0) stop("No events detected! Consider changing the 'start_date' or 'end_date' values.")
 
@@ -128,7 +129,7 @@ event_line <- function(data,
   event <- event %>%
     dplyr::filter(duration >= min_duration) %>%
     dplyr::mutate(index_start_fix = index_start - 1,
-           index_end_fix = index_end + 1)
+                  index_end_fix = index_end + 1)
 
   event_top <- event[1, ]
 
@@ -136,7 +137,7 @@ event_line <- function(data,
 
   event_sub <- event %>%
     dplyr::filter(date_start >= min(date_spread),
-           date_end <= max(date_spread))
+                  date_end <= max(date_spread))
 
   thresh_2x <- thresh_3x <- thresh_4x <- NULL
 
