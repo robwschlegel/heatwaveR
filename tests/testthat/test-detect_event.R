@@ -99,3 +99,13 @@ test_that("roundRes argument functions correctly", {
                "Please ensure that 'roundRes' is either a numeric value or FALSE.")
 })
 
+test_that("only one event with NA for rate_onset or rate_decline returns NA and not error", {
+  res_clim <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  res_onset <- detect_event(res_clim[885:892])
+  res_decline <- detect_event(res_clim[882:890])
+  res_both <- detect_event(res_clim[884:891])
+  expect_equal(res_onset$event$rate_onset, NA)
+  expect_equal(res_decline$event$rate_decline, NA)
+  expect_equal(res_both$event$rate_onset, NA)
+  expect_equal(res_both$event$rate_decline, NA)
+})
