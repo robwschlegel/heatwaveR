@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9004</span>
       </span>
     </div>
 
@@ -194,8 +194,8 @@
 <p>The <code><a href="reference/detect_event.html">detect_event()</a></code> function will return a list of two tibbles (see the <strong><code>tidyverse</code></strong>), <code>climatology</code> and <code>event</code>, which are the time series climatology and MHW (or MCS) events, respectively. The climatology contains the full time series of daily temperatures, as well as the the seasonal climatology, the threshold and various aspects of the events that were detected. The software was designed for detecting extreme thermal events, and the units specified below reflect that intended purpose. However, various other kinds of extreme events (e.g. rainfall) may be detected according to the ‘heatwave’ specifications, and if that is the case, the appropriate <code>minDuration</code> etc. and units of measurement need to be determined by the user.</p>
 <table class="table">
 <colgroup>
-<col width="6%">
-<col width="93%">
+<col width="7%">
+<col width="92%">
 </colgroup>
 <thead><tr class="header">
 <th>Climatology metric</th>
@@ -212,19 +212,19 @@
 </tr>
 <tr class="odd">
 <td><code>temp</code></td>
-<td>If the software was used for the purpose for which it was designed, seawater temperature <br><span class="math display"><em>d</em><em>e</em><em>g</em>.<em>C</em></span><br> on the specified date will be returned. This column will of course be named differently if another kind of measurement was specified to the <code>y</code> argument.</td>
+<td>If the software was used for the purpose for which it was designed, seawater temperature (deg. C) on the specified date will be returned. This column will of course be named differently if another kind of measurement was specified to the <code>y</code> argument.</td>
 </tr>
 <tr class="even">
 <td><code>seas</code></td>
-<td>Climatological seasonal cycle <br><span class="math display"><em>d</em><em>e</em><em>g</em>.<em>C</em></span><br>.</td>
+<td>Climatological seasonal cycle (deg. C).</td>
 </tr>
 <tr class="odd">
 <td><code>thresh</code></td>
-<td>Seasonally varying threshold (e.g., 90th percentile) <br><span class="math display"><em>d</em><em>e</em><em>g</em>.<em>C</em></span><br>.</td>
+<td>Seasonally varying threshold (e.g., 90th percentile) (deg. C).</td>
 </tr>
 <tr class="even">
 <td><code>var</code></td>
-<td>Variance (standard deviation) per <code>doy</code> of <code>temp</code> <br><span class="math display"><em>d</em><em>e</em><em>g</em>.<em>C</em></span><br>. (not returned by default as of v0.3.5)</td>
+<td>Variance (standard deviation) per <code>doy</code> of <code>temp</code> (deg. C). (not returned by default as of v0.3.5)</td>
 </tr>
 <tr class="odd">
 <td><code>threshCriterion</code></td>
@@ -273,43 +273,43 @@
 </tr>
 <tr class="odd">
 <td><code>duration</code></td>
-<td>Duration of event <br><span class="math display"><em>d</em><em>a</em><em>y</em><em>s</em></span><br>.</td>
+<td>Duration of event (days).</td>
 </tr>
 <tr class="even">
 <td><code>date_start</code></td>
-<td>Start date of event <br><span class="math display"><em>d</em><em>a</em><em>t</em><em>e</em></span><br>.</td>
+<td>Start date of event (date).</td>
 </tr>
 <tr class="odd">
 <td><code>date_peak</code></td>
-<td>Date of event peak <br><span class="math display"><em>d</em><em>a</em><em>t</em><em>e</em></span><br>.</td>
+<td>Date of event peak (date).</td>
 </tr>
 <tr class="even">
 <td><code>date_end</code></td>
-<td>End date of event <br><span class="math display"><em>d</em><em>a</em><em>t</em><em>e</em></span><br>.</td>
+<td>End date of event (date).</td>
 </tr>
 <tr class="odd">
 <td><code>intensity_mean</code></td>
-<td>Mean intensity <br><span class="math display"><em>d</em><em>e</em><em>g</em>.<em>C</em></span><br>.</td>
+<td>Mean intensity (deg. C).</td>
 </tr>
 <tr class="even">
 <td><code>intensity_max</code></td>
-<td>Maximum (peak) intensity <br><span class="math display"><em>d</em><em>e</em><em>g</em>.<em>C</em></span><br>.</td>
+<td>Maximum (peak) intensity (deg. C).</td>
 </tr>
 <tr class="odd">
 <td><code>intensity_var</code></td>
-<td>Intensity variability (standard deviation) <br><span class="math display"><em>d</em><em>e</em><em>g</em>.<em>C</em></span><br>.</td>
+<td>Intensity variability (standard deviation) (deg. C).</td>
 </tr>
 <tr class="even">
 <td><code>intensity_cumulative</code></td>
-<td>Cumulative intensity <br><span class="math display"><em>d</em><em>e</em><em>g</em>.<em>C</em><em>x</em><em>d</em><em>a</em><em>y</em><em>s</em></span><br>.</td>
+<td>Cumulative intensity (deg. C x days).</td>
 </tr>
 <tr class="odd">
 <td><code>rate_onset</code></td>
-<td>Onset rate of event <br><span class="math display"><em>d</em><em>e</em><em>g</em>.<em>C</em>/<em>d</em><em>a</em><em>y</em></span><br>.</td>
+<td>Onset rate of event (deg. C / day).</td>
 </tr>
 <tr class="even">
 <td><code>rate_decline</code></td>
-<td>Decline rate of event <br><span class="math display"><em>d</em><em>e</em><em>g</em>.<em>C</em>/<em>d</em><em>a</em><em>y</em></span><br>.</td>
+<td>Decline rate of event (deg. C / day).</td>
 </tr>
 </tbody>
 </table>
@@ -333,8 +333,7 @@
 <div id="the-marine-heatwave-tracker" class="section level2">
 <h2 class="hasAnchor">
 <a href="#the-marine-heatwave-tracker" class="anchor"></a>The Marine Heatwave Tracker</h2>
-<p>To see the <strong><code>heatwaveR</code></strong> package in action, check out the <a href="http://www.marineheatwaves.org/tracker.html">Marine Heatwave Tracker</a> website. This is a daily updating global analysis of where in the world marine heatwaves are occurring. It has near real-time information as well as historic data going back to January 1st, 1982 and uses the Hobday et al.</p>
-<p>(2018) colour scheme to show how intense the MHWs are.</p>
+<p>To see the <strong><code>heatwaveR</code></strong> package in action, check out the <a href="http://www.marineheatwaves.org/tracker.html">Marine Heatwave Tracker</a> website. This is a daily updating global analysis of where in the world marine heatwaves are occurring. It has near real-time information as well as historic data going back to January 1st, 1982 and uses the Hobday et al. (2018) colour scheme to show how intense the MHWs are.</p>
 </div>
 <div id="contributing-to-heatwaver" class="section level2">
 <h2 class="hasAnchor">

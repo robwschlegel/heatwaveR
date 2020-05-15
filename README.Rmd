@@ -93,10 +93,10 @@ The `detect_event()` function will return a list of two tibbles (see the __`tidy
 |--------------------|--------------------------------------------------------------------------------------------------------|
 |`doy` | Julian day (day-of-year). For non-leap years it runs 1...59 and   61...366, while leap years run 1...366. This column will be named differently if another name was specified to the `doy` argument. |
 |`t` | The date of the temperature measurement. This column will be named differently if another name was specified to the `x` argument. |
-|`temp` | If the software was used for the purpose for which it was designed, seawater temperature [deg. C] on the specified date will be returned. This column will of course be named differently if another kind of measurement was specified to the `y` argument. |
-|`seas` | Climatological seasonal cycle [deg. C]. |
-|`thresh` | Seasonally varying threshold (e.g., 90th percentile) [deg. C]. |
-|`var` | Variance (standard deviation) per `doy` of `temp` [deg. C]. (not returned by default as of v0.3.5) |
+|`temp` | If the software was used for the purpose for which it was designed, seawater temperature (deg. C) on the specified date will be returned. This column will of course be named differently if another kind of measurement was specified to the `y` argument. |
+|`seas` | Climatological seasonal cycle (deg. C). |
+|`thresh` | Seasonally varying threshold (e.g., 90th percentile) (deg. C). |
+|`var` | Variance (standard deviation) per `doy` of `temp` (deg. C). (not returned by default as of v0.3.5) |
 |`threshCriterion` | Boolean indicating if `temp` exceeds `thresh`. |
 |`durationCriterion` | Boolean indicating whether periods of consecutive `threshCriterion` are >= `minDuration`. |
 |`event` | Boolean indicating if all criteria that define a MHW or MCS are met. |
@@ -110,16 +110,16 @@ The events are summarised using a range of event metrics:
 |`index_start` | Row number from the given time series where the event starts. |
 |`index_peak` | Row number from the given time series where the event peaks. |
 |`index_end` | Row number from the given time series where the event ends. |
-|`duration` | Duration of event [days]. |
-|`date_start` | Start date of event [date]. |
-|`date_peak` | Date of event peak [date]. |
-|`date_end` | End date of event [date]. |
-|`intensity_mean` | Mean intensity [deg. C]. |
-|`intensity_max` | Maximum (peak) intensity [deg. C]. |
-|`intensity_var` | Intensity variability (standard deviation) [deg. C]. |
-|`intensity_cumulative` | Cumulative intensity [deg. C x days]. |
-|`rate_onset` | Onset rate of event [deg. C / day]. |
-|`rate_decline` | Decline rate of event [deg. C / day]. |
+|`duration` | Duration of event (days). |
+|`date_start` | Start date of event (date). |
+|`date_peak` | Date of event peak (date). |
+|`date_end` | End date of event (date). |
+|`intensity_mean` | Mean intensity (deg. C). |
+|`intensity_max` | Maximum (peak) intensity (deg. C). |
+|`intensity_var` | Intensity variability (standard deviation) (deg. C). |
+|`intensity_cumulative` | Cumulative intensity (deg. C x days). |
+|`rate_onset` | Onset rate of event (deg. C / day). |
+|`rate_decline` | Decline rate of event (deg. C / day). |
 
 `intensity_max_relThresh`, `intensity_mean_relThresh`, `intensity_var_relThresh`, and `intensity_cumulative_relThresh` are as above except relative to the threshold (e.g., 90th percentile) rather than the seasonal climatology.
 
