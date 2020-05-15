@@ -1,3 +1,8 @@
+# heatwaveR 0.4.2.9004 (2020-05-15)
+
+* Fixed bug in `detect_event()` caused by __`data.table`__
+  * __`data.table`__ no longer allows rounding of NA values
+
 # heatwaveR 0.4.2.9003 (2020-05-08)
 
 * Fixed bug in `event_line()` caused by __`data.table`__

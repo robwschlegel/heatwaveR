@@ -318,7 +318,6 @@ detect_event <- function(data,
       B <- c(NA, B)
       C <- c(NA, C)
     }
-
     mhw_rel_seas_start <- 0.5 * (A + B - C)
 
     events$rate_onset <- ifelse(
@@ -370,8 +369,17 @@ detect_event <- function(data,
 
   event_cols <- names(events)[9:22]
   clim_cols <- names(events_clim)[2:4]
-  if(is.numeric(roundRes)){
-    if(nrow(events) > 0){
+  if (nrow(events) == 1) {
+    if (is.na(events$rate_onset)) {
+      event_cols <- event_cols[-grep(pattern = "rate_onset", x = event_cols, value = FALSE)]
+    }
+    if (is.na(events$rate_decline)) {
+      event_cols <- event_cols[-grep(pattern = "rate_decline", x = event_cols, value = FALSE)]
+    }
+  }
+
+  if (is.numeric(roundRes)) {
+    if (nrow(events) > 0) {
       events[,(event_cols) := round(.SD, roundRes), .SDcols = event_cols]
       events_clim[,(clim_cols) := round(.SD, roundRes), .SDcols = clim_cols]
     }
