@@ -1,6 +1,6 @@
 context("Test category.R")
 
-test_that("category() returns the correct tibbles and columns", {
+test_that("category() returns the correct data.tables and columns", {
   ts <- ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   res <- detect_event(ts)
   cat_res <- category(res)

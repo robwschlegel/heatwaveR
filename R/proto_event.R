@@ -42,9 +42,9 @@ proto_event <- function(t_series,
   suppressWarnings(
   if (is.null(proto_events) | max(duration) < minDuration){
     res <- data.frame(t_series,
-                        durationCriterion = FALSE,
-                        event = FALSE,
-                        event_no = NA)
+                      durationCriterion = FALSE,
+                      event = FALSE,
+                      event_no = NA)
       return(res)
   } else {
     proto_events$duration <- duration

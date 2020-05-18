@@ -1,3 +1,46 @@
+# heatwaveR 0.4.2.9004 (2020-05-15)
+
+* Fixed bug in `detect_event()` caused by __`data.table`__
+  * __`data.table`__ no longer allows rounding of NA values
+
+# heatwaveR 0.4.2.9003 (2020-05-08)
+
+* Fixed bug in `event_line()` caused by __`data.table`__
+
+# heatwaveR 0.4.2.9002 (2020-05-05)
+
+* Cleaned up the CITATION file
+
+# heatwaveR 0.4.2.9002 (2020-03-23)
+
+* Improvement to legend appearance for `event_line()`
+* Improvement to plotting in category vignette
+
+# heatwaveR 0.4.2.9001 (2020-02-24)
+
+* Minor spelling error fixes
+* Minor tweak to `make_whole_fast()`
+
+# heatwaveR 0.4.2.9001 (2020-02-13)
+
+* Added a new citation that used the `heatwaveR` package
+
+# heatwaveR 0.4.2.9001 (2020-02-05)
+
+* Minor internal tweak to exceedance function
+
+# heatwaveR 0.4.2.9001 (2020-01-13)
+
+* Added one small test to get codecov back up to 100%
+
+# heatwaveR 0.4.2.9001 (2020-01-08)
+
+* Beginning to phase out __`dplyr`__ and __`tibble`__ dependencies
+* Replacing some __`dplyr`__ functions with __`plyr`__ as they appear to be slightly faster
+  and also don't have the same multicore issues that more recent __`dplyr`__ developments have created
+* Added `roundRes` argument to `detect_event()` to allow users to decide the rounding precision of 
+  the returned results
+
 # heatwaveR 0.4.2 (2019-12-10)
 
 * Minor change to `ts2clm()` that does not alter any functionality

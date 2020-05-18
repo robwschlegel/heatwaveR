@@ -17,7 +17,8 @@ detect_event(
   maxGap = 2,
   maxGap2 = maxGap,
   coldSpells = FALSE,
-  protoEvents = FALSE
+  protoEvents = FALSE,
+  roundRes = 4
 )
 }
 \arguments{
@@ -91,9 +92,14 @@ have been exceeded, a column showing if a heatwave is present (i.e. both
 \code{threshCriterion} and \code{durationCriterion} \code{TRUE}), and a
 sequential number uniquely identifying the detected event. In this case,
 the heatwave metrics will not be reported. The default is \code{FALSE}.}
+
+\item{roundRes}{This argument allows the user to choose how many decimal places
+the MHW metric outputs will be rounded to. Default is 4. To
+prevent rounding set \code{roundRes = FALSE}. This argument may only be given
+numeric values or FALSE.}
 }
 \value{
-The function will return a list of two tibbles (see the \code{tidyverse}),
+The function will return a list of two data.tables (see \code{data.table}),
 \code{climatology} and \code{event}, which are, surprisingly, the climatology
 and event results, respectively. The climatology contains the full time series of
 daily temperatures, as well as the the seasonal climatology, the threshold

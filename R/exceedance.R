@@ -205,7 +205,7 @@ exceedance <- function(data,
       dplyr::summarise(index_start = min(row_index),
                        index_peak = row_index[exceedance_rel_thresh == max(exceedance_rel_thresh)][1],
                        index_end = max(row_index),
-                       duration = n(),
+                       duration = dplyr::n(),
                        date_start = min(ts_x),
                        date_peak = ts_x[exceedance_rel_thresh == max(exceedance_rel_thresh)][1],
                        date_end = max(ts_x),
@@ -238,8 +238,8 @@ exceedance <- function(data,
 
     D <- exceedance_rel_thresh[exceedances$index_end]
     E <- ts_whole$ts_y[exceedances$index_end + 1]
-    F <- ts_whole$thresh[exceedances$index_end + 1]
-    exceedance_rel_thresh_end <- 0.5 * (D + E - F)
+    G <- ts_whole$thresh[exceedances$index_end + 1]
+    exceedance_rel_thresh_end <- 0.5 * (D + E - G)
 
     exceedances$rate_decline <- ifelse(
       exceedances$index_end < nrow(ts_whole),

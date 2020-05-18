@@ -21,14 +21,14 @@ ts2clm(
 )
 }
 \arguments{
-\item{data}{A data frame with two columns. In the default setting (i.e. ommitting
+\item{data}{A data frame with two columns. In the default setting (i.e. omitting
 the arguments \code{x} and \code{y}; see immediately below), the data set is
 expected to have the headers \code{t} and \code{temp}. The \code{t} column is a
 vector of dates of class \code{Date}, while \code{temp} is the measured variable
 (by default it is assumed to be temperature).}
 
 \item{x}{This column is expected to contain a vector of dates. If a column
-headed \code{t} is present in the dataframe, this argument may be ommitted;
+headed \code{t} is present in the dataframe, this argument may be omitted;
 otherwise, specify the name of the column with dates here.}
 
 \item{y}{This is a column containing the measurement variable. If the column
@@ -53,7 +53,7 @@ to \code{TRUE} will return an error.}
 \item{windowHalfWidth}{Width of sliding window about day-of-year (to one
 side of the center day-of-year) used for the pooling of values and
 calculation of climatology and threshold percentile. Default is \code{5}
-days, which gives a window width of 11 days centered on the 6th day of the
+days, which gives a window width of 11 days centred on the 6th day of the
 series of 11 days.}
 
 \item{pctile}{Threshold percentile (\%) for detection of events (MHWs).
@@ -103,7 +103,7 @@ units need to be determined by the user.
   percentile) [deg. C]. This is used in \code{\link{detect_event}} for the
   detection/calculation of events (MHWs).}
   \item{var}{Seasonally varying variance (standard deviation) [deg. C]. This
-  column is not returned if \code{var = FALSE} (defaut).}
+  column is not returned if \code{var = FALSE} (default).}
 Should \code{clmOnly} be enabled, only the 365 or 366 day climatology will be
 returned.
 }
