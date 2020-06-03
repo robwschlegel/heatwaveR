@@ -1,3 +1,8 @@
+# heatwaveR 0.4.2.9005 (2020-06-03)
+
+* Ensured that newly released __`dplyr`__ v1.0.0 did not introduce any bugs
+* Updated vignettes to now work with v2.1 of the OISST data
+
 # heatwaveR 0.4.2.9004 (2020-05-15)
 
 * Fixed bug in `detect_event()` caused by __`data.table`__

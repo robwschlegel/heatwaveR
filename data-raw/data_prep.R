@@ -5,75 +5,74 @@
 
 library(tidyverse)
 library(heatwaveR)
-library(rerddap)
-library(ncdf4)
-
-# Most up-to-date info
-rerddap::info(datasetid = "ncdc_oisst_v2_avhrr_by_time_zlev_lat_lon",
-              url = "https://www.ncei.noaa.gov/erddap/")
+library(tidync)
 
 
-# Functions ---------------------------------------------------------------
+# File info ---------------------------------------------------------------
 
-# Download the data
-OISST_lon_dl <- function(times, lon, lat){
-  oisst_res <- griddap(x = "ncdc_oisst_v2_avhrr_by_time_zlev_lat_lon",
-                       url = "https://www.ncei.noaa.gov/erddap/",
-                       time = times,
-                       depth = c(0, 0),
-                       latitude = rep(lat, 2),
-                       longitude = rep(lon, 2),
-                       fields = "sst")
+# First we tell R where the data are on the interwebs
+OISST_url_month <- "https://www.ncei.noaa.gov/data/sea-surface-temperature-optimum-interpolation/v2.1/access/avhrr/"
+
+# Then we pull that into a happy format
+OISST_url_month_get <- getURL(OISST_url_month)
+
+# Now we strip away all of the unneeded stuff to get just the months of data that are available
+OISST_months <- data.frame(months = readHTMLTable(OISST_url_month_get, skip.rows = 1:2)[[1]]$Name) %>%
+  mutate(months = lubridate::as_date(str_replace(as.character(months), "/", "01"))) %>%
+  mutate(months = gsub("-", "", substr(months, 1, 7))) %>%
+  na.omit()
+
+# Find the URLs for each individual day of data
+OISST_url_daily <- function(target_month){
+  OISST_url <- paste0(OISST_url_month, target_month,"/")
+  OISST_url_get <- getURL(OISST_url)
+  OISST_table <- data.frame(files = readHTMLTable(OISST_url_get, skip.rows = 1:2)[[1]]$Name) %>%
+    mutate(files = as.character(files)) %>%
+    filter(grepl("avhrr", files)) %>%
+    mutate(t = lubridate::as_date(sapply(strsplit(files, "[.]"), "[[", 2)),
+           full_name = paste0(OISST_url, files))
+  return(OISST_table)
 }
 
-# Prep a single lon download
-OISST_lon_prep <- function(times, lon, lat){
+# Here we collect the URLs for every day of data available from 2019 onwards
+OISST_filenames <- plyr::ldply(OISST_months$months, .fun = OISST_url_daily)
 
-  # Open the NetCDF connection
-  nc_file <- OISST_lon_dl(times, lon, lat)
 
-  nc <- nc_open(nc_file$summary$filename)
 
-  # Extract the SST values and add the lon/lat/time dimension names
-  res <- ncvar_get(nc, varid = "sst")
-  dimnames(res) <- list(t = nc$dim$time$vals)
+# Download full OISST dataset ---------------------------------------------
 
-  # Convert the data into a 'long' dataframe for use in the 'tidyverse' ecosystem
-  res <- as.data.frame(reshape2::melt(res, value.name = "temp"), row.names = NULL) %>%
-    mutate(t = as.Date(as.POSIXct(t, origin = "1970-01-01 00:00:00")),
-           temp = round(temp, 2))
-
-  # Close the NetCDF connection and finish
-  nc_close(nc)
-  return(res)
+# This function will go about downloading each day of data as a NetCDF file
+OISST_url_daily_dl <- function(target_URL){
+  dir.create("~/data/OISST", showWarnings = F)
+  file_name <- paste0("~/data/OISST/",sapply(strsplit(target_URL, split = "/"), "[[", 10))
+  if(!file.exists(file_name)) download.file(url = target_URL, method = "libcurl", destfile = file_name)
 }
 
-# Wrapper to download data in ~5 year chunks as this is the erddap limit
-OISST_lon_rep <- function(lon, lat){
-  # download
-  OISST_1 <- OISST_lon_prep(c("1982-01-01T00:00:00Z", "1986-12-31T00:00:00Z"), lon, lat)
-  OISST_2 <- OISST_lon_prep(c("1987-01-01T00:00:00Z", "1991-12-31T00:00:00Z"), lon, lat)
-  OISST_3 <- OISST_lon_prep(c("1992-01-01T00:00:00Z", "1996-12-31T00:00:00Z"), lon, lat)
-  OISST_4 <- OISST_lon_prep(c("1997-01-01T00:00:00Z", "2001-12-31T00:00:00Z"), lon, lat)
-  OISST_5 <- OISST_lon_prep(c("2002-01-01T00:00:00Z", "2006-12-31T00:00:00Z"), lon, lat)
-  OISST_6 <- OISST_lon_prep(c("2007-01-01T00:00:00Z", "2011-12-31T00:00:00Z"), lon, lat)
-  OISST_7 <- OISST_lon_prep(c("2012-01-01T00:00:00Z", "2016-12-31T00:00:00Z"), lon, lat)
-  OISST_8 <- OISST_lon_prep(c("2017-01-01T00:00:00Z", "2018-12-31T00:00:00Z"), lon, lat)
+# Set cores
+doParallel::registerDoParallel(cores = 7)
 
-  # Finish
-  OISST_all <- rbind(OISST_1, OISST_2, OISST_3, OISST_4,
-                     OISST_5, OISST_6, OISST_7, OISST_8)
-  return(OISST_all)
+# Catch'em all
+plyr::l_ply(OISST_filenames$full_name, .fun = OISST_url_daily_dl, .parallel = T)
+
+
+# Load single pixel -------------------------------------------------------
+
+# Function for loading a single pixel
+OISST_pixel <- function(file_name, lon1, lat1){
+  OISST_dat <- tidync(file_name) %>%
+    hyper_filter(lon = lon == lon1,
+                 lat = lat == lat1) %>%
+    hyper_tibble() %>%
+    select(lon, lat, time, sst) %>%
+    dplyr::rename(t = time, temp = sst) %>%
+    mutate(t = as.Date(t, origin = "1978-01-01"))
+  return(OISST_dat)
 }
-
-
-# Download ----------------------------------------------------------------
 
 # Convert the NW Atl lon to the correct format
 # -67+360
 
 sst_WA <- OISST_lon_rep(112.5, -29.5)
-# sst_WA <- unique(sst_WA) #
 sst_Med <- OISST_lon_rep(9, 43.5)
 sst_NW_Atl <- OISST_lon_rep(293, 43)
 
@@ -109,3 +108,4 @@ Algiers <- Algiers %>%
 
 # Add to package
 usethis::use_data(Algiers, overwrite = T)
+
