@@ -22,9 +22,7 @@ Suggests:
     knitr,
     rmarkdown,
     covr,
-    tidync,
-    RCurl,
-    XML
+    tidync
 Imports:
     plyr,
     tibble,
