@@ -25,6 +25,7 @@ Because of human-induced climate change, we anticipate that extreme events will 
 ```{r load-pkg}
 library(dplyr) # For basic data manipulation
 library(ggplot2) # For visualising data
+library(purrr) # For performing nested calculations
 library(heatwaveR) # For detecting MHWs
 library(tidync) # For easily dealing with NetCDF data
 library(doParallel) # For parallel processing
@@ -35,7 +36,8 @@ library(doParallel) # For parallel processing
 In the previous vignette we saw how to [download and prepare OISST data](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html). In this vignette we will use the data we downloaded for our example on how to detect MHWs in gridded data. In the code chink below is the loading function created in the previous vignette. Note that because we are going to be detecting MHWs we will want at least 30 years of data. The code in the previous vignette can be used to do this with only minor alterations. It would be preferable to use an ERDDAP server to download only the data necessary, but as of this writing (June 3rd, 2020) NOAA OISST v2.1 data ar not available on any ERDDAP servers.
 
 ```{r load-data}
-OISST_load <- function(file_name, lon1, lon2, lat1, lat2){
+# Load one file
+OISST_load_day <- function(file_name, lon1, lon2, lat1, lat2){
       OISST_dat <- tidync(file_name) %>%
         hyper_filter(lon = between(lon, lon1, lon2),
                      lat = between(lat, lat1, lat2)) %>% 
@@ -46,18 +48,46 @@ OISST_load <- function(file_name, lon1, lon2, lat1, lat2){
       return(OISST_dat)
 }
 
+# Load one month of files
+OISST_load_n <- function(file_names, n, lon1, lon2, lat1, lat2){
+  file_dates <- sapply(strsplit(file_names, "[.]"), "[[", 2)
+  file_index <- data.frame(file_name = file_names,
+                           month = substr(file_dates, 1, 6)) %>% 
+    filter(month %in% c("198201", "198202")) %>% 
+    # group_by(month) %>% 
+    nest_by(month) %>% 
+    mutate(daily_data = map(data, OISST_load_day,
+                            lon1 = 15, lon2 = 21, lat1 = -40, lat2 = -35))
+}
+
 # Locate the files that will be loaded
 OISST_files <- dir("~/data/OISST", full.names = T)
 
 # NB: One should never use ALL available cores, save at least 1 for other essential tasks
-# The computer I'm writing this vignette on has 8 cores, so I use 7 here
-registerDoParallel(cores = 7)
+# The computer I'm writing this vignette on has 8 cores, so I use 6 here
+registerDoParallel(cores = 6)
 
 # Load the data in parallel
-  # Note that it will take quite a while to load 30 years of data if each day is saved as a separate file
-OISST <- plyr::ldply(.data = OISST_files, .fun = OISST_load, .parallel = T,
-                     lon1 = 15, lon2 = 21, lat1 = -40, lat2 = -35)
+  # Note that it will take quite a while to load 30 years of data 
+  # because each day is saved as a separate file
+  # On 7 cores it tool ~30 minutes
+# Run this as one chunk per decade in case of errors
+OISST1 <- plyr::ldply(.data = OISST_files[1:365], .fun = OISST_load, .parallel = T, 
+                      lon1 = 15, lon2 = 21, lat1 = -40, lat2 = -35)
+OISST2 <- plyr::ldply(.data = OISST_files[3653:7304], .fun = OISST_load, .parallel = T, 
+                      lon1 = 15, lon2 = 21, lat1 = -40, lat2 = -35)
+OISST3 <- plyr::ldply(.data = OISST_files[1:3652], .fun = OISST_load, .parallel = T, 
+                      lon1 = 15, lon2 = 21, lat1 = -40, lat2 = -35)
+OISST4 <- plyr::ldply(.data = OISST_files[1:3652], .fun = OISST_load, .parallel = T, 
+                      lon1 = 15, lon2 = 21, lat1 = -40, lat2 = -35)
+
+# Then combine them
+
+# Save our new file for faster loading if we need it again
+saveRDS(OISST, "~/data/OISST_agulhas_region.Rd")
 ```
+
+This is obviously not great if it takes us over 30 minutes to load data. Ideally one would be able to access these data 
 
 ## Event detection
 

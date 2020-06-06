@@ -34,24 +34,16 @@ For this vignette we will be accessing the NOAA OISST dataset indexed [here](htt
 # install.packages("dplyr")
 # install.packages("lubridate")
 # install.packages("ggplot2")
-# install.packages("stringr")
-# install.packages("RCurl")
-# install.packages("XML")
 # install.packages("tidync")
 # install.packages("doParallel")
-# install.packages("ncdf4")
-# install.packages("plyr") # Note that this library is not explicitly loaded
+# install.packages("plyr") # Note that this library should never be explicitly loaded
 
 # Load the packages once they have been downloaded and installed
 # The packages we will use
 library(dplyr) # A staple for most modern data management in R
 library(lubridate) # Useful functions for dealing with dates
-# library(stringr) # Used for easy manipulation of character strings
 library(ggplot2) # The preferred library for data visualisation
-# library(RCurl) # For helping R to make sense of URLs for web hosted data
-# library(XML) # For reading the HTML tables created by RCurl
 library(tidync) # For easily dealing with NetCDF data
-library(ncdf4) # For creating netCDF files
 library(doParallel) # For parallel processing
 ```
 
@@ -68,7 +60,7 @@ OISST_base_url <- "https://www.ncei.noaa.gov/data/sea-surface-temperature-optimu
 
 # Now we create a data.frame that contains all of the dates we want to download
   # NB: In order to change the dates download changes the dates in the following line
-OISST_dates <- data.frame(t = seq(as.Date("2019-01-01"), as.Date("2019-01-31"), by = "day"))
+OISST_dates <- data.frame(t = seq(as.Date("2019-12-01"), as.Date("2019-12-31"), by = "day"))
 
 # To finish up this step we add some text to those dates so they match the OISST file names
 OISST_files <- OISST_dates %>% 
@@ -93,8 +85,8 @@ Now that we have a dataframe that contains all of the URLs for the files we want
 # This function will also check if the file has been previously downloaded
   # If it has it will not download it again
 OISST_url_daily_dl <- function(target_URL){
-  dir.create("~/data/OISST_daily", showWarnings = F)
-  file_name <- paste0("~/data/OISST_daily/",sapply(strsplit(target_URL, split = "/"), "[[", 10))
+  dir.create("~/data/OISST", showWarnings = F)
+  file_name <- paste0("~/data/OISST/",sapply(strsplit(target_URL, split = "/"), "[[", 10))
   if(!file.exists(file_name)) download.file(url = target_URL, method = "libcurl", destfile = file_name)
 }
 
@@ -110,6 +102,8 @@ system.time(plyr::l_ply(OISST_files$file_name, .fun = OISST_url_daily_dl, .paral
 # This scales well into years and decades, and is much faster with more cores
 # Download speeds will also depend on the speed of the users internet connection
 ```
+
+It is important to check
 
 ## Loading data
 
@@ -132,7 +126,7 @@ OISST_load <- function(file_name, lon1, lon2, lat1, lat2){
 }
 
 # Locate the files that will be loaded
-OISST_files <- dir("~/data/OISST_daily", full.names = T)
+OISST_files <- dir("~/data/OISST", full.names = T)
 
 # Load the data in parallel
 OISST_dat <- plyr::ldply(.data = OISST_files, .fun = OISST_load, .parallel = T,
@@ -151,7 +145,7 @@ It is always good to visualise data early and often in any workflow. The code pi
 
 ```{r NOAA-visual}
 OISST_dat %>% 
-  filter(t == "2019-01-01") %>% 
+  filter(t == "2019-12-01") %>% 
   ggplot(aes(x = lon, y = lat)) +
   geom_tile(aes(fill = temp)) +
   scale_fill_viridis_c() +
@@ -159,98 +153,6 @@ OISST_dat %>%
   labs(x = NULL, y = NULL, fill = "SST (°C)") +
   theme(legend.position = "bottom")
 ```
-
-## Compiling data
-
-If one only needed to download a few months or a year or two of data it won't be necessary to compile the data further and the rest of this vignette can be skipped. If however one intends to download 30+ years of data in order to calculate MHWs or some other sort of time series analysis it will be incredibly useful to compile the daily netCDF files into monthly or annual files instead. There are other software tools that one can use to do this, but this is an R package, so we are going to do it in R!
-
-```{r netCDF-create}
-# This function can be used to compile daily netCDF files into monthly or annual files
-ncdf_compile <- function(file_names){
-  
-  # Lad the data
-  ncdf_dat <- plyr::ldply(.data = file_names, .fun = OISST_load, .parallel = T,
-                          lon1 = 0, lon2 = 360, lat1 = -90, lat2 = 90)
-  
-  # Detect if more than one month of data is present
-  ncdf_dates <- ncdf_dat %>% 
-    dplyr::select(t) %>% 
-    unique() %>% 
-    mutate(t_day = gsub("-", "", t),
-           t_month = substr(t_day, 1, 6),
-           t_year = year(t))
-  
-  # Create file name based on data
-  # NB: If this folder is not created the user must create it manually
-    # Or change this directory to a desired location
-  if(length(unique(ncdf_dates$t_month)) == 1){
-    dir.create("~/data/OISST_monthly", showWarnings = F)
-    ncdf_name <- paste0("~/data/OISST_monthly/oisst-avhrr-v02r01.", 
-                        unique(ncdf_dates$t_month), ".nc")
-  } else if(length(unique(ncdf_dates$t_year)) == 1){
-    dir.create("~/data/OISST_annual", showWarnings = F)
-    ncdf_name <- paste0("~/data/OISST_annual/oisst-avhrr-v02r01.", 
-                        unique(ncdf_dates$t_year), ".nc")
-  } else if(length(unique(ncdf_dates$t_year)) > 1){
-        dir.create("~/data/OISST_annual", showWarnings = F)
-    ncdf_name <- paste0("~/data/OISST_annual/oisst-avhrr-v02r01.", 
-                        min(unique(ncdf_dates$t_year)), "_",
-                        max(unique(ncdf_dates$t_year)), ".nc")
-  }
-  
-  # Establish the lon, lat, and t values
-  ncdf_lon <- unique(ncdf_dat$lon)
-  ncdf_lat <- unique(ncdf_dat$lat)
-  ncdf_t <- unique(ncdf_dat$t)
-  
-  # We then create an array from the data
-  temp_array <- array(data = ncdf_dat$temp, 
-                      dim = c(length(ncdf_lat), length(ncdf_lon), length(ncdf_t)),
-                      dimnames = list(lat = ncdf_lat, lon = ncdf_lon, t = ncdf_t))
-
-  # And assign values to each cell
-  # dimnames(temp_array) <- list(lat = OISST_lat,
-  #                              lon = OISST_lon,
-  #                              t = OISST_t)
-  
-  # Define dimensions
-  lon_dim <- ncdim_def("lon", "degrees_east", as.double(ncdf_lon)) 
-  lat_dim <- ncdim_def("lat", "degrees_north", as.double(ncdf_lat)) 
-  t_dim <- ncdim_def("t", "days since 1978-01-01 12:00:00", as.double(ncdf_t))
-
-  # Define temperature variable
-  temp_def <- ncvar_def(name = "temp", units = "deg_C",
-                        dim = list(lon_dim, lat_dim, t_dim), missval = 9999, 
-                        longname = "Sea surface temperature", prec = "single")
-
-  # Create the shell of the netCDF file
-  ncdf_out <- nc_create(filename = ncdf_name, vars = list(temp_def), force_v4 = T)
-
-  # Add the SST data
-  ncvar_put(nc = ncdf_out, varid = temp_def, vals = temp_array)
-
-  # Add the dimension info
-  ncatt_put(nc = ncdf_out, varid = "lon", attname = "axis", attval = "X")
-  ncatt_put(nc = ncdf_out, varid = "lat", attname = "axis", attval = "Y")
-  ncatt_put(nc = ncdf_out, varid = "t", attname = "axis", attval = "T")
-
-  # NB: It is possible to add much more information to a netCDF file
-    # Please see the help file for ncatt_put for more info
-
-  # Write the data to disk
-  nc_close(ncdf_out)
-}
-
-# Compile the one month of data we've downloaded
-ncdf_compile(OISST_files)
-```
-
-And now we check that our netCDF file was created correctly.
-
-```{r netCDF-check}
-
-```
-
 
 In the next vignette we will see how to [detect MHWs in gridded data](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html).
 
