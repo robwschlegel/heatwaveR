@@ -32,7 +32,7 @@ library(doParallel) # For parallel processing
 
 ## Gridded data
 
-In the previous vignette we saw how to [download and prepare OISST data](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html). In this vignette we will use the data we downloaded for our example on how to detect MHWs in gridded data. In the code chink below is the loading function created in the previous vignette. Note that because we are going to be detecting MHWs we will want at least 30 years of data. The code in the previous vignette can be used to do this with only minor alterations. It would be preferable to use an ERDDAP server to download only the data necessary, but as of this writing (June 3rd, 2020) NOAA OISST v2.1 data ar not available on any ERDDAP servers.
+In the previous vignette we saw how to [download and prepare OISST data](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html). In this vignette we will use the data we downloaded for our example on how to detect MHWs in gridded data. Note that because we are going to be detecting MHWs we will want at least 30 years of data. The code in the previous vignette can be used to download these data with only minor alterations. It would be preferable to use an ERDDAP server to download only the data necessary, but as of this writing (June 6th, 2020) NOAA OISST v2.1 data ar not available on any ERDDAP servers. So we will need to make a plan in order to deal with these large global data files while only using a laptop.
 
 ```{r load-data}
 # Load one file
@@ -47,45 +47,63 @@ load_region <- function(file_name){
       return(OISST_dat)
 }
 
-# Load one month of files
-OISST_load_n <- function(file_names, n, lon1, lon2, lat1, lat2){
-  file_dates <- sapply(strsplit(file_names, "[.]"), "[[", 2)
-  file_index <- data.frame(file_name = file_names,
-                           month = substr(file_dates, 1, 6)) %>% 
-    filter(month %in% c("198201", "198202")) %>% 
-    # group_by(month) %>% 
-    nest_by(month) %>% 
-    mutate(daily_data = map(data, OISST_load_day,
-                            lon1 = 15, lon2 = 21, lat1 = -40, lat2 = -35))
-}
-
 # Locate the files that will be loaded
 OISST_files <- dir("~/data/OISST", full.names = T)
 
 # NB: One should never use ALL available cores, save at least 1 for other essential tasks
 # The computer I'm writing this vignette on has 8 cores, so I use 6 here
-registerDoParallel(cores = 6)
+registerDoParallel(cores = 7)
 
 # Load the data in parallel
-  # Note that it will take quite a while to load 30 years of data 
-  # because each day is saved as a separate file
-  # On 6 cores it took more than 30 minutes
+# Note that it will take quite a while to load 30 years of data
+# because each day is saved as a separate file
+# On 6 cores it took more than 30 minutes
 # Run this as only a few years at a time in case of errors
-  # It may be necessary to reduce the number of files being loaded at once
-OISST1 <- plyr::ldply(.data = OISST_files[1:1096], .fun = load_region, .parallel = T)
-OISST2 <- plyr::ldply(.data = OISST_files[1097:2191], .fun = load_region, .parallel = T)
-OISST3 <- plyr::ldply(.data = OISST_files[1:3652], .fun = load_region, .parallel = T, 
-                      lon1 = 15, lon2 = 21, lat1 = -40, lat2 = -35)
-OISST4 <- plyr::ldply(.data = OISST_files[1:3652], .fun = OISST_load, .parallel = T, 
-                      lon1 = 15, lon2 = 21, lat1 = -40, lat2 = -35)
+# It may be necessary to reduce the number of files being loaded at once depending on one's RAM
+# It's also a safer choice to save these files as we go
+OISST1 <- plyr::ldply(.data = OISST_files[1:1000], .fun = load_region, .parallel = T)
+saveRDS(OISST1, "~/data/OISST1_agulhas_region.Rda")
+OISST2 <- plyr::ldply(.data = OISST_files[1001:2000], .fun = load_region, .parallel = T)
+saveRDS(OISST2, "~/data/OISST2_agulhas_region.Rda")
+OISST3 <- plyr::ldply(.data = OISST_files[2001:3000], .fun = load_region, .parallel = T)
+saveRDS(OISST3, "~/data/OISST3_agulhas_region.Rda")
+OISST4 <- plyr::ldply(.data = OISST_files[3001:4000], .fun = load_region, .parallel = T)
+saveRDS(OISST4, "~/data/OISST4_agulhas_region.Rda")
+OISST5 <- plyr::ldply(.data = OISST_files[4001:5000], .fun = load_region, .parallel = T)
+saveRDS(OISST5, "~/data/OISST5_agulhas_region.Rda")
+OISST6 <- plyr::ldply(.data = OISST_files[5001:6000], .fun = load_region, .parallel = T)
+saveRDS(OISST6, "~/data/OISST6_agulhas_region.Rda")
+OISST7 <- plyr::ldply(.data = OISST_files[6001:7000], .fun = load_region, .parallel = T)
+saveRDS(OISST7, "~/data/OISST7_agulhas_region.Rda")
+OISST8 <- plyr::ldply(.data = OISST_files[7001:8000], .fun = load_region, .parallel = T)
+saveRDS(OISST8, "~/data/OISST8_agulhas_region.Rda")
+OISST9 <- plyr::ldply(.data = OISST_files[8001:9000], .fun = load_region, .parallel = T)
+saveRDS(OISST9, "~/data/OISST9_agulhas_region.Rda")
+OISST10 <- plyr::ldply(.data = OISST_files[9001:10000], .fun = load_region, .parallel = T)
+saveRDS(OISST10, "~/data/OISST10_agulhas_region.Rda")
+OISST11 <- plyr::ldply(.data = OISST_files[10001:11000], .fun = load_region, .parallel = T)
+saveRDS(OISST11, "~/data/OISST11_agulhas_region.Rda")
+OISST12 <- plyr::ldply(.data = OISST_files[11001:12000], .fun = load_region, .parallel = T)
+saveRDS(OISST12, "~/data/OISST12_agulhas_region.Rda")
+OISST13 <- plyr::ldply(.data = OISST_files[12001:13000], .fun = load_region, .parallel = T)
+saveRDS(OISST13, "~/data/OISST13_agulhas_region.Rda")
+OISST14 <- plyr::ldply(.data = OISST_files[13001:13879], .fun = load_region, .parallel = T)
+saveRDS(OISST14, "~/data/OISST14_agulhas_region.Rda")
 
 # Then combine them
+OISST <- rbind(OISST1, OISST2, OISST3, OISST4, OISST5, OISST6, OISST7,
+               OISST8, OISST9, OISST10, OISST11, OISST12, OISST13, OISST14)
 
 # Save our new file for faster loading if we need it again
-saveRDS(OISST, "~/data/OISST_agulhas_region.Rd")
+saveRDS(OISST, "~/data/OISST_agulhas_region.Rda")
+
+# Remove the smaller files and clean up
+rm(OISST1, OISST2, OISST3, OISST4, OISST5, OISST6, OISST7,
+   OISST8, OISST9, OISST10, OISST11, OISST12, OISST13, OISST14)
+gc()
 ```
 
-This is obviously not great if it takes us over 30 minutes to load data. Ideally one would be able to access these data 
+This is obviously not great if it takes us over 30 minutes to load the data and dozens of lines of repeated code. Ideally one would be able to access only the necessary data via an ERDDAP server but this is not currently possible. When NOAA hosts the v2.1 OISST data on an ERDDAP server I'll upload a new vignette that shows how to perform the same task as above in a much shorter and easier way.
 
 ## Event detection
 
@@ -108,11 +126,11 @@ With that convenience function loaded into our environment we may now use `ddply
 
 ```{r detect-plyr}
 system.time(
-MHW_plyr <- plyr::ddply(.data = OISST, .variables = c("lon", "lat"), .fun = event_only, .parallel = TRUE)
-) # 25 seconds
+MHW_result <- plyr <- plyr::ddply(.data = OISST, .variables = c("lon", "lat"), .fun = event_only, .parallel = TRUE)
+) # 30 seconds
 ```
 
-The __`plyr`__ method took 25 seconds using seven cores. This method is not seven times faster than if we used a single core because when using multiple cores there is a certain amount of loss in efficiency due to the computer needing to remember which results are meant to go where so that it can stitch everything back together again for you. This takes very little memory, but over large jobs it can start to become problematic. Occasionally 'slippage' can occur as well where an entire task can be forgotten. This is very rare but does happen. This is partly what makes __`dplyr`__ a viable option as it does not have this problem. To further maximise efficiency I would recommend writing out this full workflow in a stand-alone script and then running it using `source()` directly from an R terminal.
+The __`plyr`__ method took 30 seconds using seven cores. This method is not seven times faster than if we used a single core because when using multiple cores there is a certain amount of loss in efficiency due to the computer needing to remember which results are meant to go where so that it can stitch everything back together again for you. This takes very little memory, but over large jobs it can start to become problematic. Occasionally 'slippage' can occur as well where an entire task can be forgotten. This is very rare but does happen. This is partly what makes __`dplyr`__ a viable option as it does not have this problem. To further maximise efficiency I would recommend writing out this full workflow in a stand-alone script and then running it using `source()` directly from an R terminal.
 
 ## Trend detection
 
