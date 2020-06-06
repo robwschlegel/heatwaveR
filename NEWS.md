@@ -1,3 +1,7 @@
+# heatwaveR 0.4.2.9005 (2020-06-06)
+
+* Updated the gridded data vignette to work with OISST v2.1
+
 # heatwaveR 0.4.2.9005 (2020-06-03)
 
 * Ensured that newly released __`dplyr`__ v1.0.0 did not introduce any bugs
