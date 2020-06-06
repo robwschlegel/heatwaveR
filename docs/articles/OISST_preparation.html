@@ -125,7 +125,7 @@
       <h1 data-toc-skip>Downloading and Preparing NOAA OISST Data</h1>
                         <h4 class="author">Robert W Schlegel and AJ Smit</h4>
             
-            <h4 class="date">2020-06-03</h4>
+            <h4 class="date">2020-06-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/OISST_preparation.Rmd"><code>vignettes/OISST_preparation.Rmd</code></a></small>
       <div class="hidden name"><code>OISST_preparation.Rmd</code></div>
@@ -147,76 +147,51 @@
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="co"># The two packages we will need</span>
   <span class="co"># NB: The packages only need to be installed from GitHub once</span>
 <span class="co"># install.packages("dplyr")</span>
+<span class="co"># install.packages("lubridate")</span>
 <span class="co"># install.packages("ggplot2")</span>
-<span class="co"># install.packages("stringr")</span>
-<span class="co"># install.packages("RCurl")</span>
-<span class="co"># install.packages("XML")</span>
 <span class="co"># install.packages("tidync")</span>
 <span class="co"># install.packages("doParallel")</span>
-<span class="co"># install.packages("plyr") # Note that this library is not explicitly loaded</span>
-<span class="co"># install.packages("lubridate") # Note that this library is not explicitly loaded</span>
+<span class="co"># install.packages("plyr") # Note that this library should never be explicitly loaded</span>
 
 <span class="co"># Load the packages once they have been downloaded and installed</span>
 <span class="co"># The packages we will use</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dplyr</span>) <span class="co"># A staple for most modern data management in R</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">stringr</span>) <span class="co"># Used for easy manipulation of character strings</span>
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">lubridate</span>) <span class="co"># Useful functions for dealing with dates</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>) <span class="co"># The preferred library for data visualisation</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">RCurl</span>) <span class="co"># For helping R to make sense of URLs for web hosted data</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">XML</span>) <span class="co"># For reading the HTML tables created by RCurl</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidync</span>) <span class="co"># For easily dealing with NetCDF data</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">doParallel</span>) <span class="co"># For parallel processing</span></pre></body></html></div>
-<p>With our packages loaded we may now begin downloading data. We will break this step down into some key parts in order to keep this process as clear as possible. Before we begin I need to stress that this is a very direct and unrestricted method for accessing these data and I urge responsibility in only downloading as much data as are necessary. Please do not download the entire dataset unless you have a specific need for it.</p>
+<p>With our packages loaded we may now begin downloading and preparing our data for further use. We will break this step down into some key parts in order to keep this process as clear as possible. Before we begin I need to stress that this is a very direct and unrestricted method for accessing these data and I urge responsibility in only downloading as much data as are necessary. Please do not download the entire dataset unless you have a specific need for it, such as <a href="https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html">detecting marine heatwaves (MHWs) in gridded data</a>.</p>
 </div>
 <div id="file-information" class="section level2">
 <h2 class="hasAnchor">
 <a href="#file-information" class="anchor"></a>File Information</h2>
-<p>The first step in downloading the data is to tell you computer where they are. There are manual ways of doing this but we want to use code that we can run whenever we need and it will always be able to find the file names for us.</p>
+<p>The first step in downloading the data is to tell you computer where they are. There is an automated way to do this but it requires a couple of additional packages and we aim to keep this vignette as simple and direct as possible. For our purposes today we will manually create the URLs of the files we want to download.</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="co"># First we tell R where the data are on the interwebs</span>
-<span class="no">OISST_url_month</span> <span class="kw">&lt;-</span> <span class="st">"https://www.ncei.noaa.gov/data/sea-surface-temperature-optimum-interpolation/v2.1/access/avhrr/"</span>
+<span class="no">OISST_base_url</span> <span class="kw">&lt;-</span> <span class="st">"https://www.ncei.noaa.gov/data/sea-surface-temperature-optimum-interpolation/v2.1/access/avhrr/"</span>
+<span class="co"># Note that one may go to this URL in any web browser to manually inspect the files</span>
 
-<span class="co"># Then we pull that into a happy format</span>
-  <span class="co"># There is a lot here so it takes ~1 minute</span>
-<span class="no">OISST_url_month_get</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RCurl/man/getURL.html">getURL</a></span>(<span class="no">OISST_url_month</span>)
+<span class="co"># Now we create a data.frame that contains all of the dates we want to download</span>
+  <span class="co"># NB: In order to change the dates download changes the dates in the following line</span>
+<span class="no">OISST_dates</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">t</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span>(<span class="st">"2019-12-01"</span>), <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span>(<span class="st">"2019-12-31"</span>), <span class="kw">by</span> <span class="kw">=</span> <span class="st">"day"</span>))
 
-<span class="co"># Before we continue let's set a limit on the data we are going to download</span>
-  <span class="co"># NB: One should not simply download the entire dataset just because it is possible.</span>
-  <span class="co"># There should be a compelling reason for doing so.</span>
-<span class="no">start_date</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span>(<span class="st">"2019-01-01"</span>)
-
-<span class="co"># Now we strip away all of the unneeded stuff to get just the months of data that are available</span>
-<span class="no">OISST_months</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">months</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/XML/man/readHTMLTable.html">readHTMLTable</a></span>(<span class="no">OISST_url_month_get</span>, <span class="kw">skip.rows</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">2</span>)<span class="kw">[[</span><span class="fl">1</span>]]$<span class="no">Name</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">months</span> <span class="kw">=</span> <span class="kw pkg">lubridate</span><span class="kw ns">::</span><span class="fu"><a href="http://lubridate.tidyverse.org/reference/as_date.html">as_date</a></span>(<span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(<span class="no">months</span>), <span class="st">"/"</span>, <span class="st">"01"</span>))) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">months</span> <span class="kw">&gt;=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="kw pkg">lubridate</span><span class="kw ns">::</span><span class="fu"><a href="http://lubridate.tidyverse.org/reference/round_date.html">floor_date</a></span>(<span class="no">start_date</span>, <span class="kw">unit</span> <span class="kw">=</span> <span class="st">"month"</span>))) <span class="kw">%&gt;%</span> <span class="co"># Filtering out months before Jan 2019</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">months</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span>(<span class="st">"-"</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/r/base/substr.html">substr</a></span>(<span class="no">months</span>, <span class="fl">1</span>, <span class="fl">7</span>))) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html">na.omit</a></span>()
-
-<span class="co"># Up next we need to now find the URLs for each individual day of data</span>
-<span class="co"># To do this we will wrap the following chunk of code into a function so we can loop it more easily</span>
-<span class="no">OISST_url_daily</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">target_month</span>){
-  <span class="no">OISST_url</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="no">OISST_url_month</span>, <span class="no">target_month</span>,<span class="st">"/"</span>)
-  <span class="no">OISST_url_get</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RCurl/man/getURL.html">getURL</a></span>(<span class="no">OISST_url</span>)
-  <span class="no">OISST_table</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">files</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/XML/man/readHTMLTable.html">readHTMLTable</a></span>(<span class="no">OISST_url_get</span>, <span class="kw">skip.rows</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">2</span>)<span class="kw">[[</span><span class="fl">1</span>]]$<span class="no">Name</span>) <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">files</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(<span class="no">files</span>)) <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span>(<span class="st">"avhrr"</span>, <span class="no">files</span>)) <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">t</span> <span class="kw">=</span> <span class="kw pkg">lubridate</span><span class="kw ns">::</span><span class="fu"><a href="http://lubridate.tidyverse.org/reference/as_date.html">as_date</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span>(<span class="no">files</span>, <span class="st">"[.]"</span>), <span class="st">"[["</span>, <span class="fl">2</span>)),
-           <span class="kw">full_name</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="no">OISST_url</span>, <span class="no">files</span>))
-  <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="no">OISST_table</span>)
-}
-
-<span class="co"># Here we collect the URLs for every day of data available from 2019 onwards</span>
-<span class="no">OISST_filenames</span> <span class="kw">&lt;-</span> <span class="kw pkg">plyr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/plyr/man/ldply.html">ldply</a></span>(<span class="no">OISST_months</span>$<span class="no">months</span>, <span class="kw">.fun</span> <span class="kw">=</span> <span class="no">OISST_url_daily</span>)
-
-<span class="co"># Just to keep things tidy in this vignette I am now going to limit this data collection even further</span>
-<span class="no">OISST_filenames</span> <span class="kw">&lt;-</span> <span class="no">OISST_filenames</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">t</span> <span class="kw">&lt;=</span> <span class="st">"2019-01-31"</span>)</pre></body></html></div>
+<span class="co"># To finish up this step we add some text to those dates so they match the OISST file names</span>
+<span class="no">OISST_files</span> <span class="kw">&lt;-</span> <span class="no">OISST_dates</span> <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">t_day</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span>(<span class="st">"-"</span>, <span class="st">""</span>, <span class="no">t</span>),
+         <span class="kw">t_month</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/substr.html">substr</a></span>(<span class="no">t_day</span>, <span class="fl">1</span>, <span class="fl">6</span>),
+         <span class="kw">t_year</span> <span class="kw">=</span> <span class="fu"><a href="http://lubridate.tidyverse.org/reference/year.html">year</a></span>(<span class="no">t</span>),
+         <span class="kw">file_name</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="no">OISST_base_url</span>, <span class="no">t_month</span>, <span class="st">"/"</span>, <span class="st">"oisst-avhrr-v02r01."</span>, <span class="no">t_day</span> ,<span class="st">".nc"</span>))</pre></body></html></div>
 </div>
 <div id="downloading-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#downloading-data" class="anchor"></a>Downloading data</h2>
-<p>Now that we have a dataframe that contains all of the URLs for the files we want to download let’s create a function that will crawl through those URLs and download files for us.</p>
+<p>Now that we have a dataframe that contains all of the URLs for the files we want to download let’s create a function that will crawl through those URLs and download the files for us.</p>
 <div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="co"># This function will go about downloading each day of data as a NetCDF file</span>
 <span class="co"># Note that this will download files into a 'data/OISST' folder in the root directory</span>
   <span class="co"># If this folder does not exist it will create it</span>
+  <span class="co"># If it does not automatically create the folder it will need to be done manually</span>
+  <span class="co"># The folder that is created must be a new folder with no other files in it</span>
+  <span class="co"># A possible bug with netCDF files in R is they won't load correctly from </span>
+  <span class="co"># existing folders with other file types in them</span>
 <span class="co"># This function will also check if the file has been previously downloaded</span>
   <span class="co"># If it has it will not download it again</span>
 <span class="no">OISST_url_daily_dl</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">target_URL</span>){
@@ -225,16 +200,18 @@
   <span class="kw">if</span>(!<span class="fu"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span>(<span class="no">file_name</span>)) <span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span>(<span class="kw">url</span> <span class="kw">=</span> <span class="no">target_URL</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"libcurl"</span>, <span class="kw">destfile</span> <span class="kw">=</span> <span class="no">file_name</span>)
 }
 
-<span class="co"># The way this code has been written it may be run on multiple cores</span>
-<span class="co"># Most modern laptops have at least 4 cores, so we will utilise 3 of them here</span>
 <span class="co"># The more cores used, the faster the data may be downloaded</span>
-<span class="kw pkg">doParallel</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/doParallel/man/registerDoParallel.html">registerDoParallel</a></span>(<span class="kw">cores</span> <span class="kw">=</span> <span class="fl">3</span>)
+  <span class="co"># It is best practice to not use all of the cores on one's machine</span>
+  <span class="co"># The laptop on which I am running this code has 8 cores, so I use 7 here</span>
+<span class="kw pkg">doParallel</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/doParallel/man/registerDoParallel.html">registerDoParallel</a></span>(<span class="kw">cores</span> <span class="kw">=</span> <span class="fl">7</span>)
 
 <span class="co"># And with that we are clear for take off</span>
-<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="kw pkg">plyr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/plyr/man/l_ply.html">l_ply</a></span>(<span class="no">OISST_filenames</span>$<span class="no">full_name</span>, <span class="kw">.fun</span> <span class="kw">=</span> <span class="no">OISST_url_daily_dl</span>, <span class="kw">.parallel</span> <span class="kw">=</span> <span class="no">T</span>)) <span class="co"># ~15 seconds</span>
+<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="kw pkg">plyr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/plyr/man/l_ply.html">l_ply</a></span>(<span class="no">OISST_files</span>$<span class="no">file_name</span>, <span class="kw">.fun</span> <span class="kw">=</span> <span class="no">OISST_url_daily_dl</span>, <span class="kw">.parallel</span> <span class="kw">=</span> <span class="no">T</span>)) <span class="co"># ~15 seconds</span>
 
 <span class="co"># In roughly 15 seconds a user may have a full month of global data downloaded</span>
-<span class="co"># This scales well into years and decades, and is much faster with more cores</span></pre></body></html></div>
+<span class="co"># This scales well into years and decades, and is much faster with more cores</span>
+<span class="co"># Download speeds will also depend on the speed of the users internet connection</span></pre></body></html></div>
+<p>It is important to check</p>
 </div>
 <div id="loading-data" class="section level2">
 <h2 class="hasAnchor">
@@ -269,9 +246,9 @@
 <div id="visualising-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#visualising-data" class="anchor"></a>Visualising data</h2>
-<p>To wrap this vignette up we will see a code pipeline we can use to visualise a day of data from those we’ve loaded.</p>
+<p>It is always good to visualise data early and often in any workflow. The code pipeline below shows how we can visualise a day of data from those we’ve loaded.</p>
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">OISST_dat</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">t</span> <span class="kw">==</span> <span class="st">"2019-01-01"</span>) <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">t</span> <span class="kw">==</span> <span class="st">"2019-12-01"</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="no">lon</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="no">lat</span>)) +
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_tile</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">fill</span> <span class="kw">=</span> <span class="no">temp</span>)) +
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_fill_viridis_c</a></span>() +
