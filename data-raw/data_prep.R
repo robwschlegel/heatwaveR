@@ -38,7 +38,6 @@ OISST_url_daily <- function(target_month){
 OISST_filenames <- plyr::ldply(OISST_months$months, .fun = OISST_url_daily)
 
 
-
 # Download full OISST dataset ---------------------------------------------
 
 # This function will go about downloading each day of data as a NetCDF file

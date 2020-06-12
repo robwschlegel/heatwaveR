@@ -1,3 +1,8 @@
+# heatwaveR 0.4.3 (2020-06-12)
+
+* Release pushed to CRAN in light of changes to __`data.table`__ and __`dplyr`__
+* Waiting until NOAA OISST data area available on an ERDDAP server before updating them
+
 # heatwaveR 0.4.2.9005 (2020-06-06)
 
 * Updated the gridded data vignette to work with OISST v2.1
