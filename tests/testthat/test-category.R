@@ -82,8 +82,6 @@ test_that("roundVal works as expected", {
 test_that("no detected events returns an empty dataframe and not an error", {
   sst_WA_flat <- sst_WA
   sst_WA_flat$temp <- 1
-  # sst_WA_flat$temp[4:6] <- 5
-  # ts_xy <- ts2clm(sst_WA_flat, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   res <- detect_event(ts2clm(sst_WA_flat, climatologyPeriod = c("1983-01-01", "2012-12-31")))
   cat_event <- category(res, climatology = F)
   cat_clim <- category(res, climatology = T)
@@ -114,4 +112,16 @@ test_that("category() returns the correct data.tables and columns for MCSs", {
   expect_is(cat_res, "tbl_df")
   expect_equal(ncol(cat_res), 11)
   expect_equal(cat_res$i_max[1], -2.6183)
+})
+
+test_that("MCS climatology results are correctly inverted to give negative intensities", {
+  ts <- ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31"), pctile = 10)
+  res <- detect_event(ts, coldSpells = T)
+  cat <- category(res, climatology = T)
+  expect_is(cat, "list")
+  expect_is(cat$climatology, "tbl_df")
+  expect_is(cat$event, "tbl_df")
+  expect_equal(ncol(cat$climatology), 4)
+  expect_equal(ncol(cat$event), 11)
+  expect_equal(cat$climatology$intensity[1], -1.4919)
 })

@@ -266,23 +266,19 @@ category <- function(data,
     moderate_n <- clim_diff %>%
       dplyr::filter(ts_y >= thresh) %>%
       dplyr::group_by(event_no) %>%
-      dplyr::summarise(moderate = dplyr::n(), .groups = "drop") #%>%
-      # dplyr::ungroup()
+      dplyr::summarise(moderate = dplyr::n(), .groups = "drop")
     strong_n <- clim_diff %>%
       dplyr::filter(ts_y >= thresh_2x) %>%
       dplyr::group_by(event_no) %>%
-      dplyr::summarise(strong = dplyr::n(), .groups = "drop") #%>%
-      # dplyr::ungroup()
+      dplyr::summarise(strong = dplyr::n(), .groups = "drop")
     severe_n <- clim_diff %>%
       dplyr::filter(ts_y >= thresh_3x) %>%
       dplyr::group_by(event_no) %>%
-      dplyr::summarise(severe = dplyr::n(), .groups = "drop") #%>%
-      # dplyr::ungroup()
+      dplyr::summarise(severe = dplyr::n(), .groups = "drop")
     extreme_n <- clim_diff %>%
       dplyr::filter(ts_y >= thresh_4x) %>%
       dplyr::group_by(event_no) %>%
-      dplyr::summarise(extreme = dplyr::n(), .groups = "drop") #%>%
-      # dplyr::ungroup()
+      dplyr::summarise(extreme = dplyr::n(), .groups = "drop")
     cat_n <- dplyr::left_join(moderate_n, strong_n, by = "event_no") %>%
       dplyr::left_join(severe_n, by = "event_no") %>%
       dplyr::left_join(extreme_n, by = "event_no")
