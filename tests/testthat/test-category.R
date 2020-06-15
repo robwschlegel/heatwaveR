@@ -106,3 +106,12 @@ test_that("the different `season` option function as expected", {
   expect_error(category(res, season = "banana"),
                "Please provide one of the following to the `season` argument: 'range', 'start', 'peak', 'end'.")
 })
+
+test_that("category() returns the correct data.tables and columns for MCSs", {
+  ts <- ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31"), pctile = 10)
+  res <- detect_event(ts, coldSpells = T)
+  cat_res <- category(res)
+  expect_is(cat_res, "tbl_df")
+  expect_equal(ncol(cat_res), 11)
+  expect_equal(cat_res$i_max[1], -2.6183)
+})

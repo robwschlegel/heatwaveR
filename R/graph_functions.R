@@ -101,15 +101,13 @@ event_line <- function(data,
   if (!(exists("event", data)) | !(exists("climatology", data)))
     stop("Please ensure you are running this function on the output of 'heatwaveR::detect_event()'")
 
-  ts.x <- eval(substitute(x), data$climatology)
-  data$climatology$ts.x <- ts.x
-  ts.y <- eval(substitute(y), data$climatology)
-  data$climatology$ts.y <- ts.y
+  ts_x <- eval(substitute(x), data$climatology)
+  data$climatology$ts_x <- ts_x
+  ts_y <- eval(substitute(y), data$climatology)
+  data$climatology$ts_y <- ts_y
 
-  if (is.null(start_date))
-    start_date <- min(data$climatology$ts.x)
-  if (is.null(end_date))
-    end_date <- max(data$climatology$ts.x)
+  if (is.null(start_date)) start_date <- min(data$climatology$ts_x)
+  if (is.null(end_date)) end_date <- max(data$climatology$ts_x)
 
   event <- data$event %>%
     dplyr::filter(date_end >= start_date & date_start <= end_date) %>%
@@ -156,46 +154,46 @@ event_line <- function(data,
   clim_top <- clim_diff[event_top$index_start_fix:event_top$index_end_fix,]
 
   clim_spread <- clim_diff %>%
-    dplyr::filter(ts.x %in% date_spread)
+    dplyr::filter(ts_x %in% date_spread)
 
   thresh <- seas <- y1 <- y2 <-  NULL
 
   if (event_top$intensity_mean > 0) {
     fillCol <- c("events" = "salmon", "peak event" = "red")
-    clim_events$y1 <- clim_events$ts.y
+    clim_events$y1 <- clim_events$ts_y
     clim_events$y2 <- clim_events$thresh
-    clim_top$y1 <- clim_top$ts.y
+    clim_top$y1 <- clim_top$ts_y
     clim_top$y2 <- clim_top$thresh
   } else {
     fillCol <- c("events" = "steelblue3", "peak event" = "navy")
     clim_events$y1 <- clim_events$thresh
-    clim_events$y2 <- clim_events$ts.y
+    clim_events$y2 <- clim_events$ts_y
     clim_top$y1 <- clim_top$thresh
-    clim_top$y2 <- clim_top$ts.y
+    clim_top$y2 <- clim_top$ts_y
   }
 
-  if(!is.null(y_axis_title)){
+  if (!is.null(y_axis_title)) {
     if(!is.character(y_axis_title)) stop("Please ensure that the argument provided to 'y_axis_title' is a character string.")
     ylabel <- y_axis_title
   } else {
     ylabel <- expression(paste("Temperature [", degree, "C]"))
   }
 
-  if(!is.null(x_axis_title)){
-    if(!is.character(x_axis_title)) stop("Please ensure that the argument provided to 'x_axis_title' is a character string.")
+  if (!is.null(x_axis_title)) {
+    if (!is.character(x_axis_title)) stop("Please ensure that the argument provided to 'x_axis_title' is a character string.")
     xlabel <- x_axis_title
   } else {
     xlabel <- NULL
   }
 
-  if(!is.null(x_axis_text_angle)){
+  if (!is.null(x_axis_text_angle)) {
     if(!is.numeric(x_axis_text_angle)) stop("Please ensure that the argument provided to 'x_axis_text_angle' is a number.")
     xtangle <- x_axis_text_angle
   } else {
     xtangle <- 0
   }
 
-  ep <- ggplot(data = clim_spread, aes(x = ts.x, y = ts.y)) +
+  ep <- ggplot(data = clim_spread, aes(x = ts_x, y = ts_y)) +
     scale_x_date(expand = c(0, 0), date_labels = "%b %Y") +
     labs(x = xlabel, y = ylabel) +
     theme(plot.background = element_blank(),
@@ -215,9 +213,7 @@ event_line <- function(data,
           legend.key = element_blank()
           )
 
-  if(category){
-
-    if(event_top$intensity_mean < 0) stop("Categories currently only calculated for MHWs, not MCSs. But coming soon!")
+  if (category) {
 
     lineColCat <- c(
       "Temperature" = "black",
@@ -228,22 +224,41 @@ event_line <- function(data,
       "4x Threshold" = "darkgreen"
     )
 
-    fillColCat <- c(
-      "Moderate" = "#ffc866",
-      "Strong" = "#ff6900",
-      "Severe" = "#9e0000",
-      "Extreme" = "#2d0000"
-    )
+    if (event_top$intensity_mean < 0) {
+      fillColCat <- c(
+        "Moderate" = "#A4D4E0",
+        "Strong" = "#5B80A6",
+        "Severe" = "#2A3C66",
+        "Extreme" = "#111433"
+      )
+      ep <- ep +
+        geom_flame(data = clim_events, size = 0.5,
+                   aes(x = ts_x, y = thresh, y2 = ts_y, fill = "Moderate")) +
+        geom_flame(data = clim_events, size = 0.5,
+                   aes(x = ts_x, y = thresh_2x, y2 = ts_y, fill = "Strong")) +
+        geom_flame(data = clim_events, size = 0.5,
+                   aes(x = ts_x, y = thresh_3x, y2 = ts_y, fill = "Severe")) +
+        geom_flame(data = clim_events, size = 0.5,
+                   aes(x = ts_x, y = thresh_4x, y2 = ts_y, fill = "Extreme"))
+    } else {
+      fillColCat <- c(
+        "Moderate" = "#ffc866",
+        "Strong" = "#ff6900",
+        "Severe" = "#9e0000",
+        "Extreme" = "#2d0000"
+      )
+      ep <- ep +
+        geom_flame(data = clim_events, size = 0.5,
+                   aes(x = ts_x, y = y1, y2 = y2, fill = "Moderate")) +
+        geom_flame(data = clim_events, size = 0.5,
+                   aes(x = ts_x, y = y1, y2 = thresh_2x, fill = "Strong")) +
+        geom_flame(data = clim_events, size = 0.5,
+                   aes(x = ts_x, y = y1, y2 = thresh_3x, fill = "Severe")) +
+        geom_flame(data = clim_events, size = 0.5,
+                   aes(x = ts_x, y = y1, y2 = thresh_4x, fill = "Extreme"))
+    }
 
     ep <- ep +
-      geom_flame(data = clim_events, size = 0.5,
-                 aes(x = ts.x, y = y1, y2 = y2, fill = "Moderate")) +
-      geom_flame(data = clim_events, size = 0.5,
-                 aes(x = ts.x, y = y1, y2 = thresh_2x, fill = "Strong")) +
-      geom_flame(data = clim_events, size = 0.5,
-                 aes(x = ts.x, y = y1, y2 = thresh_3x, fill = "Severe")) +
-      geom_flame(data = clim_events, size = 0.5,
-                 aes(x = ts.x, y = y1, y2 = thresh_4x, fill = "Extreme")) +
       geom_line(aes(y = thresh_2x, col = "2x Threshold"),
                 size = 0.7, linetype = "dashed") +
       geom_line(aes(y = thresh_3x, col = "3x Threshold"),
@@ -254,7 +269,7 @@ event_line <- function(data,
                 size = 0.7, alpha = 1) +
       geom_line(aes(y = thresh, col = "Threshold"),
                 size = 0.7, alpha = 1) +
-      geom_line(aes(y = ts.y, col = "Temperature"), size = 0.6) +
+      geom_line(aes(y = ts_y, col = "Temperature"), size = 0.6) +
       scale_colour_manual(name = NULL, values = lineColCat,
                           breaks = c("Temperature", "Climatology", "Threshold",
                                      "2x Threshold", "3x Threshold", "4x Threshold")) +
@@ -275,14 +290,14 @@ event_line <- function(data,
 
     ep <- ep +
       geom_flame(data = clim_events, size = 0.5,
-                 aes(x = ts.x, y = y1, y2 = y2, fill = "events")) +
+                 aes(x = ts_x, y = y1, y2 = y2, fill = "events")) +
       geom_flame(data = clim_top, size = 0.5,
-                 aes(x = ts.x, y = y1, y2 = y2, fill = "peak event")) +
+                 aes(x = ts_x, y = y1, y2 = y2, fill = "peak event")) +
       geom_line(aes(y = seas, col = "Climatology"),
                 size = 0.7, alpha = 1) +
       geom_line(aes(y = thresh, col = "Threshold"),
                 size = 0.7, alpha = 1) +
-      geom_line(aes(y = ts.y, col = "Temperature"), size = 0.6) +
+      geom_line(aes(y = ts_y, col = "Temperature"), size = 0.6) +
       scale_colour_manual(name = NULL, values = lineCol,
                           breaks = c("Temperature", "Climatology", "Threshold")) +
       scale_fill_manual(name = NULL, values = fillCol, guide = FALSE)

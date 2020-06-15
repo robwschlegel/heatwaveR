@@ -44,7 +44,7 @@ test_that("event_line() metric must be spelled correctly", {
 })
 
 test_that("event_line() may create MCS output", {
-  res <- detect_event(data = ts2clm(sst_Med,
+  res <- detect_event(data = ts2clm(sst_Med, pctile = 10,
                 climatologyPeriod = c("1983-01-01", "2012-12-31")), coldSpells = TRUE)
   tp <- event_line(data = res, start_date = "2012-01-01", end_date = "2012-12-31")
   expect_is(tp, "ggplot")
@@ -58,14 +58,11 @@ test_that("event_line() category argument works", {
   expect_is(tp, "ggplot")
 })
 
-test_that("event_line() category argument doesn't work for MCSs", {
-  res <- detect_event(data = ts2clm(sst_Med, pctile = 10,
-                                    climatologyPeriod = c("1983-01-01", "2012-12-31")),
+test_that("event_line() category argument works for MCSs", {
+  res <- detect_event(ts2clm(sst_Med, pctile = 10, climatologyPeriod = c("1983-01-01", "2012-12-31")),
                       coldSpells = TRUE)
-  test <- res$event
-  expect_error(event_line(data = res, start_date = "2012-01-01", end_date = "2012-12-31",
-                   category = TRUE),
-               "Categories currently only calculated for MHWs, not MCSs. But coming soon!")
+  tp <- event_line(data = res, start_date = "2012-01-01", end_date = "2012-12-31", category = TRUE)
+  expect_is(tp, "ggplot")
 })
 
 test_that("event_line() additional options error traping works", {

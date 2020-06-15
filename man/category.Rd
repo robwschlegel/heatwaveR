@@ -25,7 +25,7 @@ name differs from the default (i.e. \code{temp}), specify the name here.}
 southern hemisphere (TRUE, default) or the northern hemisphere (FALSE) so that it may correctly
 output the \code{season} column (see below).}
 
-\item{name}{If a character string (e.g. "Bohai Sea") is provide here it will be used
+\item{name}{If a character string (e.g. "Bohai Sea") is provided here it will be used
 to name the events in the \code{event_name} column (see below) of the output.
 If no value is provided the default output is "Event".}
 
@@ -58,15 +58,15 @@ are then the difference multiplied by the category level.
 
 The definitions for the default output columns are as follows:
   \item{event_no}{The number of the event as determined by \code{\link{detect_event}}
-  for reference between the outputs.}
+  to allow for joining between the outputs.}
   \item{event_name}{The name of the event. Generated from the \code{\link{name}}
   value provided and the year of the \code{peak_date} (see following) of
   the event. If no \code{\link{name}} value is provided the default "Event" is used.
   As proposed in Hobday et al. (2018), \code{Moderate} events are not given a name
   so as to prevent multiple repeat names within the same year. If two or more events
-  ranked greater than Moderate are reported withiin the same year, they will be
+  ranked greater than Moderate are reported within the same year, they will be
   differentiated with the addition of a trailing letter
-  (e.g. Event 2001 a, Event 2001 b). (still in development)}
+  (e.g. Event 2001a, Event 2001b).}
   \item{peak_date}{The date (day) on which the maximum intensity of the event
   was recorded.}
   \item{category}{The maximum category threshold reached/exceeded by the event.}
@@ -82,17 +82,16 @@ The definitions for the default output columns are as follows:
   \item{p_severe}{The proportion of the total duration (days) spent at or above
   the third threshold, but below the fourth threshold.}
   \item{p_extreme}{The proportion of the total duration (days) spent at or above
-  the fourth and final threshold. There is currently no recorded event that has
-  exceeded a hypothetical fifth threshold so none is calculated... yet..}
-  \item{season}{The season(S) during which the event occurred. If the event
-  occurred across two seasons this will be displayed as "Winter/Spring".
-  Across three seasons as "Winter-Summer". Events lasting across four or more
+  the fourth and final threshold.}
+  \item{season}{The season(s) during which the event occurred. If the event
+  occurred across two seasons this will be displayed as e.g. "Winter/Spring".
+  Across three seasons as e.g. "Winter-Summer". Events lasting across four or more
   seasons are listed as "Year-round". December (June) is used here as the start of
   Austral (Boreal) summer. If "start", "peak", or "end" was given to the \code{season}
   argument then only the one season during that chosen period will be given.}
 
 If \code{climatology = TRUE}, this function will output a list of two dataframes.
-The first dataframe, \code{climatology}, will contain only the following columns:
+The first dataframe, \code{climatology}, will contain the following columns:
   \item{t}{The column containing the daily date values.}
   \item{event_no}{The numeric event number label.}
   \item{intensity}{The daily exceedance (default is degrees C) above the
@@ -103,7 +102,7 @@ The second dataframe, \code{event}, contains the default output of this function
 as detailed above.
 }
 \description{
-Calculates the categories of a series of events as produced by \code{\link{detect_event}} in
+Calculates the categories of MHWs or MCSs produced by \code{\link{detect_event}} in
 accordance with the naming scheme proposed in Hobday et al. (2018).
 }
 \details{
@@ -114,7 +113,7 @@ An explanation for the categories is as follows:
   \item{II Strong-}{Events with a maximum intensity that doubles the distance from the seasonal
   climatology and the threshold, but do not triple it.}
   \item{III Severe-}{Events that triple the aforementioned distance, but do not quadruple it.}
-  \item{IV Extreme-}{Events with a maximum intensity that is four times or greater the
+  \item{IV Extreme-}{Events with a maximum intensity that is four times or greater than the
   aforementioned distance. Scary stuff...}
   }
 }
@@ -126,7 +125,7 @@ cat_WA <- category(res_WA, name = "WA")
 tail(cat_WA)
 
 # If the data were collected in the northern hemisphere
-# we must let the funciton know this, as seen below
+# we must let the function know this, as seen below
 res_Med <- detect_event(ts2clm(sst_Med,
                         climatologyPeriod = c("1983-01-01", "2012-12-31")))
 cat_Med <- category(res_Med, S = FALSE, name = "Med")
