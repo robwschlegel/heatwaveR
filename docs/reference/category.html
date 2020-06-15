@@ -53,7 +53,7 @@
 
 
 <meta property="og:title" content="Calculate the categories of events. — category" />
-<meta property="og:description" content="Calculates the categories of a series of events as produced by detect_event in
+<meta property="og:description" content="Calculates the categories of MHWs or MCSs produced by detect_event in
 accordance with the naming scheme proposed in Hobday et al. (2018)." />
 <meta property="og:image" content="https://robwschlegel.github.io/heatwaveR/index.html/logo.png" />
 
@@ -97,7 +97,7 @@ accordance with the naming scheme proposed in Hobday et al. (2018)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3.9000</span>
       </span>
     </div>
 
@@ -179,7 +179,7 @@ accordance with the naming scheme proposed in Hobday et al. (2018)." />
     </div>
 
     <div class="ref-description">
-    <p>Calculates the categories of a series of events as produced by <code><a href='detect_event.html'>detect_event</a></code> in
+    <p>Calculates the categories of MHWs or MCSs produced by <code><a href='detect_event.html'>detect_event</a></code> in
 accordance with the naming scheme proposed in Hobday et al. (2018).</p>
     </div>
 
@@ -214,7 +214,7 @@ output the <code>season</code> column (see below).</p></td>
     </tr>
     <tr>
       <th>name</th>
-      <td><p>If a character string (e.g. "Bohai Sea") is provide here it will be used
+      <td><p>If a character string (e.g. "Bohai Sea") is provided here it will be used
 to name the events in the <code>event_name</code> column (see below) of the output.
 If no value is provided the default output is "Event".</p></td>
     </tr>
@@ -255,15 +255,15 @@ between the given seasonal climatology and threshold climatology. The four categ
 are then the difference multiplied by the category level.</p>
 <p>The definitions for the default output columns are as follows:</p>
 <dt>event_no</dt><dd><p>The number of the event as determined by <code><a href='detect_event.html'>detect_event</a></code>
-  for reference between the outputs.</p></dd>
+  to allow for joining between the outputs.</p></dd>
   <dt>event_name</dt><dd><p>The name of the event. Generated from the <code><a href='https://rdrr.io/r/base/name.html'>name</a></code>
   value provided and the year of the <code>peak_date</code> (see following) of
   the event. If no <code><a href='https://rdrr.io/r/base/name.html'>name</a></code> value is provided the default "Event" is used.
   As proposed in Hobday et al. (2018), <code>Moderate</code> events are not given a name
   so as to prevent multiple repeat names within the same year. If two or more events
-  ranked greater than Moderate are reported withiin the same year, they will be
+  ranked greater than Moderate are reported within the same year, they will be
   differentiated with the addition of a trailing letter
-  (e.g. Event 2001 a, Event 2001 b). (still in development)</p></dd>
+  (e.g. Event 2001a, Event 2001b).</p></dd>
   <dt>peak_date</dt><dd><p>The date (day) on which the maximum intensity of the event
   was recorded.</p></dd>
   <dt>category</dt><dd><p>The maximum category threshold reached/exceeded by the event.</p></dd>
@@ -279,17 +279,16 @@ are then the difference multiplied by the category level.</p>
   <dt>p_severe</dt><dd><p>The proportion of the total duration (days) spent at or above
   the third threshold, but below the fourth threshold.</p></dd>
   <dt>p_extreme</dt><dd><p>The proportion of the total duration (days) spent at or above
-  the fourth and final threshold. There is currently no recorded event that has
-  exceeded a hypothetical fifth threshold so none is calculated... yet..</p></dd>
-  <dt>season</dt><dd><p>The season(S) during which the event occurred. If the event
-  occurred across two seasons this will be displayed as "Winter/Spring".
-  Across three seasons as "Winter-Summer". Events lasting across four or more
+  the fourth and final threshold.</p></dd>
+  <dt>season</dt><dd><p>The season(s) during which the event occurred. If the event
+  occurred across two seasons this will be displayed as e.g. "Winter/Spring".
+  Across three seasons as e.g. "Winter-Summer". Events lasting across four or more
   seasons are listed as "Year-round". December (June) is used here as the start of
   Austral (Boreal) summer. If "start", "peak", or "end" was given to the <code>season</code>
   argument then only the one season during that chosen period will be given.</p></dd>
 
 If climatology = TRUE, this function will output a list of two dataframes.
-The first dataframe, climatology, will contain only the following columns:
+The first dataframe, climatology, will contain the following columns:
   <dt>t</dt><dd><p>The column containing the daily date values.</p></dd>
   <dt>event_no</dt><dd><p>The numeric event number label.</p></dd>
   <dt>intensity</dt><dd><p>The daily exceedance (default is degrees C) above the
@@ -307,7 +306,7 @@ as detailed above.
 <li><p>II Strong-Events with a maximum intensity that doubles the distance from the seasonal
   climatology and the threshold, but do not triple it.</p></li>
 <li><p>III Severe-Events that triple the aforementioned distance, but do not quadruple it.</p></li>
-<li><p>IV Extreme-Events with a maximum intensity that is four times or greater the
+<li><p>IV Extreme-Events with a maximum intensity that is four times or greater than the
   aforementioned distance. Scary stuff...</p></li>
 </ol>
 
@@ -332,7 +331,7 @@ Marine Heatwaves. Oceanography 31(2).</p>
 #&gt; </span><span style='color: #BCBCBC;'>6</span><span>       42 WA 2011b   2011-02-28 IV Extr…  6.51       60         47       32
 #&gt; </span><span style='color: #949494;'># … with 3 more variables: p_severe </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, p_extreme </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, season </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'>
 <span class='co'># If the data were collected in the northern hemisphere</span>
-<span class='co'># we must let the funciton know this, as seen below</span>
+<span class='co'># we must let the function know this, as seen below</span>
 <span class='no'>res_Med</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='detect_event.html'>detect_event</a></span>(<span class='fu'><a href='ts2clm.html'>ts2clm</a></span>(<span class='no'>sst_Med</span>,
                         <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span>)))
 <span class='no'>cat_Med</span> <span class='kw'>&lt;-</span> <span class='fu'>category</span>(<span class='no'>res_Med</span>, <span class='kw'>S</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Med"</span>)
