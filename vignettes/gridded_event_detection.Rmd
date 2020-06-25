@@ -126,7 +126,7 @@ With that convenience function loaded into our environment we may now use `ddply
 
 ```{r detect-plyr}
 system.time(
-MHW_result <- plyr <- plyr::ddply(.data = OISST, .variables = c("lon", "lat"), .fun = event_only, .parallel = TRUE)
+MHW_result <- plyr::ddply(.data = OISST, .variables = c("lon", "lat"), .fun = event_only, .parallel = TRUE)
 ) # 30 seconds
 ```
 
