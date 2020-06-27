@@ -2,7 +2,7 @@
 title: "Detecting Events in Gridded Data"
 author: "Robert W Schlegel and AJ Smit"
 date: "`r Sys.Date()`"
-description: "This vignette demonstrates how to deetect marine heatwaves (MHWs) in dataframes of gridded data in which each pixel is a separate time series."
+description: "This vignette demonstrates how to detect marine heatwaves (MHWs) in dataframes of gridded data in which each pixel is a separate time series."
 output: 
   rmarkdown::html_vignette:
     fig_caption: yes
@@ -20,7 +20,7 @@ knitr::opts_chunk$set(fig.width = 4, fig.align = 'center',
 
 ## Overview
 
-Because of human-induced climate change, we anticipate that extreme events will occur more frequently and that they will become greater in intensity. Here we investigate this hypothesis by using gridded SST data, which is the only way that we can assess if this trend is unfolding across large ocean regions. Using the gridded [0.25 degree Reynolds OISST](http://dx.doi.org/10.1175/2007JCLI1824.1), we will detect marine heatwaves (MHWs) around South Africa by applying the `detect_event()` function pixel-by-pixel to the data we downloaded in [the previous vignette](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html). After detecting the events, we will fit a generalised linear model (GLM) to each pixel to calculate rates of change in some MHW metrics, and then plot the estimated trends. 
+In the previous vignette we saw how to [download and prepare OISST data](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html). In this vignette we will use the subsetted data we downloaded (not global) for our example on how to detect MHWs in gridded data.
 
 ```{r load-pkg}
 library(dplyr) # For basic data manipulation
@@ -30,86 +30,21 @@ library(tidync) # For easily dealing with NetCDF data
 library(doParallel) # For parallel processing
 ```
 
-## Gridded data
+## Loading data
 
-In the previous vignette we saw how to [download and prepare OISST data](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html). In this vignette we will use the data we downloaded for our example on how to detect MHWs in gridded data. Note that because we are going to be detecting MHWs we will want at least 30 years of data. The code in the previous vignette can be used to download these data with only minor alterations. It would be preferable to use an ERDDAP server to download only the data necessary, but as of this writing (June 6th, 2020) NOAA OISST v2.1 data are not available on any ERDDAP servers. So we will need to make a plan in order to deal with these large global data files while only using a laptop.
+Because we saved our data as an `.Rds` file, loading it into R is easy.
 
 ```{r load-data}
-# Load one file
-load_region <- function(file_name){
-      OISST_dat <- tidync(file_name) %>%
-        hyper_filter(lon = between(lon, 15, 21),
-                     lat = between(lat, -40, -35)) %>% 
-        hyper_tibble() %>% 
-        select(lon, lat, time, sst) %>% 
-        dplyr::rename(t = time, temp = sst) %>% 
-        mutate(t = as.Date(t, origin = "1978-01-01"))
-      return(OISST_dat)
-}
-
-# Locate the files that will be loaded
-OISST_files <- dir("~/data/OISST", full.names = T)
-
-# NB: One should never use ALL available cores, save at least 1 for other essential tasks
-# The computer I'm writing this vignette on has 8 cores, so I use 6 here
-registerDoParallel(cores = 7)
-
-# Load the data in parallel
-# Note that it will take quite a while to load 30 years of data
-# because each day is saved as a separate file
-# On 6 cores it took more than 30 minutes
-# Run this as only a few years at a time in case of errors
-# It may be necessary to reduce the number of files being loaded at once depending on one's RAM
-# It's also a safer choice to save these files as we go
-OISST1 <- plyr::ldply(.data = OISST_files[1:1000], .fun = load_region, .parallel = T)
-saveRDS(OISST1, "~/data/OISST1_agulhas_region.Rda")
-OISST2 <- plyr::ldply(.data = OISST_files[1001:2000], .fun = load_region, .parallel = T)
-saveRDS(OISST2, "~/data/OISST2_agulhas_region.Rda")
-OISST3 <- plyr::ldply(.data = OISST_files[2001:3000], .fun = load_region, .parallel = T)
-saveRDS(OISST3, "~/data/OISST3_agulhas_region.Rda")
-OISST4 <- plyr::ldply(.data = OISST_files[3001:4000], .fun = load_region, .parallel = T)
-saveRDS(OISST4, "~/data/OISST4_agulhas_region.Rda")
-OISST5 <- plyr::ldply(.data = OISST_files[4001:5000], .fun = load_region, .parallel = T)
-saveRDS(OISST5, "~/data/OISST5_agulhas_region.Rda")
-OISST6 <- plyr::ldply(.data = OISST_files[5001:6000], .fun = load_region, .parallel = T)
-saveRDS(OISST6, "~/data/OISST6_agulhas_region.Rda")
-OISST7 <- plyr::ldply(.data = OISST_files[6001:7000], .fun = load_region, .parallel = T)
-saveRDS(OISST7, "~/data/OISST7_agulhas_region.Rda")
-OISST8 <- plyr::ldply(.data = OISST_files[7001:8000], .fun = load_region, .parallel = T)
-saveRDS(OISST8, "~/data/OISST8_agulhas_region.Rda")
-OISST9 <- plyr::ldply(.data = OISST_files[8001:9000], .fun = load_region, .parallel = T)
-saveRDS(OISST9, "~/data/OISST9_agulhas_region.Rda")
-OISST10 <- plyr::ldply(.data = OISST_files[9001:10000], .fun = load_region, .parallel = T)
-saveRDS(OISST10, "~/data/OISST10_agulhas_region.Rda")
-OISST11 <- plyr::ldply(.data = OISST_files[10001:11000], .fun = load_region, .parallel = T)
-saveRDS(OISST11, "~/data/OISST11_agulhas_region.Rda")
-OISST12 <- plyr::ldply(.data = OISST_files[11001:12000], .fun = load_region, .parallel = T)
-saveRDS(OISST12, "~/data/OISST12_agulhas_region.Rda")
-OISST13 <- plyr::ldply(.data = OISST_files[12001:13000], .fun = load_region, .parallel = T)
-saveRDS(OISST13, "~/data/OISST13_agulhas_region.Rda")
-OISST14 <- plyr::ldply(.data = OISST_files[13001:13879], .fun = load_region, .parallel = T)
-saveRDS(OISST14, "~/data/OISST14_agulhas_region.Rda")
-
-# Then combine them
-OISST <- rbind(OISST1, OISST2, OISST3, OISST4, OISST5, OISST6, OISST7,
-               OISST8, OISST9, OISST10, OISST11, OISST12, OISST13, OISST14)
-
-# Save our new file for faster loading if we need it again
-saveRDS(OISST, "~/data/OISST_agulhas_region.Rda")
-
-# Remove the smaller files and clean up
-rm(OISST1, OISST2, OISST3, OISST4, OISST5, OISST6, OISST7,
-   OISST8, OISST9, OISST10, OISST11, OISST12, OISST13, OISST14)
-gc()
+OISST <- readRDS("~/Desktop/OISST_vignette.Rds")
 ```
-
-This is obviously not great if it takes us over 30 minutes to load the data and dozens of lines of repeated code. Ideally one would be able to access only the necessary data via an ERDDAP server but this is not currently possible. When NOAA hosts the v2.1 OISST data on an ERDDAP server I'll upload a new vignette that shows how to perform the same task as above in a much shorter and easier way.
 
 ## Event detection
 
-When we want to make the same calculation across multiple groups of data within one dataframe we have many good options available to us. The first is to make use of the `map()` suite of functions found in the __`purrr`__ package, and now implemented in __`dplyr`__. This is a very fast __`tidyverse`__ friendly approach to splitting up tasks. Another good option is to go back in time a bit and use the `ddply()` function from the __`plyr`__ package. This is arguably a better approach as it allows us to very easily use multiple cores to detect the MHWs. The problem with this approach is that one must _never_ load the __`plyr`__ library directly as it has some fundamental inconsistencies with __`dplyr`__ and other packages in the __`tidyverse`__. In a previous version of this vignette I provided multiple approaches for calculating MHWs but I've found over time that the functionality that is being added to __`dplyr`__ and it's siblings is consistently slower and more convoluted than the original __`plyr`__ approach. For that reason we will use only that method here.
+### Two good choices: __`dplyr`__ vs. __`plyr`__
 
-It is a little clumsy to use multiple functions at once with `ddply()` so we will combine the calculations we want to make into one wrapper function first.
+When we want to make the same calculation across multiple groups of data within one dataframe we have two good options available to us. The first is to make use of the `map()` suite of functions found in the __`purrr`__ package, and now implemented in __`dplyr`__. This is a very fast __`tidyverse`__ friendly approach to splitting up tasks. The other good option is to go back in time a bit and use the `ddply()` function from the __`plyr`__ package. This is arguably a better approach as it allows us to very easily use multiple cores to detect the MHWs. The problem with this approach is that one must _never_ load the __`plyr`__ library directly as it has some fundamental inconsistencies with the __`tidyverse`__. We will see below how to perform these two different techniques without causing ourselves any headaches.
+
+It is a little clumsy to use multiple functions at once with the two methods so we will combine the calculations we want to make into one wrapper function.
 
 ```{r detect-func}
 event_only <- function(df){
@@ -122,17 +57,82 @@ event_only <- function(df){
 }
 ```
 
-With that convenience function loaded into our environment we may now use `ddply()` in just one line of code to detect all of the MHWs in our study area.
 
-```{r detect-plyr}
+#### The __`dplyr`__ method
+
+This method requires no special consideration and is performed just as any other friendly __`tidyverse`__ code chunk would be.
+
+```{r detect-purrr}
 system.time(
-MHW_result <- plyr::ddply(.data = OISST, .variables = c("lon", "lat"), .fun = event_only, .parallel = TRUE)
-) # 30 seconds
+# First we start by choosing the 'OISST' dataframe
+MHW_dplyr <- OISST %>% 
+  # Then we group the data by the 'lon' and 'lat' columns
+  group_by(lon, lat) %>% 
+  # Then we run our MHW detecting function on each group
+  group_modify(~event_only(.x))
+) # ~123 seconds
 ```
 
-The __`plyr`__ method took 30 seconds using seven cores. This method is not seven times faster than if we used a single core because when using multiple cores there is a certain amount of loss in efficiency due to the computer needing to remember which results are meant to go where so that it can stitch everything back together again for you. This takes very little memory, but over large jobs it can start to become problematic. Occasionally 'slippage' can occur as well where an entire task can be forgotten. This is very rare but does happen. This is partly what makes __`dplyr`__ a viable option as it does not have this problem. To further maximise efficiency I would recommend writing out this full workflow in a stand-alone script and then running it using `source()` directly from an R terminal.
+Running the above calculations with only one of the 2.8 GHz cores on a modern laptop took ~123 seconds. It must be noted however that a recent update to the __`dplyr`__ package now allows it to interrogate one's computer to determine how many cores it has at it's disposal. It then uses one core at full capacity and the other cores usually at half capacity.
 
-## Trend detection
+#### The __`plyr`__ technique
+
+This method requires that we first tell our machine how many of its processor cores to give us for our calculation.
+
+```{r detect-plyr}
+# NB: One should never use ALL available cores, save at least 1 for other essential tasks
+# The computer I'm writing this vignette on has 8 cores, so I use 7 here
+registerDoParallel(cores = 7)
+
+# Detect events
+system.time(
+MHW_plyr <- plyr::ddply(.data = OISST, .variables = c("lon", "lat"), .fun = event_only, .parallel = TRUE)
+) # 33 seconds
+```
+
+The __`plyr`__ technique took 33 seconds using seven cores. This technique is not seven times faster because when using multiple cores there is a certain amount of loss in efficiency due to the computer needing to remember which results are meant to go where so that it can stitch everything back together again for you. This takes very little memory, but over large jobs it can start to become problematic. Occasionally 'slippage' can occur as well where an entire task can be forgotten. This is very rare but does happen. This is partly what makes __`dplyr`__ a viable option as it does not have this problem. The other reason is that __`dplyr`__ performs more efficient calculations than __`plyr`__. But what if we could have the best of both worlds?
+
+### A harmonious third option
+
+As one may see above, running these calculations on a very large (or even global) gridded dataset can quickly become very heavy. While running these calculations myself on the global OISST dataset I have found that the fastest option is to combine the two options above. In my workflow I have saved each longitude segment of the global OISST dataset as separate files and use the __`dplyr`__ method on each individual file, while using the __`plyr`__ method to be running the multiple calculations on as many files as my core limit will allow. One may not do this the other way around and use __`dplyr`__ to run multiple __`plyr`__ calculations at once. This will confuse your computer and likely cause a stack overflow. Which sounds more fun than it actually is... as I have had to learn.
+
+In order to happily combine these two options into one we will need to convert the __`dplyr`__ code we wrote above into it's own wrapper function, which we will then call on a stack of files using the __`plyr`__ technique. Before we do that we must first create the aforementioned stack of files.
+
+```{r lon-files}
+for(i in 1:length(unique(OISST$lon))){
+  OISST_sub <- OISST %>% 
+    filter(lon == unique(lon)[i])
+  saveRDS(object = OISST_sub, file = paste0("~/Desktop/OISST_lon_",i,".Rds"))
+}
+```
+
+This may initially seem like an unnecessary extra step, but when one is working with time series data it is necessary to have all of the dates at a given pixel loaded at once. Unless one is working from a server/virtual machine/supercomputer this means that one will often not be able to comfortably hold an entire grid for a study area in memory at once. Having the data accessible as thin strips like this makes life easier. And as we see in the code chunk below it also (arguably) allows us to perform the most efficient calculations on our data.
+
+```{r detect-both}
+# The 'dplyr' wrapper function to pass to 'plyr'
+dplyr_wraper <- function(file_name){
+  MHW_dplyr <- readRDS(file_name) %>% 
+    group_by(lon, lat) %>% 
+    group_modify(~event_only(.x))
+}
+# Create a vector of the files we want to use
+OISST_files <- dir("~/Desktop", pattern = "OISST_lon_*", full.names = T)
+
+# Use 'plyr' technique to run 'dplyr' technique with multiple cores
+system.time(
+MHW_result <- plyr::ldply(OISST_files, .fun = dplyr_wraper, .parallel = T)
+) # 31 seconds
+```
+
+Even though this technique is not much faster computationally, it is much lighter on our memory (RAM) as it only loads one longitude slice of our data at a time. To maximise efficiency even further I would recommend writing out this full workflow in a stand-alone script and then running it using `source()` directly from an R terminal. The gain in speed here appears nominal, but as one scales this up the speed boost becomes apparent.
+
+As mentioned above, recent changes to how __`dplyr`__ interacts with one's computer has perhaps slowed down the __`plyr`__ + __`dplyr`__ workflow shown here. It may be now that simply using __`plyr`__ by itself is the better option. It depends on the number of cores and the amount of RAM that one has available.
+
+## Case study
+
+Because of human-induced climate change, we anticipate that extreme events will occur more frequently and that they will become greater in intensity. Here we investigate this hypothesis by using gridded SST data, which is the only way that we can assess if this trend is unfolding across large ocean regions. Using the gridded [0.25 degree Reynolds OISST](http://dx.doi.org/10.1175/2007JCLI1824.1), we will detect marine heatwaves (MHWs) around South Africa by applying the `detect_event()` function pixel-by-pixel to the data we downloaded in [the previous vignette](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html). After detecting the events, we will fit a generalised linear model (GLM) to each pixel to calculate rates of change in some MHW metrics, and then plot the estimated trends. 
+
+### Trend detection
 
 With our MHW detected we will now look at how to fit some GLMs to the results in order to determine long-term trends in MHW occurrence.
 
@@ -143,7 +143,7 @@ Up first we see how to calculate the number of events that occurred per pixel.
 event_freq <- MHW_result %>% 
   mutate(year = lubridate::year(date_start)) %>% 
   group_by(lon, lat, year) %>% 
-  summarise(n = n())
+  summarise(n = n(), .groups = "drop")
 head(event_freq)
 
 # create complete grid for merging with:
@@ -178,7 +178,7 @@ OISST_nTrend$pval <- cut(OISST_nTrend$p, breaks = c(0, 0.001, 0.01, 0.05, 1))
 head(OISST_nTrend)
 ```
 
-## Visualising the results
+### Visualising the results
 
 Let's finish this vignette by visualising the long-term trends in the annual occurrence of MHWs per pixel in the chosen study area. First we will grab the base global map from the __`maps`__ package.
 

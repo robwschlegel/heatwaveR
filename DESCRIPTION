@@ -23,7 +23,8 @@ Suggests:
     rmarkdown,
     covr,
     tidync,
-    tidyr
+    tidyr,
+    rerddap
 Imports:
     plyr,
     tibble,

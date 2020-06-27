@@ -1,3 +1,12 @@
+# heatwaveR 0.4.4 (2020-06-27)
+
+* Released v0.4.4 to CRAN
+
+# heatwaveR 0.4.3.9001 (2020-06-26)
+
+* Re-wrote OISST and gridded detection vignettes after finding an ERDDAP server that hosts the NOAA OISST v2.1 data.
+* Updated the packaged time series to now use v2.1 data from 1982 to 2019
+
 # heatwaveR 0.4.3.9000 (2020-06-25)
 
 * Minor bug fix in gridded detection vignette
