@@ -1,3 +1,10 @@
+# heatwaveR 0.4.4.9000 (2020-07-30)
+
+* dplyr v1.0.0 no longer handles empty data.frames the same
+  * It now forces them to by logical type, so empty data.frames no longer unnest with normal results
+  * This was fixed by having `detect_event` and `category` return single row NA data.frames instead
+* Thinking about phasing out __`data.table`__
+
 # heatwaveR 0.4.4 (2020-06-27)
 
 * Released v0.4.4 to CRAN

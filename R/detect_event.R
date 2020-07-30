@@ -104,7 +104,7 @@
 #' of our preparation of Schlegel et al. (2017), wherein the cold events
 #' receive a brief overview.
 #'
-#' @return The function will return a list of two data.tables (see \code{data.table}),
+#' @return The function will return a list of two tibbles (see the \code{tidyverse}),
 #' \code{climatology} and \code{event}, which are, surprisingly, the climatology
 #' and event results, respectively. The climatology contains the full time series of
 #' daily temperatures, as well as the the seasonal climatology, the threshold
@@ -235,7 +235,7 @@ detect_event <- function(data,
   ts_y <- eval(substitute(y), data)
   ts_seas <- eval(substitute(seasClim), data)
   ts_thresh <- eval(substitute(threshClim), data)
-  t_series <- data.table::data.table(ts_x, ts_y, ts_seas, ts_thresh)
+  t_series <- data.frame(ts_x, ts_y, ts_seas, ts_thresh)
   rm(ts_x); rm(ts_y); rm(ts_seas); rm(ts_thresh)
 
   if (coldSpells) {
@@ -308,7 +308,8 @@ detect_event <- function(data,
                           intensity_max_abs = max(ts_y),
                           intensity_var_abs = sqrt(stats::var(ts_y)),
                           intensity_cumulative_abs = sum(ts_y))
-    events <- data.table::data.table(events)
+    events <- tibble::as_tibble(events)
+    # events <- data.table::data.table(events)
 
     mhw_rel_seas <- t_series$ts_y - t_series$ts_seas
     A <- mhw_rel_seas[events$index_start]
@@ -340,7 +341,7 @@ detect_event <- function(data,
     )
 
     if (coldSpells) {
-      events$intensity_mean <-  -events$intensity_mean
+      events$intensity_mean <- -events$intensity_mean
       events$intensity_max <- -events$intensity_max
       events$intensity_cumulative <- -events$intensity_cumulative
       events$intensity_mean_relThresh <- -events$intensity_mean_relThresh
@@ -355,17 +356,19 @@ detect_event <- function(data,
 
   } else {
     events <- data.frame(event_no = NA, index_start = NA, index_peak = NA, index_end = NA,
-                                        duration = NA, date_start = NA, date_peak = NA, date_end = NA,
-                                        intensity_mean = NA, intensity_max = NA, intensity_var = NA,
-                                        intensity_cumulative = NA, intensity_mean_relThresh = NA,
-                                        intensity_max_relThresh = NA, intensity_var_relThresh = NA,
-                                        intensity_cumulative_relThresh = NA, intensity_mean_abs = NA,
-                                        intensity_max_abs = NA, intensity_var_abs = NA,
-                                        intensity_cumulative_abs = NA, rate_onset = NA, rate_decline = NA)
-    events <- data.table::data.table(stats::na.omit(events))
+                         duration = NA, date_start = NA, date_peak = NA, date_end = NA,
+                         intensity_mean = NA, intensity_max = NA, intensity_var = NA,
+                         intensity_cumulative = NA, intensity_mean_relThresh = NA,
+                         intensity_max_relThresh = NA, intensity_var_relThresh = NA,
+                         intensity_cumulative_relThresh = NA, intensity_mean_abs = NA,
+                         intensity_max_abs = NA, intensity_var_abs = NA,
+                         intensity_cumulative_abs = NA, rate_onset = NA, rate_decline = NA)
+    events <- tibble::as_tibble(events)
+    # events <- tibble::as_tibble(stats::na.omit(events))
+    # events <- data.table::data.table(stats::na.omit(events))
   }
 
-  .SD <- NULL
+  # .SD <- NULL
 
   event_cols <- names(events)[9:22]
   clim_cols <- names(events_clim)[2:4]
@@ -380,12 +383,14 @@ detect_event <- function(data,
 
   if (is.numeric(roundRes)) {
     if (nrow(events) > 0) {
-      events[,(event_cols) := round(.SD, roundRes), .SDcols = event_cols]
-      events_clim[,(clim_cols) := round(.SD, roundRes), .SDcols = clim_cols]
+      events <- dplyr::mutate(events, dplyr::across(dplyr::all_of(event_cols), round, roundRes))
+      events_clim <- dplyr::mutate(events_clim, dplyr::across(dplyr::all_of(clim_cols), round, roundRes))
+      # events[,(event_cols) := round(.SD, roundRes), .SDcols = event_cols]
+      # events_clim[,(clim_cols) := round(.SD, roundRes), .SDcols = clim_cols]
     }
   }
 
-  data_clim <- cbind(data, events_clim[,5:8])
+  data_clim <- tibble::as_tibble(cbind(data, events_clim[,5:8]))
 
   list(climatology = data_clim,
        event = events)

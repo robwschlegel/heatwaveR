@@ -64,11 +64,11 @@
 #' Oliver, Institute for Marine and Antarctic Studies, University of Tasmania,
 #' Feb 2015, and is documented by Hobday et al. (2016).
 #'
-#' @return The function will return a list of two components. The first being
-#' \code{threshold}, which shows the daily temperatures and on which specific days
-#' the given \code{threshold} was exceeded. The second component of the list is
-#' \code{exceedance}, which shows a medley of statistics for each discrete group
-#' of days in exceedance of the given \code{threshold}. Note that any additional
+#' @return The function will return a list of two tibbles (see the \code{tidyverse}).
+#' The first being \code{threshold}, which shows the daily temperatures and on which
+#' specific days the given \code{threshold} was exceeded. The second component of the
+#' list is \code{exceedance}, which shows a medley of statistics for each discrete
+#' group of days in exceedance of the given \code{threshold}. Note that any additional
 #' columns left in the data frame given to this function will be output in the
 #' \code{threshold} component of the output. For example, if one uses
 #' \code{\link{ts2clm}} to prepare a time series for analysis and leaves
@@ -141,7 +141,7 @@ exceedance <- function(data,
 
     ts_x <- eval(substitute(x), data)
     ts_y <- eval(substitute(y), data)
-    ts_xy <- data.table::data.table(ts_x = ts_x, ts_y = ts_y)
+    ts_xy <- data.frame(ts_x = ts_x, ts_y = ts_y)
     rm(ts_x); rm(ts_y)
 
     ts_whole <- make_whole_fast(ts_xy)

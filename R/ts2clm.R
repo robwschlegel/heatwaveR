@@ -243,6 +243,7 @@ ts2clm <- function(data,
       data.table::setorder(ts_res, ts_x)
       names(ts_res)[2] <- paste(substitute(x))
       names(ts_res)[3] <- paste(substitute(y))
+      ts_res <- tibble::as_tibble(ts_res)
       return(ts_res)
 
     }

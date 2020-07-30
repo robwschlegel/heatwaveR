@@ -79,7 +79,7 @@ test_that("roundVal works as expected", {
   expect_equal(as.character(min(cat_4$climatology$intensity)), "0.519")
 })
 
-test_that("no detected events returns an empty dataframe and not an error", {
+test_that("no detected events returns an 1 row NA dataframe and not an error", {
   sst_WA_flat <- sst_WA
   sst_WA_flat$temp <- 1
   res <- detect_event(ts2clm(sst_WA_flat, climatologyPeriod = c("1983-01-01", "2012-12-31")))
@@ -88,9 +88,9 @@ test_that("no detected events returns an empty dataframe and not an error", {
   expect_is(cat_event, "tbl_df")
   expect_is(cat_clim, "list")
   expect_is(cat_clim$climatology, "tbl_df")
-  expect_equal(nrow(cat_event), 0)
+  expect_equal(nrow(cat_event), 1)
   expect_equal(ncol(cat_event), 11)
-  expect_equal(nrow(cat_clim$climatology), 0)
+  expect_equal(nrow(cat_clim$climatology), 1)
   expect_equal(ncol(cat_clim$climatology), 4)
 })
 
