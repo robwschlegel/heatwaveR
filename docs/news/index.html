@@ -95,7 +95,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9000</span>
       </span>
     </div>
 
@@ -175,6 +175,21 @@
       <small>Source: <a href='https://github.com/robwschlegel/heatwaveR/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="heatwaver-0449000-2020-07-30" class="section level1">
+<h1 class="page-header" data-toc-text="0.4.4.9000">
+<a href="#heatwaver-0449000-2020-07-30" class="anchor"></a>heatwaveR 0.4.4.9000 (2020-07-30)<small> Unreleased </small>
+</h1>
+<ul>
+<li>dplyr v1.0.0 no longer handles empty data.frames the same
+<ul>
+<li>It now forces them to by logical type, so empty data.frames no longer unnest with normal results</li>
+<li>This was fixed by having <code>detect_event</code> and <code>category</code> return single row NA data.frames instead</li>
+</ul>
+</li>
+<li>Thinking about phasing out <strong><code>data.table</code></strong>
+</li>
+</ul>
+</div>
     <div id="heatwaver-044-2020-06-27" class="section level1">
 <h1 class="page-header" data-toc-text="0.4.4">
 <a href="#heatwaver-044-2020-06-27" class="anchor"></a>heatwaveR 0.4.4 (2020-06-27)<small> 2020-06-27 </small>

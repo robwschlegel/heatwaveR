@@ -96,7 +96,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9000</span>
       </span>
     </div>
 
@@ -261,11 +261,11 @@ integer. The default is <code>3</code> days.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The function will return a list of two components. The first being
-<code>threshold</code>, which shows the daily temperatures and on which specific days
-the given <code>threshold</code> was exceeded. The second component of the list is
-<code>exceedance</code>, which shows a medley of statistics for each discrete group
-of days in exceedance of the given <code>threshold</code>. Note that any additional
+    <p>The function will return a list of two tibbles (see the <code>tidyverse</code>).
+The first being <code>threshold</code>, which shows the daily temperatures and on which
+specific days the given <code>threshold</code> was exceeded. The second component of the
+list is <code>exceedance</code>, which shows a medley of statistics for each discrete
+group of days in exceedance of the given <code>threshold</code>. Note that any additional
 columns left in the data frame given to this function will be output in the
 <code>threshold</code> component of the output. For example, if one uses
 <code><a href='ts2clm.html'>ts2clm</a></code> to prepare a time series for analysis and leaves

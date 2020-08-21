@@ -98,7 +98,7 @@ by an optional moving average smoother as used by Hobday et al. (2016)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9000</span>
       </span>
     </div>
 
@@ -357,17 +357,19 @@ doi:10.1016/j.pocean.2015.12.014</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>ts2clm</span>(<span class='no'>sst_WA</span>, <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span>))
-<span class='no'>res</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt;     doy          t  temp    seas  thresh
-#&gt;  1:   1 1982-01-01 20.94 21.6080 22.9605
-#&gt;  2:   2 1982-01-02 21.25 21.6348 22.9987
-#&gt;  3:   3 1982-01-03 21.38 21.6621 23.0376
-#&gt;  4:   4 1982-01-04 21.16 21.6895 23.0771
-#&gt;  5:   5 1982-01-05 21.26 21.7169 23.1130
-#&gt;  6:   6 1982-01-06 21.61 21.7436 23.1460
-#&gt;  7:   7 1982-01-07 21.74 21.7699 23.1775
-#&gt;  8:   8 1982-01-08 21.50 21.7958 23.2080
-#&gt;  9:   9 1982-01-09 21.40 21.8217 23.2366
-#&gt; 10:  10 1982-01-10 21.36 21.8478 23.2649</div><div class='input'>
+<span class='no'>res</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 10 x 5</span><span>
+#&gt;      doy t           temp  seas thresh
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>     1 1982-01-01  20.9  21.6   23.0
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>     2 1982-01-02  21.2  21.6   23.0
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>     3 1982-01-03  21.4  21.7   23.0
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>     4 1982-01-04  21.2  21.7   23.1
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>     5 1982-01-05  21.3  21.7   23.1
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>     6 1982-01-06  21.6  21.7   23.1
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>     7 1982-01-07  21.7  21.8   23.2
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>     8 1982-01-08  21.5  21.8   23.2
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>     9 1982-01-09  21.4  21.8   23.2
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>    10 1982-01-10  21.4  21.8   23.3</div><div class='input'>
 <span class='co'># Or if one only wants the 366 day climatology</span>
 <span class='no'>res_clim</span> <span class='kw'>&lt;-</span> <span class='fu'>ts2clm</span>(<span class='no'>sst_WA</span>, <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span>),
                    <span class='kw'>clmOnly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
@@ -385,18 +387,20 @@ doi:10.1016/j.pocean.2015.12.014</p>
 <span class='co'># Or if one wants the variance column included in the results</span>
 <span class='no'>res_var</span> <span class='kw'>&lt;-</span> <span class='fu'>ts2clm</span>(<span class='no'>sst_WA</span>, <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span>),
                   <span class='kw'>var</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>res_var</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt;     doy          t  temp    seas  thresh    var
-#&gt;  1:   1 1982-01-01 20.94 21.6080 22.9605 0.9585
-#&gt;  2:   2 1982-01-02 21.25 21.6348 22.9987 0.9636
-#&gt;  3:   3 1982-01-03 21.38 21.6621 23.0376 0.9684
-#&gt;  4:   4 1982-01-04 21.16 21.6895 23.0771 0.9728
-#&gt;  5:   5 1982-01-05 21.26 21.7169 23.1130 0.9764
-#&gt;  6:   6 1982-01-06 21.61 21.7436 23.1460 0.9797
-#&gt;  7:   7 1982-01-07 21.74 21.7699 23.1775 0.9828
-#&gt;  8:   8 1982-01-08 21.50 21.7958 23.2080 0.9860
-#&gt;  9:   9 1982-01-09 21.40 21.8217 23.2366 0.9884
-#&gt; 10:  10 1982-01-10 21.36 21.8478 23.2649 0.9906</div><div class='input'>
-</div></pre>
+<span class='no'>res_var</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 10 x 6</span><span>
+#&gt;      doy t           temp  seas thresh   var
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>     1 1982-01-01  20.9  21.6   23.0 0.958
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>     2 1982-01-02  21.2  21.6   23.0 0.964
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>     3 1982-01-03  21.4  21.7   23.0 0.968
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>     4 1982-01-04  21.2  21.7   23.1 0.973
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>     5 1982-01-05  21.3  21.7   23.1 0.976
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>     6 1982-01-06  21.6  21.7   23.1 0.980
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>     7 1982-01-07  21.7  21.8   23.2 0.983
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>     8 1982-01-08  21.5  21.8   23.2 0.986
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>     9 1982-01-09  21.4  21.8   23.2 0.988
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>    10 1982-01-10  21.4  21.8   23.3 0.991</div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
