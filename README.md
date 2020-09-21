@@ -245,7 +245,6 @@ Postdoctoral Fellow
 
 Ocean Frontier Institute
 
-Woods Hole Oceanographic Institute
+Dalhousie University
 
-<rschlegel@whoi.edu>  
-<!-- Work tel.: +27 (0)21 959 3783 -->
+<robert.schlegel@dal.ca>
