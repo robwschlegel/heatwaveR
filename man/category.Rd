@@ -10,6 +10,7 @@ category(
   S = TRUE,
   name = "Event",
   climatology = FALSE,
+  MCScorrect = F,
   season = "range",
   roundVal = 4
 )
@@ -36,6 +37,11 @@ as \code{\link{detect_event}}. The first dataframe \code{climatology}, contains 
 information as found in \code{\link{detect_event}}, but with the addition of the daily
 intensity (anomaly above seasonal doy threshold) and category values. The second dataframe,
 \code{event}, is the summary results that this function produces by default.}
+
+\item{MCScorrect}{When calculating marine cold-spells (MCSs) it may occur in some areas
+that the bottom thresholds for the more intense categories will be below -1.8C,
+this is physically impossible on Earth, so if one wants to correct the bottom thresholds
+to not be able to exceed -1.8C, set this argument to TRUE (default is FALSE).}
 
 \item{season}{This argument allows the user to decide how the season(s) of occurrence for
 the MHWs are labelled. The default setting of \code{"range"} will return the range of seasons

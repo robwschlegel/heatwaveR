@@ -1,3 +1,7 @@
+# heatwaveR 0.4.4.9001 (2020-10-31)
+
+* Added `MCScorrect` argument to `catgegory` function that allows the user to bound the bottom threshold for MCS categories to -1.8C.
+
 # heatwaveR 0.4.4.9000 (2020-07-30)
 
 * dplyr v1.0.0 no longer handles empty data.frames the same

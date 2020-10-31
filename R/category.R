@@ -22,6 +22,10 @@
 #' information as found in \code{\link{detect_event}}, but with the addition of the daily
 #' intensity (anomaly above seasonal doy threshold) and category values. The second dataframe,
 #' \code{event}, is the summary results that this function produces by default.
+#' @param MCScorrect When calculating marine cold-spells (MCSs) it may occur in some areas
+#' that the bottom thresholds for the more intense categories will be below -1.8C,
+#' this is physically impossible on Earth, so if one wants to correct the bottom thresholds
+#' to not be able to exceed -1.8C, set this argument to TRUE (default is FALSE).
 #' @param season This argument allows the user to decide how the season(s) of occurrence for
 #' the MHWs are labelled. The default setting of \code{"range"} will return the range of seasons
 #' over which the MHW occurred, as seen in Hobday et al. (2018). One may chose to rather have
@@ -136,6 +140,7 @@ category <- function(data,
                      S = TRUE,
                      name = "Event",
                      climatology = FALSE,
+                     MCScorrect = F,
                      season = "range",
                      roundVal = 4) {
 
@@ -247,10 +252,18 @@ category <- function(data,
 
     clim_diff <- data$climatology %>%
       dplyr::filter(!is.na(event_no)) %>%
-      dplyr::mutate(diff = thresh - seas,
-                    thresh_2x = thresh + diff,
-                    thresh_3x = thresh_2x + diff,
-                    thresh_4x = thresh_3x + diff)
+      dplyr::mutate(diff = round(thresh - seas, roundVal),
+                    thresh_2x = round(thresh + diff, roundVal),
+                    thresh_3x = round(thresh_2x + diff, roundVal),
+                    thresh_4x = round(thresh_3x + diff, roundVal))
+
+    if(MCScorrect){
+      clim_diff <- clim_diff %>%
+        dplyr::mutate(diff = round(dplyr::case_when(thresh_4x + diff <= -1.8 ~ -(thresh + 1.8)/4, TRUE ~ diff), roundVal),
+                      thresh_2x = round(thresh + diff, roundVal),
+                      thresh_3x = round(thresh_2x + diff, roundVal),
+                      thresh_4x = round(thresh_3x + diff, roundVal))
+    }
 
     moderate <- strong <- severe <- extreme <- NULL
 

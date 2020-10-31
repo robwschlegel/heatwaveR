@@ -125,3 +125,13 @@ test_that("MCS climatology results are correctly inverted to give negative inten
   expect_equal(ncol(cat$event), 11)
   expect_equal(cat$climatology$intensity[1], -1.4919)
 })
+
+test_that("MCScorrect argument bounds the results to -1.8C", {
+  sst_low <- sst_Med; sst_low$temp <- sst_low$temp-20; sst_low$temp <- ifelse(sst_low$temp < -1.8, -1.8, sst_low$temp)
+  ts_low <- ts2clm(sst_low, climatologyPeriod = c("1983-01-01", "2012-12-31"), pctile = 10)
+  res <- detect_event(ts_low, coldSpells = T)
+  cat <- category(res, climatology = T)
+  cat_correct <- category(res, climatology = T, MCScorrect = T)
+  expect_equal(as.numeric(table(cat$climatology$category)[1]), 475)
+  expect_equal(as.numeric(table(cat_correct$climatology$category)[4]), 266)
+})
