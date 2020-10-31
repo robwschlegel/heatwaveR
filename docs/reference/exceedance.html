@@ -96,7 +96,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9001</span>
       </span>
     </div>
 
@@ -181,17 +181,17 @@
     <p>Detect consecutive days in exceedance of a given threshold.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>exceedance</span>(
-  <span class='no'>data</span>,
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>,
-  <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>,
-  <span class='no'>threshold</span>,
-  <span class='kw'>below</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>minDuration</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>joinAcrossGaps</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>maxGap</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>maxPadLength</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>exceedance</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  x <span class='op'>=</span> <span class='va'>t</span>,
+  y <span class='op'>=</span> <span class='va'>temp</span>,
+  <span class='va'>threshold</span>,
+  below <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  minDuration <span class='op'>=</span> <span class='fl'>5</span>,
+  joinAcrossGaps <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  maxGap <span class='op'>=</span> <span class='fl'>2</span>,
+  maxPadLength <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -336,11 +336,15 @@ language for 'exceedance'.</p></li>
 package, which was ported from the Python algorithm that was written by Eric
 Oliver, Institute for Marine and Antarctic Studies, University of Tasmania,
 Feb 2015, and is documented by Hobday et al. (2016).</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Robert W. Schlegel, Albertus J. Smit</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>exceedance</span>(<span class='no'>sst_WA</span>, <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='fl'>25</span>)
+    <pre class="examples"><div class='input'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>exceedance</span><span class='op'>(</span><span class='va'>sst_WA</span>, threshold <span class='op'>=</span> <span class='fl'>25</span><span class='op'>)</span>
 <span class='co'># show first ten days of daily data:</span>
-<span class='no'>res</span>$<span class='no'>threshold</span>[<span class='fl'>1</span>:<span class='fl'>10</span>, ]</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 10 x 7</span><span>
+<span class='va'>res</span><span class='op'>$</span><span class='va'>threshold</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='op'>]</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 10 x 7</span><span>
 #&gt;    t           temp thresh threshCriterion durationCriteri… exceedance
 #&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     
 #&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 1982-01-01  20.9     25 FALSE           FALSE            FALSE     
@@ -354,7 +358,8 @@ Feb 2015, and is documented by Hobday et al. (2016).</p>
 #&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 1982-01-09  21.4     25 FALSE           FALSE            FALSE     
 #&gt; </span><span style='color: #BCBCBC;'>10</span><span> 1982-01-10  21.4     25 FALSE           FALSE            FALSE     
 #&gt; </span><span style='color: #949494;'># … with 1 more variable: exceedance_no </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span></div><div class='input'><span class='co'># show first five exceedances:</span>
-<span class='no'>res</span>$<span class='no'>exceedance</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, ]</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 5 x 18</span><span>
+<span class='va'>res</span><span class='op'>$</span><span class='va'>exceedance</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='op'>]</span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 5 x 18</span><span>
 #&gt;   exceedance_no index_start index_peak index_end duration date_start date_peak 
 #&gt;           </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>    
 #&gt; </span><span style='color: #BCBCBC;'>1</span><span>             1        </span><span style='text-decoration: underline;'>2</span><span>682       </span><span style='text-decoration: underline;'>2</span><span>683      </span><span style='text-decoration: underline;'>2</span><span>686        5 1989-05-05 1989-05-06
@@ -382,7 +387,7 @@ Feb 2015, and is documented by Hobday et al. (2016).</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

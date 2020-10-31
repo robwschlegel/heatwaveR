@@ -97,7 +97,7 @@ accordance with the naming scheme proposed in Hobday et al. (2018)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9001</span>
       </span>
     </div>
 
@@ -183,15 +183,16 @@ accordance with the naming scheme proposed in Hobday et al. (2018)." />
 accordance with the naming scheme proposed in Hobday et al. (2018).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>category</span>(
-  <span class='no'>data</span>,
-  <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>,
-  <span class='kw'>S</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Event"</span>,
-  <span class='kw'>climatology</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>season</span> <span class='kw'>=</span> <span class='st'>"range"</span>,
-  <span class='kw'>roundVal</span> <span class='kw'>=</span> <span class='fl'>4</span>
-)</pre>
+    <pre class="usage"><span class='fu'>category</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  y <span class='op'>=</span> <span class='va'>temp</span>,
+  S <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  name <span class='op'>=</span> <span class='st'>"Event"</span>,
+  climatology <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  MCScorrect <span class='op'>=</span> <span class='cn'>F</span>,
+  season <span class='op'>=</span> <span class='st'>"range"</span>,
+  roundVal <span class='op'>=</span> <span class='fl'>4</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -227,6 +228,13 @@ as <code><a href='detect_event.html'>detect_event</a></code>. The first datafram
 information as found in <code><a href='detect_event.html'>detect_event</a></code>, but with the addition of the daily
 intensity (anomaly above seasonal doy threshold) and category values. The second dataframe,
 <code>event</code>, is the summary results that this function produces by default.</p></td>
+    </tr>
+    <tr>
+      <th>MCScorrect</th>
+      <td><p>When calculating marine cold-spells (MCSs) it may occur in some areas
+that the bottom thresholds for the more intense categories will be below -1.8C,
+this is physically impossible on Earth, so if one wants to correct the bottom thresholds
+to not be able to exceed -1.8C, set this argument to TRUE (default is FALSE).</p></td>
     </tr>
     <tr>
       <th>season</th>
@@ -269,7 +277,7 @@ are then the difference multiplied by the category level.</p>
   <dt>category</dt><dd><p>The maximum category threshold reached/exceeded by the event.</p></dd>
   <dt>i_max</dt><dd><p>The maximum intensity of the event above the threshold value.</p></dd>
   <dt>duration</dt><dd><p>The total duration (days) of the event. Note that this includes
-  any possible days when the measurement value <code>y</code>) may have dropped below the
+  any possible days when the measurement value <code><a href='https://ggplot2.tidyverse.org/reference/aes_position.html'>y</a></code>) may have dropped below the
   threshold value. Therefore, the proportion of the event duration (days) spent above
   certain thresholds may not add up to 100% (see following four items).</p></dd>
   <dt>p_moderate</dt><dd><p>The proportion of the total duration (days) spent at or above
@@ -314,13 +322,17 @@ as detailed above.
 
     <p>Hobday et al. (2018). Categorizing and Naming
 Marine Heatwaves. Oceanography 31(2).</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Robert W. Schlegel</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>res_WA</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='detect_event.html'>detect_event</a></span>(<span class='fu'><a href='ts2clm.html'>ts2clm</a></span>(<span class='no'>sst_WA</span>,
-                       <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span>)))
+    <pre class="examples"><div class='input'><span class='va'>res_WA</span> <span class='op'>&lt;-</span> <span class='fu'><a href='detect_event.html'>detect_event</a></span><span class='op'>(</span><span class='fu'><a href='ts2clm.html'>ts2clm</a></span><span class='op'>(</span><span class='va'>sst_WA</span>,
+                       climatologyPeriod <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 <span class='co'># Note that the name argument expects a character vector</span>
-<span class='no'>cat_WA</span> <span class='kw'>&lt;-</span> <span class='fu'>category</span>(<span class='no'>res_WA</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"WA"</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='no'>cat_WA</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 11</span><span>
+<span class='va'>cat_WA</span> <span class='op'>&lt;-</span> <span class='fu'>category</span><span class='op'>(</span><span class='va'>res_WA</span>, name <span class='op'>=</span> <span class='st'>"WA"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>cat_WA</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 11</span><span>
 #&gt;   event_no event_name peak_date  category i_max duration p_moderate p_strong
 #&gt;      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #BCBCBC;'>1</span><span>       40 WA 2010c   2010-12-02 II Stro…  2.66       15         73       27
@@ -332,10 +344,11 @@ Marine Heatwaves. Oceanography 31(2).</p>
 #&gt; </span><span style='color: #949494;'># … with 3 more variables: p_severe </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, p_extreme </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, season </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'>
 <span class='co'># If the data were collected in the northern hemisphere</span>
 <span class='co'># we must let the function know this, as seen below</span>
-<span class='no'>res_Med</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='detect_event.html'>detect_event</a></span>(<span class='fu'><a href='ts2clm.html'>ts2clm</a></span>(<span class='no'>sst_Med</span>,
-                        <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span>)))
-<span class='no'>cat_Med</span> <span class='kw'>&lt;-</span> <span class='fu'>category</span>(<span class='no'>res_Med</span>, <span class='kw'>S</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Med"</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span>(<span class='no'>cat_Med</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 6 x 11</span><span>
+<span class='va'>res_Med</span> <span class='op'>&lt;-</span> <span class='fu'><a href='detect_event.html'>detect_event</a></span><span class='op'>(</span><span class='fu'><a href='ts2clm.html'>ts2clm</a></span><span class='op'>(</span><span class='va'>sst_Med</span>,
+                        climatologyPeriod <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>cat_Med</span> <span class='op'>&lt;-</span> <span class='fu'>category</span><span class='op'>(</span><span class='va'>res_Med</span>, S <span class='op'>=</span> <span class='cn'>FALSE</span>, name <span class='op'>=</span> <span class='st'>"Med"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>cat_Med</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 6 x 11</span><span>
 #&gt;   event_no event_name peak_date  category i_max duration p_moderate p_strong
 #&gt;      </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #BCBCBC;'>1</span><span>       84 Med 2017a  2017-04-12 II Stro…  2.60       24         58       42
@@ -347,8 +360,9 @@ Marine Heatwaves. Oceanography 31(2).</p>
 #&gt; </span><span style='color: #949494;'># … with 3 more variables: p_severe </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, p_extreme </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, season </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'>
 <span class='co'># One may also choose to have this function output the daily</span>
 <span class='co'># category classifications as well by setting: climatology = TRUE</span>
-<span class='no'>cat_WA_daily</span> <span class='kw'>&lt;-</span> <span class='fu'>category</span>(<span class='no'>res_WA</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"WA"</span>, <span class='kw'>climatology</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>cat_WA_daily</span>$<span class='no'>climatology</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 6 x 4</span><span>
+<span class='va'>cat_WA_daily</span> <span class='op'>&lt;-</span> <span class='fu'>category</span><span class='op'>(</span><span class='va'>res_WA</span>, name <span class='op'>=</span> <span class='st'>"WA"</span>, climatology <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>cat_WA_daily</span><span class='op'>$</span><span class='va'>climatology</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 6 x 4</span><span>
 #&gt;   t          event_no intensity category  
 #&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     
 #&gt; </span><span style='color: #BCBCBC;'>1</span><span> 1984-06-03        1      1.56 I Moderate
@@ -363,8 +377,10 @@ Marine Heatwaves. Oceanography 31(2).</p>
 <span class='co'># with gridded data.</span>
 <span class='co'># Should one want a complete time series, the daily category results</span>
 <span class='co'># may simply be left_join() with the detect_event() results</span>
-<span class='no'>cat_WA_ts</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>left_join</a></span>(<span class='no'>res_WA</span>$<span class='no'>climatology</span>,
-                              <span class='no'>cat_WA_daily</span>$<span class='no'>climatology</span>)</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("t", "event_no")</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>cat_WA_ts</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 6 x 11</span><span>
+<span class='va'>cat_WA_ts</span> <span class='op'>&lt;-</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>left_join</a></span><span class='op'>(</span><span class='va'>res_WA</span><span class='op'>$</span><span class='va'>climatology</span>,
+                              <span class='va'>cat_WA_daily</span><span class='op'>$</span><span class='va'>climatology</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("t", "event_no")</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>cat_WA_ts</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 6 x 11</span><span>
 #&gt;     doy t           temp  seas thresh threshCriterion durationCriteri… event
 #&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>
 #&gt; </span><span style='color: #BCBCBC;'>1</span><span>     1 1982-01-01  20.9  21.6   23.0 FALSE           FALSE            FALSE
@@ -390,7 +406,7 @@ Marine Heatwaves. Oceanography 31(2).</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

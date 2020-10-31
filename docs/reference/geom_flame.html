@@ -105,7 +105,7 @@ as may be necessary." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9001</span>
       </span>
     </div>
 
@@ -199,25 +199,25 @@ additional information to the figure as geom layers to ggplot2 graphs
 as may be necessary.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>geom_flame</span>(
-  <span class='kw'>mapping</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"identity"</span>,
-  <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"identity"</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>n_gap</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>show.legend</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>inherit.aes</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>geom_flame</span><span class='op'>(</span>
+  mapping <span class='op'>=</span> <span class='cn'>NULL</span>,
+  data <span class='op'>=</span> <span class='cn'>NULL</span>,
+  stat <span class='op'>=</span> <span class='st'>"identity"</span>,
+  position <span class='op'>=</span> <span class='st'>"identity"</span>,
+  <span class='va'>...</span>,
+  n <span class='op'>=</span> <span class='fl'>0</span>,
+  n_gap <span class='op'>=</span> <span class='fl'>0</span>,
+  na.rm <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  show.legend <span class='op'>=</span> <span class='cn'>NA</span>,
+  inherit.aes <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>mapping</th>
-      <td><p>Set of aesthetic mappings created by <code>aes()</code> or <code>aes_()</code>.
+      <td><p>Set of aesthetic mappings created by <code><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes()</a></code> or <code><a href='https://ggplot2.tidyverse.org/reference/aes_.html'>aes_()</a></code>.
 If specified and inherit.aes = TRUE (the default), it is combined with the
 default mapping at the top level of the plot. You must supply mapping if
 there is no plot mapping.</p></td>
@@ -226,9 +226,9 @@ there is no plot mapping.</p></td>
       <th>data</th>
       <td><p>The data to be displayed in this layer. There are three options:</p>
 <p>If NULL, the default, the data is inherited from the plot data as specified
-in the call to <code>ggplot()</code>.</p>
+in the call to <code><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot()</a></code>.</p>
 <p>A data.frame, or other object, will override the plot data. All objects will
-be fortified to produce a data frame. See <code>fortify()</code> for which variables will
+be fortified to produce a data frame. See <code><a href='https://ggplot2.tidyverse.org/reference/fortify.html'>fortify()</a></code> for which variables will
 be created.</p>
 <p>A function will be called with a single argument, the plot data. The return
 value must be a <code>data.frame</code>, and will be used as the layer data.</p></td>
@@ -245,7 +245,7 @@ to a position adjustment function.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>other arguments passed on to <code>layer</code>. These are
+      <td><p>other arguments passed on to <code><a href='https://ggplot2.tidyverse.org/reference/layer.html'>layer</a></code>. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 <code>color = "red"</code> or <code>size = 3</code>. They may also be parameters
 to the paired geom/stat.</p></td>
@@ -283,7 +283,7 @@ the aesthetics to display.</p></td>
       <td><p>If <code>FALSE</code>, overrides the default aesthetics, rather
 than combining with them. This is most useful for helper functions that define
 both data and aesthetics and shouldn't inherit behaviour from the default plot
-specification, e.g. <code>borders()</code>.</p></td>
+specification, e.g. <code><a href='https://ggplot2.tidyverse.org/reference/borders.html'>borders()</a></code>.</p></td>
     </tr>
     </table>
 
@@ -311,20 +311,24 @@ doi: 10.1016/j.pocean.2015.12.014</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='event_line.html'>event_line</a></code> for a non-ggplot2 based flame function.</p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Robert W. Schlegel</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>ts</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ts2clm.html'>ts2clm</a></span>(<span class='no'>sst_WA</span>, <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span>))
-<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='detect_event.html'>detect_event</a></span>(<span class='no'>ts</span>)
-<span class='no'>mhw</span> <span class='kw'>&lt;-</span> <span class='no'>res</span>$<span class='no'>clim</span>
-<span class='no'>mhw</span> <span class='kw'>&lt;-</span> <span class='no'>mhw</span>[<span class='fl'>10580</span>:<span class='fl'>10690</span>,]
+    <pre class="examples"><div class='input'><span class='va'>ts</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ts2clm.html'>ts2clm</a></span><span class='op'>(</span><span class='va'>sst_WA</span>, climatologyPeriod <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='detect_event.html'>detect_event</a></span><span class='op'>(</span><span class='va'>ts</span><span class='op'>)</span>
+<span class='va'>mhw</span> <span class='op'>&lt;-</span> <span class='va'>res</span><span class='op'>$</span><span class='va'>clim</span>
+<span class='va'>mhw</span> <span class='op'>&lt;-</span> <span class='va'>mhw</span><span class='op'>[</span><span class='fl'>10580</span><span class='op'>:</span><span class='fl'>10690</span>,<span class='op'>]</span>
 
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='http://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>
 
-<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='no'>mhw</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>)) +
-  <span class='fu'>geom_flame</span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>y2</span> <span class='kw'>=</span> <span class='no'>thresh</span>)) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span>(<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span>(<span class='st'>"2011-02-01"</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='fl'>28</span>,
-            <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"That's not a heatwave.\nThis, is a heatwave."</span>)) +
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>xlab</a></span>(<span class='st'>"Date"</span>) + <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ylab</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span>(<span class='st'>"Temperature ["</span>, <span class='no'>degree</span>, <span class='st'>"C]"</span>)))</div><div class='img'><img src='geom_flame-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>mhw</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>t</span>, y <span class='op'>=</span> <span class='va'>temp</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_flame</span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>y2 <span class='op'>=</span> <span class='va'>thresh</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_text.html'>geom_text</a></span><span class='op'>(</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/as.Date.html'>as.Date</a></span><span class='op'>(</span><span class='st'>"2011-02-01"</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='fl'>28</span>,
+            label <span class='op'>=</span> <span class='st'>"That's not a heatwave.\nThis, is a heatwave."</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>xlab</a></span><span class='op'>(</span><span class='st'>"Date"</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>ylab</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/expression.html'>expression</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste</a></span><span class='op'>(</span><span class='st'>"Temperature ["</span>, <span class='va'>degree</span>, <span class='st'>"C]"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='geom_flame-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -341,7 +345,7 @@ doi: 10.1016/j.pocean.2015.12.014</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

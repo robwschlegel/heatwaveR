@@ -97,7 +97,7 @@ Hobday et al. (2016)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9001</span>
       </span>
     </div>
 
@@ -183,21 +183,21 @@ Hobday et al. (2016)." />
 Hobday et al. (2016).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>event_line</span>(
-  <span class='no'>data</span>,
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>t</span>,
-  <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>temp</span>,
-  <span class='kw'>min_duration</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>spread</span> <span class='kw'>=</span> <span class='fl'>150</span>,
-  <span class='kw'>metric</span> <span class='kw'>=</span> <span class='st'>"intensity_cumulative"</span>,
-  <span class='kw'>start_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>end_date</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>category</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>x_axis_title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>x_axis_text_angle</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>y_axis_title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>y_axis_range</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)</pre>
+    <pre class="usage"><span class='fu'>event_line</span><span class='op'>(</span>
+  <span class='va'>data</span>,
+  x <span class='op'>=</span> <span class='va'>t</span>,
+  y <span class='op'>=</span> <span class='va'>temp</span>,
+  min_duration <span class='op'>=</span> <span class='fl'>5</span>,
+  spread <span class='op'>=</span> <span class='fl'>150</span>,
+  metric <span class='op'>=</span> <span class='st'>"intensity_cumulative"</span>,
+  start_date <span class='op'>=</span> <span class='cn'>NULL</span>,
+  end_date <span class='op'>=</span> <span class='cn'>NULL</span>,
+  category <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  x_axis_title <span class='op'>=</span> <span class='cn'>NULL</span>,
+  x_axis_text_angle <span class='op'>=</span> <span class='cn'>NULL</span>,
+  y_axis_title <span class='op'>=</span> <span class='cn'>NULL</span>,
+  y_axis_range <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -302,15 +302,20 @@ that one must not have any prior knowledge of ggplot2 to create the figure.</p>
     <p>Hobday, A.J. et al. (2016), A hierarchical approach to defining
 marine heatwaves, Progress in Oceanography, 141, pp. 227-238,
 doi: 10.1016/j.pocean.2015.12.014</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Robert W. Schlegel</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>ts</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ts2clm.html'>ts2clm</a></span>(<span class='no'>sst_WA</span>, <span class='kw'>climatologyPeriod</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span>))
-<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='detect_event.html'>detect_event</a></span>(<span class='no'>ts</span>)
+    <pre class="examples"><div class='input'><span class='va'>ts</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ts2clm.html'>ts2clm</a></span><span class='op'>(</span><span class='va'>sst_WA</span>, climatologyPeriod <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'><a href='detect_event.html'>detect_event</a></span><span class='op'>(</span><span class='va'>ts</span><span class='op'>)</span>
 
-<span class='fu'>event_line</span>(<span class='no'>res</span>, <span class='kw'>spread</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>metric</span> <span class='kw'>=</span> <span class='st'>"intensity_cumulative"</span>,
-<span class='kw'>start_date</span> <span class='kw'>=</span> <span class='st'>"2010-12-01"</span>, <span class='kw'>end_date</span> <span class='kw'>=</span> <span class='st'>"2011-06-30"</span>)</div><div class='img'><img src='event_line-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>event_line</span>(<span class='no'>res</span>, <span class='kw'>spread</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>start_date</span> <span class='kw'>=</span> <span class='st'>"2010-12-01"</span>,
-<span class='kw'>end_date</span> <span class='kw'>=</span> <span class='st'>"2011-06-30"</span>, <span class='kw'>category</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='event_line-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>event_line</span><span class='op'>(</span><span class='va'>res</span>, spread <span class='op'>=</span> <span class='fl'>100</span>, metric <span class='op'>=</span> <span class='st'>"intensity_cumulative"</span>,
+start_date <span class='op'>=</span> <span class='st'>"2010-12-01"</span>, end_date <span class='op'>=</span> <span class='st'>"2011-06-30"</span><span class='op'>)</span>
+</div><div class='img'><img src='event_line-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>event_line</span><span class='op'>(</span><span class='va'>res</span>, spread <span class='op'>=</span> <span class='fl'>100</span>, start_date <span class='op'>=</span> <span class='st'>"2010-12-01"</span>,
+end_date <span class='op'>=</span> <span class='st'>"2011-06-30"</span>, category <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='img'><img src='event_line-2.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -327,7 +332,7 @@ doi: 10.1016/j.pocean.2015.12.014</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

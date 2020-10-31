@@ -1,5 +1,5 @@
 pandoc: 2.7.3
-pkgdown: 1.5.1
+pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   OISST_preparation: OISST_preparation.html
@@ -8,7 +8,7 @@ articles:
   event_categories: event_categories.html
   exceedance: exceedance.html
   gridded_event_detection: gridded_event_detection.html
-last_built: 2020-09-21T19:55Z
+last_built: 2020-10-31T21:32Z
 urls:
   reference: https://robwschlegel.github.io/heatwaveR/index.html/reference
   article: https://robwschlegel.github.io/heatwaveR/index.html/articles
