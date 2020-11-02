@@ -25,7 +25,7 @@ In Hobday et al. (2018) a naming convention for MHWs was proposed that divides t
 
 | Category      | Description |
 |---------------|--------------------------------------------------------------------------------------------------------|
-| I Moderate | Events that have been detected, but with a maximum intensity that does not double the distance between the seasonal climatology and the threshold value. These are common and not terribly worisome. |
+| I Moderate | Events that have been detected, but with a maximum intensity that does not double the distance between the seasonal climatology and the threshold value. These are common and not terribly worrisome. |
 |II Strong | Events with a maximum intensity that doubles the distance from the seasonal climatology to the threshold, but does not triple it. These are not uncommon, but have yet to be shown to cause any long term biological or ecological damage. |
 |III Severe | Thankfully these are relatively uncommon as they have been linked to damaging events. The 2003 Mediterranean MHW was this category. |
 |IV Extreme | Events with a maximum intensity that is four times or greater than the aforementioned distance. These events are currently rare, but are projected to increase with frequency. This is troubling as events in this category are now well documented as causing widespread and lasting ecological damage. The 2011 Western Australia MHW was this category. It is also the logo of this package. |
@@ -34,16 +34,17 @@ In Hobday et al. (2018) a naming convention for MHWs was proposed that divides t
 
 The categories of MHWs under the Hobday et al. (2018) naming scheme may be calculated with the __`heatwaveR`__ package using the `category()` function on the output of the `detect_event()` function. By default this function will order events from most to least intense. Note that one may control the output for the names of the events by providing ones own character string for the `name` argument. Because we have calculated MHWs on the Western Australia data, we provide the name "WA" below:
 
-```{r category-example1}
+```{r category-example-1}
 # Load libraries
 library(dplyr)
+library(tidyr)
 library(ggplot2)
 library(heatwaveR)
 
 # Calculate events
 ts <- ts2clm(sst_WA, climatologyPeriod = c("1982-01-01", "2011-12-31"))
-mhw <- detect_event(ts)
-MHW_cat <- category(mhw, S = TRUE, name = "WA")
+MHW <- detect_event(ts)
+MHW_cat <- category(MHW, S = TRUE, name = "WA")
 
 # Look at the top few events
 tail(MHW_cat)
@@ -51,7 +52,7 @@ tail(MHW_cat)
 
 Note that this functions expects the data to have been collected in the southern hemisphere, hence the argument `S = TRUE`. If they were not, one must set `S = FALSE` as seen in the example below. This ensures that the correct seasons are attributed to the event.
 
-```{r category-example2}
+```{r category-example-2}
 res_Med <- detect_event(ts2clm(sst_Med, climatologyPeriod = c("1982-01-01", "2011-12-31")))
 res_Med_cat <- category(res_Med, S = FALSE, name = "Med")
 tail(res_Med_cat)
@@ -64,7 +65,7 @@ tail(res_Med_cat)
 A quick and easy visualisation of the categories of a MHW may be accomplished with `event_line()` by setting the `category` argument to `TRUE`.
 
 ```{r fig-example-1, echo = TRUE, eval = TRUE}
-event_line(mhw, spread = 100, start_date = "2010-11-01", end_date = "2011-06-30", category = TRUE)
+event_line(MHW, spread = 100, start_date = "2010-11-01", end_date = "2011-06-30", category = TRUE)
 ```
 <!-- ![](vignettes/fig-example-10-1.png) -->
 
@@ -74,7 +75,7 @@ Were one to want to visualise the categories of a MHW 'by hand', the following c
 
 ```{r fig-example-2, echo = TRUE, eval = TRUE}
 # Create category breaks and select slice of data.frame
-clim_cat <- mhw$clim %>%
+clim_cat <- MHW$clim %>%
   dplyr::mutate(diff = thresh - seas,
                 thresh_2x = thresh + diff,
                 thresh_3x = thresh_2x + diff,
@@ -118,10 +119,117 @@ ggplot(data = clim_cat, aes(x = t, y = temp)) +
   guides(colour = guide_legend(override.aes = list(linetype = c("solid", "solid", "solid",
                                                                 "dashed", "dotdash", "dotted"),
                                                    size = c(0.6, 0.7, 0.7, 0.7, 0.7, 0.7)))) +
-  labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
+  labs(y = "Temperature [°C]", x = NULL)
 ```
 <!-- ![](vignettes/fig-example-11-1.png) -->
 
-## Calculating/visualising MCS categories
+## Calculating MCS categories
 
-The functionality for the detection and visualisation of categories for MCSs has not yet been implemented in __`heatwaveR`__. There are plans to do so, but it is currently a low priority as no research groups that we are aware of are looking at MCS categories. If your research group is interested in doing so, please contact us and we will bump up the priority of this feature.
+MCSs are calculated the same as for MHWs. The `category()` function will automagically detect if it has been fed MHWs or MCSs so no additional arguments are required. For the sake of clarity the following code chunks demonstrates how to calculate MCS categories.
+
+```{r category-example-3}
+# Calculate events
+ts_MCS <- ts2clm(sst_WA, climatologyPeriod = c("1982-01-01", "2011-12-31"), pctile = 10)
+MCS <- detect_event(ts_MCS, coldSpells = T)
+MCS_cat <- category(MCS, S = TRUE, name = "WA")
+
+# Look at the top few events
+tail(MCS_cat)
+```
+
+## Visualising MCS categories
+
+### Default MCS category visuals
+
+The `event_line()` function also works for visualising MCS categories. The function will automagically detect that it is being fed MCSs so we do not need to provide it with any new arguments. Note that the colour palette for MCS does have four colours, same as for MHWs, but none of the demo time series that come packaged with __`heatwaveR`__ have MCSs that intense so we are not able to demonstrate the full colour palette here.
+
+```{r fig-example-3, echo = TRUE, eval = TRUE}
+event_line(MCS, spread = 100, start_date = "1989-11-01", end_date = "1990-06-30", category = TRUE)
+```
+### Custom MHW category visuals
+
+The following code chunk demonstrates how to manually create a figure showing the MCS categories.
+
+```{r fig-example-4, echo = TRUE, eval = TRUE}
+# Create category breaks and select slice of data.frame
+MCS_clim_cat <- MCS$clim %>%
+  dplyr::mutate(diff = thresh - seas,
+                thresh_2x = thresh + diff,
+                thresh_3x = thresh_2x + diff,
+                thresh_4x = thresh_3x + diff) %>% 
+  dplyr::slice(2910:3150)
+
+# Set line colours
+lineColCat <- c(
+  "Temperature" = "black",
+  "Climatology" = "gray20",
+  "Threshold" = "darkgreen",
+  "2x Threshold" = "darkgreen",
+  "3x Threshold" = "darkgreen",
+  "4x Threshold" = "darkgreen"
+  )
+
+# Set category fill colours
+fillColCat <- c(
+  "Moderate" = "#A4D4E0",
+  "Strong" = "#5B80A6",
+  "Severe" = "#2A3C66",
+  "Extreme" = "#111433"
+  )
+
+ggplot(data = MCS_clim_cat, aes(x = t, y = temp)) +
+  geom_flame(aes(y = thresh, y2 = temp, fill = "Moderate")) +
+  geom_flame(aes(y = thresh_2x, y2 = temp, fill = "Strong")) +
+  geom_flame(aes(y = thresh_3x, y2 = temp, fill = "Severe")) +
+  geom_flame(aes(y = thresh_4x, y2 = temp, fill = "Extreme")) +
+  geom_line(aes(y = thresh_2x, col = "2x Threshold"), size = 0.7, linetype = "dashed") +
+  geom_line(aes(y = thresh_3x, col = "3x Threshold"), size = 0.7, linetype = "dotdash") +
+  geom_line(aes(y = thresh_4x, col = "4x Threshold"), size = 0.7, linetype = "dotted") +
+  geom_line(aes(y = seas, col = "Climatology"), size = 0.7) +
+  geom_line(aes(y = thresh, col = "Threshold"), size = 0.7) +
+  geom_line(aes(y = temp, col = "Temperature"), size = 0.6) +
+  scale_colour_manual(name = NULL, values = lineColCat,
+                      breaks = c("Temperature", "Climatology", "Threshold",
+                                 "2x Threshold", "3x Threshold", "4x Threshold")) +
+  scale_fill_manual(name = NULL, values = fillColCat, guide = FALSE) +
+  scale_x_date(date_labels = "%b %Y") +
+  guides(colour = guide_legend(override.aes = list(linetype = c("solid", "solid", "solid",
+                                                                "dashed", "dotdash", "dotted"),
+                                                   size = c(0.6, 0.7, 0.7, 0.7, 0.7, 0.7)))) +
+  labs(y = "Temperature [°C]", x = NULL)
+```
+## Category colour palettes
+
+For the sake of convenience the MHW and MCS colour palettes are provided below with a figure showing the direct comparison.
+
+```{r comp-fig}
+# The MCS colour palette
+MCS_colours <- c(
+  "Moderate" = "#A4D4E0",
+  "Strong" = "#5B80A6",
+  "Severe" = "#2A3C66",
+  "Extreme" = "#111433"
+)
+
+# The MHW colour palette
+MHW_colours <- c(
+  "Moderate" = "#ffc866",
+  "Strong" = "#ff6900",
+  "Severe" = "#9e0000",
+  "Extreme" = "#2d0000"
+)
+
+# Create the colour palette for plotting by itself
+colour_palette <- data.frame(category = factor(c("I Moderate", "II Strong", "III Severe", "IV Extreme"),
+                                               levels = c("I Moderate", "II Strong", "III Severe", "IV Extreme")),
+                             MHW = c(MHW_colours[1], MHW_colours[2], MHW_colours[3], MHW_colours[4]),
+                             MCS = c(MCS_colours[1], MCS_colours[2], MCS_colours[3], MCS_colours[4])) %>% 
+  pivot_longer(cols = c(MHW, MCS), names_to = "event", values_to = "colour")
+
+# Show the palettes side-by-side
+ggplot(data = colour_palette, aes(x = category, y = event)) +
+  geom_tile(fill = colour_palette$colour) +
+  coord_cartesian(expand = F) +
+  labs(x = NULL, y = NULL)
+```
+

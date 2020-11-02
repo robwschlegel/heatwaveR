@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9001</span>
       </span>
     </div>
 
@@ -119,13 +119,13 @@
 
       
 
-      </header><div class="row">
+      </header><script src="OISST_preparation_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Downloading and Preparing NOAA OISST Data</h1>
                         <h4 class="author">Robert W Schlegel and AJ Smit</h4>
             
-            <h4 class="date">2020-05-15</h4>
+            <h4 class="date">2020-10-31</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/OISST_preparation.Rmd"><code>vignettes/OISST_preparation.Rmd</code></a></small>
       <div class="hidden name"><code>OISST_preparation.Rmd</code></div>
@@ -138,79 +138,224 @@
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
 <p>In this vignette we will see how to retrieve and prepare <a href="https://journals.ametsoc.org/doi/full/10.1175/2007JCLI1824.1">Reynolds optimally interpolated sea surface temperature</a> (OISST) data for calculating marine heatwaves (MHWs). The OISST product is a global 1/4 degree gridded dataset of Advanced Very High Resolution Radiometer (AVHRR) derived SSTs at a daily resolution, starting on 1 September 1981. The source of the data is currently the <a href="https://www.ncdc.noaa.gov/oisst">NOAA NCDC</a>.</p>
-<p>Each daily global file is around 8.3 MB, so they add up to a large amount of data when a time series of the recommended 30 year minimum duration for the detection of MHWs is downloaded. If one were to download all of the data currently available it would exceed 100 GB of total disk space. It is therefore best practice to download only a subset of the data as would match one’s study area. Thanks to the <a href="https://docs.ropensci.org/rerddap/"><strong><code>rerddap</code></strong> package</a> this is easy to do in <code>R</code>.</p>
+<p>Each daily global file, when not compressed, is around 8.3 MB, so they add up to a large amount of data when a time series of the recommended 30 year minimum duration for the detection of MHWs is downloaded. If one were to download all of the data currently available it would exceed 100 GB of total disk space. It is therefore best practice to download only a subset of the data that matches one’s study area. Thanks to the <a href="https://docs.ropensci.org/rerddap/"><strong><code>rerddap</code></strong> package</a> this is incredibly easy to do in <code>R</code>.</p>
+<p>Should one want to download the full global dataset, each daily global file is available in netCDF format and is roughly 1.6 MB. This means that one full year of global data will be roughly 600 MB, and the full dataset roughly 25 GB. This is however when the data are very compressed. If we were to attempt to load the entire uncompressed dataset into our memory at once it would take more than 200 GB of RAM. That is well beyond the scope of any current laptop so in the second half of this vignette we will see how to download the full OISST dataset before then seeing how we can load only a subset of the data into the R environment for use with further analyses.</p>
+<p>This vignette may appear very long and complex but it has been written in an attempt to keep the process of downloading and working with satellite data as straight-forward and easy to follow as possible. Before we begin with all of the code etc. please note that for almost all applications it is only necessary to use the first method outlined below. For most users the second download method in this vignette can simply be skipped.</p>
 </div>
-<div id="downloading-and-preparing-data" class="section level2">
+<div id="setup" class="section level2">
 <h2 class="hasAnchor">
-<a href="#downloading-and-preparing-data" class="anchor"></a>Downloading and preparing data</h2>
-<p>For this vignette we will be accessing the NOAA OISST data hosted on this <a href="https://www.ncei.noaa.gov/erddap/griddap/ncdc_oisst_v2_avhrr_by_time_zlev_lat_lon.html">ERDDAP web interface</a>. One may download the data there manually with the user friendly web interface, or use the <strong><code>rerddap</code></strong> package to do the same through <code>R</code>. Due to some recent developments the <strong><code>rerddap</code></strong> package on CRAN may provide an unstable interface to the NOAA ERDDAP servers. This issue has already been addressed in the development version of the package and so we will begin by installing the package from <code>GitHub</code>. Please note that this package has quite a few dependencies and so may take a few minutes to install. If any errors are encountered during this process please consult the GitHub page <a href="https://github.com/ropensci/rerddap">here</a>. We will also need functionality in the <strong><code>tidyverse</code></strong> package that is only available in the development version so we will be installing that from <code>GitHub</code> as well.</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="co"># The two packages we will need</span>
-  <span class="co"># NB: The packages only need to be installed from GitHub once</span>
-<span class="co"># devtools::install_github("tidyverse/tidyverse")</span>
-<span class="co"># devtools::install_github("ropensci/rerddap")</span>
+<a href="#setup" class="anchor"></a>Setup</h2>
+<p>For this vignette we will be accessing the NOAA OISST dataset on this <a href="https://coastwatch.pfeg.noaa.gov/erddap/griddap/NOAA_DHW.html">ERDDAP server</a> for the subsetted data, while the global data are indexed <a href="https://www.ncei.noaa.gov/data/sea-surface-temperature-optimum-interpolation/v2.1/access/avhrr/">here</a>. One may download the data on both servers manually by using the ERDDAP UI or clicking on each indexed file individually. But programming languages like R are designed to prevent us from needing to experience that sort of anguish. Below we will load the libraries we need in order to have R download all of the data that we may need. If any of the lines of code in the following chunk do not run it means that we will need to first install that package. Uncomment the line of code that would install the problem package and run it before trying to load the library again.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="co"># The packages we will need</span>
+<span class="co"># install.packages("dplyr")</span>
+<span class="co"># install.packages("lubridate")</span>
+<span class="co"># install.packages("ggplot2")</span>
+<span class="co"># install.packages("tidync")</span>
+<span class="co"># install.packages("doParallel")</span>
+<span class="co"># install.packages("rerddap")</span>
+<span class="co"># install.packages("plyr") # Note that this library should never be loaded, only installed</span>
 
-<span class="co"># Load the packages once they have been downloaded and installed</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dplyr</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rerddap</span>)
-
-<span class="co"># The information for the NOAA OISST data</span>
-<span class="kw pkg">rerddap</span><span class="kw ns">::</span><span class="fu"><a href="https://docs.ropensci.org/rerddap/reference/info.html">info</a></span>(<span class="kw">datasetid</span> <span class="kw">=</span> <span class="st">"ncdc_oisst_v2_avhrr_by_time_zlev_lat_lon"</span>, <span class="kw">url</span> <span class="kw">=</span> <span class="st">"https://www.ncei.noaa.gov/erddap/"</span>)</pre></body></html></div>
-<p>With our packages loaded and our target dataset identified we may now begin the download with the <code><a href="https://docs.ropensci.org/rerddap/reference/griddap.html">griddap()</a></code> function. While putting this vignette together however I noticed one little hiccup in the work flow. It seems that the ERDDAP server does not like it when one tries to access more than nine consecutive years of data in one request, regardless of the spatial extent being requested. So before we download our data we are going to make a wrapper function that helps us control the range of times we want to download. This will reduce the amount of redundant coding we would otherwise need to do.</p>
-<div id="the-download-function" class="section level3">
+<span class="co"># The packages we will use</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span> <span class="co"># A staple for modern data management in R</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://lubridate.tidyverse.org">lubridate</a></span><span class="op">)</span> <span class="co"># Useful functions for dealing with dates</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span> <span class="co"># The preferred library for data visualisation</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/tidync/">tidync</a></span><span class="op">)</span> <span class="co"># For easily dealing with NetCDF data</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/rerddap">rerddap</a></span><span class="op">)</span> <span class="co"># For easily downloading subsets of data</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">doParallel</span><span class="op">)</span> <span class="co"># For parallel processing</span></pre></div>
+<p>With our packages loaded we may now begin downloading and preparing our data for further use. Please use the table of contents on the right side of the screen to jump between the different download methods as desired. We will break each different method down into smaller steps in order to keep this process as clear as possible. Before we begin I need to stress that this is a very direct and unrestricted method for accessing these data and I urge responsibility in only downloading as much data as are necessary. Please do not download the entire dataset unless you have a specific need for it.</p>
+</div>
+<div id="downloading-subsetted-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#downloading-subsetted-data" class="anchor"></a>Downloading subsetted data</h2>
+<div id="file-information" class="section level3">
 <h3 class="hasAnchor">
-<a href="#the-download-function" class="anchor"></a>The download function</h3>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="co"># This function expects the user to provide it with a start and end date</span>
-<span class="co"># It then downloads and prepares the data</span>
-<span class="no">OISST_sub</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">time_df</span>){
-  <span class="no">oisst_res</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rerddap/reference/griddap.html">griddap</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="st">"ncdc_oisst_v2_avhrr_by_time_zlev_lat_lon"</span>,
-                       <span class="kw">url</span> <span class="kw">=</span> <span class="st">"https://www.ncei.noaa.gov/erddap/"</span>,
-                       <span class="kw">time</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">time_df</span>$<span class="no">start</span>, <span class="no">time_df</span>$<span class="no">end</span>),
-                       <span class="kw">depth</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">0</span>),
-                       <span class="kw">latitude</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(-<span class="fl">40</span>, -<span class="fl">35</span>),
-                       <span class="kw">longitude</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">15</span>, <span class="fl">21</span>),
-                       <span class="kw">fields</span> <span class="kw">=</span> <span class="st">"sst"</span>)$<span class="no">data</span> <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">time</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span>(<span class="kw pkg">stringr</span><span class="kw ns">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove</a></span>(<span class="no">time</span>, <span class="st">"T00:00:00Z"</span>))) <span class="kw">%&gt;%</span>
-    <span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span>(<span class="kw">t</span> <span class="kw">=</span> <span class="no">time</span>, <span class="kw">temp</span> <span class="kw">=</span> <span class="no">sst</span>) <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">lon</span>, <span class="no">lat</span>, <span class="no">t</span>, <span class="no">temp</span>) <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html">na.omit</a></span>()
-}</pre></body></html></div>
-<p>In the wrapper function above we see that we have chosen to download only the ‘sst’ data out of the several variables (‘fields’) available to us. We also see that we have chosen the spatial extent of latitude -40 to -35 and longitude 15 to 21. This a small window over some of the Agulhas Retroflection to the south west of the coastline of South Africa. A larger area is not being chosen here simply due to the speed constraints of downloading the data and detecting the events therein. One may simply change the lon/lat values above as necessary to match the desired study area. The function will also be re-labelling the ‘time’ column as ‘t’, and the ‘sst’ column as ‘temp’. We do this so that they match the default column names that are expected for calculating MHWs and we won’t have to do any extra work later on.</p>
+<a href="#file-information" class="anchor"></a>File information</h3>
+<p>Before we begin downloading the subsetted data for our study area we need to make sure that they are currently available on an ERDDAP server. The location of the NOAA OISST data has changed in the past so it should not be assumed that the current location will exist in perpetuity. Finding the server on which these data are located can be a cup game at times.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="co"># The information for the NOAA OISST data</span>
+<span class="fu">rerddap</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/rerddap/reference/info.html">info</a></span><span class="op">(</span>datasetid <span class="op">=</span> <span class="st">"ncdcOisst21Agg_LonPM180"</span>, url <span class="op">=</span> <span class="st">"https://coastwatch.pfeg.noaa.gov/erddap/"</span><span class="op">)</span>
+
+<span class="co"># Note that there is also a version with lon values from 0 yo 360</span>
+<span class="fu">rerddap</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/rerddap/reference/info.html">info</a></span><span class="op">(</span>datasetid <span class="op">=</span> <span class="st">"ncdcOisst21Agg"</span>, url <span class="op">=</span> <span class="st">"https://coastwatch.pfeg.noaa.gov/erddap/"</span><span class="op">)</span></pre></div>
+<p>With our target dataset identified we may now begin the download with the <code><a href="https://docs.ropensci.org/rerddap/reference/griddap.html">griddap()</a></code> function. While putting this vignette together however I noticed one little hiccup in the work flow. It seems that the ERDDAP server does not like it when one tries to access more than nine consecutive years of data in one request, regardless of the spatial extent being requested. So before we download our data we are going to make a wrapper function that helps us control the range of times we want to download. This will reduce the amount of redundant coding we would otherwise need to do.</p>
+</div>
+<div id="download-function" class="section level3">
+<h3 class="hasAnchor">
+<a href="#download-function" class="anchor"></a>Download function</h3>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="co"># This function downloads and prepares data based on user provided start and end dates</span>
+<span class="va">OISST_sub_dl</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">time_df</span><span class="op">)</span><span class="op">{</span>
+  <span class="va">OISST_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/rerddap/reference/griddap.html">griddap</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"ncdcOisst21Agg_LonPM180"</span>, 
+                       url <span class="op">=</span> <span class="st">"https://coastwatch.pfeg.noaa.gov/erddap/"</span>, 
+                       time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">time_df</span><span class="op">$</span><span class="va">start</span>, <span class="va">time_df</span><span class="op">$</span><span class="va">end</span><span class="op">)</span>, 
+                       zlev <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,
+                       latitude <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">40</span>, <span class="op">-</span><span class="fl">35</span><span class="op">)</span>,
+                       longitude <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">21</span><span class="op">)</span>,
+                       fields <span class="op">=</span> <span class="st">"sst"</span><span class="op">)</span><span class="op">$</span><span class="va">data</span> <span class="op">%&gt;%</span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove</a></span><span class="op">(</span><span class="va">time</span>, <span class="st">"T00:00:00Z"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>t <span class="op">=</span> <span class="va">time</span>, temp <span class="op">=</span> <span class="va">sst</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">lon</span>, <span class="va">lat</span>, <span class="va">t</span>, <span class="va">temp</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+    <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html">na.omit</a></span><span class="op">(</span><span class="op">)</span>
+<span class="op">}</span></pre></div>
+<p>In the wrapper function above we see that we have chosen to download only the ‘sst’ data out of the several variables (‘fields’) available to us. We also see that we have chosen the spatial extent of latitude -40 to -35 and longitude 15 to 21. This a small window over some of the Agulhas Retroflection to the south west of South Africa. A larger area is not being chosen here simply due to the speed constraints of downloading the data and detecting the events therein. One may simply change the longitude and latitude values above as necessary to match the desired study area. The function will also be re-labelling the ‘time’ column as ‘t’, and the ‘sst’ column as ‘temp’. We do this so that they match the default column names that are expected for calculating MHWs and we won’t have to do any extra work later on.</p>
 <p>One must note here that depending on the RAM available on one’s machine, it may not be possible to handle all of the data downloaded at once if they are very large (e.g. &gt; 5 GB). The discussion on the limitations of the R language due to its dependence on virtual memory is beyond the scope of this vignette, but if one limits one’s downloads to no more than several square pixels at a time that should be fine. Were one to try to download the whole Indian Ocean, for example, that may cause issues if being run on a laptop or computer of a similar power.</p>
 </div>
-<div id="the-date-range" class="section level3">
+<div id="date-range" class="section level3">
 <h3 class="hasAnchor">
-<a href="#the-date-range" class="anchor"></a>The date range</h3>
-<p>With our wrapper function written we would now need to run it several times in order to grab all of the OISST data from <code>1982-01-01</code> to <code>2018-12-31</code>. Even though each year of data for the extent used in this vignette is only ~360 KB, the server does not like it when more than 9 years of consecutive data are requested. The server will also end a users connection after ~17 individual files have been requested. Because we can’t download all of the data in one request, and we can’t download the data one year at a time, we will need to make requests for multiple batches of data. To accomplish this we will create a dataframe of start and end dates that will allow us to automate the entire download while meeting the aforementioned criteria.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="co"># Date download range by start and end dates per year</span>
-<span class="no">dl_years</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">date_index</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">5</span>,
-                       <span class="kw">start</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"1982-01-01"</span>, <span class="st">"1990-01-01"</span>,
-                                         <span class="st">"1998-01-01"</span>, <span class="st">"2006-01-01"</span>, <span class="st">"2014-01-01"</span>)),
-                       <span class="kw">end</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"1989-12-31"</span>, <span class="st">"1997-12-31"</span>,
-                                       <span class="st">"2005-12-31"</span>, <span class="st">"2013-12-31"</span>, <span class="st">"2018-12-31"</span>)))</pre></body></html></div>
+<a href="#date-range" class="anchor"></a>Date range</h3>
+<p>With our wrapper function written we would now need to run it several times in order to grab all of the OISST data from <code>1982-01-01</code> to <code>2019-12-31</code>. Even though each year of data for the extent used in this vignette is only ~360 KB, the server does not like it when more than 9 years of consecutive data are requested. The server will also end a users connection after ~17 individual files have been requested. Because we can’t download all of the data in one request, and we can’t download the data one year at a time, we will need to make requests for multiple batches of data. To accomplish this we will create a dataframe of start and end dates that will allow us to automate the entire download while meeting the aforementioned criteria.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="co"># Date download range by start and end dates per year</span>
+<span class="va">dl_years</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>date_index <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,
+                       start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"1990-01-01"</span>, 
+                                         <span class="st">"1998-01-01"</span>, <span class="st">"2006-01-01"</span>, <span class="st">"2014-01-01"</span><span class="op">)</span><span class="op">)</span>,
+                       end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1989-12-31"</span>, <span class="st">"1997-12-31"</span>, 
+                                       <span class="st">"2005-12-31"</span>, <span class="st">"2013-12-31"</span>, <span class="st">"2019-12-31"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></pre></div>
 </div>
-<div id="the-data" class="section level3">
+<div id="downloadprep-data" class="section level3">
 <h3 class="hasAnchor">
-<a href="#the-data" class="anchor"></a>The data</h3>
+<a href="#downloadprep-data" class="anchor"></a>Download/prep data</h3>
 <p>One could also use the <strong><code>plyr</code></strong> suite of functions to automate the process of downloading and processing multiple files, but I’ve chosen here to stick with the <strong><code>tidyverse</code></strong> native approach. If the below chunk of code fails or times out, simply re-run it until all of the data have been downloaded.</p>
 <p>It is worth pointing out here that these data are downloaded as cached files on the users computer by using the <strong><code>hoardr</code></strong> package. This means that if one runs the same command again, it will not re-download the data because it first looks in the folder where it has automatically cached the data for you and sees that it may simply draw the data from there. No need to change anything or write a second script for loading data.</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="co"># Download all of the data with one nested request</span>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="co"># Download all of the data with one nested request</span>
 <span class="co"># The time this takes will vary greatly based on connection speed</span>
-<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(
-  <span class="no">OISST_data</span> <span class="kw">&lt;-</span> <span class="no">dl_years</span> <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(<span class="no">date_index</span>) <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_map.html">group_modify</a></span>(~<span class="fu">OISST_sub</span>(<span class="no">.x</span>)) <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span>() <span class="kw">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">lon</span>, <span class="no">lat</span>, <span class="no">t</span>, <span class="no">temp</span>)
-) <span class="co"># 921 seconds, ~184 seconds per batch</span></pre></body></html></div>
-<p>If the above code chunk is giving errors it is likely due to either not having the development version of the <strong><code>tidyverse</code></strong> installed (see beginning of vignette), or one’s Internet connection is timing out. There are also rare instances where the NOAA server is not responding due to an issue on their end. Any connection based issues may be resolved by simply waiting for a few minutes, or by ensuring a stable connection.</p>
+<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span>
+  <span class="va">OISST_data</span> <span class="op">&lt;-</span> <span class="va">dl_years</span> <span class="op">%&gt;%</span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">date_index</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_map.html">group_modify</a></span><span class="op">(</span><span class="op">~</span><span class="fu">OISST_sub_dl</span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">lon</span>, <span class="va">lat</span>, <span class="va">t</span>, <span class="va">temp</span><span class="op">)</span>
+<span class="op">)</span> <span class="co"># 636 seconds, ~127 seconds per batch</span></pre></div>
+<p>If the above code chunk is giving errors it is likely due to one’s Internet connection timing out. There are also rare instances where the NOAA server is not responding due to an issue on their end. Any connection based issues may be resolved by simply waiting for a few minutes, or by ensuring a stable connection.</p>
 </div>
-<div id="the-saved-file" class="section level3">
+<div id="visualise-data" class="section level3">
 <h3 class="hasAnchor">
-<a href="#the-saved-file" class="anchor"></a>The saved file</h3>
-<p>With the data downloaded and prepared for further use, all that’s left to do is save them.</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="co"># Save the data as an .Rda file as it has a much better compression rate than .RData</span>
-<span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span>(<span class="no">OISST_data</span>, <span class="kw">file</span> <span class="kw">=</span> <span class="st">"~/Desktop/OISST_vignette.Rda"</span>)</pre></body></html></div>
-<p>Note above that I have chosen to save the file to my desktop. This is not normally where one (hopefully!) would save such a file. Rather one would be saving these data into the project folder out of which one is working. In the next vignette we will see how to <a href="https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html">detect MHWs in gridded data</a>.</p>
+<a href="#visualise-data" class="anchor"></a>Visualise data</h3>
+<p>Before we save our data for later use it is good practice to visualise them.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="va">OISST_data</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">t</span> <span class="op">==</span> <span class="st">"2019-12-01"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">lon</span>, y <span class="op">=</span> <span class="va">lat</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_tile</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">temp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="co"># borders() + # Activate this line to see the global map</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_fill_viridis_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_map.html">coord_quickmap</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span>, fill <span class="op">=</span> <span class="st">"SST (°C)"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span></pre></div>
+</div>
+<div id="save-data" class="section level3">
+<h3 class="hasAnchor">
+<a href="#save-data" class="anchor"></a>Save data</h3>
+<p>With the data downloaded and prepared for further use (and a test visual run), all that’s left to do is save them.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="co"># Save the data as an .Rds file because it has a much better compression rate than .RData</span>
+<span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="va">OISST_data</span>, file <span class="op">=</span> <span class="st">"~/Desktop/OISST_vignette.Rds"</span><span class="op">)</span></pre></div>
+<p>Note above that I have chosen to save the file to my desktop. This is not normally where one (hopefully!) would save such a file. Rather one would be saving these data into the project folder out of which one is working. In the next vignette we will see how to <a href="https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html">detect MHWs in gridded data</a> using the data downloaded here.</p>
+</div>
+</div>
+<div id="downloading-global-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#downloading-global-data" class="anchor"></a>Downloading global data</h2>
+<p>The method for downloading and preparing NOAA OISST data outlined in the first half of this vignette should be considered best practice for all applications except those that specifically need to look at the entire globe. If one needs to download the global dataset then it is preferable to go straight to the source. Note that one may still download the full global dataset using the methods above by setting the lon/lat extent to be the full width and height of the globe. The method outlined below will download over 13,000 individual files. This makes dealing with individual files very easy, but agglomerating them into one file can be very time consuming.</p>
+<div id="file-information-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#file-information-1" class="anchor"></a>File information</h3>
+<p>The first step in downloading the full global dataset is to tell you computer where they are. There is an automated way to do this but it requires a couple of additional packages and we aim to keep this vignette as simple and direct as possible. For our purposes today we will manually create the URLs of the files we want to download.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="co"># First we tell R where the data are on the interwebs</span>
+<span class="va">OISST_base_url</span> <span class="op">&lt;-</span> <span class="st">"https://www.ncei.noaa.gov/data/sea-surface-temperature-optimum-interpolation/v2.1/access/avhrr/"</span>
+<span class="co"># Note that one may go to this URL in any web browser to manually inspect the files</span>
+
+<span class="co"># Now we create a data.frame that contains all of the dates we want to download</span>
+  <span class="co"># NB: In order to change the dates download changes the dates in the following line</span>
+<span class="va">OISST_dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>t <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="st">"2019-12-01"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="st">"2019-12-31"</span><span class="op">)</span>, by <span class="op">=</span> <span class="st">"day"</span><span class="op">)</span><span class="op">)</span>
+
+<span class="co"># To finish up this step we add some text to those dates so they match the OISST file names</span>
+<span class="va">OISST_files</span> <span class="op">&lt;-</span> <span class="va">OISST_dates</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>t_day <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"-"</span>, <span class="st">""</span>, <span class="va">t</span><span class="op">)</span>,
+         t_month <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/substr.html">substr</a></span><span class="op">(</span><span class="va">t_day</span>, <span class="fl">1</span>, <span class="fl">6</span><span class="op">)</span>,
+         t_year <span class="op">=</span> <span class="fu"><a href="http://lubridate.tidyverse.org/reference/year.html">year</a></span><span class="op">(</span><span class="va">t</span><span class="op">)</span>,
+         file_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">OISST_base_url</span>, <span class="va">t_month</span>, <span class="st">"/"</span>, <span class="st">"oisst-avhrr-v02r01."</span>, <span class="va">t_day</span> ,<span class="st">".nc"</span><span class="op">)</span><span class="op">)</span></pre></div>
+</div>
+<div id="download-data" class="section level3">
+<h3 class="hasAnchor">
+<a href="#download-data" class="anchor"></a>Download data</h3>
+<p>Now that we have a dataframe that contains all of the URLs for the files we want to download we’ll create a function that will crawl through those URLs and download the files for us.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="co"># This function will go about downloading each day of data as a NetCDF file</span>
+<span class="co"># Note that this will download files into a 'data/OISST' folder in the root directory</span>
+  <span class="co"># If this folder does not exist it will create it</span>
+  <span class="co"># If it does not automatically create the folder it will need to be done manually</span>
+  <span class="co"># The folder that is created must be a new folder with no other files in it</span>
+  <span class="co"># A possible bug with netCDF files in R is they won't load correctly from </span>
+  <span class="co"># existing folders with other file types in them</span>
+<span class="co"># This function will also check if the file has been previously downloaded</span>
+  <span class="co"># If it has it will not download it again</span>
+<span class="va">OISST_url_daily_dl</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">target_URL</span><span class="op">)</span><span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="st">"~/data/OISST"</span>, showWarnings <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>
+  <span class="va">file_name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"~/data/OISST/"</span>,<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span><span class="op">(</span><span class="va">target_URL</span>, split <span class="op">=</span> <span class="st">"/"</span><span class="op">)</span>, <span class="st">"[["</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
+  <span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span><span class="op">(</span><span class="va">file_name</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span><span class="op">(</span>url <span class="op">=</span> <span class="va">target_URL</span>, method <span class="op">=</span> <span class="st">"libcurl"</span>, destfile <span class="op">=</span> <span class="va">file_name</span><span class="op">)</span>
+<span class="op">}</span>
+
+<span class="co"># The more cores used, the faster the data may be downloaded</span>
+  <span class="co"># It is best practice to not use all of the cores on one's machine</span>
+  <span class="co"># The laptop on which I am running this code has 8 cores, so I use 7 here</span>
+<span class="fu">doParallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/doParallel/man/registerDoParallel.html">registerDoParallel</a></span><span class="op">(</span>cores <span class="op">=</span> <span class="fl">7</span><span class="op">)</span>
+
+<span class="co"># And with that we are clear for take off</span>
+<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu">plyr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/plyr/man/l_ply.html">l_ply</a></span><span class="op">(</span><span class="va">OISST_files</span><span class="op">$</span><span class="va">file_name</span>, .fun <span class="op">=</span> <span class="va">OISST_url_daily_dl</span>, .parallel <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span> <span class="co"># ~15 seconds</span>
+
+<span class="co"># In roughly 15 seconds a user may have a full month of global data downloaded</span>
+<span class="co"># This scales well into years and decades, and is much faster with more cores</span>
+<span class="co"># Download speeds will also depend on the speed of the users internet connection</span></pre></div>
+</div>
+<div id="load-data" class="section level3">
+<h3 class="hasAnchor">
+<a href="#load-data" class="anchor"></a>Load data</h3>
+<p>The following code chunk contains the function we may use to load and prepare our OISST data for further use in R.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit">
+<span class="co"># This function will load and subset daily data into one data.frame</span>
+<span class="co"># Note that the subsetting by lon/lat is done before the data are loaded</span>
+  <span class="co"># This means it will use much less RAM and is viable for use on most laptops</span>
+  <span class="co"># Assuming one's study area is not too large</span>
+<span class="va">OISST_load</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">file_name</span>, <span class="va">lon1</span>, <span class="va">lon2</span>, <span class="va">lat1</span>, <span class="va">lat2</span><span class="op">)</span><span class="op">{</span>
+      <span class="va">OISST_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/tidync/reference/tidync.html">tidync</a></span><span class="op">(</span><span class="va">file_name</span><span class="op">)</span> <span class="op">%&gt;%</span>
+        <span class="fu"><a href="https://docs.ropensci.org/tidync/reference/hyper_filter.html">hyper_filter</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span><span class="op">(</span><span class="va">lon</span>, <span class="va">lon1</span>, <span class="va">lon2</span><span class="op">)</span>,
+                     lat <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span><span class="op">(</span><span class="va">lat</span>, <span class="va">lat1</span>, <span class="va">lat2</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+        <span class="fu"><a href="https://docs.ropensci.org/tidync/reference/hyper_tibble.html">hyper_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">lon</span>, <span class="va">lat</span>, <span class="va">time</span>, <span class="va">sst</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+        <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>t <span class="op">=</span> <span class="va">time</span>, temp <span class="op">=</span> <span class="va">sst</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>t <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="va">t</span>, origin <span class="op">=</span> <span class="st">"1978-01-01"</span><span class="op">)</span><span class="op">)</span>
+      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">OISST_dat</span><span class="op">)</span>
+<span class="op">}</span>
+
+<span class="co"># Locate the files that will be loaded</span>
+<span class="va">OISST_files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">dir</a></span><span class="op">(</span><span class="st">"~/data/OISST"</span>, full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
+
+<span class="co"># Load the data in parallel</span>
+<span class="va">OISST_dat</span> <span class="op">&lt;-</span> <span class="fu">plyr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/plyr/man/ldply.html">ldply</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">OISST_files</span>, .fun <span class="op">=</span> <span class="va">OISST_load</span>, .parallel <span class="op">=</span> <span class="cn">T</span>,
+                         lon1 <span class="op">=</span> <span class="fl">270</span>, lon2 <span class="op">=</span> <span class="fl">320</span>, lat1 <span class="op">=</span> <span class="fl">30</span>, lat2 <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>
+
+<span class="co"># It should only take a few seconds to load one month of data depending on the size of the lon/lat extent chosen</span></pre></div>
+<p>In the code chunk above I have chosen the spatial extent of longitude 270 to 320 and latitude 30 to 50. This a window over the Atlantic Coast of North America. One may simply change the lon/lat values above as necessary to match the desired study area. The function also re-labels the ‘time’ column as ‘t’, and the ‘sst’ column as ‘temp’. We do this now so that they match the default column names that are expected for calculating MHWs so we won’t have to do any extra work later on.</p>
+<p>Again, please note that trying to load too much data at once may be too much for the RAM on one’s machine. If running the above code causes one’s machine to hang, try loading a smaller subset of data. Or make friends with someone with a server sized machine.</p>
+</div>
+<div id="visualise-data-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#visualise-data-1" class="anchor"></a>Visualise data</h3>
+<p>It is always good to visualise data early and often in any workflow. The code pipeline below shows how we can visualise a day of data from those we’ve loaded.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit">
+<span class="va">OISST_dat</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">t</span> <span class="op">==</span> <span class="st">"2019-12-01"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">lon</span>, y <span class="op">=</span> <span class="va">lat</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_tile</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">temp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_fill_viridis_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_map.html">coord_quickmap</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span>, fill <span class="op">=</span> <span class="st">"SST (°C)"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span></pre></div>
+<p>In the next vignette we will see how to <a href="https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html">detect MHWs in gridded data</a>.</p>
 </div>
 </div>
   </div>
@@ -230,7 +375,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

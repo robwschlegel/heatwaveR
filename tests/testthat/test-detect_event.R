@@ -4,8 +4,8 @@ test_that("detect() returns the correct lists, data.table, and columns", {
   ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   res <- detect_event(ts)
   expect_is(res, "list")
-  expect_is(res$climatology, "data.table")
-  expect_is(res$event, "data.table")
+  expect_is(res$climatology, "tbl_df")
+  expect_is(res$event, "tbl_df")
   expect_equal(ncol(res$climatology),9)
   expect_equal(ncol(res$event), 22)
 })
@@ -64,16 +64,16 @@ test_that("threshClim2 must be logic values", {
   expect_error(detect_event(ts, threshClim2 = "aaa"))
 })
 
-test_that("no detected events returns an empty event dataframe and not an error", {
+test_that("no detected events returns a 1 row NA event dataframe and not an error", {
   sst_WA_flat <- sst_WA
   sst_WA_flat$temp <- 1
   res <- detect_event(ts2clm(sst_WA_flat, climatologyPeriod = c("1983-01-01", "2012-12-31")))
   expect_is(res, "list")
-  expect_is(res$climatology, "data.table")
-  expect_is(res$event, "data.table")
+  expect_is(res$climatology, "tbl_df")
+  expect_is(res$event, "tbl_df")
   expect_equal(ncol(res$climatology), 9)
   expect_equal(ncol(res$event), 22)
-  expect_equal(nrow(res$event), 0)
+  expect_equal(nrow(res$event), 1)
 })
 
 test_that("decimal places are rounded to the fourth place", {
@@ -101,9 +101,9 @@ test_that("roundRes argument functions correctly", {
 
 test_that("only one event with NA for rate_onset or rate_decline returns NA and not error", {
   res_clim <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-  res_onset <- detect_event(res_clim[885:892])
-  res_decline <- detect_event(res_clim[882:890])
-  res_both <- detect_event(res_clim[884:891])
+  res_onset <- detect_event(res_clim[885:892,])
+  res_decline <- detect_event(res_clim[882:890,])
+  res_both <- detect_event(res_clim[884:891,])
   expect_equal(res_onset$event$rate_onset, NA)
   expect_equal(res_decline$event$rate_decline, NA)
   expect_equal(res_both$event$rate_onset, NA)

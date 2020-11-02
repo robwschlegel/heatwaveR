@@ -61,11 +61,11 @@ greater than \code{maxPadLength} will be left as \code{NA}. Set as an
 integer. The default is \code{3} days.}
 }
 \value{
-The function will return a list of two components. The first being
-\code{threshold}, which shows the daily temperatures and on which specific days
-the given \code{threshold} was exceeded. The second component of the list is
-\code{exceedance}, which shows a medley of statistics for each discrete group
-of days in exceedance of the given \code{threshold}. Note that any additional
+The function will return a list of two tibbles (see the \code{tidyverse}).
+The first being \code{threshold}, which shows the daily temperatures and on which
+specific days the given \code{threshold} was exceeded. The second component of the
+list is \code{exceedance}, which shows a medley of statistics for each discrete
+group of days in exceedance of the given \code{threshold}. Note that any additional
 columns left in the data frame given to this function will be output in the
 \code{threshold} component of the output. For example, if one uses
 \code{\link{ts2clm}} to prepare a time series for analysis and leaves

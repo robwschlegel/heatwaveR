@@ -99,7 +99,7 @@ prevent rounding set \code{roundRes = FALSE}. This argument may only be given
 numeric values or FALSE.}
 }
 \value{
-The function will return a list of two data.tables (see \code{data.table}),
+The function will return a list of two tibbles (see the \code{tidyverse}),
 \code{climatology} and \code{event}, which are, surprisingly, the climatology
 and event results, respectively. The climatology contains the full time series of
 daily temperatures, as well as the the seasonal climatology, the threshold
