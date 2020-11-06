@@ -84,7 +84,7 @@ make_whole <- function(data, x = t, y = temp) {
 
   t_series <- ser %>%
     dplyr::left_join(y = dat) %>%
-    mutate(doy = lubridate::yday(ts_x),
+    dplyr::mutate(doy = lubridate::yday(ts_x),
            date = as.Date(as.POSIXct(ts_x)),
            ts_y = as.numeric(ts_y)) %>%
     dplyr::select(doy, date, ts_y, -ts_x)
