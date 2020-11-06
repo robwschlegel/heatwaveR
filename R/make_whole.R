@@ -71,7 +71,7 @@ make_whole <- function(data, x = t, y = temp) {
 
   ts_x <- eval(substitute(x), data)
   ts_y <- eval(substitute(y), data)
-  dat <- tibble::tibble(ts_x, ts_y)
+  dat <- data.frame(ts_x, ts_y)
   rm(ts_x); rm(ts_y)
 
   dat <- dat %>%
@@ -79,8 +79,8 @@ make_whole <- function(data, x = t, y = temp) {
     dplyr::summarise(ts_y = mean(ts_y, na.rm = TRUE)) %>%
     dplyr::ungroup()
 
-  ser <- tibble::tibble(ts_x = seq(min(lubridate::ymd(dat$ts_x)),
-                                   max(lubridate::ymd(dat$ts_x)), by = "1 day"))
+  ser <- data.frame(ts_x = seq(min(lubridate::ymd(dat$ts_x)),
+                               max(lubridate::ymd(dat$ts_x)), by = "1 day"))
 
   t_series <- ser %>%
     dplyr::left_join(y = dat) %>%
