@@ -20,7 +20,7 @@
 #' four arguments may be ignored.
 #' @param x This column is expected to contain a vector of dates as per the
 #' specification of \code{\link{ts2clm}}. If a column headed \code{t} is present in
-#' the dataframe, this argument may be ommitted; otherwise, specify the name of
+#' the dataframe, this argument may be omitted; otherwise, specify the name of
 #' the column with dates here.
 #' @param y This is a column containing the measurement variable. If the column
 #' name differs from the default (i.e. \code{temp}), specify the name here.
