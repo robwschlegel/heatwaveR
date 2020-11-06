@@ -94,14 +94,15 @@ make_whole <- function(data, x = t, y = temp) {
   # However, tidyr is listed as 'Suggests', which means it is sometimes loaded by other packages
   # as and when needed. This function (`make_whole`) is not used by default (it needs to be enabled
   # when needed if `make_whole_fast` fails, so perhaps this is good enough reason to use the more
-  # efficient code that relies on tidyr in stead of lines 82-91...?)
+  # efficient code that relies on tidyr instead of lines 82-91...?)
   #
   # t_series <- dat %>%
-  # dplyr::rename(date = ts_x) %>%
+  #   dplyr::rename(date = ts_x) %>%
   #   dplyr::mutate(date = as.Date(as.POSIXct(date)),
   #                 ts_y = as.numeric(ts_y)) %>%
   #   tidyr::complete(date = seq.Date(min(lubridate::ymd(ts_x)), max(lubridate::ymd(ts_x)), by = "day")) %>%
-  #   dplyr::mutate(doy = lubridate::yday(date))
+  #   dplyr::mutate(doy = lubridate::yday(date)) %>%
+  #   dplyr::select(doy, date, ts_y)
 
   t_series$doy <- as.integer(ifelse(
     lubridate::leap_year(lubridate::year(t_series$date)) == FALSE,
