@@ -257,7 +257,7 @@ category <- function(data,
                     thresh_3x = round(thresh_2x + diff, roundVal),
                     thresh_4x = round(thresh_3x + diff, roundVal))
 
-    if(MCScorrect){
+    if(MCScorrect) {
       clim_diff <- clim_diff %>%
         dplyr::mutate(diff = round(dplyr::case_when(thresh_4x + diff <= -1.8 ~ -(thresh + 1.8)/4, TRUE ~ diff), roundVal),
                       thresh_2x = round(thresh + diff, roundVal),
@@ -267,7 +267,7 @@ category <- function(data,
 
     moderate <- strong <- severe <- extreme <- NULL
 
-    if(max(cat_frame$i_max) < 0){
+    if(max(cat_frame$i_max) < 0) {
       clim_diff$ts_y <- -clim_diff$ts_y
       clim_diff$seas <- -clim_diff$seas
       clim_diff$thresh <- -clim_diff$thresh

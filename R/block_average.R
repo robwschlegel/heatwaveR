@@ -84,17 +84,17 @@ block_average <- function(data,
                           y = temp,
                           report = "full") {
 
-  if("climatology" %in% names(data)){
+  if("climatology" %in% names(data)) {
   clim <- data$climatology
   ts_x <- eval(substitute(x), data$climatology)
   ts_y <- eval(substitute(y), data$climatology)
   event <- data$event
-  } else if("threshold" %in% names(data)){
+  } else if("threshold" %in% names(data)) {
     clim <- data$threshold
     ts_x <- eval(substitute(x), data$threshold)
     ts_y <- eval(substitute(y), data$threshold)
     event <- data$exceedance
-    } else{
+    } else {
       stop("Please ensure you are providing this function with the output of either detect_event() or exceedance().")
     }
 

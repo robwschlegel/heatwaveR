@@ -223,8 +223,8 @@ detect_event <- function(data,
     stop("Please ensure that 'joinAcrossGaps' is either TRUE or FALSE.")
   if (!(is.numeric(maxGap)))
     stop("Please ensure that 'maxGap' is a numeric/integer value.")
-  if (!(is.numeric(roundRes))){
-    if(!roundRes == FALSE){
+  if (!(is.numeric(roundRes))) {
+    if(!roundRes == FALSE) {
       stop("Please ensure that 'roundRes' is either a numeric value or FALSE.")
     }
   }
@@ -292,7 +292,7 @@ detect_event <- function(data,
                           index_start = min(row_index),
                           index_peak = row_index[mhw_rel_seas == max(mhw_rel_seas)][1],
                           index_end = max(row_index),
-                          duration = index_end-index_start+1,
+                          duration = index_end - index_start + 1,
                           date_start = min(ts_x),
                           date_peak = ts_x[mhw_rel_seas == max(mhw_rel_seas)][1],
                           date_end = max(ts_x),

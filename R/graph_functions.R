@@ -280,7 +280,7 @@ event_line <- function(data,
       theme(legend.direction = "vertical")
     ep
 
-  } else{
+  } else {
 
     lineCol <- c(
       "Temperature" = "black",
@@ -371,7 +371,7 @@ lolli_plot <- function(data,
   event <- data$event %>%
     dplyr::select(metric, xaxis)
 
-  y_top <- as.numeric(event[which(abs(event[ ,1]) == max(abs(event[ ,1])))[1], 1])*1.05
+  y_top <- as.numeric(event[which(abs(event[ ,1]) == max(abs(event[ ,1])))[1], 1]) * 1.05
   if (y_top >= 0) y_limits <- c(0, y_top)
   if (y_top < 0) y_limits <- c(y_top, 0)
 

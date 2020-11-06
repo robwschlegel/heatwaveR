@@ -225,7 +225,7 @@ ts2clm <- function(data,
     }
 
     cols <- names(ts_clim)
-    if(is.numeric(roundClm)){
+    if(is.numeric(roundClm)) {
       ts_clim[,(cols) := round(.SD, roundClm), .SDcols = cols]
     }
     rm(ts_mat)
