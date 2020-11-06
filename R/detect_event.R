@@ -7,7 +7,7 @@
 #' other means.
 #'
 #' @param data A data frame with at least four columns. In the default setting
-#' (i.e. ommitting the arguments \code{x}, \code{y}, \code{seas}, and \code{thresh};
+#' (i.e. omitting the arguments \code{x}, \code{y}, \code{seas}, and \code{thresh};
 #' see immediately below), the data set is expected to have the headers \code{t},
 #' \code{temp}, \code{seas}, and \code{thresh}. The \code{t}
 #' column is a vector of dates of class \code{Date}, \code{temp} is the measured
