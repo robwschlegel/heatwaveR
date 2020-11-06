@@ -90,6 +90,14 @@ make_whole <- function(data, x = t, y = temp) {
     dplyr::select(doy, date, ts_y, -ts_x)
   rm(ser); rm(dat)
 
+  # lines 82-91 may be replaced by this (below) but this requires tidyr :-(
+  # t_series <- dat %>%
+  # dplyr::rename(date = ts_x) %>%
+  #   dplyr::mutate(date = as.Date(as.POSIXct(date)),
+  #                 ts_y = as.numeric(ts_y)) %>%
+  #   tidyr::complete(date = seq.Date(min(lubridate::ymd(ts_x)), max(lubridate::ymd(ts_x)), by = "day")) %>%
+  #   dplyr::mutate(doy = lubridate::yday(date))
+
   t_series$doy <- as.integer(ifelse(
     lubridate::leap_year(lubridate::year(t_series$date)) == FALSE,
     ifelse(t_series$doy > feb28, t_series$doy + 1, t_series$doy),
