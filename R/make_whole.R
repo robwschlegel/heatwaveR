@@ -90,7 +90,12 @@ make_whole <- function(data, x = t, y = temp) {
     dplyr::select(doy, date, ts_y, -ts_x)
   rm(ser); rm(dat)
 
-  # lines 82-91 may be replaced by this (below) but this requires tidyr :-(
+  # Lines 82-91 may be replaced by this (below) but this requires tidyr :-(
+  # However, tidyr is listed as 'Suggests', which means it is sometimes loaded by other packages
+  # as and when needed. This function (`make_whole`) is not used by default (it needs to be enabled
+  # when needed if `make_whole_fast` fails, so perhaps this is good enough reason to use the more
+  # efficient code that relies on tidyr in stead of lines 82-91...?)
+  #
   # t_series <- dat %>%
   # dplyr::rename(date = ts_x) %>%
   #   dplyr::mutate(date = as.Date(as.POSIXct(date)),
