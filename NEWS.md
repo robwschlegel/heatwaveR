@@ -1,4 +1,4 @@
-# heatwaveR 0.4.4.9002 (2020-07-30)
+# heatwaveR 0.4.4.9002 (2020-11-06)
 
 -   Remove the last offending trace of **`zoo`** from `make_whole`.
 -   Fix miscellaneous typos and formatting inconsistencies.
