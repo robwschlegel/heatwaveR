@@ -166,15 +166,15 @@ ts2clm <- function(data,
       stop("Please ensure that 'smoothPercentileWidth' is a numeric/integer value.")
     if (!(is.logical(clmOnly)))
       stop("Please ensure that 'clmOnly' is either TRUE or FALSE.")
-    if (!(is.numeric(roundClm))){
-      if(!roundClm == FALSE){
+    if (!(is.numeric(roundClm))) {
+      if (!roundClm == FALSE) {
         stop("Please ensure that 'roundClm' is either a numeric value or FALSE.")
       }
     }
 
     clim_start <- climatologyPeriod[1]
     clim_end <- climatologyPeriod[2]
-    doy <- temp <- .SD <-  NULL
+    doy <- .SD <-  NULL
 
     ts_x <- eval(substitute(x), data)
     ts_y <- eval(substitute(y), data)
@@ -190,7 +190,7 @@ ts2clm <- function(data,
 
     ts_whole <- make_whole_fast(ts_xy)
 
-    if (length(stats::na.omit(ts_whole$ts_y)) < length(ts_whole$ts_y) & is.numeric(maxPadLength)){
+    if (length(stats::na.omit(ts_whole$ts_y)) < length(ts_whole$ts_y) & is.numeric(maxPadLength)) {
       ts_whole <- na_interp(doy = ts_whole$doy,
                             x = ts_whole$ts_x,
                             y = ts_whole$ts_y,
@@ -225,7 +225,7 @@ ts2clm <- function(data,
     }
 
     cols <- names(ts_clim)
-    if(is.numeric(roundClm)) {
+    if (is.numeric(roundClm)) {
       ts_clim[,(cols) := round(.SD, roundClm), .SDcols = cols]
     }
     rm(ts_mat)
