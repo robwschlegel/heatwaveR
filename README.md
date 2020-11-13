@@ -241,10 +241,10 @@ functions were contributed by Robert. W. Schlegel.
 
 Robert W. Schlegel
 
-Postdoctoral Fellow
+Data Scientist
 
-Ocean Frontier Institute
+Laboratoire d’Océanographie de Villefranche-sur-Mer, LOV
 
-Dalhousie University
+Institut de la Mer de Villefranche, IMEV
 
-<robert.schlegel@dal.ca>
+<robert.schlegel@imev-mer.fr>

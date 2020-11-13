@@ -1,3 +1,7 @@
+# heatwaveR 0.4.4.9003 (2020-11-13)
+
+-   Minor fixes for passing build
+
 # heatwaveR 0.4.4.9002 (2020-11-06)
 
 -   Remove the last offending trace of **`zoo`** from `make_whole`.
@@ -11,7 +15,7 @@
 
 -   dplyr v1.0.0 no longer handles empty data.frames the same
 
-    -   It now forces them to by logical type, so empty data.frames no longer unnest with normal results
+    -   It now forces them to logical type, so empty data.frames no longer unnest with normal results
     -   This was fixed by having `detect_event` and `category` return single row NA data.frames instead
 
 -   Thinking about phasing out **`data.table`**
