@@ -1,3 +1,7 @@
+# heatwaveR 0.4.4.9004 (2020-12-16)
+
+-   Moved away from Travis CI to GitHub actions
+
 # heatwaveR 0.4.4.9004 (2020-11-18)
 
 -   Fixed bug in `proto_event` that caused `joinAcrossGaps` argument to flag the first n days of a time series as part of an event
