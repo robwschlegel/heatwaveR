@@ -3,6 +3,10 @@
 -   `exceedance` now outputs a one row all NA data.frame when there are no events in exceedance of the threshold
 -   The previous version would return an error if no exceedances were detected, making it generally unusable in gridded data
 
+# heatwaveR 0.4.4.9004 (2020-12-16)
+
+-   Moved away from Travis CI to GitHub actions 
+
 # heatwaveR 0.4.4.9004 (2020-11-18)
 
 -   Fixed bug in `proto_event` that caused `joinAcrossGaps` argument to flag the first n days of a time series as part of an event
