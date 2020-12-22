@@ -29,7 +29,7 @@ directly if they meet the given criteria.}
 
 \item{x}{This column is expected to contain a vector of dates as per the
 specification of \code{make_whole}. If a column headed \code{t} is present in
-the dataframe, this argument may be ommitted; otherwise, specify the name of
+the dataframe, this argument may be omitted; otherwise, specify the name of
 the column with dates here.}
 
 \item{y}{This is a column containing the measurement variable. If the column
@@ -86,7 +86,7 @@ The information shown in the \code{threshold} component is:
   \item{exceedance}{Boolean indicting if all criteria that define a discrete
   group in exceedance of the \code{threshold} are met.}
   \item{exceedance_no}{A sequential number indicating the ID and order of
-  occurence of exceedances.}
+  occurrence of exceedances.}
 
 The individual exceedances are summarised using the following metrics:
   \item{exceedance_no}{The same sequential number indicating the ID and
@@ -121,7 +121,7 @@ daily temperatures, with few missing values. The accompanying function
 suitable for use with \code{exceedance}, although this may also be accomplished
 'by hand' as long as the criteria are met as discussed in the documentation
 to \code{\link{make_whole}}.
-\item Future versions seek to accomodate monthly and annual time series, too.
+\item Future versions seek to accommodate monthly and annual time series, too.
 \item The calculation of onset and decline rates assumes that exceedance of the
 \code{threshold} started a half-day before the start day and ended a half-day
 after the end-day. This is consistent with the duration definition as implemented,
