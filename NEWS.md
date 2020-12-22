@@ -2,6 +2,8 @@
 
 -   `exceedance` now outputs a one row all NA data.frame when there are no events in exceedance of the threshold
 -   The previous version would return an error if no exceedances were detected, making it generally unusable in gridded data
+-   All **`plotly`** dependencies were removed due to the orphaning of the package
+    - The code to allow `geom_flame` to work with **`plotly`** may be found here: https://github.com/robwschlegel/MHWapp/blob/master/shiny/functions.R
 
 # heatwaveR 0.4.4.9004 (2020-12-16)
 

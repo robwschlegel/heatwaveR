@@ -17,26 +17,25 @@ ByteCompile: true
 RoxygenNote: 7.1.1
 Depends: R (>= 3.0.2)
 Suggests:
-    ggpubr,
-    testthat,
-    knitr,
-    rmarkdown,
     covr,
+    ggpubr,
+    knitr,
+    rerddap,
+    rmarkdown,
+    testthat,
     tidync,
-    tidyr,
-    rerddap
+    tidyr
 Imports:
-    plyr,
-    tibble,
-    lubridate,
-    dplyr,
-    stats,
-    utils,
-    grid,
-    RcppRoll,
-    plotly, 
     data.table, 
-    ggplot2
+    dplyr,
+    ggplot2,
+    grid,
+    lubridate,
+    plyr,
+    RcppRoll,
+    stats,
+    tibble,
+    utils
 LinkingTo: Rcpp (>= 0.12.16), RcppArmadillo
 NeedsCompilation: yes
 VignetteBuilder: knitr
