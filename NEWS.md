@@ -1,3 +1,11 @@
+# heatwaveR 0.4.4.9006 (2021-01-06)
+
+-   Some minor tweaks to satisfy CRAN
+
+# heatwaveR 0.4.4.9005 (2020-12-30)
+
+-   Pushing to GitHub actions now triggers codecov correctly
+
 # heatwaveR 0.4.4.9005 (2020-12-22)
 
 -   `exceedance` now outputs a one row all NA data.frame when there are no events in exceedance of the threshold

@@ -121,9 +121,10 @@ event_line <- function(data,
     stop("Please ensure you have spelled the desired metric correctly.")
   }
 
-  index_start <- index_end <- NULL
+  index_start <- index_end <- event_idx <-  NULL
 
-  event <- event[order(-abs(event[colnames(event) == metric])),]
+  event_idx <- as.vector(-abs(event[colnames(event) == metric]))
+  event <- event[order(event_idx),]
   event <- event %>%
     dplyr::filter(duration >= min_duration) %>%
     dplyr::mutate(index_start_fix = index_start - 1,
