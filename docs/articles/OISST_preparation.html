@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9006</span>
       </span>
     </div>
 
@@ -54,7 +54,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -98,7 +98,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/robwschlegel/heatwaveR">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
     github
   </a>
@@ -119,14 +119,13 @@
 
       
 
-      </header><script src="OISST_preparation_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="OISST_preparation_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="OISST_preparation_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="OISST_preparation_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Downloading and Preparing NOAA OISST Data</h1>
                         <h4 class="author">Robert W Schlegel and AJ Smit</h4>
             
-            <h4 class="date">2020-12-22</h4>
+            <h4 class="date">2021-01-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/OISST_preparation.Rmd"><code>vignettes/OISST_preparation.Rmd</code></a></small>
       <div class="hidden name"><code>OISST_preparation.Rmd</code></div>
@@ -160,7 +159,7 @@
 <span class="co"># The packages we will use</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span> <span class="co"># A staple for modern data management in R</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org">lubridate</a></span><span class="op">)</span> <span class="co"># Useful functions for dealing with dates</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span> <span class="co"># The preferred library for data visualisation</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span> <span class="co"># The preferred library for data visualisation</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/tidync/">tidync</a></span><span class="op">)</span> <span class="co"># For easily dealing with NetCDF data</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/rerddap/">rerddap</a></span><span class="op">)</span> <span class="co"># For easily downloading subsets of data</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">doParallel</span><span class="op">)</span> <span class="co"># For parallel processing</span></code></pre></div>

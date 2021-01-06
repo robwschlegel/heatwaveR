@@ -95,7 +95,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9006</span>
       </span>
     </div>
 
@@ -103,7 +103,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -147,7 +147,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/robwschlegel/heatwaveR">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
     github
   </a>
@@ -175,6 +175,22 @@
       <small>Source: <a href='https://github.com/robwschlegel/heatwaveR/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="heatwaver-0449006-2021-01-06" class="section level1">
+<h1 class="page-header" data-toc-text="0.4.4.9006">
+<a href="#heatwaver-0449006-2021-01-06" class="anchor"></a>heatwaveR 0.4.4.9006 (2021-01-06)<small> Unreleased </small>
+</h1>
+<ul>
+<li>Some minor tweaks to satisfy CRAN</li>
+</ul>
+</div>
+    <div id="heatwaver-0449005-2020-12-30" class="section level1">
+<h1 class="page-header" data-toc-text="0.4.4.9005">
+<a href="#heatwaver-0449005-2020-12-30" class="anchor"></a>heatwaveR 0.4.4.9005 (2020-12-30)<small> Unreleased </small>
+</h1>
+<ul>
+<li>Pushing to GitHub actions now triggers codecov correctly</li>
+</ul>
+</div>
     <div id="heatwaver-0449005-2020-12-22" class="section level1">
 <h1 class="page-header" data-toc-text="0.4.4.9005">
 <a href="#heatwaver-0449005-2020-12-22" class="anchor"></a>heatwaveR 0.4.4.9005 (2020-12-22)<small> Unreleased </small>
@@ -183,6 +199,12 @@
 <li>
 <code>exceedance</code> now outputs a one row all NA data.frame when there are no events in exceedance of the threshold</li>
 <li>The previous version would return an error if no exceedances were detected, making it generally unusable in gridded data</li>
+<li>All <strong><code>plotly</code></strong> dependencies were removed due to the orphaning of the package
+<ul>
+<li>The code to allow <code>geom_flame</code> to work with <strong><code>plotly</code></strong> may be found here: <a href="https://github.com/robwschlegel/MHWapp/blob/master/shiny/functions.R" class="uri">https://github.com/robwschlegel/MHWapp/blob/master/shiny/functions.R</a>
+</li>
+</ul>
+</li>
 </ul>
 </div>
     <div id="heatwaver-0449004-2020-12-16" class="section level1">
