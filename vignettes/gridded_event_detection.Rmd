@@ -130,7 +130,7 @@ As mentioned above, recent changes to how __`dplyr`__ interacts with one's compu
 
 ## Case study
 
-Because of human-induced climate change, we anticipate that extreme events will occur more frequently and that they will become greater in intensity. Here we investigate this hypothesis by using gridded SST data, which is the only way that we can assess if this trend is unfolding across large ocean regions. Using the gridded [0.25 degree Reynolds OISST](https://doi.org/10.1175/2007JCLI1824.1), we will detect marine heatwaves (MHWs) around South Africa by applying the `detect_event()` function pixel-by-pixel to the data we downloaded in [the previous vignette](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html). After detecting the events, we will fit a generalised linear model (GLM) to each pixel to calculate rates of change in some MHW metrics, and then plot the estimated trends. 
+Because of human-induced climate change, we anticipate that extreme events will occur more frequently and that they will become greater in intensity. Here we investigate this hypothesis by using gridded SST data, which is the only way that we can assess if this trend is unfolding across large ocean regions. Using the gridded 0.25 degree Reynolds OISST, we will detect marine heatwaves (MHWs) around South Africa by applying the `detect_event()` function pixel-by-pixel to the data we downloaded in [the previous vignette](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html). After detecting the events, we will fit a generalised linear model (GLM) to each pixel to calculate rates of change in some MHW metrics, and then plot the estimated trends. 
 
 ### Trend detection
 
@@ -140,22 +140,14 @@ Up first we see how to calculate the number of events that occurred per pixel.
 
 ```{r event-tally}
 # summarise the number of unique longitude, latitude and year combination:
-event_freq <- MHW_result %>% 
+OISST_n <- MHW_result %>% 
   mutate(year = lubridate::year(date_start)) %>% 
   group_by(lon, lat, year) %>% 
-  summarise(n = n(), .groups = "drop")
-head(event_freq)
-
-# create complete grid for merging with:
-sst_grid <- OISST %>% 
-  select(lon, lat, t) %>% 
-  mutate(t = lubridate::year(t)) %>% 
-  dplyr::rename(year = t) %>% 
-  distinct()
-
-# and merge:
-OISST_n <- left_join(sst_grid, event_freq, by = c("lon", "lat", "year")) %>% 
+  summarise(n = n(), .groups = "drop") %>% 
+  group_by(lon, lat) %>%
+  tidyr::complete(year = c(1982:2019)) %>% # Note that these dates may differ
   mutate(n = ifelse(is.na(n), 0, n))
+head(OISST_n)
 ```
 
 Then we specify the particulars of the GLM we are going to use.
