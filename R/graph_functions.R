@@ -123,8 +123,8 @@ event_line <- function(data,
 
   index_start <- index_end <- event_idx <-  NULL
 
-  event_idx <- as.vector(-abs(event[colnames(event) == metric]))
-  event <- event[order(event_idx),]
+  event_idx <- as.vector(-abs(event[colnames(event) == metric])[,1])
+  event <- event[base::order(event_idx),]
   event <- event %>%
     dplyr::filter(duration >= min_duration) %>%
     dplyr::mutate(index_start_fix = index_start - 1,

@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.5</span>
       </span>
     </div>
 
@@ -54,7 +54,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -98,7 +98,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/robwschlegel/heatwaveR">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
     github
   </a>
@@ -119,13 +119,14 @@
 
       
 
-      </header><script src="gridded_event_detection_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="gridded_event_detection_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="gridded_event_detection_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="gridded_event_detection_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Detecting Events in Gridded Data</h1>
                         <h4 class="author">Robert W Schlegel and AJ Smit</h4>
             
-            <h4 class="date">2021-01-06</h4>
+            <h4 class="date">2021-01-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/gridded_event_detection.Rmd"><code>vignettes/gridded_event_detection.Rmd</code></a></small>
       <div class="hidden name"><code>gridded_event_detection.Rmd</code></div>
@@ -140,7 +141,7 @@
 <p>In the previous vignette we saw how to <a href="https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html">download and prepare OISST data</a>. In this vignette we will use the subsetted data we downloaded (not global) for our example on how to detect MHWs in gridded data.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span> <span class="co"># For basic data manipulation</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span> <span class="co"># For visualising data</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span> <span class="co"># For visualising data</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://robwschlegel.github.io/heatwaveR/index.html">heatwaveR</a></span><span class="op">)</span> <span class="co"># For detecting MHWs</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/tidync/">tidync</a></span><span class="op">)</span> <span class="co"># For easily dealing with NetCDF data</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">doParallel</span><span class="op">)</span> <span class="co"># For parallel processing</span></code></pre></div>
@@ -234,7 +235,7 @@
 <div id="case-study" class="section level2">
 <h2 class="hasAnchor">
 <a href="#case-study" class="anchor"></a>Case study</h2>
-<p>Because of human-induced climate change, we anticipate that extreme events will occur more frequently and that they will become greater in intensity. Here we investigate this hypothesis by using gridded SST data, which is the only way that we can assess if this trend is unfolding across large ocean regions. Using the gridded <a href="http://dx.doi.org/10.1175/2007JCLI1824.1">0.25 degree Reynolds OISST</a>, we will detect marine heatwaves (MHWs) around South Africa by applying the <code><a href="../reference/detect_event.html">detect_event()</a></code> function pixel-by-pixel to the data we downloaded in <a href="https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html">the previous vignette</a>. After detecting the events, we will fit a generalised linear model (GLM) to each pixel to calculate rates of change in some MHW metrics, and then plot the estimated trends.</p>
+<p>Because of human-induced climate change, we anticipate that extreme events will occur more frequently and that they will become greater in intensity. Here we investigate this hypothesis by using gridded SST data, which is the only way that we can assess if this trend is unfolding across large ocean regions. Using the gridded <a href="https://doi.org/10.1175/2007JCLI1824.1">0.25 degree Reynolds OISST</a>, we will detect marine heatwaves (MHWs) around South Africa by applying the <code><a href="../reference/detect_event.html">detect_event()</a></code> function pixel-by-pixel to the data we downloaded in <a href="https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html">the previous vignette</a>. After detecting the events, we will fit a generalised linear model (GLM) to each pixel to calculate rates of change in some MHW metrics, and then plot the estimated trends.</p>
 <div id="trend-detection" class="section level3">
 <h3 class="hasAnchor">
 <a href="#trend-detection" class="anchor"></a>Trend detection</h3>
