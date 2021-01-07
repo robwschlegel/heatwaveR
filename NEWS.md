@@ -1,6 +1,6 @@
-# heatwaveR 0.4.5 (2021-01-06)
+# heatwaveR 0.4.5 (2021-01-07)
 
--   Pushed new main version to CRAN
+-   Pushed new major version to CRAN
 
 # heatwaveR 0.4.4.9006 (2021-01-06)
 

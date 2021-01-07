@@ -6,7 +6,7 @@
 coverage](https://codecov.io/gh/robwschlegel/heatwaveR/branch/master/graph/badge.svg)](https://codecov.io/gh/robwschlegel/heatwaveR?branch=master)
 [![JOSS](http://joss.theoj.org/papers/10.21105/joss.00821/status.svg)](https://doi.org/10.21105/joss.00821)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1324308.svg)](https://doi.org/10.5281/zenodo.1324308)
-[![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/heatwaveR)](https://cran.r-project.org/web/packages/heatwaveR/index.html)
+[![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/heatwaveR)](https://cran.r-project.org/package=heatwaveR)
 
 The **`heatwaveR`** package is a project-wide update to the
 [**`RmarineHeatWaves`**](https://github.com/ajsmit/RmarineHeatWaves)
