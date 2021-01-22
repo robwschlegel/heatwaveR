@@ -1,0 +1,142 @@
+---
+title: "Saving MHW Output as NetCDF Files"
+author: "Robert W Schlegel"
+date: "`r Sys.Date()`"
+description: "This vignette demonstrates how to save marine heatwaves (MHWs) detected in gridded data as NetCDF files."
+output: 
+  rmarkdown::html_vignette:
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{Saving MHW Output as NetCDF Files}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r global_options, include = FALSE}
+knitr::opts_chunk$set(fig.width = 4, fig.align = 'center',
+                      echo = TRUE, warning = FALSE, message = FALSE, 
+                      eval = FALSE, tidy = FALSE)
+```
+
+## Overview
+
+In the previous vignette we saw how to [detect marine heatwaves (MHWs) in gridded data](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html). In this vignette we will use those gridded MHW results to see how to save them as a NetCDF file.
+
+```{r load-pkg}
+library(dplyr) # For basic data manipulation
+library(tidync) # For easily dealing with NetCDF data
+library(ncdf4) # For creating NetCDF files
+library(abind) # For dealing with arrays
+library(ggplot2) # For visualising data
+library(heatwaveR) # For detecting MHWs
+library(doParallel) # For parallel processing
+```
+
+## Loading data
+
+Please see the [downloading and preparing OISST data](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html) and [detecting marine heatwaves (MHWs) in gridded data](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html) vignettes first if you have not yet worked through them. We will be using the MHW results created from those two vignettes below. 
+
+```{r load}
+MHW_res_grid <- readRDS("~/Desktop/MHW_result.Rds")
+```
+
+## Prepare the data
+
+The main sticking point between MHW results and the NetCDF file format in R is that NetCDF files will only accept the file type in R known as "arrays", and most R outputs are data.frames. So the majority of what we need to do is to convert our data from data.frames to arrays. There are many ways to do this and a search of the interwebs will produce a plethora of results. Over the years I have settled into an approach that I use operationally for the MHW Tracker that I will also use here. It is not necessarily the fastest method, nor does it use the fewest lines of code possible, but it does follow the **`tidyverse`** approach to programming, and I think it is about as transparent as this process can be. We will create two function below that will help us along in this process.
+
+```{r data-prep}
+# Function for creating arrays from data.frames
+# df <- filter(df_step, event_no == 73)
+df_acast <- function(df, lon_lat){
+  
+  # Ensure correct grid size
+  # med_coords_sub <- med_coords %>% 
+  #   filter(lat == df$lat[1])
+  
+  # Round data for massive file size reduction
+  # df$temp <- round(df$temp, 2)
+  
+  # Force grid
+  res <- df %>%
+    right_join(lon_lat, by = c("lon", "lat")) %>% 
+    # mutate(event_no = df$event_no[1]) %>% 
+    arrange(lon, lat)
+  
+  # Create array
+  res_array <- base::array(res[,4], dim = c(length(unique(lon_lat$lon)), length(unique(lon_lat$lat))))#, 1))
+  dimnames(res_array) <- list(lon = unique(lon_lat$lon),
+                              lat = unique(lon_lat$lat))#,
+                              # event_no = unique(df$event_no))
+  return(res_array)
+}
+
+# Wrapper function for last step before data are entered into NetCDF files
+# df <-  MHW_res_grid
+# col_choice <- "duration"
+df_proc <- function(df, col_choice){
+  
+  # Determine the correct array dimensions
+  lon <- seq(min(df$lon), max(df$lon), by = 0.25)
+  lat <- seq(min(df$lat), max(df$lat), by = 0.25)
+  event_no <- seq(min(df$event_no), max(df$event_no), by = 1)
+  
+  # Create full lon/lat grid
+  lon_lat <- expand.grid(lon = lon, lat = lat) %>% 
+    data.frame()
+  
+  # Get only the desired columns
+  df_step <- df[c("lon", "lat", "event_no", col_choice)] #%>% 
+    # mutate(temp = ifelse(is.na(temp), NA, temp),
+           # t = as.integer(t)) %>% 
+    # na.omit()
+  
+  # Acast
+  dfa <- df_step %>%
+    mutate(event_no2 = event_no) %>%
+    plyr::daply(., c("event_no"), df_acast, .parallel = T, lon_lat = lon_lat) #%>% 
+    # mutate(event_no2 = NULL)
+  
+  
+  # dfa <- df_step %>%
+  #   mutate(event_no2 = event_no) %>%
+  #   group_by(event_no2) %>%
+  #   tidyr::nest() %>%
+  #   mutate(data2 = purrr::map(data, df_acast, lon_lat = lon_lat)) %>%
+  #   select(-data)
+  
+  # Final form
+  # dfa_res <- abind(dfa, along = 3, hier.names = T)
+  # rm(df_step); gc()
+  # dimnames(dfa_res)
+  return(dfa)
+}
+
+# We must now run this function on each column of data we want to add to the NetCDF file
+doParallel::registerDoParallel(cores = 7)
+prep_dur <- df_proc(MHW_res_grid, "duration")
+```
+
+## Create NetCDF shell
+
+With our data prepared into a series of arrays, we now need to set the stage for our NetCDF file. The important thing here is that the dimensions of the arrays we created match up to the dimensions of the NetCDF file.
+
+```{r nc-shell}
+
+```
+
+## Create NetCDF file
+
+The last step in this process is to add the prepared data top the NetCDF shell we have constructed. The **`ncdf4`** package helps to make this all a relatively straight forward process.
+
+```{r nc-make}
+
+```
+
+## Visualising the results
+
+Let's not stop there. To ensure that the NetCDF file was created correctly we want to load it back into our workspace and plot the results.
+
+```{r res-vis}
+
+```
+

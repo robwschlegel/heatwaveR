@@ -122,6 +122,9 @@ OISST_files <- dir("~/Desktop", pattern = "OISST_lon_*", full.names = T)
 system.time(
 MHW_result <- plyr::ldply(OISST_files, .fun = dplyr_wraper, .parallel = T)
 ) # 31 seconds
+
+# Save for later use as desired
+saveRDS(MHW_result, "~/Desktop/MHW_result.Rds")
 ```
 
 Even though this technique is not much faster computationally, it is much lighter on our memory (RAM) as it only loads one longitude slice of our data at a time. To maximise efficiency even further I would recommend writing out this full workflow in a stand-alone script and then running it using `source()` directly from an R terminal. The gain in speed here appears nominal, but as one scales this up the speed boost becomes apparent.
