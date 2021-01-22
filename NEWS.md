@@ -1,3 +1,7 @@
+# heatwaveR 0.4.5 (2021-01-23)
+
+-   Created a new vignette that shows how to save gridded MHW results to a NetCDF file
+
 # heatwaveR 0.4.5 (2021-01-07)
 
 -   Pushed new major version to CRAN

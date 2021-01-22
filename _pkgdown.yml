@@ -20,6 +20,8 @@ navbar:
       href: articles/OISST_preparation.html
     - text: "Detecting Events in Gridded Data"
       href: articles/gridded_event_detection.html
+    - text: "Saving MHW Results to NetCDF"
+      href: articles/MHW_to_nc.html
     - text: "Alternative Thresholds"
       href: articles/complex_clims.html
   - text: "Citations"
