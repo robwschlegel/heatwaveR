@@ -54,7 +54,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -84,6 +84,9 @@
       <a href="../articles/gridded_event_detection.html">Detecting Events in Gridded Data</a>
     </li>
     <li>
+      <a href="../articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a>
+    </li>
+    <li>
       <a href="../articles/complex_clims.html">Alternative Thresholds</a>
     </li>
   </ul>
@@ -98,7 +101,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/robwschlegel/heatwaveR">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
     github
   </a>
@@ -119,13 +122,14 @@
 
       
 
-      </header><script src="exceedance_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="exceedance_files/header-attrs-2.5/header-attrs.js"></script><link href="exceedance_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="exceedance_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Calculating and Visualising Exceedances</h1>
                         <h4 class="author">Robert W Schlegel</h4>
             
-            <h4 class="date">2021-01-07</h4>
+            <h4 class="date">2021-01-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/exceedance.Rmd"><code>vignettes/exceedance.Rmd</code></a></small>
       <div class="hidden name"><code>exceedance.Rmd</code></div>
@@ -146,7 +150,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Activate libraries</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://robwschlegel.github.io/heatwaveR/index.html">heatwaveR</a></span><span class="op">)</span>
 
 <span class="co"># Calculate exceedence</span>
