@@ -41,6 +41,12 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@v1
 
+      - name: Provide gfortran
+        if: runner.os == 'macOS'
+        run: |
+          sudo ln -s /usr/local/bin/gfortran-9 /usr/local/bin/gfortran
+          gfortran --version
+
       - name: Query dependencies
         run: |
           install.packages('remotes')
