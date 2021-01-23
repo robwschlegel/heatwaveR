@@ -26,7 +26,6 @@ In the previous vignette we saw how to [detect marine heatwaves (MHWs) in gridde
 library(dplyr) # For basic data manipulation
 library(ncdf4) # For creating NetCDF files
 library(tidync) # For easily dealing with NetCDF data
-library(abind) # For dealing with arrays
 library(ggplot2) # For visualising data
 library(doParallel) # For parallel processing
 ```
