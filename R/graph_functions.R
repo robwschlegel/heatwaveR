@@ -365,7 +365,7 @@ lolli_plot <- function(data,
     stop("Please ensure you have spelled the name of desired x-axis correctly.")
   }
 
-  if (event_count >= nrow(data$event)) {
+  if (event_count > nrow(data$event)) {
     stop("Please ensure that event_count is less or equal to than the total number of events in your results.")
   }
 
