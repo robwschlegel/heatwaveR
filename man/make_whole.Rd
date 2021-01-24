@@ -35,7 +35,7 @@ of the input data.
 }
 \description{
 Takes a series of dates and temperatures, and if irregular (but ordered), inserts
-missing dates and fills correpsonding temperatures with NAs.
+missing dates and fills corresponding temperatures with NAs.
 }
 \details{
 \enumerate{
