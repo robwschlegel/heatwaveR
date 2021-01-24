@@ -43,7 +43,7 @@ clim_spread <- function(data, clim_start, clim_end, windowHalfWidth) {
   begin_pad <- utils::tail(ts_spread, windowHalfWidth)
   end_pad <- utils::head(ts_spread, windowHalfWidth)
   l <- list(begin_pad, ts_spread, end_pad)
-  rm(begin_pad); rm(end_pad)
+  rm(list = c("begin_pad", "end_pad"))
 
   ts_spread <- data.table::rbindlist(l)
   rm(l)

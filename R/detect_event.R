@@ -123,7 +123,7 @@
 #'   \item{event}{Boolean indicating if all criteria that define an extreme event
 #'   are met.}
 #'   \item{event_no}{A sequential number indicating the ID and order of
-#'   occurence of the events.}
+#'   occurrence of the events.}
 #'
 #' The \code{event} results are summarised using a range of event metrics:
 #'   \item{event_no}{A sequential number indicating the ID and order of

@@ -72,7 +72,7 @@ make_whole <- function(data, x = t, y = temp) {
   ts_x <- eval(substitute(x), data)
   ts_y <- eval(substitute(y), data)
   dat <- data.frame(ts_x, ts_y)
-  rm(ts_x); rm(ts_y)
+  rm(list = c("ts_x", "ts_y"))
 
   dat <- dat %>%
     dplyr::group_by(ts_x) %>%
@@ -88,7 +88,7 @@ make_whole <- function(data, x = t, y = temp) {
            date = as.Date(as.POSIXct(ts_x)),
            ts_y = as.numeric(ts_y)) %>%
     dplyr::select(doy, date, ts_y, -ts_x)
-  rm(ser); rm(dat)
+  rm(list = c("ser", "dat"))
 
   # Lines 82-91 may be replaced by this (below) but this requires tidyr :-(
   # However, tidyr is listed as 'Suggests', which means it is sometimes loaded by other packages
