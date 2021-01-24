@@ -13,7 +13,7 @@
 #' directly if they meet the given criteria.
 #' @param x This column is expected to contain a vector of dates as per the
 #' specification of \code{make_whole}. If a column headed \code{t} is present in
-#' the dataframe, this argument may be ommitted; otherwise, specify the name of
+#' the dataframe, this argument may be omitted; otherwise, specify the name of
 #' the column with dates here.
 #' @param y This is a column containing the measurement variable. If the column
 #' name differs from the default (i.e. \code{temp}), specify the name here.
@@ -45,7 +45,7 @@
 #' suitable for use with \code{exceedance}, although this may also be accomplished
 #' 'by hand' as long as the criteria are met as discussed in the documentation
 #' to \code{\link{make_whole}}.
-#' \item Future versions seek to accomodate monthly and annual time series, too.
+#' \item Future versions seek to accommodate monthly and annual time series, too.
 #' \item The calculation of onset and decline rates assumes that exceedance of the
 #' \code{threshold} started a half-day before the start day and ended a half-day
 #' after the end-day. This is consistent with the duration definition as implemented,
@@ -89,7 +89,7 @@
 #'   \item{exceedance}{Boolean indicting if all criteria that define a discrete
 #'   group in exceedance of the \code{threshold} are met.}
 #'   \item{exceedance_no}{A sequential number indicating the ID and order of
-#'   occurence of exceedances.}
+#'   occurrence of exceedances.}
 #'
 #' The individual exceedances are summarised using the following metrics:
 #'   \item{exceedance_no}{The same sequential number indicating the ID and
@@ -155,14 +155,14 @@ exceedance <- function(data,
 
     if (missing(threshold))
       stop("Oh no! Please provide a threshold against which to calculate exceedances.")
-    if (threshold > max(ts_whole$ts_y, na.rm = T)) {
-      stop(paste("The given threshold value of ", threshold, " is greater than the maximum temperature of ",
-                 round(max(ts_whole$ts_y, na.rm = T), 2), " present in this time series.", sep = ""))
-    }
-    if (threshold < min(ts_whole$ts_y, na.rm = T)) {
-      stop(paste("The given threshold value of ", threshold, " is less than the minimum temperature of ",
-                 round(min(ts_whole$ts_y, na.rm = T), 2), " present in this time series.", sep = ""))
-    }
+    # if (threshold > max(ts_whole$ts_y, na.rm = T)) {
+    #   stop(paste("The given threshold value of ", threshold, " is greater than the maximum temperature of ",
+    #              round(max(ts_whole$ts_y, na.rm = T), 2), " present in this time series.", sep = ""))
+    # }
+    # if (threshold < min(ts_whole$ts_y, na.rm = T)) {
+    #   stop(paste("The given threshold value of ", threshold, " is less than the minimum temperature of ",
+    #              round(min(ts_whole$ts_y, na.rm = T), 2), " present in this time series.", sep = ""))
+    # }
     if (maxPadLength != FALSE & !is.numeric(maxPadLength))
       stop("Please ensure that 'maxPadLength' is either FALSE or a numeric/integer value.")
 
@@ -174,13 +174,12 @@ exceedance <- function(data,
     ts_whole$thresh <- rep(threshold, nrow(ts_whole))
     ts_whole$threshCriterion <- ts_whole$ts_y > ts_whole$thresh
 
-
-    if (sum(stats::na.omit(ts_whole$threshCriterion)) < minDuration & below == FALSE) {
-      stop(paste0("Not enough consecutive days above ", threshold, " to detect an event."))
-    }
-    if (sum(stats::na.omit(ts_whole$threshCriterion)) < minDuration & below == TRUE) {
-      stop(paste0("Not enough consecutive days below ", abs(threshold), " to detect an event."))
-    }
+    # if (sum(stats::na.omit(ts_whole$threshCriterion)) < minDuration & below == FALSE) {
+    #   stop(paste0("Not enough consecutive days above ", threshold, " to detect an event."))
+    # }
+    # if (sum(stats::na.omit(ts_whole$threshCriterion)) < minDuration & below == TRUE) {
+    #   stop(paste0("Not enough consecutive days below ", abs(threshold), " to detect an event."))
+    # }
 
     ts_whole$threshCriterion[is.na(ts_whole$threshCriterion)] <- FALSE
 
@@ -197,70 +196,82 @@ exceedance <- function(data,
       exceedance_rel_thresh <- intensity_mean_abs <- intensity_max_abs <-
       intensity_cum_abs <- ts_y <- exceedance_no <- row_index <- index_peak <-  NULL
 
-    exceedances <- exceedances_clim %>%
-      dplyr::mutate(row_index = seq_len(nrow(exceedances_clim)),
-                    exceedance_rel_thresh = ts_y - thresh) %>%
-      dplyr::filter(stats::complete.cases(exceedance_no)) %>%
-      dplyr::group_by(exceedance_no) %>%
-      dplyr::summarise(index_start = min(row_index),
-                       index_peak = row_index[exceedance_rel_thresh == max(exceedance_rel_thresh)][1],
-                       index_end = max(row_index),
-                       duration = dplyr::n(),
-                       date_start = min(ts_x),
-                       date_peak = ts_x[exceedance_rel_thresh == max(exceedance_rel_thresh)][1],
-                       date_end = max(ts_x),
-                       intensity_mean = mean(exceedance_rel_thresh),
-                       intensity_max = max(exceedance_rel_thresh),
-                       intensity_var = sqrt(stats::var(exceedance_rel_thresh)),
-                       intensity_cumulative = max(cumsum(exceedance_rel_thresh)),
-                       intensity_mean_abs = mean(ts_y),
-                       intensity_max_abs = max(ts_y),
-                       intensity_var_abs = sqrt(stats::var(ts_y)),
-                       intensity_cum_abs = max(cumsum(ts_y)))
+    if (nrow(stats::na.omit(exceedances_clim)) > 0) {
+
+      exceedances <- exceedances_clim %>%
+        dplyr::mutate(row_index = seq_len(nrow(exceedances_clim)),
+                      exceedance_rel_thresh = ts_y - thresh) %>%
+        dplyr::filter(stats::complete.cases(exceedance_no)) %>%
+        dplyr::group_by(exceedance_no) %>%
+        dplyr::summarise(index_start = min(row_index),
+                         index_peak = row_index[exceedance_rel_thresh == max(exceedance_rel_thresh)][1],
+                         index_end = max(row_index),
+                         duration = dplyr::n(),
+                         date_start = min(ts_x),
+                         date_peak = ts_x[exceedance_rel_thresh == max(exceedance_rel_thresh)][1],
+                         date_end = max(ts_x),
+                         intensity_mean = mean(exceedance_rel_thresh),
+                         intensity_max = max(exceedance_rel_thresh),
+                         intensity_var = sqrt(stats::var(exceedance_rel_thresh)),
+                         intensity_cumulative = max(cumsum(exceedance_rel_thresh)),
+                         intensity_mean_abs = mean(ts_y),
+                         intensity_max_abs = max(ts_y),
+                         intensity_var_abs = sqrt(stats::var(ts_y)),
+                         intensity_cum_abs = max(cumsum(ts_y)), .groups = "drop")
 
 
-    exceedance_rel_thresh <- ts_whole$ts_y - ts_whole$thresh
-    A <- exceedance_rel_thresh[exceedances$index_start]
-    B <- ts_whole$ts_y[exceedances$index_start - 1]
-    C <- ts_whole$thresh[exceedances$index_start - 1]
-    if (length(B) + 1 == length(A)) {
-      B <- c(NA, B)
-      C <- c(NA, C)
-    }
-    exceedance_rel_thresh_start <- 0.5 * (A + B - C)
+      exceedance_rel_thresh <- ts_whole$ts_y - ts_whole$thresh
+      A <- exceedance_rel_thresh[exceedances$index_start]
+      B <- ts_whole$ts_y[exceedances$index_start - 1]
+      C <- ts_whole$thresh[exceedances$index_start - 1]
+      if (length(B) + 1 == length(A)) {
+        B <- c(NA, B)
+        C <- c(NA, C)
+      }
+      exceedance_rel_thresh_start <- 0.5 * (A + B - C)
 
-    exceedances$rate_onset <- ifelse(
-      exceedances$index_start > 1,
-      (exceedances$intensity_max - exceedance_rel_thresh_start) / (as.numeric(
-        difftime(exceedances$date_peak, exceedances$date_start, units = "days")) + 0.5),
-      NA
-    )
-
-    D <- exceedance_rel_thresh[exceedances$index_end]
-    E <- ts_whole$ts_y[exceedances$index_end + 1]
-    G <- ts_whole$thresh[exceedances$index_end + 1]
-    exceedance_rel_thresh_end <- 0.5 * (D + E - G)
-
-    exceedances$rate_decline <- ifelse(
-      exceedances$index_end < nrow(ts_whole),
-      (exceedances$intensity_max - exceedance_rel_thresh_end) / (as.numeric(
-        difftime(exceedances$date_end, exceedances$date_peak, units = "days")) + 0.5),
-      NA
-    )
-
-    if (below) {
-      exceedances <- exceedances %>% dplyr::mutate(
-        intensity_mean = -intensity_mean,
-        intensity_max = -intensity_max,
-        intensity_cumulative = -intensity_cumulative,
-        intensity_mean_abs = -intensity_mean_abs,
-        intensity_max_abs = -intensity_max_abs,
-        intensity_cum_abs = -intensity_cum_abs
+      exceedances$rate_onset <- ifelse(
+        exceedances$index_start > 1,
+        (exceedances$intensity_max - exceedance_rel_thresh_start) / (as.numeric(
+          difftime(exceedances$date_peak, exceedances$date_start, units = "days")) + 0.5),
+        NA
       )
-      exceedances_clim <- exceedances_clim %>% dplyr::mutate(
-        ts_y = -ts_y,
-        thresh = -thresh
+
+      D <- exceedance_rel_thresh[exceedances$index_end]
+      E <- ts_whole$ts_y[exceedances$index_end + 1]
+      G <- ts_whole$thresh[exceedances$index_end + 1]
+      exceedance_rel_thresh_end <- 0.5 * (D + E - G)
+
+      exceedances$rate_decline <- ifelse(
+        exceedances$index_end < nrow(ts_whole),
+        (exceedances$intensity_max - exceedance_rel_thresh_end) / (as.numeric(
+          difftime(exceedances$date_end, exceedances$date_peak, units = "days")) + 0.5),
+        NA
       )
+
+      if (below) {
+        exceedances <- exceedances %>% dplyr::mutate(
+          intensity_mean = -intensity_mean,
+          intensity_max = -intensity_max,
+          intensity_cumulative = -intensity_cumulative,
+          intensity_mean_abs = -intensity_mean_abs,
+          intensity_max_abs = -intensity_max_abs,
+          intensity_cum_abs = -intensity_cum_abs
+        )
+        exceedances_clim <- exceedances_clim %>% dplyr::mutate(
+          ts_y = -ts_y,
+          thresh = -thresh
+        )
+      }
+
+    } else {
+      exceedances <- data.frame(exceedance_no = NA, index_start = NA, index_peak = NA, index_end = NA,
+                                duration = NA, date_start = NA, date_peak = NA, date_end = NA,
+                                intensity_mean = NA, intensity_max = NA, intensity_var = NA,
+                                intensity_cumulative = NA, intensity_mean_abs = NA,
+                                intensity_max_abs = NA, intensity_var_abs = NA,
+                                intensity_cum_abs = NA, rate_onset = NA, rate_decline = NA)
+      exceedances <- tibble::as_tibble(exceedances)
     }
 
     exceedances <- dplyr::mutate_if(exceedances, is.numeric, round, 4)

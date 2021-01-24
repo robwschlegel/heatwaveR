@@ -68,6 +68,7 @@ proto_event <- function(t_series,
                           lapply(s2[ex2$values == FALSE], function(x)
                             data.table::data.table(index_start = min(x), index_end = max(x))))
     proto_gaps$duration <- proto_gaps$index_end - proto_gaps$index_start + 1
+    proto_gaps <- proto_gaps[proto_gaps$index_end > proto_events$index_start[1]]
 
     if (any(proto_gaps$duration >= 1 & proto_gaps$duration <= maxGap)) {
       proto_gaps <- proto_gaps[duration >= 1 & duration <= maxGap, ]

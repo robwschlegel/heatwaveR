@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.5</span>
       </span>
     </div>
 
@@ -84,6 +84,9 @@
       <a href="../articles/gridded_event_detection.html">Detecting Events in Gridded Data</a>
     </li>
     <li>
+      <a href="../articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a>
+    </li>
+    <li>
       <a href="../articles/complex_clims.html">Alternative Thresholds</a>
     </li>
   </ul>
@@ -119,13 +122,14 @@
 
       
 
-      </header><script src="event_categories_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="event_categories_files/header-attrs-2.5/header-attrs.js"></script><link href="event_categories_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="event_categories_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Calculating and Visualising Event Categories</h1>
                         <h4 class="author">Robert W Schlegel</h4>
             
-            <h4 class="date">2020-10-31</h4>
+            <h4 class="date">2021-01-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/event_categories.Rmd"><code>vignettes/event_categories.Rmd</code></a></small>
       <div class="hidden name"><code>event_categories.Rmd</code></div>
@@ -171,8 +175,8 @@
 <h2 class="hasAnchor">
 <a href="#calculating-mhw-categories" class="anchor"></a>Calculating MHW categories</h2>
 <p>The categories of MHWs under the Hobday et al. (2018) naming scheme may be calculated with the <strong><code>heatwaveR</code></strong> package using the <code><a href="../reference/category.html">category()</a></code> function on the output of the <code><a href="../reference/detect_event.html">detect_event()</a></code> function. By default this function will order events from most to least intense. Note that one may control the output for the names of the events by providing ones own character string for the <code>name</code> argument. Because we have calculated MHWs on the Western Australia data, we provide the name “WA” below:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="co"># Load libraries</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Load libraries</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org">tidyr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
@@ -184,7 +188,7 @@
 <span class="va">MHW_cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/category.html">category</a></span><span class="op">(</span><span class="va">MHW</span>, S <span class="op">=</span> <span class="cn">TRUE</span>, name <span class="op">=</span> <span class="st">"WA"</span><span class="op">)</span>
 
 <span class="co"># Look at the top few events</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="va">MHW_cat</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="va">MHW_cat</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 11
 ##   event_no event_name peak_date  category i_max duration p_moderate p_strong
 ##      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
@@ -196,10 +200,10 @@
 ## 6       52 WA 2011a   2011-02-28 IV Extr…  6.58      105         52       27
 ## # … with 3 more variables: p_severe &lt;dbl&gt;, p_extreme &lt;dbl&gt;, season &lt;chr&gt;</code></pre>
 <p>Note that this functions expects the data to have been collected in the southern hemisphere, hence the argument <code>S = TRUE</code>. If they were not, one must set <code>S = FALSE</code> as seen in the example below. This ensures that the correct seasons are attributed to the event.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="va">res_Med</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/detect_event.html">detect_event</a></span><span class="op">(</span><span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_Med</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">res_Med</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/detect_event.html">detect_event</a></span><span class="op">(</span><span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_Med</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="va">res_Med_cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/category.html">category</a></span><span class="op">(</span><span class="va">res_Med</span>, S <span class="op">=</span> <span class="cn">FALSE</span>, name <span class="op">=</span> <span class="st">"Med"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="va">res_Med_cat</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="va">res_Med_cat</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 11
 ##   event_no event_name peak_date  category i_max duration p_moderate p_strong
 ##      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
@@ -218,16 +222,16 @@
 <h3 class="hasAnchor">
 <a href="#default-mhw-category-visuals" class="anchor"></a>Default MHW category visuals</h3>
 <p>A quick and easy visualisation of the categories of a MHW may be accomplished with <code><a href="../reference/event_line.html">event_line()</a></code> by setting the <code>category</code> argument to <code>TRUE</code>.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">MHW</span>, spread <span class="op">=</span> <span class="fl">100</span>, start_date <span class="op">=</span> <span class="st">"2010-11-01"</span>, end_date <span class="op">=</span> <span class="st">"2011-06-30"</span>, category <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">MHW</span>, spread <span class="op">=</span> <span class="fl">100</span>, start_date <span class="op">=</span> <span class="st">"2010-11-01"</span>, end_date <span class="op">=</span> <span class="st">"2011-06-30"</span>, category <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="event_categories_files/figure-html/fig-example-1-1.png" width="768"><!-- ![](vignettes/fig-example-10-1.png) --></p>
 </div>
 <div id="custom-mhw-category-visuals" class="section level3">
 <h3 class="hasAnchor">
 <a href="#custom-mhw-category-visuals" class="anchor"></a>Custom MHW category visuals</h3>
-<p>Were one to want to visualise the categories of a MHW ‘by hand’, the following code will provide a good starting point.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="co"># Create category breaks and select slice of data.frame</span>
+<p>Were one to want to visualise the categories of a MHW ‘by hand,’ the following code will provide a good starting point.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Create category breaks and select slice of data.frame</span>
 <span class="va">clim_cat</span> <span class="op">&lt;-</span> <span class="va">MHW</span><span class="op">$</span><span class="va">clim</span> <span class="op">%&gt;%</span>
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>diff <span class="op">=</span> <span class="va">thresh</span> <span class="op">-</span> <span class="va">seas</span>,
                 thresh_2x <span class="op">=</span> <span class="va">thresh</span> <span class="op">+</span> <span class="va">diff</span>,
@@ -272,7 +276,7 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html">guides</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html">guide_legend</a></span><span class="op">(</span>override.aes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>linetype <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"solid"</span>, <span class="st">"solid"</span>, <span class="st">"solid"</span>,
                                                                 <span class="st">"dashed"</span>, <span class="st">"dotdash"</span>, <span class="st">"dotted"</span><span class="op">)</span>,
                                                    size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Temperature [°C]"</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></pre></div>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Temperature [°C]"</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
 <p><img src="event_categories_files/figure-html/fig-example-2-1.png" width="768"><!-- ![](vignettes/fig-example-11-1.png) --></p>
 </div>
 </div>
@@ -280,14 +284,14 @@
 <h2 class="hasAnchor">
 <a href="#calculating-mcs-categories" class="anchor"></a>Calculating MCS categories</h2>
 <p>MCSs are calculated the same as for MHWs. The <code><a href="../reference/category.html">category()</a></code> function will automagically detect if it has been fed MHWs or MCSs so no additional arguments are required. For the sake of clarity the following code chunks demonstrates how to calculate MCS categories.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="co"># Calculate events</span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Calculate events</span>
 <span class="va">ts_MCS</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span><span class="op">)</span>, pctile <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 <span class="va">MCS</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/detect_event.html">detect_event</a></span><span class="op">(</span><span class="va">ts_MCS</span>, coldSpells <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
 <span class="va">MCS_cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/category.html">category</a></span><span class="op">(</span><span class="va">MCS</span>, S <span class="op">=</span> <span class="cn">TRUE</span>, name <span class="op">=</span> <span class="st">"WA"</span><span class="op">)</span>
 
 <span class="co"># Look at the top few events</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="va">MCS_cat</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="va">MCS_cat</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 11
 ##   event_no event_name peak_date  category i_max duration p_moderate p_strong
 ##      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
@@ -306,12 +310,12 @@
 <h3 class="hasAnchor">
 <a href="#default-mcs-category-visuals" class="anchor"></a>Default MCS category visuals</h3>
 <p>The <code><a href="../reference/event_line.html">event_line()</a></code> function also works for visualising MCS categories. The function will automagically detect that it is being fed MCSs so we do not need to provide it with any new arguments. Note that the colour palette for MCS does have four colours, same as for MHWs, but none of the demo time series that come packaged with <strong><code>heatwaveR</code></strong> have MCSs that intense so we are not able to demonstrate the full colour palette here.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">MCS</span>, spread <span class="op">=</span> <span class="fl">100</span>, start_date <span class="op">=</span> <span class="st">"1989-11-01"</span>, end_date <span class="op">=</span> <span class="st">"1990-06-30"</span>, category <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">MCS</span>, spread <span class="op">=</span> <span class="fl">100</span>, start_date <span class="op">=</span> <span class="st">"1989-11-01"</span>, end_date <span class="op">=</span> <span class="st">"1990-06-30"</span>, category <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="event_categories_files/figure-html/fig-example-3-1.png" width="768"> ### Custom MHW category visuals</p>
 <p>The following code chunk demonstrates how to manually create a figure showing the MCS categories.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="co"># Create category breaks and select slice of data.frame</span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Create category breaks and select slice of data.frame</span>
 <span class="va">MCS_clim_cat</span> <span class="op">&lt;-</span> <span class="va">MCS</span><span class="op">$</span><span class="va">clim</span> <span class="op">%&gt;%</span>
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>diff <span class="op">=</span> <span class="va">thresh</span> <span class="op">-</span> <span class="va">seas</span>,
                 thresh_2x <span class="op">=</span> <span class="va">thresh</span> <span class="op">+</span> <span class="va">diff</span>,
@@ -356,11 +360,11 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html">guides</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html">guide_legend</a></span><span class="op">(</span>override.aes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>linetype <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"solid"</span>, <span class="st">"solid"</span>, <span class="st">"solid"</span>,
                                                                 <span class="st">"dashed"</span>, <span class="st">"dotdash"</span>, <span class="st">"dotted"</span><span class="op">)</span>,
                                                    size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Temperature [°C]"</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></pre></div>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Temperature [°C]"</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
 <p><img src="event_categories_files/figure-html/fig-example-4-1.png" width="768"> ## Category colour palettes</p>
 <p>For the sake of convenience the MHW and MCS colour palettes are provided below with a figure showing the direct comparison.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="co"># The MCS colour palette</span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># The MCS colour palette</span>
 <span class="va">MCS_colours</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
   <span class="st">"Moderate"</span> <span class="op">=</span> <span class="st">"#A4D4E0"</span>,
   <span class="st">"Strong"</span> <span class="op">=</span> <span class="st">"#5B80A6"</span>,
@@ -387,7 +391,7 @@
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">colour_palette</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">category</span>, y <span class="op">=</span> <span class="va">event</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_tile</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">colour_palette</span><span class="op">$</span><span class="va">colour</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html">coord_cartesian</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></pre></div>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
 <p><img src="event_categories_files/figure-html/comp-fig-1.png" width="768"></p>
 </div>
 </div>

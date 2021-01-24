@@ -1,3 +1,38 @@
+# heatwaveR 0.4.5 (2021-01-23)
+
+-   Created a new vignette that shows how to save gridded MHW results to a NetCDF file
+
+# heatwaveR 0.4.5 (2021-01-07)
+
+-   Pushed new major version to CRAN
+
+# heatwaveR 0.4.4.9006 (2021-01-06)
+
+-   Some minor tweaks to satisfy CRAN
+
+# heatwaveR 0.4.4.9005 (2020-12-30)
+
+-   Pushing to GitHub actions now triggers codecov correctly
+
+# heatwaveR 0.4.4.9005 (2020-12-22)
+
+-   `exceedance` now outputs a one row all NA data.frame when there are no events in exceedance of the threshold
+-   The previous version would return an error if no exceedances were detected, making it generally unusable in gridded data
+-   All **`plotly`** dependencies were removed due to the orphaning of the package
+    - The code to allow `geom_flame` to work with **`plotly`** may be found here: https://github.com/robwschlegel/MHWapp/blob/master/shiny/functions.R
+
+# heatwaveR 0.4.4.9004 (2020-12-16)
+
+-   Moved away from Travis CI to GitHub actions 
+
+# heatwaveR 0.4.4.9004 (2020-11-18)
+
+-   Fixed bug in `proto_event` that caused `joinAcrossGaps` argument to flag the first n days of a time series as part of an event
+
+# heatwaveR 0.4.4.9003 (2020-11-13)
+
+-   Minor fixes for passing build
+
 # heatwaveR 0.4.4.9002 (2020-11-06)
 
 -   Remove the last offending trace of **`zoo`** from `make_whole`.
@@ -5,13 +40,13 @@
 
 # heatwaveR 0.4.4.9001 (2020-10-31)
 
--   Added `MCScorrect` argument to `catgegory` function that allows the user to bound the bottom threshold for MCS categories to -1.8C.
+-   Added `MCScorrect` argument to `catgegory` function that allows the user to bound the bottom threshold for MCS categories to -1.8C
 
 # heatwaveR 0.4.4.9000 (2020-07-30)
 
 -   dplyr v1.0.0 no longer handles empty data.frames the same
 
-    -   It now forces them to by logical type, so empty data.frames no longer unnest with normal results
+    -   It now forces them to logical type, so empty data.frames no longer unnest with normal results
     -   This was fixed by having `detect_event` and `category` return single row NA data.frames instead
 
 -   Thinking about phasing out **`data.table`**

@@ -174,7 +174,7 @@ ts2clm <- function(data,
 
     clim_start <- climatologyPeriod[1]
     clim_end <- climatologyPeriod[2]
-    doy <- .SD <-  NULL
+    temp <- doy <- .SD <-  NULL
 
     ts_x <- eval(substitute(x), data)
     ts_y <- eval(substitute(y), data)

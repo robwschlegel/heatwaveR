@@ -95,7 +95,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.5</span>
       </span>
     </div>
 
@@ -131,6 +131,9 @@
     </li>
     <li>
       <a href="../articles/gridded_event_detection.html">Detecting Events in Gridded Data</a>
+    </li>
+    <li>
+      <a href="../articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a>
     </li>
     <li>
       <a href="../articles/complex_clims.html">Alternative Thresholds</a>
@@ -175,12 +178,93 @@
       <small>Source: <a href='https://github.com/robwschlegel/heatwaveR/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="heatwaver-045-2021-01-23" class="section level1">
+<h1 class="page-header" data-toc-text="0.4.5">
+<a href="#heatwaver-045-2021-01-23" class="anchor"></a>heatwaveR 0.4.5 (2021-01-23)<small> 2021-01-07 </small>
+</h1>
+<ul>
+<li>Created a new vignette that shows how to save gridded MHW results to a NetCDF file</li>
+</ul>
+</div>
+    <div id="heatwaver-045-2021-01-07" class="section level1">
+<h1 class="page-header" data-toc-text="0.4.5">
+<a href="#heatwaver-045-2021-01-07" class="anchor"></a>heatwaveR 0.4.5 (2021-01-07)<small> 2021-01-07 </small>
+</h1>
+<ul>
+<li>Pushed new major version to CRAN</li>
+</ul>
+</div>
+    <div id="heatwaver-0449006-2021-01-06" class="section level1">
+<h1 class="page-header" data-toc-text="0.4.4.9006">
+<a href="#heatwaver-0449006-2021-01-06" class="anchor"></a>heatwaveR 0.4.4.9006 (2021-01-06)<small> Unreleased </small>
+</h1>
+<ul>
+<li>Some minor tweaks to satisfy CRAN</li>
+</ul>
+</div>
+    <div id="heatwaver-0449005-2020-12-30" class="section level1">
+<h1 class="page-header" data-toc-text="0.4.4.9005">
+<a href="#heatwaver-0449005-2020-12-30" class="anchor"></a>heatwaveR 0.4.4.9005 (2020-12-30)<small> Unreleased </small>
+</h1>
+<ul>
+<li>Pushing to GitHub actions now triggers codecov correctly</li>
+</ul>
+</div>
+    <div id="heatwaver-0449005-2020-12-22" class="section level1">
+<h1 class="page-header" data-toc-text="0.4.4.9005">
+<a href="#heatwaver-0449005-2020-12-22" class="anchor"></a>heatwaveR 0.4.4.9005 (2020-12-22)<small> Unreleased </small>
+</h1>
+<ul>
+<li>
+<code>exceedance</code> now outputs a one row all NA data.frame when there are no events in exceedance of the threshold</li>
+<li>The previous version would return an error if no exceedances were detected, making it generally unusable in gridded data</li>
+<li>All <strong><code>plotly</code></strong> dependencies were removed due to the orphaning of the package
+<ul>
+<li>The code to allow <code>geom_flame</code> to work with <strong><code>plotly</code></strong> may be found here: <a href="https://github.com/robwschlegel/MHWapp/blob/master/shiny/functions.R" class="uri">https://github.com/robwschlegel/MHWapp/blob/master/shiny/functions.R</a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+    <div id="heatwaver-0449004-2020-12-16" class="section level1">
+<h1 class="page-header" data-toc-text="0.4.4.9004">
+<a href="#heatwaver-0449004-2020-12-16" class="anchor"></a>heatwaveR 0.4.4.9004 (2020-12-16)<small> Unreleased </small>
+</h1>
+<ul>
+<li>Moved away from Travis CI to GitHub actions</li>
+</ul>
+</div>
+    <div id="heatwaver-0449004-2020-11-18" class="section level1">
+<h1 class="page-header" data-toc-text="0.4.4.9004">
+<a href="#heatwaver-0449004-2020-11-18" class="anchor"></a>heatwaveR 0.4.4.9004 (2020-11-18)<small> Unreleased </small>
+</h1>
+<ul>
+<li>Fixed bug in <code>proto_event</code> that caused <code>joinAcrossGaps</code> argument to flag the first n days of a time series as part of an event</li>
+</ul>
+</div>
+    <div id="heatwaver-0449003-2020-11-13" class="section level1">
+<h1 class="page-header" data-toc-text="0.4.4.9003">
+<a href="#heatwaver-0449003-2020-11-13" class="anchor"></a>heatwaveR 0.4.4.9003 (2020-11-13)<small> Unreleased </small>
+</h1>
+<ul>
+<li>Minor fixes for passing build</li>
+</ul>
+</div>
+    <div id="heatwaver-0449002-2020-11-06" class="section level1">
+<h1 class="page-header" data-toc-text="0.4.4.9002">
+<a href="#heatwaver-0449002-2020-11-06" class="anchor"></a>heatwaveR 0.4.4.9002 (2020-11-06)<small> Unreleased </small>
+</h1>
+<ul>
+<li>Remove the last offending trace of <strong><code>zoo</code></strong> from <code>make_whole</code>.</li>
+<li>Fix miscellaneous typos and formatting inconsistencies.</li>
+</ul>
+</div>
     <div id="heatwaver-0449001-2020-10-31" class="section level1">
 <h1 class="page-header" data-toc-text="0.4.4.9001">
 <a href="#heatwaver-0449001-2020-10-31" class="anchor"></a>heatwaveR 0.4.4.9001 (2020-10-31)<small> Unreleased </small>
 </h1>
 <ul>
-<li>Added <code>MCScorrect</code> argument to <code>catgegory</code> function that allows the user to bound the bottom threshold for MCS categories to -1.8C.</li>
+<li>Added <code>MCScorrect</code> argument to <code>catgegory</code> function that allows the user to bound the bottom threshold for MCS categories to -1.8C</li>
 </ul>
 </div>
     <div id="heatwaver-0449000-2020-07-30" class="section level1">
@@ -188,14 +272,14 @@
 <a href="#heatwaver-0449000-2020-07-30" class="anchor"></a>heatwaveR 0.4.4.9000 (2020-07-30)<small> Unreleased </small>
 </h1>
 <ul>
-<li>dplyr v1.0.0 no longer handles empty data.frames the same
+<li>
+<p>dplyr v1.0.0 no longer handles empty data.frames the same</p>
 <ul>
-<li>It now forces them to by logical type, so empty data.frames no longer unnest with normal results</li>
+<li>It now forces them to logical type, so empty data.frames no longer unnest with normal results</li>
 <li>This was fixed by having <code>detect_event</code> and <code>category</code> return single row NA data.frames instead</li>
 </ul>
 </li>
-<li>Thinking about phasing out <strong><code>data.table</code></strong>
-</li>
+<li><p>Thinking about phasing out <strong><code>data.table</code></strong></p></li>
 </ul>
 </div>
     <div id="heatwaver-044-2020-06-27" class="section level1">
@@ -266,7 +350,8 @@
 <a href="#heatwaver-0429004-2020-05-15" class="anchor"></a>heatwaveR 0.4.2.9004 (2020-05-15)<small> Unreleased </small>
 </h1>
 <ul>
-<li>Fixed bug in <code><a href="../reference/detect_event.html">detect_event()</a></code> caused by <strong><code>data.table</code></strong>
+<li>
+<p>Fixed bug in <code><a href="../reference/detect_event.html">detect_event()</a></code> caused by <strong><code>data.table</code></strong></p>
 <ul>
 <li>
 <strong><code>data.table</code></strong> no longer allows rounding of NA values</li>
@@ -367,19 +452,20 @@
 <a href="#heatwaver-042-2019-11-26" class="anchor"></a>heatwaveR 0.4.2 (2019-11-26)<small> 2019-12-01 </small>
 </h1>
 <ul>
-<li>Fixed bug in <code><a href="../reference/category.html">category()</a></code> that incorrectly returned the difference between <code>seas</code> and <code>thresh</code> as the daily intensity value, rather than the actual temperature anomaly above <code>seas</code>
+<li>
+<p>Fixed bug in <code><a href="../reference/category.html">category()</a></code> that incorrectly returned the difference between <code>seas</code> and <code>thresh</code> as the daily intensity value, rather than the actual temperature anomaly above <code>seas</code></p>
 <ul>
 <li>Also fixed the labelling of days below <code>thresh</code> as <code>Moderate</code>, they are now <code>NA</code>
 </li>
 </ul>
 </li>
 <li>
-<code><a href="../reference/category.html">category()</a></code> now adds lower case letters to the ends of event names if there were multiple large events within the same year
+<p><code><a href="../reference/category.html">category()</a></code> now adds lower case letters to the ends of event names if there were multiple large events within the same year</p>
 <ul>
 <li>This may cause backwards compatibility issues in very rare cases, but is a necessary change</li>
 </ul>
 </li>
-<li>Added <code>roundVal</code> argument to <code><a href="../reference/category.html">category()</a></code> to allow users to decide the rounding precision of the returned results</li>
+<li><p>Added <code>roundVal</code> argument to <code><a href="../reference/category.html">category()</a></code> to allow users to decide the rounding precision of the returned results</p></li>
 </ul>
 </div>
     <div id="heatwaver-0419004-2019-11-23" class="section level1">
@@ -413,7 +499,8 @@
 <a href="#heatwaver-0419002-2019-11-03" class="anchor"></a>heatwaveR 0.4.1.9002 (2019-11-03)<small> Unreleased </small>
 </h1>
 <ul>
-<li>A bug was discovered where the <code><a href="../reference/ts2clm.html">ts2clm()</a></code> function does not first check that the time series being fed to it is in correct chronological order
+<li>
+<p>A bug was discovered where the <code><a href="../reference/ts2clm.html">ts2clm()</a></code> function does not first check that the time series being fed to it is in correct chronological order</p>
 <ul>
 <li>This was fixed by ordering the data being fed to the function before beginning of the further calculations</li>
 </ul>
@@ -425,7 +512,8 @@
 <a href="#heatwaver-0419001-2019-10-30" class="anchor"></a>heatwaveR 0.4.1.9001 (2019-10-30)<small> Unreleased </small>
 </h1>
 <ul>
-<li>An update to <code>data.table</code> sometime in August, 2019 reduced the packages tolerance for code with <code>1:n</code> in it
+<li>
+<p>An update to <code>data.table</code> sometime in August, 2019 reduced the packages tolerance for code with <code>1:n</code> in it</p>
 <ul>
 <li>As this is a potential memory weakness, when this creates an empty vector in multicore calculations it causes the entire run to fall over</li>
 <li>Therefore, all use of <code>1:n</code> has been replaced with <code><a href="https://rdrr.io/r/base/seq.html">seq_len(n)</a></code>
@@ -441,7 +529,8 @@
 <a href="#heatwaver-0419000-2019-10-26" class="anchor"></a>heatwaveR 0.4.1.9000 (2019-10-26)<small> Unreleased </small>
 </h1>
 <ul>
-<li>An update to the <code>ggplot2</code> package some time back in August, 2019 changed slightly how Geoms work internally
+<li>
+<p>An update to the <code>ggplot2</code> package some time back in August, 2019 changed slightly how Geoms work internally</p>
 <ul>
 <li>This allowed <code><a href="../reference/geom_lolli.html">geom_lolli()</a></code> to fall over in very rare circumstances so this issue has been addressed</li>
 </ul>
@@ -453,9 +542,10 @@
 <a href="#heatwaver-041-2019-09-09" class="anchor"></a>heatwaveR 0.4.1 (2019-09-09)<small> 2019-09-09 </small>
 </h1>
 <ul>
-<li>Updated the <code>OISST Preparation</code> vignette to match the improvements to the <code>rerddap</code> package</li>
-<li>Also updated the vignette to be more clear to contact NOAA about data retrieval issues</li>
-<li>Added <code>season</code> argument to <code><a href="../reference/category.html">category()</a></code>, which allows the user to specify which season of the MHWs they are interested in:
+<li><p>Updated the <code>OISST Preparation</code> vignette to match the improvements to the <code>rerddap</code> package</p></li>
+<li><p>Also updated the vignette to be more clear to contact NOAA about data retrieval issues</p></li>
+<li>
+<p>Added <code>season</code> argument to <code><a href="../reference/category.html">category()</a></code>, which allows the user to specify which season of the MHWs they are interested in:</p>
 <ul>
 <li>‘range’ - The beginning and ending season of the MHW</li>
 <li>‘start’ - The season during the start of the MHW</li>
@@ -550,14 +640,15 @@
 <a href="#heatwaver-036-2019-01-16-1" class="anchor"></a>heatwaveR 0.3.6 (2019-01-16)<small> 2019-01-16 </small>
 </h1>
 <ul>
-<li>Finished Alternative Thresholds (Complex Climatologies) vignette</li>
-<li>Bumped code coverage back up to 100%</li>
-<li>AN important potential backwards compatibility breaking change is that by default <code><a href="../reference/ts2clm.html">ts2clm()</a></code> and <code><a href="../reference/exceedance.html">exceedance()</a></code> will no longer produce a <code>var</code> column
+<li><p>Finished Alternative Thresholds (Complex Climatologies) vignette</p></li>
+<li><p>Bumped code coverage back up to 100%</p></li>
+<li>
+<p>AN important potential backwards compatibility breaking change is that by default <code><a href="../reference/ts2clm.html">ts2clm()</a></code> and <code><a href="../reference/exceedance.html">exceedance()</a></code> will no longer produce a <code>var</code> column</p>
 <ul>
 <li>The argument <code>var = TRUE</code> may be given to produce this column</li>
 </ul>
 </li>
-<li>Submitted v0.3.6 to CRAN</li>
+<li><p>Submitted v0.3.6 to CRAN</p></li>
 </ul>
 </div>
     <div id="heatwaver-0359006-2019-01-15" class="section level1">

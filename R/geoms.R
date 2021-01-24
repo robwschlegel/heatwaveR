@@ -151,7 +151,7 @@ GeomFlame <- ggplot2::ggproto("GeomFlame", ggplot2::Geom,
                                 # Screen out spikes
                                 data <- data[data_event$screen != TRUE,]
 
-                                # Find the ploygon corners
+                                # Find the polygon corners
                                 x1 <- data$y
                                 x2 <- data$y2
 
@@ -176,8 +176,8 @@ GeomFlame <- ggplot2::ggproto("GeomFlame", ggplot2::Geom,
                                 x.points <- data$x[intersect.points] + (x_gap*(x.points - intersect.points))
 
                                 # Create new data frame and merge to introduce new rows of data
-                                data2 <- data.frame(y = c(data$y, y.points), x = c(data$x, x.points))
-                                data2 <- data2[order(data2$x),]
+                                data2 <- data.frame(x = c(data$x, x.points), y = c(data$y, y.points))
+                                data2 <- data2[do.call(order, data2),]
                                 data <- base::merge(data, data2, by = c("x", "y"), all.y = T)
                                 data$y2[is.na(data$y2)] <- data$y[is.na(data$y2)]
 
@@ -333,7 +333,8 @@ GeomLolli <- ggplot2::ggproto("GeomLolli", ggplot2::Geom,
                               draw_group = function(data, panel_scales, coord, n) {
                                 data$xend = data$x
                                 data$yend = 0
-                                data = data[order(abs(data$y), decreasing = T),]
+                                data_y = as.vector(data$y)
+                                data = data[order(abs(data_y), decreasing = T),]
 
                                 # Define the big points
                                 big_points = data

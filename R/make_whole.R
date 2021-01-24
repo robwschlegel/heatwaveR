@@ -66,7 +66,7 @@
 #'
 make_whole <- function(data, x = t, y = temp) {
 
-  temp <- NULL
+  temp <- doy <- NULL
   feb28 <- 59
 
   ts_x <- eval(substitute(x), data)
@@ -83,7 +83,7 @@ make_whole <- function(data, x = t, y = temp) {
                                max(lubridate::ymd(dat$ts_x)), by = "1 day"))
 
   t_series <- ser %>%
-    dplyr::left_join(y = dat) %>%
+    dplyr::left_join(y = dat, by = "ts_x") %>%
     dplyr::mutate(doy = lubridate::yday(ts_x),
            date = as.Date(as.POSIXct(ts_x)),
            ts_y = as.numeric(ts_y)) %>%

@@ -49,9 +49,6 @@
     <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/na_interp.html</loc>
   </url>
   <url>
-    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/plotly_helpers.html</loc>
-  </url>
-  <url>
     <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/proto_event.html</loc>
   </url>
   <url>
@@ -68,6 +65,9 @@
   </url>
   <url>
     <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/articles/MHW_to_nc.html</loc>
   </url>
   <url>
     <loc>https://robwschlegel.github.io/heatwaveR/index.html/articles/OISST_preparation.html</loc>

@@ -20,7 +20,10 @@
 <script src="pkgdown.js"></script><!-- docsearch --><script src="docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Detect Heatwaves and Cold-Spells">
-<meta property="og:description" content="The different methods of defining and detecting extreme events, known as heatwaves or cold-spells in both air and water temperature data are encompassed within this package. These detection algorithms may be used on non-temperature data as well however, this is not catered for explicitly here as no use of this technique in the literature currently exists.">
+<meta property="og:description" content="The different methods for defining, detecting, and categorising the extreme events 
+    known as heatwaves or cold-spells, as first proposed in Hobday et al. (2016) &lt;doi: 10.1016/j.pocean.2015.12.014&gt; 
+    and Hobday et al. (2018) &lt;https://www.jstor.org/stable/26542662&gt;. The functions in this package work on both air 
+    and water temperature data. These detection algorithms may be used on non-temperature data as well.">
 <meta property="og:image" content="https://robwschlegel.github.io/heatwaveR/index.html/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -46,7 +49,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.5</span>
       </span>
     </div>
 
@@ -82,6 +85,9 @@
     </li>
     <li>
       <a href="articles/gridded_event_detection.html">Detecting Events in Gridded Data</a>
+    </li>
+    <li>
+      <a href="articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a>
     </li>
     <li>
       <a href="articles/complex_clims.html">Alternative Thresholds</a>
@@ -371,10 +377,10 @@
 <h2 class="hasAnchor">
 <a href="#contact" class="anchor"></a>Contact</h2>
 <p>Robert W. Schlegel</p>
-<p>Postdoctoral Fellow</p>
-<p>Ocean Frontier Institute</p>
-<p>Dalhousie University</p>
-<p><a href="mailto:robert.schlegel@dal.ca" class="email">robert.schlegel@dal.ca</a></p>
+<p>Data Scientist</p>
+<p>Laboratoire d’Océanographie de Villefranche-sur-Mer, LOV</p>
+<p>Institut de la Mer de Villefranche, IMEV</p>
+<p><a href="mailto:robert.schlegel@imev-mer.fr" class="email">robert.schlegel@imev-mer.fr</a></p>
 </div>
 </div>
   </div>
@@ -423,11 +429,11 @@
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://cran.r-project.org/package=heatwaveR"><img src="http://www.r-pkg.org/badges/version/heatwaveR" alt="CRAN_Status_Badge"></a></li>
-<li><a href="https://travis-ci.org/robwschlegel/heatwaveR"><img src="https://travis-ci.org/robwschlegel/heatwaveR.svg?branch=master" alt="Travis build status"></a></li>
-<li><a href="https://codecov.io/github/robwschlegel/heatwaveR?branch=master"><img src="https://codecov.io/gh/robwschlegel/heatwaveR/branch/master/graph/badge.svg" alt="Coverage status"></a></li>
+<li><a href="https://github.com/robwschlegel/heatwaveR/actions"><img src="https://github.com/robwschlegel/heatwaveR/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://codecov.io/gh/robwschlegel/heatwaveR?branch=master"><img src="https://codecov.io/gh/robwschlegel/heatwaveR/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
 <li><a href="https://doi.org/10.21105/joss.00821"><img src="http://joss.theoj.org/papers/10.21105/joss.00821/status.svg" alt="JOSS"></a></li>
 <li><a href="https://doi.org/10.5281/zenodo.1324308"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.1324308.svg" alt="DOI"></a></li>
-<li><a href="https://cran.r-project.org/web/packages/heatwaveR/index.html"><img src="https://cranlogs.r-pkg.org/badges/grand-total/heatwaveR" alt="Downloads"></a></li>
+<li><a href="https://cran.r-project.org/package=heatwaveR"><img src="https://cranlogs.r-pkg.org/badges/grand-total/heatwaveR" alt="Downloads"></a></li>
 </ul>
 </div>
 </div>

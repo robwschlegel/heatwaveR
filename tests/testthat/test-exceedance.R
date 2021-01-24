@@ -14,26 +14,28 @@ test_that("threshold may not be missing", {
                "Oh no! Please provide a threshold against which to calculate exceedances.")
 })
 
-test_that("threshold may not exceed the max temperature in the data", {
-  expect_error(exceedance(data = sst_Med, threshold = 30),
-               "The given threshold value of 30 is greater than the maximum temperature of 28.78 present in this time series.")
-})
-
-test_that("threshold may not exceed the min temperature in the data", {
-  expect_error(exceedance(data = sst_Med, threshold = 10),
-               "The given threshold value of 10 is less than the minimum temperature of 11.2 present in this time series.")
+test_that("no exceedances returns a 1 row NA exceedance dataframe and not an error", {
+  res_high <- exceedance(data = sst_Med, threshold = 30)
+  res_low <- exceedance(data = sst_Med, threshold = 10, below = T)
+  expect_is(res_high, "list")
+  expect_is(res_low, "list")
+  expect_is(res_high$threshold, "tbl_df")
+  expect_is(res_low$threshold, "tbl_df")
+  expect_is(res_high$exceedance, "tbl_df")
+  expect_is(res_low$exceedance, "tbl_df")
+  expect_equal(ncol(res_high$threshold), 7)
+  expect_equal(ncol(res_low$threshold), 7)
+  expect_equal(ncol(res_high$exceedance), 18)
+  expect_equal(ncol(res_low$exceedance), 18)
+  expect_equal(nrow(res_high$exceedance), 1)
+  expect_equal(nrow(res_low$exceedance), 1)
+  expect_equal(res_high$exceedance$exceedance_no[1], NA)
+  expect_equal(res_low$exceedance$exceedance_no[1], NA)
 })
 
 test_that("below argument creates negative values", {
   res <- exceedance(data = sst_Med, threshold = 15, below = TRUE)
   expect_lt(res$exceedance$intensity_max[1], 0)
-})
-
-test_that("threshold must be exceeded by enough to be able to detect events", {
-  expect_error(exceedance(sst_Med, threshold = 28.7),
-               "Not enough consecutive days above 28.7 to detect an event.")
-  expect_error(exceedance(sst_Med, threshold = 11.5, below = T),
-               "Not enough consecutive days below 11.5 to detect an event.")
 })
 
 test_that("joinAcrossGaps = F creates more events", {

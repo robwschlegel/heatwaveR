@@ -96,7 +96,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.5</span>
       </span>
     </div>
 
@@ -132,6 +132,9 @@
     </li>
     <li>
       <a href="../articles/gridded_event_detection.html">Detecting Events in Gridded Data</a>
+    </li>
+    <li>
+      <a href="../articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a>
     </li>
     <li>
       <a href="../articles/complex_clims.html">Alternative Thresholds</a>
@@ -212,7 +215,7 @@ directly if they meet the given criteria.</p></td>
       <th>x</th>
       <td><p>This column is expected to contain a vector of dates as per the
 specification of <code>make_whole</code>. If a column headed <code>t</code> is present in
-the dataframe, this argument may be ommitted; otherwise, specify the name of
+the dataframe, this argument may be omitted; otherwise, specify the name of
 the column with dates here.</p></td>
     </tr>
     <tr>
@@ -285,7 +288,7 @@ in the <code>doy</code> column, this column will appear in the output.</p>
   <dt>exceedance</dt><dd><p>Boolean indicting if all criteria that define a discrete
   group in exceedance of the <code>threshold</code> are met.</p></dd>
   <dt>exceedance_no</dt><dd><p>A sequential number indicating the ID and order of
-  occurence of exceedances.</p></dd>
+  occurrence of exceedances.</p></dd>
 
 The individual exceedances are summarised using the following metrics:
   <dt>exceedance_no</dt><dd><p>The same sequential number indicating the ID and
@@ -319,7 +322,7 @@ daily temperatures, with few missing values. The accompanying function
 suitable for use with <code>exceedance</code>, although this may also be accomplished
 'by hand' as long as the criteria are met as discussed in the documentation
 to <code><a href='make_whole.html'>make_whole</a></code>.</p></li>
-<li><p>Future versions seek to accomodate monthly and annual time series, too.</p></li>
+<li><p>Future versions seek to accommodate monthly and annual time series, too.</p></li>
 <li><p>The calculation of onset and decline rates assumes that exceedance of the
 <code>threshold</code> started a half-day before the start day and ended a half-day
 after the end-day. This is consistent with the duration definition as implemented,

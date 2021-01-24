@@ -2,7 +2,6 @@
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^data-raw$
-^\.travis\.yml$
 ^codecov\.yml$
 ^CODE_OF_CONDUCT\.md$
 ^_pkgdown\.yml$
@@ -19,3 +18,4 @@
 ^pkgdown
 ^index-1.html
 ^CITATIONS.md
+^\.github$

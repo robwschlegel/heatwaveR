@@ -1,13 +1,12 @@
 # heatwaveR <img src="vignettes/logo.png" width=200 align="right" />
 
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/heatwaveR)](https://cran.r-project.org/package=heatwaveR)
-[![Travis build
-status](https://travis-ci.org/robwschlegel/heatwaveR.svg?branch=master)](https://travis-ci.org/robwschlegel/heatwaveR)
-[![Coverage
-status](https://codecov.io/gh/robwschlegel/heatwaveR/branch/master/graph/badge.svg)](https://codecov.io/github/robwschlegel/heatwaveR?branch=master)
+[![R-CMD-check](https://github.com/robwschlegel/heatwaveR/workflows/R-CMD-check/badge.svg)](https://github.com/robwschlegel/heatwaveR/actions)
+[![Codecov test
+coverage](https://codecov.io/gh/robwschlegel/heatwaveR/branch/master/graph/badge.svg)](https://codecov.io/gh/robwschlegel/heatwaveR?branch=master)
 [![JOSS](http://joss.theoj.org/papers/10.21105/joss.00821/status.svg)](https://doi.org/10.21105/joss.00821)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1324308.svg)](https://doi.org/10.5281/zenodo.1324308)
-[![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/heatwaveR)](https://cran.r-project.org/web/packages/heatwaveR/index.html)
+[![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/heatwaveR)](https://cran.r-project.org/package=heatwaveR)
 
 The **`heatwaveR`** package is a project-wide update to the
 [**`RmarineHeatWaves`**](https://github.com/ajsmit/RmarineHeatWaves)
@@ -241,10 +240,10 @@ functions were contributed by Robert. W. Schlegel.
 
 Robert W. Schlegel
 
-Postdoctoral Fellow
+Data Scientist
 
-Ocean Frontier Institute
+Laboratoire d’Océanographie de Villefranche-sur-Mer, LOV
 
-Dalhousie University
+Institut de la Mer de Villefranche, IMEV
 
-<robert.schlegel@dal.ca>
+<robert.schlegel@imev-mer.fr>

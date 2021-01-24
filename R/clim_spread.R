@@ -28,7 +28,7 @@ clim_spread <- function(data, clim_start, clim_end, windowHalfWidth) {
 
   ts_x <- ts_y <- NULL
 
-  ts_clim <- data[ts_x %between% c(clim_start, clim_end)]
+  ts_clim <- data.table::as.data.table(data)[ts_x %between% c(clim_start, clim_end)]
   rm(data)
 
   data.table::setDT(ts_clim)[, ts_x := format(as.Date(ts_x), "%Y") ]

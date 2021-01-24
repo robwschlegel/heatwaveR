@@ -6,7 +6,10 @@
 \alias{heatwaveR-package}
 \title{heatwaveR: Detect Heatwaves and Cold-Spells}
 \description{
-The different methods of defining and detecting extreme events, known as heatwaves or cold-spells in both air and water temperature data are encompassed within this package. These detection algorithms may be used on non-temperature data as well however, this is not catered for explicitly here as no use of this technique in the literature currently exists.
+The different methods for defining, detecting, and categorising the extreme events 
+    known as heatwaves or cold-spells, as first proposed in Hobday et al. (2016) <doi: 10.1016/j.pocean.2015.12.014> 
+    and Hobday et al. (2018) <https://www.jstor.org/stable/26542662>. The functions in this package work on both air 
+    and water temperature data. These detection algorithms may be used on non-temperature data as well.
 }
 \seealso{
 Useful links:
