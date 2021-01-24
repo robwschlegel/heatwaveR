@@ -112,21 +112,21 @@ test_that("lolli_plot() metric must be spelled correctly", {
   res <- detect_event(data = ts2clm(sst_Med,
                 climatologyPeriod = c("1983-01-01", "2012-12-31")))
   expect_error(lolli_plot(res, metric = "what does the fox say"),
-               "Please ensure you have spelled the desired metric correctly.")
+               "Please ensure you have spelled the name of desired metric correctly.")
 })
 
 test_that("lolli_plot() xaxis must be spelled correctly", {
   res <- detect_event(data = ts2clm(sst_Med,
                 climatologyPeriod = c("1983-01-01", "2012-12-31")))
   expect_error(lolli_plot(res, xaxis = "waw paw paw paw paw"),
-               "Please ensure you have spelled the desired xaxis correctly.")
+               "Please ensure you have spelled the name of desired x-axis correctly.")
 })
 
 test_that("lolli_plot() may not be asked to highlight more events than there are", {
   res <- detect_event(data = ts2clm(sst_Med,
                                     climatologyPeriod = c("1983-01-01", "2012-12-31")))
   expect_error(lolli_plot(res, event_count = 666),
-               "Please ensure that event_count is less than the total number of events in your results.")
+               "Please ensure that event_count is less or equal to than the total number of events in your results.")
 })
 
 test_that("lolli_plot() may create MCS output", {
