@@ -100,7 +100,7 @@ other means." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.5.9000</span>
       </span>
     </div>
 
@@ -108,7 +108,7 @@ other means." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -155,7 +155,7 @@ other means." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/robwschlegel/heatwaveR">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
     github
   </a>
@@ -206,7 +206,9 @@ other means.</p>
   maxGap2 <span class='op'>=</span> <span class='va'>maxGap</span>,
   coldSpells <span class='op'>=</span> <span class='cn'>FALSE</span>,
   protoEvents <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  roundRes <span class='op'>=</span> <span class='fl'>4</span>
+  categories <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  roundRes <span class='op'>=</span> <span class='fl'>4</span>,
+  <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -253,7 +255,7 @@ If the column name for the seasonal climatology is different, provide that here.
     <tr>
       <th>threshClim2</th>
       <td><p>If one wishes to provide a second climatology threshold
-filter for the more rigorous detection of events, a vector or column conataining
+filter for the more rigorous detection of events, a vector or column containing
 logical values (i.e. TRUE FALSE) should be provided here. By default this
 argument is ignored. It's primary purpose is to allow for the inclusion of
 tMin and tMax thresholds.</p></td>
@@ -310,11 +312,26 @@ sequential number uniquely identifying the detected event. In this case,
 the heatwave metrics will not be reported. The default is <code>FALSE</code>.</p></td>
     </tr>
     <tr>
+      <th>categories</th>
+      <td><p>Rather than using <code><a href='category.html'>category</a></code> as a separate step to determine
+the categories of the detected MHWs, one may choose to set this argument to <code>TRUE</code>.
+One may pass the same arguments used in the <code><a href='category.html'>category</a></code> function to this function
+to affect the output. Note that the default behaviour of <code><a href='category.html'>category</a></code> is to
+return the event data only. To return the same list structure that <code>detect_event</code>
+outputs by default, use <code>climatology = TRUE</code>.</p></td>
+    </tr>
+    <tr>
       <th>roundRes</th>
       <td><p>This argument allows the user to choose how many decimal places
 the MHW metric outputs will be rounded to. Default is 4. To
 prevent rounding set <code>roundRes = FALSE</code>. This argument may only be given
 numeric values or FALSE.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Other arguments that will be passed internally to <code><a href='category.html'>category</a></code>
+when <code>categories = TRUE</code>. See the documentation for <code><a href='category.html'>category</a></code> for the
+list of possible arguments.</p></td>
     </tr>
     </table>
 
@@ -338,7 +355,12 @@ case, the appropriate units need to be determined by the user.</p>
   <dt>event</dt><dd><p>Boolean indicating if all criteria that define an extreme event
   are met.</p></dd>
   <dt>event_no</dt><dd><p>A sequential number indicating the ID and order of
-  occurence of the events.</p></dd>
+  occurrence of the events.</p></dd>
+  <dt>intensity</dt><dd><p>The difference between <code>temp</code> (or whichever column is provided
+  for <code>y</code>) and <code>seas</code>. Only added if <code>categories = TRUE</code>
+  and <code>climatology = TRUE</code>.</p></dd>
+  <dt>category</dt><dd><p>The category classification per day. Only added
+  if <code>categories = TRUE</code> and <code>climatology = TRUE</code>.</p></dd>
 
 The event results are summarised using a range of event metrics:
   <dt>event_no</dt><dd><p>A sequential number indicating the ID and order of
@@ -355,6 +377,31 @@ The event results are summarised using a range of event metrics:
   <dt>intensity_cumulative</dt><dd><p>Cumulative intensity [deg. C x days].</p></dd>
   <dt>rate_onset</dt><dd><p>Onset rate of event [deg. C / day].</p></dd>
   <dt>rate_decline</dt><dd><p>Decline rate of event [deg. C / day].</p></dd>
+  <dt>event_name</dt><dd><p>The name of the event. Generated from the <code><a href='https://rdrr.io/r/base/name.html'>name</a></code>
+  value provided and the year of the <code>date_peak</code> of
+  the event. If no <code><a href='https://rdrr.io/r/base/name.html'>name</a></code> value is provided the default "Event" is used.
+  As proposed in Hobday et al. (2018), <code>Moderate</code> events are not given a name
+  so as to prevent multiple repeat names within the same year. If two or more events
+  ranked greater than Moderate are reported within the same year, they will be
+  differentiated with the addition of a trailing letter
+  (e.g. Event 2001a, Event 2001b). Only added if <code>categories = TRUE</code>.</p></dd>
+  <dt>category</dt><dd><p>The maximum category threshold reached/exceeded by the event.
+  Only added if <code>categories = TRUE</code>.</p></dd>
+  <dt>p_moderate</dt><dd><p>The proportion of the total duration (days) spent at or above
+  the first threshold, but below any further thresholds. Only added if <code>categories = TRUE</code>.</p></dd>
+  <dt>p_strong</dt><dd><p>The proportion of the total duration (days) spent at or above
+  the second threshold, but below any further thresholds. Only added if <code>categories = TRUE</code>.</p></dd>
+  <dt>p_severe</dt><dd><p>The proportion of the total duration (days) spent at or above
+  the third threshold, but below the fourth threshold. Only added if <code>categories = TRUE</code>.</p></dd>
+  <dt>p_extreme</dt><dd><p>The proportion of the total duration (days) spent at or above
+  the fourth and final threshold. Only added if <code>categories = TRUE</code>.</p></dd>
+  <dt>season</dt><dd><p>The season(s) during which the event occurred. If the event
+  occurred across two seasons this will be displayed as e.g. "Winter/Spring".
+  Across three seasons as e.g. "Winter-Summer". Events lasting across four or more
+  seasons are listed as "Year-round". December (June) is used here as the start of
+  Austral (Boreal) summer. If "start", "peak", or "end" was given to the <code>season</code>
+  argument then only the one season during that chosen period will be given.
+  Only added if <code>categories = TRUE</code>.</p></dd>
 
 intensity_max_relThresh, intensity_mean_relThresh,
 intensity_var_relThresh, and intensity_cumulative_relThresh
@@ -480,6 +527,12 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
 #&gt; </span><span style='color: #BCBCBC;'>5</span><span>        5         672        681       685       14 1983-11-03 1983-11-12
 #&gt; </span><span style='color: #949494;'># … with 3 more variables: date_end </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span style='color: #949494;'>, intensity_mean </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
 #&gt; </span><span style='color: #949494;'>#   intensity_max </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
+<span class='co'># It is also possible to calculate the categories of events directly</span>
+<span class='co'># See the \code{\link{category}} documentation for more functionality</span>
+<span class='va'>res_clim</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ts2clm.html'>ts2clm</a></span><span class='op'>(</span><span class='va'>sst_WA</span>, climatologyPeriod <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"1983-01-01"</span>, <span class='st'>"2012-12-31"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>out_event</span> <span class='op'>&lt;-</span> <span class='fu'>detect_event</span><span class='op'>(</span><span class='va'>res_clim</span>, categories <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>out_list</span> <span class='op'>&lt;-</span> <span class='fu'>detect_event</span><span class='op'>(</span><span class='va'>res_clim</span>, categories <span class='op'>=</span> <span class='cn'>TRUE</span>, climatology <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+
 <span class='co'># It is also possible to give two separate sets of threshold criteria</span>
 
 <span class='co'># To use a second static threshold we first use the exceedance function</span>
