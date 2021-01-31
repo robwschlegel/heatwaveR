@@ -142,7 +142,7 @@ exceedance <- function(data,
     ts_x <- eval(substitute(x), data)
     ts_y <- eval(substitute(y), data)
     ts_xy <- data.frame(ts_x = ts_x, ts_y = ts_y)
-    rm(ts_x); rm(ts_y)
+    rm(list = c("ts_x", "ts_y"))
 
     ts_whole <- make_whole_fast(ts_xy)
 

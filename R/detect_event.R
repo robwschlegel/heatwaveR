@@ -271,7 +271,7 @@ detect_event <- function(data,
   if (!(is.numeric(maxGap)))
     stop("Please ensure that 'maxGap' is a numeric/integer value.")
   if (!(is.numeric(roundRes))) {
-    if(!roundRes == FALSE) {
+    if (!roundRes == FALSE) {
       stop("Please ensure that 'roundRes' is either a numeric value or FALSE.")
     }
   }

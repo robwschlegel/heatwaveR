@@ -82,7 +82,7 @@ make_whole_fast <- function(data) {
   t_series <- data.table::data.table(doy = v_doy,
                                      ts_x = v_date,
                                      ts_y = v_ts_y)
-  rm(v_date); rm(v_doy); rm(v_ts_y)
+  rm(list = c("v_date", "v_doy", "v_ts_y"))
 
   return(t_series)
 }

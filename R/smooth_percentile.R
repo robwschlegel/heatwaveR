@@ -40,6 +40,7 @@ smooth_percentile <- function(data, smoothPercentileWidth, var_calc) {
 
     clim$var <- var[(smoothPercentileWidth/2 + 2):((smoothPercentileWidth/2 + 1) + len_clim_year)]
   }
+  rm(prep)
 
   return(clim)
 }

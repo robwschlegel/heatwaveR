@@ -186,7 +186,7 @@ ts2clm <- function(data,
       stop("Please ensure the temperature values you are providing are type 'num' for numeric.")
 
     ts_xy <- data.table::data.table(ts_x = ts_x, ts_y = ts_y)[base::order(ts_x)]
-    rm(ts_x); rm(ts_y)
+    rm(list = c("ts_x", "ts_y"))
 
     ts_whole <- make_whole_fast(ts_xy)
 
