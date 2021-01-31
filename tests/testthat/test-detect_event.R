@@ -109,3 +109,15 @@ test_that("only one event with NA for rate_onset or rate_decline returns NA and 
   expect_equal(res_both$event$rate_onset, NA)
   expect_equal(res_both$event$rate_decline, NA)
 })
+
+test_that("built in 'categories' argument works as expected", {
+  ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  res_event <- detect_event(ts, categories = T)
+  res_list <- detect_event(ts, categories = T, climatology = T)
+  res_season <- detect_event(ts, categories = T, season = "peak")
+  expect_is(res_event, "data.frame")
+  expect_is(res_list, "list")
+  expect_equal(res_event$category[1], "I Moderate")
+  expect_equal(res_list$climatology$category[889], "I Moderate")
+  expect_equal(res_season$season[3], "Winter")
+})

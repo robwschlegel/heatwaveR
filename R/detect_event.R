@@ -30,7 +30,7 @@
 #' @param threshClim The threshold climatology column should be called
 #' \code{thresh}. If it is not, provide the name of the threshold column here.
 #' @param threshClim2 If one wishes to provide a second climatology threshold
-#' filter for the more rigorous detection of events, a vector or column conataining
+#' filter for the more rigorous detection of events, a vector or column containing
 #' logical values (i.e. TRUE FALSE) should be provided here. By default this
 #' argument is ignored. It's primary purpose is to allow for the inclusion of
 #' tMin and tMax thresholds.
@@ -64,10 +64,19 @@
 #' \code{threshCriterion} and \code{durationCriterion} \code{TRUE}), and a
 #' sequential number uniquely identifying the detected event. In this case,
 #' the heatwave metrics will not be reported. The default is \code{FALSE}.
+#' @param categories Rather than using \code{\link{category}} as a separate step to determine
+#' the categories of the detected MHWs, one may choose to set this argument to \code{TRUE}.
+#' One may pass the same arguments used in the \code{\link{category}} function to this function
+#' to affect the output. Note that the default behaviour of \code{\link{category}} is to
+#' return the event data only. To return the same list structure that \code{\link{detect_event}}
+#' outputs by default, use \code{climatology = TRUE}.
 #' @param roundRes This argument allows the user to choose how many decimal places
 #' the MHW metric outputs will be rounded to. Default is 4. To
 #' prevent rounding set \code{roundRes = FALSE}. This argument may only be given
 #' numeric values or FALSE.
+#' @param ... Other arguments that will be passed internally to \code{\link{category}}
+#' when \code{categories = TRUE}. See the documentation for \code{\link{category}} for the
+#' list of possible arguments.
 #'
 #' @details
 #' \enumerate{
@@ -123,7 +132,12 @@
 #'   \item{event}{Boolean indicating if all criteria that define an extreme event
 #'   are met.}
 #'   \item{event_no}{A sequential number indicating the ID and order of
-#'   occurence of the events.}
+#'   occurrence of the events.}
+#'   \item{intensity}{The difference between \code{temp} (or whichever column is provided
+#'   for \code{y}) and \code{seas}. Only added if \code{categories = TRUE}
+#'   and \code{climatology = TRUE}.}
+#'   \item{category}{The category classification per day. Only added
+#'   if \code{categories = TRUE} and \code{climatology = TRUE}.}
 #'
 #' The \code{event} results are summarised using a range of event metrics:
 #'   \item{event_no}{A sequential number indicating the ID and order of
@@ -140,6 +154,31 @@
 #'   \item{intensity_cumulative}{Cumulative intensity [deg. C x days].}
 #'   \item{rate_onset}{Onset rate of event [deg. C / day].}
 #'   \item{rate_decline}{Decline rate of event [deg. C / day].}
+#'   \item{event_name}{The name of the event. Generated from the \code{\link{name}}
+#'   value provided and the year of the \code{date_peak} of
+#'   the event. If no \code{\link{name}} value is provided the default "Event" is used.
+#'   As proposed in Hobday et al. (2018), \code{Moderate} events are not given a name
+#'   so as to prevent multiple repeat names within the same year. If two or more events
+#'   ranked greater than Moderate are reported within the same year, they will be
+#'   differentiated with the addition of a trailing letter
+#'   (e.g. Event 2001a, Event 2001b). Only added if \code{categories = TRUE}.}
+#'   \item{category}{The maximum category threshold reached/exceeded by the event.
+#'   Only added if \code{categories = TRUE}.}
+#'   \item{p_moderate}{The proportion of the total duration (days) spent at or above
+#'   the first threshold, but below any further thresholds. Only added if \code{categories = TRUE}.}
+#'   \item{p_strong}{The proportion of the total duration (days) spent at or above
+#'   the second threshold, but below any further thresholds. Only added if \code{categories = TRUE}.}
+#'   \item{p_severe}{The proportion of the total duration (days) spent at or above
+#'   the third threshold, but below the fourth threshold. Only added if \code{categories = TRUE}.}
+#'   \item{p_extreme}{The proportion of the total duration (days) spent at or above
+#'   the fourth and final threshold. Only added if \code{categories = TRUE}.}
+#'   \item{season}{The season(s) during which the event occurred. If the event
+#'   occurred across two seasons this will be displayed as e.g. "Winter/Spring".
+#'   Across three seasons as e.g. "Winter-Summer". Events lasting across four or more
+#'   seasons are listed as "Year-round". December (June) is used here as the start of
+#'   Austral (Boreal) summer. If "start", "peak", or "end" was given to the \code{season}
+#'   argument then only the one season during that chosen period will be given.
+#'   Only added if \code{categories = TRUE}.}
 #'
 #' \code{intensity_max_relThresh}, \code{intensity_mean_relThresh},
 #' \code{intensity_var_relThresh}, and \code{intensity_cumulative_relThresh}
@@ -186,6 +225,12 @@
 #' # show some of the cold-spells:
 #' out$event[1:5, 1:10]
 #'
+#' # It is also possible to calculate the categories of events directly
+#' # See the \code{\link{category}} documentation for more functionality
+#' res_clim <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+#' out_event <- detect_event(res_clim, categories = TRUE)
+#' out_list <- detect_event(res_clim, categories = TRUE, climatology = TRUE)
+#'
 #' # It is also possible to give two separate sets of threshold criteria
 #'
 #' # To use a second static threshold we first use the exceedance function
@@ -215,7 +260,9 @@ detect_event <- function(data,
                          maxGap2 = maxGap,
                          coldSpells = FALSE,
                          protoEvents = FALSE,
-                         roundRes = 4) {
+                         categories = FALSE,
+                         roundRes = 4,
+                         ...) {
 
   if (!(is.numeric(minDuration)))
     stop("Please ensure that 'minDuration' is a numeric/integer value.")
@@ -309,7 +356,6 @@ detect_event <- function(data,
                           intensity_var_abs = sqrt(stats::var(ts_y)),
                           intensity_cumulative_abs = sum(ts_y))
     events <- tibble::as_tibble(events)
-    # events <- data.table::data.table(events)
 
     mhw_rel_seas <- t_series$ts_y - t_series$ts_seas
     A <- mhw_rel_seas[events$index_start]
@@ -364,11 +410,7 @@ detect_event <- function(data,
                          intensity_max_abs = NA, intensity_var_abs = NA,
                          intensity_cumulative_abs = NA, rate_onset = NA, rate_decline = NA)
     events <- tibble::as_tibble(events)
-    # events <- tibble::as_tibble(stats::na.omit(events))
-    # events <- data.table::data.table(stats::na.omit(events))
   }
-
-  # .SD <- NULL
 
   event_cols <- names(events)[9:22]
   clim_cols <- names(events_clim)[2:4]
@@ -385,15 +427,28 @@ detect_event <- function(data,
     if (nrow(events) > 0) {
       events <- dplyr::mutate(events, dplyr::across(dplyr::all_of(event_cols), round, roundRes))
       events_clim <- dplyr::mutate(events_clim, dplyr::across(dplyr::all_of(clim_cols), round, roundRes))
-      # events[,(event_cols) := round(.SD, roundRes), .SDcols = event_cols]
-      # events_clim[,(clim_cols) := round(.SD, roundRes), .SDcols = clim_cols]
     }
   }
 
   data_clim <- tibble::as_tibble(cbind(data, events_clim[,5:8]))
 
-  list(climatology = data_clim,
-       event = events)
+  data_res <- list(climatology = data_clim, event = events)
+
+  if (categories) {
+    data_cat <- category(data_res, ...)
+    if(is.data.frame(data_cat)){
+      data_res <- dplyr::left_join(events, data_cat,
+                                   by = c("event_no", "duration",
+                                          "intensity_max" = "i_max", "date_peak" = "peak_date"))
+    } else {
+      data_res <- list(climatology = dplyr::left_join(data_res$climatology,
+                                                      data_cat$climatology, by = c("t", "event_no")),
+                       event = dplyr::left_join(data_res$event, data_cat$event,
+                                                by = c("event_no", "duration",
+                                                       "intensity_max" = "i_max", "date_peak" = "peak_date")))
+    }
+  }
+  return(data_res)
   }
 }
 

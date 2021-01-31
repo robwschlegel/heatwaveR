@@ -1,6 +1,6 @@
 Package: heatwaveR
-Version: 0.4.5
-Date: 2021-01-07
+Version: 0.4.5.9000
+Date: 2021-01-31
 Title: Detect Heatwaves and Cold-Spells
 Description: The different methods for defining, detecting, and categorising the extreme events 
     known as heatwaves or cold-spells, as first proposed in Hobday et al. (2016) <doi: 10.1016/j.pocean.2015.12.014> 

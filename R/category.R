@@ -163,14 +163,12 @@ category <- function(data,
                                               p_strong = NA,
                                               p_severe = NA,
                                               p_extreme = NA,
-                                              season = NA)) #%>%
-        # stats::na.omit()
+                                              season = NA))
       if (climatology) {
         clim_res <- tibble::as_tibble(data.frame(t = NA,
                                                  event_no = NA,
                                                  intensity = NA,
-                                                 category = NA)) #%>%
-          # stats::na.omit()
+                                                 category = NA))
         res <- list(climatology = clim_res,
                     event = cat_res)
         return(res)
