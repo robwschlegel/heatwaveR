@@ -1,3 +1,7 @@
+# heatwaveR 0.4.5.9000 (2021-02-10)
+
+-   Added more citations of the package
+
 # heatwaveR 0.4.5.9000 (2021-01-31)
 
 -   Added a `categories` argument to `detect_event()`

@@ -120,7 +120,7 @@ system.time(
     group_modify(~OISST_sub_dl(.x)) %>% 
     ungroup() %>% 
     select(lon, lat, t, temp)
-) # 636 seconds, ~127 seconds per batch
+) # 38 seconds, ~8 seconds per batch
 ```
 
 If the above code chunk is giving errors it is likely due to one's Internet connection timing out. There are also rare instances where the NOAA server is not responding due to an issue on their end. Any connection based issues may be resolved by simply waiting for a few minutes, or by ensuring a stable connection.
