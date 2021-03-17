@@ -121,3 +121,19 @@ test_that("built in 'categories' argument works as expected", {
   expect_equal(res_list$climatology$category[889], "I Moderate")
   expect_equal(res_season$season[3], "Winter")
 })
+
+test_that("Useful error is returned when incorrect column names exist", {
+  ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  colnames(ts) <- c("doy", "banana", "temp", "seas", "thresh")
+  expect_error(detect_event(ts),
+               "Please ensure that a column named 't' is present in your data.frame or that you have assigned a column to the 'x' argument.")
+  colnames(ts) <- c("doy", "t", "banana", "seas", "thresh")
+  expect_error(detect_event(ts),
+               "Please ensure that a column named 'temp' is present in your data.frame or that you have assigned a column to the 'y' argument.")
+  colnames(ts) <- c("doy", "t", "temp", "banana", "thresh")
+  expect_error(detect_event(ts),
+               "Please ensure that a column named 'seas' is present in your data.frame or that you have assigned a column to the 'seasClim' argument.")
+  colnames(ts) <- c("doy", "t", "temp", "seas", "banana")
+  expect_error(detect_event(ts),
+               "Please ensure that a column named 'thresh' is present in your data.frame or that you have assigned a column to the 'threshClim' argument.")
+})

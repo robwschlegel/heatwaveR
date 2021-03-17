@@ -1,3 +1,7 @@
+# heatwaveR 0.4.5.9001 (2021-03-17)
+
+-   Improved error trapping for `ts2clm()`, `detect_event()`, and `exceedance()`
+
 # heatwaveR 0.4.5.9000 (2021-02-10)
 
 -   Added more citations of the package

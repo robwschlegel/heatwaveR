@@ -279,9 +279,17 @@ detect_event <- function(data,
   temp <- seas <- thresh <- threshCriterion <- durationCriterion <- event <- NULL
 
   ts_x <- eval(substitute(x), data)
+  if (is.null(ts_x) | is.function(ts_x))
+    stop("Please ensure that a column named 't' is present in your data.frame or that you have assigned a column to the 'x' argument.")
   ts_y <- eval(substitute(y), data)
+  if (is.null(ts_y) | is.function(ts_y))
+    stop("Please ensure that a column named 'temp' is present in your data.frame or that you have assigned a column to the 'y' argument.")
   ts_seas <- eval(substitute(seasClim), data)
+  if (is.null(ts_seas) | is.function(ts_seas))
+    stop("Please ensure that a column named 'seas' is present in your data.frame or that you have assigned a column to the 'seasClim' argument.")
   ts_thresh <- eval(substitute(threshClim), data)
+  if (is.null(ts_thresh) | is.function(ts_thresh))
+    stop("Please ensure that a column named 'thresh' is present in your data.frame or that you have assigned a column to the 'threshClim' argument.")
   t_series <- data.frame(ts_x, ts_y, ts_seas, ts_thresh)
   rm(ts_x); rm(ts_y); rm(ts_seas); rm(ts_thresh)
 
