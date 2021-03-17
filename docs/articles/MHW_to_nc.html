@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.5.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.5.9001</span>
       </span>
     </div>
 
@@ -122,13 +122,13 @@
 
       
 
-      </header><script src="MHW_to_nc_files/header-attrs-2.6/header-attrs.js"></script><div class="row">
+      </header><script src="MHW_to_nc_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Saving MHW Results to NetCDF</h1>
                         <h4 class="author">Robert W Schlegel</h4>
             
-            <h4 class="date">2021-02-10</h4>
+            <h4 class="date">2021-03-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/MHW_to_nc.Rmd"><code>vignettes/MHW_to_nc.Rmd</code></a></small>
       <div class="hidden name"><code>MHW_to_nc.Rmd</code></div>
@@ -158,7 +158,7 @@
 <div id="prepare-the-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#prepare-the-data" class="anchor"></a>Prepare the data</h2>
-<p>The main sticking point between MHW results and the NetCDF file format in R is that NetCDF files will only accept the file type in R known as “arrays”, and most R outputs are data.frames. So the majority of what we need to do is to convert our data from data.frames to arrays. There are many ways to do this and a search of the interwebs will produce a plethora of results. Over the years I have settled into an approach that I use operationally for the MHW Tracker that I will also use here. It is not necessarily the fastest method, nor does it use the fewest lines of code possible, but it does follow the <strong><code>tidyverse</code></strong> approach to programming, and I think it is about as transparent as this process can be. We will create two function below that will help us along in this process.</p>
+<p>The main sticking point between MHW results and the NetCDF file format in R is that NetCDF files will only accept the file type in R known as “arrays”, and most R outputs are data.frames. So the majority of what we need to do is to convert our data from data.frames to arrays. There are many ways to do this and a search of the interwebs will produce a plethora of results. Over the years I have settled into an approach that I use operationally for the MHW Tracker that I will also use here. It is not necessarily the fastest method, nor does it use the fewest lines of code possible, but it does follow the <strong><code>tidyverse</code></strong> approach to programming, and I think it is about as transparent as this process can be. We will create two functions below that will help us along in this process.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Function for creating arrays from data.frames</span>
 <span class="va">df_acast</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span>, <span class="va">lon_lat</span><span class="op">)</span><span class="op">{</span>
@@ -225,22 +225,22 @@
 <div id="create-netcdf-file" class="section level2">
 <h2 class="hasAnchor">
 <a href="#create-netcdf-file" class="anchor"></a>Create NetCDF file</h2>
-<p>The last step in this process is to add the prepared data top the NetCDF shell we have constructed. The <strong><code>ncdf4</code></strong> package helps to make this all a relatively straight forward process.</p>
+<p>The last step in this process is to add the prepared data to the NetCDF shell we have constructed. The <strong><code>ncdf4</code></strong> package helps to make this all a relatively straight forward process.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># path and file name, set dname</span>
+<code class="sourceCode R"><span class="co"># Path and file name</span>
+  <span class="co"># NB: We are net setting time dimensions here because we are using event_no as our "time" dimension</span>
 <span class="va">ncpath</span> <span class="op">&lt;-</span> <span class="st">"~/Desktop/"</span>
 <span class="va">ncname</span> <span class="op">&lt;-</span> <span class="st">"MHW_results"</span>
 <span class="va">ncfname</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">ncpath</span>, <span class="va">ncname</span>, <span class="st">".nc"</span><span class="op">)</span>
 <span class="co"># dname &lt;- "tmp"</span>
 
-<span class="co"># create and write the netCDF file -- ncdf4 version</span>
-<span class="co"># define dimensions</span>
+<span class="co"># Define dimensions</span>
 <span class="va">londim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ncdf4/man/ncdim_def.html">ncdim_def</a></span><span class="op">(</span><span class="st">"lon"</span>, <span class="st">"degrees_east"</span>, <span class="va">lon</span><span class="op">)</span>
 <span class="va">latdim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ncdf4/man/ncdim_def.html">ncdim_def</a></span><span class="op">(</span><span class="st">"lat"</span>, <span class="st">"degrees_north"</span>, <span class="va">lat</span><span class="op">)</span>
 <span class="va">endim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ncdf4/man/ncdim_def.html">ncdim_def</a></span><span class="op">(</span><span class="st">"event_no"</span>, <span class="st">"event_number"</span>, <span class="va">event_no</span><span class="op">)</span>
 <span class="co"># timedim &lt;- ncdim_def("time", tunits, as.double(time))</span>
 
-<span class="co"># define variables</span>
+<span class="co"># Define variables</span>
 <span class="va">fillvalue</span> <span class="op">&lt;-</span> <span class="fl">1e32</span>
 <span class="va">def_dur</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ncdf4/man/ncvar_def.html">ncvar_def</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"duration"</span>, units <span class="op">=</span> <span class="st">"days"</span>, dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">endim</span>, <span class="va">latdim</span>, <span class="va">londim</span><span class="op">)</span>, 
                      missval <span class="op">=</span> <span class="va">fillvalue</span>, longname <span class="op">=</span> <span class="st">"duration of MHW"</span>, prec <span class="op">=</span> <span class="st">"double"</span><span class="op">)</span>
@@ -251,21 +251,22 @@
 <span class="va">def_peak</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ncdf4/man/ncvar_def.html">ncvar_def</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"date_peak"</span>, units <span class="op">=</span> <span class="va">tunits</span>, dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">endim</span>, <span class="va">latdim</span>, <span class="va">londim</span><span class="op">)</span>,
                       missval <span class="op">=</span> <span class="fl">0</span>, longname <span class="op">=</span> <span class="st">"date of peak temperature anomaly during MHW"</span>, prec <span class="op">=</span> <span class="st">"integer"</span><span class="op">)</span>
 
-<span class="co"># create netCDF file and put arrays</span>
+<span class="co"># Create netCDF file and prepare space for our arrays</span>
 <span class="va">ncout</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/ncdf4/man/nc_create.html">nc_create</a></span><span class="op">(</span><span class="va">ncfname</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">def_peak</span>, <span class="va">def_dur</span>, <span class="va">def_max_int</span>, <span class="va">def_cum_int</span><span class="op">)</span>, force_v4 <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
-<span class="co"># put variables</span>
+<span class="co"># Add the actual data</span>
 <span class="fu"><a href="https://rdrr.io/pkg/ncdf4/man/ancvar_put.html">ncvar_put</a></span><span class="op">(</span><span class="va">ncout</span>, <span class="va">def_dur</span>, <span class="va">prep_dur</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/ncdf4/man/ancvar_put.html">ncvar_put</a></span><span class="op">(</span><span class="va">ncout</span>, <span class="va">def_max_int</span>, <span class="va">prep_max_int</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/ncdf4/man/ancvar_put.html">ncvar_put</a></span><span class="op">(</span><span class="va">ncout</span>, <span class="va">def_cum_int</span>, <span class="va">prep_cum_int</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/ncdf4/man/ancvar_put.html">ncvar_put</a></span><span class="op">(</span><span class="va">ncout</span>, <span class="va">def_peak</span>, <span class="va">prep_peak</span><span class="op">)</span>
 
-<span class="co"># put additional attributes into dimension and data variables</span>
+<span class="co"># Put additional attributes into dimension and data variables</span>
 <span class="fu"><a href="https://rdrr.io/pkg/ncdf4/man/ncatt_put.html">ncatt_put</a></span><span class="op">(</span><span class="va">ncout</span>, <span class="st">"lon"</span>, <span class="st">"axis"</span>, <span class="st">"X"</span><span class="op">)</span> <span class="co">#,verbose=FALSE) #,definemode=FALSE)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/ncdf4/man/ncatt_put.html">ncatt_put</a></span><span class="op">(</span><span class="va">ncout</span>, <span class="st">"lat"</span>, <span class="st">"axis"</span>, <span class="st">"Y"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/ncdf4/man/ncatt_put.html">ncatt_put</a></span><span class="op">(</span><span class="va">ncout</span>, <span class="st">"event_no"</span>, <span class="st">"axis"</span>, <span class="st">"event_no"</span><span class="op">)</span>
 
-<span class="co"># add global attributes</span>
+<span class="co"># Add global attributes</span>
+  <span class="co"># These are useful for whomever else may want to use your NetCDF file</span>
 <span class="fu"><a href="https://rdrr.io/pkg/ncdf4/man/ncatt_put.html">ncatt_put</a></span><span class="op">(</span><span class="va">ncout</span>, <span class="fl">0</span>, <span class="st">"title"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"MHW results from lon: "</span>,
                                     <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">lon</span><span class="op">)</span>,<span class="st">" to "</span>,<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">lon</span><span class="op">)</span>,
                                     <span class="st">" and lat: "</span>,<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">lat</span><span class="op">)</span>,<span class="st">" to "</span>,<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">lat</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>

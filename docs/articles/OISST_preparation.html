@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.5.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.5.9001</span>
       </span>
     </div>
 
@@ -122,13 +122,13 @@
 
       
 
-      </header><script src="OISST_preparation_files/header-attrs-2.6/header-attrs.js"></script><div class="row">
+      </header><script src="OISST_preparation_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Downloading and Preparing NOAA OISST Data</h1>
                         <h4 class="author">Robert W Schlegel and AJ Smit</h4>
             
-            <h4 class="date">2021-02-10</h4>
+            <h4 class="date">2021-03-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/OISST_preparation.Rmd"><code>vignettes/OISST_preparation.Rmd</code></a></small>
       <div class="hidden name"><code>OISST_preparation.Rmd</code></div>
@@ -230,7 +230,7 @@
     <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_map.html">group_modify</a></span><span class="op">(</span><span class="op">~</span><span class="fu">OISST_sub_dl</span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">lon</span>, <span class="va">lat</span>, <span class="va">t</span>, <span class="va">temp</span><span class="op">)</span>
-<span class="op">)</span> <span class="co"># 636 seconds, ~127 seconds per batch</span></code></pre></div>
+<span class="op">)</span> <span class="co"># 38 seconds, ~8 seconds per batch</span></code></pre></div>
 <p>If the above code chunk is giving errors it is likely due to one’s Internet connection timing out. There are also rare instances where the NOAA server is not responding due to an issue on their end. Any connection based issues may be resolved by simply waiting for a few minutes, or by ensuring a stable connection.</p>
 </div>
 <div id="visualise-data" class="section level3">
