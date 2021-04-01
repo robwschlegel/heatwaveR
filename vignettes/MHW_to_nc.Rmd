@@ -40,7 +40,7 @@ MHW_res_grid <- readRDS("~/Desktop/MHW_result.Rds")
 
 ## Prepare the data
 
-The main sticking point between MHW results and the NetCDF file format in R is that NetCDF files will only accept the file type in R known as "arrays", and most R outputs are data.frames. So the majority of what we need to do is to convert our data from data.frames to arrays. There are many ways to do this and a search of the interwebs will produce a plethora of results. Over the years I have settled into an approach that I use operationally for the MHW Tracker that I will also use here. It is not necessarily the fastest method, nor does it use the fewest lines of code possible, but it does follow the **`tidyverse`** approach to programming, and I think it is about as transparent as this process can be. We will create two function below that will help us along in this process.
+The main sticking point between MHW results and the NetCDF file format in R is that NetCDF files will only accept the file type in R known as "arrays", and most R outputs are data.frames. So the majority of what we need to do is to convert our data from data.frames to arrays. There are many ways to do this and a search of the interwebs will produce a plethora of results. Over the years I have settled into an approach that I use operationally for the MHW Tracker that I will also use here. It is not necessarily the fastest method, nor does it use the fewest lines of code possible, but it does follow the **`tidyverse`** approach to programming, and I think it is about as transparent as this process can be. We will create two functions below that will help us along in this process.
 
 ```{r data-prep}
 # Function for creating arrays from data.frames
@@ -109,23 +109,23 @@ nen <- length(event_no)
 
 ## Create NetCDF file
 
-The last step in this process is to add the prepared data top the NetCDF shell we have constructed. The **`ncdf4`** package helps to make this all a relatively straight forward process.
+The last step in this process is to add the prepared data to the NetCDF shell we have constructed. The **`ncdf4`** package helps to make this all a relatively straight forward process.
 
 ```{r nc-make}
-# path and file name, set dname
+# Path and file name
+  # NB: We are net setting time dimensions here because we are using event_no as our "time" dimension
 ncpath <- "~/Desktop/"
 ncname <- "MHW_results"
 ncfname <- paste0(ncpath, ncname, ".nc")
 # dname <- "tmp"
 
-# create and write the netCDF file -- ncdf4 version
-# define dimensions
+# Define dimensions
 londim <- ncdim_def("lon", "degrees_east", lon)
 latdim <- ncdim_def("lat", "degrees_north", lat)
 endim <- ncdim_def("event_no", "event_number", event_no)
 # timedim <- ncdim_def("time", tunits, as.double(time))
 
-# define variables
+# Define variables
 fillvalue <- 1e32
 def_dur <- ncvar_def(name = "duration", units = "days", dim = list(endim, latdim, londim), 
                      missval = fillvalue, longname = "duration of MHW", prec = "double")
@@ -136,21 +136,22 @@ def_cum_int <- ncvar_def(name = "cum_int", units = "deg_c days", dim = list(endi
 def_peak <- ncvar_def(name = "date_peak", units = tunits, dim = list(endim, latdim, londim),
                       missval = 0, longname = "date of peak temperature anomaly during MHW", prec = "integer")
 
-# create netCDF file and put arrays
+# Create netCDF file and prepare space for our arrays
 ncout <- nc_create(ncfname, list(def_peak, def_dur, def_max_int, def_cum_int), force_v4 = TRUE)
 
-# put variables
+# Add the actual data
 ncvar_put(ncout, def_dur, prep_dur)
 ncvar_put(ncout, def_max_int, prep_max_int)
 ncvar_put(ncout, def_cum_int, prep_cum_int)
 ncvar_put(ncout, def_peak, prep_peak)
 
-# put additional attributes into dimension and data variables
+# Put additional attributes into dimension and data variables
 ncatt_put(ncout, "lon", "axis", "X") #,verbose=FALSE) #,definemode=FALSE)
 ncatt_put(ncout, "lat", "axis", "Y")
 ncatt_put(ncout, "event_no", "axis", "event_no")
 
-# add global attributes
+# Add global attributes
+  # These are useful for whomever else may want to use your NetCDF file
 ncatt_put(ncout, 0, "title", paste0("MHW results from lon: ",
                                     min(lon)," to ",max(lon),
                                     " and lat: ",min(lat)," to ",max(lat)))

@@ -120,3 +120,13 @@ test_that("roundClm argument functions correctly", {
   res <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), roundClm = F)
   expect_gt(res$seas[1], 21.60802)
 })
+
+test_that("Useful error is returned when incorrect column names exist", {
+  ts <- sst_WA
+  colnames(ts) <- c("banana", "temp")
+  expect_error(ts2clm(ts, climatologyPeriod = c("1983-01-01", "2012-12-31")),
+               "Please ensure that a column named 't' is present in your data.frame or that you have assigned a column to the 'x' argument.")
+  colnames(ts) <- c("t", "banana")
+  expect_error(ts2clm(ts, climatologyPeriod = c("1983-01-01", "2012-12-31")),
+               "Please ensure that a column named 'temp' is present in your data.frame or that you have assigned a column to the 'y' argument.")
+})

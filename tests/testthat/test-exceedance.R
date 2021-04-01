@@ -72,3 +72,13 @@ test_that("maxPadLength argument works correctly throughout", {
   res <- exceedance(data = sst_Med_NA, threshold = 20, maxPadLength = 2)
   expect_equal(round(res$threshold$temp[21], 2), 13.57)
 })
+
+test_that("Useful error is returned when incorrect column names exist", {
+  ts <- sst_WA
+  colnames(ts) <- c("banana", "temp")
+  expect_error(exceedance(ts, threshold = 20),
+               "Please ensure that a column named 't' is present in your data.frame or that you have assigned a column to the 'x' argument.")
+  colnames(ts) <- c("t", "banana")
+  expect_error(exceedance(ts, threshold = 20),
+               "Please ensure that a column named 'temp' is present in your data.frame or that you have assigned a column to the 'y' argument.")
+})

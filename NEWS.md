@@ -1,3 +1,16 @@
+# heatwaveR 0.4.5.9001 (2021-03-17)
+
+-   Improved error trapping for `ts2clm()`, `detect_event()`, and `exceedance()`
+
+# heatwaveR 0.4.5.9000 (2021-02-10)
+
+-   Added more citations of the package
+
+# heatwaveR 0.4.5.9000 (2021-01-31)
+
+-   Added a `categories` argument to `detect_event()`
+    -   This allows one to determine the categories of events directly, rather than as a second step using the `category()` function
+
 # heatwaveR 0.4.5 (2021-01-23)
 
 -   Created a new vignette that shows how to save gridded MHW results to a NetCDF file
