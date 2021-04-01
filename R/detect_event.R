@@ -15,7 +15,7 @@
 #' cycle daily climatology (366 days), and \code{thresh} is the seasonal cycle
 #' daily threshold above which events may be detected. Data of the appropriate
 #' format are created by the function \code{\link{ts2clm}}, but your own data
-#' can be supplied if they meet the criteria specified by \code{\link{ts2clm}}
+#' can be supplied if they meet the criteria specified by \code{\link{ts2clm}}.
 #' If the column names of \code{data} match those outlined here, the following
 #' four arguments may be ignored.
 #' @param x This column is expected to contain a vector of dates as per the
@@ -24,9 +24,10 @@
 #' the column with dates here.
 #' @param y This is a column containing the measurement variable. If the column
 #' name differs from the default (i.e. \code{temp}), specify the name here.
-#' @param seasClim This function will assume that the seasonal climatology column
-#' is called \code{seas} as this matches the output of \code{\link{ts2clm}}.
-#' If the column name for the seasonal climatology is different, provide that here.
+#' @param seasClim The dafault for this argument assumes that the seasonal
+#' climatology column is called \code{seas} as this matches the output of
+#' \code{\link{ts2clm}}. If the column name for the seasonal climatology is
+#' different, provide that here.
 #' @param threshClim The threshold climatology column should be called
 #' \code{thresh}. If it is not, provide the name of the threshold column here.
 #' @param threshClim2 If one wishes to provide a second climatology threshold
