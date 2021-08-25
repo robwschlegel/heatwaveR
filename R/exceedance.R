@@ -140,7 +140,11 @@ exceedance <- function(data,
     temp <- threshCriterion <- durationCriterion <- event <- event_no <- doy <- NULL
 
     ts_x <- eval(substitute(x), data)
+    if (is.null(ts_x) | is.function(ts_x))
+      stop("Please ensure that a column named 't' is present in your data.frame or that you have assigned a column to the 'x' argument.")
     ts_y <- eval(substitute(y), data)
+    if (is.null(ts_y) | is.function(ts_y))
+      stop("Please ensure that a column named 'temp' is present in your data.frame or that you have assigned a column to the 'y' argument.")
     ts_xy <- data.frame(ts_x = ts_x, ts_y = ts_y)
     rm(list = c("ts_x", "ts_y"))
 

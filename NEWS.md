@@ -1,6 +1,14 @@
-# heatwaveR 0.4.5.9000 (2021-08-25)
+# heatwaveR 0.4.5.9001 (2021-08-25)
 
 -   Updated the visualisation vignette to now include the code necessary to get `geom_flame()` to work with **`plotly`** now that it is no longer directly supported
+
+# heatwaveR 0.4.5.9001 (2021-03-17)
+
+-   Improved error trapping for `ts2clm()`, `detect_event()`, and `exceedance()`
+
+# heatwaveR 0.4.5.9000 (2021-02-10)
+
+-   Added more citations of the package
 
 # heatwaveR 0.4.5.9000 (2021-01-31)
 

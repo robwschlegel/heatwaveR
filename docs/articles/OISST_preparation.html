@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.5.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.5.9001</span>
       </span>
     </div>
 
@@ -230,7 +230,7 @@
     <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_map.html">group_modify</a></span><span class="op">(</span><span class="op">~</span><span class="fu">OISST_sub_dl</span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
     <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">lon</span>, <span class="va">lat</span>, <span class="va">t</span>, <span class="va">temp</span><span class="op">)</span>
-<span class="op">)</span> <span class="co"># 636 seconds, ~127 seconds per batch</span></code></pre></div>
+<span class="op">)</span> <span class="co"># 38 seconds, ~8 seconds per batch</span></code></pre></div>
 <p>If the above code chunk is giving errors it is likely due to one’s Internet connection timing out. There are also rare instances where the NOAA server is not responding due to an issue on their end. Any connection based issues may be resolved by simply waiting for a few minutes, or by ensuring a stable connection.</p>
 </div>
 <div id="visualise-data" class="section level3">
@@ -324,10 +324,10 @@
   <span class="co"># This means it will use much less RAM and is viable for use on most laptops</span>
   <span class="co"># Assuming one's study area is not too large</span>
 <span class="va">OISST_load</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">file_name</span>, <span class="va">lon1</span>, <span class="va">lon2</span>, <span class="va">lat1</span>, <span class="va">lat2</span><span class="op">)</span><span class="op">{</span>
-      <span class="va">OISST_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tidync/man/tidync.html">tidync</a></span><span class="op">(</span><span class="va">file_name</span><span class="op">)</span> <span class="op">%&gt;%</span>
-        <span class="fu"><a href="https://rdrr.io/pkg/tidync/man/hyper_filter.html">hyper_filter</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span><span class="op">(</span><span class="va">lon</span>, <span class="va">lon1</span>, <span class="va">lon2</span><span class="op">)</span>,
+      <span class="va">OISST_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/tidync/reference/tidync.html">tidync</a></span><span class="op">(</span><span class="va">file_name</span><span class="op">)</span> <span class="op">%&gt;%</span>
+        <span class="fu"><a href="https://docs.ropensci.org/tidync/reference/hyper_filter.html">hyper_filter</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span><span class="op">(</span><span class="va">lon</span>, <span class="va">lon1</span>, <span class="va">lon2</span><span class="op">)</span>,
                      lat <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span><span class="op">(</span><span class="va">lat</span>, <span class="va">lat1</span>, <span class="va">lat2</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-        <span class="fu"><a href="https://rdrr.io/pkg/tidync/man/hyper_tibble.html">hyper_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+        <span class="fu"><a href="https://docs.ropensci.org/tidync/reference/hyper_tibble.html">hyper_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
         <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">lon</span>, <span class="va">lat</span>, <span class="va">time</span>, <span class="va">sst</span><span class="op">)</span> <span class="op">%&gt;%</span> 
         <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>t <span class="op">=</span> <span class="va">time</span>, temp <span class="op">=</span> <span class="va">sst</span><span class="op">)</span> <span class="op">%&gt;%</span> 
         <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>t <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="va">t</span>, origin <span class="op">=</span> <span class="st">"1978-01-01"</span><span class="op">)</span><span class="op">)</span>

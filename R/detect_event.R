@@ -15,7 +15,7 @@
 #' cycle daily climatology (366 days), and \code{thresh} is the seasonal cycle
 #' daily threshold above which events may be detected. Data of the appropriate
 #' format are created by the function \code{\link{ts2clm}}, but your own data
-#' can be supplied if they meet the criteria specified by \code{\link{ts2clm}}
+#' can be supplied if they meet the criteria specified by \code{\link{ts2clm}}.
 #' If the column names of \code{data} match those outlined here, the following
 #' four arguments may be ignored.
 #' @param x This column is expected to contain a vector of dates as per the
@@ -24,9 +24,10 @@
 #' the column with dates here.
 #' @param y This is a column containing the measurement variable. If the column
 #' name differs from the default (i.e. \code{temp}), specify the name here.
-#' @param seasClim This function will assume that the seasonal climatology column
-#' is called \code{seas} as this matches the output of \code{\link{ts2clm}}.
-#' If the column name for the seasonal climatology is different, provide that here.
+#' @param seasClim The dafault for this argument assumes that the seasonal
+#' climatology column is called \code{seas} as this matches the output of
+#' \code{\link{ts2clm}}. If the column name for the seasonal climatology is
+#' different, provide that here.
 #' @param threshClim The threshold climatology column should be called
 #' \code{thresh}. If it is not, provide the name of the threshold column here.
 #' @param threshClim2 If one wishes to provide a second climatology threshold
@@ -279,9 +280,17 @@ detect_event <- function(data,
   temp <- seas <- thresh <- threshCriterion <- durationCriterion <- event <- NULL
 
   ts_x <- eval(substitute(x), data)
+  if (is.null(ts_x) | is.function(ts_x))
+    stop("Please ensure that a column named 't' is present in your data.frame or that you have assigned a column to the 'x' argument.")
   ts_y <- eval(substitute(y), data)
+  if (is.null(ts_y) | is.function(ts_y))
+    stop("Please ensure that a column named 'temp' is present in your data.frame or that you have assigned a column to the 'y' argument.")
   ts_seas <- eval(substitute(seasClim), data)
+  if (is.null(ts_seas) | is.function(ts_seas))
+    stop("Please ensure that a column named 'seas' is present in your data.frame or that you have assigned a column to the 'seasClim' argument.")
   ts_thresh <- eval(substitute(threshClim), data)
+  if (is.null(ts_thresh) | is.function(ts_thresh))
+    stop("Please ensure that a column named 'thresh' is present in your data.frame or that you have assigned a column to the 'threshClim' argument.")
   t_series <- data.frame(ts_x, ts_y, ts_seas, ts_thresh)
   rm(ts_x); rm(ts_y); rm(ts_seas); rm(ts_thresh)
 
