@@ -1,3 +1,7 @@
+# heatwaveR 0.4.5.9000 (2021-08-25)
+
+-   Updated the visualisation vignette to now include the code necessary to get `geom_flame()` to work with **`plotly`** now that it is no longer directly supported
+
 # heatwaveR 0.4.5.9000 (2021-01-31)
 
 -   Added a `categories` argument to `detect_event()`

@@ -347,34 +347,34 @@ Feb 2015, and is documented by Hobday et al. (2016).</p>
     <pre class="examples"><div class='input'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>exceedance</span><span class='op'>(</span><span class='va'>sst_WA</span>, threshold <span class='op'>=</span> <span class='fl'>25</span><span class='op'>)</span>
 <span class='co'># show first ten days of daily data:</span>
 <span class='va'>res</span><span class='op'>$</span><span class='va'>threshold</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='op'>]</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 10 x 7</span><span>
-#&gt;    t           temp thresh threshCriterion durationCriteri… exceedance
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>           </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>            </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>     
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> 1982-01-01  20.9     25 FALSE           FALSE            FALSE     
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> 1982-01-02  21.2     25 FALSE           FALSE            FALSE     
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> 1982-01-03  21.4     25 FALSE           FALSE            FALSE     
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> 1982-01-04  21.2     25 FALSE           FALSE            FALSE     
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> 1982-01-05  21.3     25 FALSE           FALSE            FALSE     
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> 1982-01-06  21.6     25 FALSE           FALSE            FALSE     
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> 1982-01-07  21.7     25 FALSE           FALSE            FALSE     
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> 1982-01-08  21.5     25 FALSE           FALSE            FALSE     
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> 1982-01-09  21.4     25 FALSE           FALSE            FALSE     
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> 1982-01-10  21.4     25 FALSE           FALSE            FALSE     
-#&gt; </span><span style='color: #949494;'># … with 1 more variable: exceedance_no </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span></div><div class='input'><span class='co'># show first five exceedances:</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 10 x 7</span>
+#&gt;    t           temp thresh threshCriterion durationCriterion exceedance
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span>     
+#&gt; <span style='color: #BCBCBC;'> 1</span> 1982-01-01  20.9     25 FALSE           FALSE             FALSE     
+#&gt; <span style='color: #BCBCBC;'> 2</span> 1982-01-02  21.2     25 FALSE           FALSE             FALSE     
+#&gt; <span style='color: #BCBCBC;'> 3</span> 1982-01-03  21.4     25 FALSE           FALSE             FALSE     
+#&gt; <span style='color: #BCBCBC;'> 4</span> 1982-01-04  21.2     25 FALSE           FALSE             FALSE     
+#&gt; <span style='color: #BCBCBC;'> 5</span> 1982-01-05  21.3     25 FALSE           FALSE             FALSE     
+#&gt; <span style='color: #BCBCBC;'> 6</span> 1982-01-06  21.6     25 FALSE           FALSE             FALSE     
+#&gt; <span style='color: #BCBCBC;'> 7</span> 1982-01-07  21.7     25 FALSE           FALSE             FALSE     
+#&gt; <span style='color: #BCBCBC;'> 8</span> 1982-01-08  21.5     25 FALSE           FALSE             FALSE     
+#&gt; <span style='color: #BCBCBC;'> 9</span> 1982-01-09  21.4     25 FALSE           FALSE             FALSE     
+#&gt; <span style='color: #BCBCBC;'>10</span> 1982-01-10  21.4     25 FALSE           FALSE             FALSE     
+#&gt; <span style='color: #949494;'># … with 1 more variable: exceedance_no &lt;int&gt;</span></div><div class='input'><span class='co'># show first five exceedances:</span>
 <span class='va'>res</span><span class='op'>$</span><span class='va'>exceedance</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='op'>]</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 5 x 18</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 18</span>
 #&gt;   exceedance_no index_start index_peak index_end duration date_start date_peak 
-#&gt;           </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span>    
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span>             1        </span><span style='text-decoration: underline;'>2</span><span>682       </span><span style='text-decoration: underline;'>2</span><span>683      </span><span style='text-decoration: underline;'>2</span><span>686        5 1989-05-05 1989-05-06
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span>             2        </span><span style='text-decoration: underline;'>6</span><span>342       </span><span style='text-decoration: underline;'>6</span><span>351      </span><span style='text-decoration: underline;'>6</span><span>358       17 1999-05-13 1999-05-22
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span>             3        </span><span style='text-decoration: underline;'>6</span><span>362       </span><span style='text-decoration: underline;'>6</span><span>363      </span><span style='text-decoration: underline;'>6</span><span>368        7 1999-06-02 1999-06-03
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span>             4        </span><span style='text-decoration: underline;'>6</span><span>686       </span><span style='text-decoration: underline;'>6</span><span>688      </span><span style='text-decoration: underline;'>6</span><span>691        6 2000-04-21 2000-04-23
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span>             5        </span><span style='text-decoration: underline;'>6</span><span>698       </span><span style='text-decoration: underline;'>6</span><span>699      </span><span style='text-decoration: underline;'>6</span><span>707       10 2000-05-03 2000-05-04
-#&gt; </span><span style='color: #949494;'># … with 11 more variables: date_end </span><span style='color: #949494;font-style: italic;'>&lt;date&gt;</span><span style='color: #949494;'>, intensity_mean </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   intensity_max </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, intensity_var </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, intensity_cumulative </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   intensity_mean_abs </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, intensity_max_abs </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, intensity_var_abs </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   intensity_cum_abs </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, rate_onset </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, rate_decline </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'>
-</div></span></pre>
+#&gt;           <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>    
+#&gt; <span style='color: #BCBCBC;'>1</span>             1        <span style='text-decoration: underline;'>2</span>682       <span style='text-decoration: underline;'>2</span>683      <span style='text-decoration: underline;'>2</span>686        5 1989-05-05 1989-05-06
+#&gt; <span style='color: #BCBCBC;'>2</span>             2        <span style='text-decoration: underline;'>6</span>342       <span style='text-decoration: underline;'>6</span>351      <span style='text-decoration: underline;'>6</span>358       17 1999-05-13 1999-05-22
+#&gt; <span style='color: #BCBCBC;'>3</span>             3        <span style='text-decoration: underline;'>6</span>362       <span style='text-decoration: underline;'>6</span>363      <span style='text-decoration: underline;'>6</span>368        7 1999-06-02 1999-06-03
+#&gt; <span style='color: #BCBCBC;'>4</span>             4        <span style='text-decoration: underline;'>6</span>686       <span style='text-decoration: underline;'>6</span>688      <span style='text-decoration: underline;'>6</span>691        6 2000-04-21 2000-04-23
+#&gt; <span style='color: #BCBCBC;'>5</span>             5        <span style='text-decoration: underline;'>6</span>698       <span style='text-decoration: underline;'>6</span>699      <span style='text-decoration: underline;'>6</span>707       10 2000-05-03 2000-05-04
+#&gt; <span style='color: #949494;'># … with 11 more variables: date_end &lt;date&gt;, intensity_mean &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   intensity_max &lt;dbl&gt;, intensity_var &lt;dbl&gt;, intensity_cumulative &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   intensity_mean_abs &lt;dbl&gt;, intensity_max_abs &lt;dbl&gt;, intensity_var_abs &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   intensity_cum_abs &lt;dbl&gt;, rate_onset &lt;dbl&gt;, rate_decline &lt;dbl&gt;</span></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

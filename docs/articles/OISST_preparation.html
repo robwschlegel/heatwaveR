@@ -122,13 +122,13 @@
 
       
 
-      </header><script src="OISST_preparation_files/header-attrs-2.6/header-attrs.js"></script><div class="row">
+      </header><script src="OISST_preparation_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Downloading and Preparing NOAA OISST Data</h1>
                         <h4 class="author">Robert W Schlegel and AJ Smit</h4>
             
-            <h4 class="date">2021-01-31</h4>
+            <h4 class="date">2021-08-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/OISST_preparation.Rmd"><code>vignettes/OISST_preparation.Rmd</code></a></small>
       <div class="hidden name"><code>OISST_preparation.Rmd</code></div>
@@ -324,10 +324,10 @@
   <span class="co"># This means it will use much less RAM and is viable for use on most laptops</span>
   <span class="co"># Assuming one's study area is not too large</span>
 <span class="va">OISST_load</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">file_name</span>, <span class="va">lon1</span>, <span class="va">lon2</span>, <span class="va">lat1</span>, <span class="va">lat2</span><span class="op">)</span><span class="op">{</span>
-      <span class="va">OISST_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/tidync/reference/tidync.html">tidync</a></span><span class="op">(</span><span class="va">file_name</span><span class="op">)</span> <span class="op">%&gt;%</span>
-        <span class="fu"><a href="https://docs.ropensci.org/tidync/reference/hyper_filter.html">hyper_filter</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span><span class="op">(</span><span class="va">lon</span>, <span class="va">lon1</span>, <span class="va">lon2</span><span class="op">)</span>,
+      <span class="va">OISST_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/tidync/man/tidync.html">tidync</a></span><span class="op">(</span><span class="va">file_name</span><span class="op">)</span> <span class="op">%&gt;%</span>
+        <span class="fu"><a href="https://rdrr.io/pkg/tidync/man/hyper_filter.html">hyper_filter</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span><span class="op">(</span><span class="va">lon</span>, <span class="va">lon1</span>, <span class="va">lon2</span><span class="op">)</span>,
                      lat <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span><span class="op">(</span><span class="va">lat</span>, <span class="va">lat1</span>, <span class="va">lat2</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-        <span class="fu"><a href="https://docs.ropensci.org/tidync/reference/hyper_tibble.html">hyper_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+        <span class="fu"><a href="https://rdrr.io/pkg/tidync/man/hyper_tibble.html">hyper_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
         <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">lon</span>, <span class="va">lat</span>, <span class="va">time</span>, <span class="va">sst</span><span class="op">)</span> <span class="op">%&gt;%</span> 
         <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>t <span class="op">=</span> <span class="va">time</span>, temp <span class="op">=</span> <span class="va">sst</span><span class="op">)</span> <span class="op">%&gt;%</span> 
         <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>t <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span><span class="op">(</span><span class="va">t</span>, origin <span class="op">=</span> <span class="st">"1978-01-01"</span><span class="op">)</span><span class="op">)</span>

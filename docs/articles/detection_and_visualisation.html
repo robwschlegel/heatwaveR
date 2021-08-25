@@ -122,13 +122,13 @@
 
       
 
-      </header><script src="detection_and_visualisation_files/header-attrs-2.6/header-attrs.js"></script><div class="row">
+      </header><script src="detection_and_visualisation_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Basic Detection and Visualisation of Events</h1>
                         <h4 class="author">AJ Smit and Robert W Schlegel</h4>
             
-            <h4 class="date">2021-01-31</h4>
+            <h4 class="date">2021-08-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/detection_and_visualisation.Rmd"><code>vignettes/detection_and_visualisation.Rmd</code></a></small>
       <div class="hidden name"><code>detection_and_visualisation.Rmd</code></div>
@@ -361,11 +361,94 @@
 <div id="interactive-visuals" class="section level2">
 <h2 class="hasAnchor">
 <a href="#interactive-visuals" class="anchor"></a>Interactive visuals</h2>
-<p>As of <strong><code>heatwaveR</code></strong> v0.3.6.9002, <code><a href="../reference/geom_flame.html">geom_flame()</a></code> may now also be used with <strong><code>plotly</code></strong> to allow for interactive MHW visuals. A simple working example is given below. It is not currently possible to use <code><a href="../reference/geom_lolli.html">geom_lolli()</a></code> with <strong><code>plotly</code></strong> but this functionality is being considered.</p>
+<p>As of <strong><code>heatwaveR</code></strong> v0.3.6.9002, <code><a href="../reference/geom_flame.html">geom_flame()</a></code> was also able to be used with <strong><code>plotly</code></strong> to allow for interactive MHW visuals. Unfortunately around December of 2020 the <strong><code>plotly</code></strong> packaged was orphaned and CRAN decided it didn’t want packages to include it as an imported package. Therefore as of v0.4.4.9005 <strong><code>heatwaveR</code></strong> no longer has built in support for using <code><a href="../reference/geom_flame.html">geom_flame()</a></code> with <strong><code>plotly</code></strong>. It is however still possible with a bit of work and a simple working example is given below. It is not currently possible to use <code><a href="../reference/geom_lolli.html">geom_lolli()</a></code> with <strong><code>plotly</code></strong>. Rather one is advised to just create the dots and segments separately with <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html">geom_segment()</a></code> respectively as these are already recognised by <strong><code>plotly</code></strong>.</p>
 <p>Note that the following code chunk is not run as it makes this vignette a bit too large.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Must load plotly library first</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://plotly-r.com">plotly</a></span><span class="op">)</span>
+
+<span class="co"># Function needed for making geom_flame() work with plotly</span>
+<span class="va">geom2trace.GeomFlame</span> <span class="op">&lt;-</span> <span class="kw">function</span> <span class="op">(</span><span class="va">data</span>,
+                                  <span class="va">params</span>,
+                                  <span class="va">p</span><span class="op">)</span> <span class="op">{</span>
+  
+  <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">&lt;-</span> <span class="va">y2</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>
+  
+  <span class="co"># Create data.frame for ease of use</span>
+  <span class="va">data1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">data</span><span class="op">[[</span><span class="st">"x"</span><span class="op">]</span><span class="op">]</span>,
+                      y <span class="op">=</span> <span class="va">data</span><span class="op">[[</span><span class="st">"y"</span><span class="op">]</span><span class="op">]</span>,
+                      y2 <span class="op">=</span> <span class="va">data</span><span class="op">[[</span><span class="st">"y2"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
+  
+  <span class="co"># Grab parameters</span>
+  <span class="va">n</span> <span class="op">&lt;-</span> <span class="va">params</span><span class="op">[[</span><span class="st">"n"</span><span class="op">]</span><span class="op">]</span>
+  <span class="va">n_gap</span> <span class="op">&lt;-</span> <span class="va">params</span><span class="op">[[</span><span class="st">"n_gap"</span><span class="op">]</span><span class="op">]</span>
+  
+  <span class="co"># Find events that meet minimum length requirement</span>
+  <span class="va">data_event</span> <span class="op">&lt;-</span> <span class="fu">heatwaveR</span><span class="fu">::</span><span class="fu"><a href="../reference/detect_event.html">detect_event</a></span><span class="op">(</span><span class="va">data1</span>, x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span>,
+                                        seasClim <span class="op">=</span> <span class="va">y</span>,
+                                        threshClim <span class="op">=</span> <span class="va">y2</span>,
+                                        minDuration <span class="op">=</span> <span class="va">n</span>,
+                                        maxGap <span class="op">=</span> <span class="va">n_gap</span>,
+                                        protoEvents <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
+  
+  <span class="co"># Detect spikes</span>
+  <span class="va">data_event</span><span class="op">$</span><span class="va">screen</span> <span class="op">&lt;-</span> <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">data_event</span><span class="op">$</span><span class="va">threshCriterion</span> <span class="op">==</span> <span class="cn">FALSE</span>, <span class="cn">FALSE</span>,
+                                    <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">data_event</span><span class="op">$</span><span class="va">event</span> <span class="op">==</span> <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>
+  
+  <span class="co"># Screen out spikes</span>
+  <span class="va">data1</span> <span class="op">&lt;-</span> <span class="va">data1</span><span class="op">[</span><span class="va">data_event</span><span class="op">$</span><span class="va">screen</span> <span class="op">!=</span> <span class="cn">TRUE</span>,<span class="op">]</span>
+  
+  <span class="co"># Prepare to find the polygon corners</span>
+  <span class="va">x1</span> <span class="op">&lt;-</span> <span class="va">data1</span><span class="op">$</span><span class="va">y</span>
+  <span class="va">x2</span> <span class="op">&lt;-</span> <span class="va">data1</span><span class="op">$</span><span class="va">y2</span>
+  
+  <span class="co"># # Find points where x1 is above x2.</span>
+  <span class="va">above</span> <span class="op">&lt;-</span> <span class="va">x1</span> <span class="op">&gt;</span> <span class="va">x2</span>
+  <span class="va">above</span><span class="op">[</span><span class="va">above</span> <span class="op">==</span> <span class="cn">TRUE</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span>
+  <span class="va">above</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">above</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0</span>
+  
+  <span class="co"># Points always intersect when above=TRUE, then FALSE or reverse</span>
+  <span class="va">intersect.points</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diff.html">diff</a></span><span class="op">(</span><span class="va">above</span><span class="op">)</span> <span class="op">!=</span> <span class="fl">0</span><span class="op">)</span>
+  
+  <span class="co"># Find the slopes for each line segment.</span>
+  <span class="va">x1.slopes</span> <span class="op">&lt;-</span> <span class="va">x1</span><span class="op">[</span><span class="va">intersect.points</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">x1</span><span class="op">[</span><span class="va">intersect.points</span><span class="op">]</span>
+  <span class="va">x2.slopes</span> <span class="op">&lt;-</span> <span class="va">x2</span><span class="op">[</span><span class="va">intersect.points</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">x2</span><span class="op">[</span><span class="va">intersect.points</span><span class="op">]</span>
+  
+  <span class="co"># # Find the intersection for each segment.</span>
+  <span class="va">x.points</span> <span class="op">&lt;-</span> <span class="va">intersect.points</span> <span class="op">+</span> <span class="op">(</span><span class="op">(</span><span class="va">x2</span><span class="op">[</span><span class="va">intersect.points</span><span class="op">]</span> <span class="op">-</span> <span class="va">x1</span><span class="op">[</span><span class="va">intersect.points</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="va">x1.slopes</span> <span class="op">-</span> <span class="va">x2.slopes</span><span class="op">)</span><span class="op">)</span>
+  <span class="va">y.points</span> <span class="op">&lt;-</span> <span class="va">x1</span><span class="op">[</span><span class="va">intersect.points</span><span class="op">]</span> <span class="op">+</span> <span class="op">(</span><span class="va">x1.slopes</span> <span class="op">*</span> <span class="op">(</span><span class="va">x.points</span> <span class="op">-</span> <span class="va">intersect.points</span><span class="op">)</span><span class="op">)</span>
+  
+  <span class="co"># Coerce x.points to the same scale as x</span>
+  <span class="va">x_gap</span> <span class="op">&lt;-</span> <span class="va">data1</span><span class="op">$</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">data1</span><span class="op">$</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>
+  <span class="va">x.points</span> <span class="op">&lt;-</span> <span class="va">data1</span><span class="op">$</span><span class="va">x</span><span class="op">[</span><span class="va">intersect.points</span><span class="op">]</span> <span class="op">+</span> <span class="op">(</span><span class="va">x_gap</span><span class="op">*</span><span class="op">(</span><span class="va">x.points</span> <span class="op">-</span> <span class="va">intersect.points</span><span class="op">)</span><span class="op">)</span>
+  
+  <span class="co"># Create new data frame and merge to introduce new rows of data</span>
+  <span class="va">data2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">data1</span><span class="op">$</span><span class="va">y</span>, <span class="va">y.points</span><span class="op">)</span>, x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">data1</span><span class="op">$</span><span class="va">x</span>, <span class="va">x.points</span><span class="op">)</span><span class="op">)</span>
+  <span class="va">data2</span> <span class="op">&lt;-</span> <span class="va">data2</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">data2</span><span class="op">$</span><span class="va">x</span><span class="op">)</span>,<span class="op">]</span>
+  <span class="va">data3</span> <span class="op">&lt;-</span> <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span><span class="op">(</span><span class="va">data1</span>, <span class="va">data2</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>,<span class="st">"y"</span><span class="op">)</span>, all.y <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
+  <span class="va">data3</span><span class="op">$</span><span class="va">y2</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">data3</span><span class="op">$</span><span class="va">y2</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">data3</span><span class="op">$</span><span class="va">y</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">data3</span><span class="op">$</span><span class="va">y2</span><span class="op">)</span><span class="op">]</span>
+  
+  <span class="co"># Remove missing values for better plotting</span>
+  <span class="va">data3</span><span class="op">$</span><span class="va">y</span><span class="op">[</span><span class="va">data3</span><span class="op">$</span><span class="va">y</span> <span class="op">&lt;</span> <span class="va">data3</span><span class="op">$</span><span class="va">y2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span>
+  <span class="va">missing_pos</span> <span class="op">&lt;-</span> <span class="op">!</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/complete.cases.html">complete.cases</a></span><span class="op">(</span><span class="va">data3</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"y2"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
+  <span class="va">ids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumsum</a></span><span class="op">(</span><span class="va">missing_pos</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span>
+  <span class="va">ids</span><span class="op">[</span><span class="va">missing_pos</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span>
+  
+  <span class="co"># Get the correct positions</span>
+  <span class="va">positions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">data3</span><span class="op">$</span><span class="va">x</span>, <span class="fu"><a href="https://rdrr.io/r/base/rev.html">rev</a></span><span class="op">(</span><span class="va">data3</span><span class="op">$</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>,
+                          y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">data3</span><span class="op">$</span><span class="va">y</span>, <span class="fu"><a href="https://rdrr.io/r/base/rev.html">rev</a></span><span class="op">(</span><span class="va">data3</span><span class="op">$</span><span class="va">y2</span><span class="op">)</span><span class="op">)</span>,
+                          ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">ids</span>, <span class="fu"><a href="https://rdrr.io/r/base/rev.html">rev</a></span><span class="op">(</span><span class="va">ids</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+  
+  <span class="co"># Convert to a format geom2trace is happy with</span>
+  <span class="va">positions</span> <span class="op">&lt;-</span> <span class="fu">plotly</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/plotly/reference/group2NA.html">group2NA</a></span><span class="op">(</span><span class="va">positions</span>, groupNames <span class="op">=</span> <span class="st">"ids"</span><span class="op">)</span>
+  <span class="va">positions</span> <span class="op">&lt;-</span> <span class="va">positions</span><span class="op">[</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/complete.cases.html">complete.cases</a></span><span class="op">(</span><span class="va">positions</span><span class="op">$</span><span class="va">ids</span><span class="op">)</span>,<span class="op">]</span>
+  <span class="va">positions</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">positions</span>, <span class="va">data</span><span class="op">[</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span><span class="op">]</span>, by <span class="op">=</span> <span class="st">"x"</span><span class="op">)</span>
+  <span class="va">positions</span><span class="op">$</span><span class="va">PANEL</span> <span class="op">&lt;-</span> <span class="va">positions</span><span class="op">$</span><span class="va">PANEL</span><span class="op">[</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/complete.cases.html">complete.cases</a></span><span class="op">(</span><span class="va">positions</span><span class="op">$</span><span class="va">PANEL</span><span class="op">)</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>
+  <span class="va">positions</span><span class="op">$</span><span class="va">group</span> <span class="op">&lt;-</span> <span class="va">positions</span><span class="op">$</span><span class="va">group</span><span class="op">[</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/complete.cases.html">complete.cases</a></span><span class="op">(</span><span class="va">positions</span><span class="op">$</span><span class="va">group</span><span class="op">)</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>
+  
+  <span class="co"># Run the plotly polygon code</span>
+  <span class="fu"><a href="https://rdrr.io/r/utils/getFromNamespace.html">getFromNamespace</a></span><span class="op">(</span><span class="st">"geom2trace.GeomPolygon"</span>, <span class="fu"><a href="https://rdrr.io/r/base/ns-internal.html">asNamespace</a></span><span class="op">(</span><span class="st">"plotly"</span><span class="op">)</span><span class="op">)</span><span class="op">(</span><span class="va">positions</span><span class="op">)</span>
+<span class="op">}</span>
 
 <span class="co"># Time series</span>
 <span class="va">ts_res</span> <span class="op">&lt;-</span> <span class="fu">heatwaveR</span><span class="fu">::</span><span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu">heatwaveR</span><span class="fu">::</span><span class="va"><a href="../reference/sst_WA.html">sst_WA</a></span>,
@@ -381,7 +464,7 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">""</span>, y <span class="op">=</span> <span class="st">"Temperature (°C)"</span><span class="op">)</span>
 
 <span class="co"># Create interactive visuals</span>
-<span class="fu"><a href="https://rdrr.io/pkg/plotly/man/ggplotly.html">ggplotly</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://docs.ropensci.org/plotly/reference/ggplotly.html">ggplotly</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></code></pre></div>
 </div>
   </div>
 

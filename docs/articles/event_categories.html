@@ -122,13 +122,13 @@
 
       
 
-      </header><script src="event_categories_files/header-attrs-2.6/header-attrs.js"></script><div class="row">
+      </header><script src="event_categories_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Calculating and Visualising Event Categories</h1>
                         <h4 class="author">Robert W Schlegel</h4>
             
-            <h4 class="date">2021-01-31</h4>
+            <h4 class="date">2021-08-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/event_categories.Rmd"><code>vignettes/event_categories.Rmd</code></a></small>
       <div class="hidden name"><code>event_categories.Rmd</code></div>
@@ -189,14 +189,14 @@
 <span class="co"># Look at the top few events</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="va">MHW_cat</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 11
-##   event_no event_name peak_date  category i_max duration p_moderate p_strong
-##      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
-## 1       60 WA 2012b   2012-12-31 II Stro…  3.42       14         64       36
-## 2       29 WA 1999    1999-05-22 II Stro…  3.64       95         63       37
-## 3       47 WA 2009    2009-03-25 II Stro…  2.38        7         57       43
-## 4       72 WA 2015    2015-10-02 II Stro…  2.46        7         57       43
-## 5       41 WA 2008a   2008-04-14 III Sev…  3.83       35         57       23
-## 6       52 WA 2011a   2011-02-28 IV Extr…  6.58      105         52       27
+##   event_no event_name peak_date  category   i_max duration p_moderate p_strong
+##      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
+## 1       60 WA 2012b   2012-12-31 II Strong   3.42       14         64       36
+## 2       29 WA 1999    1999-05-22 II Strong   3.64       95         63       37
+## 3       47 WA 2009    2009-03-25 II Strong   2.38        7         57       43
+## 4       72 WA 2015    2015-10-02 II Strong   2.46        7         57       43
+## 5       41 WA 2008a   2008-04-14 III Severe  3.83       35         57       23
+## 6       52 WA 2011a   2011-02-28 IV Extreme  6.58      105         52       27
 ## # … with 3 more variables: p_severe &lt;dbl&gt;, p_extreme &lt;dbl&gt;, season &lt;chr&gt;</code></pre>
 <p>Note that this functions expects the data to have been collected in the southern hemisphere, hence the argument <code>S = TRUE</code>. If they were not, one must set <code>S = FALSE</code> as seen in the example below. This ensures that the correct seasons are attributed to the event.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -204,14 +204,14 @@
 <span class="va">res_Med_cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/category.html">category</a></span><span class="op">(</span><span class="va">res_Med</span>, S <span class="op">=</span> <span class="cn">FALSE</span>, name <span class="op">=</span> <span class="st">"Med"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="va">res_Med_cat</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 11
-##   event_no event_name peak_date  category i_max duration p_moderate p_strong
-##      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
-## 1       60 Med 2011d  2011-09-15 II Stro…  2.94        7         57       43
-## 2       30 Med 2003a  2003-06-20 II Stro…  5.05       30         53       47
-## 3       67 Med 2012b  2012-08-20 II Stro…  4.32       18         44       56
-## 4       93 Med 2018a  2018-04-21 II Stro…  3.34       14         43       57
-## 5       46 Med 2007c  2007-04-25 III Sev…  4.05       19         42       53
-## 6       75 Med 2014   2014-10-18 II Stro…  3.34      144         39       60
+##   event_no event_name peak_date  category   i_max duration p_moderate p_strong
+##      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
+## 1       60 Med 2011d  2011-09-15 II Strong   2.94        7         57       43
+## 2       30 Med 2003a  2003-06-20 II Strong   5.05       30         53       47
+## 3       67 Med 2012b  2012-08-20 II Strong   4.32       18         44       56
+## 4       93 Med 2018a  2018-04-21 II Strong   3.34       14         43       57
+## 5       46 Med 2007c  2007-04-25 III Severe  4.05       19         42       53
+## 6       75 Med 2014   2014-10-18 II Strong   3.34      144         39       60
 ## # … with 3 more variables: p_severe &lt;dbl&gt;, p_extreme &lt;dbl&gt;, season &lt;chr&gt;</code></pre>
 </div>
 <div id="visualising-mhw-categories" class="section level2">
@@ -292,14 +292,14 @@
 <span class="co"># Look at the top few events</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="va">MCS_cat</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 11
-##   event_no event_name peak_date  category i_max duration p_moderate p_strong
-##      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
-## 1       15 WA 1990    1990-05-11 II Stro… -3.19       76         62       38
-## 2       53 WA 2005    2005-10-16 II Stro… -1.86       13         62       38
-## 3       75 WA 2017b   2017-08-20 II Stro… -2.73       37         59       41
-## 4       80 WA 2018    2018-08-15 II Stro… -2.90       63         57       43
-## 5       74 WA 2017a   2017-07-05 II Stro… -3.54       21         48       52
-## 6       11 WA 1987    1987-12-10 II Stro… -2.50        9         44       56
+##   event_no event_name peak_date  category  i_max duration p_moderate p_strong
+##      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;     &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
+## 1       15 WA 1990    1990-05-11 II Strong -3.19       76         62       38
+## 2       53 WA 2005    2005-10-16 II Strong -1.86       13         62       38
+## 3       75 WA 2017b   2017-08-20 II Strong -2.73       37         59       41
+## 4       80 WA 2018    2018-08-15 II Strong -2.90       63         57       43
+## 5       74 WA 2017a   2017-07-05 II Strong -3.54       21         48       52
+## 6       11 WA 1987    1987-12-10 II Strong -2.50        9         44       56
 ## # … with 3 more variables: p_severe &lt;dbl&gt;, p_extreme &lt;dbl&gt;, season &lt;chr&gt;</code></pre>
 </div>
 <div id="visualising-mcs-categories" class="section level2">
@@ -311,7 +311,11 @@
 <p>The <code><a href="../reference/event_line.html">event_line()</a></code> function also works for visualising MCS categories. The function will automagically detect that it is being fed MCSs so we do not need to provide it with any new arguments. Note that the colour palette for MCS does have four colours, same as for MHWs, but none of the demo time series that come packaged with <strong><code>heatwaveR</code></strong> have MCSs that intense so we are not able to demonstrate the full colour palette here.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">MCS</span>, spread <span class="op">=</span> <span class="fl">100</span>, start_date <span class="op">=</span> <span class="st">"1989-11-01"</span>, end_date <span class="op">=</span> <span class="st">"1990-06-30"</span>, category <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<p><img src="event_categories_files/figure-html/fig-example-3-1.png" width="768"> ### Custom MHW category visuals</p>
+<p><img src="event_categories_files/figure-html/fig-example-3-1.png" width="768"></p>
+</div>
+<div id="custom-mhw-category-visuals-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#custom-mhw-category-visuals-1" class="anchor"></a>Custom MHW category visuals</h3>
 <p>The following code chunk demonstrates how to manually create a figure showing the MCS categories.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Create category breaks and select slice of data.frame</span>
@@ -325,21 +329,22 @@
 <span class="co"># Set line colours</span>
 <span class="va">lineColCat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
   <span class="st">"Temperature"</span> <span class="op">=</span> <span class="st">"black"</span>,
-  <span class="st">"Climatology"</span> <span class="op">=</span> <span class="st">"gray20"</span>,
-  <span class="st">"Threshold"</span> <span class="op">=</span> <span class="st">"darkgreen"</span>,
-  <span class="st">"2x Threshold"</span> <span class="op">=</span> <span class="st">"darkgreen"</span>,
-  <span class="st">"3x Threshold"</span> <span class="op">=</span> <span class="st">"darkgreen"</span>,
-  <span class="st">"4x Threshold"</span> <span class="op">=</span> <span class="st">"darkgreen"</span>
+  <span class="st">"Climatology"</span> <span class="op">=</span> <span class="st">"grey40"</span>,
+  <span class="st">"Threshold"</span> <span class="op">=</span> <span class="st">"darkorchid"</span>,
+  <span class="st">"2x Threshold"</span> <span class="op">=</span> <span class="st">"darkorchid"</span>,
+  <span class="st">"3x Threshold"</span> <span class="op">=</span> <span class="st">"darkorchid"</span>,
+  <span class="st">"4x Threshold"</span> <span class="op">=</span> <span class="st">"darkorchid"</span>
   <span class="op">)</span>
 
 <span class="co"># Set category fill colours</span>
 <span class="va">fillColCat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
-  <span class="st">"Moderate"</span> <span class="op">=</span> <span class="st">"#A4D4E0"</span>,
-  <span class="st">"Strong"</span> <span class="op">=</span> <span class="st">"#5B80A6"</span>,
-  <span class="st">"Severe"</span> <span class="op">=</span> <span class="st">"#2A3C66"</span>,
+  <span class="st">"Moderate"</span> <span class="op">=</span> <span class="st">"#C7ECF2"</span>,
+  <span class="st">"Strong"</span> <span class="op">=</span> <span class="st">"#85B7CC"</span>,
+  <span class="st">"Severe"</span> <span class="op">=</span> <span class="st">"#4A6A94"</span>,
   <span class="st">"Extreme"</span> <span class="op">=</span> <span class="st">"#111433"</span>
   <span class="op">)</span>
 
+<span class="co"># Create plot</span>
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">MCS_clim_cat</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">t</span>, y <span class="op">=</span> <span class="va">temp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/geom_flame.html">geom_flame</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh</span>, y2 <span class="op">=</span> <span class="va">temp</span>, fill <span class="op">=</span> <span class="st">"Moderate"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/geom_flame.html">geom_flame</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh_2x</span>, y2 <span class="op">=</span> <span class="va">temp</span>, fill <span class="op">=</span> <span class="st">"Strong"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>

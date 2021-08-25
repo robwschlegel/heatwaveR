@@ -146,6 +146,7 @@ The `event_line()` function also works for visualising MCS categories. The funct
 ```{r fig-example-3, echo = TRUE, eval = TRUE}
 event_line(MCS, spread = 100, start_date = "1989-11-01", end_date = "1990-06-30", category = TRUE)
 ```
+
 ### Custom MHW category visuals
 
 The following code chunk demonstrates how to manually create a figure showing the MCS categories.
@@ -162,21 +163,22 @@ MCS_clim_cat <- MCS$clim %>%
 # Set line colours
 lineColCat <- c(
   "Temperature" = "black",
-  "Climatology" = "gray20",
-  "Threshold" = "darkgreen",
-  "2x Threshold" = "darkgreen",
-  "3x Threshold" = "darkgreen",
-  "4x Threshold" = "darkgreen"
+  "Climatology" = "grey40",
+  "Threshold" = "darkorchid",
+  "2x Threshold" = "darkorchid",
+  "3x Threshold" = "darkorchid",
+  "4x Threshold" = "darkorchid"
   )
 
 # Set category fill colours
 fillColCat <- c(
-  "Moderate" = "#A4D4E0",
-  "Strong" = "#5B80A6",
-  "Severe" = "#2A3C66",
+  "Moderate" = "#C7ECF2",
+  "Strong" = "#85B7CC",
+  "Severe" = "#4A6A94",
   "Extreme" = "#111433"
   )
 
+# Create plot
 ggplot(data = MCS_clim_cat, aes(x = t, y = temp)) +
   geom_flame(aes(y = thresh, y2 = temp, fill = "Moderate")) +
   geom_flame(aes(y = thresh_2x, y2 = temp, fill = "Strong")) +
