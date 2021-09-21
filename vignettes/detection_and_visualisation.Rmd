@@ -315,11 +315,17 @@ geom2trace.GeomFlame <- function (data,
   positions <- plotly::group2NA(positions, groupNames = "ids")
   positions <- positions[stats::complete.cases(positions$ids),]
   positions <- dplyr::left_join(positions, data[,-c(2,3)], by = "x")
-  positions$PANEL <- positions$PANEL[stats::complete.cases(positions$PANEL)][1]
-  positions$group <- positions$group[stats::complete.cases(positions$group)][1]
+  if(length(stats::complete.cases(positions$PANEL)) > 1) 
+    positions$PANEL <- positions$PANEL[stats::complete.cases(positions$PANEL)][1]
+  if(length(stats::complete.cases(positions$group)) > 1) 
+    positions$group <- positions$group[stats::complete.cases(positions$group)][1]
   
   # Run the plotly polygon code
-  getFromNamespace("geom2trace.GeomPolygon", asNamespace("plotly"))(positions)
+  if(length(unique(positions$PANEL)) == 1){
+    getFromNamespace("geom2trace.GeomPolygon", asNamespace("plotly"))(positions)
+  } else{
+    return()
+  }
 }
 
 # Time series

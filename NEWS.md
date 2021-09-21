@@ -1,3 +1,8 @@
+# heatwaveR 0.4.5.9002 (2021-08-21)
+
+-   Updated the MCS colour palette throughout the package
+    - The new colour palette is very similar, but with improved contrast
+
 # heatwaveR 0.4.5.9001 (2021-08-25)
 
 -   Updated the visualisation vignette to now include the code necessary to get `geom_flame()` to work with **`plotly`** now that it is no longer directly supported

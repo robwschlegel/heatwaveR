@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.5.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.5.9002</span>
       </span>
     </div>
 
@@ -128,7 +128,7 @@
       <h1 data-toc-skip>Calculating and Visualising Event Categories</h1>
                         <h4 class="author">Robert W Schlegel</h4>
             
-            <h4 class="date">2021-08-25</h4>
+            <h4 class="date">2021-09-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/event_categories.Rmd"><code>vignettes/event_categories.Rmd</code></a></small>
       <div class="hidden name"><code>event_categories.Rmd</code></div>
@@ -365,14 +365,19 @@
                                                                 <span class="st">"dashed"</span>, <span class="st">"dotdash"</span>, <span class="st">"dotted"</span><span class="op">)</span>,
                                                    size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Temperature [°C]"</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
-<p><img src="event_categories_files/figure-html/fig-example-4-1.png" width="768"> ## Category colour palettes</p>
+<p><img src="event_categories_files/figure-html/fig-example-4-1.png" width="768"></p>
+</div>
+</div>
+<div id="category-colour-palettes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#category-colour-palettes" class="anchor"></a>Category colour palettes</h2>
 <p>For the sake of convenience the MHW and MCS colour palettes are provided below with a figure showing the direct comparison.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># The MCS colour palette</span>
 <span class="va">MCS_colours</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
-  <span class="st">"Moderate"</span> <span class="op">=</span> <span class="st">"#A4D4E0"</span>,
-  <span class="st">"Strong"</span> <span class="op">=</span> <span class="st">"#5B80A6"</span>,
-  <span class="st">"Severe"</span> <span class="op">=</span> <span class="st">"#2A3C66"</span>,
+  <span class="st">"Moderate"</span> <span class="op">=</span> <span class="st">"#C7ECF2"</span>,
+  <span class="st">"Strong"</span> <span class="op">=</span> <span class="st">"#85B7CC"</span>,
+  <span class="st">"Severe"</span> <span class="op">=</span> <span class="st">"#4A6A94"</span>,
   <span class="st">"Extreme"</span> <span class="op">=</span> <span class="st">"#111433"</span>
 <span class="op">)</span>
 
@@ -397,7 +402,6 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html">coord_cartesian</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
 <p><img src="event_categories_files/figure-html/comp-fig-1.png" width="768"></p>
-</div>
 </div>
   </div>
 

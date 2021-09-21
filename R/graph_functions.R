@@ -227,9 +227,9 @@ event_line <- function(data,
 
     if (event_top$intensity_mean < 0) {
       fillColCat <- c(
-        "Moderate" = "#A4D4E0",
-        "Strong" = "#5B80A6",
-        "Severe" = "#2A3C66",
+        "Moderate" = "#C7ECF2",
+        "Strong" = "#85B7CC",
+        "Severe" = "#4A6A94",
         "Extreme" = "#111433"
       )
       ep <- ep +

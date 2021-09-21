@@ -200,6 +200,7 @@ ggplot(data = MCS_clim_cat, aes(x = t, y = temp)) +
                                                    size = c(0.6, 0.7, 0.7, 0.7, 0.7, 0.7)))) +
   labs(y = "Temperature [°C]", x = NULL)
 ```
+
 ## Category colour palettes
 
 For the sake of convenience the MHW and MCS colour palettes are provided below with a figure showing the direct comparison.
@@ -207,9 +208,9 @@ For the sake of convenience the MHW and MCS colour palettes are provided below w
 ```{r comp-fig}
 # The MCS colour palette
 MCS_colours <- c(
-  "Moderate" = "#A4D4E0",
-  "Strong" = "#5B80A6",
-  "Severe" = "#2A3C66",
+  "Moderate" = "#C7ECF2",
+  "Strong" = "#85B7CC",
+  "Severe" = "#4A6A94",
   "Extreme" = "#111433"
 )
 
