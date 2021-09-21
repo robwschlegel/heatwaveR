@@ -2,6 +2,7 @@
 
 -   Updated the MCS colour palette throughout the package
     - The new colour palette is very similar, but with improved contrast
+-   Made a minor but important change to `category()` so that categories are based on temperature greater (lesser) than the thresholds and not greater (lesser) than or equal to
 
 # heatwaveR 0.4.5.9001 (2021-08-25)
 
