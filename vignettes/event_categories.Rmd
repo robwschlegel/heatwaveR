@@ -147,7 +147,7 @@ The `event_line()` function also works for visualising MCS categories. The funct
 event_line(MCS, spread = 100, start_date = "1989-11-01", end_date = "1990-06-30", category = TRUE)
 ```
 
-### Custom MHW category visuals
+### Custom MCS category visuals
 
 The following code chunk demonstrates how to manually create a figure showing the MCS categories.
 
