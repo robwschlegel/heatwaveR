@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.5.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.6</span>
       </span>
     </div>
 
@@ -54,7 +54,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -101,7 +101,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/robwschlegel/heatwaveR">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
     github
   </a>
@@ -122,13 +122,13 @@
 
       
 
-      </header><script src="complex_clims_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
+      </header><script src="complex_clims_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Alternative Thresholds</h1>
                         <h4 class="author">Robert W Schlegel</h4>
             
-            <h4 class="date">2021-09-21</h4>
+            <h4 class="date">2021-10-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/complex_clims.Rmd"><code>vignettes/complex_clims.Rmd</code></a></small>
       <div class="hidden name"><code>complex_clims.Rmd</code></div>
@@ -243,7 +243,7 @@
 <p>Here is a brief display of the top few events from each method:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">events_one_thresh</span><span class="op">$</span><span class="va">event</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 5 x 22
+<pre><code>## # A tibble: 5 × 22
 ##   event_no index_start index_peak index_end duration date_start date_peak 
 ##      &lt;int&gt;       &lt;int&gt;      &lt;int&gt;     &lt;int&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;    
 ## 1        1        6135       6137      6144       10 1977-10-18 1977-10-20
@@ -259,7 +259,7 @@
 ## #   intensity_cumulative_abs &lt;dbl&gt;, rate_onset &lt;dbl&gt;, rate_decline &lt;dbl&gt;</code></pre>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">events_two_thresh</span><span class="op">$</span><span class="va">event</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 5 x 22
+<pre><code>## # A tibble: 5 × 22
 ##   event_no index_start index_peak index_end duration date_start date_peak 
 ##      &lt;int&gt;       &lt;int&gt;      &lt;int&gt;     &lt;int&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;    
 ## 1        1        6135       6137      6137        3 1977-10-18 1977-10-20
@@ -309,7 +309,7 @@
 
 <span class="co"># Compare results</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">events_one_thresh_filtered</span><span class="op">$</span><span class="va">event</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 5 x 22
+<pre><code>## # A tibble: 5 × 22
 ##   event_no index_start index_peak index_end duration date_start date_peak 
 ##      &lt;int&gt;       &lt;int&gt;      &lt;int&gt;     &lt;int&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;    
 ## 1        1        6135       6137      6144       10 1977-10-18 1977-10-20
@@ -325,7 +325,7 @@
 ## #   intensity_cumulative_abs &lt;dbl&gt;, rate_onset &lt;dbl&gt;, rate_decline &lt;dbl&gt;</code></pre>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">events_two_thresh</span><span class="op">$</span><span class="va">event</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 5 x 22
+<pre><code>## # A tibble: 5 × 22
 ##   event_no index_start index_peak index_end duration date_start date_peak 
 ##      &lt;int&gt;       &lt;int&gt;      &lt;int&gt;     &lt;int&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;    
 ## 1        1        6135       6137      6137        3 1977-10-18 1977-10-20

@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.5.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.6</span>
       </span>
     </div>
 
@@ -54,7 +54,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -101,7 +101,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/robwschlegel/heatwaveR">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
     github
   </a>
@@ -122,13 +122,13 @@
 
       
 
-      </header><script src="MHW_to_nc_files/header-attrs-2.8/header-attrs.js"></script><div class="row">
+      </header><script src="MHW_to_nc_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Saving MHW Results to NetCDF</h1>
                         <h4 class="author">Robert W Schlegel</h4>
             
-            <h4 class="date">2021-09-21</h4>
+            <h4 class="date">2021-10-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/MHW_to_nc.Rmd"><code>vignettes/MHW_to_nc.Rmd</code></a></small>
       <div class="hidden name"><code>MHW_to_nc.Rmd</code></div>
@@ -169,7 +169,7 @@
     <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">lon</span>, <span class="va">lat</span><span class="op">)</span>
   
   <span class="co"># Convert date values to integers if they are present</span>
-  <span class="kw">if</span><span class="op">(</span><span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="http://lubridate.tidyverse.org/reference/date_utils.html">is.Date</a></span><span class="op">(</span><span class="va">res</span><span class="op">[</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="va">res</span><span class="op">[</span>,<span class="fl">4</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="va">res</span><span class="op">[</span>,<span class="fl">4</span><span class="op">]</span><span class="op">)</span>
+  <span class="kw">if</span><span class="op">(</span><span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/date_utils.html">is.Date</a></span><span class="op">(</span><span class="va">res</span><span class="op">[</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="va">res</span><span class="op">[</span>,<span class="fl">4</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="va">res</span><span class="op">[</span>,<span class="fl">4</span><span class="op">]</span><span class="op">)</span>
   
   <span class="co"># Create array</span>
   <span class="va">res_array</span> <span class="op">&lt;-</span> <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/array.html">array</a></span><span class="op">(</span><span class="va">res</span><span class="op">[</span>,<span class="fl">4</span><span class="op">]</span>, dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">lon_lat</span><span class="op">$</span><span class="va">lon</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">lon_lat</span><span class="op">$</span><span class="va">lat</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>

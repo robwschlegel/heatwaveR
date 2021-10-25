@@ -100,7 +100,7 @@ other means." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.5.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.6</span>
       </span>
     </div>
 
@@ -108,7 +108,7 @@ other means." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -155,7 +155,7 @@ other means." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/robwschlegel/heatwaveR">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
     github
   </a>
@@ -472,7 +472,7 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
 <span class='va'>out</span> <span class='op'>&lt;-</span> <span class='fu'>detect_event</span><span class='op'>(</span><span class='va'>res_clim</span><span class='op'>)</span>
 <span class='co'># show a portion of the climatology:</span>
 <span class='va'>out</span><span class='op'>$</span><span class='va'>climatology</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='op'>]</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 10 x 9</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 10 × 9</span>
 #&gt;      doy t           temp  seas thresh threshCriterion durationCriterion event
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'> 1</span>     1 1982-01-01  20.9  21.6   23.0 FALSE           FALSE             FALSE
@@ -487,7 +487,7 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
 #&gt; <span style='color: #BCBCBC;'>10</span>    10 1982-01-10  21.4  21.8   23.3 FALSE           FALSE             FALSE
 #&gt; <span style='color: #949494;'># … with 1 more variable: event_no &lt;int&gt;</span></div><div class='input'><span class='co'># show some of the heat waves:</span>
 <span class='va'>out</span><span class='op'>$</span><span class='va'>event</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 10</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 × 10</span>
 #&gt;   event_no index_start index_peak index_end duration date_start date_peak 
 #&gt;      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>    
 #&gt; <span style='color: #BCBCBC;'>1</span>        1         885        887       889        5 1984-06-03 1984-06-05
@@ -503,7 +503,7 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
 <span class='va'>out</span> <span class='op'>&lt;-</span> <span class='fu'>detect_event</span><span class='op'>(</span><span class='va'>res_clim</span>, coldSpells <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='co'># show a portion of the climatology:</span>
 <span class='va'>out</span><span class='op'>$</span><span class='va'>climatology</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='op'>]</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 10 x 9</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 10 × 9</span>
 #&gt;      doy t           temp  seas thresh threshCriterion durationCriterion event
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;lgl&gt;</span>
 #&gt; <span style='color: #BCBCBC;'> 1</span>     1 1982-01-01  20.9  21.6   20.5 FALSE           FALSE             FALSE
@@ -518,7 +518,7 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
 #&gt; <span style='color: #BCBCBC;'>10</span>    10 1982-01-10  21.4  21.8   20.8 FALSE           FALSE             FALSE
 #&gt; <span style='color: #949494;'># … with 1 more variable: event_no &lt;int&gt;</span></div><div class='input'><span class='co'># show some of the cold-spells:</span>
 <span class='va'>out</span><span class='op'>$</span><span class='va'>event</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 10</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 × 10</span>
 #&gt;   event_no index_start index_peak index_end duration date_start date_peak 
 #&gt;      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;date&gt;</span>    
 #&gt; <span style='color: #BCBCBC;'>1</span>        1          83         83        87        5 1982-03-24 1982-03-24
