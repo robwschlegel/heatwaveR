@@ -4,6 +4,8 @@
 #' user-specified sliding window for the mean and threshold calculation, followed
 #' by an optional moving average smoother as used by Hobday et al. (2016).
 #'
+#' @import Rcpp
+#'
 #' @importFrom data.table %between%
 #' @useDynLib heatwaveR
 #'

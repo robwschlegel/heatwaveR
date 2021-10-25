@@ -1,4 +1,8 @@
-# heatwaveR 0.4.5.9002 (2021-08-21)
+# heatwaveR 0.4.6 (2021-10-25)
+
+-   Explicitly loading **`Rcpp`** due to a change in the behaviour of the package causing ERRORs on CRAN checks
+
+# heatwaveR 0.4.5.9002 (2021-09-21)
 
 -   Updated the MCS colour palette throughout the package
     - The new colour palette is very similar, but with improved contrast
