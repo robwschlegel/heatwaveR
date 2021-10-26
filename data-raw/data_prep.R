@@ -6,7 +6,7 @@
 library(tidyverse)
 library(heatwaveR)
 library(rerddap)
-library(doParallel); registerDoParallel(cores = 7)
+library(doParallel); registerDoParallel(cores = 15)
 # library(ncdf4)
 
 # Most up-to-date info
@@ -17,7 +17,11 @@ dl_years <- data.frame(date_index = 1:5,
                        start = as.Date(c("1982-01-01", "1990-01-01",
                                          "1998-01-01", "2006-01-01", "2014-01-01")),
                        end = as.Date(c("1989-12-31", "1997-12-31",
-                                       "2005-12-31", "2013-12-31", "2019-12-31")))
+                                       "2005-12-31", "2013-12-31", "2020-12-31")))
+dl_years_test <- data.frame(date_index = 1,
+                            start = as.Date(c("1982-01-01")),
+                            end = as.Date(c("1982-12-31")))
+
 
 # Functions ---------------------------------------------------------------
 
@@ -32,14 +36,14 @@ OISST_pixel_dl <- function(time_df, lon, lat){
                        fields = "sst")$data %>%
     mutate(time = as.Date(stringr::str_remove(time, "T00:00:00Z"))) %>%
     dplyr::rename(t = time, temp = sst) %>%
-    select(t, temp) %>%
+    # select(t, temp) %>%
     na.omit()
 }
 
 # Wrapper to download data in ~5 year chunks as this is the rough ERDDAP limit
 OISST_time_wrap <- function(lon, lat){
-  OISST_sub <- plyr::ddply(dl_years, "date_index", OISST_pixel_dl, .parallel = T,
-                           lon = lon,lat = lat) %>%
+  OISST_sub <- plyr::ddply(dl_years_test, "date_index", OISST_pixel_dl, .parallel = T,
+                           lon = lon, lat = lat) %>%
   dplyr::select(-date_index)
   # OISST_sub <- dl_years %>%
   #   group_by(date_index) %>%
@@ -51,10 +55,16 @@ OISST_time_wrap <- function(lon, lat){
 
 # Download ----------------------------------------------------------------
 
-# Thee take roughly 100 minutes each
+# These take roughly 100 minutes each
+# NB: These often fail due to the unreliable NOAA GRIDDAP connection
 sst_WA_new <- OISST_time_wrap(112.5, -29.5)
 sst_Med_new <- OISST_time_wrap(9, 43.5)
 sst_NW_Atl_new <- OISST_time_wrap(-67, 43)
+
+# Rather extract the data via tikoraluk/OISST_download.R and load here
+load("~/Downloads/sst_1.RData")
+load("~/Downloads/sst_2.RData")
+load("~/Downloads/sst_3.RData")
 
 
 # Check that the correct data were downloaded -----------------------------
@@ -64,17 +74,17 @@ data(sst_Med)
 data(sst_NW_Atl)
 
 # Join to test
-sst_WA_test <- left_join(sst_WA, sst_WA_new, by = c("t")) %>%
+sst_WA_test <- left_join(sst_WA, sst_1, by = c("t")) %>%
   mutate(test_col = temp.x - temp.y)
-sst_Med_test <- left_join(sst_Med, sst_Med_new, by = c("t")) %>%
+sst_Med_test <- left_join(sst_Med, sst_2, by = c("t")) %>%
   mutate(test_col = temp.x - temp.y)
-sst_NW_Atl_test <- left_join(sst_NW_Atl, sst_NW_Atl_new, by = c("t")) %>%
+sst_NW_Atl_test <- left_join(sst_NW_Atl, sst_3, by = c("t")) %>%
   mutate(test_col = temp.x - temp.y)
 
 # If everything checks out prepare to overwrite the old files
-sst_WA <- sst_WA_new
-sst_Med <- sst_Med_new
-sst_NW_Atl <- sst_NW_Atl_new
+sst_WA <- sst_1
+sst_Med <- sst_2
+sst_NW_Atl <- sst_3
 
 
 # Save --------------------------------------------------------------------

@@ -3,7 +3,7 @@
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/heatwaveR)](https://cran.r-project.org/package=heatwaveR)
 [![R-CMD-check](https://github.com/robwschlegel/heatwaveR/workflows/R-CMD-check/badge.svg)](https://github.com/robwschlegel/heatwaveR/actions)
 [![Codecov test
-coverage](https://codecov.io/gh/robwschlegel/heatwaveR/branch/master/graph/badge.svg)](https://codecov.io/gh/robwschlegel/heatwaveR?branch=master)
+coverage](https://codecov.io/gh/robwschlegel/heatwaveR/branch/master/graph/badge.svg)](https://app.codecov.io/gh/robwschlegel/heatwaveR?branch=master)
 [![JOSS](http://joss.theoj.org/papers/10.21105/joss.00821/status.svg)](https://doi.org/10.21105/joss.00821)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1324308.svg)](https://doi.org/10.5281/zenodo.1324308)
 [![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/heatwaveR)](https://cran.r-project.org/package=heatwaveR)
@@ -62,7 +62,7 @@ Or the development version may be installed from GitHub with:
 ## The functions
 
 | Function          | Description                                                                                                    |
-| ----------------- | -------------------------------------------------------------------------------------------------------------- |
+|-------------------|----------------------------------------------------------------------------------------------------------------|
 | `ts2clm()`        | Constructs seasonal and threshold climatologies as per the definition of Hobday et al. (2016).                 |
 | `detect_event()`  | The main function which detects the events as per the definition of Hobday et al. (2016).                      |
 | `block_average()` | Calculates annual means for event metrics.                                                                     |
@@ -92,7 +92,7 @@ is the case, the appropriate `minDuration` etc. and units of measurement
 need to be determined by the user.
 
 | Climatology metric  | Description                                                                                                                                                                                                                                                 |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|---------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `doy`               | Julian day (day-of-year). For non-leap years it runs 1…59 and 61…366, while leap years run 1…366. This column will be named differently if another name was specified to the `doy` argument.                                                                |
 | `t`                 | The date of the temperature measurement. This column will be named differently if another name was specified to the `x` argument.                                                                                                                           |
 | `temp`              | If the software was used for the purpose for which it was designed, seawater temperature (deg. C) on the specified date will be returned. This column will of course be named differently if another kind of measurement was specified to the `y` argument. |
@@ -100,14 +100,14 @@ need to be determined by the user.
 | `thresh`            | Seasonally varying threshold (e.g., 90th percentile) (deg. C).                                                                                                                                                                                              |
 | `var`               | Variance (standard deviation) per `doy` of `temp` (deg. C). (not returned by default as of v0.3.5)                                                                                                                                                          |
 | `threshCriterion`   | Boolean indicating if `temp` exceeds `thresh`.                                                                                                                                                                                                              |
-| `durationCriterion` | Boolean indicating whether periods of consecutive `threshCriterion` are \>= `minDuration`.                                                                                                                                                                  |
+| `durationCriterion` | Boolean indicating whether periods of consecutive `threshCriterion` are &gt;= `minDuration`.                                                                                                                                                                |
 | `event`             | Boolean indicating if all criteria that define a MHW or MCS are met.                                                                                                                                                                                        |
 | `event_no`          | A sequential number indicating the ID and order of occurrence of the MHWs or MCSs.                                                                                                                                                                          |
 
 The events are summarised using a range of event metrics:
 
 | Event metric           | Description                                                                                                                                         |
-| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
 | `event_no`             | A sequential number indicating the ID and order of the events. This allows one to match/join results between the `climatology` and `event` outputs. |
 | `index_start`          | Row number from the given time series where the event starts.                                                                                       |
 | `index_peak`           | Row number from the given time series where the event peaks.                                                                                        |
@@ -149,20 +149,20 @@ For detailed explanations and walkthroughs on the use of the
 **`heatwaveR`** package please click on the Vignettes tab in the toolbar
 above, or follow the links below:
 
-  - For a basic introduction to the [detection and
+-   For a basic introduction to the [detection and
     visualisation](https://robwschlegel.github.io/heatwaveR/articles/detection_and_visualisation.html)
     of events.
-  - For an explanation on the use of the
+-   For an explanation on the use of the
     [exceedance](https://robwschlegel.github.io/heatwaveR/articles/exceedance.html)
     function.
-  - For a walkthrough on the calculation and visualisation of [event
+-   For a walkthrough on the calculation and visualisation of [event
     categories](https://robwschlegel.github.io/heatwaveR/articles/event_categories.html).
-  - For examples on the calculation of atmospheric events with
+-   For examples on the calculation of atmospheric events with
     [alternative
     thresholds](https://robwschlegel.github.io/heatwaveR/articles/complex_clims.html).
-  - For a demonstration on how to [download and prepare OISST
+-   For a demonstration on how to [download and prepare OISST
     data](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html).
-  - Which may then have the `detect_event()` function applied to the
+-   Which may then have the `detect_event()` function applied to the
     [gridded
     data](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html),
     and then fit a GLM and plot the results.

@@ -94,7 +94,7 @@ test_that("roundRes argument functions correctly", {
   res <- detect_event(ts, roundRes = 0)
   expect_equal(res$event$intensity_max[1], 2)
   res <- detect_event(ts, roundRes = F)
-  expect_gt(res$event$rate_decline[1], 0.17824)
+  expect_gt(res$event$rate_decline[1], 0.1782399)
   expect_error(detect_event(ts, roundRes = "Banana"),
                "Please ensure that 'roundRes' is either a numeric value or FALSE.")
 })

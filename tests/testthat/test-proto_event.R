@@ -10,7 +10,7 @@ test_that("proto_event() returns the correct output", {
                                  minDuration = 5, maxGap = 2)
   expect_is(res, "data.frame")
   expect_equal(ncol(res), 8)
-  expect_equal(nrow(res), 13514)
+  expect_equal(nrow(res), 14245)
 })
 
 test_that("joinAcrossGaps = FALSE creates more events", {
@@ -40,6 +40,6 @@ test_that("no detected events returns columns that all say FALSE/NA and not an e
                                  minDuration = 5, maxGap = 2)
   expect_is(res, "data.frame")
   expect_equal(ncol(res), 8)
-  expect_equal(nrow(res), 13514)
-  expect_equal(sum(is.na(res$event_no)), 13514)
+  expect_equal(nrow(res), 14245)
+  expect_equal(sum(is.na(res$event_no)), 14245)
 })

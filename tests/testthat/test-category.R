@@ -23,9 +23,9 @@ test_that("The name argument works correctly", {
   cat_res <- category(res)
   cat_res_banana <- category(res, name = "Banana")
   cat_res_pawpaw <- category(res, name = "Pawpaw")
-  expect_equal(droplevels(cat_res$event_name[89]), as.factor("Event 2012b"))
-  expect_equal(droplevels(cat_res_banana$event_name[90]), as.factor("Banana 2014"))
-  expect_equal(droplevels(cat_res_pawpaw$event_name[91]), as.factor("Pawpaw 2018a"))
+  expect_equal(droplevels(cat_res$event_name[89]), as.factor("Event 2016a"))
+  expect_equal(droplevels(cat_res_banana$event_name[90]), as.factor("Banana 2018c"))
+  expect_equal(droplevels(cat_res_pawpaw$event_name[91]), as.factor("Pawpaw 2007c"))
 })
 
 test_that("y = any existing column", {
@@ -42,12 +42,12 @@ test_that("season splits work under all circumstances", {
   ts$temp[4000:4200] <- 22
   res <- detect_event(ts)
   cat_res <- category(res, S = F)
-  expect_equal(cat_res$season[93], "Year-round")
-  expect_equal(cat_res$season[35], "Summer/Fall")
-  expect_equal(cat_res$season[66], "Winter/Spring")
-  expect_equal(cat_res$season[73], "Spring/Summer")
-  expect_equal(cat_res$season[88], "Summer-Winter")
-  expect_equal(cat_res$season[94], "Fall-Spring")
+  expect_equal(cat_res$season[110], "Year-round")
+  expect_equal(cat_res$season[88], "Summer/Fall")
+  expect_equal(cat_res$season[95], "Winter/Spring")
+  expect_equal(cat_res$season[97], "Spring/Summer")
+  expect_equal(cat_res$season[105], "Summer-Winter")
+  expect_equal(cat_res$season[111], "Fall-Spring")
 })
 
 test_that("climatology = T causes a list output with the time series category data", {
@@ -65,18 +65,18 @@ test_that("climatology intensity values are correct", {
   cat_daily <- category(res, climatology = T)$climatology
   expect_is(cat_daily, "tbl_df")
   expect_equal(ncol(cat_daily), 4)
-  expect_equal(max(cat_daily$intensity), 5.3546)
-  expect_equal(min(cat_daily$intensity), 0.519)
+  expect_equal(max(cat_daily$intensity), 5.5064)
+  expect_equal(min(cat_daily$intensity), 0.3017)
 })
 
 test_that("roundVal works as expected", {
   res <- detect_event(ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31")))
   cat_2 <- category(res, climatology = T, roundVal = 2)
   cat_4 <- category(res, climatology = T, roundVal = 4)
-  expect_equal(as.character(max(cat_2$event$i_max)), "5.35")
-  expect_equal(as.character(max(cat_4$event$i_max)), "5.3546")
-  expect_equal(as.character(min(cat_2$climatology$intensity)), "0.52")
-  expect_equal(as.character(min(cat_4$climatology$intensity)), "0.519")
+  expect_equal(as.character(max(cat_2$event$i_max)), "5.51")
+  expect_equal(as.character(max(cat_4$event$i_max)), "5.5064")
+  expect_equal(as.character(min(cat_2$climatology$intensity)), "0.3")
+  expect_equal(as.character(min(cat_4$climatology$intensity)), "0.3017")
 })
 
 test_that("no detected events returns an 1 row NA dataframe and not an error", {
@@ -132,6 +132,6 @@ test_that("MCScorrect argument bounds the results to -1.8C", {
   res <- detect_event(ts_low, coldSpells = T)
   cat <- category(res, climatology = T)
   cat_correct <- category(res, climatology = T, MCScorrect = T)
-  expect_equal(as.numeric(table(cat$climatology$category)[1]), 475)
-  expect_equal(as.numeric(table(cat_correct$climatology$category)[4]), 266)
+  expect_equal(as.numeric(table(cat$climatology$category)[1]), 479)
+  expect_equal(as.numeric(table(cat_correct$climatology$category)[4]), 271)
 })

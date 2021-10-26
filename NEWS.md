@@ -1,3 +1,7 @@
+# heatwaveR 0.4.6 (2021-10-26)
+
+-   Updated SST time series to 2020-12-31 
+
 # heatwaveR 0.4.6 (2021-10-25)
 
 -   Explicitly loading **`Rcpp`** due to a change in the behaviour of the package causing ERRORs on CRAN checks
