@@ -128,7 +128,7 @@
       <h1 data-toc-skip>Basic Detection and Visualisation of Events</h1>
                         <h4 class="author">AJ Smit and Robert W Schlegel</h4>
             
-            <h4 class="date">2021-10-25</h4>
+            <h4 class="date">2021-10-26</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/detection_and_visualisation.Rmd"><code>vignettes/detection_and_visualisation.Rmd</code></a></small>
       <div class="hidden name"><code>detection_and_visualisation.Rmd</code></div>
@@ -143,13 +143,15 @@
 <p>The <code><a href="../reference/detect_event.html">detect_event()</a></code> function is the core of this package, and it expects to be fed the output of the second core function, <code><a href="../reference/ts2clm.html">ts2clm()</a></code>. By default, <code><a href="../reference/ts2clm.html">ts2clm()</a></code> wants to receive a two-column dataframe with one column labelled <code>t</code> containing all of the date values, and a second column <code>temp</code> containing all of the temperature values. Please note that the date format it expects is “YYYY-MM-DD.” For example, please see the top five rows of one of the datasets included with the <strong><code>heatwaveR</code></strong> package:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu">heatwaveR</span><span class="fu">::</span><span class="va"><a href="../reference/sst_WA.html">sst_WA</a></span><span class="op">)</span></code></pre></div>
-<pre><code>##            t  temp
-## 1 1982-01-01 20.94
-## 2 1982-01-02 21.25
-## 3 1982-01-03 21.38
-## 4 1982-01-04 21.16
-## 5 1982-01-05 21.26
-## 6 1982-01-06 21.61</code></pre>
+<pre><code>## # A tibble: 6 × 2
+##   t           temp
+##   &lt;date&gt;     &lt;dbl&gt;
+## 1 1982-01-01  20.9
+## 2 1982-01-02  21.2
+## 3 1982-01-03  21.4
+## 4 1982-01-04  21.2
+## 5 1982-01-05  21.3
+## 6 1982-01-06  21.6</code></pre>
 <p>It is possible to use different column names other than <code>t</code> and <code>temp</code> with which to calculate events. Please see the help files for <code><a href="../reference/ts2clm.html">ts2clm()</a></code> or <code><a href="../reference/detect_event.html">detect_event()</a></code> for a thorough explanation of how to do so.</p>
 <p>Loading ones data from a <code>.csv</code> file or other text based format is the easiest approach for the calculation of events, assuming one is not working with gridded data (e.g. NetCDF). Please see <a href="https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html">this vignette</a> for a detailed walkthrough on using the functions in this package with gridded data.</p>
 </div>
@@ -288,10 +290,10 @@
 ##   event_no duration date_start date_peak  intensity_mean intensity_max
 ##      &lt;int&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;              &lt;dbl&gt;         &lt;dbl&gt;
 ## 1       15       76 1990-04-13 1990-05-11          -2.50         -3.19
-## 2       80       63 2018-07-30 2018-08-15          -2.14         -2.90
-## 3       49       58 2003-12-19 2004-01-23          -1.73         -2.59
+## 2       49       58 2003-12-19 2004-01-23          -1.73         -2.59
+## 3       83       41 2020-04-26 2020-05-25          -2.34         -3.14
 ## 4       64       52 2014-04-14 2014-05-05          -1.78         -2.54
-## 5        7       37 1986-06-24 1986-07-17          -2.00         -2.91
+## 5       77       46 2018-07-24 2018-08-02          -1.81         -2.43
 ## # … with 1 more variable: intensity_cumulative &lt;dbl&gt;</code></pre>
 </div>
 <div id="visualising-marine-cold-spells-mcss" class="section level2">
