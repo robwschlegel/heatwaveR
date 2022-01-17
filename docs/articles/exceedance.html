@@ -34,6 +34,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -46,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9000</span>
       </span>
     </div>
 
@@ -100,7 +102,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/robwschlegel/heatwaveR">
+  <a href="https://github.com/robwschlegel/heatwaveR" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
     github
@@ -122,113 +124,113 @@
 
       
 
-      </header><script src="exceedance_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Calculating and Visualising Exceedances</h1>
-                        <h4 class="author">Robert W Schlegel</h4>
+                        <h4 data-toc-skip class="author">Robert W Schlegel</h4>
             
-            <h4 class="date">2021-10-26</h4>
+            <h4 data-toc-skip class="date">2022-01-17</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/exceedance.Rmd"><code>vignettes/exceedance.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/exceedance.Rmd" class="external-link"><code>vignettes/exceedance.Rmd</code></a></small>
       <div class="hidden name"><code>exceedance.Rmd</code></div>
 
     </div>
 
     
     
-<div id="exceedances" class="section level2">
-<h2 class="hasAnchor">
-<a href="#exceedances" class="anchor"></a>Exceedances</h2>
-<p>In addition to the calculation of events based on a given percentile, this package also allows for the calculation of events based on a given static threshold with the <code><a href="../reference/exceedance.html">exceedance()</a></code> function. This is most useful if one is more interested in testing a time series for events that exceed a pre-determined static threshold that is already known to be of particular significance in a given part of the world. The output of this function may also be used in the calculation of events that may require two thresholds, such as atmospheric events with ‘tMin’ and ‘tMax’ daily values. For a detailed explanation for how to do this please see <a href="https://robwschlegel.github.io/heatwaveR/articles/complex_clims.html">this vignette</a>. The data requirements for <code><a href="../reference/exceedance.html">exceedance()</a></code> are the same as for <code><a href="../reference/ts2clm.html">ts2clm()</a></code> and <code><a href="../reference/detect_event.html">detect_event()</a></code>.</p>
+<div class="section level2">
+<h2 id="exceedances">Exceedances<a class="anchor" aria-label="anchor" href="#exceedances"></a>
+</h2>
+<p>In addition to the calculation of events based on a given percentile, this package also allows for the calculation of events based on a given static threshold with the <code><a href="../reference/exceedance.html">exceedance()</a></code> function. This is most useful if one is more interested in testing a time series for events that exceed a pre-determined static threshold that is already known to be of particular significance in a given part of the world. The output of this function may also be used in the calculation of events that may require two thresholds, such as atmospheric events with ‘tMin’ and ‘tMax’ daily values. For a detailed explanation for how to do this please see <a href="https://robwschlegel.github.io/heatwaveR/articles/complex_clims.html" class="external-link">this vignette</a>. The data requirements for <code><a href="../reference/exceedance.html">exceedance()</a></code> are the same as for <code><a href="../reference/ts2clm.html">ts2clm()</a></code> and <code><a href="../reference/detect_event.html">detect_event()</a></code>.</p>
 </div>
-<div id="calculating-exceedances" class="section level2">
-<h2 class="hasAnchor">
-<a href="#calculating-exceedances" class="anchor"></a>Calculating exceedances</h2>
+<div class="section level2">
+<h2 id="calculating-exceedances">Calculating exceedances<a class="anchor" aria-label="anchor" href="#calculating-exceedances"></a>
+</h2>
 <p>The calculation of exceedances may be done with only one function as seen here:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Activate libraries</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://robwschlegel.github.io/heatwaveR/index.html">heatwaveR</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://robwschlegel.github.io/heatwaveR/index.html">heatwaveR</a></span><span class="op">)</span>
 
 <span class="co"># Calculate exceedence</span>
 <span class="va">exc_25</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/exceedance.html">exceedance</a></span><span class="op">(</span><span class="va">sst_WA</span>, threshold <span class="op">=</span> <span class="fl">25</span><span class="op">)</span>
 
 <span class="co"># Look at a few metrics</span>
-<span class="va">exc_25</span><span class="op">$</span><span class="va">exceedance</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">exceedance_no</span>, <span class="va">duration</span>, <span class="va">date_start</span>, <span class="va">date_peak</span>, <span class="va">intensity_max</span>, <span class="va">intensity_cumulative</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="op">-</span><span class="va">intensity_cumulative</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 5 × 6
-##   exceedance_no duration date_start date_peak  intensity_max intensity_cumulati…
-##           &lt;dbl&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;             &lt;dbl&gt;               &lt;dbl&gt;
-## 1             7       52 2011-02-08 2011-02-28          4.74               87.0 
-## 2             6       25 2008-04-03 2008-04-14          2.19               24.5 
-## 3            10       41 2012-03-03 2012-04-10          1.37               18.0 
-## 4             2       17 1999-05-13 1999-05-22          1.4                14.6 
-## 5             5       10 2000-05-03 2000-05-04          1.01                6.97</code></pre>
+<span class="va">exc_25</span><span class="op">$</span><span class="va">exceedance</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">exceedance_no</span>, <span class="va">duration</span>, <span class="va">date_start</span>, <span class="va">date_peak</span>, <span class="va">intensity_max</span>, <span class="va">intensity_cumulative</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="op">-</span><span class="va">intensity_cumulative</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 5 × 6</span></span>
+<span class="co">##   exceedance_no duration date_start date_peak  intensity_max intensity_cumulati…</span>
+<span class="co">##           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">## <span style="color: #BCBCBC;">1</span>             7       52 2011-02-08 2011-02-28          4.74               87.0 </span>
+<span class="co">## <span style="color: #BCBCBC;">2</span>             6       25 2008-04-03 2008-04-14          2.19               24.5 </span>
+<span class="co">## <span style="color: #BCBCBC;">3</span>            10       41 2012-03-03 2012-04-10          1.37               18.0 </span>
+<span class="co">## <span style="color: #BCBCBC;">4</span>             2       17 1999-05-13 1999-05-22          1.4                14.6 </span>
+<span class="co">## <span style="color: #BCBCBC;">5</span>             5       10 2000-05-03 2000-05-04          1.01                6.97</span></code></pre>
 <p>Note that the resultant output of <code><a href="../reference/exceedance.html">exceedance()</a></code> is very similar to <code><a href="../reference/detect_event.html">detect_event()</a></code>, except that the two dataframes within the list are called <code>threshold</code> and <code>exceedance</code>, rather than <code>climatology</code> and <code>event</code>.</p>
 </div>
-<div id="visualising-exceedances" class="section level2">
-<h2 class="hasAnchor">
-<a href="#visualising-exceedances" class="anchor"></a>Visualising exceedances</h2>
+<div class="section level2">
+<h2 id="visualising-exceedances">Visualising exceedances<a class="anchor" aria-label="anchor" href="#visualising-exceedances"></a>
+</h2>
 <p>Because <code><a href="../reference/event_line.html">event_line()</a></code> and <code><a href="../reference/lolli_plot.html">lolli_plot()</a></code> are designed to work on the output of <code><a href="../reference/detect_event.html">detect_event()</a></code>, if we want to visualise the results of <code><a href="../reference/exceedance.html">exceedance()</a></code> we will need to do so ‘by hand’ with <strong><code>ggplot2</code></strong>. The code below works as an example of how to do so:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">exc_25_thresh</span> <span class="op">&lt;-</span> <span class="va">exc_25</span><span class="op">$</span><span class="va">threshold</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="fl">9500</span><span class="op">:</span><span class="fl">9866</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">exc_25_thresh</span> <span class="op">&lt;-</span> <span class="va">exc_25</span><span class="op">$</span><span class="va">threshold</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice</a></span><span class="op">(</span><span class="fl">9500</span><span class="op">:</span><span class="fl">9866</span><span class="op">)</span>
 
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">exc_25_thresh</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">t</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/geom_flame.html">geom_flame</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">temp</span>, y2 <span class="op">=</span> <span class="va">thresh</span>, fill <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span>, show.legend <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">temp</span>, colour <span class="op">=</span> <span class="st">"temp"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh</span>, colour <span class="op">=</span> <span class="st">"thresh"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">1.0</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_colour_manual</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Line Colour"</span>,
-                      values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"temp"</span> <span class="op">=</span> <span class="st">"black"</span>, <span class="st">"thresh"</span> <span class="op">=</span>  <span class="st">"forestgreen"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Event Colour"</span>, values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"all"</span> <span class="op">=</span> <span class="st">"salmon"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html">guides</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html">guide_legend</a></span><span class="op">(</span>override.aes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html">scale_x_date</a></span><span class="op">(</span>date_labels <span class="op">=</span> <span class="st">"%b %Y"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Temperature ["</span>, <span class="va">degree</span>, <span class="st">"C]"</span><span class="op">)</span><span class="op">)</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">exc_25_thresh</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">t</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/geom_flame.html">geom_flame</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">temp</span>, y2 <span class="op">=</span> <span class="va">thresh</span>, fill <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span>, show.legend <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">temp</span>, colour <span class="op">=</span> <span class="st">"temp"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh</span>, colour <span class="op">=</span> <span class="st">"thresh"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">1.0</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_colour_manual</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Line Colour"</span>,
+                      values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"temp"</span> <span class="op">=</span> <span class="st">"black"</span>, <span class="st">"thresh"</span> <span class="op">=</span>  <span class="st">"forestgreen"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Event Colour"</span>, values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"all"</span> <span class="op">=</span> <span class="st">"salmon"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html" class="external-link">guide_legend</a></span><span class="op">(</span>override.aes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html" class="external-link">scale_x_date</a></span><span class="op">(</span>date_labels <span class="op">=</span> <span class="st">"%b %Y"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Temperature ["</span>, <span class="va">degree</span>, <span class="st">"C]"</span><span class="op">)</span><span class="op">)</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
 <p><img src="exceedance_files/figure-html/fig-example1-1.png" width="768"><!-- ![](vignettes/fig-example1-1.png) --></p>
 </div>
-<div id="calculating-negative-exceedances" class="section level2">
-<h2 class="hasAnchor">
-<a href="#calculating-negative-exceedances" class="anchor"></a>Calculating negative exceedances</h2>
+<div class="section level2">
+<h2 id="calculating-negative-exceedances">Calculating negative exceedances<a class="anchor" aria-label="anchor" href="#calculating-negative-exceedances"></a>
+</h2>
 <p>Unfortunately there is no antonym for exceedance in the English language, which makes talking about exceedances <em>below</em> a static threshold somewhat awkward. For the purposes of clarity here we will refer to these as negative exceedances.</p>
 <p>The <code><a href="../reference/exceedance.html">exceedance()</a></code> function may be used to calculate consecutive days below a threshold as seen here:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">exc_19</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/exceedance.html">exceedance</a></span><span class="op">(</span><span class="va">sst_WA</span>, threshold <span class="op">=</span> <span class="fl">19</span>, below <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="va">exc_19</span><span class="op">$</span><span class="va">exceedance</span> <span class="op">%&gt;%</span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">exceedance_no</span>, <span class="va">duration</span>, <span class="va">date_start</span>, <span class="va">date_peak</span>, <span class="va">intensity_mean</span>, <span class="va">intensity_cumulative</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">intensity_cumulative</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 5 × 6
-##   exceedance_no duration date_start date_peak  intensity_mean intensity_cumulat…
-##           &lt;dbl&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;              &lt;dbl&gt;              &lt;dbl&gt;
-## 1            28       61 2017-08-09 2017-08-20         -0.609              -37.2
-## 2            30       65 2018-07-27 2018-08-22         -0.530              -34.5
-## 3            16       30 2002-09-09 2002-09-25         -0.876              -26.3
-## 4            17       34 2003-09-06 2003-09-16         -0.753              -25.6
-## 5            13       24 1997-09-03 1997-09-15         -0.769              -18.5</code></pre>
+<span class="va">exc_19</span><span class="op">$</span><span class="va">exceedance</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">exceedance_no</span>, <span class="va">duration</span>, <span class="va">date_start</span>, <span class="va">date_peak</span>, <span class="va">intensity_mean</span>, <span class="va">intensity_cumulative</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">intensity_cumulative</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 5 × 6</span></span>
+<span class="co">##   exceedance_no duration date_start date_peak  intensity_mean intensity_cumulat…</span>
+<span class="co">##           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">## <span style="color: #BCBCBC;">1</span>            28       61 2017-08-09 2017-08-20         -<span style="color: #BB0000;">0.609</span>              -<span style="color: #BB0000;">37.2</span></span>
+<span class="co">## <span style="color: #BCBCBC;">2</span>            30       65 2018-07-27 2018-08-22         -<span style="color: #BB0000;">0.530</span>              -<span style="color: #BB0000;">34.5</span></span>
+<span class="co">## <span style="color: #BCBCBC;">3</span>            16       30 2002-09-09 2002-09-25         -<span style="color: #BB0000;">0.876</span>              -<span style="color: #BB0000;">26.3</span></span>
+<span class="co">## <span style="color: #BCBCBC;">4</span>            17       34 2003-09-06 2003-09-16         -<span style="color: #BB0000;">0.753</span>              -<span style="color: #BB0000;">25.6</span></span>
+<span class="co">## <span style="color: #BCBCBC;">5</span>            13       24 1997-09-03 1997-09-15         -<span style="color: #BB0000;">0.769</span>              -<span style="color: #BB0000;">18.5</span></span></code></pre>
 </div>
-<div id="visualising-negative-exceedances" class="section level2">
-<h2 class="hasAnchor">
-<a href="#visualising-negative-exceedances" class="anchor"></a>Visualising negative exceedances</h2>
+<div class="section level2">
+<h2 id="visualising-negative-exceedances">Visualising negative exceedances<a class="anchor" aria-label="anchor" href="#visualising-negative-exceedances"></a>
+</h2>
 <p>Were one to desire a visualisation of these data it could be produced with the following code:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">exc_19_thresh</span> <span class="op">&lt;-</span> <span class="va">exc_19</span><span class="op">$</span><span class="va">threshold</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="fl">1500</span><span class="op">:</span><span class="fl">1866</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">exc_19_thresh</span> <span class="op">&lt;-</span> <span class="va">exc_19</span><span class="op">$</span><span class="va">threshold</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice</a></span><span class="op">(</span><span class="fl">1500</span><span class="op">:</span><span class="fl">1866</span><span class="op">)</span>
 
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">exc_19_thresh</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">t</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/geom_flame.html">geom_flame</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh</span>, y2 <span class="op">=</span> <span class="va">temp</span><span class="op">)</span>, fill <span class="op">=</span> <span class="st">"steelblue3"</span>, show.legend <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">temp</span>, colour <span class="op">=</span> <span class="st">"temp"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh</span>, colour <span class="op">=</span> <span class="st">"thresh"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">1.0</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_colour_manual</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Line Colour"</span>,
-                      values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"temp"</span> <span class="op">=</span> <span class="st">"black"</span>, <span class="st">"thresh"</span> <span class="op">=</span>  <span class="st">"forestgreen"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">18</span>, <span class="fl">23.5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html">scale_x_date</a></span><span class="op">(</span>date_labels <span class="op">=</span> <span class="st">"%b %Y"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Temperature ["</span>, <span class="va">degree</span>, <span class="st">"C]"</span><span class="op">)</span><span class="op">)</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">exc_19_thresh</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">t</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/geom_flame.html">geom_flame</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh</span>, y2 <span class="op">=</span> <span class="va">temp</span><span class="op">)</span>, fill <span class="op">=</span> <span class="st">"steelblue3"</span>, show.legend <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">temp</span>, colour <span class="op">=</span> <span class="st">"temp"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh</span>, colour <span class="op">=</span> <span class="st">"thresh"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">1.0</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_colour_manual</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Line Colour"</span>,
+                      values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"temp"</span> <span class="op">=</span> <span class="st">"black"</span>, <span class="st">"thresh"</span> <span class="op">=</span>  <span class="st">"forestgreen"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">18</span>, <span class="fl">23.5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html" class="external-link">scale_x_date</a></span><span class="op">(</span>date_labels <span class="op">=</span> <span class="st">"%b %Y"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Temperature ["</span>, <span class="va">degree</span>, <span class="st">"C]"</span><span class="op">)</span><span class="op">)</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
 <p><img src="exceedance_files/figure-html/fig-example2-1.png" width="768"><!-- ![](vignettes/fig-example2-1.png) --></p>
 </div>
   </div>
@@ -244,11 +246,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Robert W. Schlegel, Albertus J. Smit.</p>
+  <p></p>
+<p>Developed by Robert W. Schlegel, Albertus J. Smit.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>

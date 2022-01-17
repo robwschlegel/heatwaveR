@@ -1,70 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://robwschlegel.github.io/heatwaveR/index.html/index.html</loc>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/404.html</loc>
   </url>
   <url>
-    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/Algiers.html</loc>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/CITATIONS.html</loc>
   </url>
   <url>
-    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/block_average.html</loc>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/CODE_OF_CONDUCT.html</loc>
   </url>
   <url>
-    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/category.html</loc>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/CONTRIBUTING.html</loc>
   </url>
   <url>
-    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/clim_calc.html</loc>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/clim_spread.html</loc>
-  </url>
-  <url>
-    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.html</loc>
-  </url>
-  <url>
-    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.html</loc>
-  </url>
-  <url>
-    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/exceedance.html</loc>
-  </url>
-  <url>
-    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/geom_flame.html</loc>
-  </url>
-  <url>
-    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/geom_lolli.html</loc>
-  </url>
-  <url>
-    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/heatwaveR-package.html</loc>
-  </url>
-  <url>
-    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/lolli_plot.html</loc>
-  </url>
-  <url>
-    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/make_whole.html</loc>
-  </url>
-  <url>
-    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/make_whole_fast.html</loc>
-  </url>
-  <url>
-    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/na_interp.html</loc>
-  </url>
-  <url>
-    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/proto_event.html</loc>
-  </url>
-  <url>
-    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/smooth_percentile.html</loc>
-  </url>
-  <url>
-    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/sst_Med.html</loc>
-  </url>
-  <url>
-    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/sst_NW_Atl.html</loc>
-  </url>
-  <url>
-    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/sst_WA.html</loc>
-  </url>
-  <url>
-    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.html</loc>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/LICENSE.html</loc>
   </url>
   <url>
     <loc>https://robwschlegel.github.io/heatwaveR/index.html/articles/MHW_to_nc.html</loc>
@@ -86,5 +38,89 @@
   </url>
   <url>
     <loc>https://robwschlegel.github.io/heatwaveR/index.html/articles/gridded_event_detection.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/authors.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/index.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/news/index.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/Algiers.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/block_average.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/category.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/clim_calc.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/clim_spread.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/detect.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/exceedance.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/geom_flame.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/geom_lolli.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/heatwaveR-package.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/lolli_plot.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/make_whole.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/make_whole_fast.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/na_interp.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/plotly_helpers.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/proto_event.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/smooth_percentile.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/sst_Med.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/sst_NW_Atl.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/sst_WA.html</loc>
+  </url>
+  <url>
+    <loc>https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.html</loc>
   </url>
 </urlset>

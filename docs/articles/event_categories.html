@@ -34,6 +34,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -46,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9000</span>
       </span>
     </div>
 
@@ -100,7 +102,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/robwschlegel/heatwaveR">
+  <a href="https://github.com/robwschlegel/heatwaveR" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
     github
@@ -122,24 +124,24 @@
 
       
 
-      </header><script src="event_categories_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Calculating and Visualising Event Categories</h1>
-                        <h4 class="author">Robert W Schlegel</h4>
+                        <h4 data-toc-skip class="author">Robert W Schlegel</h4>
             
-            <h4 class="date">2021-10-26</h4>
+            <h4 data-toc-skip class="date">2022-01-17</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/master/vignettes/event_categories.Rmd"><code>vignettes/event_categories.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/event_categories.Rmd" class="external-link"><code>vignettes/event_categories.Rmd</code></a></small>
       <div class="hidden name"><code>event_categories.Rmd</code></div>
 
     </div>
 
     
     
-<div id="categories" class="section level2">
-<h2 class="hasAnchor">
-<a href="#categories" class="anchor"></a>Categories</h2>
+<div class="section level2">
+<h2 id="categories">Categories<a class="anchor" aria-label="anchor" href="#categories"></a>
+</h2>
 <p>In Hobday et al. (2018) a naming convention for MHWs was proposed that divides them into four categories based on their maximum observed intensity. The naming convention and a brief description are as follows:</p>
 <table class="table">
 <colgroup>
@@ -170,76 +172,76 @@
 </tbody>
 </table>
 </div>
-<div id="calculating-mhw-categories" class="section level2">
-<h2 class="hasAnchor">
-<a href="#calculating-mhw-categories" class="anchor"></a>Calculating MHW categories</h2>
+<div class="section level2">
+<h2 id="calculating-mhw-categories">Calculating MHW categories<a class="anchor" aria-label="anchor" href="#calculating-mhw-categories"></a>
+</h2>
 <p>The categories of MHWs under the Hobday et al. (2018) naming scheme may be calculated with the <strong><code>heatwaveR</code></strong> package using the <code><a href="../reference/category.html">category()</a></code> function on the output of the <code><a href="../reference/detect_event.html">detect_event()</a></code> function. By default this function will order events from most to least intense. Note that one may control the output for the names of the events by providing ones own character string for the <code>name</code> argument. Because we have calculated MHWs on the Western Australia data, we provide the name “WA” below:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Load libraries</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org">tidyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://robwschlegel.github.io/heatwaveR/index.html">heatwaveR</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://robwschlegel.github.io/heatwaveR/index.html">heatwaveR</a></span><span class="op">)</span>
 
 <span class="co"># Calculate events</span>
-<span class="va">ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">MHW</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/detect_event.html">detect_event</a></span><span class="op">(</span><span class="va">ts</span><span class="op">)</span>
 <span class="va">MHW_cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/category.html">category</a></span><span class="op">(</span><span class="va">MHW</span>, S <span class="op">=</span> <span class="cn">TRUE</span>, name <span class="op">=</span> <span class="st">"WA"</span><span class="op">)</span>
 
 <span class="co"># Look at the top few events</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="va">MHW_cat</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 6 × 11
-##   event_no event_name peak_date  category   i_max duration p_moderate p_strong
-##      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
-## 1       60 WA 2012b   2012-12-31 II Strong   3.42       14         64       36
-## 2       29 WA 1999    1999-05-22 II Strong   3.64       95         63       37
-## 3       47 WA 2009    2009-03-25 II Strong   2.38        7         57       43
-## 4       72 WA 2015    2015-10-02 II Strong   2.46        7         57       43
-## 5       41 WA 2008a   2008-04-14 III Severe  3.83       35         57       23
-## 6       52 WA 2011a   2011-02-28 IV Extreme  6.58      105         52       27
-## # … with 3 more variables: p_severe &lt;dbl&gt;, p_extreme &lt;dbl&gt;, season &lt;chr&gt;</code></pre>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">MHW_cat</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 6 × 11</span></span>
+<span class="co">##   event_no event_name peak_date  category   i_max duration p_moderate p_strong</span>
+<span class="co">##      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">## <span style="color: #BCBCBC;">1</span>       60 WA 2012b   2012-12-31 II Strong   3.42       14         64       36</span>
+<span class="co">## <span style="color: #BCBCBC;">2</span>       29 WA 1999    1999-05-22 II Strong   3.64       95         63       37</span>
+<span class="co">## <span style="color: #BCBCBC;">3</span>       47 WA 2009    2009-03-25 II Strong   2.38        7         57       43</span>
+<span class="co">## <span style="color: #BCBCBC;">4</span>       72 WA 2015    2015-10-02 II Strong   2.46        7         57       43</span>
+<span class="co">## <span style="color: #BCBCBC;">5</span>       41 WA 2008a   2008-04-14 III Severe  3.83       35         57       23</span>
+<span class="co">## <span style="color: #BCBCBC;">6</span>       52 WA 2011a   2011-02-28 IV Extreme  6.58      105         52       27</span>
+<span class="co">## <span style="color: #949494;"># … with 3 more variables: p_severe &lt;dbl&gt;, p_extreme &lt;dbl&gt;, season &lt;chr&gt;</span></span></code></pre>
 <p>Note that this functions expects the data to have been collected in the southern hemisphere, hence the argument <code>S = TRUE</code>. If they were not, one must set <code>S = FALSE</code> as seen in the example below. This ensures that the correct seasons are attributed to the event.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">res_Med</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/detect_event.html">detect_event</a></span><span class="op">(</span><span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_Med</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">res_Med</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/detect_event.html">detect_event</a></span><span class="op">(</span><span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_Med</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="va">res_Med_cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/category.html">category</a></span><span class="op">(</span><span class="va">res_Med</span>, S <span class="op">=</span> <span class="cn">FALSE</span>, name <span class="op">=</span> <span class="st">"Med"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="va">res_Med_cat</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 6 × 11
-##   event_no event_name peak_date  category   i_max duration p_moderate p_strong
-##      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
-## 1       30 Med 2003a  2003-06-20 II Strong   5.05       30         53       47
-## 2       98 Med 2018b  2018-08-04 II Strong   4.75       44         52       48
-## 3       67 Med 2012b  2012-08-20 II Strong   4.32       18         44       56
-## 4       46 Med 2007c  2007-04-25 III Severe  4.05       19         42       53
-## 5       75 Med 2014   2014-10-18 II Strong   3.34      144         39       60
-## 6       96 Med 2018a  2018-04-28 II Strong   3.32       11         27       73
-## # … with 3 more variables: p_severe &lt;dbl&gt;, p_extreme &lt;dbl&gt;, season &lt;chr&gt;</code></pre>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">res_Med_cat</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 6 × 11</span></span>
+<span class="co">##   event_no event_name peak_date  category   i_max duration p_moderate p_strong</span>
+<span class="co">##      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">## <span style="color: #BCBCBC;">1</span>       30 Med 2003a  2003-06-20 II Strong   5.05       30         53       47</span>
+<span class="co">## <span style="color: #BCBCBC;">2</span>       98 Med 2018b  2018-08-04 II Strong   4.75       44         52       48</span>
+<span class="co">## <span style="color: #BCBCBC;">3</span>       67 Med 2012b  2012-08-20 II Strong   4.32       18         44       56</span>
+<span class="co">## <span style="color: #BCBCBC;">4</span>       46 Med 2007c  2007-04-25 III Severe  4.05       19         42       53</span>
+<span class="co">## <span style="color: #BCBCBC;">5</span>       75 Med 2014   2014-10-18 II Strong   3.34      144         39       60</span>
+<span class="co">## <span style="color: #BCBCBC;">6</span>       96 Med 2018a  2018-04-28 II Strong   3.32       11         27       73</span>
+<span class="co">## <span style="color: #949494;"># … with 3 more variables: p_severe &lt;dbl&gt;, p_extreme &lt;dbl&gt;, season &lt;chr&gt;</span></span></code></pre>
 </div>
-<div id="visualising-mhw-categories" class="section level2">
-<h2 class="hasAnchor">
-<a href="#visualising-mhw-categories" class="anchor"></a>Visualising MHW categories</h2>
-<div id="default-mhw-category-visuals" class="section level3">
-<h3 class="hasAnchor">
-<a href="#default-mhw-category-visuals" class="anchor"></a>Default MHW category visuals</h3>
+<div class="section level2">
+<h2 id="visualising-mhw-categories">Visualising MHW categories<a class="anchor" aria-label="anchor" href="#visualising-mhw-categories"></a>
+</h2>
+<div class="section level3">
+<h3 id="default-mhw-category-visuals">Default MHW category visuals<a class="anchor" aria-label="anchor" href="#default-mhw-category-visuals"></a>
+</h3>
 <p>A quick and easy visualisation of the categories of a MHW may be accomplished with <code><a href="../reference/event_line.html">event_line()</a></code> by setting the <code>category</code> argument to <code>TRUE</code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">MHW</span>, spread <span class="op">=</span> <span class="fl">100</span>, start_date <span class="op">=</span> <span class="st">"2010-11-01"</span>, end_date <span class="op">=</span> <span class="st">"2011-06-30"</span>, category <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="event_categories_files/figure-html/fig-example-1-1.png" width="768"><!-- ![](vignettes/fig-example-10-1.png) --></p>
 </div>
-<div id="custom-mhw-category-visuals" class="section level3">
-<h3 class="hasAnchor">
-<a href="#custom-mhw-category-visuals" class="anchor"></a>Custom MHW category visuals</h3>
+<div class="section level3">
+<h3 id="custom-mhw-category-visuals">Custom MHW category visuals<a class="anchor" aria-label="anchor" href="#custom-mhw-category-visuals"></a>
+</h3>
 <p>Were one to want to visualise the categories of a MHW ‘by hand,’ the following code will provide a good starting point.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Create category breaks and select slice of data.frame</span>
-<span class="va">clim_cat</span> <span class="op">&lt;-</span> <span class="va">MHW</span><span class="op">$</span><span class="va">clim</span> <span class="op">%&gt;%</span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>diff <span class="op">=</span> <span class="va">thresh</span> <span class="op">-</span> <span class="va">seas</span>,
+<span class="va">clim_cat</span> <span class="op">&lt;-</span> <span class="va">MHW</span><span class="op">$</span><span class="va">clim</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>diff <span class="op">=</span> <span class="va">thresh</span> <span class="op">-</span> <span class="va">seas</span>,
                 thresh_2x <span class="op">=</span> <span class="va">thresh</span> <span class="op">+</span> <span class="va">diff</span>,
                 thresh_3x <span class="op">=</span> <span class="va">thresh_2x</span> <span class="op">+</span> <span class="va">diff</span>,
-                thresh_4x <span class="op">=</span> <span class="va">thresh_3x</span> <span class="op">+</span> <span class="va">diff</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="fl">10580</span><span class="op">:</span><span class="fl">10690</span><span class="op">)</span>
+                thresh_4x <span class="op">=</span> <span class="va">thresh_3x</span> <span class="op">+</span> <span class="va">diff</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice</a></span><span class="op">(</span><span class="fl">10580</span><span class="op">:</span><span class="fl">10690</span><span class="op">)</span>
 
 <span class="co"># Set line colours</span>
-<span class="va">lineColCat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+<span class="va">lineColCat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
   <span class="st">"Temperature"</span> <span class="op">=</span> <span class="st">"black"</span>,
   <span class="st">"Climatology"</span> <span class="op">=</span> <span class="st">"gray20"</span>,
   <span class="st">"Threshold"</span> <span class="op">=</span> <span class="st">"darkgreen"</span>,
@@ -249,85 +251,85 @@
   <span class="op">)</span>
 
 <span class="co"># Set category fill colours</span>
-<span class="va">fillColCat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+<span class="va">fillColCat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
   <span class="st">"Moderate"</span> <span class="op">=</span> <span class="st">"#ffc866"</span>,
   <span class="st">"Strong"</span> <span class="op">=</span> <span class="st">"#ff6900"</span>,
   <span class="st">"Severe"</span> <span class="op">=</span> <span class="st">"#9e0000"</span>,
   <span class="st">"Extreme"</span> <span class="op">=</span> <span class="st">"#2d0000"</span>
   <span class="op">)</span>
 
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">clim_cat</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">t</span>, y <span class="op">=</span> <span class="va">temp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/geom_flame.html">geom_flame</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y2 <span class="op">=</span> <span class="va">thresh</span>, fill <span class="op">=</span> <span class="st">"Moderate"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/geom_flame.html">geom_flame</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y2 <span class="op">=</span> <span class="va">thresh_2x</span>, fill <span class="op">=</span> <span class="st">"Strong"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/geom_flame.html">geom_flame</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y2 <span class="op">=</span> <span class="va">thresh_3x</span>, fill <span class="op">=</span> <span class="st">"Severe"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/geom_flame.html">geom_flame</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y2 <span class="op">=</span> <span class="va">thresh_4x</span>, fill <span class="op">=</span> <span class="st">"Extreme"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh_2x</span>, col <span class="op">=</span> <span class="st">"2x Threshold"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.7</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh_3x</span>, col <span class="op">=</span> <span class="st">"3x Threshold"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.7</span>, linetype <span class="op">=</span> <span class="st">"dotdash"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh_4x</span>, col <span class="op">=</span> <span class="st">"4x Threshold"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.7</span>, linetype <span class="op">=</span> <span class="st">"dotted"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">seas</span>, col <span class="op">=</span> <span class="st">"Climatology"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh</span>, col <span class="op">=</span> <span class="st">"Threshold"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">temp</span>, col <span class="op">=</span> <span class="st">"Temperature"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_colour_manual</a></span><span class="op">(</span>name <span class="op">=</span> <span class="cn">NULL</span>, values <span class="op">=</span> <span class="va">lineColCat</span>,
-                      breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Temperature"</span>, <span class="st">"Climatology"</span>, <span class="st">"Threshold"</span>,
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">clim_cat</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">t</span>, y <span class="op">=</span> <span class="va">temp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/geom_flame.html">geom_flame</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y2 <span class="op">=</span> <span class="va">thresh</span>, fill <span class="op">=</span> <span class="st">"Moderate"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/geom_flame.html">geom_flame</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y2 <span class="op">=</span> <span class="va">thresh_2x</span>, fill <span class="op">=</span> <span class="st">"Strong"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/geom_flame.html">geom_flame</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y2 <span class="op">=</span> <span class="va">thresh_3x</span>, fill <span class="op">=</span> <span class="st">"Severe"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/geom_flame.html">geom_flame</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y2 <span class="op">=</span> <span class="va">thresh_4x</span>, fill <span class="op">=</span> <span class="st">"Extreme"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh_2x</span>, col <span class="op">=</span> <span class="st">"2x Threshold"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.7</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh_3x</span>, col <span class="op">=</span> <span class="st">"3x Threshold"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.7</span>, linetype <span class="op">=</span> <span class="st">"dotdash"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh_4x</span>, col <span class="op">=</span> <span class="st">"4x Threshold"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.7</span>, linetype <span class="op">=</span> <span class="st">"dotted"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">seas</span>, col <span class="op">=</span> <span class="st">"Climatology"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh</span>, col <span class="op">=</span> <span class="st">"Threshold"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">temp</span>, col <span class="op">=</span> <span class="st">"Temperature"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_colour_manual</a></span><span class="op">(</span>name <span class="op">=</span> <span class="cn">NULL</span>, values <span class="op">=</span> <span class="va">lineColCat</span>,
+                      breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Temperature"</span>, <span class="st">"Climatology"</span>, <span class="st">"Threshold"</span>,
                                  <span class="st">"2x Threshold"</span>, <span class="st">"3x Threshold"</span>, <span class="st">"4x Threshold"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span><span class="op">(</span>name <span class="op">=</span> <span class="cn">NULL</span>, values <span class="op">=</span> <span class="va">fillColCat</span>, guide <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html">scale_x_date</a></span><span class="op">(</span>date_labels <span class="op">=</span> <span class="st">"%b %Y"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html">guides</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html">guide_legend</a></span><span class="op">(</span>override.aes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>linetype <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"solid"</span>, <span class="st">"solid"</span>, <span class="st">"solid"</span>,
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>name <span class="op">=</span> <span class="cn">NULL</span>, values <span class="op">=</span> <span class="va">fillColCat</span>, guide <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html" class="external-link">scale_x_date</a></span><span class="op">(</span>date_labels <span class="op">=</span> <span class="st">"%b %Y"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html" class="external-link">guide_legend</a></span><span class="op">(</span>override.aes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>linetype <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"solid"</span>, <span class="st">"solid"</span>, <span class="st">"solid"</span>,
                                                                 <span class="st">"dashed"</span>, <span class="st">"dotdash"</span>, <span class="st">"dotted"</span><span class="op">)</span>,
-                                                   size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Temperature [°C]"</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+                                                   size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Temperature [°C]"</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
 <p><img src="event_categories_files/figure-html/fig-example-2-1.png" width="768"><!-- ![](vignettes/fig-example-11-1.png) --></p>
 </div>
 </div>
-<div id="calculating-mcs-categories" class="section level2">
-<h2 class="hasAnchor">
-<a href="#calculating-mcs-categories" class="anchor"></a>Calculating MCS categories</h2>
+<div class="section level2">
+<h2 id="calculating-mcs-categories">Calculating MCS categories<a class="anchor" aria-label="anchor" href="#calculating-mcs-categories"></a>
+</h2>
 <p>MCSs are calculated the same as for MHWs. The <code><a href="../reference/category.html">category()</a></code> function will automagically detect if it has been fed MHWs or MCSs so no additional arguments are required. For the sake of clarity the following code chunks demonstrates how to calculate MCS categories.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Calculate events</span>
-<span class="va">ts_MCS</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span><span class="op">)</span>, pctile <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
+<span class="va">ts_MCS</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span><span class="op">)</span>, pctile <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 <span class="va">MCS</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/detect_event.html">detect_event</a></span><span class="op">(</span><span class="va">ts_MCS</span>, coldSpells <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
 <span class="va">MCS_cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/category.html">category</a></span><span class="op">(</span><span class="va">MCS</span>, S <span class="op">=</span> <span class="cn">TRUE</span>, name <span class="op">=</span> <span class="st">"WA"</span><span class="op">)</span>
 
 <span class="co"># Look at the top few events</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="va">MCS_cat</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 6 × 11
-##   event_no event_name peak_date  category  i_max duration p_moderate p_strong
-##      &lt;int&gt; &lt;fct&gt;      &lt;date&gt;     &lt;chr&gt;     &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
-## 1       77 WA 2018a   2018-08-02 II Strong -2.43       46         67       33
-## 2       40 WA 2000    2000-08-13 II Strong -2.27       11         64       36
-## 3       15 WA 1990    1990-05-11 II Strong -3.19       76         62       38
-## 4       53 WA 2005    2005-10-16 II Strong -1.86       13         62       38
-## 5       83 WA 2020    2020-05-25 II Strong -3.14       41         61       39
-## 6       11 WA 1987    1987-12-10 II Strong -2.50        9         44       56
-## # … with 3 more variables: p_severe &lt;dbl&gt;, p_extreme &lt;dbl&gt;, season &lt;chr&gt;</code></pre>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">MCS_cat</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 6 × 11</span></span>
+<span class="co">##   event_no event_name peak_date  category  i_max duration p_moderate p_strong</span>
+<span class="co">##      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">## <span style="color: #BCBCBC;">1</span>       77 WA 2018a   2018-08-02 II Strong -<span style="color: #BB0000;">2.43</span>       46         67       33</span>
+<span class="co">## <span style="color: #BCBCBC;">2</span>       40 WA 2000    2000-08-13 II Strong -<span style="color: #BB0000;">2.27</span>       11         64       36</span>
+<span class="co">## <span style="color: #BCBCBC;">3</span>       15 WA 1990    1990-05-11 II Strong -<span style="color: #BB0000;">3.19</span>       76         62       38</span>
+<span class="co">## <span style="color: #BCBCBC;">4</span>       53 WA 2005    2005-10-16 II Strong -<span style="color: #BB0000;">1.86</span>       13         62       38</span>
+<span class="co">## <span style="color: #BCBCBC;">5</span>       83 WA 2020    2020-05-25 II Strong -<span style="color: #BB0000;">3.14</span>       41         61       39</span>
+<span class="co">## <span style="color: #BCBCBC;">6</span>       11 WA 1987    1987-12-10 II Strong -<span style="color: #BB0000;">2.50</span>        9         44       56</span>
+<span class="co">## <span style="color: #949494;"># … with 3 more variables: p_severe &lt;dbl&gt;, p_extreme &lt;dbl&gt;, season &lt;chr&gt;</span></span></code></pre>
 </div>
-<div id="visualising-mcs-categories" class="section level2">
-<h2 class="hasAnchor">
-<a href="#visualising-mcs-categories" class="anchor"></a>Visualising MCS categories</h2>
-<div id="default-mcs-category-visuals" class="section level3">
-<h3 class="hasAnchor">
-<a href="#default-mcs-category-visuals" class="anchor"></a>Default MCS category visuals</h3>
+<div class="section level2">
+<h2 id="visualising-mcs-categories">Visualising MCS categories<a class="anchor" aria-label="anchor" href="#visualising-mcs-categories"></a>
+</h2>
+<div class="section level3">
+<h3 id="default-mcs-category-visuals">Default MCS category visuals<a class="anchor" aria-label="anchor" href="#default-mcs-category-visuals"></a>
+</h3>
 <p>The <code><a href="../reference/event_line.html">event_line()</a></code> function also works for visualising MCS categories. The function will automagically detect that it is being fed MCSs so we do not need to provide it with any new arguments. Note that the colour palette for MCS does have four colours, same as for MHWs, but none of the demo time series that come packaged with <strong><code>heatwaveR</code></strong> have MCSs that intense so we are not able to demonstrate the full colour palette here.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">MCS</span>, spread <span class="op">=</span> <span class="fl">100</span>, start_date <span class="op">=</span> <span class="st">"1989-11-01"</span>, end_date <span class="op">=</span> <span class="st">"1990-06-30"</span>, category <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="event_categories_files/figure-html/fig-example-3-1.png" width="768"></p>
 </div>
-<div id="custom-mcs-category-visuals" class="section level3">
-<h3 class="hasAnchor">
-<a href="#custom-mcs-category-visuals" class="anchor"></a>Custom MCS category visuals</h3>
+<div class="section level3">
+<h3 id="custom-mcs-category-visuals">Custom MCS category visuals<a class="anchor" aria-label="anchor" href="#custom-mcs-category-visuals"></a>
+</h3>
 <p>The following code chunk demonstrates how to manually create a figure showing the MCS categories.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Create category breaks and select slice of data.frame</span>
-<span class="va">MCS_clim_cat</span> <span class="op">&lt;-</span> <span class="va">MCS</span><span class="op">$</span><span class="va">clim</span> <span class="op">%&gt;%</span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>diff <span class="op">=</span> <span class="va">thresh</span> <span class="op">-</span> <span class="va">seas</span>,
+<span class="va">MCS_clim_cat</span> <span class="op">&lt;-</span> <span class="va">MCS</span><span class="op">$</span><span class="va">clim</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>diff <span class="op">=</span> <span class="va">thresh</span> <span class="op">-</span> <span class="va">seas</span>,
                 thresh_2x <span class="op">=</span> <span class="va">thresh</span> <span class="op">+</span> <span class="va">diff</span>,
                 thresh_3x <span class="op">=</span> <span class="va">thresh_2x</span> <span class="op">+</span> <span class="va">diff</span>,
-                thresh_4x <span class="op">=</span> <span class="va">thresh_3x</span> <span class="op">+</span> <span class="va">diff</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="fl">2910</span><span class="op">:</span><span class="fl">3150</span><span class="op">)</span>
+                thresh_4x <span class="op">=</span> <span class="va">thresh_3x</span> <span class="op">+</span> <span class="va">diff</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice</a></span><span class="op">(</span><span class="fl">2910</span><span class="op">:</span><span class="fl">3150</span><span class="op">)</span>
 
 <span class="co"># Set line colours</span>
-<span class="va">lineColCat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+<span class="va">lineColCat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
   <span class="st">"Temperature"</span> <span class="op">=</span> <span class="st">"black"</span>,
   <span class="st">"Climatology"</span> <span class="op">=</span> <span class="st">"grey40"</span>,
   <span class="st">"Threshold"</span> <span class="op">=</span> <span class="st">"darkorchid"</span>,
@@ -337,7 +339,7 @@
   <span class="op">)</span>
 
 <span class="co"># Set category fill colours</span>
-<span class="va">fillColCat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+<span class="va">fillColCat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
   <span class="st">"Moderate"</span> <span class="op">=</span> <span class="st">"#C7ECF2"</span>,
   <span class="st">"Strong"</span> <span class="op">=</span> <span class="st">"#85B7CC"</span>,
   <span class="st">"Severe"</span> <span class="op">=</span> <span class="st">"#4A6A94"</span>,
@@ -345,36 +347,36 @@
   <span class="op">)</span>
 
 <span class="co"># Create plot</span>
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">MCS_clim_cat</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">t</span>, y <span class="op">=</span> <span class="va">temp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/geom_flame.html">geom_flame</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh</span>, y2 <span class="op">=</span> <span class="va">temp</span>, fill <span class="op">=</span> <span class="st">"Moderate"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/geom_flame.html">geom_flame</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh_2x</span>, y2 <span class="op">=</span> <span class="va">temp</span>, fill <span class="op">=</span> <span class="st">"Strong"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/geom_flame.html">geom_flame</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh_3x</span>, y2 <span class="op">=</span> <span class="va">temp</span>, fill <span class="op">=</span> <span class="st">"Severe"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/geom_flame.html">geom_flame</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh_4x</span>, y2 <span class="op">=</span> <span class="va">temp</span>, fill <span class="op">=</span> <span class="st">"Extreme"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh_2x</span>, col <span class="op">=</span> <span class="st">"2x Threshold"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.7</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh_3x</span>, col <span class="op">=</span> <span class="st">"3x Threshold"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.7</span>, linetype <span class="op">=</span> <span class="st">"dotdash"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh_4x</span>, col <span class="op">=</span> <span class="st">"4x Threshold"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.7</span>, linetype <span class="op">=</span> <span class="st">"dotted"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">seas</span>, col <span class="op">=</span> <span class="st">"Climatology"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh</span>, col <span class="op">=</span> <span class="st">"Threshold"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">temp</span>, col <span class="op">=</span> <span class="st">"Temperature"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_colour_manual</a></span><span class="op">(</span>name <span class="op">=</span> <span class="cn">NULL</span>, values <span class="op">=</span> <span class="va">lineColCat</span>,
-                      breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Temperature"</span>, <span class="st">"Climatology"</span>, <span class="st">"Threshold"</span>,
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">MCS_clim_cat</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">t</span>, y <span class="op">=</span> <span class="va">temp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/geom_flame.html">geom_flame</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh</span>, y2 <span class="op">=</span> <span class="va">temp</span>, fill <span class="op">=</span> <span class="st">"Moderate"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/geom_flame.html">geom_flame</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh_2x</span>, y2 <span class="op">=</span> <span class="va">temp</span>, fill <span class="op">=</span> <span class="st">"Strong"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/geom_flame.html">geom_flame</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh_3x</span>, y2 <span class="op">=</span> <span class="va">temp</span>, fill <span class="op">=</span> <span class="st">"Severe"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/geom_flame.html">geom_flame</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh_4x</span>, y2 <span class="op">=</span> <span class="va">temp</span>, fill <span class="op">=</span> <span class="st">"Extreme"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh_2x</span>, col <span class="op">=</span> <span class="st">"2x Threshold"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.7</span>, linetype <span class="op">=</span> <span class="st">"dashed"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh_3x</span>, col <span class="op">=</span> <span class="st">"3x Threshold"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.7</span>, linetype <span class="op">=</span> <span class="st">"dotdash"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh_4x</span>, col <span class="op">=</span> <span class="st">"4x Threshold"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.7</span>, linetype <span class="op">=</span> <span class="st">"dotted"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">seas</span>, col <span class="op">=</span> <span class="st">"Climatology"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">thresh</span>, col <span class="op">=</span> <span class="st">"Threshold"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">temp</span>, col <span class="op">=</span> <span class="st">"Temperature"</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_colour_manual</a></span><span class="op">(</span>name <span class="op">=</span> <span class="cn">NULL</span>, values <span class="op">=</span> <span class="va">lineColCat</span>,
+                      breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Temperature"</span>, <span class="st">"Climatology"</span>, <span class="st">"Threshold"</span>,
                                  <span class="st">"2x Threshold"</span>, <span class="st">"3x Threshold"</span>, <span class="st">"4x Threshold"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span><span class="op">(</span>name <span class="op">=</span> <span class="cn">NULL</span>, values <span class="op">=</span> <span class="va">fillColCat</span>, guide <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html">scale_x_date</a></span><span class="op">(</span>date_labels <span class="op">=</span> <span class="st">"%b %Y"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html">guides</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html">guide_legend</a></span><span class="op">(</span>override.aes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>linetype <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"solid"</span>, <span class="st">"solid"</span>, <span class="st">"solid"</span>,
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_fill_manual</a></span><span class="op">(</span>name <span class="op">=</span> <span class="cn">NULL</span>, values <span class="op">=</span> <span class="va">fillColCat</span>, guide <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html" class="external-link">scale_x_date</a></span><span class="op">(</span>date_labels <span class="op">=</span> <span class="st">"%b %Y"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html" class="external-link">guide_legend</a></span><span class="op">(</span>override.aes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>linetype <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"solid"</span>, <span class="st">"solid"</span>, <span class="st">"solid"</span>,
                                                                 <span class="st">"dashed"</span>, <span class="st">"dotdash"</span>, <span class="st">"dotted"</span><span class="op">)</span>,
-                                                   size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Temperature [°C]"</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+                                                   size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Temperature [°C]"</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
 <p><img src="event_categories_files/figure-html/fig-example-4-1.png" width="768"></p>
 </div>
 </div>
-<div id="category-colour-palettes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#category-colour-palettes" class="anchor"></a>Category colour palettes</h2>
+<div class="section level2">
+<h2 id="category-colour-palettes">Category colour palettes<a class="anchor" aria-label="anchor" href="#category-colour-palettes"></a>
+</h2>
 <p>For the sake of convenience the MHW and MCS colour palettes are provided below with a figure showing the direct comparison.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># The MCS colour palette</span>
-<span class="va">MCS_colours</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+<span class="va">MCS_colours</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
   <span class="st">"Moderate"</span> <span class="op">=</span> <span class="st">"#C7ECF2"</span>,
   <span class="st">"Strong"</span> <span class="op">=</span> <span class="st">"#85B7CC"</span>,
   <span class="st">"Severe"</span> <span class="op">=</span> <span class="st">"#4A6A94"</span>,
@@ -382,7 +384,7 @@
 <span class="op">)</span>
 
 <span class="co"># The MHW colour palette</span>
-<span class="va">MHW_colours</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
+<span class="va">MHW_colours</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
   <span class="st">"Moderate"</span> <span class="op">=</span> <span class="st">"#ffc866"</span>,
   <span class="st">"Strong"</span> <span class="op">=</span> <span class="st">"#ff6900"</span>,
   <span class="st">"Severe"</span> <span class="op">=</span> <span class="st">"#9e0000"</span>,
@@ -390,17 +392,17 @@
 <span class="op">)</span>
 
 <span class="co"># Create the colour palette for plotting by itself</span>
-<span class="va">colour_palette</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>category <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"I Moderate"</span>, <span class="st">"II Strong"</span>, <span class="st">"III Severe"</span>, <span class="st">"IV Extreme"</span><span class="op">)</span>,
-                                               levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"I Moderate"</span>, <span class="st">"II Strong"</span>, <span class="st">"III Severe"</span>, <span class="st">"IV Extreme"</span><span class="op">)</span><span class="op">)</span>,
-                             MHW <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">MHW_colours</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">MHW_colours</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, <span class="va">MHW_colours</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>, <span class="va">MHW_colours</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span>,
-                             MCS <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">MCS_colours</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">MCS_colours</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, <span class="va">MCS_colours</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>, <span class="va">MCS_colours</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">MHW</span>, <span class="va">MCS</span><span class="op">)</span>, names_to <span class="op">=</span> <span class="st">"event"</span>, values_to <span class="op">=</span> <span class="st">"colour"</span><span class="op">)</span>
+<span class="va">colour_palette</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>category <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"I Moderate"</span>, <span class="st">"II Strong"</span>, <span class="st">"III Severe"</span>, <span class="st">"IV Extreme"</span><span class="op">)</span>,
+                                               levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"I Moderate"</span>, <span class="st">"II Strong"</span>, <span class="st">"III Severe"</span>, <span class="st">"IV Extreme"</span><span class="op">)</span><span class="op">)</span>,
+                             MHW <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">MHW_colours</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">MHW_colours</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, <span class="va">MHW_colours</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>, <span class="va">MHW_colours</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span>,
+                             MCS <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">MCS_colours</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="va">MCS_colours</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, <span class="va">MCS_colours</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>, <span class="va">MCS_colours</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">MHW</span>, <span class="va">MCS</span><span class="op">)</span>, names_to <span class="op">=</span> <span class="st">"event"</span>, values_to <span class="op">=</span> <span class="st">"colour"</span><span class="op">)</span>
 
 <span class="co"># Show the palettes side-by-side</span>
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">colour_palette</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">category</span>, y <span class="op">=</span> <span class="va">event</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_tile</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">colour_palette</span><span class="op">$</span><span class="va">colour</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html">coord_cartesian</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">colour_palette</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">category</span>, y <span class="op">=</span> <span class="va">event</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">geom_tile</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">colour_palette</span><span class="op">$</span><span class="va">colour</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
 <p><img src="event_categories_files/figure-html/comp-fig-1.png" width="768"></p>
 </div>
   </div>
@@ -416,11 +418,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Robert W. Schlegel, Albertus J. Smit.</p>
+  <p></p>
+<p>Developed by Robert W. Schlegel, Albertus J. Smit.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>

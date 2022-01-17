@@ -1,5 +1,5 @@
 pandoc: 2.11.4
-pkgdown: 1.6.1
+pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
   MHW_to_nc: MHW_to_nc.html
@@ -9,7 +9,7 @@ articles:
   event_categories: event_categories.html
   exceedance: exceedance.html
   gridded_event_detection: gridded_event_detection.html
-last_built: 2021-10-26T08:36Z
+last_built: 2022-01-17T16:06Z
 urls:
   reference: https://robwschlegel.github.io/heatwaveR/index.html/reference
   article: https://robwschlegel.github.io/heatwaveR/index.html/articles
