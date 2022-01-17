@@ -23,9 +23,9 @@ test_that("The name argument works correctly", {
   cat_res <- category(res)
   cat_res_banana <- category(res, name = "Banana")
   cat_res_pawpaw <- category(res, name = "Pawpaw")
-  expect_equal(droplevels(cat_res$event_name[89]), as.factor("Event 2016a"))
-  expect_equal(droplevels(cat_res_banana$event_name[90]), as.factor("Banana 2018c"))
-  expect_equal(droplevels(cat_res_pawpaw$event_name[91]), as.factor("Pawpaw 2007c"))
+  expect_equal(droplevels(cat_res$event_name[89]), as.factor("Event 2019b"))
+  expect_equal(droplevels(cat_res_banana$event_name[90]), as.factor("Banana 2021a"))
+  expect_equal(droplevels(cat_res_pawpaw$event_name[91]), as.factor("Pawpaw 1989"))
 })
 
 test_that("y = any existing column", {
@@ -36,7 +36,7 @@ test_that("y = any existing column", {
 })
 
 test_that("season splits work under all circumstances", {
-  ts <- ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  ts <- ts2clm(sst_Med[1:14245,], climatologyPeriod = c("1983-01-01", "2012-12-31"))
   ts$temp[1000:1500] <- 24
   ts$temp[2000:2200] <- 22
   ts$temp[4000:4200] <- 22

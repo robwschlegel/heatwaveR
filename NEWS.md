@@ -1,6 +1,10 @@
+# heatwaveR 0.4.6.9000 (2022-01-17)
+
+-   Updated SST time series to 2021-12-31
+
 # heatwaveR 0.4.6 (2021-10-26)
 
--   Updated SST time series to 2020-12-31 
+-   Updated SST time series to 2020-12-31
 
 # heatwaveR 0.4.6 (2021-10-25)
 
