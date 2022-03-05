@@ -332,132 +332,131 @@ detect_event <- function(data,
 
   } else {
 
-  intensity_mean <- intensity_max <- intensity_cumulative <- intensity_mean_relThresh <-
-    intensity_max_relThresh <- intensity_cumulative_relThresh <- intensity_mean_abs <-
-    intensity_max_abs <- intensity_cumulative_abs <- rate_onset <- rate_decline <-
-    mhw_rel_thresh <- mhw_rel_seas <- event_no <- row_index <- index_start <- index_peak <-
-    index_end <- NULL
+    intensity_mean <- intensity_max <- intensity_cumulative <- intensity_mean_relThresh <-
+      intensity_max_relThresh <- intensity_cumulative_relThresh <- intensity_mean_abs <-
+      intensity_max_abs <- intensity_cumulative_abs <- rate_onset <- rate_decline <-
+      mhw_rel_thresh <- mhw_rel_seas <- event_no <- row_index <- index_start <- index_peak <-
+      index_end <- NULL
 
-  if (nrow(stats::na.omit(events_clim)) > 0) {
-    events <- data.frame(events_clim,
-                         row_index = base::seq_len(nrow(events_clim)),
-                         mhw_rel_seas = events_clim$ts_y - events_clim$ts_seas,
-                         mhw_rel_thresh = events_clim$ts_y - events_clim$ts_thresh)
-    events <- events[stats::complete.cases(events$event_no),]
-    events <- plyr::ddply(events, c("event_no"), .fun = plyr::summarise,
-                          index_start = min(row_index),
-                          index_peak = row_index[mhw_rel_seas == max(mhw_rel_seas)][1],
-                          index_end = max(row_index),
-                          duration = index_end - index_start + 1,
-                          date_start = min(ts_x),
-                          date_peak = ts_x[mhw_rel_seas == max(mhw_rel_seas)][1],
-                          date_end = max(ts_x),
-                          intensity_mean = mean(mhw_rel_seas),
-                          intensity_max = max(mhw_rel_seas),
-                          intensity_var = sqrt(stats::var(mhw_rel_seas)),
-                          intensity_cumulative = sum(mhw_rel_seas),
-                          intensity_mean_relThresh = mean(mhw_rel_thresh),
-                          intensity_max_relThresh = max(mhw_rel_thresh),
-                          intensity_var_relThresh = sqrt(stats::var(mhw_rel_thresh)),
-                          intensity_cumulative_relThresh = sum(mhw_rel_thresh),
-                          intensity_mean_abs = mean(ts_y),
-                          intensity_max_abs = max(ts_y),
-                          intensity_var_abs = sqrt(stats::var(ts_y)),
-                          intensity_cumulative_abs = sum(ts_y))
-    events <- tibble::as_tibble(events)
+    if (nrow(stats::na.omit(events_clim)) > 0) {
+      events <- data.frame(events_clim,
+                           row_index = base::seq_len(nrow(events_clim)),
+                           mhw_rel_seas = events_clim$ts_y - events_clim$ts_seas,
+                           mhw_rel_thresh = events_clim$ts_y - events_clim$ts_thresh)
+      events <- events[stats::complete.cases(events$event_no),]
+      events <- plyr::ddply(events, c("event_no"), .fun = plyr::summarise,
+                            index_start = min(row_index),
+                            index_peak = row_index[mhw_rel_seas == max(mhw_rel_seas)][1],
+                            index_end = max(row_index),
+                            duration = index_end - index_start + 1,
+                            date_start = min(ts_x),
+                            date_peak = ts_x[mhw_rel_seas == max(mhw_rel_seas)][1],
+                            date_end = max(ts_x),
+                            intensity_mean = mean(mhw_rel_seas),
+                            intensity_max = max(mhw_rel_seas),
+                            intensity_var = sqrt(stats::var(mhw_rel_seas)),
+                            intensity_cumulative = sum(mhw_rel_seas),
+                            intensity_mean_relThresh = mean(mhw_rel_thresh),
+                            intensity_max_relThresh = max(mhw_rel_thresh),
+                            intensity_var_relThresh = sqrt(stats::var(mhw_rel_thresh)),
+                            intensity_cumulative_relThresh = sum(mhw_rel_thresh),
+                            intensity_mean_abs = mean(ts_y),
+                            intensity_max_abs = max(ts_y),
+                            intensity_var_abs = sqrt(stats::var(ts_y)),
+                            intensity_cumulative_abs = sum(ts_y))
+      events <- tibble::as_tibble(events)
 
-    mhw_rel_seas <- t_series$ts_y - t_series$ts_seas
-    A <- mhw_rel_seas[events$index_start]
-    B <- t_series$ts_y[events$index_start - 1]
-    C <- t_series$ts_seas[events$index_start - 1]
-    if (length(B) + 1 == length(A)) {
-      B <- c(NA, B)
-      C <- c(NA, C)
-    }
-    mhw_rel_seas_start <- 0.5 * (A + B - C)
+      mhw_rel_seas <- t_series$ts_y - t_series$ts_seas
+      A <- mhw_rel_seas[events$index_start]
+      B <- t_series$ts_y[events$index_start - 1]
+      C <- t_series$ts_seas[events$index_start - 1]
+      if (length(B) + 1 == length(A)) {
+        B <- c(NA, B)
+        C <- c(NA, C)
+      }
+      mhw_rel_seas_start <- 0.5 * (A + B - C)
 
-    events$rate_onset <- ifelse(
-      events$index_start > 1,
-      (events$intensity_max - mhw_rel_seas_start) / (as.numeric(
-        difftime(events$date_peak, events$date_start, units = "days")) + 0.5),
-      NA
-    )
+      events$rate_onset <- ifelse(
+        events$index_start > 1,
+        (events$intensity_max - mhw_rel_seas_start) / (as.numeric(
+          difftime(events$date_peak, events$date_start, units = "days")) + 0.5),
+        NA
+      )
 
-    D <- mhw_rel_seas[events$index_end]
-    E <- t_series$ts_y[events$index_end + 1]
-    G <- t_series$ts_seas[events$index_end + 1]
-    mhw_rel_seas_end <- 0.5 * (D + E - G)
+      D <- mhw_rel_seas[events$index_end]
+      E <- t_series$ts_y[events$index_end + 1]
+      G <- t_series$ts_seas[events$index_end + 1]
+      mhw_rel_seas_end <- 0.5 * (D + E - G)
 
-    events$rate_decline <- ifelse(
-      events$index_end < nrow(t_series),
-      (events$intensity_max - mhw_rel_seas_end) / (as.numeric(
-        difftime(events$date_end, events$date_peak, units = "days")) + 0.5),
-      NA
-    )
+      events$rate_decline <- ifelse(
+        events$index_end < nrow(t_series),
+        (events$intensity_max - mhw_rel_seas_end) / (as.numeric(
+          difftime(events$date_end, events$date_peak, units = "days")) + 0.5),
+        NA
+      )
 
-    if (coldSpells) {
-      events$intensity_mean <- -events$intensity_mean
-      events$intensity_max <- -events$intensity_max
-      events$intensity_cumulative <- -events$intensity_cumulative
-      events$intensity_mean_relThresh <- -events$intensity_mean_relThresh
-      events$intensity_max_relThresh <- -events$intensity_max_relThresh
-      events$intensity_cumulative_relThresh <- -events$intensity_cumulative_relThresh
-      events$intensity_mean_abs <- -events$intensity_mean_abs
-      events$intensity_max_abs <- -events$intensity_max_abs
-      events$intensity_cumulative_abs <- -events$intensity_cumulative_abs
-      events$rate_onset <- -events$rate_onset
-      events$rate_decline <- -events$rate_decline
-    }
+      if (coldSpells) {
+        events$intensity_mean <- -events$intensity_mean
+        events$intensity_max <- -events$intensity_max
+        events$intensity_cumulative <- -events$intensity_cumulative
+        events$intensity_mean_relThresh <- -events$intensity_mean_relThresh
+        events$intensity_max_relThresh <- -events$intensity_max_relThresh
+        events$intensity_cumulative_relThresh <- -events$intensity_cumulative_relThresh
+        events$intensity_mean_abs <- -events$intensity_mean_abs
+        events$intensity_max_abs <- -events$intensity_max_abs
+        events$intensity_cumulative_abs <- -events$intensity_cumulative_abs
+        events$rate_onset <- -events$rate_onset
+        events$rate_decline <- -events$rate_decline
+      }
 
-  } else {
-    events <- data.frame(event_no = NA, index_start = NA, index_peak = NA, index_end = NA,
-                         duration = NA, date_start = NA, date_peak = NA, date_end = NA,
-                         intensity_mean = NA, intensity_max = NA, intensity_var = NA,
-                         intensity_cumulative = NA, intensity_mean_relThresh = NA,
-                         intensity_max_relThresh = NA, intensity_var_relThresh = NA,
-                         intensity_cumulative_relThresh = NA, intensity_mean_abs = NA,
-                         intensity_max_abs = NA, intensity_var_abs = NA,
-                         intensity_cumulative_abs = NA, rate_onset = NA, rate_decline = NA)
-    events <- tibble::as_tibble(events)
-  }
-
-  event_cols <- names(events)[9:22]
-  clim_cols <- names(events_clim)[2:4]
-  if (nrow(events) == 1) {
-    if (is.na(events$rate_onset)) {
-      event_cols <- event_cols[-grep(pattern = "rate_onset", x = event_cols, value = FALSE)]
-    }
-    if (is.na(events$rate_decline)) {
-      event_cols <- event_cols[-grep(pattern = "rate_decline", x = event_cols, value = FALSE)]
-    }
-  }
-
-  if (is.numeric(roundRes)) {
-    if (nrow(events) > 0) {
-      events <- dplyr::mutate(events, dplyr::across(dplyr::all_of(event_cols), round, roundRes))
-      events_clim <- dplyr::mutate(events_clim, dplyr::across(dplyr::all_of(clim_cols), round, roundRes))
-    }
-  }
-
-  data_clim <- tibble::as_tibble(cbind(data, events_clim[,5:8]))
-
-  data_res <- list(climatology = data_clim, event = events)
-
-  if (categories) {
-    data_cat <- category(data_res, ...)
-    if(is.data.frame(data_cat)){
-      data_res <- dplyr::left_join(events, data_cat,
-                                   by = c("event_no", "duration",
-                                          "intensity_max" = "i_max", "date_peak" = "peak_date"))
     } else {
-      data_res <- list(climatology = dplyr::left_join(data_res$climatology,
-                                                      data_cat$climatology, by = c("t", "event_no")),
-                       event = dplyr::left_join(data_res$event, data_cat$event,
-                                                by = c("event_no", "duration",
-                                                       "intensity_max" = "i_max", "date_peak" = "peak_date")))
+      events <- data.frame(event_no = NA, index_start = NA, index_peak = NA, index_end = NA,
+                           duration = NA, date_start = NA, date_peak = NA, date_end = NA,
+                           intensity_mean = NA, intensity_max = NA, intensity_var = NA,
+                           intensity_cumulative = NA, intensity_mean_relThresh = NA,
+                           intensity_max_relThresh = NA, intensity_var_relThresh = NA,
+                           intensity_cumulative_relThresh = NA, intensity_mean_abs = NA,
+                           intensity_max_abs = NA, intensity_var_abs = NA,
+                           intensity_cumulative_abs = NA, rate_onset = NA, rate_decline = NA)
+      events <- tibble::as_tibble(events)
     }
-  }
-  return(data_res)
+
+    event_cols <- names(events)[9:22]
+    clim_cols <- names(events_clim)[2:4]
+    if (nrow(events) == 1) {
+      if (is.na(events$rate_onset)) {
+        event_cols <- event_cols[-grep(pattern = "rate_onset", x = event_cols, value = FALSE)]
+      }
+      if (is.na(events$rate_decline)) {
+        event_cols <- event_cols[-grep(pattern = "rate_decline", x = event_cols, value = FALSE)]
+      }
+    }
+
+    if (is.numeric(roundRes)) {
+      if (nrow(events) > 0) {
+        events <- dplyr::mutate(events, dplyr::across(dplyr::all_of(event_cols), round, roundRes))
+        events_clim <- dplyr::mutate(events_clim, dplyr::across(dplyr::all_of(clim_cols), round, roundRes))
+      }
+    }
+
+    data_clim <- tibble::as_tibble(cbind(data, events_clim[,5:8]))
+
+    data_res <- list(climatology = data_clim, event = events)
+
+    if (categories) {
+      data_cat <- category(data_res, ...)
+      if(is.data.frame(data_cat)){
+        data_res <- dplyr::left_join(events, data_cat,
+                                     by = c("event_no", "duration",
+                                            "intensity_max" = "i_max", "date_peak" = "peak_date"))
+      } else {
+        data_res <- list(climatology = dplyr::left_join(data_res$climatology,
+                                                        data_cat$climatology, by = c("t", "event_no")),
+                         event = dplyr::left_join(data_res$event, data_cat$event,
+                                                  by = c("event_no", "duration",
+                                                         "intensity_max" = "i_max", "date_peak" = "peak_date")))
+      }
+    }
+    return(data_res)
   }
 }
-
