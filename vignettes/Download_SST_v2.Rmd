@@ -20,7 +20,7 @@ knitr::opts_chunk$set(fig.width = 4, fig.align = 'center',
 
 ## Overview
 
-In this vignette we shall look at retrieving and processing the [Reynolds optimally interpolated sea surface temperature](https://journals.ametsoc.org/doi/full/10.1175/2007JCLI1824.1) (OISST), which is a global data set of Advanced Very High Resolution Radiometer (AVHRR) derived SSTs at a daily resolution, starting on 1 September 1981. The source of the data is the [Physical Oceanography Distributed Active Archive Centre (PODAAC)](https://podaac.jpl.nasa.gov/).
+In this vignette we shall look at retrieving and processing the [Reynolds Optimally Interpolated Sea Surface Temperature](https://journals.ametsoc.org/doi/full/10.1175/2007JCLI1824.1) (OISST), which is a global data set of Advanced Very High Resolution Radiometer (AVHRR) derived SSTs at a daily resolution, starting on 1 September 1981. The source of the data is the [Physical Oceanography Distributed Active Archive Centre (PODAAC)](https://podaac.jpl.nasa.gov/).
 
 Several steps are involved:
 
@@ -30,7 +30,7 @@ Several steps are involved:
 -   Creating longitude slices
 -   Detecting MHWs in each slice in parallel
 
-![**Figure 1.** OISST data plotted on a Gnomonic Cubed Sphere projection thanks to [Panoply](https://www.giss.nasa.gov/tools/panoply/)---the similarity with certain religious iconography is purely coincidental. The SST field is filled using the Parula colour scale.](sst_in_oisst-avhrr-v02r01.19810901.png){width="100%"}
+![**Figure 1.** OISST data plotted on a Gnomonic Cubed Sphere projection thanks to [Panoply](https://www.giss.nasa.gov/tools/panoply/)---the similarity with certain religious iconography is purely coincidental.](sst_in_oisst-avhrr-v02r01.19810901.png){width="100%"}
 
 Each global, daily file is around 8.3Mb, so they add up to a large amount of data when a time series of at least 30 years duration is downloaded. A time series of at least 30 years is needed for heatwave detection. Currently I have 13,216 of these global files, and this amounts to \~108Gb of total disk space. Since not everyone will need all of these data, we shall subset the data using a python script prior to downloading them.
 
@@ -54,7 +54,7 @@ Encapsulated by the above command are the following parameters:
 -   end.date = 2022-02-28 (daily, new data are made available)
 -   short.name = AVHRR_OI-NCEI-L4-GLOB-v2.0
 
-The spatial extent is for a region around southern Africa that has both the Benguela and Agulhas Current in it; we select files starting in 1981-09-01 and going up to 2022-02-28. The short name is the name mentioned on the [Reynolds OISST data website](https://podaac.jpl.nasa.gov/dataset/AVHRR_OI-NCEI-L4-GLOB-v2.0)---substituting this name for any of the other SST datasets on that website *should* then permit the retrieval of other data sets (e.g. the [MUR data's](https://podaac.jpl.nasa.gov/dataset/MUR-JPL-L4-GLOB-v4.1) short name is MUR-JPL-L4-GLOB-v4.1).
+The spatial extent is for a region around southern Africa that has both the Benguela and Agulhas Current in it; we select files starting in 1981-09-01 and going up to 2022-02-28. The short name is the name mentioned on the [Reynolds OISST data website](https://podaac.jpl.nasa.gov/dataset/AVHRR_OI-NCEI-L4-GLOB-v2.0)---substituting this name for any of the other SST datasets on that website *should* then permit the retrieval of other data sets (e.g. the [MUR data's](https://podaac.jpl.nasa.gov/dataset/MUR-JPL-L4-GLOB-v4.1) short name is MUR-JPL-L4-GLOB-v4.1). This website seems to be down frequently, so try a couple of times if it does not work the first time.
 
 Adjust any of these parameters to taste in order to define the spatial extent and the time period as required by your study.
 
@@ -79,7 +79,7 @@ Another advantage of going the combined netCDF route is that the resultant giant
 
 ## Extract SST data using `tidync`, and parallel process individual 'slices'
 
-I use `tidync::tidync()` to sequentially select small slices that fit into memory and process each in parallel using `plyr::ldapply()`. Someday I'll replace the `plyr` function with something newer as this package is sadly no longer maintained. The 'width' of a slice can be scaled with the amount of memory, and the subsequent parallel processing to detect the events within each slice scales with the number of CPU cores.
+I use `tidync::tidync()` to sequentially select small slices that fit into memory and process each in parallel using `plyr::ldapply()`. Someday I'll replace the `plyr` function with something newer as this package is sadly no longer maintained. Maybe one of the `map()` family of functions in the **purrr** package? The 'width' of a slice can be scaled with the amount of memory, and the subsequent parallel processing to detect the events within each slice scales with the number of CPU cores.
 
 ## Apply the slice and detect functions
 

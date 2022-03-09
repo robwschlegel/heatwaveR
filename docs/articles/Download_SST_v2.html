@@ -147,7 +147,7 @@ Alternative Methods</h1>
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
 <p>In this vignette we shall look at retrieving and processing the <a href="https://journals.ametsoc.org/doi/full/10.1175/2007JCLI1824.1" class="external-link">Reynolds
-optimally interpolated sea surface temperature</a> (OISST), which is a
+Optimally Interpolated Sea Surface Temperature</a> (OISST), which is a
 global data set of Advanced Very High Resolution Radiometer (AVHRR)
 derived SSTs at a daily resolution, starting on 1 September 1981. The
 source of the data is the <a href="https://podaac.jpl.nasa.gov/" class="external-link">Physical Oceanography Distributed
@@ -164,8 +164,8 @@ Active Archive Centre (PODAAC)</a>.</p>
 <div class="figure">
 <img src="sst_in_oisst-avhrr-v02r01.19810901.png" style="width:100.0%" alt=""><p class="caption"><strong>Figure 1.</strong> OISST data plotted on a
 Gnomonic Cubed Sphere projection thanks to <a href="https://www.giss.nasa.gov/tools/panoply/" class="external-link">Panoply</a>—the
-similarity with certain religious iconography is purely coincidental.
-The SST field is filled using the Parula colour scale.</p>
+similarity with certain religious iconography is purely
+coincidental.</p>
 </div>
 <p>Each global, daily file is around 8.3Mb, so they add up to a large
 amount of data when a time series of at least 30 years duration is
@@ -212,7 +212,9 @@ mentioned on the <a href="https://podaac.jpl.nasa.gov/dataset/AVHRR_OI-NCEI-L4-G
 OISST data website</a>—substituting this name for any of the other SST
 datasets on that website <em>should</em> then permit the retrieval of
 other data sets (e.g. the <a href="https://podaac.jpl.nasa.gov/dataset/MUR-JPL-L4-GLOB-v4.1" class="external-link">MUR
-data’s</a> short name is MUR-JPL-L4-GLOB-v4.1).</p>
+data’s</a> short name is MUR-JPL-L4-GLOB-v4.1). This website seems to be
+down frequently, so try a couple of times if it does not work the first
+time.</p>
 <p>Adjust any of these parameters to taste in order to define the
 spatial extent and the time period as required by your study.</p>
 <p>If everything works according to plan, a bunch of data will now be
@@ -255,9 +257,11 @@ individual ‘slices’<a class="anchor" aria-label="anchor" href="#extract-sst-
 slices that fit into memory and process each in parallel using
 <code>plyr::ldapply()</code>. Someday I’ll replace the <code>plyr</code>
 function with something newer as this package is sadly no longer
-maintained. The ‘width’ of a slice can be scaled with the amount of
-memory, and the subsequent parallel processing to detect the events
-within each slice scales with the number of CPU cores.</p>
+maintained. Maybe one of the <code><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map()</a></code> family of functions in
+the <strong>purrr</strong> package? The ‘width’ of a slice can be scaled
+with the amount of memory, and the subsequent parallel processing to
+detect the events within each slice scales with the number of CPU
+cores.</p>
 </div>
 <div class="section level2">
 <h2 id="apply-the-slice-and-detect-functions">Apply the slice and detect functions<a class="anchor" aria-label="anchor" href="#apply-the-slice-and-detect-functions"></a>
