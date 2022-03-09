@@ -86,6 +86,9 @@
       <a href="../articles/gridded_event_detection.html">Detecting Events in Gridded Data</a>
     </li>
     <li>
+      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse NOAA OISST Data: Alternative Methods</a>
+    </li>
+    <li>
       <a href="../articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a>
     </li>
     <li>
@@ -128,9 +131,10 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Saving MHW Results to NetCDF</h1>
-                        <h4 data-toc-skip class="author">Robert W Schlegel</h4>
+                        <h4 data-toc-skip class="author">Robert W
+Schlegel</h4>
             
-            <h4 data-toc-skip class="date">2022-01-17</h4>
+            <h4 data-toc-skip class="date">2022-03-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/MHW_to_nc.Rmd" class="external-link"><code>vignettes/MHW_to_nc.Rmd</code></a></small>
       <div class="hidden name"><code>MHW_to_nc.Rmd</code></div>
@@ -142,25 +146,43 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>In the previous vignette we saw how to <a href="https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html" class="external-link">detect marine heatwaves (MHWs) in gridded data</a>. In this vignette we will use those gridded MHW results to see how to save them as a NetCDF file.</p>
+<p>In the previous vignette we saw how to <a href="https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html" class="external-link">detect
+marine heatwaves (MHWs) in gridded data</a>. In this vignette we will
+use those gridded MHW results to see how to save them as a NetCDF
+file.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span> <span class="co"># For basic data manipulation</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://cirrus.ucsd.edu/~pierce/ncdf/" class="external-link">ncdf4</a></span><span class="op">)</span> <span class="co"># For creating NetCDF files</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/tidync/" class="external-link">tidync</a></span><span class="op">)</span> <span class="co"># For easily dealing with NetCDF data</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span> <span class="co"># For visualising data</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">doParallel</span><span class="op">)</span> <span class="co"># For parallel processing</span></code></pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RevolutionAnalytics/doparallel" class="external-link">doParallel</a></span><span class="op">)</span> <span class="co"># For parallel processing</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="loading-data">Loading data<a class="anchor" aria-label="anchor" href="#loading-data"></a>
 </h2>
-<p>Please see the <a href="https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html" class="external-link">downloading and preparing OISST data</a> and <a href="https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html" class="external-link">detecting marine heatwaves (MHWs) in gridded data</a> vignettes first if you have not yet worked through them. We will be using the MHW results created from those two vignettes below.</p>
+<p>Please see the <a href="https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html" class="external-link">downloading
+and preparing OISST data</a> and <a href="https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html" class="external-link">detecting
+marine heatwaves (MHWs) in gridded data</a> vignettes first if you have
+not yet worked through them. We will be using the MHW results created
+from those two vignettes below.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">MHW_res_grid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"~/Desktop/MHW_result.Rds"</span><span class="op">)</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="prepare-the-data">Prepare the data<a class="anchor" aria-label="anchor" href="#prepare-the-data"></a>
 </h2>
-<p>The main sticking point between MHW results and the NetCDF file format in R is that NetCDF files will only accept the file type in R known as “arrays”, and most R outputs are data.frames. So the majority of what we need to do is to convert our data from data.frames to arrays. There are many ways to do this and a search of the interwebs will produce a plethora of results. Over the years I have settled into an approach that I use operationally for the MHW Tracker that I will also use here. It is not necessarily the fastest method, nor does it use the fewest lines of code possible, but it does follow the <strong><code>tidyverse</code></strong> approach to programming, and I think it is about as transparent as this process can be. We will create two functions below that will help us along in this process.</p>
+<p>The main sticking point between MHW results and the NetCDF file
+format in R is that NetCDF files will only accept the file type in R
+known as “arrays”, and most R outputs are data.frames. So the majority
+of what we need to do is to convert our data from data.frames to arrays.
+There are many ways to do this and a search of the interwebs will
+produce a plethora of results. Over the years I have settled into an
+approach that I use operationally for the MHW Tracker that I will also
+use here. It is not necessarily the fastest method, nor does it use the
+fewest lines of code possible, but it does follow the
+<strong><code>tidyverse</code></strong> approach to programming, and I
+think it is about as transparent as this process can be. We will create
+two functions below that will help us along in this process.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Function for creating arrays from data.frames</span>
 <span class="va">df_acast</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span>, <span class="va">lon_lat</span><span class="op">)</span><span class="op">{</span>
@@ -174,9 +196,9 @@
   <span class="kw">if</span><span class="op">(</span><span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/date_utils.html" class="external-link">is.Date</a></span><span class="op">(</span><span class="va">res</span><span class="op">[</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="va">res</span><span class="op">[</span>,<span class="fl">4</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">res</span><span class="op">[</span>,<span class="fl">4</span><span class="op">]</span><span class="op">)</span>
   
   <span class="co"># Create array</span>
-  <span class="va">res_array</span> <span class="op">&lt;-</span> <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="va">res</span><span class="op">[</span>,<span class="fl">4</span><span class="op">]</span>, dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">lon_lat</span><span class="op">$</span><span class="va">lon</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">lon_lat</span><span class="op">$</span><span class="va">lat</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">res_array</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">lon_lat</span><span class="op">$</span><span class="va">lon</span><span class="op">)</span>,
-                              lat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">lon_lat</span><span class="op">$</span><span class="va">lat</span><span class="op">)</span><span class="op">)</span>
+  <span class="va">res_array</span> <span class="op">&lt;-</span> <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="va">res</span><span class="op">[</span>,<span class="fl">4</span><span class="op">]</span>, dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">lon_lat</span><span class="op">$</span><span class="va">lon</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">lon_lat</span><span class="op">$</span><span class="va">lat</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">res_array</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">lon_lat</span><span class="op">$</span><span class="va">lon</span><span class="op">)</span>,
+                              lat <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">lon_lat</span><span class="op">$</span><span class="va">lat</span><span class="op">)</span><span class="op">)</span>
   <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">res_array</span><span class="op">)</span>
 <span class="op">}</span>
 
@@ -184,8 +206,8 @@
 <span class="va">df_proc</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span>, <span class="va">col_choice</span><span class="op">)</span><span class="op">{</span>
   
   <span class="co"># Determine the correct array dimensions</span>
-  <span class="va">lon_step</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diff.html" class="external-link">diff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">lon</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-  <span class="va">lat_step</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diff.html" class="external-link">diff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">lat</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+  <span class="va">lon_step</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diff.html" class="external-link">diff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">lon</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+  <span class="va">lat_step</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diff.html" class="external-link">diff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">lat</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
   <span class="va">lon</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">lon</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">lon</span><span class="op">)</span>, by <span class="op">=</span> <span class="va">lon_step</span><span class="op">)</span>
   <span class="va">lat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">lat</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">lat</span><span class="op">)</span>, by <span class="op">=</span> <span class="va">lat_step</span><span class="op">)</span>
   
@@ -209,11 +231,14 @@
 <div class="section level2">
 <h2 id="create-netcdf-shell">Create NetCDF shell<a class="anchor" aria-label="anchor" href="#create-netcdf-shell"></a>
 </h2>
-<p>With our data prepared into a series of arrays, we now need to set the stage for our NetCDF file. The important thing here is that the dimensions of the arrays we created match up to the dimensions of the NetCDF file.</p>
+<p>With our data prepared into a series of arrays, we now need to set
+the stage for our NetCDF file. The important thing here is that the
+dimensions of the arrays we created match up to the dimensions of the
+NetCDF file.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Get file attributes</span>
-<span class="va">lon_step</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diff.html" class="external-link">diff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">MHW_res_grid</span><span class="op">$</span><span class="va">lon</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="va">lat_step</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diff.html" class="external-link">diff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">MHW_res_grid</span><span class="op">$</span><span class="va">lat</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="va">lon_step</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diff.html" class="external-link">diff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">MHW_res_grid</span><span class="op">$</span><span class="va">lon</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="va">lat_step</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diff.html" class="external-link">diff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">MHW_res_grid</span><span class="op">$</span><span class="va">lat</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="va">lon</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">MHW_res_grid</span><span class="op">$</span><span class="va">lon</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">MHW_res_grid</span><span class="op">$</span><span class="va">lon</span><span class="op">)</span>, by <span class="op">=</span> <span class="va">lon_step</span><span class="op">)</span>
 <span class="va">lat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">MHW_res_grid</span><span class="op">$</span><span class="va">lat</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">MHW_res_grid</span><span class="op">$</span><span class="va">lat</span><span class="op">)</span>, by <span class="op">=</span> <span class="va">lat_step</span><span class="op">)</span>
 <span class="va">event_no</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">MHW_res_grid</span><span class="op">$</span><span class="va">event_no</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">MHW_res_grid</span><span class="op">$</span><span class="va">event_no</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
@@ -227,7 +252,10 @@
 <div class="section level2">
 <h2 id="create-netcdf-file">Create NetCDF file<a class="anchor" aria-label="anchor" href="#create-netcdf-file"></a>
 </h2>
-<p>The last step in this process is to add the prepared data to the NetCDF shell we have constructed. The <strong><code>ncdf4</code></strong> package helps to make this all a relatively straight forward process.</p>
+<p>The last step in this process is to add the prepared data to the
+NetCDF shell we have constructed. The
+<strong><code>ncdf4</code></strong> package helps to make this all a
+relatively straight forward process.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Path and file name</span>
   <span class="co"># NB: We are net setting time dimensions here because we are using event_no as our "time" dimension</span>
@@ -285,7 +313,9 @@
 <div class="section level2">
 <h2 id="visualising-the-results">Visualising the results<a class="anchor" aria-label="anchor" href="#visualising-the-results"></a>
 </h2>
-<p>Let’s not stop there. To ensure that the NetCDF file was created correctly we want to load it back into our workspace and plot the results.</p>
+<p>Let’s not stop there. To ensure that the NetCDF file was created
+correctly we want to load it back into our workspace and plot the
+results.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Convenience function for comparing files</span>
 <span class="va">quick_grid</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span>, <span class="va">var_choice</span><span class="op">)</span><span class="op">{</span>
@@ -330,7 +360,8 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer>

@@ -86,6 +86,9 @@
       <a href="../articles/gridded_event_detection.html">Detecting Events in Gridded Data</a>
     </li>
     <li>
+      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse NOAA OISST Data: Alternative Methods</a>
+    </li>
+    <li>
       <a href="../articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a>
     </li>
     <li>
@@ -128,9 +131,10 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Calculating and Visualising Exceedances</h1>
-                        <h4 data-toc-skip class="author">Robert W Schlegel</h4>
+                        <h4 data-toc-skip class="author">Robert W
+Schlegel</h4>
             
-            <h4 data-toc-skip class="date">2022-01-17</h4>
+            <h4 data-toc-skip class="date">2022-03-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/exceedance.Rmd" class="external-link"><code>vignettes/exceedance.Rmd</code></a></small>
       <div class="hidden name"><code>exceedance.Rmd</code></div>
@@ -142,12 +146,25 @@
 <div class="section level2">
 <h2 id="exceedances">Exceedances<a class="anchor" aria-label="anchor" href="#exceedances"></a>
 </h2>
-<p>In addition to the calculation of events based on a given percentile, this package also allows for the calculation of events based on a given static threshold with the <code><a href="../reference/exceedance.html">exceedance()</a></code> function. This is most useful if one is more interested in testing a time series for events that exceed a pre-determined static threshold that is already known to be of particular significance in a given part of the world. The output of this function may also be used in the calculation of events that may require two thresholds, such as atmospheric events with ‘tMin’ and ‘tMax’ daily values. For a detailed explanation for how to do this please see <a href="https://robwschlegel.github.io/heatwaveR/articles/complex_clims.html" class="external-link">this vignette</a>. The data requirements for <code><a href="../reference/exceedance.html">exceedance()</a></code> are the same as for <code><a href="../reference/ts2clm.html">ts2clm()</a></code> and <code><a href="../reference/detect_event.html">detect_event()</a></code>.</p>
+<p>In addition to the calculation of events based on a given percentile,
+this package also allows for the calculation of events based on a given
+static threshold with the <code><a href="../reference/exceedance.html">exceedance()</a></code> function. This is
+most useful if one is more interested in testing a time series for
+events that exceed a pre-determined static threshold that is already
+known to be of particular significance in a given part of the world. The
+output of this function may also be used in the calculation of events
+that may require two thresholds, such as atmospheric events with ‘tMin’
+and ‘tMax’ daily values. For a detailed explanation for how to do this
+please see <a href="https://robwschlegel.github.io/heatwaveR/articles/complex_clims.html" class="external-link">this
+vignette</a>. The data requirements for <code><a href="../reference/exceedance.html">exceedance()</a></code> are
+the same as for <code><a href="../reference/ts2clm.html">ts2clm()</a></code> and
+<code><a href="../reference/detect_event.html">detect_event()</a></code>.</p>
 </div>
 <div class="section level2">
 <h2 id="calculating-exceedances">Calculating exceedances<a class="anchor" aria-label="anchor" href="#calculating-exceedances"></a>
 </h2>
-<p>The calculation of exceedances may be done with only one function as seen here:</p>
+<p>The calculation of exceedances may be done with only one function as
+seen here:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Activate libraries</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
@@ -171,12 +188,20 @@
 <span class="co">## <span style="color: #BCBCBC;">3</span>            10       41 2012-03-03 2012-04-10          1.37               18.0 </span>
 <span class="co">## <span style="color: #BCBCBC;">4</span>             2       17 1999-05-13 1999-05-22          1.4                14.6 </span>
 <span class="co">## <span style="color: #BCBCBC;">5</span>             5       10 2000-05-03 2000-05-04          1.01                6.97</span></code></pre>
-<p>Note that the resultant output of <code><a href="../reference/exceedance.html">exceedance()</a></code> is very similar to <code><a href="../reference/detect_event.html">detect_event()</a></code>, except that the two dataframes within the list are called <code>threshold</code> and <code>exceedance</code>, rather than <code>climatology</code> and <code>event</code>.</p>
+<p>Note that the resultant output of <code><a href="../reference/exceedance.html">exceedance()</a></code> is very
+similar to <code><a href="../reference/detect_event.html">detect_event()</a></code>, except that the two dataframes
+within the list are called <code>threshold</code> and
+<code>exceedance</code>, rather than <code>climatology</code> and
+<code>event</code>.</p>
 </div>
 <div class="section level2">
 <h2 id="visualising-exceedances">Visualising exceedances<a class="anchor" aria-label="anchor" href="#visualising-exceedances"></a>
 </h2>
-<p>Because <code><a href="../reference/event_line.html">event_line()</a></code> and <code><a href="../reference/lolli_plot.html">lolli_plot()</a></code> are designed to work on the output of <code><a href="../reference/detect_event.html">detect_event()</a></code>, if we want to visualise the results of <code><a href="../reference/exceedance.html">exceedance()</a></code> we will need to do so ‘by hand’ with <strong><code>ggplot2</code></strong>. The code below works as an example of how to do so:</p>
+<p>Because <code><a href="../reference/event_line.html">event_line()</a></code> and <code><a href="../reference/lolli_plot.html">lolli_plot()</a></code> are
+designed to work on the output of <code><a href="../reference/detect_event.html">detect_event()</a></code>, if we
+want to visualise the results of <code><a href="../reference/exceedance.html">exceedance()</a></code> we will need
+to do so ‘by hand’ with <strong><code>ggplot2</code></strong>. The code
+below works as an example of how to do so:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">exc_25_thresh</span> <span class="op">&lt;-</span> <span class="va">exc_25</span><span class="op">$</span><span class="va">threshold</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice</a></span><span class="op">(</span><span class="fl">9500</span><span class="op">:</span><span class="fl">9866</span><span class="op">)</span>
@@ -196,8 +221,12 @@
 <div class="section level2">
 <h2 id="calculating-negative-exceedances">Calculating negative exceedances<a class="anchor" aria-label="anchor" href="#calculating-negative-exceedances"></a>
 </h2>
-<p>Unfortunately there is no antonym for exceedance in the English language, which makes talking about exceedances <em>below</em> a static threshold somewhat awkward. For the purposes of clarity here we will refer to these as negative exceedances.</p>
-<p>The <code><a href="../reference/exceedance.html">exceedance()</a></code> function may be used to calculate consecutive days below a threshold as seen here:</p>
+<p>Unfortunately there is no antonym for exceedance in the English
+language, which makes talking about exceedances <em>below</em> a static
+threshold somewhat awkward. For the purposes of clarity here we will
+refer to these as negative exceedances.</p>
+<p>The <code><a href="../reference/exceedance.html">exceedance()</a></code> function may be used to calculate
+consecutive days below a threshold as seen here:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">exc_19</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/exceedance.html">exceedance</a></span><span class="op">(</span><span class="va">sst_WA</span>, threshold <span class="op">=</span> <span class="fl">19</span>, below <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="va">exc_19</span><span class="op">$</span><span class="va">exceedance</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
@@ -217,7 +246,8 @@
 <div class="section level2">
 <h2 id="visualising-negative-exceedances">Visualising negative exceedances<a class="anchor" aria-label="anchor" href="#visualising-negative-exceedances"></a>
 </h2>
-<p>Were one to desire a visualisation of these data it could be produced with the following code:</p>
+<p>Were one to desire a visualisation of these data it could be produced
+with the following code:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">exc_19_thresh</span> <span class="op">&lt;-</span> <span class="va">exc_19</span><span class="op">$</span><span class="va">threshold</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice</a></span><span class="op">(</span><span class="fl">1500</span><span class="op">:</span><span class="fl">1866</span><span class="op">)</span>
@@ -252,7 +282,8 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer>

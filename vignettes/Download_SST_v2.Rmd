@@ -1,5 +1,5 @@
 ---
-title: "Downloading, Preparing, and Analysing NOAA OISST Data: Alternative Methods"
+title: "Download, Prepare, and Analyse NOAA OISST Data: Alternative Methods"
 author: "AJ Smit"
 date: "`r Sys.Date()`"
 description: "This vignette demonstrates an alternative method for downloading NOAA OISST data (using a python script) and preparing and detecting marine heatwaves."
@@ -7,7 +7,7 @@ output:
   rmarkdown::html_vignette:
     fig_caption: yes
 vignette: >
-  %\VignetteIndexEntry{OISST retrieval and processing}
+  %\VignetteIndexEntry{Download, Prepare, and Analyse NOAA OISST Data: Alternative Methods}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---

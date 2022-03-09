@@ -86,6 +86,9 @@
       <a href="../articles/gridded_event_detection.html">Detecting Events in Gridded Data</a>
     </li>
     <li>
+      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse NOAA OISST Data: Alternative Methods</a>
+    </li>
+    <li>
       <a href="../articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a>
     </li>
     <li>
@@ -128,9 +131,10 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Detecting Events in Gridded Data</h1>
-                        <h4 data-toc-skip class="author">Robert W Schlegel and AJ Smit</h4>
+                        <h4 data-toc-skip class="author">Robert W
+Schlegel and AJ Smit</h4>
             
-            <h4 data-toc-skip class="date">2022-01-17</h4>
+            <h4 data-toc-skip class="date">2022-03-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/gridded_event_detection.Rmd" class="external-link"><code>vignettes/gridded_event_detection.Rmd</code></a></small>
       <div class="hidden name"><code>gridded_event_detection.Rmd</code></div>
@@ -142,18 +146,22 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>In the previous vignette we saw how to <a href="https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html" class="external-link">download and prepare OISST data</a>. In this vignette we will use the subsetted data we downloaded (not global) for our example on how to detect MHWs in gridded data.</p>
+<p>In the previous vignette we saw how to <a href="https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html" class="external-link">download
+and prepare OISST data</a>. In this vignette we will use the subsetted
+data we downloaded (not global) for our example on how to detect MHWs in
+gridded data.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span> <span class="co"># For basic data manipulation</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span> <span class="co"># For visualising data</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://robwschlegel.github.io/heatwaveR/index.html">heatwaveR</a></span><span class="op">)</span> <span class="co"># For detecting MHWs</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/tidync/" class="external-link">tidync</a></span><span class="op">)</span> <span class="co"># For easily dealing with NetCDF data</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">doParallel</span><span class="op">)</span> <span class="co"># For parallel processing</span></code></pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RevolutionAnalytics/doparallel" class="external-link">doParallel</a></span><span class="op">)</span> <span class="co"># For parallel processing</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="loading-data">Loading data<a class="anchor" aria-label="anchor" href="#loading-data"></a>
 </h2>
-<p>Because we saved our data as an <code>.Rds</code> file, loading it into R is easy.</p>
+<p>Because we saved our data as an <code>.Rds</code> file, loading it
+into R is easy.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">OISST</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"~/Desktop/OISST_vignette.Rds"</span><span class="op">)</span></code></pre></div>
 </div>
@@ -161,10 +169,28 @@
 <h2 id="event-detection">Event detection<a class="anchor" aria-label="anchor" href="#event-detection"></a>
 </h2>
 <div class="section level3">
-<h3 id="two-good-choices-dplyr-vs--plyr">Two good choices: <strong><code>dplyr</code></strong> vs. <strong><code>plyr</code></strong><a class="anchor" aria-label="anchor" href="#two-good-choices-dplyr-vs--plyr"></a>
+<h3 id="two-good-choices-dplyr-vs--plyr">Two good choices: <strong><code>dplyr</code></strong>
+vs. <strong><code>plyr</code></strong><a class="anchor" aria-label="anchor" href="#two-good-choices-dplyr-vs--plyr"></a>
 </h3>
-<p>When we want to make the same calculation across multiple groups of data within one dataframe we have two good options available to us. The first is to make use of the <code>map()</code> suite of functions found in the <strong><code>purrr</code></strong> package, and now implemented in <strong><code>dplyr</code></strong>. This is a very fast <strong><code>tidyverse</code></strong> friendly approach to splitting up tasks. The other good option is to go back in time a bit and use the <code>ddply()</code> function from the <strong><code>plyr</code></strong> package. This is arguably a better approach as it allows us to very easily use multiple cores to detect the MHWs. The problem with this approach is that one must <em>never</em> load the <strong><code>plyr</code></strong> library directly as it has some fundamental inconsistencies with the <strong><code>tidyverse</code></strong>. We will see below how to perform these two different techniques without causing ourselves any headaches.</p>
-<p>It is a little clumsy to use multiple functions at once with the two methods so we will combine the calculations we want to make into one wrapper function.</p>
+<p>When we want to make the same calculation across multiple groups of
+data within one dataframe we have two good options available to us. The
+first is to make use of the <code><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map()</a></code> suite of functions found
+in the <strong><code>purrr</code></strong> package, and now implemented
+in <strong><code>dplyr</code></strong>. This is a very fast
+<strong><code>tidyverse</code></strong> friendly approach to splitting
+up tasks. The other good option is to go back in time a bit and use the
+<code>ddply()</code> function from the
+<strong><code>plyr</code></strong> package. This is arguably a better
+approach as it allows us to very easily use multiple cores to detect the
+MHWs. The problem with this approach is that one must <em>never</em>
+load the <strong><code>plyr</code></strong> library directly as it has
+some fundamental inconsistencies with the
+<strong><code>tidyverse</code></strong>. We will see below how to
+perform these two different techniques without causing ourselves any
+headaches.</p>
+<p>It is a little clumsy to use multiple functions at once with the two
+methods so we will combine the calculations we want to make into one
+wrapper function.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">event_only</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">{</span>
   <span class="co"># First calculate the climatologies</span>
@@ -177,7 +203,9 @@
 <div class="section level4">
 <h4 id="the-dplyr-method">The <strong><code>dplyr</code></strong> method<a class="anchor" aria-label="anchor" href="#the-dplyr-method"></a>
 </h4>
-<p>This method requires no special consideration and is performed just as any other friendly <strong><code>tidyverse</code></strong> code chunk would be.</p>
+<p>This method requires no special consideration and is performed just
+as any other friendly <strong><code>tidyverse</code></strong> code chunk
+would be.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span>
 <span class="co"># First we start by choosing the 'OISST' dataframe</span>
@@ -187,12 +215,18 @@
   <span class="co"># Then we run our MHW detecting function on each group</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_map.html" class="external-link">group_modify</a></span><span class="op">(</span><span class="op">~</span><span class="fu">event_only</span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span>
 <span class="op">)</span> <span class="co"># ~123 seconds</span></code></pre></div>
-<p>Running the above calculations with only one of the 2.8 GHz cores on a modern laptop took ~123 seconds. It must be noted however that a recent update to the <strong><code>dplyr</code></strong> package now allows it to interrogate one’s computer to determine how many cores it has at it’s disposal. It then uses one core at full capacity and the other cores usually at half capacity.</p>
+<p>Running the above calculations with only one of the 2.8 GHz cores on
+a modern laptop took ~123 seconds. It must be noted however that a
+recent update to the <strong><code>dplyr</code></strong> package now
+allows it to interrogate one’s computer to determine how many cores it
+has at it’s disposal. It then uses one core at full capacity and the
+other cores usually at half capacity.</p>
 </div>
 <div class="section level4">
 <h4 id="the-plyr-technique">The <strong><code>plyr</code></strong> technique<a class="anchor" aria-label="anchor" href="#the-plyr-technique"></a>
 </h4>
-<p>This method requires that we first tell our machine how many of its processor cores to give us for our calculation.</p>
+<p>This method requires that we first tell our machine how many of its
+processor cores to give us for our calculation.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># NB: One should never use ALL available cores, save at least 1 for other essential tasks</span>
 <span class="co"># The computer I'm writing this vignette on has 8 cores, so I use 7 here</span>
@@ -202,21 +236,56 @@
 <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span>
 <span class="va">MHW_plyr</span> <span class="op">&lt;-</span> <span class="fu">plyr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/plyr/man/ddply.html" class="external-link">ddply</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">OISST</span>, .variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lon"</span>, <span class="st">"lat"</span><span class="op">)</span>, .fun <span class="op">=</span> <span class="va">event_only</span>, .parallel <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="op">)</span> <span class="co"># 33 seconds</span></code></pre></div>
-<p>The <strong><code>plyr</code></strong> technique took 33 seconds using seven cores. This technique is not seven times faster because when using multiple cores there is a certain amount of loss in efficiency due to the computer needing to remember which results are meant to go where so that it can stitch everything back together again for you. This takes very little memory, but over large jobs it can start to become problematic. Occasionally ‘slippage’ can occur as well where an entire task can be forgotten. This is very rare but does happen. This is partly what makes <strong><code>dplyr</code></strong> a viable option as it does not have this problem. The other reason is that <strong><code>dplyr</code></strong> performs more efficient calculations than <strong><code>plyr</code></strong>. But what if we could have the best of both worlds?</p>
+<p>The <strong><code>plyr</code></strong> technique took 33 seconds
+using seven cores. This technique is not seven times faster because when
+using multiple cores there is a certain amount of loss in efficiency due
+to the computer needing to remember which results are meant to go where
+so that it can stitch everything back together again for you. This takes
+very little memory, but over large jobs it can start to become
+problematic. Occasionally ‘slippage’ can occur as well where an entire
+task can be forgotten. This is very rare but does happen. This is partly
+what makes <strong><code>dplyr</code></strong> a viable option as it
+does not have this problem. The other reason is that
+<strong><code>dplyr</code></strong> performs more efficient calculations
+than <strong><code>plyr</code></strong>. But what if we could have the
+best of both worlds?</p>
 </div>
 </div>
 <div class="section level3">
 <h3 id="a-harmonious-third-option">A harmonious third option<a class="anchor" aria-label="anchor" href="#a-harmonious-third-option"></a>
 </h3>
-<p>As one may see above, running these calculations on a very large (or even global) gridded dataset can quickly become very heavy. While running these calculations myself on the global OISST dataset I have found that the fastest option is to combine the two options above. In my workflow I have saved each longitude segment of the global OISST dataset as separate files and use the <strong><code>dplyr</code></strong> method on each individual file, while using the <strong><code>plyr</code></strong> method to be running the multiple calculations on as many files as my core limit will allow. One may not do this the other way around and use <strong><code>dplyr</code></strong> to run multiple <strong><code>plyr</code></strong> calculations at once. This will confuse your computer and likely cause a stack overflow. Which sounds more fun than it actually is… as I have had to learn.</p>
-<p>In order to happily combine these two options into one we will need to convert the <strong><code>dplyr</code></strong> code we wrote above into it’s own wrapper function, which we will then call on a stack of files using the <strong><code>plyr</code></strong> technique. Before we do that we must first create the aforementioned stack of files.</p>
+<p>As one may see above, running these calculations on a very large (or
+even global) gridded dataset can quickly become very heavy. While
+running these calculations myself on the global OISST dataset I have
+found that the fastest option is to combine the two options above. In my
+workflow I have saved each longitude segment of the global OISST dataset
+as separate files and use the <strong><code>dplyr</code></strong> method
+on each individual file, while using the
+<strong><code>plyr</code></strong> method to be running the multiple
+calculations on as many files as my core limit will allow. One may not
+do this the other way around and use <strong><code>dplyr</code></strong>
+to run multiple <strong><code>plyr</code></strong> calculations at once.
+This will confuse your computer and likely cause a stack overflow. Which
+sounds more fun than it actually is… as I have had to learn.</p>
+<p>In order to happily combine these two options into one we will need
+to convert the <strong><code>dplyr</code></strong> code we wrote above
+into it’s own wrapper function, which we will then call on a stack of
+files using the <strong><code>plyr</code></strong> technique. Before we
+do that we must first create the aforementioned stack of files.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">OISST</span><span class="op">$</span><span class="va">lon</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+<code class="sourceCode R"><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">OISST</span><span class="op">$</span><span class="va">lon</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
   <span class="va">OISST_sub</span> <span class="op">&lt;-</span> <span class="va">OISST</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">lon</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">lon</span><span class="op">)</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">lon</span> <span class="op">==</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">lon</span><span class="op">)</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span>
   <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">OISST_sub</span>, file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"~/Desktop/OISST_lon_"</span>,<span class="va">i</span>,<span class="st">".Rds"</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
-<p>This may initially seem like an unnecessary extra step, but when one is working with time series data it is necessary to have all of the dates at a given pixel loaded at once. Unless one is working from a server/virtual machine/supercomputer this means that one will often not be able to comfortably hold an entire grid for a study area in memory at once. Having the data accessible as thin strips like this makes life easier. And as we see in the code chunk below it also (arguably) allows us to perform the most efficient calculations on our data.</p>
+<p>This may initially seem like an unnecessary extra step, but when one
+is working with time series data it is necessary to have all of the
+dates at a given pixel loaded at once. Unless one is working from a
+server/virtual machine/supercomputer this means that one will often not
+be able to comfortably hold an entire grid for a study area in memory at
+once. Having the data accessible as thin strips like this makes life
+easier. And as we see in the code chunk below it also (arguably) allows
+us to perform the most efficient calculations on our data.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># The 'dplyr' wrapper function to pass to 'plyr'</span>
 <span class="va">dplyr_wraper</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">file_name</span><span class="op">)</span><span class="op">{</span>
@@ -234,19 +303,43 @@
 
 <span class="co"># Save for later use as desired</span>
 <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="va">MHW_result</span>, <span class="st">"~/Desktop/MHW_result.Rds"</span><span class="op">)</span></code></pre></div>
-<p>Even though this technique is not much faster computationally, it is much lighter on our memory (RAM) as it only loads one longitude slice of our data at a time. To maximise efficiency even further I would recommend writing out this full workflow in a stand-alone script and then running it using <code><a href="https://rdrr.io/r/base/source.html" class="external-link">source()</a></code> directly from an R terminal. The gain in speed here appears nominal, but as one scales this up the speed boost becomes apparent.</p>
-<p>As mentioned above, recent changes to how <strong><code>dplyr</code></strong> interacts with one’s computer has perhaps slowed down the <strong><code>plyr</code></strong> + <strong><code>dplyr</code></strong> workflow shown here. It may be now that simply using <strong><code>plyr</code></strong> by itself is the better option. It depends on the number of cores and the amount of RAM that one has available.</p>
+<p>Even though this technique is not much faster computationally, it is
+much lighter on our memory (RAM) as it only loads one longitude slice of
+our data at a time. To maximise efficiency even further I would
+recommend writing out this full workflow in a stand-alone script and
+then running it using <code><a href="https://rdrr.io/r/base/source.html" class="external-link">source()</a></code> directly from an R terminal.
+The gain in speed here appears nominal, but as one scales this up the
+speed boost becomes apparent.</p>
+<p>As mentioned above, recent changes to how
+<strong><code>dplyr</code></strong> interacts with one’s computer has
+perhaps slowed down the <strong><code>plyr</code></strong> +
+<strong><code>dplyr</code></strong> workflow shown here. It may be now
+that simply using <strong><code>plyr</code></strong> by itself is the
+better option. It depends on the number of cores and the amount of RAM
+that one has available.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="case-study">Case study<a class="anchor" aria-label="anchor" href="#case-study"></a>
 </h2>
-<p>Because of human-induced climate change, we anticipate that extreme events will occur more frequently and that they will become greater in intensity. Here we investigate this hypothesis by using gridded SST data, which is the only way that we can assess if this trend is unfolding across large ocean regions. Using the gridded 0.25 degree Reynolds OISST, we will detect marine heatwaves (MHWs) around South Africa by applying the <code><a href="../reference/detect_event.html">detect_event()</a></code> function pixel-by-pixel to the data we downloaded in <a href="https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html" class="external-link">the previous vignette</a>. After detecting the events, we will fit a generalised linear model (GLM) to each pixel to calculate rates of change in some MHW metrics, and then plot the estimated trends.</p>
+<p>Because of human-induced climate change, we anticipate that extreme
+events will occur more frequently and that they will become greater in
+intensity. Here we investigate this hypothesis by using gridded SST
+data, which is the only way that we can assess if this trend is
+unfolding across large ocean regions. Using the gridded 0.25 degree
+Reynolds OISST, we will detect marine heatwaves (MHWs) around South
+Africa by applying the <code><a href="../reference/detect_event.html">detect_event()</a></code> function
+pixel-by-pixel to the data we downloaded in <a href="https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html" class="external-link">the
+previous vignette</a>. After detecting the events, we will fit a
+generalised linear model (GLM) to each pixel to calculate rates of
+change in some MHW metrics, and then plot the estimated trends.</p>
 <div class="section level3">
 <h3 id="trend-detection">Trend detection<a class="anchor" aria-label="anchor" href="#trend-detection"></a>
 </h3>
-<p>With our MHW detected we will now look at how to fit some GLMs to the results in order to determine long-term trends in MHW occurrence.</p>
-<p>Up first we see how to calculate the number of events that occurred per pixel.</p>
+<p>With our MHW detected we will now look at how to fit some GLMs to the
+results in order to determine long-term trends in MHW occurrence.</p>
+<p>Up first we see how to calculate the number of events that occurred
+per pixel.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># summarise the number of unique longitude, latitude and year combination:</span>
 <span class="va">OISST_n</span> <span class="op">&lt;-</span> <span class="va">MHW_result</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
@@ -255,7 +348,7 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>, .groups <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">lon</span>, <span class="va">lat</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/complete.html" class="external-link">complete</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1982</span><span class="op">:</span><span class="fl">2019</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="co"># Note that these dates may differ</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span>, <span class="fl">0</span>, <span class="va">n</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span>, <span class="fl">0</span>, <span class="va">n</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">OISST_n</span><span class="op">)</span></code></pre></div>
 <p>Then we specify the particulars of the GLM we are going to use.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
@@ -275,12 +368,19 @@
 <div class="section level3">
 <h3 id="visualising-the-results">Visualising the results<a class="anchor" aria-label="anchor" href="#visualising-the-results"></a>
 </h3>
-<p>Let’s finish this vignette by visualising the long-term trends in the annual occurrence of MHWs per pixel in the chosen study area. First we will grab the base global map from the <strong><code>maps</code></strong> package.</p>
+<p>Let’s finish this vignette by visualising the long-term trends in the
+annual occurrence of MHWs per pixel in the chosen study area. First we
+will grab the base global map from the
+<strong><code>maps</code></strong> package.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># The base map</span>
 <span class="va">map_base</span> <span class="op">&lt;-</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/fortify.html" class="external-link">fortify</a></span><span class="op">(</span><span class="fu">maps</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/maps/man/map.html" class="external-link">map</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="cn">TRUE</span>, plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="va">long</span><span class="op">)</span></code></pre></div>
-<p>Then we will create two maps that we will stick together using <strong><code>ggpubr</code></strong>. The first map will show the slope of the count of events detected per year over time as shades of red, and the second map will show the significance (<em>p</em>-value) of these trends in shades of grey.</p>
+<p>Then we will create two maps that we will stick together using
+<strong><code>ggpubr</code></strong>. The first map will show the slope
+of the count of events detected per year over time as shades of red, and
+the second map will show the significance (<em>p</em>-value) of these
+trends in shades of grey.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">map_slope</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">OISST_nTrend</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">lon</span>, y <span class="op">=</span> <span class="va">lat</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">geom_rect</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">0.2</span>, fill <span class="op">=</span> <span class="cn">NA</span>,
@@ -319,7 +419,10 @@
 
 <span class="va">map_both</span> <span class="op">&lt;-</span> <span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="va">map_slope</span>, <span class="va">map_p</span>, align <span class="op">=</span> <span class="st">"hv"</span><span class="op">)</span>
 <span class="va">map_both</span></code></pre></div>
-<p>From the figure above we may see that the entire study area shows significant (<em>p</em>&lt;= 0.05) increases in the count of MHWs per year. This is generally the case for the entire globe. Not shown here is the significant increase in the intensity of MHWs as well.</p>
+<p>From the figure above we may see that the entire study area shows
+significant (<em>p</em>&lt;= 0.05) increases in the count of MHWs per
+year. This is generally the case for the entire globe. Not shown here is
+the significant increase in the intensity of MHWs as well.</p>
 </div>
 </div>
   </div>
@@ -341,7 +444,8 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer>
