@@ -128,9 +128,10 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Basic Detection and Visualisation of Events</h1>
-                        <h4 data-toc-skip class="author">AJ Smit and Robert W Schlegel</h4>
+                        <h4 data-toc-skip class="author">AJ Smit and
+Robert W Schlegel</h4>
             
-            <h4 data-toc-skip class="date">2022-01-17</h4>
+            <h4 data-toc-skip class="date">2022-03-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/detection_and_visualisation.Rmd" class="external-link"><code>vignettes/detection_and_visualisation.Rmd</code></a></small>
       <div class="hidden name"><code>detection_and_visualisation.Rmd</code></div>
@@ -142,7 +143,15 @@
 <div class="section level2">
 <h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
 </h2>
-<p>The <code><a href="../reference/detect_event.html">detect_event()</a></code> function is the core of this package, and it expects to be fed the output of the second core function, <code><a href="../reference/ts2clm.html">ts2clm()</a></code>. By default, <code><a href="../reference/ts2clm.html">ts2clm()</a></code> wants to receive a two-column dataframe with one column labelled <code>t</code> containing all of the date values, and a second column <code>temp</code> containing all of the temperature values. Please note that the date format it expects is “YYYY-MM-DD.” For example, please see the top five rows of one of the datasets included with the <strong><code>heatwaveR</code></strong> package:</p>
+<p>The <code><a href="../reference/detect_event.html">detect_event()</a></code> function is the core of this package,
+and it expects to be fed the output of the second core function,
+<code><a href="../reference/ts2clm.html">ts2clm()</a></code>. By default, <code><a href="../reference/ts2clm.html">ts2clm()</a></code> wants to
+receive a two-column dataframe with one column labelled <code>t</code>
+containing all of the date values, and a second column <code>temp</code>
+containing all of the temperature values. Please note that the date
+format it expects is “YYYY-MM-DD”. For example, please see the top five
+rows of one of the datasets included with the
+<strong><code>heatwaveR</code></strong> package:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">heatwaveR</span><span class="fu">::</span><span class="va"><a href="../reference/sst_WA.html">sst_WA</a></span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## <span style="color: #949494;"># A tibble: 6 × 2</span></span>
@@ -154,13 +163,24 @@
 <span class="co">## <span style="color: #BCBCBC;">4</span> 1982-01-04  21.2</span>
 <span class="co">## <span style="color: #BCBCBC;">5</span> 1982-01-05  21.3</span>
 <span class="co">## <span style="color: #BCBCBC;">6</span> 1982-01-06  21.6</span></code></pre>
-<p>It is possible to use different column names other than <code>t</code> and <code>temp</code> with which to calculate events. Please see the help files for <code><a href="../reference/ts2clm.html">ts2clm()</a></code> or <code><a href="../reference/detect_event.html">detect_event()</a></code> for a thorough explanation of how to do so.</p>
-<p>Loading ones data from a <code>.csv</code> file or other text based format is the easiest approach for the calculation of events, assuming one is not working with gridded data (e.g. NetCDF). Please see <a href="https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html" class="external-link">this vignette</a> for a detailed walkthrough on using the functions in this package with gridded data.</p>
+<p>It is possible to use different column names other than
+<code>t</code> and <code>temp</code> with which to calculate events.
+Please see the help files for <code><a href="../reference/ts2clm.html">ts2clm()</a></code> or
+<code><a href="../reference/detect_event.html">detect_event()</a></code> for a thorough explanation of how to do
+so.</p>
+<p>Loading ones data from a <code>.csv</code> file or other text based
+format is the easiest approach for the calculation of events, assuming
+one is not working with gridded data (e.g. NetCDF). Please see <a href="https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html" class="external-link">this
+vignette</a> for a detailed walkthrough on using the functions in this
+package with gridded data.</p>
 </div>
 <div class="section level2">
 <h2 id="calculating-marine-heatwaves-mhws">Calculating marine heatwaves (MHWs)<a class="anchor" aria-label="anchor" href="#calculating-marine-heatwaves-mhws"></a>
 </h2>
-<p>Here are the <code><a href="../reference/ts2clm.html">ts2clm()</a></code> and <code><a href="../reference/detect_event.html">detect_event()</a></code> function applied to the Western Australia test data included with this package (<code>sst_WA</code>), which are also discussed by Hobday et al. (2016):</p>
+<p>Here are the <code><a href="../reference/ts2clm.html">ts2clm()</a></code> and <code><a href="../reference/detect_event.html">detect_event()</a></code>
+function applied to the Western Australia test data included with this
+package (<code>sst_WA</code>), which are also discussed by Hobday et
+al. (2016):</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
@@ -191,7 +211,10 @@
 <div class="section level3">
 <h3 id="default-mhw-visuals">Default MHW visuals<a class="anchor" aria-label="anchor" href="#default-mhw-visuals"></a>
 </h3>
-<p>One may use <code><a href="../reference/event_line.html">event_line()</a></code> and <code><a href="../reference/lolli_plot.html">lolli_plot()</a></code> directly on the output of <code><a href="../reference/detect_event.html">detect_event()</a></code> in order to visualise MHWs. Here are the functions being used to visualise the massive Western Australian heatwave of 2011:</p>
+<p>One may use <code><a href="../reference/event_line.html">event_line()</a></code> and <code><a href="../reference/lolli_plot.html">lolli_plot()</a></code>
+directly on the output of <code><a href="../reference/detect_event.html">detect_event()</a></code> in order to
+visualise MHWs. Here are the functions being used to visualise the
+massive Western Australian heatwave of 2011:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">mhw</span>, spread <span class="op">=</span> <span class="fl">180</span>, metric <span class="op">=</span> <span class="st">"intensity_max"</span>, 
            start_date <span class="op">=</span> <span class="st">"1982-01-01"</span>, end_date <span class="op">=</span> <span class="st">"2014-12-31"</span><span class="op">)</span></code></pre></div>
@@ -203,7 +226,19 @@
 <div class="section level3">
 <h3 id="custom-mhw-visuals">Custom MHW visuals<a class="anchor" aria-label="anchor" href="#custom-mhw-visuals"></a>
 </h3>
-<p>The <code><a href="../reference/event_line.html">event_line()</a></code> and <code><a href="../reference/lolli_plot.html">lolli_plot()</a></code> functions were designed to work directly on the list returned by <code><a href="../reference/detect_event.html">detect_event()</a></code>. If more control over the figures is required, it may be useful to create them in <strong><code>ggplot2</code></strong> by stacking <code>geoms</code>. We specifically created two new <strong><code>ggplot2</code></strong> <code>geoms</code> to reproduce the functionality of <code><a href="../reference/event_line.html">event_line()</a></code> and <code><a href="../reference/lolli_plot.html">lolli_plot()</a></code>. These functions are more general in their functionality and can be used outside of the <strong><code>heatwaveR</code></strong> package, too. To apply them to MHWs and MCSs first requires that we access the <code>climatology</code> or <code>event</code> dataframes within the list that is produced by <code><a href="../reference/detect_event.html">detect_event()</a></code>. Here is how:</p>
+<p>The <code><a href="../reference/event_line.html">event_line()</a></code> and <code><a href="../reference/lolli_plot.html">lolli_plot()</a></code> functions
+were designed to work directly on the list returned by
+<code><a href="../reference/detect_event.html">detect_event()</a></code>. If more control over the figures is
+required, it may be useful to create them in
+<strong><code>ggplot2</code></strong> by stacking <code>geoms</code>. We
+specifically created two new <strong><code>ggplot2</code></strong>
+<code>geoms</code> to reproduce the functionality of
+<code><a href="../reference/event_line.html">event_line()</a></code> and <code><a href="../reference/lolli_plot.html">lolli_plot()</a></code>. These functions
+are more general in their functionality and can be used outside of the
+<strong><code>heatwaveR</code></strong> package, too. To apply them to
+MHWs and MCSs first requires that we access the <code>climatology</code>
+or <code>event</code> dataframes within the list that is produced by
+<code><a href="../reference/detect_event.html">detect_event()</a></code>. Here is how:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Select the region of the time series of interest</span>
 <span class="va">mhw2</span> <span class="op">&lt;-</span> <span class="va">mhw</span><span class="op">$</span><span class="va">climatology</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
@@ -224,7 +259,11 @@
 <div class="section level3">
 <h3 id="spicy-mhw-visuals">Spicy MHW visuals<a class="anchor" aria-label="anchor" href="#spicy-mhw-visuals"></a>
 </h3>
-<p>The default output of these function may not be to your liking. If so, not to worry. As <strong><code>ggplot2</code></strong> <code>geoms</code>, they are highly malleable. For example, if we were to choose to reproduce the format of the MHWs as seen in Hobday et al. (2016), the code would look something like this:</p>
+<p>The default output of these function may not be to your liking. If
+so, not to worry. As <strong><code>ggplot2</code></strong>
+<code>geoms</code>, they are highly malleable. For example, if we were
+to choose to reproduce the format of the MHWs as seen in Hobday et
+al. (2016), the code would look something like this:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># It is necessary to give geom_flame() at least one row on either side of </span>
 <span class="co"># the event in order to calculate the polygon corners smoothly</span>
@@ -248,7 +287,11 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html" class="external-link">guide_legend</a></span><span class="op">(</span>override.aes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Temperature ["</span>, <span class="va">degree</span>, <span class="st">"C]"</span><span class="op">)</span><span class="op">)</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
 <p><img src="detection_and_visualisation_files/figure-html/fig-example3-1.png" width="768"><!-- ![](vignettes/fig-example4-1.png) --></p>
-<p>It is also worth pointing out that when we use <code><a href="../reference/geom_flame.html">geom_flame()</a></code> directly like this, but we don’t want to highlight events greater less than our standard five day length, allowing for a two day gap, we want to use the arguments <code>n</code> and <code>n_gap</code> respectively.</p>
+<p>It is also worth pointing out that when we use
+<code><a href="../reference/geom_flame.html">geom_flame()</a></code> directly like this, but we don’t want to
+highlight events greater less than our standard five day length,
+allowing for a two day gap, we want to use the arguments <code>n</code>
+and <code>n_gap</code> respectively.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mhw3</span> <span class="op">&lt;-</span> <span class="va">mhw</span><span class="op">$</span><span class="va">climatology</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice</a></span><span class="op">(</span><span class="fl">850</span><span class="op">:</span><span class="fl">950</span><span class="op">)</span>
@@ -261,7 +304,9 @@
     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"black"</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"1984-05-16"</span><span class="op">)</span>, y <span class="op">=</span> <span class="fl">24.5</span>,
                 label <span class="op">=</span> <span class="st">"heat\n\n\n\n\nspike"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="detection_and_visualisation_files/figure-html/flame_gaps-1.png" width="768"></p>
-<p>Should we not wish to highlight any events with <code><a href="../reference/geom_lolli.html">geom_lolli()</a></code>, plot them with a colour other than the default, and use a different theme, it would look like this:</p>
+<p>Should we not wish to highlight any events with
+<code><a href="../reference/geom_lolli.html">geom_lolli()</a></code>, plot them with a colour other than the
+default, and use a different theme, it would look like this:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mhw</span><span class="op">$</span><span class="va">event</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">date_peak</span>, y <span class="op">=</span> <span class="va">intensity_max</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/geom_lolli.html">geom_lolli</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"firebrick"</span><span class="op">)</span> <span class="op">+</span>
@@ -269,13 +314,19 @@
        y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Max. intensity ["</span>, <span class="va">degree</span>, <span class="st">"C]"</span><span class="op">)</span><span class="op">)</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_linedraw</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="detection_and_visualisation_files/figure-html/fig-example4-1.png" width="768"><!-- ![](vignettes/fig-example5-1.png) --></p>
-<p>Because these are simple <strong><code>ggplot2</code></strong> geoms possibilities are nearly infinite.</p>
+<p>Because these are simple <strong><code>ggplot2</code></strong> geoms
+possibilities are nearly infinite.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="calculating-marine-cold-spells-mcss">Calculating marine cold-spells (MCSs)<a class="anchor" aria-label="anchor" href="#calculating-marine-cold-spells-mcss"></a>
 </h2>
-<p>The calculation and visualisation of cold-spells is also provided for within this package. The data to be fed into the functions is the same as for MHWs. The main difference is that one is now calculating the 10th percentile threshold, rather than the 90th percentile threshold. Here are the top five cold-spells (cumulative intensity) detected in the OISST data for Western Australia:</p>
+<p>The calculation and visualisation of cold-spells is also provided for
+within this package. The data to be fed into the functions is the same
+as for MHWs. The main difference is that one is now calculating the 10th
+percentile threshold, rather than the 90th percentile threshold. Here
+are the top five cold-spells (cumulative intensity) detected in the
+OISST data for Western Australia:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># First calculate the cold-spells</span>
 <span class="va">ts_10th</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span><span class="op">)</span>, pctile <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
@@ -312,12 +363,14 @@
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">mcs</span>, metric <span class="op">=</span> <span class="st">"intensity_cumulative"</span>, xaxis <span class="op">=</span> <span class="st">"event_no"</span><span class="op">)</span></code></pre></div>
 <p><img src="detection_and_visualisation_files/figure-html/fig-example5-2.png" width="768"><!-- ![](vignettes/fig-example6-1.png) --><!-- ![](vignettes/fig-example6-2.png) --></p>
-<p>Note that one does not need to specify that MCSs are to be visualised, the functions are able to understand this on their own.</p>
+<p>Note that one does not need to specify that MCSs are to be
+visualised, the functions are able to understand this on their own.</p>
 </div>
 <div class="section level3">
 <h3 id="custom-mcs-visuals">Custom MCS visuals<a class="anchor" aria-label="anchor" href="#custom-mcs-visuals"></a>
 </h3>
-<p>Cold spell figures may be created as <code>geoms</code> in <strong><code>ggplot2</code></strong>, too:</p>
+<p>Cold spell figures may be created as <code>geoms</code> in
+<strong><code>ggplot2</code></strong>, too:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Select the region of the time series of interest</span>
 <span class="va">mcs2</span> <span class="op">&lt;-</span> <span class="va">mcs</span><span class="op">$</span><span class="va">climatology</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
@@ -337,7 +390,10 @@
 <div class="section level3">
 <h3 id="minty-mcs-visuals">Minty MCS visuals<a class="anchor" aria-label="anchor" href="#minty-mcs-visuals"></a>
 </h3>
-<p>Again, because <code><a href="../reference/geom_flame.html">geom_flame()</a></code> and <code><a href="../reference/geom_lolli.html">geom_lolli()</a></code> are simple <strong><code>ggplot2</code></strong> geoms, one can go completely bananas with them:</p>
+<p>Again, because <code><a href="../reference/geom_flame.html">geom_flame()</a></code> and
+<code><a href="../reference/geom_lolli.html">geom_lolli()</a></code> are simple
+<strong><code>ggplot2</code></strong> geoms, one can go completely
+bananas with them:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mcs_top</span> <span class="op">&lt;-</span> <span class="va">mcs2</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice</a></span><span class="op">(</span><span class="fl">125</span><span class="op">:</span><span class="fl">202</span><span class="op">)</span>
@@ -365,8 +421,23 @@
 <div class="section level2">
 <h2 id="interactive-visuals">Interactive visuals<a class="anchor" aria-label="anchor" href="#interactive-visuals"></a>
 </h2>
-<p>As of <strong><code>heatwaveR</code></strong> v0.3.6.9002, <code><a href="../reference/geom_flame.html">geom_flame()</a></code> was also able to be used with <strong><code>plotly</code></strong> to allow for interactive MHW visuals. Unfortunately around December of 2020 the <strong><code>plotly</code></strong> packaged was orphaned and CRAN decided it didn’t want packages to include it as an imported package. Therefore as of v0.4.4.9005 <strong><code>heatwaveR</code></strong> no longer has built in support for using <code><a href="../reference/geom_flame.html">geom_flame()</a></code> with <strong><code>plotly</code></strong>. It is however still possible with a bit of work and a simple working example is given below. It is not currently possible to use <code><a href="../reference/geom_lolli.html">geom_lolli()</a></code> with <strong><code>plotly</code></strong>. Rather one is advised to just create the dots and segments separately with <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html" class="external-link">geom_segment()</a></code> respectively as these are already recognised by <strong><code>plotly</code></strong>.</p>
-<p>Note that the following code chunk is not run as it makes this vignette a bit too large.</p>
+<p>As of <strong><code>heatwaveR</code></strong> v0.3.6.9002,
+<code><a href="../reference/geom_flame.html">geom_flame()</a></code> was also able to be used with
+<strong><code>plotly</code></strong> to allow for interactive MHW
+visuals. Unfortunately around December of 2020 the
+<strong><code>plotly</code></strong> packaged was orphaned and CRAN
+decided it didn’t want packages to include it as an imported package.
+Therefore as of v0.4.4.9005 <strong><code>heatwaveR</code></strong> no
+longer has built in support for using <code><a href="../reference/geom_flame.html">geom_flame()</a></code> with
+<strong><code>plotly</code></strong>. It is however still possible with
+a bit of work and a simple working example is given below. It is not
+currently possible to use <code><a href="../reference/geom_lolli.html">geom_lolli()</a></code> with
+<strong><code>plotly</code></strong>. Rather one is advised to just
+create the dots and segments separately with <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point()</a></code>
+and <code><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html" class="external-link">geom_segment()</a></code> respectively as these are already
+recognised by <strong><code>plotly</code></strong>.</p>
+<p>Note that the following code chunk is not run as it makes this
+vignette a bit too large.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Must load plotly library first</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://plotly-r.com" class="external-link">plotly</a></span><span class="op">)</span>
@@ -397,7 +468,7 @@
   
   <span class="co"># Detect spikes</span>
   <span class="va">data_event</span><span class="op">$</span><span class="va">screen</span> <span class="op">&lt;-</span> <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">data_event</span><span class="op">$</span><span class="va">threshCriterion</span> <span class="op">==</span> <span class="cn">FALSE</span>, <span class="cn">FALSE</span>,
-                                    <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">data_event</span><span class="op">$</span><span class="va">event</span> <span class="op">==</span> <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>
+                                    <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">data_event</span><span class="op">$</span><span class="va">event</span> <span class="op">==</span> <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>
   
   <span class="co"># Screen out spikes</span>
   <span class="va">data1</span> <span class="op">&lt;-</span> <span class="va">data1</span><span class="op">[</span><span class="va">data_event</span><span class="op">$</span><span class="va">screen</span> <span class="op">!=</span> <span class="cn">TRUE</span>,<span class="op">]</span>
@@ -428,7 +499,7 @@
   
   <span class="co"># Create new data frame and merge to introduce new rows of data</span>
   <span class="va">data2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">data1</span><span class="op">$</span><span class="va">y</span>, <span class="va">y.points</span><span class="op">)</span>, x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">data1</span><span class="op">$</span><span class="va">x</span>, <span class="va">x.points</span><span class="op">)</span><span class="op">)</span>
-  <span class="va">data2</span> <span class="op">&lt;-</span> <span class="va">data2</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">data2</span><span class="op">$</span><span class="va">x</span><span class="op">)</span>,<span class="op">]</span>
+  <span class="va">data2</span> <span class="op">&lt;-</span> <span class="va">data2</span><span class="op">[</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setorder.html" class="external-link">order</a></span><span class="op">(</span><span class="va">data2</span><span class="op">$</span><span class="va">x</span><span class="op">)</span>,<span class="op">]</span>
   <span class="va">data3</span> <span class="op">&lt;-</span> <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">data1</span>, <span class="va">data2</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>,<span class="st">"y"</span><span class="op">)</span>, all.y <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
   <span class="va">data3</span><span class="op">$</span><span class="va">y2</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">data3</span><span class="op">$</span><span class="va">y2</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">data3</span><span class="op">$</span><span class="va">y</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">data3</span><span class="op">$</span><span class="va">y2</span><span class="op">)</span><span class="op">]</span>
   
@@ -453,7 +524,7 @@
     <span class="va">positions</span><span class="op">$</span><span class="va">group</span> <span class="op">&lt;-</span> <span class="va">positions</span><span class="op">$</span><span class="va">group</span><span class="op">[</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/complete.cases.html" class="external-link">complete.cases</a></span><span class="op">(</span><span class="va">positions</span><span class="op">$</span><span class="va">group</span><span class="op">)</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>
   
   <span class="co"># Run the plotly polygon code</span>
-  <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">positions</span><span class="op">$</span><span class="va">PANEL</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span><span class="op">{</span>
+  <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">positions</span><span class="op">$</span><span class="va">PANEL</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span><span class="op">{</span>
     <span class="fu"><a href="https://rdrr.io/r/utils/getFromNamespace.html" class="external-link">getFromNamespace</a></span><span class="op">(</span><span class="st">"geom2trace.GeomPolygon"</span>, <span class="fu"><a href="https://rdrr.io/r/base/ns-internal.html" class="external-link">asNamespace</a></span><span class="op">(</span><span class="st">"plotly"</span><span class="op">)</span><span class="op">)</span><span class="op">(</span><span class="va">positions</span><span class="op">)</span>
   <span class="op">}</span> <span class="kw">else</span><span class="op">{</span>
     <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="op">)</span>
@@ -495,7 +566,8 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
+2.0.2.</p>
 </div>
 
       </footer>

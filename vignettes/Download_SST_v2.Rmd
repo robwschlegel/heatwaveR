@@ -1,8 +1,8 @@
 ---
-title: "Retrieval, combining, slicing, and detecting MHWs in OISST data"
+title: "Downloading, Preparing, and Analysing NOAA OISST Data: Alternative Methods"
 author: "AJ Smit"
 date: "`r Sys.Date()`"
-description: "This vignette as about downloading OISST netCDF files and preparing them for the detection of extreme events."
+description: "This vignette demonstrates an alternative method for downloading NOAA OISST data (using a python script) and preparing and detecting marine heatwaves."
 output: 
   rmarkdown::html_vignette:
     fig_caption: yes

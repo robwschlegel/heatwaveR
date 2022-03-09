@@ -20,6 +20,8 @@ navbar:
       href: articles/OISST_preparation.html
     - text: "Detecting Events in Gridded Data"
       href: articles/gridded_event_detection.html
+    - text: "Downloading, Preparing, and Analysing NOAA OISST Data: Alternative Methods"
+      href: articles/Download_SST_v2.html
     - text: "Saving MHW Results to NetCDF"
       href: articles/MHW_to_nc.html
     - text: "Alternative Thresholds"
