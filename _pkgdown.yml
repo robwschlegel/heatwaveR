@@ -26,6 +26,8 @@ navbar:
       href: articles/MHW_to_nc.html
     - text: "Alternative Thresholds"
       href: articles/complex_clims.html
+    - text: "Trend and Breakpoint Analyses"
+      href: articles/MHW_metric_trends.html
   - text: "Citations"
     href: CITATIONS.html
   - text: "News"

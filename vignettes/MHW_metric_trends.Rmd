@@ -1,0 +1,461 @@
+---
+title: "Trend and Breakpoint analyses in MHW metrics"
+author: "Francois Thoral and Robert Schlegel"
+date: "`r Sys.Date()`"
+description: "This vignette demonstrates the utility and limitation of running a trend and break point analyses in MHW metrics."
+output: 
+  rmarkdown::html_vignette:
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{Trend and Breakpoint Analyses}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: bibliography.bib
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width = 8, fig.height = 8, fig.align = 'centre',
+                      echo = TRUE, warning = FALSE, message = FALSE,
+                      eval = TRUE, tidy = FALSE)
+```
+
+## Overview
+
+In the previous vignettes we saw how to [download and prepare OISST data](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html)and to [detect MHWs in gridded data](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html). In this vignette we will use data subsetted around the New Zealand (NZ) Exclusive Economic Zone (EEZ) for our example to calculate trends and breakpoints for bioregions (from @spalding2007) and seasons as shown in @thoral2022.
+
+```{r load-pkg}
+library(tidyverse)
+library(viridis)
+library(trend)
+library(heatwaveR)
+library(lubridate)
+library(plotly)
+library(kableExtra)
+library(rerddap)
+library(sf)
+```
+
+## MEOW
+
+The Marine Ecosystems of the World (MEOW) shapefile may be downloaded [here](https://hub.arcgis.com/datasets/903c3ae05b264c00a3b5e58a4561b7e6/about). Extract the contents of the download to a convenient location before use with the following code chunks. For more information on the MEOW please see @spalding2007.
+
+```{r MEOW, eval=FALSE}
+# Load and process the MEOW shapefile
+# NB: Change your file path to where the files were unzipped
+MEOW_NZ <- st_read('~/Desktop/meow_ecos.shp') %>% 
+  dplyr:::filter(PROVINCE %in% c('Northern New Zealand', 'Southern New Zealand','Subantarctic New Zealand')) %>% 
+  st_make_valid() %>%
+  st_transform(crs = 4326) %>% 
+  st_shift_longitude() %>% 
+  mutate(ECOREGION = factor(ECOREGION, levels = c("Kermadec Island", "Three Kings-North Cape", "Northeastern New Zealand",
+                                                  "Central New Zealand","Chatham Island","South New Zealand", 
+                                                  "Bounty and Antipodes Islands","Snares Island","Auckland Island","Campbell Island")))
+
+# Find max lon/lat ranges
+lon_range <- range(sf::st_coordinates(MEOW_NZ$geometry)[,1])
+lat_range <- range(sf::st_coordinates(MEOW_NZ$geometry)[,2])
+
+# Expand a bit to make sure all necessary pixels are downloaded
+lon_range <- c(lon_range[1]-0.25, lon_range[2]+0.25)
+lat_range <- c(lat_range[1]-0.25, lat_range[2]+0.25)
+```
+
+![MEOW bioregions around New Zealand](MapEcoregions.png){width=500px}
+
+Once we have our MEOW data for NZ ready it's time to find out which pixels specificaly we will want to download.
+
+```{r MEOW_pix, eval=FALSE}
+# Create OISST grid
+lon_lat_OISST <- base::expand.grid(seq(0.125, 359.875, by = 0.25), 
+                                   seq(-89.875, 89.875, by = 0.25)) %>% 
+  dplyr::rename(lon = Var1, lat = Var2) %>% 
+  dplyr::arrange(lon, lat) %>% 
+  st_as_sf(coords = c('lon', 'lat'), crs = 4326)
+
+# Join OISST grid to MEOW spatial and filter out pixels not within NZ EEZ
+lon_lat_NZ <- st_join(lon_lat_OISST, MEOW_NZ) %>% 
+  dplyr::select(geometry, ECOREGION, PROVINCE) %>% 
+  dplyr::filter(!is.na(ECOREGION))
+
+# Convert the coordinates back to a tibble for further use
+# NB: Should be 5,921 pixels
+# 6,398
+lon_lat_NZ_tb <- lon_lat_NZ %>% 
+  mutate(lon = sf::st_coordinates(.)[,1],
+         lat = sf::st_coordinates(.)[,2]) %>% 
+  as_tibble() %>% 
+  dplyr::select(-geometry)
+```
+
+
+## Download data and calculate climatologies
+
+We begin by loading daily OISST v2.1 data for all pixels around New Zealand (lat 25-55°S, lon 160-190°E) and use the functions `heatwaveR::ts2clim()` and `heatwaveR::detect_event()` to get the climatology from the time series. Note that this full process will take roughly one hour on a desktop computer given the number of pixels and days.
+
+```{r load-data, eval=F}
+library(raster)
+OISST_url <- "https://www.ncei.noaa.gov/thredds/dodsC/OisstBase/NetCDF/V2.1/AVHRR/198201/oisst-avhrr-v02r01.19820101.nc"
+
+OISST_raster <- brick(OISST_url, varname = "sst")
+plot(OISST_raster)
+
+system.time(
+test1 <- data.frame(lon_lat_NZ_tb,
+                    t = file_date,
+                    temp = raster::extract(OISST_raster, lon_lat_NZ_tb[c("lon", "lat")], method = "simple"))
+)
+
+data.frame(grid_MUR(bbox_wide_from_name(site_abv)), 
+           t = file_date,
+           temp = as.vector(raster::extract(MUR_raster, extent_MUR(bbox_wide_from_name(site_abv)), method = "simple")-273.15))
+
+
+
+## Get SST for around NZ + Islands and for all years
+OISST_sub_dl <- function(time_df){
+  OISST_dat <- griddap(x = "ncdcOisst21Agg", 
+                       url = "https://coastwatch.pfeg.noaa.gov/erddap/", 
+                       time = c(time_df$start, time_df$end), 
+                       zlev = c(0, 0),
+                       latitude = lon_range,
+                       longitude = lat_range,
+                       fields = c("sst"))$data %>% 
+    mutate(time = as.Date(stringr::str_remove(time, "T00:00:00Z"))) %>% 
+    dplyr::rename(t = time, temp = sst) %>% 
+    select(lon, lat, t, temp) %>% 
+    na.omit()
+}
+
+# The span of years to download
+dl_years <- data.frame(date_index = 1:5,
+                       start = as.Date(c("1982-01-01", "1990-01-01",
+                                         "1998-01-01", "2006-01-01", "2014-01-01")),
+                       end = as.Date(c("1989-12-31", "1997-12-31",
+                                       "2005-12-31", "2013-12-31", "2021-12-31")))
+
+# Download the data
+# NB: Takes ~21 minutes on a desktop computer
+# NB: Contains 207,608,896 rows, 4 columns, and uses ~10 GB of RAM
+system.time(
+  OISST_data <- 
+)
+OISST_data <- dl_years %>% 
+    group_by(date_index) %>% 
+    group_modify(~OISST_sub_dl_NZ(.x)) %>% 
+    ungroup() %>% 
+    dplyr::select(lon, lat, t, temp)
+
+# Get the climatologies only
+clim_only <- function(df){
+  # First calculate the climatologies
+  clim <- ts2clm(data = df, climatologyPeriod = c("1982-01-01", "2011-12-31"))
+  # Then the events
+  event <- detect_event(data = clim)
+  # Return only the climatology metric dataframe of results
+return(event$climatology)
+}
+
+# Extract the climatology values
+# NB: Takes ~46 minutes on a desktop computer
+OISST_clim <- OISST_data %>%
+  group_by(lon,lat) %>%
+  group_modify(~clim_only(.x)) %>%
+  drop_na()
+```
+
+## Summarise MHW metrics by year, season, and bioregion
+
+We first summarise the MHW metrics by year and season.
+
+```{r summarize-metrics, eval=F}
+MHW_summary <- OISST_clim %>% 
+  dplyr::select(-c(doy, thresh, threshCriterion, durationCriterion, event)) %>% 
+  mutate(season_num = month(as.Date(floor_date(t, unit = "season"))),
+         year = year(t)) %>%
+  mutate(season = recode_factor(season_num, `12` = "Summer", `3` = "Autumn", `6` = "Winter", `9` = "Spring")) %>% 
+  mutate(intensity = temp-seas) %>% 
+  group_by(lon, lat, year, season) %>% 
+  summarise(nevents = length(unique(event_no)),
+            nMHWdays = length(t),
+            int_cumulative = sum(intensity), 
+            int_mean = mean(intensity),
+            int_max = max(intensity), .groups = "drop") %>% 
+  pivot_longer(-c(lon, lat, year, season), names_to = 'metrics', values_to = 'values')
+```
+
+Then we assign bioregions using the `sf` (@sf) package.
+
+```{r assign-bioregion, eval=F}
+# We only get the pixels here (rather than time series of MHW days), converted to sf object
+# NB: Should be 14,212 pixels, but some out of MEOW polygons
+MHW_pixels <- MHW_summary %>% 
+  group_by(lon, lat) %>% 
+  tally() %>% 
+  st_as_sf(coords = c('lon','lat'), crs = 4326) 
+
+# Join the MHW gridded pixels to the MEOW spatial data
+MHW_pixels_MEOW <- st_join(MHW_pixels, MEOW_NZ) %>% 
+  dplyr::select(geometry, ECOREGION, PROVINCE)
+
+# Filter out pixels not within the NZ EEZ and convert the coordinates back to a tibble for further use
+# NB: Should be 5,921 pixels
+MHW_pixels_NZ <- MHW_pixels_MEOW %>% 
+  dplyr::filter(!is.na(ECOREGION)) %>% 
+  mutate(lon = sf::st_coordinates(.)[,1],
+         lat = sf::st_coordinates(.)[,2]) %>% 
+  as_tibble() %>% 
+  dplyr::select(-geometry)
+
+# Filter out pixels not within NZ MEOW
+# NB: Should be 2,128,210 rows
+MHW_summary_NZ <- left_join(MHW_summary, MHW_pixels_NZ, by = c('lon','lat'))  %>% 
+  dplyr::filter(!is.na(ECOREGION))
+
+# Save for future use
+saveRDS(MHW_summary_NZ,"~/Desktop/MHW_summary_NZ_1982_2021_OISST.Rds")
+```
+
+## Trends in MHW metrics at NZ scale + Bioregions
+
+```{r nz-trend}
+# Load data from previous code chunk
+MHW_summary_NZ <- readRDS("~/Desktop/MHW_summary_NZ_1982_2021_OISST.Rds")
+
+# get count of unique pixels
+MHW_summary_NZ_npix <- MHW_summary_NZ %>% 
+  dplyr::select(lon, lat) %>% 
+  dplyr::distinct()
+
+# Get annual summaries
+MHW_annual_summary_NZ <- MHW_summary_NZ %>%
+  pivot_wider(names_from = metrics, values_from = values) %>% 
+  group_by(year) %>% 
+  summarize(Number_MHW_days = sum(nMHWdays)/nrow(MHW_summary_NZ_npix),
+            Nevents = sum(nevents)/nrow(MHW_summary_NZ_npix), 
+            Mean_Intensity = mean(int_mean), 
+            Maximum_Intensity = mean(int_max),
+            Cumulative_Intensity = sum(int_cumulative)/nrow(MHW_summary_NZ_npix), .groups = "drop") %>% 
+  complete(year = 1982:2021) %>%
+  pivot_longer(-year, names_to = 'Metrics', values_to = 'values') %>% 
+  mutate(Metrics = factor(Metrics, levels = c("Number_MHW_days", "Nevents", "Mean_Intensity", "Maximum_Intensity", "Cumulative_Intensity")))
+
+# Prepare prettier labels
+metrics_labs <- c(`Number_MHW_days` = "Number of MHW days",
+                  `Nevents` = "Number of Events",
+                  `Mean_Intensity` = "Mean Intensity (°C)",
+                  `Maximum_Intensity` = "Maximum Intensity (°C)",
+                  `Cumulative_Intensity` = "Cumulative Intensity (°C Days)")
+
+# Create figure
+p <- ggplot(MHW_annual_summary_NZ, aes(x = year, y = values, col = Metrics)) + 
+  geom_line(size = 0.5) + 
+  geom_smooth(se = T) +
+  scale_colour_viridis(begin = 0, end = 0.75, option = "viridis", discrete = T) + 
+  facet_wrap(Metrics ~ ., scales = 'free', labeller = as_labeller(metrics_labs), ncol = 2) + 
+  labs(x = "Year", Y = NULL) +
+  theme_bw() + 
+  theme(legend.position = "none") 
+
+# Coerce to interactive plotly format
+ggplotly(p)
+```
+
+It seems like some of the metrics are going up, and that there is a potential acceleration after the years 2010. We can then calculate non parametric linear trends (Sen's slope and Mann-Kendall test) and breakpoints (Pettitt test) using the `trend` (@trend) package as well as the more usual and parametric `lm` function.
+
+```{r nz-trend2}
+# Get annual trends
+MHW_annual_trends_NZ <- MHW_annual_summary_NZ %>% 
+  group_by(Metrics) %>% 
+  nest() %>% 
+  mutate(ts_out = purrr::map(data, ~ts(.x$values, start = 1982, end = 2021, frequency = 1))) %>% 
+  mutate(sens = purrr::map(ts_out, ~sens.slope(.x, conf.level = 0.95)), 
+         pettitt = purrr::map(ts_out, ~pettitt.test(.x)),
+         lm = purrr::map(data, ~lm(values ~ year, .x))) %>% 
+  mutate(Sens_Slope = as.numeric(unlist(sens)[1]),
+         P_Value = as.numeric(unlist(sens)[3]),
+         Change_Point_Year = time(ts_out[[1]])[as.numeric(unlist(pettitt)[3])],
+         Change_Point_pvalue = as.numeric(unlist(pettitt)[4]),
+         lm_slope = unlist(lm)$coefficients.year) %>% 
+  # Add step of cutting time series in 2 using Change_Point_Year 
+  mutate(pre_ts = purrr::map(ts_out, ~window(.x, start = 1982, end = Change_Point_Year)),
+         post_ts = purrr::map(ts_out, ~window(.x, start = Change_Point_Year, end = 2021))) %>% 
+  # Add step of calculating sen's slope and p-value to pre and post change point year
+  mutate(sens_pre = purrr::map(pre_ts, ~sens.slope(.x, conf.level = 0.95)),
+         Sens_Slope_pre = as.numeric(unlist(sens_pre)[1]), P_Value_pre = as.numeric(unlist(sens_pre)[3]),
+         sens_post = purrr::map(post_ts, ~sens.slope(.x, conf.level = 0.95)),
+         Sens_Slope_post = as.numeric(unlist(sens_post)[1]),
+         P_Value_post = as.numeric(unlist(sens_post)[3])) %>% 
+  dplyr::select(Metrics, Sens_Slope, P_Value, Change_Point_Year, Change_Point_pvalue, lm_slope,
+                Sens_Slope_pre, P_Value_pre, Sens_Slope_post, P_Value_post)
+
+# Create table
+kable(MHW_annual_trends_NZ, caption = "Table 1 - Sens's Slope and p-value.")  %>%
+  kable_classic()
+```
+
+In fact, we see significant change-point years for the number of MHW days (2012), number of events (1997) and cumulative intensity (2012). The slopes pre and post change-point are documenting the recent change in the metrics which complement the trend on the full time series. What are the reason behind the change-points? 
+
+One can be more interested in finding patterns in MHW trends between ecoregions.
+
+```{r ecoregions-trends}
+# Count pixels per realm
+MHW_summary_NZ_npix_realms <- MHW_summary_NZ %>% 
+  group_by(lon, lat, ECOREGION) %>% 
+  tally() %>% 
+  group_by(ECOREGION) %>% 
+  tally() %>% 
+  rename(npix = n)
+MHW_summary_NZ_npix_realms
+
+# Summarise by realm
+MHW_summary_NZ_realms <- left_join(MHW_summary_NZ, MHW_summary_NZ_npix_realms, by = 'ECOREGION') %>% 
+  pivot_wider(names_from = metrics,values_from = values) %>% 
+  group_by(year, ECOREGION, season, npix) %>% 
+  summarize(Number_MHW_days = sum(nMHWdays),
+            Nevents = sum(nevents), 
+            Mean_Intensity = mean(int_mean), 
+            Maximum_Intensity = mean(int_max), # get the max instead of mean(max)--> nope, tells different story
+            Cumulative_Intensity = sum(int_cumulative), .groups = "drop") %>% 
+  mutate(Number_MHW_days = Number_MHW_days/npix,
+         Nevents = Nevents/npix, 
+         Cumulative_Intensity = Cumulative_Intensity/npix) %>% 
+  group_by(ECOREGION, season) %>% 
+  complete(year = 1982:2021) %>% 
+  dplyr::select(-npix) %>% 
+  pivot_longer(-c(year, ECOREGION, season), names_to = 'Metrics', values_to = 'values') %>% 
+  mutate(Metrics = factor(Metrics, levels = c("Number_MHW_days", "Nevents", "Mean_Intensity", "Maximum_Intensity", "Cumulative_Intensity"))) %>% 
+  replace(is.na(.), 0)
+
+# Plot the results
+p <- MHW_summary_NZ_realms %>% 
+  dplyr::filter(Metrics == 'Number_MHW_days') %>% 
+  ggplot(aes(x = year, y = values, colour = season)) + 
+  geom_line(size = 0.5) + 
+  geom_smooth(se = T) +
+  labs(x = "Year", y = "Number of MHW days") +
+  scale_colour_viridis(begin = 0, end = 0.75, option = "inferno", discrete = T) +
+  guides(colour = guide_legend(override.aes = list(shape = 15, size = 2))) +
+  facet_wrap(ECOREGION~., ncol = 3) + 
+  theme_bw() + 
+  theme(legend.position = c(0.8,0.05),
+        legend.title = element_blank())
+  
+# Coerce to plotly format
+ggplotly(p)
+```
+
+We could also show similar graphs for other metrics, like number of events, min, max or cumulative intensity.
+
+```{r ecoregions-trends2}
+# Get trends
+MHW_trends_NZ_realms <- MHW_summary_NZ_realms %>% 
+  group_by(Metrics, ECOREGION, season) %>% 
+  nest() %>% 
+  mutate(ts_out = purrr::map(data, ~ts(.x$values, start = 1982, end = 2021, frequency = 1))) %>% 
+  mutate(sens = purrr::map(ts_out, ~sens.slope(.x, conf.level = 0.95)),
+         pettitt = purrr::map(ts_out, ~pettitt.test(.x)),
+         lm = purrr::map(data, ~lm(values ~ year,.x))) %>%
+  mutate(Sens_Slope = as.numeric(unlist(sens)[1]),
+         P_Value = as.numeric(unlist(sens)[3]),
+         Change_Point_Year = time(ts_out[[1]])[as.numeric(unlist(pettitt)[3])],
+         Change_Point_pvalue = as.numeric(unlist(pettitt)[4]),
+         lm_slope = unlist(lm)$coefficients.year) %>% 
+  # Add step of cutting time series in 2 using Change_Point_Year 
+  mutate(pre_ts = purrr::map(ts_out, ~window(.x, start = 1982, end = Change_Point_Year)),
+         post_ts = purrr::map(ts_out, ~window(.x, start = Change_Point_Year, end = 2021))) %>% 
+  # Add step of calculating sen's slope and p-value to pre and post change point year
+  mutate(sens_pre = purrr::map(pre_ts, ~sens.slope(.x, conf.level = 0.95)),
+         Sens_Slope_pre = as.numeric(unlist(sens_pre)[1]),
+         P_Value_pre = as.numeric(unlist(sens_pre)[3]),
+         sens_post = purrr::map(post_ts, ~sens.slope(.x, conf.level = 0.95)),
+         Sens_Slope_post = as.numeric(unlist(sens_post)[1]),
+         P_Value_post = as.numeric(unlist(sens_post)[3])) %>% 
+  ungroup() %>% # To remove Season column
+  dplyr::select(ECOREGION, Metrics, season, Sens_Slope, P_Value, Change_Point_Year, Change_Point_pvalue,
+                lm_slope, Sens_Slope_pre, P_Value_pre, Sens_Slope_post, P_Value_post) %>% 
+  dplyr::filter(Metrics == 'Number_MHW_days')
+
+# Create table
+kable(MHW_trends_NZ_realms, caption = "Table 2 - Sens's Slope and p-value.") %>%
+  kable_classic()
+```
+
+According to the previous tables, the trend and break point analyses are useful to asses changes in MHW metrics at these scales. But MHWs are by definition discrete events in space and time. So some can argue that having a pixel and event-based approach is preferable. Can we still apply this methodology on pixel scale?
+
+## Pixel-based case scenario <a name="pixel"></a>
+
+We use the time series of SST available within the `heatwaveR` package (sst_WA) and investigate the trend analysis in 5 metrics by grouping metric values per year as we have done above.
+
+```{r pixel}
+# Simple event detection
+MHW_WA <- detect_event(ts2clm(sst_WA, climatologyPeriod = c("1982-01-01", "2011-12-31")))
+
+# Get annual metrics
+MHW_WA_metrics_year <- MHW_WA$climatology %>% 
+  dplyr::filter(!is.na(event_no)) %>% 
+  mutate(year = year(t),
+         intensity = temp-seas) %>% 
+  group_by(event, year) %>% 
+  summarise(nevents = length(unique(event_no)),
+            nMHWdays = length(t),
+            int_cumulative = sum(intensity), 
+            int_mean = mean(intensity),
+            int_max = max(intensity), .groups = "drop") %>% 
+  # Need to complete time series in case of years with no MHWs in order to get full ts in trend analysis
+  complete(year = 1982:2018) %>% 
+  dplyr::select(-event) %>% 
+  pivot_longer(-c(year), names_to = 'Metrics', values_to = 'values') %>% 
+  replace(is.na(.), 0)
+
+# Plot the data
+p <- ggplot(MHW_WA_metrics_year, aes(x = year, y = values)) +
+  geom_point() +
+  geom_line() +
+  geom_smooth(se = T, method = 'lm') +
+  labs(x = "Year") + 
+  facet_wrap(~Metrics, scales = 'free') +
+  theme_bw() + 
+  theme(legend.position = "none") 
+
+# Cerce to plotly
+ggplotly(p)
+```
+
+The `lm` regression seems to detect some upward trends in the metrics. What does Mann-Kendall have to say about these?
+
+```{r, warning=F}
+MHW_WA_trends <- MHW_WA_metrics_year %>% 
+  group_by(Metrics) %>% 
+  nest() %>% 
+  mutate(ts_out = purrr::map(data, ~ts(.x$values, start = 1982, end = 2018, frequency = 1))) %>% 
+  mutate(sens = purrr::map(ts_out, ~sens.slope(.x, conf.level = 0.95)), 
+         pettitt = purrr::map(ts_out, ~pettitt.test(.x)),
+         lm = purrr::map(data,~lm(values ~ year, .x))) %>% 
+  mutate(Sens_Slope = as.numeric(unlist(sens)[1]),
+         P_Value = as.numeric(unlist(sens)[3]),
+         Change_Point_Year = time(ts_out[[1]])[as.numeric(unlist(pettitt)[3])],
+         Change_Point_pvalue = as.numeric(unlist(pettitt)[4]),
+         lm_slope = unlist(lm)$coefficients.year) %>%
+  # Add step of cutting time series in 2 using Change_Point_Year 
+  mutate(pre_ts = purrr::map(ts_out,~window(.x, start = 1982, end = Change_Point_Year)),
+         post_ts = purrr::map(ts_out,~window(.x, start = Change_Point_Year, end = 2018))) %>% 
+  # Add step of calculating sen's slope and p-value to pre and post change point year
+  mutate(sens_pre = purrr::map(pre_ts, ~sens.slope(.x, conf.level = 0.95)),
+         Sens_Slope_pre = as.numeric(unlist(sens_pre)[1]),
+         P_Value_pre = as.numeric(unlist(sens_pre)[3]),
+         sens_post = purrr::map(post_ts, ~sens.slope(.x, conf.level = 0.95)),
+         Sens_Slope_post = as.numeric(unlist(sens_post)[1]),
+         P_Value_post = as.numeric(unlist(sens_post)[3])) %>% 
+  dplyr::select(Metrics, Sens_Slope, P_Value, Change_Point_Year, Change_Point_pvalue, 
+                lm_slope, Sens_Slope_pre, P_Value_pre, Sens_Slope_post, P_Value_post)
+
+# Create table
+kable(MHW_WA_trends, caption = "Table 3 - Sens's Slope and p-value.")  %>%
+  kable_classic()
+```
+
+For some reason, the Mann-Kendall and Sen Slope analyses don't seem to be useful here as they return suspiciously too low trends (vs lm_slope, which is the traditional linear regression using `lm`) and quite high p-values
+
+Summarizing MHW metrics by year in a given pixel will likely result in some years with no MHWs, hence bringing some 0 values into the time series. I am not too sure how sensitive the MK and Pettitt (breakpoint) analyses are to 0 values, something to look into in the future.
+
+## References
