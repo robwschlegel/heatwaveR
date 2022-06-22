@@ -90,50 +90,10 @@ lon_lat_NZ_tb <- lon_lat_NZ %>%
 
 ## Download data and calculate climatologies
 
-We begin by loading daily OISST v2.1 data for all pixels around New Zealand (lat 25-55°S, lon 160-190°E) and use the functions `heatwaveR::ts2clim()` and `heatwaveR::detect_event()` to get the climatology from the time series. Note that this full process will take roughly one hour on a desktop computer given the number of pixels and days.
+We begin by loading daily OISST v2.1 data for all pixels around New Zealand (lat 25-55°S, lon 160-190°E) and use the functions `heatwaveR::ts2clim()` and `heatwaveR::detect_event()` to get the climatology from the time series. Note that this full process will take roughly one hour on a desktop computer given the number of pixels and days. Even though we know the exact coordinates of the pixels that we want, it is still faster to use the `rerddap::griddap()` function to extract a bounding box around NZ rather than to use the functions in the __`raster`__ package to extract the EEZ polygons.
 
 ```{r load-data, eval=F}
-library(raster)
-OISST_url <- "https://www.ncei.noaa.gov/thredds/dodsC/OisstBase/NetCDF/V2.1/AVHRR/198201/oisst-avhrr-v02r01.19820101.nc"
-
-system.time(
-OISST_raster <- brick(OISST_url, varname = "sst")
-)
-
-plot(OISST_raster)
-
-system.time(
-test1 <- data.frame(lon_lat_NZ_tb,
-                    t = file_date,
-                    temp = as.vector(raster::extract(OISST_raster, lon_lat_NZ_tb[c("lon", "lat")], method = "simple")))
-)
-
-ggplot(data = test1, aes(x = lon, y = lat)) +
-  geom_raster(aes(fill = temp))
-
-OISST_pix_dl <- function(file_date, pixel_coords){
-  file_date_flat <- gsub("-", "", file_date)
-  OISST_url <- paste0("https://www.ncei.noaa.gov/thredds/dodsC/OisstBase/NetCDF/V2.1/AVHRR/",
-                      substr(file_date_flat, 1, 6),"/oisst-avhrr-v02r01.",file_date_flat,".nc")
-  OISST_raster <- brick(OISST_url, varname = "sst")
-  OISST_res <- data.frame(pixel_coords,
-                          t = file_date,
-                          temp = as.vector(raster::extract(OISST_raster,
-                                                           pixel_coords[c("lon", "lat")], method = "simple")))
-  rm(OISST_raster); gc()
-  return(OISST_res)
-}
-
-
-library(doParallel)
-doParallel::registerDoParallel(cores = 15)
-system.time(
-  OISST_data2 <- plyr::ldply(seq(as.Date("1982-01-01"), as.Date("1982-12-31"), by = "day"),
-                             OISST_pix_dl, pixel_coords = lon_lat_NZ_tb, .parallel = T)
-) # 152 seconds for 1 month
-
-
-## Get SST for around NZ + Islands and for all years
+# Get SST for around NZ + Islands and for all years
 OISST_sub_dl <- function(time_df){
   OISST_dat <- griddap(x = "ncdcOisst21Agg", 
                        url = "https://coastwatch.pfeg.noaa.gov/erddap/", 
@@ -158,15 +118,17 @@ dl_years <- data.frame(date_index = 1:5,
 # Download the data
 # NB: Takes ~21 minutes on a desktop computer
 # NB: Contains 207,608,896 rows, 4 columns, and uses ~10 GB of RAM
-system.time(
-  OISST_data3 <- OISST_sub_dl(time_df = data.frame(start = "1982-01-01", end = "1982-12-31"))
-) # 
+# 10.8 GB 17:34
 OISST_data <- dl_years %>% 
     group_by(date_index) %>% 
-    group_modify(~OISST_sub_dl_NZ(.x)) %>% 
+    group_modify(~OISST_sub_dl(.x)) %>% 
     ungroup() %>% 
     dplyr::select(lon, lat, t, temp)
 
+# Filter out only the NZ pixels
+# NB: Contains XXX rows
+OISST_data_NZ <- left_join(lon_lat_NZ_tb, OISST_data, by = c("lon", "lat"))
+  
 # Get the climatologies only
 clim_only <- function(df){
   # First calculate the climatologies
@@ -179,10 +141,12 @@ return(event$climatology)
 
 # Extract the climatology values
 # NB: Takes ~46 minutes on a desktop computer
+system.time(
 OISST_clim <- OISST_data %>%
   group_by(lon,lat) %>%
   group_modify(~clim_only(.x)) %>%
   drop_na()
+)
 ```
 
 ## Summarise MHW metrics by year, season, and bioregion
