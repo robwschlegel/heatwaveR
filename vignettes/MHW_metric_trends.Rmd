@@ -96,19 +96,41 @@ We begin by loading daily OISST v2.1 data for all pixels around New Zealand (lat
 library(raster)
 OISST_url <- "https://www.ncei.noaa.gov/thredds/dodsC/OisstBase/NetCDF/V2.1/AVHRR/198201/oisst-avhrr-v02r01.19820101.nc"
 
+system.time(
 OISST_raster <- brick(OISST_url, varname = "sst")
+)
+
 plot(OISST_raster)
 
 system.time(
 test1 <- data.frame(lon_lat_NZ_tb,
                     t = file_date,
-                    temp = raster::extract(OISST_raster, lon_lat_NZ_tb[c("lon", "lat")], method = "simple"))
+                    temp = as.vector(raster::extract(OISST_raster, lon_lat_NZ_tb[c("lon", "lat")], method = "simple")))
 )
 
-data.frame(grid_MUR(bbox_wide_from_name(site_abv)), 
-           t = file_date,
-           temp = as.vector(raster::extract(MUR_raster, extent_MUR(bbox_wide_from_name(site_abv)), method = "simple")-273.15))
+ggplot(data = test1, aes(x = lon, y = lat)) +
+  geom_raster(aes(fill = temp))
 
+OISST_pix_dl <- function(file_date, pixel_coords){
+  file_date_flat <- gsub("-", "", file_date)
+  OISST_url <- paste0("https://www.ncei.noaa.gov/thredds/dodsC/OisstBase/NetCDF/V2.1/AVHRR/",
+                      substr(file_date_flat, 1, 6),"/oisst-avhrr-v02r01.",file_date_flat,".nc")
+  OISST_raster <- brick(OISST_url, varname = "sst")
+  OISST_res <- data.frame(pixel_coords,
+                          t = file_date,
+                          temp = as.vector(raster::extract(OISST_raster,
+                                                           pixel_coords[c("lon", "lat")], method = "simple")))
+  rm(OISST_raster); gc()
+  return(OISST_res)
+}
+
+
+library(doParallel)
+doParallel::registerDoParallel(cores = 15)
+system.time(
+  OISST_data2 <- plyr::ldply(seq(as.Date("1982-01-01"), as.Date("1982-12-31"), by = "day"),
+                             OISST_pix_dl, pixel_coords = lon_lat_NZ_tb, .parallel = T)
+) # 152 seconds for 1 month
 
 
 ## Get SST for around NZ + Islands and for all years
@@ -117,12 +139,12 @@ OISST_sub_dl <- function(time_df){
                        url = "https://coastwatch.pfeg.noaa.gov/erddap/", 
                        time = c(time_df$start, time_df$end), 
                        zlev = c(0, 0),
-                       latitude = lon_range,
-                       longitude = lat_range,
+                       latitude = lat_range,
+                       longitude = lon_range,
                        fields = c("sst"))$data %>% 
     mutate(time = as.Date(stringr::str_remove(time, "T00:00:00Z"))) %>% 
     dplyr::rename(t = time, temp = sst) %>% 
-    select(lon, lat, t, temp) %>% 
+    dplyr::select(lon, lat, t, temp) %>% 
     na.omit()
 }
 
@@ -137,8 +159,8 @@ dl_years <- data.frame(date_index = 1:5,
 # NB: Takes ~21 minutes on a desktop computer
 # NB: Contains 207,608,896 rows, 4 columns, and uses ~10 GB of RAM
 system.time(
-  OISST_data <- 
-)
+  OISST_data3 <- OISST_sub_dl(time_df = data.frame(start = "1982-01-01", end = "1982-12-31"))
+) # 
 OISST_data <- dl_years %>% 
     group_by(date_index) %>% 
     group_modify(~OISST_sub_dl_NZ(.x)) %>% 
