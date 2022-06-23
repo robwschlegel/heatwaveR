@@ -2,7 +2,7 @@
 
 -   Added two new vignettes 
     - Alternatives to downloading NOAA OISST data
-    - Trend and brek point analyses for MHW metrics
+    - Trend and break point analyses for MHW metrics
 
 # heatwaveR 0.4.6.9000 (2022-01-17)
 

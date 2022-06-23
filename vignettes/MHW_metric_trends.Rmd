@@ -24,11 +24,13 @@ knitr::opts_chunk$set(fig.width = 8, fig.height = 8, fig.align = 'centre',
 In the previous vignettes we saw how to [download and prepare OISST data](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html)and to [detect MHWs in gridded data](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html). In this vignette we will use data subsetted around the New Zealand (NZ) Exclusive Economic Zone (EEZ) for our example to calculate trends and breakpoints for bioregions (from @spalding2007) and seasons as shown in @thoral2022.
 
 ```{r load-pkg}
-library(tidyverse)
-library(viridis)
-library(trend)
 library(heatwaveR)
 library(lubridate)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(viridis)
+library(trend)
 library(kableExtra)
 library(rerddap)
 library(sf)
@@ -138,12 +140,10 @@ return(event$climatology)
 
 # Extract the climatology values
 # NB: Takes ~21 minutes on a desktop computer
-system.time(
 OISST_clim <- OISST_data_NZ %>%
   group_by(ECOREGION, PROVINCE, lon, lat) %>%
   group_modify(~clim_only(.x)) %>%
   drop_na()
-)
 ```
 
 ## Summarise MHW metrics by year, season, and bioregion
@@ -175,7 +175,7 @@ saveRDS(MHW_summary,"~/Desktop/MHW_summary_NZ_1982_2021_OISST.Rds")
 # Load data from previous code chunk
 MHW_summary_NZ <- readRDS("~/Desktop/MHW_summary_NZ_1982_2021_OISST.Rds")
 
-# get count of unique pixels
+# Get count of unique pixels
 MHW_summary_NZ_npix <- MHW_summary_NZ %>% 
   dplyr::select(lon, lat) %>% 
   dplyr::distinct()

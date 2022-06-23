@@ -12,5 +12,3 @@ src/heatwaveR.so
 src/rep_vec.cpp
 src/rep_vec.so
 .vscode
-vignettes/MHW_summary_NZ_1982_2021_OISST.Rds
-vignettes/MEOW-TNC.zip

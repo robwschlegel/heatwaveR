@@ -29,7 +29,11 @@ Suggests:
     rmarkdown,
     testthat,
     tidync,
-    tidyr
+    tidyr,
+    kableExtra,
+    trend,
+    sf,
+    viridis
 Imports:
     data.table, 
     dplyr,
