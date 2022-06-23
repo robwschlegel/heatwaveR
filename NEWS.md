@@ -1,3 +1,9 @@
+# heatwaveR 0.4.6.9001 (2022-06-23)
+
+-   Added two new vignettes 
+    - Alternatives to downloading NOAA OISST data
+    - Trend and brek point analyses for MHW metrics
+
 # heatwaveR 0.4.6.9000 (2022-01-17)
 
 -   Updated SST time series to 2021-12-31

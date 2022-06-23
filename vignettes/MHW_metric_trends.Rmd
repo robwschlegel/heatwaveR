@@ -7,7 +7,7 @@ output:
   rmarkdown::html_vignette:
     fig_caption: yes
 vignette: >
-  %\VignetteIndexEntry{Trend and Breakpoint Analyses}
+  %\VignetteIndexEntry{Trend and Breakpoint analyses in MHW metrics}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 bibliography: bibliography.bib
@@ -29,7 +29,6 @@ library(viridis)
 library(trend)
 library(heatwaveR)
 library(lubridate)
-library(plotly)
 library(kableExtra)
 library(rerddap)
 library(sf)
@@ -62,7 +61,7 @@ lat_range <- c(lat_range[1]-0.25, lat_range[2]+0.25)
 
 ![MEOW bioregions around New Zealand](MapEcoregions.png){width=500px}
 
-Once we have our MEOW data for NZ ready it's time to find out which pixels specificaly we will want to download.
+Once we have our MEOW data for NZ ready it's time to find out which pixels specifically we will want to analyse. The process of assigning bioregions to pixels is simplified by using the `sf` (@sf) package.
 
 ```{r MEOW_pix, eval=FALSE}
 # Create OISST grid
@@ -78,19 +77,18 @@ lon_lat_NZ <- st_join(lon_lat_OISST, MEOW_NZ) %>%
   dplyr::filter(!is.na(ECOREGION))
 
 # Convert the coordinates back to a tibble for further use
-# NB: Should be 5,921 pixels
-# 6,398
-lon_lat_NZ_tb <- lon_lat_NZ %>% 
+# NB: Should be 6,398 pixels
+lon_lat_NZ_df <- lon_lat_NZ %>% 
   mutate(lon = sf::st_coordinates(.)[,1],
          lat = sf::st_coordinates(.)[,2]) %>% 
-  as_tibble() %>% 
+  mutate(lon = as.numeric(lon), lat = as.numeric(lat)) %>% 
+  data.frame() %>% 
   dplyr::select(-geometry)
 ```
 
-
 ## Download data and calculate climatologies
 
-We begin by loading daily OISST v2.1 data for all pixels around New Zealand (lat 25-55°S, lon 160-190°E) and use the functions `heatwaveR::ts2clim()` and `heatwaveR::detect_event()` to get the climatology from the time series. Note that this full process will take roughly one hour on a desktop computer given the number of pixels and days. Even though we know the exact coordinates of the pixels that we want, it is still faster to use the `rerddap::griddap()` function to extract a bounding box around NZ rather than to use the functions in the __`raster`__ package to extract the EEZ polygons.
+We begin by downloading daily OISST v2.1 data for all pixels around New Zealand (lat 25-55°S, lon 160-190°E) and use the functions `heatwaveR::ts2clim()` and `heatwaveR::detect_event()` to get the climatology from the time series. Note that this full process will take roughly one hour on a desktop computer given the number of pixels and days. Even though we know the exact coordinates of the pixels that we want, it is still faster to use the `rerddap::griddap()` function to extract a bounding box around NZ rather than to use the functions in the __`raster`__ package to extract the EEZ polygons.
 
 ```{r load-data, eval=F}
 # Get SST for around NZ + Islands and for all years
@@ -117,8 +115,7 @@ dl_years <- data.frame(date_index = 1:5,
 
 # Download the data
 # NB: Takes ~21 minutes on a desktop computer
-# NB: Contains 207,608,896 rows, 4 columns, and uses ~10 GB of RAM
-# 10.8 GB 17:34
+# NB: Contains 175,208,352 rows, 4 columns, and uses ~15 GB of RAM
 OISST_data <- dl_years %>% 
     group_by(date_index) %>% 
     group_modify(~OISST_sub_dl(.x)) %>% 
@@ -126,8 +123,8 @@ OISST_data <- dl_years %>%
     dplyr::select(lon, lat, t, temp)
 
 # Filter out only the NZ pixels
-# NB: Contains XXX rows
-OISST_data_NZ <- left_join(lon_lat_NZ_tb, OISST_data, by = c("lon", "lat"))
+# NB: Contains 87,195,152 rows
+OISST_data_NZ <- left_join(lon_lat_NZ_df, OISST_data, by = c("lon", "lat")) %>% drop_na()
   
 # Get the climatologies only
 clim_only <- function(df){
@@ -140,10 +137,10 @@ return(event$climatology)
 }
 
 # Extract the climatology values
-# NB: Takes ~46 minutes on a desktop computer
+# NB: Takes ~21 minutes on a desktop computer
 system.time(
-OISST_clim <- OISST_data %>%
-  group_by(lon,lat) %>%
+OISST_clim <- OISST_data_NZ %>%
+  group_by(ECOREGION, PROVINCE, lon, lat) %>%
   group_modify(~clim_only(.x)) %>%
   drop_na()
 )
@@ -151,54 +148,25 @@ OISST_clim <- OISST_data %>%
 
 ## Summarise MHW metrics by year, season, and bioregion
 
-We first summarise the MHW metrics by year and season.
-
 ```{r summarize-metrics, eval=F}
+# Get summary
 MHW_summary <- OISST_clim %>% 
   dplyr::select(-c(doy, thresh, threshCriterion, durationCriterion, event)) %>% 
   mutate(season_num = month(as.Date(floor_date(t, unit = "season"))),
          year = year(t)) %>%
   mutate(season = recode_factor(season_num, `12` = "Summer", `3` = "Autumn", `6` = "Winter", `9` = "Spring")) %>% 
   mutate(intensity = temp-seas) %>% 
-  group_by(lon, lat, year, season) %>% 
+  group_by(ECOREGION, PROVINCE, lon, lat, year, season) %>% 
   summarise(nevents = length(unique(event_no)),
             nMHWdays = length(t),
             int_cumulative = sum(intensity), 
             int_mean = mean(intensity),
             int_max = max(intensity), .groups = "drop") %>% 
-  pivot_longer(-c(lon, lat, year, season), names_to = 'metrics', values_to = 'values')
-```
-
-Then we assign bioregions using the `sf` (@sf) package.
-
-```{r assign-bioregion, eval=F}
-# We only get the pixels here (rather than time series of MHW days), converted to sf object
-# NB: Should be 14,212 pixels, but some out of MEOW polygons
-MHW_pixels <- MHW_summary %>% 
-  group_by(lon, lat) %>% 
-  tally() %>% 
-  st_as_sf(coords = c('lon','lat'), crs = 4326) 
-
-# Join the MHW gridded pixels to the MEOW spatial data
-MHW_pixels_MEOW <- st_join(MHW_pixels, MEOW_NZ) %>% 
-  dplyr::select(geometry, ECOREGION, PROVINCE)
-
-# Filter out pixels not within the NZ EEZ and convert the coordinates back to a tibble for further use
-# NB: Should be 5,921 pixels
-MHW_pixels_NZ <- MHW_pixels_MEOW %>% 
-  dplyr::filter(!is.na(ECOREGION)) %>% 
-  mutate(lon = sf::st_coordinates(.)[,1],
-         lat = sf::st_coordinates(.)[,2]) %>% 
-  as_tibble() %>% 
-  dplyr::select(-geometry)
-
-# Filter out pixels not within NZ MEOW
-# NB: Should be 2,128,210 rows
-MHW_summary_NZ <- left_join(MHW_summary, MHW_pixels_NZ, by = c('lon','lat'))  %>% 
-  dplyr::filter(!is.na(ECOREGION))
+  pivot_longer(-c(ECOREGION, PROVINCE, lon, lat, year, season), names_to = 'metrics', values_to = 'values')
 
 # Save for future use
-saveRDS(MHW_summary_NZ,"~/Desktop/MHW_summary_NZ_1982_2021_OISST.Rds")
+# NB: 10.8 MB
+saveRDS(MHW_summary,"~/Desktop/MHW_summary_NZ_1982_2021_OISST.Rds")
 ```
 
 ## Trends in MHW metrics at NZ scale + Bioregions
@@ -241,9 +209,10 @@ p <- ggplot(MHW_annual_summary_NZ, aes(x = year, y = values, col = Metrics)) +
   labs(x = "Year", Y = NULL) +
   theme_bw() + 
   theme(legend.position = "none") 
+p
 
 # Coerce to interactive plotly format
-ggplotly(p)
+# plotly::ggplotly(p)
 ```
 
 It seems like some of the metrics are going up, and that there is a potential acceleration after the years 2010. We can then calculate non parametric linear trends (Sen's slope and Mann-Kendall test) and breakpoints (Pettitt test) using the `trend` (@trend) package as well as the more usual and parametric `lm` function.
@@ -325,9 +294,10 @@ p <- MHW_summary_NZ_realms %>%
   theme_bw() + 
   theme(legend.position = c(0.8,0.05),
         legend.title = element_blank())
-  
+p
+
 # Coerce to plotly format
-ggplotly(p)
+# plotly::ggplotly(p)
 ```
 
 We could also show similar graphs for other metrics, like number of events, min, max or cumulative intensity.
@@ -402,9 +372,10 @@ p <- ggplot(MHW_WA_metrics_year, aes(x = year, y = values)) +
   facet_wrap(~Metrics, scales = 'free') +
   theme_bw() + 
   theme(legend.position = "none") 
+p
 
-# Cerce to plotly
-ggplotly(p)
+# Coerce to plotly
+# plotly::ggplotly(p)
 ```
 
 The `lm` regression seems to detect some upward trends in the metrics. What does Mann-Kendall have to say about these?
