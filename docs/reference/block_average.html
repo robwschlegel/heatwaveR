@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9001</span>
       </span>
     </div>
 
@@ -38,7 +38,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
      
     <span class="caret"></span>
@@ -47,10 +47,16 @@
       <a href="../articles/detection_and_visualisation.html">Basic Detection and Visualisation of Events</a>
     </li>
     <li>
+      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+    </li>
+    <li>
       <a href="../articles/exceedance.html">Calculating and Visualising Exceedances</a>
     </li>
     <li>
-      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
+    </li>
+    <li>
+      <a href="../articles/MHW_metric_trends.html">Trend and Breakpoint Analyses</a>
     </li>
     <li>
       <a href="../articles/OISST_preparation.html">Downloading and Preparing OISST Data</a>
@@ -59,13 +65,10 @@
       <a href="../articles/gridded_event_detection.html">Detecting Events in Gridded Data</a>
     </li>
     <li>
-      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse NOAA OISST Data: Alternative Methods</a>
+      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse Data: Alternative</a>
     </li>
     <li>
       <a href="../articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a>
-    </li>
-    <li>
-      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
     </li>
   </ul></li>
 <li>
@@ -112,58 +115,86 @@
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>Accepts the data returned by the <code><a href="detect_event.html">detect_event</a></code> function.</p></dd>
+
+
 <dt>x</dt>
 <dd><p>This column is expected to contain a vector of dates as per the
 specification of <code>ts2clm</code>. If a column headed <code>t</code> is present in
 the dataframe, this argument may be ommitted; otherwise, specify the name of
 the column with dates here.</p></dd>
+
+
 <dt>y</dt>
 <dd><p>This is a column containing the measurement variable. If the column
 name differs from the default (i.e. <code>temp</code>), specify the name here.</p></dd>
+
+
 <dt>report</dt>
 <dd><p>Specify either <code>full</code> or <code>partial</code>. Selecting <code>full</code> causes
 the report to contain NAs for any years in which no events were detected
 (except for <code>count</code>, which will be zero in those years), while <code>partial</code>
 reports only the years wherein events were detected. The default is <code>full</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The function will return a data frame of the averaged (or aggregate)
+    
+
+<p>The function will return a data frame of the averaged (or aggregate)
 metrics. It includes the following:</p>
 <dl><dt>year</dt>
 <dd><p>The year over which the metrics were averaged.</p></dd>
-<dt>count</dt>
+
+  <dt>count</dt>
 <dd><p>The number of events per year.</p></dd>
-<dt>duration</dt>
+
+  <dt>duration</dt>
 <dd><p>The average duration of events per year [days].</p></dd>
-<dt>duration_max</dt>
+
+  <dt>duration_max</dt>
 <dd><p>The maximum duration of an event in each year [days].</p></dd>
-<dt>intensity_mean</dt>
+
+  <dt>intensity_mean</dt>
 <dd><p>The average event "mean intensity" in each year [deg. C].</p></dd>
-<dt>intensity_max</dt>
+
+  <dt>intensity_max</dt>
 <dd><p>The average event "maximum (peak) intensity" in each year
   [deg. C].</p></dd>
-<dt>intensity_max_max</dt>
+
+  <dt>intensity_max_max</dt>
 <dd><p>The maximum event "maximum (peak) intensity" in
   each year [deg. C].</p></dd>
-<dt>intensity_var</dt>
+
+  <dt>intensity_var</dt>
 <dd><p>The average event "intensity variability" in each year
   [deg. C].</p></dd>
-<dt>intensity_cumulative</dt>
+
+  <dt>intensity_cumulative</dt>
 <dd><p>The average event "cumulative intensity" in each year
   [deg. C x days].</p></dd>
-<dt>rate_onset</dt>
+
+  <dt>rate_onset</dt>
 <dd><p>Average event onset rate in each year [deg. C / days].</p></dd>
-<dt>rate_decline</dt>
+
+  <dt>rate_decline</dt>
 <dd><p>Average event decline rate in each year [deg. C / days].</p></dd>
-<dt>total_days</dt>
+
+  <dt>total_days</dt>
 <dd><p>Total number of events days in each year [days].</p></dd>
-<dt>total_icum</dt>
+
+  <dt>total_icum</dt>
 <dd><p>Total cumulative intensity over all events in each year [deg. C x days].</p></dd>
+
+
 </dl><p><code>intensity_max_relThresh</code>, <code>intensity_mean_relThresh</code>,
-<code>intensity_var_relThresh</code>, and <code>intensity_cumulative_relThresh</code>are as above except relative to the threshold (e.g., 90th percentile) rather
-than the seasonal climatology.
-<code>intensity_max_abs</code>, <code>intensity_mean_abs</code>, <code>intensity_var_abs</code>, and
+<code>intensity_var_relThresh</code>, and <code>intensity_cumulative_relThresh</code></p>
+
+
+<p>are as above except relative to the threshold (e.g., 90th percentile) rather
+than the seasonal climatology.</p>
+
+
+<p><code>intensity_max_abs</code>, <code>intensity_mean_abs</code>, <code>intensity_var_abs</code>, and
 <code>intensity_cumulative_abs</code> are as above except as absolute magnitudes
 rather than relative to the seasonal climatology or threshold.</p>
     </div>
@@ -204,20 +235,20 @@ doi: 10.1016/j.pocean.2015.12.014</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Deviance Residuals: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Min       1Q   Median       3Q      Max  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -2.1428  -1.6759  -0.6056   0.6476   3.1983  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -2.2651  -1.6615  -0.5661   0.7848   3.2940  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              Estimate Std. Error z value Pr(&gt;|z|)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept) -39.67427   22.59280  -1.756   0.0791 .</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> year          0.02006    0.01128   1.779   0.0752 .</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept) -49.62247   21.43191  -2.315   0.0206 *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> year          0.02504    0.01069   2.343   0.0191 *</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Dispersion parameter for poisson family taken to be 1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Null deviance: 103.85  on 38  degrees of freedom</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Residual deviance: 100.63  on 37  degrees of freedom</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AIC: 163.84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Null deviance: 108.10  on 39  degrees of freedom</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Residual deviance: 102.48  on 38  degrees of freedom</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> AIC: 169.16</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of Fisher Scoring iterations: 6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -244,8 +275,7 @@ doi: 10.1016/j.pocean.2015.12.014</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

@@ -17,7 +17,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 ByteCompile: true
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 Depends: R (>= 3.0.2)
 Suggests:
     doParallel,
@@ -30,6 +30,7 @@ Suggests:
     testthat,
     tidync,
     tidyr,
+    purrr,
     kableExtra,
     trend,
     sf,

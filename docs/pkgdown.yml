@@ -1,7 +1,9 @@
 pandoc: 2.17.1.1
-pkgdown: 2.0.2
+pkgdown: 2.0.4
 pkgdown_sha: ~
 articles:
+  Download_SST_v2: Download_SST_v2.html
+  MHW_metric_trends: MHW_metric_trends.html
   MHW_to_nc: MHW_to_nc.html
   OISST_preparation: OISST_preparation.html
   complex_clims: complex_clims.html
@@ -9,8 +11,7 @@ articles:
   event_categories: event_categories.html
   exceedance: exceedance.html
   gridded_event_detection: gridded_event_detection.html
-  Download_SST_v2: Download_SST_v2.html
-last_built: 2022-03-09T06:01Z
+last_built: 2022-06-23T11:08Z
 urls:
   reference: https://robwschlegel.github.io/heatwaveR/index.html/reference
   article: https://robwschlegel.github.io/heatwaveR/index.html/articles

@@ -3,6 +3,8 @@
 #' Takes a series of dates and temperatures, and if irregular (but ordered), inserts
 #' missing dates and fills corresponding temperatures with NAs.
 #'
+#' @keywords internal
+#'
 #' @importFrom dplyr %>%
 #'
 #' @param data A data frame with columns for date and temperature data.

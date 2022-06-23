@@ -1,6 +1,6 @@
 ---
 title: "Trend and Breakpoint analyses in MHW metrics"
-author: "Francois Thoral and Robert Schlegel"
+author: "Francois Thoral"
 date: "`r Sys.Date()`"
 description: "This vignette demonstrates the utility and limitation of running a trend and break point analyses in MHW metrics."
 output: 
@@ -21,13 +21,14 @@ knitr::opts_chunk$set(fig.width = 8, fig.height = 8, fig.align = 'centre',
 
 ## Overview
 
-In the previous vignettes we saw how to [download and prepare OISST data](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html)and to [detect MHWs in gridded data](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html). In this vignette we will use data subsetted around the New Zealand (NZ) Exclusive Economic Zone (EEZ) for our example to calculate trends and breakpoints for bioregions (from @spalding2007) and seasons as shown in @thoral2022.
+One may see in other vignettes how to [download and prepare OISST data](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html) and how to [detect MHWs in gridded data](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html). In this vignette we will use data subsetted around the New Zealand (NZ) Exclusive Economic Zone (EEZ) for our example to calculate trends and breakpoints for bioregions (from @spalding2007) and seasons as shown in @thoral2022.
 
 ```{r load-pkg}
 library(heatwaveR)
 library(lubridate)
 library(dplyr)
 library(tidyr)
+library(purrr)
 library(ggplot2)
 library(viridis)
 library(trend)
@@ -44,13 +45,16 @@ The Marine Ecosystems of the World (MEOW) shapefile may be downloaded [here](htt
 # Load and process the MEOW shapefile
 # NB: Change your file path to where the files were unzipped
 MEOW_NZ <- st_read('~/Desktop/meow_ecos.shp') %>% 
-  dplyr:::filter(PROVINCE %in% c('Northern New Zealand', 'Southern New Zealand','Subantarctic New Zealand')) %>% 
+  dplyr:::filter(PROVINCE %in% c('Northern New Zealand', 'Southern New Zealand',
+                                 'Subantarctic New Zealand')) %>% 
   st_make_valid() %>%
   st_transform(crs = 4326) %>% 
   st_shift_longitude() %>% 
-  mutate(ECOREGION = factor(ECOREGION, levels = c("Kermadec Island", "Three Kings-North Cape", "Northeastern New Zealand",
-                                                  "Central New Zealand","Chatham Island","South New Zealand", 
-                                                  "Bounty and Antipodes Islands","Snares Island","Auckland Island","Campbell Island")))
+  mutate(ECOREGION = factor(ECOREGION, levels = c("Kermadec Island", "Three Kings-North Cape", 
+                                                  "Northeastern New Zealand", "Central New Zealand",
+                                                  "Chatham Island", "South New Zealand", 
+                                                  "Bounty and Antipodes Islands",
+                                                  "Snares Island","Auckland Island","Campbell Island")))
 
 # Find max lon/lat ranges
 lon_range <- range(sf::st_coordinates(MEOW_NZ$geometry)[,1])
@@ -154,7 +158,8 @@ MHW_summary <- OISST_clim %>%
   dplyr::select(-c(doy, thresh, threshCriterion, durationCriterion, event)) %>% 
   mutate(season_num = month(as.Date(floor_date(t, unit = "season"))),
          year = year(t)) %>%
-  mutate(season = recode_factor(season_num, `12` = "Summer", `3` = "Autumn", `6` = "Winter", `9` = "Spring")) %>% 
+  mutate(season = recode_factor(season_num, `12` = "Summer", `3` = "Autumn", 
+                                `6` = "Winter", `9` = "Spring")) %>% 
   mutate(intensity = temp-seas) %>% 
   group_by(ECOREGION, PROVINCE, lon, lat, year, season) %>% 
   summarise(nevents = length(unique(event_no)),
@@ -162,7 +167,8 @@ MHW_summary <- OISST_clim %>%
             int_cumulative = sum(intensity), 
             int_mean = mean(intensity),
             int_max = max(intensity), .groups = "drop") %>% 
-  pivot_longer(-c(ECOREGION, PROVINCE, lon, lat, year, season), names_to = 'metrics', values_to = 'values')
+  pivot_longer(-c(ECOREGION, PROVINCE, lon, lat, year, season), 
+               names_to = 'metrics', values_to = 'values')
 
 # Save for future use
 # NB: 10.8 MB
@@ -191,7 +197,8 @@ MHW_annual_summary_NZ <- MHW_summary_NZ %>%
             Cumulative_Intensity = sum(int_cumulative)/nrow(MHW_summary_NZ_npix), .groups = "drop") %>% 
   complete(year = 1982:2021) %>%
   pivot_longer(-year, names_to = 'Metrics', values_to = 'values') %>% 
-  mutate(Metrics = factor(Metrics, levels = c("Number_MHW_days", "Nevents", "Mean_Intensity", "Maximum_Intensity", "Cumulative_Intensity")))
+  mutate(Metrics = factor(Metrics, levels = c("Number_MHW_days", "Nevents", "Mean_Intensity", 
+                                              "Maximum_Intensity", "Cumulative_Intensity")))
 
 # Prepare prettier labels
 metrics_labs <- c(`Number_MHW_days` = "Number of MHW days",
@@ -269,7 +276,7 @@ MHW_summary_NZ_realms <- left_join(MHW_summary_NZ, MHW_summary_NZ_npix_realms, b
   summarize(Number_MHW_days = sum(nMHWdays),
             Nevents = sum(nevents), 
             Mean_Intensity = mean(int_mean), 
-            Maximum_Intensity = mean(int_max), # get the max instead of mean(max)--> nope, tells different story
+            Maximum_Intensity = mean(int_max),
             Cumulative_Intensity = sum(int_cumulative), .groups = "drop") %>% 
   mutate(Number_MHW_days = Number_MHW_days/npix,
          Nevents = Nevents/npix, 
@@ -278,7 +285,8 @@ MHW_summary_NZ_realms <- left_join(MHW_summary_NZ, MHW_summary_NZ_npix_realms, b
   complete(year = 1982:2021) %>% 
   dplyr::select(-npix) %>% 
   pivot_longer(-c(year, ECOREGION, season), names_to = 'Metrics', values_to = 'values') %>% 
-  mutate(Metrics = factor(Metrics, levels = c("Number_MHW_days", "Nevents", "Mean_Intensity", "Maximum_Intensity", "Cumulative_Intensity"))) %>% 
+  mutate(Metrics = factor(Metrics, levels = c("Number_MHW_days", "Nevents", "Mean_Intensity", 
+                                              "Maximum_Intensity", "Cumulative_Intensity"))) %>% 
   replace(is.na(.), 0)
 
 # Plot the results

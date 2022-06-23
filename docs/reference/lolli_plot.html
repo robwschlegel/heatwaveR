@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9001</span>
       </span>
     </div>
 
@@ -38,7 +38,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
      
     <span class="caret"></span>
@@ -47,10 +47,16 @@
       <a href="../articles/detection_and_visualisation.html">Basic Detection and Visualisation of Events</a>
     </li>
     <li>
+      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+    </li>
+    <li>
       <a href="../articles/exceedance.html">Calculating and Visualising Exceedances</a>
     </li>
     <li>
-      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
+    </li>
+    <li>
+      <a href="../articles/MHW_metric_trends.html">Trend and Breakpoint Analyses</a>
     </li>
     <li>
       <a href="../articles/OISST_preparation.html">Downloading and Preparing OISST Data</a>
@@ -59,13 +65,10 @@
       <a href="../articles/gridded_event_detection.html">Detecting Events in Gridded Data</a>
     </li>
     <li>
-      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse NOAA OISST Data: Alternative Methods</a>
+      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse Data: Alternative</a>
     </li>
     <li>
       <a href="../articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a>
-    </li>
-    <li>
-      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
     </li>
   </ul></li>
 <li>
@@ -117,23 +120,35 @@
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>Output from the <code><a href="detect_event.html">detect_event</a></code> function.</p></dd>
+
+
 <dt>xaxis</dt>
 <dd><p>One of <code>event_no</code>, <code>date_start</code> or <code>date_peak</code>.
 Default is <code>date_start</code>.</p></dd>
+
+
 <dt>metric</dt>
 <dd><p>One of <code>intensity_mean</code>, <code>intensity_max</code>,
 <code>intensity_cumulative</code> and <code>duration</code>.
  Default is <code>intensity_max</code>.</p></dd>
+
+
 <dt>event_count</dt>
 <dd><p>The number of top events to highlight, as determined by the
 value given to <code>metric</code>. Default is 3.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The function will return a graph of the intensity of the selected
+    
+
+<p>The function will return a graph of the intensity of the selected
 <code>metric</code> along the y-axis and the chosen <code>xaxis</code> value.
 The number of top events as per <code>event_count</code> will be highlighted
-in a brighter colour. This function differs in use from <code><a href="geom_lolli.html">geom_lolli</a></code>in that it creates a stand-alone figure. The benefit of this being
+in a brighter colour. This function differs in use from <code><a href="geom_lolli.html">geom_lolli</a></code></p>
+
+
+<p>in that it creates a stand-alone figure. The benefit of this being
 that one must not have any prior knowledge of <code>ggplot2</code> to create the figure.</p>
     </div>
     <div id="author">
@@ -166,8 +181,7 @@ that one must not have any prior knowledge of <code>ggplot2</code> to create the
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

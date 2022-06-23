@@ -3,6 +3,8 @@
 #' An internal function that detects the events according to the heatwave
 #' definition, and joins across the gaps if desired.
 #'
+#' @keywords internal
+#'
 #' @importFrom dplyr %>%
 #'
 #' @param t_series A dataframe of the correct dimensions inherited

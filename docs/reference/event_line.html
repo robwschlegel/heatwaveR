@@ -24,7 +24,7 @@ Hobday et al. (2016)."><meta property="og:image" content="https://robwschlegel.g
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9001</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@ Hobday et al. (2016)."><meta property="og:image" content="https://robwschlegel.g
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
      
     <span class="caret"></span>
@@ -48,10 +48,16 @@ Hobday et al. (2016)."><meta property="og:image" content="https://robwschlegel.g
       <a href="../articles/detection_and_visualisation.html">Basic Detection and Visualisation of Events</a>
     </li>
     <li>
+      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+    </li>
+    <li>
       <a href="../articles/exceedance.html">Calculating and Visualising Exceedances</a>
     </li>
     <li>
-      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
+    </li>
+    <li>
+      <a href="../articles/MHW_metric_trends.html">Trend and Breakpoint Analyses</a>
     </li>
     <li>
       <a href="../articles/OISST_preparation.html">Downloading and Preparing OISST Data</a>
@@ -60,13 +66,10 @@ Hobday et al. (2016)."><meta property="og:image" content="https://robwschlegel.g
       <a href="../articles/gridded_event_detection.html">Detecting Events in Gridded Data</a>
     </li>
     <li>
-      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse NOAA OISST Data: Alternative Methods</a>
+      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse Data: Alternative</a>
     </li>
     <li>
       <a href="../articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a>
-    </li>
-    <li>
-      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
     </li>
   </ul></li>
 <li>
@@ -129,21 +132,31 @@ Hobday et al. (2016).</p>
     <dl><dt>data</dt>
 <dd><p>The function receives the full (list) output from the
 <code><a href="detect_event.html">detect_event</a></code> function.</p></dd>
+
+
 <dt>x</dt>
 <dd><p>This column is expected to contain a vector of dates as per the
 specification of <code>make_whole</code>. If a column headed <code>t</code> is present in
 the dataframe, this argument may be ommitted; otherwise, specify the name of
 the column with dates here.</p></dd>
+
+
 <dt>y</dt>
 <dd><p>This is a column containing the measurement variable. If the column
 name differs from the default (i.e. <code>temp</code>), specify the name here.</p></dd>
+
+
 <dt>min_duration</dt>
 <dd><p>The minimum duration (days) the event must be for it to
 qualify as a heatwave or cold-spell.</p></dd>
+
+
 <dt>spread</dt>
 <dd><p>The number of days leading and trailing the largest event
 (as per <code>metric</code>) detected within the time period specified by
 <code>start_date</code> and <code>end_date</code>. The default is 150 days.</p></dd>
+
+
 <dt>metric</dt>
 <dd><p>This tells the function how to choose the event that should be
 highlighted as the 'greatest' of the events in the chosen period. One may
@@ -155,6 +168,8 @@ choose from the following options: <code>intensity_mean</code>, <code>intensity_
 <code>rate_onset</code>, <code>rate_decline</code>. Partial name matching is currently not
 supported so please specify the metric name precisely. The default is
 <code>intensity_cumulative</code>.</p></dd>
+
+
 <dt>start_date</dt>
 <dd><p>The start date of a period of time within which the largest
 event (as per <code>metric</code>) is retrieved and plotted. This may not necessarily
@@ -162,36 +177,54 @@ correspond to the biggest event of the specified metric within the entire
 time series. To plot the largest event within the whole time series, make sure
 <code>start_date</code> and <code>end_date</code> straddle this event, or simply leave them both
 as NULL (default) and <code>event_line</code> will use the entire time series date range.</p></dd>
+
+
 <dt>end_date</dt>
 <dd><p>The end date of a period of time within which the largest
 event (as per <code>metric</code>) is retrieved and plotted. See <code>start_date</code>
 for additional information.</p></dd>
+
+
 <dt>category</dt>
 <dd><p>A boolean choice of TRUE or FALSE. If set to FALSE (default) event_line() will
 produce a figure as per the second row of Figure 3 in Hobday et al. (2016). If set to TRUE a
 figure showing the different categories of the MHWs in the chosen period, highlighted as
 seen in Figure 3 of Hobday et al. (in review), will be produced. If <code>category</code> = TRUE,
 <code>metric</code> will be ignored as a different colouring scheme is used.</p></dd>
+
+
 <dt>x_axis_title</dt>
 <dd><p>If one would like to add a title for the x-axis it may be provided here.</p></dd>
+
+
 <dt>x_axis_text_angle</dt>
 <dd><p>If one would like to change the angle of the x-axis text, provide
 the angle here as a single numeric value.</p></dd>
+
+
 <dt>y_axis_title</dt>
 <dd><p>Provide text here if one would like a title for the y-axis other
 than "Temperature °C" (default)</p></dd>
+
+
 <dt>y_axis_range</dt>
 <dd><p>If one would like to control the y-axis range, provide the desired limits
 here as two numeric values (e.g. c(20, 30)).</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The function will return a line plot indicating the climatology,
+    
+
+<p>The function will return a line plot indicating the climatology,
 threshold and temperature, with the hot or cold events that meet the
 specifications of Hobday et al. (2016) shaded in as appropriate. The plotting
 of hot or cold events depends on which option is specified in <code><a href="detect_event.html">detect_event</a></code>.
 The top event detect during the selected time period will be visible in a
-brighter colour. This function differs in use from <code><a href="geom_flame.html">geom_flame</a></code>in that it creates a stand alone figure. The benefit of this being
+brighter colour. This function differs in use from <code><a href="geom_flame.html">geom_flame</a></code></p>
+
+
+<p>in that it creates a stand alone figure. The benefit of this being
 that one must not have any prior knowledge of ggplot2 to create the figure.</p>
     </div>
     <div id="references">
@@ -234,8 +267,7 @@ doi: 10.1016/j.pocean.2015.12.014</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

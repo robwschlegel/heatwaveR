@@ -51,7 +51,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9001</span>
       </span>
     </div>
 
@@ -67,7 +67,7 @@
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
      
     <span class="caret"></span>
@@ -77,10 +77,16 @@
       <a href="articles/detection_and_visualisation.html">Basic Detection and Visualisation of Events</a>
     </li>
     <li>
+      <a href="articles/event_categories.html">Calculating and Visualising Event Categories</a>
+    </li>
+    <li>
       <a href="articles/exceedance.html">Calculating and Visualising Exceedances</a>
     </li>
     <li>
-      <a href="articles/event_categories.html">Calculating and Visualising Event Categories</a>
+      <a href="articles/complex_clims.html">Alternative Thresholds</a>
+    </li>
+    <li>
+      <a href="articles/MHW_metric_trends.html">Trend and Breakpoint Analyses</a>
     </li>
     <li>
       <a href="articles/OISST_preparation.html">Downloading and Preparing OISST Data</a>
@@ -89,13 +95,10 @@
       <a href="articles/gridded_event_detection.html">Detecting Events in Gridded Data</a>
     </li>
     <li>
-      <a href="articles/Download_SST_v2.html">Download, Prepare, and Analyse NOAA OISST Data: Alternative Methods</a>
+      <a href="articles/Download_SST_v2.html">Download, Prepare, and Analyse Data: Alternative</a>
     </li>
     <li>
       <a href="articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a>
-    </li>
-    <li>
-      <a href="articles/complex_clims.html">Alternative Thresholds</a>
     </li>
   </ul>
 </li>
@@ -133,53 +136,14 @@
       </header><div class="row">
   <div class="contents col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="heatwaver-">heatwaveR
-<img src="articles/logo.png" width="200" align="right"><a class="anchor" aria-label="anchor" href="#heatwaver-"></a>
+<div class="page-header"><h1 id="heatwaver-">heatwaveR <img src="articles/logo.png" width="200" align="right"><a class="anchor" aria-label="anchor" href="#heatwaver-"></a>
 </h1></div>
 
-<p>The <strong><code>heatwaveR</code></strong> package is a project-wide
-update to the <a href="https://github.com/ajsmit/RmarineHeatWaves" class="external-link"><strong><code>RmarineHeatWaves</code></strong></a>
-package, which is itself a translation of the original <a href="https://github.com/ecjoliver/marineHeatWaves" class="external-link">Python code</a>
-written by Eric C. J. Oliver. The
-<strong><code>heatwaveR</code></strong> package also uses the same
-naming conventions for objects, columns, and arguments as the Python
-code.</p>
-<p>The <strong><code>heatwaveR</code></strong> R package contains the
-original functions from the
-<strong><code>RmarineHeatWaves</code></strong> package that calculate
-and display marine heatwaves (MHWs) according to the definition of
-Hobday et al. (2016) as well as calculating and visualising marine
-cold-spells (MCSs) as first introduced in Schlegel et al. (2017a). It
-also contains the functionality to calculate the categories of MHWs as
-outlined in Hobday et al. (2018).</p>
-<p>This package does what <strong><code>RmarineHeatWaves</code></strong>
-does, but faster. The entire package has been deconstructed and
-modularised, and we are continuing to implement slow portions of the
-code in C++. This has alleviated the bottlenecks that slowed down the
-climatology creation portions of the code as well as generally creating
-an overall increase in the speed of the calculations. Currently the R
-code runs about as fast as the original python functions, at least in as
-far as applying it to single time series of temperatures. Readers
-familiar with both languages will know about the ongoing debate around
-the relative speed of the two languages. In our experience, R can be as
-fast as python, provided that attention is paid to finding ways to
-reduce the computational inefficiencies that stem from i) the liberal
-use of complex and inefficient non-atomic data structures, such as data
-frames; ii) the reliance on non-vectorised calculations such as loops;
-and iii) lazy (but convenient) coding that comes from drawing too
-heavily on the <code>tidyverse</code> suite of packages. We will
-continue to ensure that <strong><code>heatwaveR</code></strong> becomes
-more-and-more efficient so that it can be applied to large gridded data
-products with ease.</p>
-<p>This new package was developed and released in order to better
-accommodate the inclusion of the definitions of atmospheric heatwaves in
-addition to MHWs. Additionally, <strong><code>heatwaveR</code></strong>
-also provides the first implementation of a definition for a ‘compound
-heatwave’. There are currently multiple different definitions for this
-type of event and each of which has arguments provided for it within the
-<code><a href="reference/ts2clm.html">ts2clm()</a></code> and <code><a href="reference/detect_event.html">detect_event()</a></code> functions.</p>
-<p>This package may be installed from CRAN by typing the following
-command into the console:</p>
+<p>The <strong><code>heatwaveR</code></strong> package is a project-wide update to the <a href="https://github.com/ajsmit/RmarineHeatWaves" class="external-link"><strong><code>RmarineHeatWaves</code></strong></a> package, which is itself a translation of the original <a href="https://github.com/ecjoliver/marineHeatWaves" class="external-link">Python code</a> written by Eric C. J. Oliver. The <strong><code>heatwaveR</code></strong> package also uses the same naming conventions for objects, columns, and arguments as the Python code.</p>
+<p>The <strong><code>heatwaveR</code></strong> R package contains the original functions from the <strong><code>RmarineHeatWaves</code></strong> package that calculate and display marine heatwaves (MHWs) according to the definition of Hobday et al. (2016) as well as calculating and visualising marine cold-spells (MCSs) as first introduced in Schlegel et al. (2017a). It also contains the functionality to calculate the categories of MHWs as outlined in Hobday et al. (2018).</p>
+<p>This package does what <strong><code>RmarineHeatWaves</code></strong> does, but faster. The entire package has been deconstructed and modularised, and we are continuing to implement slow portions of the code in C++. This has alleviated the bottlenecks that slowed down the climatology creation portions of the code as well as generally creating an overall increase in the speed of the calculations. Currently the R code runs about as fast as the original python functions, at least in as far as applying it to single time series of temperatures. Readers familiar with both languages will know about the ongoing debate around the relative speed of the two languages. In our experience, R can be as fast as python, provided that attention is paid to finding ways to reduce the computational inefficiencies that stem from i) the liberal use of complex and inefficient non-atomic data structures, such as data frames; ii) the reliance on non-vectorised calculations such as loops; and iii) lazy (but convenient) coding that comes from drawing too heavily on the <code>tidyverse</code> suite of packages. We will continue to ensure that <strong><code>heatwaveR</code></strong> becomes more-and-more efficient so that it can be applied to large gridded data products with ease.</p>
+<p>This new package was developed and released in order to better accommodate the inclusion of the definitions of atmospheric heatwaves in addition to MHWs. Additionally, <strong><code>heatwaveR</code></strong> also provides the first implementation of a definition for a ‘compound heatwave’. There are currently multiple different definitions for this type of event and each of which has arguments provided for it within the <code><a href="reference/ts2clm.html">ts2clm()</a></code> and <code><a href="reference/detect_event.html">detect_event()</a></code> functions.</p>
+<p>This package may be installed from CRAN by typing the following command into the console:</p>
 <p><code>install.packages("heatwaveR")</code></p>
 <p>Or the development version may be installed from GitHub with:</p>
 <p><code>devtools::install_github("robwschlegel/heatwaveR")</code></p>
@@ -198,13 +162,11 @@ command into the console:</p>
 <tbody>
 <tr class="odd">
 <td><code><a href="reference/ts2clm.html">ts2clm()</a></code></td>
-<td>Constructs seasonal and threshold climatologies as per the
-definition of Hobday et al. (2016).</td>
+<td>Constructs seasonal and threshold climatologies as per the definition of Hobday et al. (2016).</td>
 </tr>
 <tr class="even">
 <td><code><a href="reference/detect_event.html">detect_event()</a></code></td>
-<td>The main function which detects the events as per the definition of
-Hobday et al. (2016).</td>
+<td>The main function which detects the events as per the definition of Hobday et al. (2016).</td>
 </tr>
 <tr class="odd">
 <td><code><a href="reference/block_average.html">block_average()</a></code></td>
@@ -212,56 +174,36 @@ Hobday et al. (2016).</td>
 </tr>
 <tr class="even">
 <td><code><a href="reference/category.html">category()</a></code></td>
-<td>Applies event categories to the output of
-<code><a href="reference/detect_event.html">detect_event()</a></code> based on Hobday et al. (2018).</td>
+<td>Applies event categories to the output of <code><a href="reference/detect_event.html">detect_event()</a></code> based on Hobday et al. (2018).</td>
 </tr>
 <tr class="odd">
 <td><code><a href="reference/exceedance.html">exceedance()</a></code></td>
-<td>A function similar to <code><a href="reference/detect_event.html">detect_event()</a></code> but that detects
-consecutive days above/below a given static threshold.</td>
+<td>A function similar to <code><a href="reference/detect_event.html">detect_event()</a></code> but that detects consecutive days above/below a given static threshold.</td>
 </tr>
 <tr class="even">
 <td><code><a href="reference/event_line.html">event_line()</a></code></td>
-<td>Creates a time series line graph of the heatwave or cold-spell
-results from <code><a href="reference/detect_event.html">detect_event()</a></code>.</td>
+<td>Creates a time series line graph of the heatwave or cold-spell results from <code><a href="reference/detect_event.html">detect_event()</a></code>.</td>
 </tr>
 <tr class="odd">
 <td><code><a href="reference/lolli_plot.html">lolli_plot()</a></code></td>
-<td>Creates a lolliplot time series of a selected event metric from the
-results generated by <code><a href="reference/detect_event.html">detect_event()</a></code>.</td>
+<td>Creates a lolliplot time series of a selected event metric from the results generated by <code><a href="reference/detect_event.html">detect_event()</a></code>.</td>
 </tr>
 <tr class="even">
 <td><code><a href="reference/geom_flame.html">geom_flame()</a></code></td>
-<td>Creates flame polygons of heatwaves or cold-spells from a time
-series.</td>
+<td>Creates flame polygons of heatwaves or cold-spells from a time series.</td>
 </tr>
 <tr class="odd">
 <td><code><a href="reference/geom_lolli.html">geom_lolli()</a></code></td>
-<td>Creates lolliplots from a time series of a selected event
-metric.</td>
+<td>Creates lolliplots from a time series of a selected event metric.</td>
 </tr>
 </tbody>
 </table>
-<p>The package also provides data of observed SST records for three
-historical MHWs: the 2011 Western Australia event, the 2012 Northwest
-Atlantic event, and the 2003 Mediterranean event.</p>
+<p>The package also provides data of observed SST records for three historical MHWs: the 2011 Western Australia event, the 2012 Northwest Atlantic event, and the 2003 Mediterranean event.</p>
 </div>
 <div class="section level2">
 <h2 id="the-heatwave-metrics">The heatwave metrics<a class="anchor" aria-label="anchor" href="#the-heatwave-metrics"></a>
 </h2>
-<p>The <code><a href="reference/detect_event.html">detect_event()</a></code> function will return a list of two
-tibbles (see the <strong><code>tidyverse</code></strong>),
-<code>climatology</code> and <code>event</code>, which are the time
-series climatology and MHW (or MCS) events, respectively. The
-climatology contains the full time series of daily temperatures, as well
-as the the seasonal climatology, the threshold and various aspects of
-the events that were detected. The software was designed for detecting
-extreme thermal events, and the units specified below reflect that
-intended purpose. However, various other kinds of extreme events
-(e.g. rainfall) may be detected according to the ‘heatwave’
-specifications, and if that is the case, the appropriate
-<code>minDuration</code> etc. and units of measurement need to be
-determined by the user.</p>
+<p>The <code><a href="reference/detect_event.html">detect_event()</a></code> function will return a list of two tibbles (see the <strong><code>tidyverse</code></strong>), <code>climatology</code> and <code>event</code>, which are the time series climatology and MHW (or MCS) events, respectively. The climatology contains the full time series of daily temperatures, as well as the the seasonal climatology, the threshold and various aspects of the events that were detected. The software was designed for detecting extreme thermal events, and the units specified below reflect that intended purpose. However, various other kinds of extreme events (e.g. rainfall) may be detected according to the ‘heatwave’ specifications, and if that is the case, the appropriate <code>minDuration</code> etc. and units of measurement need to be determined by the user.</p>
 <table class="table">
 <colgroup>
 <col width="7%">
@@ -274,23 +216,15 @@ determined by the user.</p>
 <tbody>
 <tr class="odd">
 <td><code>doy</code></td>
-<td>Julian day (day-of-year). For non-leap years it runs 1…59 and
-61…366, while leap years run 1…366. This column will be named
-differently if another name was specified to the <code>doy</code>
-argument.</td>
+<td>Julian day (day-of-year). For non-leap years it runs 1…59 and 61…366, while leap years run 1…366. This column will be named differently if another name was specified to the <code>doy</code> argument.</td>
 </tr>
 <tr class="even">
 <td><code>t</code></td>
-<td>The date of the temperature measurement. This column will be named
-differently if another name was specified to the <code>x</code>
-argument.</td>
+<td>The date of the temperature measurement. This column will be named differently if another name was specified to the <code>x</code> argument.</td>
 </tr>
 <tr class="odd">
 <td><code>temp</code></td>
-<td>If the software was used for the purpose for which it was designed,
-seawater temperature (deg. C) on the specified date will be returned.
-This column will of course be named differently if another kind of
-measurement was specified to the <code>y</code> argument.</td>
+<td>If the software was used for the purpose for which it was designed, seawater temperature (deg. C) on the specified date will be returned. This column will of course be named differently if another kind of measurement was specified to the <code>y</code> argument.</td>
 </tr>
 <tr class="even">
 <td><code>seas</code></td>
@@ -302,28 +236,23 @@ measurement was specified to the <code>y</code> argument.</td>
 </tr>
 <tr class="even">
 <td><code>var</code></td>
-<td>Variance (standard deviation) per <code>doy</code> of
-<code>temp</code> (deg. C). (not returned by default as of v0.3.5)</td>
+<td>Variance (standard deviation) per <code>doy</code> of <code>temp</code> (deg. C). (not returned by default as of v0.3.5)</td>
 </tr>
 <tr class="odd">
 <td><code>threshCriterion</code></td>
-<td>Boolean indicating if <code>temp</code> exceeds
-<code>thresh</code>.</td>
+<td>Boolean indicating if <code>temp</code> exceeds <code>thresh</code>.</td>
 </tr>
 <tr class="even">
 <td><code>durationCriterion</code></td>
-<td>Boolean indicating whether periods of consecutive
-<code>threshCriterion</code> are &gt;= <code>minDuration</code>.</td>
+<td>Boolean indicating whether periods of consecutive <code>threshCriterion</code> are &gt;= <code>minDuration</code>.</td>
 </tr>
 <tr class="odd">
 <td><code>event</code></td>
-<td>Boolean indicating if all criteria that define a MHW or MCS are
-met.</td>
+<td>Boolean indicating if all criteria that define a MHW or MCS are met.</td>
 </tr>
 <tr class="even">
 <td><code>event_no</code></td>
-<td>A sequential number indicating the ID and order of occurrence of the
-MHWs or MCSs.</td>
+<td>A sequential number indicating the ID and order of occurrence of the MHWs or MCSs.</td>
 </tr>
 </tbody>
 </table>
@@ -340,9 +269,7 @@ MHWs or MCSs.</td>
 <tbody>
 <tr class="odd">
 <td><code>event_no</code></td>
-<td>A sequential number indicating the ID and order of the events. This
-allows one to match/join results between the <code>climatology</code>
-and <code>event</code> outputs.</td>
+<td>A sequential number indicating the ID and order of the events. This allows one to match/join results between the <code>climatology</code> and <code>event</code> outputs.</td>
 </tr>
 <tr class="even">
 <td><code>index_start</code></td>
@@ -398,118 +325,59 @@ and <code>event</code> outputs.</td>
 </tr>
 </tbody>
 </table>
-<p><code>intensity_max_relThresh</code>,
-<code>intensity_mean_relThresh</code>,
-<code>intensity_var_relThresh</code>, and
-<code>intensity_cumulative_relThresh</code> are as above except relative
-to the threshold (e.g., 90th percentile) rather than the seasonal
-climatology.</p>
-<p><code>intensity_max_abs</code>, <code>intensity_mean_abs</code>,
-<code>intensity_var_abs</code>, and
-<code>intensity_cumulative_abs</code> are as above except as absolute
-magnitudes rather than relative to the seasonal climatology or
-threshold.</p>
-<p>Note that <code>rate_onset</code> and <code>rate_decline</code> will
-return <code>NA</code> when the event begins/ends on the first/last day
-of the time series. This may be particularly evident when the function
-is applied to large gridded data sets. Although the other metrics do not
-contain any errors and provide sensible values, please take this into
-account in the interpretation of the output. It must also be noted that
-events whose <code>date_peak</code> occur on the same day as the
-<code>date_start</code> or <code>date_end</code> of the event will
-return small negative values. This tends to only occur in areas with
-persistent ice cover. The authors are currently thinking about how best
-to handle this exception.</p>
+<p><code>intensity_max_relThresh</code>, <code>intensity_mean_relThresh</code>, <code>intensity_var_relThresh</code>, and <code>intensity_cumulative_relThresh</code> are as above except relative to the threshold (e.g., 90th percentile) rather than the seasonal climatology.</p>
+<p><code>intensity_max_abs</code>, <code>intensity_mean_abs</code>, <code>intensity_var_abs</code>, and <code>intensity_cumulative_abs</code> are as above except as absolute magnitudes rather than relative to the seasonal climatology or threshold.</p>
+<p>Note that <code>rate_onset</code> and <code>rate_decline</code> will return <code>NA</code> when the event begins/ends on the first/last day of the time series. This may be particularly evident when the function is applied to large gridded data sets. Although the other metrics do not contain any errors and provide sensible values, please take this into account in the interpretation of the output. It must also be noted that events whose <code>date_peak</code> occur on the same day as the <code>date_start</code> or <code>date_end</code> of the event will return small negative values. This tends to only occur in areas with persistent ice cover. The authors are currently thinking about how best to handle this exception.</p>
 </div>
 <div class="section level2">
 <h2 id="the-vignettes">The Vignettes<a class="anchor" aria-label="anchor" href="#the-vignettes"></a>
 </h2>
-<p>For detailed explanations and walkthroughs on the use of the
-<strong><code>heatwaveR</code></strong> package please click on the
-Vignettes tab in the toolbar above, or follow the links below:</p>
+<p>For detailed explanations and walkthroughs on the use of the <strong><code>heatwaveR</code></strong> package please click on the Vignettes tab in the toolbar above, or follow the links below:</p>
 <ul>
-<li>For a basic introduction to the <a href="https://robwschlegel.github.io/heatwaveR/articles/detection_and_visualisation.html" class="external-link">detection
-and visualisation</a> of events.</li>
-<li>For an explanation on the use of the <a href="https://robwschlegel.github.io/heatwaveR/articles/exceedance.html" class="external-link">exceedance</a>
-function.</li>
-<li>For a walkthrough on the calculation and visualisation of <a href="https://robwschlegel.github.io/heatwaveR/articles/event_categories.html" class="external-link">event
-categories</a>.</li>
-<li>For examples on the calculation of atmospheric events with <a href="https://robwschlegel.github.io/heatwaveR/articles/complex_clims.html" class="external-link">alternative
-thresholds</a>.</li>
-<li>For a demonstration on how to <a href="https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html" class="external-link">download
-and prepare OISST data</a>.</li>
-<li>Which may then have the <code><a href="reference/detect_event.html">detect_event()</a></code> function applied
-to the <a href="https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html" class="external-link">gridded
-data</a>, and then fit a GLM and plot the results.</li>
+<li>For a basic introduction to the <a href="https://robwschlegel.github.io/heatwaveR/articles/detection_and_visualisation.html" class="external-link">detection and visualisation</a> of events.</li>
+<li>For an explanation on the use of the <a href="https://robwschlegel.github.io/heatwaveR/articles/exceedance.html" class="external-link">exceedance</a> function.</li>
+<li>For a walkthrough on the calculation and visualisation of <a href="https://robwschlegel.github.io/heatwaveR/articles/event_categories.html" class="external-link">event categories</a>.</li>
+<li>For examples on the calculation of atmospheric events with <a href="https://robwschlegel.github.io/heatwaveR/articles/complex_clims.html" class="external-link">alternative thresholds</a>.</li>
+<li>For a demonstration on how to <a href="https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html" class="external-link">download and prepare OISST data</a>.</li>
+<li>Which may then have the <code><a href="reference/detect_event.html">detect_event()</a></code> function applied to the <a href="https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html" class="external-link">gridded data</a>, and then fit a GLM and plot the results.</li>
 </ul>
 </div>
 <div class="section level2">
 <h2 id="the-marine-heatwave-tracker">The Marine Heatwave Tracker<a class="anchor" aria-label="anchor" href="#the-marine-heatwave-tracker"></a>
 </h2>
-<p>To see the <strong><code>heatwaveR</code></strong> package in action,
-check out the <a href="http://www.marineheatwaves.org/tracker.html" class="external-link">Marine Heatwave
-Tracker</a> website. This is a daily updating global analysis of where
-in the world marine heatwaves are occurring. It has near real-time
-information as well as historic data going back to January 1st, 1982 and
-uses the Hobday et al. (2018) colour scheme to show how intense the MHWs
-are.</p>
+<p>To see the <strong><code>heatwaveR</code></strong> package in action, check out the <a href="http://www.marineheatwaves.org/tracker.html" class="external-link">Marine Heatwave Tracker</a> website. This is a daily updating global analysis of where in the world marine heatwaves are occurring. It has near real-time information as well as historic data going back to January 1st, 1982 and uses the Hobday et al. (2018) colour scheme to show how intense the MHWs are.</p>
 </div>
 <div class="section level2">
 <h2 id="contributing-to-heatwaver">Contributing to <strong><code>heatwaveR</code></strong>
 <a class="anchor" aria-label="anchor" href="#contributing-to-heatwaver"></a>
 </h2>
 <p>To contribute to the package please follow the guidelines <a href="https://robwschlegel.github.io/heatwaveR/CONTRIBUTING.html" class="external-link">here</a>.</p>
-<p>Please use this <a href="https://github.com/robwschlegel/heatwaveR/issues" class="external-link">link</a> to
-report any bugs found.</p>
+<p>Please use this <a href="https://github.com/robwschlegel/heatwaveR/issues" class="external-link">link</a> to report any bugs found.</p>
 </div>
 <div class="section level2">
 <h2 id="citing-heatwaver">Citing <strong><code>heatwaveR</code></strong>
 <a class="anchor" aria-label="anchor" href="#citing-heatwaver"></a>
 </h2>
-<p>Because <strong><code>heatwaveR</code></strong> is and always will be
-free to use open source software, its citation in scientific literature
-and other sources is the primary metric through which the continued
-development of this package is motivated for. Therefore, if the
-<strong><code>heatwaveR</code></strong> package is used in any analyses
-please acknowledge this through the following citation:</p>
-<p>Robert W. Schlegel and Albertus J. Smit (2018). heatwaveR: A central
-algorithm for the detection of heatwaves and cold-spells. Journal of
-Open Source Software, 3(27), 821, <a href="https://doi.org/10.21105/joss.00821" class="external-link uri">https://doi.org/10.21105/joss.00821</a></p>
+<p>Because <strong><code>heatwaveR</code></strong> is and always will be free to use open source software, its citation in scientific literature and other sources is the primary metric through which the continued development of this package is motivated for. Therefore, if the <strong><code>heatwaveR</code></strong> package is used in any analyses please acknowledge this through the following citation:</p>
+<p>Robert W. Schlegel and Albertus J. Smit (2018). heatwaveR: A central algorithm for the detection of heatwaves and cold-spells. Journal of Open Source Software, 3(27), 821, <a href="https://doi.org/10.21105/joss.00821" class="external-link uri">https://doi.org/10.21105/joss.00821</a></p>
 <p>The BibTeX citation may be accessed in R with:</p>
 <p><code>citation("heatwaveR")</code></p>
-<p>For a list of sources that have cited
-<strong><code>heatwaveR</code></strong> see the Citations tab in the
-toolbar at the top of this page. If you do not see your publication in
-the list of citations and would like it added please contact the
-developer (see below).</p>
+<p>For a list of sources that have cited <strong><code>heatwaveR</code></strong> see the Citations tab in the toolbar at the top of this page. If you do not see your publication in the list of citations and would like it added please contact the developer (see below).</p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<p>Hobday, A.J. et al. (2016). A hierarchical approach to defining
-marine heatwaves. Progress in Oceanography, 141, pp. 227-238.</p>
-<p>Schlegel, R. W., Oliver, E. C. J., Wernberg, T. W., Smit, A. J.
-(2017a). Nearshore and offshore co-occurrences of marine heatwaves and
-cold-spells. Progress in Oceanography, 151, pp. 189-205.</p>
-<p>Schlegel, R. W., Oliver, E. C., Perkins-Kirkpatrick, S., Kruger, A.,
-Smit, A. J. (2017b). Predominant atmospheric and oceanic patterns during
-coastal marine heatwaves. Frontiers in Marine Science, 4, 323.</p>
-<p>Hobday, A. J., Oliver, E. C. J., Sen Gupta, A., Benthuysen, J. A.,
-Burrows, M. T., Donat, M. G., Holbrook, N. J., Moore, P. J., Thomsen, M.
-S., Wernberg, T., Smale, D. A. (2018). Categorizing and naming marine
-heatwaves. Oceanography 31(2).</p>
+<p>Hobday, A.J. et al. (2016). A hierarchical approach to defining marine heatwaves. Progress in Oceanography, 141, pp. 227-238.</p>
+<p>Schlegel, R. W., Oliver, E. C. J., Wernberg, T. W., Smit, A. J. (2017a). Nearshore and offshore co-occurrences of marine heatwaves and cold-spells. Progress in Oceanography, 151, pp. 189-205.</p>
+<p>Schlegel, R. W., Oliver, E. C., Perkins-Kirkpatrick, S., Kruger, A., Smit, A. J. (2017b). Predominant atmospheric and oceanic patterns during coastal marine heatwaves. Frontiers in Marine Science, 4, 323.</p>
+<p>Hobday, A. J., Oliver, E. C. J., Sen Gupta, A., Benthuysen, J. A., Burrows, M. T., Donat, M. G., Holbrook, N. J., Moore, P. J., Thomsen, M. S., Wernberg, T., Smale, D. A. (2018). Categorizing and naming marine heatwaves. Oceanography 31(2).</p>
 </div>
 <div class="section level2">
 <h2 id="acknowledgements">Acknowledgements<a class="anchor" aria-label="anchor" href="#acknowledgements"></a>
 </h2>
 <p>The Python code was written by Eric C. J. Oliver.</p>
-<p>Contributors to the Marine Heatwaves definition and its numerical
-implementation include Alistair J. Hobday, Lisa V. Alexander, Sarah E.
-Perkins, Dan A. Smale, Sandra C. Straub, Jessica Benthuysen, Michael T.
-Burrows, Markus G. Donat, Ming Feng, Neil J. Holbrook, Pippa J. Moore,
-Hillary A. Scannell, Alex Sen Gupta, and Thomas Wernberg.</p>
-<p>The translation from Python to R was done by A. J. Smit and the
-graphing functions were contributed by Robert. W. Schlegel.</p>
+<p>Contributors to the Marine Heatwaves definition and its numerical implementation include Alistair J. Hobday, Lisa V. Alexander, Sarah E. Perkins, Dan A. Smale, Sandra C. Straub, Jessica Benthuysen, Michael T. Burrows, Markus G. Donat, Ming Feng, Neil J. Holbrook, Pippa J. Moore, Hillary A. Scannell, Alex Sen Gupta, and Thomas Wernberg.</p>
+<p>The translation from Python to R was done by A. J. Smit and the graphing functions were contributed by Robert. W. Schlegel.</p>
 </div>
 <div class="section level2">
 <h2 id="contact">Contact<a class="anchor" aria-label="anchor" href="#contact"></a>
@@ -587,8 +455,7 @@ graphing functions were contributed by Robert. W. Schlegel.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer>

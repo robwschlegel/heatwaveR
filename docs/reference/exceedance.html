@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9001</span>
       </span>
     </div>
 
@@ -38,7 +38,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
      
     <span class="caret"></span>
@@ -47,10 +47,16 @@
       <a href="../articles/detection_and_visualisation.html">Basic Detection and Visualisation of Events</a>
     </li>
     <li>
+      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+    </li>
+    <li>
       <a href="../articles/exceedance.html">Calculating and Visualising Exceedances</a>
     </li>
     <li>
-      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
+    </li>
+    <li>
+      <a href="../articles/MHW_metric_trends.html">Trend and Breakpoint Analyses</a>
     </li>
     <li>
       <a href="../articles/OISST_preparation.html">Downloading and Preparing OISST Data</a>
@@ -59,13 +65,10 @@
       <a href="../articles/gridded_event_detection.html">Detecting Events in Gridded Data</a>
     </li>
     <li>
-      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse NOAA OISST Data: Alternative Methods</a>
+      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse Data: Alternative</a>
     </li>
     <li>
       <a href="../articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a>
-    </li>
-    <li>
-      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
     </li>
   </ul></li>
 <li>
@@ -130,43 +133,62 @@ days of temperatures in exceedance of the <code>threshold</code> if missing days
 data are not filled in with <code>NA</code>. Data of the appropriate format are created
 by the function <code><a href="make_whole.html">make_whole</a></code>, but your own data may be used
 directly if they meet the given criteria.</p></dd>
+
+
 <dt>x</dt>
 <dd><p>This column is expected to contain a vector of dates as per the
 specification of <code>make_whole</code>. If a column headed <code>t</code> is present in
 the dataframe, this argument may be omitted; otherwise, specify the name of
 the column with dates here.</p></dd>
+
+
 <dt>y</dt>
 <dd><p>This is a column containing the measurement variable. If the column
 name differs from the default (i.e. <code>temp</code>), specify the name here.</p></dd>
+
+
 <dt>threshold</dt>
 <dd><p>The static threshold used to determine how many consecutive
 days are in exceedance of the temperature of interest.</p></dd>
+
+
 <dt>below</dt>
 <dd><p>Default is <code>FALSE</code>. When set to TRUE, consecutive days of temperature
 below the <code>threshold</code> variable are calculated. When set to FALSE,
 consecutive days above the <code>threshold</code> variable are calculated.</p></dd>
+
+
 <dt>minDuration</dt>
 <dd><p>Minimum duration that temperatures must be in exceedance
 of the <code>threshold</code> variable. The default is <code>5</code> days.</p></dd>
+
+
 <dt>joinAcrossGaps</dt>
 <dd><p>A TRUE/FALSE statement that indicates whether
 or not to join consecutive days of temperatures in exceedance of the
 <code>threshold</code> across a small gap between groups before/after a short
 gap as specified by <code>maxGap</code>. The default is <code>TRUE</code>.</p></dd>
+
+
 <dt>maxGap</dt>
 <dd><p>The maximum length of the gap across which to connect
 consecutive days in exceedance of the <code>threshold</code> when
 <code>joinAcrossGaps = TRUE</code>.</p></dd>
+
+
 <dt>maxPadLength</dt>
 <dd><p>Specifies the maximum length of days over which to
 interpolate (pad) missing data (specified as <code>NA</code>) in the input
 temperature time series; i.e., any consecutive blocks of NAs with length
 greater than <code>maxPadLength</code> will be left as <code>NA</code>. Set as an
 integer. The default is <code>3</code> days.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The function will return a list of two tibbles (see the <code>tidyverse</code>).
+    
+
+<p>The function will return a list of two tibbles (see the <code>tidyverse</code>).
 The first being <code>threshold</code>, which shows the daily temperatures and on which
 specific days the given <code>threshold</code> was exceeded. The second component of the
 list is <code>exceedance</code>, which shows a medley of statistics for each discrete
@@ -174,61 +196,86 @@ group of days in exceedance of the given <code>threshold</code>. Note that any a
 columns left in the data frame given to this function will be output in the
 <code>threshold</code> component of the output. For example, if one uses
 <code><a href="ts2clm.html">ts2clm</a></code> to prepare a time series for analysis and leaves
-in the <code>doy</code> column, this column will appear in the output.
-The information shown in the <code>threshold</code> component is:</p>
+in the <code>doy</code> column, this column will appear in the output.</p>
+
+
+<p>The information shown in the <code>threshold</code> component is:</p>
 <dl><dt>t</dt>
 <dd><p>The date of the temperature measurement. This variable may named
   differently if an alternative name is supplied to the function's <code>x</code>
   argument.</p></dd>
-<dt>temp</dt>
+
+  <dt>temp</dt>
 <dd><p>Temperature on the specified date [deg. C]. This variable may
   named differently if an alternative name is supplied to the function's <code>y</code>
   argument.</p></dd>
-<dt>thresh</dt>
+
+  <dt>thresh</dt>
 <dd><p>The static <code>threshold</code> chosen by the user [deg. C].</p></dd>
-<dt>thresh_criterion</dt>
+
+  <dt>thresh_criterion</dt>
 <dd><p>Boolean indicating if <code>temp</code> exceeds
   <code>threshold</code>.</p></dd>
-<dt>duration_criterion</dt>
+
+  <dt>duration_criterion</dt>
 <dd><p>Boolean indicating whether periods of consecutive
   <code>thresh_criterion</code> are &gt;= <code>minDuration</code>.</p></dd>
-<dt>exceedance</dt>
+
+  <dt>exceedance</dt>
 <dd><p>Boolean indicting if all criteria that define a discrete
   group in exceedance of the <code>threshold</code> are met.</p></dd>
-<dt>exceedance_no</dt>
+
+  <dt>exceedance_no</dt>
 <dd><p>A sequential number indicating the ID and order of
   occurrence of exceedances.</p></dd>
+
+
 </dl><p>The individual exceedances are summarised using the following metrics:</p>
 <dl><dt>exceedance_no</dt>
 <dd><p>The same sequential number indicating the ID and
   order of the exceedance as found in the <code>threshold</code> component of the
   output list.</p></dd>
-<dt>index_start</dt>
+
+  <dt>index_start</dt>
 <dd><p>Row number on which exceedance starts.</p></dd>
-<dt>index_peak</dt>
+
+  <dt>index_peak</dt>
 <dd><p>Row number on which exceedance peaks.</p></dd>
-<dt>index_end</dt>
+
+  <dt>index_end</dt>
 <dd><p>Row number on which exceedance ends.</p></dd>
-<dt>duration</dt>
+
+  <dt>duration</dt>
 <dd><p>Duration of exceedance [days].</p></dd>
-<dt>date_start</dt>
+
+  <dt>date_start</dt>
 <dd><p>Start date of exceedance [date].</p></dd>
-<dt>date_peak</dt>
+
+  <dt>date_peak</dt>
 <dd><p>Date of exceedance peak [date].</p></dd>
-<dt>date_end</dt>
+
+  <dt>date_end</dt>
 <dd><p>End date of exceedance [date].</p></dd>
-<dt>intensity_mean</dt>
+
+  <dt>intensity_mean</dt>
 <dd><p>Mean intensity [deg. C].</p></dd>
-<dt>intensity_max</dt>
+
+  <dt>intensity_max</dt>
 <dd><p>Maximum (peak) intensity [deg. C].</p></dd>
-<dt>intensity_var</dt>
+
+  <dt>intensity_var</dt>
 <dd><p>Intensity standard deviation [deg. C].</p></dd>
-<dt>intensity_cumulative</dt>
+
+  <dt>intensity_cumulative</dt>
 <dd><p>Cumulative intensity [deg. C x days].</p></dd>
-<dt>rate_onset</dt>
+
+  <dt>rate_onset</dt>
 <dd><p>Onset rate of exceedance [deg. C / day].</p></dd>
-<dt>rate_decline</dt>
+
+  <dt>rate_decline</dt>
 <dd><p>Decline rate of exceedance [deg. C / day].</p></dd>
+
+
 </dl><p><code>intensity_max_abs</code>, <code>intensity_mean_abs</code>, <code>intensity_var_abs</code>,
 and <code>intensity_cum_abs</code> are as above except as absolute magnitudes rather
 than relative to the threshold.</p>
@@ -313,8 +360,7 @@ Feb 2015, and is documented by Hobday et al. (2016).</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

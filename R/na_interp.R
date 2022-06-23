@@ -4,6 +4,8 @@
 #' then be used by \code{\link{clim_calc}} within \code{\link{ts2clm}}
 #' to produce a climatology as desired by the user.
 #'
+#' @keywords internal
+#'
 #' @param doy Date-of-year as per \code{make_whole} or \code{make_whole_fast}.
 #' @param x Date as per \code{make_whole} or \code{make_whole_fast}.
 #' @param y Measurement variable as per \code{make_whole} or \code{make_whole_fast}.

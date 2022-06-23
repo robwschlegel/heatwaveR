@@ -32,7 +32,7 @@ as may be necessary."><meta property="og:image" content="https://robwschlegel.gi
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9001</span>
       </span>
     </div>
 
@@ -47,7 +47,7 @@ as may be necessary."><meta property="og:image" content="https://robwschlegel.gi
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
      
     <span class="caret"></span>
@@ -56,10 +56,16 @@ as may be necessary."><meta property="og:image" content="https://robwschlegel.gi
       <a href="../articles/detection_and_visualisation.html">Basic Detection and Visualisation of Events</a>
     </li>
     <li>
+      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+    </li>
+    <li>
       <a href="../articles/exceedance.html">Calculating and Visualising Exceedances</a>
     </li>
     <li>
-      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
+    </li>
+    <li>
+      <a href="../articles/MHW_metric_trends.html">Trend and Breakpoint Analyses</a>
     </li>
     <li>
       <a href="../articles/OISST_preparation.html">Downloading and Preparing OISST Data</a>
@@ -68,13 +74,10 @@ as may be necessary."><meta property="og:image" content="https://robwschlegel.gi
       <a href="../articles/gridded_event_detection.html">Detecting Events in Gridded Data</a>
     </li>
     <li>
-      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse NOAA OISST Data: Alternative Methods</a>
+      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse Data: Alternative</a>
     </li>
     <li>
       <a href="../articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a>
-    </li>
-    <li>
-      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
     </li>
   </ul></li>
 <li>
@@ -144,6 +147,8 @@ as may be necessary.</p>
 If specified and inherit.aes = TRUE (the default), it is combined with the
 default mapping at the top level of the plot. You must supply mapping if
 there is no plot mapping.</p></dd>
+
+
 <dt>data</dt>
 <dd><p>The data to be displayed in this layer. There are three options:</p>
 <p>If NULL, the default, the data is inherited from the plot data as specified
@@ -153,22 +158,32 @@ be fortified to produce a data frame. See <code><a href="https://ggplot2.tidyver
 be created.</p>
 <p>A function will be called with a single argument, the plot data. The return
 value must be a <code>data.frame</code>, and will be used as the layer data.</p></dd>
+
+
 <dt>stat</dt>
 <dd><p>The statistical transformation to use on the data for this layer,
 as a string.</p></dd>
+
+
 <dt>position</dt>
 <dd><p>Position adjustment, either as a string, or the result of a call
 to a position adjustment function.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>other arguments passed on to <code><a href="https://ggplot2.tidyverse.org/reference/layer.html" class="external-link">layer</a></code>. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 <code>color = "red"</code> or <code>size = 3</code>. They may also be parameters
 to the paired geom/stat.</p></dd>
+
+
 <dt>n</dt>
 <dd><p>The number of steps along the x-axis (i.e. in a daily time series this
 would be days) required before the area between <code>y</code> and <code>y2</code> will be
 filled in. The default of 0 will fill in _all_ of the area between the lines.
 The standard to match Hobday et al. (2016) is <code>n = 5</code>.</p></dd>
+
+
 <dt>n_gap</dt>
 <dd><p>The number of steps along the x-axis (i.e. in a daily time series this
 would be days) within which to allow <code>geom_flame()</code> to connect polygons.
@@ -176,19 +191,26 @@ This is useful when one wants to not screen out parts of a polygon that dip
 only briefly below <code>y</code> before coming back up above it. The defauly of 0
 will not connect any of the polygons. The standard to match
 Hobday et al. (2016) is <code>n_gap = 2</code>.</p></dd>
+
+
 <dt>na.rm</dt>
 <dd><p>If <code>FALSE</code> (the default), removes missing values with
 a warning. If <code>TRUE</code> silently removes missing values.</p></dd>
+
+
 <dt>show.legend</dt>
 <dd><p>Logical. Should this layer be included in the legends? <code>NA</code>,
 the default, includes if any aesthetics are mapped. <code>FALSE</code> never includes, and
 <code>TRUE</code> always includes. It can also be a named logical vector to finely select
 the aesthetics to display.</p></dd>
+
+
 <dt>inherit.aes</dt>
 <dd><p>If <code>FALSE</code>, overrides the default aesthetics, rather
 than combining with them. This is most useful for helper functions that define
 both data and aesthetics and shouldn't inherit behaviour from the default plot
 specification, e.g. <code><a href="https://ggplot2.tidyverse.org/reference/borders.html" class="external-link">borders()</a></code>.</p></dd>
+
 </dl></div>
     <div id="aesthetics">
     <h2>Aesthetics</h2>
@@ -249,8 +271,7 @@ doi: 10.1016/j.pocean.2015.12.014</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

@@ -25,7 +25,7 @@ by an optional moving average smoother as used by Hobday et al. (2016)."><meta p
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9001</span>
       </span>
     </div>
 
@@ -40,7 +40,7 @@ by an optional moving average smoother as used by Hobday et al. (2016)."><meta p
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
      
     <span class="caret"></span>
@@ -49,10 +49,16 @@ by an optional moving average smoother as used by Hobday et al. (2016)."><meta p
       <a href="../articles/detection_and_visualisation.html">Basic Detection and Visualisation of Events</a>
     </li>
     <li>
+      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+    </li>
+    <li>
       <a href="../articles/exceedance.html">Calculating and Visualising Exceedances</a>
     </li>
     <li>
-      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
+    </li>
+    <li>
+      <a href="../articles/MHW_metric_trends.html">Trend and Breakpoint Analyses</a>
     </li>
     <li>
       <a href="../articles/OISST_preparation.html">Downloading and Preparing OISST Data</a>
@@ -61,13 +67,10 @@ by an optional moving average smoother as used by Hobday et al. (2016)."><meta p
       <a href="../articles/gridded_event_detection.html">Detecting Events in Gridded Data</a>
     </li>
     <li>
-      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse NOAA OISST Data: Alternative Methods</a>
+      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse Data: Alternative</a>
     </li>
     <li>
       <a href="../articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a>
-    </li>
-    <li>
-      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
     </li>
   </ul></li>
 <li>
@@ -134,22 +137,32 @@ the arguments <code>x</code> and <code>y</code>; see immediately below), the dat
 expected to have the headers <code>t</code> and <code>temp</code>. The <code>t</code> column is a
 vector of dates of class <code>Date</code>, while <code>temp</code> is the measured variable
 (by default it is assumed to be temperature).</p></dd>
+
+
 <dt>x</dt>
 <dd><p>This column is expected to contain a vector of dates. If a column
 headed <code>t</code> is present in the dataframe, this argument may be omitted;
 otherwise, specify the name of the column with dates here.</p></dd>
+
+
 <dt>y</dt>
 <dd><p>This is a column containing the measurement variable. If the column
 name differs from the default (i.e. <code>temp</code>), specify the name here.</p></dd>
+
+
 <dt>climatologyPeriod</dt>
 <dd><p>Required. To this argument should be passed two values
 (see example below). The first value should be the chosen date for the start of
 the climatology period, and the second value the end date of said period. This
 chosen period (preferably 30 years in length) is then used to calculate the
 seasonal cycle and the extreme value threshold.</p></dd>
+
+
 <dt>robust</dt>
 <dd><p>This argument has been deprecated and no longer has affects how
 the function operates.</p></dd>
+
+
 <dt>maxPadLength</dt>
 <dd><p>Specifies the maximum length of days over which to
 interpolate (pad) missing data (specified as <code>NA</code>) in the input
@@ -157,26 +170,38 @@ temperature time series; i.e., any consecutive blocks of NAs with length
 greater than <code>maxPadLength</code> will be left as <code>NA</code>. The default is
 <code>FALSE</code>. Set as an integer to interpolate. Setting <code>maxPadLength</code>
 to <code>TRUE</code> will return an error.</p></dd>
+
+
 <dt>windowHalfWidth</dt>
 <dd><p>Width of sliding window about day-of-year (to one
 side of the center day-of-year) used for the pooling of values and
 calculation of climatology and threshold percentile. Default is <code>5</code>
 days, which gives a window width of 11 days centred on the 6th day of the
 series of 11 days.</p></dd>
+
+
 <dt>pctile</dt>
 <dd><p>Threshold percentile (%) for detection of events (MHWs).
 Default is <code>90</code>th percentile. Should the intent be to use these
 threshold data for MCSs, set <code>pctile = 10</code>. Or some other low value.</p></dd>
+
+
 <dt>smoothPercentile</dt>
 <dd><p>Boolean switch selecting whether to smooth the
 climatology and threshold percentile time series with a moving average of
 <code>smoothPercentileWidth</code>. Default is <code>TRUE</code>.</p></dd>
+
+
 <dt>smoothPercentileWidth</dt>
 <dd><p>Full width of moving average window for smoothing
 climatology and threshold. The default is <code>31</code> days.</p></dd>
+
+
 <dt>clmOnly</dt>
 <dd><p>Choose to calculate and return only the climatologies.
 The default is <code>FALSE</code>.</p></dd>
+
+
 <dt>var</dt>
 <dd><p>This argument has been introduced to allow the user to choose if
 the variance of the seasonal signal per doy should be calculated. The default of
@@ -184,15 +209,20 @@ the variance of the seasonal signal per doy should be calculated. The default of
 on gridded data and reducing the size of the output. The variance was initially
 introduced as part of the standard output from Hobday et al. (2016), but few
 researchers use it and so it is generally regarded now as unnecessary.</p></dd>
+
+
 <dt>roundClm</dt>
 <dd><p>This argument allows the user to choose how many decimal places
 the <code>seas</code> and <code>thresh</code> outputs will be rounded to. Default is 4. To
 prevent rounding set <code>roundClm = FALSE</code>. This argument may only be given
 numeric values or FALSE.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The function will return a tibble (see the <code>tidyverse</code>) with the
+    
+
+<p>The function will return a tibble (see the <code>tidyverse</code>) with the
 input time series and the newly calculated climatology. The climatology contains
 the seasonal climatology and the threshold for calculating MHWs. The software was
 designed for creating climatologies of daily temperatures, and the units
@@ -202,23 +232,29 @@ units need to be determined by the user.</p>
 <dl><dt>doy</dt>
 <dd><p>Julian day (day-of-year). For non-leap years it runs 1...59 and
   61...366, while leap years run 1...366.</p></dd>
-<dt>t</dt>
+
+  <dt>t</dt>
 <dd><p>The date vector in the original time series supplied in <code>data</code>. If
   an alternate column was provided to the <code>x</code> argument, that name will rather
   be used for this column.</p></dd>
-<dt>temp</dt>
+
+  <dt>temp</dt>
 <dd><p>The measurement vector as per the the original <code>data</code> supplied
   to the function. If a different column was given to the <code>y</code> argument that
   will be shown here.</p></dd>
-<dt>seas</dt>
+
+  <dt>seas</dt>
 <dd><p>Climatological seasonal cycle [deg. C].</p></dd>
-<dt>thresh</dt>
+
+  <dt>thresh</dt>
 <dd><p>Seasonally varying threshold (e.g., 90th
   percentile) [deg. C]. This is used in <code><a href="detect_event.html">detect_event</a></code> for the
   detection/calculation of events (MHWs).</p></dd>
-<dt>var</dt>
+
+  <dt>var</dt>
 <dd><p>Seasonally varying variance (standard deviation) [deg. C]. This
   column is not returned if <code>var = FALSE</code> (default).</p></dd>
+
 </dl><p>Should <code>clmOnly</code> be enabled, only the 365 or 366 day climatology will be
 returned.</p>
     </div>
@@ -329,8 +365,7 @@ doi:10.1016/j.pocean.2015.12.014</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>
