@@ -16,14 +16,14 @@ bibliography: bibliography.bib
 ```{r global_options, include=FALSE}
 knitr::opts_chunk$set(fig.width = 8, fig.height = 8, fig.align = 'centre',
                       echo = TRUE, warning = FALSE, message = FALSE,
-                      eval = TRUE, tidy = FALSE)
+                      eval = FALSE, tidy = FALSE)
 ```
 
 ## Overview
 
 One may see in other vignettes how to [download and prepare OISST data](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html) and how to [detect MHWs in gridded data](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html). In this vignette we will use data subsetted around the New Zealand (NZ) Exclusive Economic Zone (EEZ) for our example to calculate trends and breakpoints for bioregions (from @spalding2007) and seasons as shown in @thoral2022.
 
-```{r load-pkg}
+```{r load-pkg, eval=T}
 library(heatwaveR)
 library(lubridate)
 library(dplyr)
@@ -350,7 +350,7 @@ According to the previous tables, the trend and break point analyses are useful 
 
 We use the time series of SST available within the `heatwaveR` package (sst_WA) and investigate the trend analysis in 5 metrics by grouping metric values per year as we have done above.
 
-```{r pixel}
+```{r pixel, eval=TRUE}
 # Simple event detection
 MHW_WA <- detect_event(ts2clm(sst_WA, climatologyPeriod = c("1982-01-01", "2011-12-31")))
 
@@ -388,7 +388,7 @@ p
 
 The `lm` regression seems to detect some upward trends in the metrics. What does Mann-Kendall have to say about these?
 
-```{r, warning=F}
+```{r, eval=TRUE}
 MHW_WA_trends <- MHW_WA_metrics_year %>% 
   group_by(Metrics) %>% 
   nest() %>% 
