@@ -1,4 +1,4 @@
-# heatwaveR 0.4.6.9001 (2023-01-17)
+# heatwaveR 0.4.6.9002 (2023-01-09)
 
 -   Updated citations page for all references to `heatwaveR` from 2022
 -   Added package names to all functions used in the downloading OISST vignette

@@ -328,12 +328,15 @@ category <- function(data,
       dplyr::select(-event_count, -event_name_letter)
 
     if (MCSice) {
+
+      max_thresh <- ice_cat <- NULL
+
       ice_test <- clim_diff %>%
         dplyr::group_by(event_no) %>%
         dplyr::summarise(max_thresh = max(thresh, na.rm = T), .groups = "drop") %>%
         dplyr::mutate(ice_cat = dplyr::case_when(max_thresh > 1.7 ~ TRUE, TRUE ~ FALSE))
 
-      cat_join <- left_join(cat_join, ice_test, by = "event_no") %>%
+      cat_join <- dplyr::left_join(cat_join, ice_test, by = "event_no") %>%
         dplyr::mutate(category = dplyr::case_when(ice_cat ~ "V Ice", TRUE ~ category)) %>%
         dplyr::select(-max_thresh, -ice_cat)
     }

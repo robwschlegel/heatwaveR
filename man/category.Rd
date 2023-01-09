@@ -11,6 +11,7 @@ category(
   name = "Event",
   climatology = FALSE,
   MCScorrect = F,
+  MCSice = F,
   season = "range",
   roundVal = 4
 )
@@ -42,6 +43,9 @@ intensity (anomaly above seasonal doy threshold) and category values. The second
 that the bottom thresholds for the more intense categories will be below -1.8C,
 this is physically impossible on Earth, so if one wants to correct the bottom thresholds
 to not be able to exceed -1.8C, set this argument to TRUE (default is FALSE).}
+
+\item{MCSice}{Sensu Schlegel et al. (2021; Marine cold-spells), it is advisable to classify
+a MCS with an event threshold below -1.7°C as a 'V Ice' category event.}
 
 \item{season}{This argument allows the user to decide how the season(s) of occurrence for
 the MHWs are labelled. The default setting of \code{"range"} will return the range of seasons
@@ -120,7 +124,8 @@ An explanation for the categories is as follows:
   climatology and the threshold, but do not triple it.}
   \item{III Severe-}{Events that triple the aforementioned distance, but do not quadruple it.}
   \item{IV Extreme-}{Events with a maximum intensity that is four times or greater than the
-  aforementioned distance. Scary stuff...}
+  aforementioned distance.}
+  \item{V Ice-}{If `MCSice = T`, a MCS with an event threshold below -1.7°C will be classified here.}
   }
 }
 \examples{
@@ -156,6 +161,9 @@ head(cat_WA_ts)
 \references{
 Hobday et al. (2018). Categorizing and Naming
 Marine Heatwaves. Oceanography 31(2).
+
+Schlegel et al. (2021). Marine cold-spells.
+Progress in Oceanography 198(102684).
 }
 \author{
 Robert W. Schlegel
