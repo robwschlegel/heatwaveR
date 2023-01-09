@@ -26,6 +26,8 @@
 #' that the bottom thresholds for the more intense categories will be below -1.8C,
 #' this is physically impossible on Earth, so if one wants to correct the bottom thresholds
 #' to not be able to exceed -1.8C, set this argument to TRUE (default is FALSE).
+#' @param MCSice Sensu Schlegel et al. (2021; Marine cold-spells), it is advisable to classify
+#' a MCS with an event threshold below -1.7°C as a 'V Ice' category event.
 #' @param season This argument allows the user to decide how the season(s) of occurrence for
 #' the MHWs are labelled. The default setting of \code{"range"} will return the range of seasons
 #' over which the MHW occurred, as seen in Hobday et al. (2018). One may chose to rather have
@@ -96,13 +98,17 @@
 #'   climatology and the threshold, but do not triple it.}
 #'   \item{III Severe-}{Events that triple the aforementioned distance, but do not quadruple it.}
 #'   \item{IV Extreme-}{Events with a maximum intensity that is four times or greater than the
-#'   aforementioned distance. Scary stuff...}
+#'   aforementioned distance.}
+#'   \item{V Ice-}{If `MCSice = T`, a MCS with an event threshold below -1.7°C will be classified here.}
 #'   }
 #'
 #' @author Robert W. Schlegel
 #'
 #' @references Hobday et al. (2018). Categorizing and Naming
 #' Marine Heatwaves. Oceanography 31(2).
+#'
+#' @references Schlegel et al. (2021). Marine cold-spells.
+#' Progress in Oceanography 198(102684).
 #'
 #' @export
 #'
@@ -141,6 +147,7 @@ category <- function(data,
                      name = "Event",
                      climatology = FALSE,
                      MCScorrect = F,
+                     MCSice = F,
                      season = "range",
                      roundVal = 4) {
 
@@ -319,6 +326,17 @@ category <- function(data,
       dplyr::mutate(event_name = dplyr::case_when(!is.na(event_name_letter) ~ paste0(event_name, event_name_letter), TRUE  ~  event_name),
                     event_name = as.factor(event_name)) %>%
       dplyr::select(-event_count, -event_name_letter)
+
+    if (MCSice) {
+      ice_test <- clim_diff %>%
+        dplyr::group_by(event_no) %>%
+        dplyr::summarise(max_thresh = max(thresh, na.rm = T), .groups = "drop") %>%
+        dplyr::mutate(ice_cat = dplyr::case_when(max_thresh > 1.7 ~ TRUE, TRUE ~ FALSE))
+
+      cat_join <- left_join(cat_join, ice_test, by = "event_no") %>%
+        dplyr::mutate(category = dplyr::case_when(ice_cat ~ "V Ice", TRUE ~ category)) %>%
+        dplyr::select(-max_thresh, -ice_cat)
+    }
 
     cat_res <- tibble::as_tibble(cat_join) %>%
       dplyr::arrange(-p_moderate, -p_strong, -p_severe, -p_extreme)
