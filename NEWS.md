@@ -1,3 +1,7 @@
+# heatwaveR 0.4.6.9001 (2023-01-17)
+
+-   Updated citations page for all references to `heatwaveR` from 2022
+
 # heatwaveR 0.4.6.9001 (2022-06-23)
 
 -   Added two new vignettes 

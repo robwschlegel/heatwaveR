@@ -110,21 +110,21 @@ Hobday et al. (2016).</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">event_line</span><span class="op">(</span>
-  <span class="va">data</span>,
-  x <span class="op">=</span> <span class="va">t</span>,
-  y <span class="op">=</span> <span class="va">temp</span>,
-  min_duration <span class="op">=</span> <span class="fl">5</span>,
-  spread <span class="op">=</span> <span class="fl">150</span>,
-  metric <span class="op">=</span> <span class="st">"intensity_cumulative"</span>,
-  start_date <span class="op">=</span> <span class="cn">NULL</span>,
-  end_date <span class="op">=</span> <span class="cn">NULL</span>,
-  category <span class="op">=</span> <span class="cn">FALSE</span>,
-  x_axis_title <span class="op">=</span> <span class="cn">NULL</span>,
-  x_axis_text_angle <span class="op">=</span> <span class="cn">NULL</span>,
-  y_axis_title <span class="op">=</span> <span class="cn">NULL</span>,
-  y_axis_range <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">event_line</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  x <span class="op">=</span> <span class="va">t</span>,</span>
+<span>  y <span class="op">=</span> <span class="va">temp</span>,</span>
+<span>  min_duration <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  spread <span class="op">=</span> <span class="fl">150</span>,</span>
+<span>  metric <span class="op">=</span> <span class="st">"intensity_cumulative"</span>,</span>
+<span>  start_date <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  end_date <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  category <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  x_axis_title <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  x_axis_text_angle <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  y_axis_title <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  y_axis_range <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -240,19 +240,23 @@ doi: 10.1016/j.pocean.2015.12.014</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="detect_event.html">detect_event</a></span><span class="op">(</span><span class="va">ts</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">event_line</span><span class="op">(</span><span class="va">res</span>, spread <span class="op">=</span> <span class="fl">100</span>, metric <span class="op">=</span> <span class="st">"intensity_cumulative"</span>,</span>
-<span class="r-in">start_date <span class="op">=</span> <span class="st">"2010-12-01"</span>, end_date <span class="op">=</span> <span class="st">"2011-06-30"</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>It is deprecated to specify `guide = FALSE` to remove a guide. Please use `guide = "none"` instead.</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="detect_event.html">detect_event</a></span><span class="op">(</span><span class="va">ts</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">event_line</span><span class="op">(</span><span class="va">res</span>, spread <span class="op">=</span> <span class="fl">100</span>, metric <span class="op">=</span> <span class="st">"intensity_cumulative"</span>,</span></span>
+<span class="r-in"><span>start_date <span class="op">=</span> <span class="st">"2010-12-01"</span>, end_date <span class="op">=</span> <span class="st">"2011-06-30"</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The `guide` argument in `scale_*()` cannot be `FALSE`. This was deprecated in</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> ggplot2 3.3.4.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Please use "none" instead.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">heatwaveR</span> package.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Please report the issue at</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   <span style="color: #0000BB; font-style: italic;">&lt;</span><a href="https://github.com/robwschlegel/heatwaveR/issues" class="external-link"><span style="color: #0000BB; font-style: italic;">https://github.com/robwschlegel/heatwaveR/issues</span></a><span style="color: #0000BB; font-style: italic;">&gt;</span>.</span>
 <span class="r-plt img"><img src="event_line-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">event_line</span><span class="op">(</span><span class="va">res</span>, spread <span class="op">=</span> <span class="fl">100</span>, start_date <span class="op">=</span> <span class="st">"2010-12-01"</span>,</span>
-<span class="r-in">end_date <span class="op">=</span> <span class="st">"2011-06-30"</span>, category <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>It is deprecated to specify `guide = FALSE` to remove a guide. Please use `guide = "none"` instead.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">event_line</span><span class="op">(</span><span class="va">res</span>, spread <span class="op">=</span> <span class="fl">100</span>, start_date <span class="op">=</span> <span class="st">"2010-12-01"</span>,</span></span>
+<span class="r-in"><span>end_date <span class="op">=</span> <span class="st">"2011-06-30"</span>, category <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="event_line-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -267,7 +271,7 @@ doi: 10.1016/j.pocean.2015.12.014</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

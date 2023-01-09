@@ -110,16 +110,16 @@ accordance with the naming scheme proposed in Hobday et al. (2018).</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">category</span><span class="op">(</span>
-  <span class="va">data</span>,
-  y <span class="op">=</span> <span class="va">temp</span>,
-  S <span class="op">=</span> <span class="cn">TRUE</span>,
-  name <span class="op">=</span> <span class="st">"Event"</span>,
-  climatology <span class="op">=</span> <span class="cn">FALSE</span>,
-  MCScorrect <span class="op">=</span> <span class="cn">F</span>,
-  season <span class="op">=</span> <span class="st">"range"</span>,
-  roundVal <span class="op">=</span> <span class="fl">4</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">category</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  y <span class="op">=</span> <span class="va">temp</span>,</span>
+<span>  S <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  name <span class="op">=</span> <span class="st">"Event"</span>,</span>
+<span>  climatology <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  MCScorrect <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>  season <span class="op">=</span> <span class="st">"range"</span>,</span>
+<span>  roundVal <span class="op">=</span> <span class="fl">4</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -287,43 +287,45 @@ Marine Heatwaves. Oceanography 31(2).</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">res_WA</span> <span class="op">&lt;-</span> <span class="fu"><a href="detect_event.html">detect_event</a></span><span class="op">(</span><span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>,</span>
-<span class="r-in">                       climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># Note that the name argument expects a character vector</span></span>
-<span class="r-in"><span class="va">cat_WA</span> <span class="op">&lt;-</span> <span class="fu">category</span><span class="op">(</span><span class="va">res_WA</span>, name <span class="op">=</span> <span class="st">"WA"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">cat_WA</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">res_WA</span> <span class="op">&lt;-</span> <span class="fu"><a href="detect_event.html">detect_event</a></span><span class="op">(</span><span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>,</span></span>
+<span class="r-in"><span>                       climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Note that the name argument expects a character vector</span></span></span>
+<span class="r-in"><span><span class="va">cat_WA</span> <span class="op">&lt;-</span> <span class="fu">category</span><span class="op">(</span><span class="va">res_WA</span>, name <span class="op">=</span> <span class="st">"WA"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">cat_WA</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 11</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   event_no event_name peak_date  category   i_max duration p_moderate p_strong</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>       40 WA 2010c   2010-12-02 II Strong   2.66       15         73       27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>       31 WA 2008a   2008-04-14 III Severe  3.77       34         62       29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>       22 WA 1999    1999-05-22 II Strong   3.60       95         59       41</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>       58 WA 2014    2014-08-31 II Strong   2.20       12         58       42</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>       61 WA 2015    2015-10-02 II Strong   2.43        7         57       43</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span>       42 WA 2011b   2011-02-28 IV Extreme  6.51       60         47       32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 3 more variables: p_severe &lt;dbl&gt;, p_extreme &lt;dbl&gt;, season &lt;chr&gt;</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># If the data were collected in the northern hemisphere</span></span>
-<span class="r-in"><span class="co"># we must let the function know this, as seen below</span></span>
-<span class="r-in"><span class="va">res_Med</span> <span class="op">&lt;-</span> <span class="fu"><a href="detect_event.html">detect_event</a></span><span class="op">(</span><span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_Med</span>,</span>
-<span class="r-in">                        climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">cat_Med</span> <span class="op">&lt;-</span> <span class="fu">category</span><span class="op">(</span><span class="va">res_Med</span>, S <span class="op">=</span> <span class="cn">FALSE</span>, name <span class="op">=</span> <span class="st">"Med"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">cat_Med</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   event_no event_name peak_date  category  i_max durat…¹ p_mod…² p_str…³ p_sev…⁴</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>       40 WA 2010c   2010-12-02 II Strong  2.66      15      73      27       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>       31 WA 2008a   2008-04-14 III Seve…  3.77      34      62      29       3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>       22 WA 1999    1999-05-22 II Strong  3.60      95      59      41       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>       58 WA 2014    2014-08-31 II Strong  2.20      12      58      42       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>       61 WA 2015    2015-10-02 II Strong  2.43       7      57      43       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span>       42 WA 2011b   2011-02-28 IV Extre…  6.51      60      47      32       8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 2 more variables: p_extreme &lt;dbl&gt;, season &lt;chr&gt;, and abbreviated</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   variable names ¹​duration, ²​p_moderate, ³​p_strong, ⁴​p_severe</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># If the data were collected in the northern hemisphere</span></span></span>
+<span class="r-in"><span><span class="co"># we must let the function know this, as seen below</span></span></span>
+<span class="r-in"><span><span class="va">res_Med</span> <span class="op">&lt;-</span> <span class="fu"><a href="detect_event.html">detect_event</a></span><span class="op">(</span><span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_Med</span>,</span></span>
+<span class="r-in"><span>                        climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cat_Med</span> <span class="op">&lt;-</span> <span class="fu">category</span><span class="op">(</span><span class="va">res_Med</span>, S <span class="op">=</span> <span class="cn">FALSE</span>, name <span class="op">=</span> <span class="st">"Med"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">cat_Med</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 11</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   event_no event_name peak_date  category   i_max duration p_moderate p_strong</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>       84 Med 2017a  2017-04-12 II Strong   2.70       25         60       36</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>       28 Med 2003a  2003-06-20 II Strong   5.02       30         57       43</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>       62 Med 2012b  2012-08-20 II Strong   4.22       18         56       44</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>       70 Med 2014   2014-10-18 II Strong   3.31      144         49       50</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>       44 Med 2007b  2007-04-25 III Severe  4.02       19         42       53</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span>       88 Med 2018a  2018-04-28 II Strong   3.29       10         20       80</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 3 more variables: p_severe &lt;dbl&gt;, p_extreme &lt;dbl&gt;, season &lt;chr&gt;</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># One may also choose to have this function output the daily</span></span>
-<span class="r-in"><span class="co"># category classifications as well by setting: climatology = TRUE</span></span>
-<span class="r-in"><span class="va">cat_WA_daily</span> <span class="op">&lt;-</span> <span class="fu">category</span><span class="op">(</span><span class="va">res_WA</span>, name <span class="op">=</span> <span class="st">"WA"</span>, climatology <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cat_WA_daily</span><span class="op">$</span><span class="va">climatology</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   event_no event_name peak_date  category  i_max durat…¹ p_mod…² p_str…³ p_sev…⁴</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>       84 Med 2017a  2017-04-12 II Strong  2.70      25      60      36       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>       28 Med 2003a  2003-06-20 II Strong  5.02      30      57      43       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>       62 Med 2012b  2012-08-20 II Strong  4.22      18      56      44       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>       70 Med 2014   2014-10-18 II Strong  3.31     144      49      50       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>       44 Med 2007b  2007-04-25 III Seve…  4.02      19      42      53       5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span>       88 Med 2018a  2018-04-28 II Strong  3.29      10      20      80       0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 2 more variables: p_extreme &lt;dbl&gt;, season &lt;chr&gt;, and abbreviated</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   variable names ¹​duration, ²​p_moderate, ³​p_strong, ⁴​p_severe</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># One may also choose to have this function output the daily</span></span></span>
+<span class="r-in"><span><span class="co"># category classifications as well by setting: climatology = TRUE</span></span></span>
+<span class="r-in"><span><span class="va">cat_WA_daily</span> <span class="op">&lt;-</span> <span class="fu">category</span><span class="op">(</span><span class="va">res_WA</span>, name <span class="op">=</span> <span class="st">"WA"</span>, climatology <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cat_WA_daily</span><span class="op">$</span><span class="va">climatology</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 4</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   t          event_no intensity category  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
@@ -333,28 +335,29 @@ Marine Heatwaves. Oceanography 31(2).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 1984-06-06        1      1.67 I Moderate</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 1984-06-07        1      1.58 I Moderate</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> 1984-06-17        2      2.02 I Moderate</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Note that this will not return the complete time series, only the</span></span>
-<span class="r-in"><span class="co"># days during which events were detected.</span></span>
-<span class="r-in"><span class="co"># This was done to reduce the size of the output for those working</span></span>
-<span class="r-in"><span class="co"># with gridded data.</span></span>
-<span class="r-in"><span class="co"># Should one want a complete time series, the daily category results</span></span>
-<span class="r-in"><span class="co"># may simply be left_join() with the detect_event() results</span></span>
-<span class="r-in"><span class="va">cat_WA_ts</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">res_WA</span><span class="op">$</span><span class="va">climatology</span>,</span>
-<span class="r-in">                              <span class="va">cat_WA_daily</span><span class="op">$</span><span class="va">climatology</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Note that this will not return the complete time series, only the</span></span></span>
+<span class="r-in"><span><span class="co"># days during which events were detected.</span></span></span>
+<span class="r-in"><span><span class="co"># This was done to reduce the size of the output for those working</span></span></span>
+<span class="r-in"><span><span class="co"># with gridded data.</span></span></span>
+<span class="r-in"><span><span class="co"># Should one want a complete time series, the daily category results</span></span></span>
+<span class="r-in"><span><span class="co"># may simply be left_join() with the detect_event() results</span></span></span>
+<span class="r-in"><span><span class="va">cat_WA_ts</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">res_WA</span><span class="op">$</span><span class="va">climatology</span>,</span></span>
+<span class="r-in"><span>                              <span class="va">cat_WA_daily</span><span class="op">$</span><span class="va">climatology</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Joining, by = c("t", "event_no")</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cat_WA_ts</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cat_WA_ts</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 11</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     doy t           temp  seas thresh threshCriterion durationCriterion event</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     1 1982-01-01  20.9  21.6   23.0 FALSE           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     2 1982-01-02  21.2  21.6   23.0 FALSE           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>     3 1982-01-03  21.4  21.7   23.0 FALSE           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>     4 1982-01-04  21.2  21.7   23.1 FALSE           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>     5 1982-01-05  21.3  21.7   23.1 FALSE           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span>     6 1982-01-06  21.6  21.7   23.1 FALSE           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 3 more variables: event_no &lt;int&gt;, intensity &lt;dbl&gt;, category &lt;chr&gt;</span></span>
-<span class="r-in"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     doy t           temp  seas thresh threshCrit…¹ durat…² event event…³ inten…⁴</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     1 1982-01-01  20.9  21.6   23.0 FALSE        FALSE   FALSE      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     2 1982-01-02  21.2  21.6   23.0 FALSE        FALSE   FALSE      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>     3 1982-01-03  21.4  21.7   23.0 FALSE        FALSE   FALSE      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>     4 1982-01-04  21.2  21.7   23.1 FALSE        FALSE   FALSE      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>     5 1982-01-05  21.3  21.7   23.1 FALSE        FALSE   FALSE      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span>     6 1982-01-06  21.6  21.7   23.1 FALSE        FALSE   FALSE      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 1 more variable: category &lt;chr&gt;, and abbreviated variable names</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ¹​threshCriterion, ²​durationCriterion, ³​event_no, ⁴​intensity</span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -369,7 +372,7 @@ Marine Heatwaves. Oceanography 31(2).</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
