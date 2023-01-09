@@ -24,7 +24,7 @@ accordance with the naming scheme proposed in Hobday et al. (2018)."><meta prope
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9002</span>
       </span>
     </div>
 
@@ -117,6 +117,7 @@ accordance with the naming scheme proposed in Hobday et al. (2018).</p>
 <span>  name <span class="op">=</span> <span class="st">"Event"</span>,</span>
 <span>  climatology <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  MCScorrect <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>  MCSice <span class="op">=</span> <span class="cn">F</span>,</span>
 <span>  season <span class="op">=</span> <span class="st">"range"</span>,</span>
 <span>  roundVal <span class="op">=</span> <span class="fl">4</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -161,6 +162,11 @@ intensity (anomaly above seasonal doy threshold) and category values. The second
 that the bottom thresholds for the more intense categories will be below -1.8C,
 this is physically impossible on Earth, so if one wants to correct the bottom thresholds
 to not be able to exceed -1.8C, set this argument to TRUE (default is FALSE).</p></dd>
+
+
+<dt>MCSice</dt>
+<dd><p>Sensu Schlegel et al. (2021; Marine cold-spells), it is advisable to classify
+a MCS with an event threshold below -1.7°C as a 'V Ice' category event.</p></dd>
 
 
 <dt>season</dt>
@@ -273,12 +279,15 @@ as detailed above.</p>
   climatology and the threshold, but do not triple it.</p></li>
 <li><p>III Severe-Events that triple the aforementioned distance, but do not quadruple it.</p></li>
 <li><p>IV Extreme-Events with a maximum intensity that is four times or greater than the
-  aforementioned distance. Scary stuff...</p></li>
+  aforementioned distance.</p></li>
+<li><p>V Ice-If `MCSice = T`, a MCS with an event threshold below -1.7°C will be classified here.</p></li>
 </ol></div>
     <div id="references">
     <h2>References</h2>
     <p>Hobday et al. (2018). Categorizing and Naming
 Marine Heatwaves. Oceanography 31(2).</p>
+<p>Schlegel et al. (2021). Marine cold-spells.
+Progress in Oceanography 198(102684).</p>
     </div>
     <div id="author">
     <h2>Author</h2>
