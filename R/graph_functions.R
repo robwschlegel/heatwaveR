@@ -96,7 +96,7 @@ event_line <- function(data,
                        y_axis_title = NULL,
                        y_axis_range = NULL) {
 
-  date_end <- date_start <- duration <-  temp <-  NULL
+  date_end <- date_start <- duration <- temp <-  NULL
 
   if (!(exists("event", data)) | !(exists("climatology", data)))
     stop("Please ensure you are running this function on the output of 'heatwaveR::detect_event()'")
@@ -199,9 +199,9 @@ event_line <- function(data,
     labs(x = xlabel, y = ylabel) +
     theme(plot.background = element_blank(),
           panel.background = element_rect(fill = "white"),
-          panel.border = element_rect(colour = "black", fill = NA, size = 0.75),
+          panel.border = element_rect(colour = "black", fill = NA, linewidth = 0.75),
           panel.grid.minor = element_line(colour = NA),
-          panel.grid.major = element_line(colour = "black", size = 0.2, linetype = "dotted"),
+          panel.grid.major = element_line(colour = "black", linewidth = 0.2, linetype = "dotted"),
           axis.text = element_text(colour = "black"),
           axis.text.x = element_text(margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"),
                                      angle = xtangle),
@@ -351,26 +351,33 @@ event_line <- function(data,
 #' lolli_plot(res)
 #'
 lolli_plot <- function(data,
-                       xaxis = "date_peak",
-                       metric = "intensity_max",
+                       xaxis = date_peak,
+                       metric = intensity_max,
                        event_count = 3) {
+
+  date_peak <- date_start <- duration <- intensity_max <-  NULL
 
   if (!(exists("event", data)) | !(exists("climatology", data))) stop("Please ensure you are running this function on the output of 'heatwaveR::detect_event()'")
 
-  if (!(metric %in% c("intensity_mean", "intensity_max", "intensity_cumulative", "duration"))) {
-    stop("Please ensure you have spelled the name of desired metric correctly.")
-  }
+  # if (!(metric %in% c("intensity_mean", "intensity_max", "intensity_cumulative", "duration"))) {
+  #   stop("Please ensure you have spelled the name of desired metric correctly.")
+  # }
 
-  if (!(xaxis %in% c("event_no", "date_start", "date_peak"))) {
-    stop("Please ensure you have spelled the name of desired x-axis correctly.")
-  }
+  # if (!(xaxis %in% c("event_no", "date_start", "date_peak"))) {
+  #   stop("Please ensure you have spelled the name of desired x-axis correctly.")
+  # }
 
   if (event_count > nrow(data$event)) {
     stop("Please ensure that event_count is less or equal to than the total number of events in your results.")
   }
 
-  event <- data$event %>%
-    dplyr::select(metric, xaxis)
+  ts_x <- eval(substitute(xaxis), data$event)
+  data$event$ts_x <- ts_x
+  ts_y <- eval(substitute(metric), data$event)
+  data$event$ts_y <- ts_y
+
+  event <- data$event #%>%
+    # dplyr::select(all_of(metric), all_of(xaxis))
 
   y_top <- as.numeric(event[which(abs(event[ ,1]) == max(abs(event[ ,1])))[1], 1]) * 1.05
   if (y_top >= 0) y_limits <- c(0, y_top)
@@ -382,33 +389,39 @@ lolli_plot <- function(data,
     lolli_col <- c("salmon", "red")
   }
 
-  if (xaxis == "event_no") xlabel <- "Event number"
-  if (xaxis == "date_start") xlabel <- "Start date"
-  if (xaxis == "date_peak") xlabel <- "Peak date"
+  # event_no <- date_start <- date_peak <- NULL
+  # intensity_max <- intensity_mean <- intensity_cumulative <- duration <- NULL
 
-  if (metric == "intensity_max") ylabel <- expression(paste("Maximum intensity [", degree, "C]"))
-  if (metric == "intensity_mean") ylabel <- expression(paste("Mean intensity [", degree, "C]"))
-  if (metric == "intensity_cumulative") ylabel <- expression(paste("Cumulative intensity [", degree, "C x days]"))
-  if (metric == "duration") ylabel <- "Duration [days]"
+  # if (xaxis == "event_no") xlabel <- "Event number"; xaxis_quo <- event_no
+  # if (xaxis == "date_start") xlabel <- "Start date"; xaxis_quo <- date_start
+  # if (xaxis == "date_peak") xlabel <- "Peak date"; xaxis_quo <- date_peak
 
-  lolli <- ggplot(data = event, aes_string(x = xaxis, y = metric)) +
+  # if (metric == "intensity_max") ylabel <- expression(paste("Maximum intensity [", degree, "C]")); metric_quo <- intensity_max
+  # if (metric == "intensity_mean") ylabel <- expression(paste("Mean intensity [", degree, "C]")); metric_quo <- intensity_mean
+  # if (metric == "intensity_cumulative") ylabel <- expression(paste("Cumulative intensity [", degree, "C x days]")); metric_quo <- intensity_cumulative
+  # if (metric == "duration") ylabel <- "Duration [days]"; metric_quo <- duration
+
+  # lolli <- ggplot(data = event, aes(x = !!enquo(xaxis_quo), y = !!enquo(metric))) +
+  lolli <- ggplot(data = event, aes(x = ts_x, y = ts_y)) +
+  # lolli <- ggplot(data = event, aes(x = {{ xaxis }}, y = {{ metric }})) +
+    # geom_lolli(fill = "grey70", n = event_count) +
     geom_lolli(colour = lolli_col[1], colour_n = lolli_col[2], fill = "grey70", n = event_count) +
-    labs(x = xlabel, y = ylabel) +
+    # labs(x = xlabel, y = ylabel) +
     scale_y_continuous(expand = c(0, 0), limits = y_limits) +
     theme(plot.background = element_blank(),
           panel.background = element_rect(fill = "white"),
-          panel.border = element_rect(colour = "black", fill = NA, size = 0.75),
+          panel.border = element_rect(colour = "black", fill = NA, linewidth = 0.75),
           panel.grid.minor = element_line(colour = NA),
-          panel.grid.major = element_line(colour = "black", size = 0.2, linetype = "dotted"),
+          panel.grid.major = element_line(colour = "black", linewidth = 0.2, linetype = "dotted"),
           axis.text = element_text(colour = "black"),
           axis.text.x = element_text(margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
           axis.text.y = element_text(margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
           axis.ticks.length = unit(-0.25, "cm")
           )
 
-  if (xaxis == "event_no") {
-    lolli <- lolli +
-      scale_x_continuous(breaks = seq(from = 0, to = nrow(data$event), by = 5))
-  }
+  # if (xaxis == "event_no") {
+  #   lolli <- lolli +
+  #     scale_x_continuous(breaks = seq(from = 0, to = nrow(data$event), by = 5))
+  # }
   lolli
 }
