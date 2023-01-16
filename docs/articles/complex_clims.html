@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9003</span>
       </span>
     </div>
 
@@ -137,7 +137,7 @@
                         <h4 data-toc-skip class="author">Robert W
 Schlegel</h4>
             
-            <h4 data-toc-skip class="date">2023-01-09</h4>
+            <h4 data-toc-skip class="date">2023-01-16</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/complex_clims.Rmd" class="external-link"><code>vignettes/complex_clims.Rmd</code></a></small>
       <div class="hidden name"><code>complex_clims.Rmd</code></div>
@@ -496,8 +496,8 @@ threshold.</p>
 different techniques may be we will use lolliplots to visualise
 them.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events_two_thresh</span>, metric <span class="op">=</span> <span class="st">"duration"</span><span class="op">)</span>, </span>
-<span>          <span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events_one_thresh_filtered</span>, metric <span class="op">=</span> <span class="st">"duration"</span><span class="op">)</span>, </span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events_two_thresh</span>, metric <span class="op">=</span> <span class="va">duration</span><span class="op">)</span>, </span>
+<span>          <span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events_one_thresh_filtered</span>, metric <span class="op">=</span> <span class="va">duration</span><span class="op">)</span>, </span>
 <span>          labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Double threshold"</span>, <span class="st">"Filter threshold"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: centre">
 <img src="complex_clims_files/figure-html/lolliplot-duration-1.png" alt="Difference in duration (days) of events given different applications of thresholds. Note the difference in the y-axes." width="768"><p class="caption">
@@ -506,8 +506,8 @@ thresholds. Note the difference in the y-axes.
 </p>
 </div>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events_two_thresh</span>, metric <span class="op">=</span> <span class="st">"intensity_cumulative"</span><span class="op">)</span>, </span>
-<span>          <span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events_one_thresh_filtered</span>, metric <span class="op">=</span> <span class="st">"intensity_cumulative"</span><span class="op">)</span>, </span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events_two_thresh</span>, metric <span class="op">=</span> <span class="va">intensity_cumulative</span><span class="op">)</span>, </span>
+<span>          <span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events_one_thresh_filtered</span>, metric <span class="op">=</span> <span class="va">intensity_cumulative</span><span class="op">)</span>, </span>
 <span>          labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Double threshold"</span>, <span class="st">"Filter threshold"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: centre">
 <img src="complex_clims_files/figure-html/lolliplot-int-cum-1.png" alt="Difference in cumulative intensity (°C x days) of events given different applications of thresholds. Note the difference in the y-axes." width="768"><p class="caption">

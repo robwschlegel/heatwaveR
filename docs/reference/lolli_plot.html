@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9003</span>
       </span>
     </div>
 
@@ -108,12 +108,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">lolli_plot</span><span class="op">(</span></span>
-<span>  <span class="va">data</span>,</span>
-<span>  xaxis <span class="op">=</span> <span class="st">"date_peak"</span>,</span>
-<span>  metric <span class="op">=</span> <span class="st">"intensity_max"</span>,</span>
-<span>  event_count <span class="op">=</span> <span class="fl">3</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">lolli_plot</span><span class="op">(</span><span class="va">data</span>, xaxis <span class="op">=</span> <span class="va">date_peak</span>, metric <span class="op">=</span> <span class="va">intensity_max</span>, event_count <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -123,19 +118,23 @@
 
 
 <dt>xaxis</dt>
-<dd><p>One of <code>event_no</code>, <code>date_start</code> or <code>date_peak</code>.
-Default is <code>date_start</code>.</p></dd>
+<dd><p>The name of a column from the <code>event</code> data.frame in
+the output of <code><a href="detect_event.html">detect_event</a></code>. Suggested choices are, but not
+limited to, of <code>event_no</code>, <code>date_start</code> or <code>date_peak</code>.
+Default is <code>date_peak</code>.</p></dd>
 
 
 <dt>metric</dt>
-<dd><p>One of <code>intensity_mean</code>, <code>intensity_max</code>,
+<dd><p>The name of a column from the <code>event</code> data.frame in
+the output of <code><a href="detect_event.html">detect_event</a></code>.Suggested choices are, but not
+limited to, <code>intensity_mean</code>, <code>intensity_max</code>,
 <code>intensity_cumulative</code> and <code>duration</code>.
  Default is <code>intensity_max</code>.</p></dd>
 
 
 <dt>event_count</dt>
 <dd><p>The number of top events to highlight, as determined by the
-value given to <code>metric</code>. Default is 3.</p></dd>
+column given to <code>metric</code>. Default is 3.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -149,7 +148,7 @@ in a brighter colour. This function differs in use from <code><a href="geom_loll
 
 
 <p>in that it creates a stand-alone figure. The benefit of this being
-that one must not have any prior knowledge of <code>ggplot2</code> to create the figure.</p>
+that one does not need any prior knowledge of <code>ggplot2</code> to create the figure.</p>
     </div>
     <div id="author">
     <h2>Author</h2>

@@ -24,7 +24,7 @@ Hobday et al. (2016)."><meta property="og:image" content="https://robwschlegel.g
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9003</span>
       </span>
     </div>
 
@@ -114,9 +114,9 @@ Hobday et al. (2016).</p>
 <span>  <span class="va">data</span>,</span>
 <span>  x <span class="op">=</span> <span class="va">t</span>,</span>
 <span>  y <span class="op">=</span> <span class="va">temp</span>,</span>
+<span>  metric <span class="op">=</span> <span class="va">intensity_cumulative</span>,</span>
 <span>  min_duration <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  spread <span class="op">=</span> <span class="fl">150</span>,</span>
-<span>  metric <span class="op">=</span> <span class="st">"intensity_cumulative"</span>,</span>
 <span>  start_date <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  end_date <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  category <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -137,13 +137,20 @@ Hobday et al. (2016).</p>
 <dt>x</dt>
 <dd><p>This column is expected to contain a vector of dates as per the
 specification of <code>make_whole</code>. If a column headed <code>t</code> is present in
-the dataframe, this argument may be ommitted; otherwise, specify the name of
+the dataframe, this argument may be omitted; otherwise, specify the name of
 the column with dates here.</p></dd>
 
 
 <dt>y</dt>
 <dd><p>This is a column containing the measurement variable. If the column
 name differs from the default (i.e. <code>temp</code>), specify the name here.</p></dd>
+
+
+<dt>metric</dt>
+<dd><p>This tells the function how to choose the event that should be
+highlighted as the 'greatest' of the events in the chosen period.
+Partial name matching is currently not supported so please specify the metric
+name precisely. The default is <code>intensity_cumulative</code>.</p></dd>
 
 
 <dt>min_duration</dt>
@@ -155,19 +162,6 @@ qualify as a heatwave or cold-spell.</p></dd>
 <dd><p>The number of days leading and trailing the largest event
 (as per <code>metric</code>) detected within the time period specified by
 <code>start_date</code> and <code>end_date</code>. The default is 150 days.</p></dd>
-
-
-<dt>metric</dt>
-<dd><p>This tells the function how to choose the event that should be
-highlighted as the 'greatest' of the events in the chosen period. One may
-choose from the following options: <code>intensity_mean</code>, <code>intensity_max</code>,
-<code>intensity_var</code>,<code>intensity_cumulative</code>, <code>intensity_mean_relThresh</code>,
-<code>intensity_max_relThresh</code>, <code>intensity_var_relThresh</code>,
-<code>intensity_cumulative_relThresh</code>, <code>intensity_mean_abs</code>,
-<code>intensity_max_abs</code>, <code>intensity_var_abs</code>, <code>intensity_cumulative_abs</code>,
-<code>rate_onset</code>, <code>rate_decline</code>. Partial name matching is currently not
-supported so please specify the metric name precisely. The default is
-<code>intensity_cumulative</code>.</p></dd>
 
 
 <dt>start_date</dt>
@@ -243,7 +237,7 @@ doi: 10.1016/j.pocean.2015.12.014</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="detect_event.html">detect_event</a></span><span class="op">(</span><span class="va">ts</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">event_line</span><span class="op">(</span><span class="va">res</span>, spread <span class="op">=</span> <span class="fl">100</span>, metric <span class="op">=</span> <span class="st">"intensity_cumulative"</span>,</span></span>
+<span class="r-in"><span><span class="fu">event_line</span><span class="op">(</span><span class="va">res</span>, spread <span class="op">=</span> <span class="fl">100</span>, metric <span class="op">=</span> <span class="va">duration</span>,</span></span>
 <span class="r-in"><span>start_date <span class="op">=</span> <span class="st">"2010-12-01"</span>, end_date <span class="op">=</span> <span class="st">"2011-06-30"</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The `guide` argument in `scale_*()` cannot be `FALSE`. This was deprecated in</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> ggplot2 3.3.4.</span>

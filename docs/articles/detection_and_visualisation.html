@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9003</span>
       </span>
     </div>
 
@@ -137,7 +137,7 @@
                         <h4 data-toc-skip class="author">AJ Smit and
 Robert W Schlegel</h4>
             
-            <h4 data-toc-skip class="date">2023-01-09</h4>
+            <h4 data-toc-skip class="date">2023-01-16</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/detection_and_visualisation.Rmd" class="external-link"><code>vignettes/detection_and_visualisation.Rmd</code></a></small>
       <div class="hidden name"><code>detection_and_visualisation.Rmd</code></div>
@@ -222,11 +222,11 @@ directly on the output of <code><a href="../reference/detect_event.html">detect_
 visualise MHWs. Here are the functions being used to visualise the
 massive Western Australian heatwave of 2011:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">mhw</span>, spread <span class="op">=</span> <span class="fl">180</span>, metric <span class="op">=</span> <span class="st">"intensity_max"</span>, </span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">mhw</span>, spread <span class="op">=</span> <span class="fl">180</span>, metric <span class="op">=</span> <span class="va">intensity_max</span>, </span>
 <span>           start_date <span class="op">=</span> <span class="st">"1982-01-01"</span>, end_date <span class="op">=</span> <span class="st">"2014-12-31"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="detection_and_visualisation_files/figure-html/fig-example1-1.png" width="768"></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">mhw</span>, metric <span class="op">=</span> <span class="st">"intensity_max"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">mhw</span>, metric <span class="op">=</span> <span class="va">intensity_max</span><span class="op">)</span></span></code></pre></div>
 <p><img src="detection_and_visualisation_files/figure-html/fig-example1-2.png" width="768"><!-- ![](vignettes/fig-example1-1.png) --><!-- ![](vignettes/fig-example2-1.png) --></p>
 </div>
 <div class="section level3">
@@ -363,11 +363,11 @@ OISST data for Western Australia:</p>
 </h3>
 <p>The default plots showing cold-spells look like this:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">mcs</span>, spread <span class="op">=</span> <span class="fl">200</span>, metric <span class="op">=</span> <span class="st">"intensity_cumulative"</span>,</span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">mcs</span>, spread <span class="op">=</span> <span class="fl">200</span>, metric <span class="op">=</span> <span class="va">intensity_cumulative</span>,</span>
 <span>           start_date <span class="op">=</span> <span class="st">"1982-01-01"</span>, end_date <span class="op">=</span> <span class="st">"2014-12-31"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="detection_and_visualisation_files/figure-html/fig-example5-1.png" width="768"></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">mcs</span>, metric <span class="op">=</span> <span class="st">"intensity_cumulative"</span>, xaxis <span class="op">=</span> <span class="st">"event_no"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">mcs</span>, metric <span class="op">=</span> <span class="va">intensity_cumulative</span>, xaxis <span class="op">=</span> <span class="va">event_no</span><span class="op">)</span></span></code></pre></div>
 <p><img src="detection_and_visualisation_files/figure-html/fig-example5-2.png" width="768"><!-- ![](vignettes/fig-example6-1.png) --><!-- ![](vignettes/fig-example6-2.png) --></p>
 <p>Note that one does not need to specify that MCSs are to be
 visualised, the functions are able to understand this on their own.</p>
