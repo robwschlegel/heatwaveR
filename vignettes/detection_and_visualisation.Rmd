@@ -59,10 +59,10 @@ mhw$event %>%
 One may use `event_line()` and `lolli_plot()` directly on the output of `detect_event()` in order to visualise MHWs. Here are the functions being used to visualise the massive Western Australian heatwave of 2011:
 
 ```{r fig-example1, echo = TRUE, eval = TRUE}
-event_line(mhw, spread = 180, metric = "intensity_max", 
+event_line(mhw, spread = 180, metric = intensity_max, 
            start_date = "1982-01-01", end_date = "2014-12-31")
 
-lolli_plot(mhw, metric = "intensity_max")
+lolli_plot(mhw, metric = intensity_max)
 ```
 <!-- ![](vignettes/fig-example1-1.png) -->
 <!-- ![](vignettes/fig-example2-1.png) -->
@@ -171,10 +171,10 @@ mcs$event %>%
 The default plots showing cold-spells look like this:
 
 ```{r fig-example5, echo = TRUE, eval = TRUE}
-event_line(mcs, spread = 200, metric = "intensity_cumulative",
+event_line(mcs, spread = 200, metric = intensity_cumulative,
            start_date = "1982-01-01", end_date = "2014-12-31")
 
-lolli_plot(mcs, metric = "intensity_cumulative", xaxis = "event_no")
+lolli_plot(mcs, metric = intensity_cumulative, xaxis = event_no)
 ```
 <!-- ![](vignettes/fig-example6-1.png) -->
 <!-- ![](vignettes/fig-example6-2.png) -->

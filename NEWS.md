@@ -1,3 +1,9 @@
+# heatwaveR 0.4.6.9003 (2023-01-16)
+
+-   Updated SST data to end of 2022
+-   Changed behaviour of `lolli_plot()` and `event_line()` to now use tidyeval
+  -   Note that this is a backwards compatibility breaking change that was required due to changes in **`ggplot2 v3.0.0`**
+
 # heatwaveR 0.4.6.9002 (2023-01-09)
 
 -   Updated citations page for all references to `heatwaveR` from 2022

@@ -14,11 +14,28 @@ test_that("event_line() doesn't fall over", {
   expect_is(tp, "ggplot")
 })
 
+test_that("event_line() arguments can be names different than 'x' or 'temp'", {
+  res <- detect_event(data = ts2clm(sst_Med,
+                                    climatologyPeriod = c("1983-01-01", "2012-12-31")))
+  res$climatology$banana <- res$climatology$temp
+  tp <- event_line(data = res, y = banana, start_date = "2012-01-01", end_date = "2012-12-31")
+  expect_is(tp, "ggplot")
+})
+
 test_that("event_line() does not require start and end dates to be provided", {
   res <- detect_event(data = ts2clm(sst_Med,
                                     climatologyPeriod = c("1983-01-01", "2012-12-31")))
   expect_is(event_line(data = res), "ggplot")
   expect_is(event_line(data = res, start_date = "2010-01-01"), "ggplot")
+})
+
+test_that("event_line() metric changes accordingly", {
+  res <- detect_event(data = ts2clm(sst_Med,
+                                    climatologyPeriod = c("1983-01-01", "2012-12-31")))
+  tp_1 <- event_line(data = res, metric = intensity_max)
+  tp_2 <- event_line(data = res, metric = duration)
+  expect_is(tp_1, "ggplot")
+  expect_is(tp_2, "ggplot")
 })
 
 test_that("data fed to event_line() is a list with correct dataframes", {
@@ -38,9 +55,8 @@ test_that("data fed to event_line() is a list with correct dataframes", {
 test_that("event_line() metric must be spelled correctly", {
   res <- detect_event(data = ts2clm(sst_Med,
                 climatologyPeriod = c("1983-01-01", "2012-12-31")))
-  expect_error(event_line(data = res, metric = "bananana",
-                          start_date = "2012-01-01", end_date = "2012-12-31"),
-               "Please ensure you have spelled the desired metric correctly.")
+  expect_error(event_line(data = res, metric = bananana,
+                          start_date = "2012-01-01", end_date = "2012-12-31"))
 })
 
 test_that("event_line() may create MCS output", {
@@ -96,8 +112,17 @@ test_that("event_line() additional options error traping works", {
 
 test_that("lolli_plot() doesn't fall over", {
   res <- detect_event(data = ts2clm(sst_Med,
-                climatologyPeriod = c("1983-01-01", "2012-12-31")))
+                                    climatologyPeriod = c("1983-01-01", "2012-12-31")))
   tp <- lolli_plot(res)
+  expect_is(tp, "ggplot")
+})
+
+test_that("lolli_plot() argument names can be changed", {
+  res <- detect_event(data = ts2clm(sst_Med,
+                                    climatologyPeriod = c("1983-01-01", "2012-12-31")))
+  res$event$`Duration [days]` <- res$event$duration
+  res$event$`Mean intensity [°C]` <- res$event$intensity_mean
+  tp <- lolli_plot(res, xaxis = `Duration [days]`, metric = `Mean intensity [°C]`)
   expect_is(tp, "ggplot")
 })
 
@@ -106,20 +131,6 @@ test_that("data fed to lolli_plot() is a list with correct dataframes", {
                                     climatologyPeriod = c("1983-01-01", "2012-12-31")))
   # Error message doesn't sync up for some reason so is omitted here...
   expect_error(lolli_plot(res$event))
-})
-
-test_that("lolli_plot() metric must be spelled correctly", {
-  res <- detect_event(data = ts2clm(sst_Med,
-                climatologyPeriod = c("1983-01-01", "2012-12-31")))
-  expect_error(lolli_plot(res, metric = "what does the fox say"),
-               "Please ensure you have spelled the name of desired metric correctly.")
-})
-
-test_that("lolli_plot() xaxis must be spelled correctly", {
-  res <- detect_event(data = ts2clm(sst_Med,
-                climatologyPeriod = c("1983-01-01", "2012-12-31")))
-  expect_error(lolli_plot(res, xaxis = "waw paw paw paw paw"),
-               "Please ensure you have spelled the name of desired x-axis correctly.")
 })
 
 test_that("lolli_plot() may not be asked to highlight more events than there are", {
@@ -143,26 +154,3 @@ test_that("lolli_plot() correctly highlights no events when told not to", {
   expect_is(tp, "ggplot")
 })
 
-test_that("lolli_plot() correctly changes x axis label for given 'xaxis' value", {
-  res <- detect_event(data = ts2clm(sst_Med, pctile = 10,
-                climatologyPeriod = c("1983-01-01", "2012-12-31")), coldSpells = TRUE)
-  tp_1 <- lolli_plot(res, xaxis = "event_no")
-  tp_2 <- lolli_plot(res, xaxis = "date_start")
-  tp_3 <- lolli_plot(res, xaxis = "date_peak")
-  expect_is(tp_1, "ggplot")
-  expect_is(tp_2, "ggplot")
-  expect_is(tp_3, "ggplot")
-})
-
-test_that("lolli_plot() correctly changes y axis label for given 'metric' value", {
-  res <- detect_event(data = ts2clm(sst_Med, pctile = 10,
-                                    climatologyPeriod = c("1983-01-01", "2012-12-31")), coldSpells = TRUE)
-  tp_1 <- lolli_plot(res, metric = "intensity_max")
-  tp_2 <- lolli_plot(res, metric = "intensity_mean")
-  tp_3 <- lolli_plot(res, metric = "intensity_cumulative")
-  tp_4 <- lolli_plot(res, metric = "duration")
-  expect_is(tp_1, "ggplot")
-  expect_is(tp_2, "ggplot")
-  expect_is(tp_3, "ggplot")
-  expect_is(tp_4, "ggplot")
-})
