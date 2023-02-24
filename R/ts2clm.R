@@ -90,7 +90,7 @@
 #'
 #' @return The function will return a tibble (see the \code{tidyverse}) with the
 #' input time series and the newly calculated climatology. The climatology contains
-#' the seasonal climatology and the threshold for calculating MHWs. The software was
+#' the daily climatology and the threshold for calculating MHWs. The software was
 #' designed for creating climatologies of daily temperatures, and the units
 #' specified below reflect that intended purpose. However, various other kinds
 #' of climatologies may be created, and if that is the case, the appropriate
@@ -103,11 +103,11 @@
 #'   \item{temp}{The measurement vector as per the the original \code{data} supplied
 #'   to the function. If a different column was given to the \code{y} argument that
 #'   will be shown here.}
-#'   \item{seas}{Climatological seasonal cycle [deg. C].}
-#'   \item{thresh}{Seasonally varying threshold (e.g., 90th
+#'   \item{seas}{Daily climatological cycle [deg. C].}
+#'   \item{thresh}{Daily varying threshold (e.g., 90th
 #'   percentile) [deg. C]. This is used in \code{\link{detect_event}} for the
 #'   detection/calculation of events (MHWs).}
-#'   \item{var}{Seasonally varying variance (standard deviation) [deg. C]. This
+#'   \item{var}{Daily varying variance (standard deviation) [deg. C]. This
 #'   column is not returned if \code{var = FALSE} (default).}
 #' Should \code{clmOnly} be enabled, only the 365 or 366 day climatology will be
 #' returned.

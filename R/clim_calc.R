@@ -1,4 +1,4 @@
-#' Calculate seasonal and threshold climatologies as well as the variance.
+#' Calculate daily mean, threshold, and variance climatologies.
 #'
 #' An internal function that helps to create the climatologies that are
 #' then output with \code{\link{ts2clm}}.
