@@ -29,6 +29,17 @@ jobs:
           writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
         shell: Rscript {0}
 
+      - name: Install system dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt update
+          sudo apt-get update
+          sudo apt-get -y install libcurl4-openssl-dev #package ssh dependency
+          while read -r cmd
+          do
+            eval sudo $cmd
+          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "20.04"))')
+
       - name: Cache R packages
         uses: actions/cache@v2
         with:

@@ -193,14 +193,14 @@ The event numbers found in `events_one_thresh_filtered` are the same as the even
 To better understand how different the results from these two different techniques may be we will use lolliplots to visualise them.
 
 ```{r lolliplot-duration, fig.cap="Difference in duration (days) of events given different applications of thresholds. Note the difference in the y-axes."}
-ggarrange(lolli_plot(events_two_thresh, metric = "duration"), 
-          lolli_plot(events_one_thresh_filtered, metric = "duration"), 
+ggarrange(lolli_plot(events_two_thresh, metric = duration), 
+          lolli_plot(events_one_thresh_filtered, metric = duration), 
           labels = c("Double threshold", "Filter threshold"))
 ```
 
 ```{r lolliplot-int-cum, fig.cap="Difference in cumulative intensity (°C x days) of events given different applications of thresholds. Note the difference in the y-axes."}
-ggarrange(lolli_plot(events_two_thresh, metric = "intensity_cumulative"), 
-          lolli_plot(events_one_thresh_filtered, metric = "intensity_cumulative"), 
+ggarrange(lolli_plot(events_two_thresh, metric = intensity_cumulative), 
+          lolli_plot(events_one_thresh_filtered, metric = intensity_cumulative), 
           labels = c("Double threshold", "Filter threshold"))
 ```
 

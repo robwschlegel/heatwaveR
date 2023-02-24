@@ -30,7 +30,7 @@ geoms as necessary."><meta property="og:image" content="https://robwschlegel.git
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9003</span>
       </span>
     </div>
 
@@ -45,7 +45,7 @@ geoms as necessary."><meta property="og:image" content="https://robwschlegel.git
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
      
     <span class="caret"></span>
@@ -54,10 +54,16 @@ geoms as necessary."><meta property="og:image" content="https://robwschlegel.git
       <a href="../articles/detection_and_visualisation.html">Basic Detection and Visualisation of Events</a>
     </li>
     <li>
+      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+    </li>
+    <li>
       <a href="../articles/exceedance.html">Calculating and Visualising Exceedances</a>
     </li>
     <li>
-      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
+    </li>
+    <li>
+      <a href="../articles/MHW_metric_trends.html">Trend and Breakpoint Analyses</a>
     </li>
     <li>
       <a href="../articles/OISST_preparation.html">Downloading and Preparing OISST Data</a>
@@ -66,13 +72,10 @@ geoms as necessary."><meta property="og:image" content="https://robwschlegel.git
       <a href="../articles/gridded_event_detection.html">Detecting Events in Gridded Data</a>
     </li>
     <li>
-      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse NOAA OISST Data: Alternative Methods</a>
+      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse Data: Alternative</a>
     </li>
     <li>
       <a href="../articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a>
-    </li>
-    <li>
-      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
     </li>
   </ul></li>
 <li>
@@ -119,15 +122,15 @@ geoms as necessary.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">geom_lolli</span><span class="op">(</span>
-  mapping <span class="op">=</span> <span class="cn">NULL</span>,
-  data <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">...</span>,
-  n <span class="op">=</span> <span class="fl">0</span>,
-  na.rm <span class="op">=</span> <span class="cn">FALSE</span>,
-  show.legend <span class="op">=</span> <span class="cn">NA</span>,
-  inherit.aes <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">geom_lolli</span><span class="op">(</span></span>
+<span>  mapping <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  n <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  na.rm <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  show.legend <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  inherit.aes <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -137,6 +140,8 @@ geoms as necessary.</p>
 specified and inherit.aes = TRUE (the default), it is combined with the
 default mapping at the top level of the plot. You must supply mapping if
 there is no plot mapping.</p></dd>
+
+
 <dt>data</dt>
 <dd><p>The data to be displayed in this layer. There are three options:</p><ol><li><p>If NULL, the default, the data is inherited from the plot data as specified
 in the call to <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot()</a></code>.</p></li>
@@ -146,27 +151,38 @@ be created.</p></li>
 <li><p>A function will be called with a single argument, the plot data. The return
 value must be a <code>data.frame</code>, and will be used as the layer data.</p></li>
 </ol></dd>
+
+
 <dt>...</dt>
 <dd><p>other arguments passed on to <code><a href="https://ggplot2.tidyverse.org/reference/layer.html" class="external-link">layer</a></code>. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 <code>color = "red"</code> or <code>size = 3</code>. They may also be parameters
 to the paired geom/stat.</p></dd>
+
+
 <dt>n</dt>
 <dd><p>The number of top events to highlight as based on the value provided
 to <code>aes(y)</code>. Default is 0.</p></dd>
+
+
 <dt>na.rm</dt>
 <dd><p>If <code>FALSE</code> (the default), removes missing values with
 a warning. If <code>TRUE</code> silently removes missing values.</p></dd>
+
+
 <dt>show.legend</dt>
 <dd><p>Logical. Should this layer be included in the legends? <code>NA</code>,
 the default, includes if any aesthetics are mapped. <code>FALSE</code> never includes, and
 <code>TRUE</code> always includes. It can also be a named logical vector to finely select
 the aesthetics to display.</p></dd>
+
+
 <dt>inherit.aes</dt>
 <dd><p>If <code>FALSE</code>, overrides the default aesthetics, rather
 than combining with them. This is most useful for helper functions that define
 both data and aesthetics and shouldn't inherit behaviour from the default plot
 specification, e.g. <code><a href="https://ggplot2.tidyverse.org/reference/borders.html" class="external-link">borders()</a></code>.</p></dd>
+
 </dl></div>
     <div id="aesthetics">
     <h2>Aesthetics</h2>
@@ -201,36 +217,38 @@ are in bold):</p><ul><li><p><strong><code>x</code></strong></p></li>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="detect_event.html">detect_event</a></span><span class="op">(</span><span class="va">ts</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">mhw</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">event</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Height of lollis represent event durations and their colours</span></span>
-<span class="r-in"><span class="co"># are mapped to the events' cumulative intensity:</span></span>
-<span class="r-in"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mhw</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">date_peak</span>, y <span class="op">=</span> <span class="va">duration</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu">geom_lolli</span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="va">intensity_cumulative</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_color_distiller</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Spectral"</span>, name <span class="op">=</span> <span class="st">"Cumulative \nintensity"</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Date"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"Event duration [days]"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="detect_event.html">detect_event</a></span><span class="op">(</span><span class="va">ts</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mhw</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">event</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Height of lollis represent event durations and their colours</span></span></span>
+<span class="r-in"><span><span class="co"># are mapped to the events' cumulative intensity:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mhw</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">date_peak</span>, y <span class="op">=</span> <span class="va">duration</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu">geom_lolli</span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="va">intensity_cumulative</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_color_distiller</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Spectral"</span>, name <span class="op">=</span> <span class="st">"Cumulative \nintensity"</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Date"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"Event duration [days]"</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Using the `size` aesthietic with geom_segment was deprecated in ggplot2 3.4.0.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Please use the `linewidth` aesthetic instead.</span>
 <span class="r-plt img"><img src="geom_lolli-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Height of lollis represent event durations and the top three (longest)</span></span>
-<span class="r-in"><span class="co"># lollis are highlighted in red:</span></span>
-<span class="r-in"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mhw</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">date_peak</span>, y <span class="op">=</span> <span class="va">duration</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu">geom_lolli</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">3</span>, colour_n <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_color_distiller</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Spectral"</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Peak date"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"Event duration [days]"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Height of lollis represent event durations and the top three (longest)</span></span></span>
+<span class="r-in"><span><span class="co"># lollis are highlighted in red:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mhw</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">date_peak</span>, y <span class="op">=</span> <span class="va">duration</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu">geom_lolli</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">3</span>, colour_n <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_color_distiller</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Spectral"</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Peak date"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"Event duration [days]"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="geom_lolli-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Because this is a proper geom, any number of ill-advised things</span></span>
-<span class="r-in"><span class="co"># may be done with it:</span></span>
-<span class="r-in"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mhw</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">event_no</span>, y <span class="op">=</span> <span class="va">intensity_max</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu">geom_lolli</span><span class="op">(</span>shape <span class="op">=</span> <span class="fl">5</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="va">rate_onset</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dotted"</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_color_distiller</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"RdYlGn"</span>, name <span class="op">=</span> <span class="st">"Rate \nonset"</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Event number"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"Max intensity [degree C]"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Because this is a proper geom, any number of ill-advised things</span></span></span>
+<span class="r-in"><span><span class="co"># may be done with it:</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mhw</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">event_no</span>, y <span class="op">=</span> <span class="va">intensity_max</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu">geom_lolli</span><span class="op">(</span>shape <span class="op">=</span> <span class="fl">5</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="va">rate_onset</span><span class="op">)</span>, linetype <span class="op">=</span> <span class="st">"dotted"</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html" class="external-link">scale_color_distiller</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"RdYlGn"</span>, name <span class="op">=</span> <span class="st">"Rate \nonset"</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">xlab</a></span><span class="op">(</span><span class="st">"Event number"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">ylab</a></span><span class="op">(</span><span class="st">"Max intensity [degree C]"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="geom_lolli-3.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -245,8 +263,7 @@ are in bold):</p><ul><li><p><strong><code>x</code></strong></p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

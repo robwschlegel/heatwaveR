@@ -4,25 +4,24 @@
 \alias{lolli_plot}
 \title{Create a timeline of selected event metrics as 'lollipops'.}
 \usage{
-lolli_plot(
-  data,
-  xaxis = "date_peak",
-  metric = "intensity_max",
-  event_count = 3
-)
+lolli_plot(data, xaxis = date_peak, metric = intensity_max, event_count = 3)
 }
 \arguments{
 \item{data}{Output from the \code{\link{detect_event}} function.}
 
-\item{xaxis}{One of \code{event_no}, \code{date_start} or \code{date_peak}.
-Default is \code{date_start}.}
+\item{xaxis}{The name of a column from the \code{event} data.frame in
+the output of \code{\link{detect_event}}. Suggested choices are, but not
+limited to, of \code{event_no}, \code{date_start} or \code{date_peak}.
+Default is \code{date_peak}.}
 
-\item{metric}{One of \code{intensity_mean}, \code{intensity_max},
+\item{metric}{The name of a column from the \code{event} data.frame in
+the output of \code{\link{detect_event}}.Suggested choices are, but not
+limited to, \code{intensity_mean}, \code{intensity_max},
 \code{intensity_cumulative} and \code{duration}.
  Default is \code{intensity_max}.}
 
 \item{event_count}{The number of top events to highlight, as determined by the
-value given to \code{metric}. Default is 3.}
+column given to \code{metric}. Default is 3.}
 }
 \value{
 The function will return a graph of the intensity of the selected
@@ -30,7 +29,7 @@ The function will return a graph of the intensity of the selected
 The number of top events as per \code{event_count} will be highlighted
 in a brighter colour. This function differs in use from \code{\link{geom_lolli}}
 in that it creates a stand-alone figure. The benefit of this being
-that one must not have any prior knowledge of \code{ggplot2} to create the figure.
+that one does not need any prior knowledge of \code{ggplot2} to create the figure.
 }
 \description{
 Visualise a timeline of several possible event metrics as 'lollipop' graphs.

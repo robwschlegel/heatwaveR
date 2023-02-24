@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9003</span>
       </span>
     </div>
 
@@ -64,7 +64,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
      
     <span class="caret"></span>
@@ -74,10 +74,16 @@
       <a href="../articles/detection_and_visualisation.html">Basic Detection and Visualisation of Events</a>
     </li>
     <li>
+      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+    </li>
+    <li>
       <a href="../articles/exceedance.html">Calculating and Visualising Exceedances</a>
     </li>
     <li>
-      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
+    </li>
+    <li>
+      <a href="../articles/MHW_metric_trends.html">Trend and Breakpoint Analyses</a>
     </li>
     <li>
       <a href="../articles/OISST_preparation.html">Downloading and Preparing OISST Data</a>
@@ -86,13 +92,10 @@
       <a href="../articles/gridded_event_detection.html">Detecting Events in Gridded Data</a>
     </li>
     <li>
-      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse NOAA OISST Data: Alternative Methods</a>
+      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse Data: Alternative</a>
     </li>
     <li>
       <a href="../articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a>
-    </li>
-    <li>
-      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
     </li>
   </ul>
 </li>
@@ -134,7 +137,7 @@
 Alternative Methods</h1>
                         <h4 data-toc-skip class="author">AJ Smit</h4>
             
-            <h4 data-toc-skip class="date">2022-03-09</h4>
+            <h4 data-toc-skip class="date">2023-01-16</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/Download_SST_v2.Rmd" class="external-link"><code>vignettes/Download_SST_v2.Rmd</code></a></small>
       <div class="hidden name"><code>Download_SST_v2.Rmd</code></div>
@@ -268,77 +271,77 @@ cores.</p>
 </h2>
 <p>Here is a set of steps that does the job for me:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Load packages -----------------------------------------------------------</span>
-
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/tidync/" class="external-link">tidync</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span> <span class="co"># for the fast fwrite() function</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://robwschlegel.github.io/heatwaveR/index.html">heatwaveR</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RevolutionAnalytics/doparallel" class="external-link">doParallel</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/doParallel/man/registerDoParallel.html" class="external-link">registerDoParallel</a></span><span class="op">(</span>cores <span class="op">=</span> <span class="fl">14</span><span class="op">)</span> <span class="co"># not using all 16</span>
-
-<span class="co"># Define paths ------------------------------------------------------------</span>
-
-<span class="va">datadir</span> <span class="op">&lt;-</span> <span class="st">"/Volumes/OceanData"</span>
-<span class="va">oisst_file_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">datadir</span>, <span class="st">"/test_files"</span><span class="op">)</span>
-<span class="va">nc_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">oisst_file_dir</span>, <span class="st">"/OISST_combined.nc"</span><span class="op">)</span>
-<span class="va">MHW_dir</span> <span class="op">&lt;-</span> <span class="va">datadir</span>
-
-<span class="co"># Define various functions ------------------------------------------------</span>
-
-<span class="co"># A load and slice function for the combined netCDF</span>
-<span class="va">OISST_load</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">file_name</span>, <span class="va">lon1</span>, <span class="va">lon2</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">OISST_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/tidync/reference/tidync.html" class="external-link">tidync</a></span><span class="op">(</span><span class="va">file_name</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-    <span class="fu"><a href="https://docs.ropensci.org/tidync/reference/hyper_filter.html" class="external-link">hyper_filter</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/between.html" class="external-link">between</a></span><span class="op">(</span><span class="va">lon</span>, <span class="va">lon1</span>, <span class="va">lon2</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-    <span class="fu"><a href="https://docs.ropensci.org/tidync/reference/hyper_tibble.html" class="external-link">hyper_tibble</a></span><span class="op">(</span>select_var <span class="op">=</span> <span class="st">"sst"</span>, force <span class="op">=</span> <span class="cn">TRUE</span>, drop <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">zlev</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>t <span class="op">=</span> <span class="va">time</span>, temp <span class="op">=</span> <span class="va">sst</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>t <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="va">t</span>, origin <span class="op">=</span> <span class="st">"1978-01-01"</span><span class="op">)</span><span class="op">)</span>
-  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">OISST_dat</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">OISST_dat</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="co"># Rob's MHW detect function</span>
-<span class="va">event_only</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">{</span>
-  <span class="co"># first calculate the climatologies</span>
-  <span class="va">clim</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1991-01-01"</span>, <span class="st">"2020-12-31"</span><span class="op">)</span><span class="op">)</span>
-  <span class="co"># then the events</span>
-  <span class="va">event</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/detect_event.html">detect_event</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">clim</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">clim</span><span class="op">)</span>
-  <span class="co"># return only the event metric dataframe of results</span>
-  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">event</span><span class="op">$</span><span class="va">event</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">event</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Load packages -----------------------------------------------------------</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/tidync/" class="external-link">tidync</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span> <span class="co"># for the fast fwrite() function</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://robwschlegel.github.io/heatwaveR/index.html">heatwaveR</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RevolutionAnalytics/doparallel" class="external-link">doParallel</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/doParallel/man/registerDoParallel.html" class="external-link">registerDoParallel</a></span><span class="op">(</span>cores <span class="op">=</span> <span class="fl">14</span><span class="op">)</span> <span class="co"># not using all 16</span></span>
+<span></span>
+<span><span class="co"># Define paths ------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="va">datadir</span> <span class="op">&lt;-</span> <span class="st">"/Volumes/OceanData"</span></span>
+<span><span class="va">oisst_file_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">datadir</span>, <span class="st">"/test_files"</span><span class="op">)</span></span>
+<span><span class="va">nc_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">oisst_file_dir</span>, <span class="st">"/OISST_combined.nc"</span><span class="op">)</span></span>
+<span><span class="va">MHW_dir</span> <span class="op">&lt;-</span> <span class="va">datadir</span></span>
+<span></span>
+<span><span class="co"># Define various functions ------------------------------------------------</span></span>
+<span></span>
+<span><span class="co"># A load and slice function for the combined netCDF</span></span>
+<span><span class="va">OISST_load</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">file_name</span>, <span class="va">lon1</span>, <span class="va">lon2</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">OISST_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/tidync/reference/tidync.html" class="external-link">tidync</a></span><span class="op">(</span><span class="va">file_name</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://docs.ropensci.org/tidync/reference/hyper_filter.html" class="external-link">hyper_filter</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/between.html" class="external-link">between</a></span><span class="op">(</span><span class="va">lon</span>, <span class="va">lon1</span>, <span class="va">lon2</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://docs.ropensci.org/tidync/reference/hyper_tibble.html" class="external-link">hyper_tibble</a></span><span class="op">(</span>select_var <span class="op">=</span> <span class="st">"sst"</span>, force <span class="op">=</span> <span class="cn">TRUE</span>, drop <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">zlev</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>t <span class="op">=</span> <span class="va">time</span>, temp <span class="op">=</span> <span class="va">sst</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>t <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="va">t</span>, origin <span class="op">=</span> <span class="st">"1978-01-01"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">OISST_dat</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">OISST_dat</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Rob's MHW detect function</span></span>
+<span><span class="va">event_only</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="co"># first calculate the climatologies</span></span>
+<span>  <span class="va">clim</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1991-01-01"</span>, <span class="st">"2020-12-31"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="co"># then the events</span></span>
+<span>  <span class="va">event</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/detect_event.html">detect_event</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">clim</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">clim</span><span class="op">)</span></span>
+<span>  <span class="co"># return only the event metric dataframe of results</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">event</span><span class="op">$</span><span class="va">event</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">event</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Execute the code --------------------------------------------------------</span>
-
-<span class="co"># Define the slices</span>
-<span class="co"># 10° longitude slices seem to work fine on</span>
-<span class="co"># my MacBook Pro with 64Gb RAM and 16 cores</span>
-<span class="va">slice_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>lon1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">350</span>, <span class="fl">10</span><span class="op">)</span>,
-                   lon2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">360</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span>
-  <span class="co"># extract slices sequentially</span>
-  <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">slice_df</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/noquote.html" class="external-link">noquote</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Processing slice"</span>, <span class="va">i</span>, <span class="st">"of"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">slice_df</span><span class="op">)</span>,
-                      <span class="st">"--&gt;"</span>, <span class="va">slice_df</span><span class="op">$</span><span class="va">lon1</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"to"</span>, <span class="va">slice_df</span><span class="op">$</span><span class="va">lon2</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"°E\n"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/noquote.html" class="external-link">noquote</a></span><span class="op">(</span><span class="st">"  &gt; 1. loading and slicing NetCDF\n"</span><span class="op">)</span><span class="op">)</span>
-    <span class="va">sst</span> <span class="op">&lt;-</span> <span class="fu">OISST_load</span><span class="op">(</span><span class="va">nc_file</span>, lon1 <span class="op">=</span> <span class="va">slice_df</span><span class="op">$</span><span class="va">lon1</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, lon2 <span class="op">=</span> <span class="va">slice_df</span><span class="op">$</span><span class="va">lon2</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span>
-    <span class="co"># process each slice in parallel</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/noquote.html" class="external-link">noquote</a></span><span class="op">(</span><span class="st">"  &gt; 2. detecting marine heatwaves\n"</span><span class="op">)</span><span class="op">)</span>
-    <span class="va">MHW</span> <span class="op">&lt;-</span> <span class="fu">plyr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/plyr/man/ddply.html" class="external-link">ddply</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">sst</span>, .variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lon"</span>, <span class="st">"lat"</span><span class="op">)</span>,
-                       .fun <span class="op">=</span> <span class="va">event_only</span>, .parallel <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">sst</span><span class="op">)</span>
-    <span class="co"># save results to disk</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/noquote.html" class="external-link">noquote</a></span><span class="op">(</span><span class="st">"  &gt; 3. saving events to csv\n"</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fwrite.html" class="external-link">fwrite</a></span><span class="op">(</span><span class="va">MHW</span>, file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">datadir</span>, <span class="st">"/MHW_slice_"</span>, <span class="va">i</span>, <span class="st">"_"</span>,
-                              <span class="va">slice_df</span><span class="op">$</span><span class="va">lon1</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"-"</span>, <span class="va">slice_df</span><span class="op">$</span><span class="va">lon2</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">".csv"</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">MHW</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/noquote.html" class="external-link">noquote</a></span><span class="op">(</span><span class="st">"SLICE DONE!\n"</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span>sep<span class="op">=</span><span class="st">"\n\n"</span><span class="op">)</span>
-  <span class="op">}</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Execute the code --------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co"># Define the slices</span></span>
+<span><span class="co"># 10° longitude slices seem to work fine on</span></span>
+<span><span class="co"># my MacBook Pro with 64Gb RAM and 16 cores</span></span>
+<span><span class="va">slice_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>lon1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">350</span>, <span class="fl">10</span><span class="op">)</span>,</span>
+<span>                   lon2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">360</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span></span>
+<span>  <span class="co"># extract slices sequentially</span></span>
+<span>  <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">slice_df</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/noquote.html" class="external-link">noquote</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Processing slice"</span>, <span class="va">i</span>, <span class="st">"of"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">slice_df</span><span class="op">)</span>,</span>
+<span>                      <span class="st">"--&gt;"</span>, <span class="va">slice_df</span><span class="op">$</span><span class="va">lon1</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"to"</span>, <span class="va">slice_df</span><span class="op">$</span><span class="va">lon2</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"°E\n"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/noquote.html" class="external-link">noquote</a></span><span class="op">(</span><span class="st">"  &gt; 1. loading and slicing NetCDF\n"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="va">sst</span> <span class="op">&lt;-</span> <span class="fu">OISST_load</span><span class="op">(</span><span class="va">nc_file</span>, lon1 <span class="op">=</span> <span class="va">slice_df</span><span class="op">$</span><span class="va">lon1</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, lon2 <span class="op">=</span> <span class="va">slice_df</span><span class="op">$</span><span class="va">lon2</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
+<span>    <span class="co"># process each slice in parallel</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/noquote.html" class="external-link">noquote</a></span><span class="op">(</span><span class="st">"  &gt; 2. detecting marine heatwaves\n"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="va">MHW</span> <span class="op">&lt;-</span> <span class="fu">plyr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/plyr/man/ddply.html" class="external-link">ddply</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">sst</span>, .variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lon"</span>, <span class="st">"lat"</span><span class="op">)</span>,</span>
+<span>                       .fun <span class="op">=</span> <span class="va">event_only</span>, .parallel <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">sst</span><span class="op">)</span></span>
+<span>    <span class="co"># save results to disk</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/noquote.html" class="external-link">noquote</a></span><span class="op">(</span><span class="st">"  &gt; 3. saving events to csv\n"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fwrite.html" class="external-link">fwrite</a></span><span class="op">(</span><span class="va">MHW</span>, file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">datadir</span>, <span class="st">"/MHW_slice_"</span>, <span class="va">i</span>, <span class="st">"_"</span>,</span>
+<span>                              <span class="va">slice_df</span><span class="op">$</span><span class="va">lon1</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"-"</span>, <span class="va">slice_df</span><span class="op">$</span><span class="va">lon2</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">".csv"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">MHW</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/noquote.html" class="external-link">noquote</a></span><span class="op">(</span><span class="st">"SLICE DONE!\n"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span>sep<span class="op">=</span><span class="st">"\n\n"</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>Please let me know if there are issues with the scripts, or if you
 have suggesations about how to improve them.</p>
 </div>
@@ -361,8 +364,7 @@ have suggesations about how to improve them.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

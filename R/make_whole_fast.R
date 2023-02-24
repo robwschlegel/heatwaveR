@@ -3,6 +3,8 @@
 #' Takes a series of dates and temperatures, and if irregular (but ordered), inserts
 #' missing dates and fills correpsonding temperatures with NAs.
 #'
+#' @keywords internal
+#'
 #' @importFrom data.table := data.table
 #' @importFrom dplyr %>%
 #'

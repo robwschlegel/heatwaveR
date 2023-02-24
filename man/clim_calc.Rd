@@ -27,3 +27,4 @@ then output with \code{\link{ts2clm}}.
 \author{
 Smit, A. J.
 }
+\keyword{internal}

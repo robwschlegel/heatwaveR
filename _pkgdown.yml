@@ -12,20 +12,22 @@ navbar:
     menu:
     - text: "Basic Detection and Visualisation of Events"
       href: articles/detection_and_visualisation.html
-    - text: "Calculating and Visualising Exceedances"
-      href: articles/exceedance.html
     - text: "Calculating and Visualising Event Categories"
       href: articles/event_categories.html
+    - text: "Calculating and Visualising Exceedances"
+      href: articles/exceedance.html
+    - text: "Alternative Thresholds"
+      href: articles/complex_clims.html
+    - text: "Trend and Breakpoint Analyses"
+      href: articles/MHW_metric_trends.html
     - text: "Downloading and Preparing OISST Data"
       href: articles/OISST_preparation.html
     - text: "Detecting Events in Gridded Data"
       href: articles/gridded_event_detection.html
-    - text: "Download, Prepare, and Analyse NOAA OISST Data: Alternative Methods"
+    - text: "Download, Prepare, and Analyse Data: Alternative"
       href: articles/Download_SST_v2.html
     - text: "Saving MHW Results to NetCDF"
       href: articles/MHW_to_nc.html
-    - text: "Alternative Thresholds"
-      href: articles/complex_clims.html
   - text: "Citations"
     href: CITATIONS.html
   - text: "News"

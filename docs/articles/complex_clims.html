@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9003</span>
       </span>
     </div>
 
@@ -64,7 +64,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
      
     <span class="caret"></span>
@@ -74,10 +74,16 @@
       <a href="../articles/detection_and_visualisation.html">Basic Detection and Visualisation of Events</a>
     </li>
     <li>
+      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+    </li>
+    <li>
       <a href="../articles/exceedance.html">Calculating and Visualising Exceedances</a>
     </li>
     <li>
-      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
+    </li>
+    <li>
+      <a href="../articles/MHW_metric_trends.html">Trend and Breakpoint Analyses</a>
     </li>
     <li>
       <a href="../articles/OISST_preparation.html">Downloading and Preparing OISST Data</a>
@@ -86,13 +92,10 @@
       <a href="../articles/gridded_event_detection.html">Detecting Events in Gridded Data</a>
     </li>
     <li>
-      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse NOAA OISST Data: Alternative Methods</a>
+      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse Data: Alternative</a>
     </li>
     <li>
       <a href="../articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a>
-    </li>
-    <li>
-      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
     </li>
   </ul>
 </li>
@@ -134,7 +137,7 @@
                         <h4 data-toc-skip class="author">Robert W
 Schlegel</h4>
             
-            <h4 data-toc-skip class="date">2022-03-09</h4>
+            <h4 data-toc-skip class="date">2023-01-16</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/complex_clims.Rmd" class="external-link"><code>vignettes/complex_clims.Rmd</code></a></small>
       <div class="hidden name"><code>complex_clims.Rmd</code></div>
@@ -155,7 +158,7 @@ change in the event detection pipeline when we moved from the
 <strong><code>heatwaveR</code></strong>. This change may primarily be
 seen with the inclusion of the <code><a href="../reference/ts2clm.html">ts2clm()</a></code> function and the
 removal of the climatology performed in
-<code><a href="https://rdrr.io/pkg/RmarineHeatWaves/man/detect.html" class="external-link">RmarineHeatWaves::detect()</a></code> in favour of
+<code>RmarineHeatWaves::detect()</code> in favour of
 <code><a href="../reference/detect_event.html">detect_event()</a></code>, which does not calculate climatologies. In
 this way we have allowed for the introduction of a multitude of more
 complex climatology calculation and event detection/filtering methods.
@@ -200,9 +203,9 @@ temperatures over Algiers, Algeria contributed by Mr. Haouari.</p>
 <p>The first step with any analysis in R should be the loading of the
 packages to be used.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rpkgs.datanovia.com/ggpubr/" class="external-link">ggpubr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://robwschlegel.github.io/heatwaveR/index.html">heatwaveR</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rpkgs.datanovia.com/ggpubr/" class="external-link">ggpubr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://robwschlegel.github.io/heatwaveR/index.html">heatwaveR</a></span><span class="op">)</span></span></code></pre></div>
 <p>With our libraries loaded, we will now go about explicitly calling
 the <code>Algiers</code> data into our environment. These data are
 automatically loaded for us when we load the <code>heatwaveR</code>
@@ -211,7 +214,7 @@ following along should feel free to use whatever data they would like.
 As long as the data have a date (<code>t</code>), <code>tMin</code>, and
 <code>tMax</code> column this code will function as designed.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">Algiers</span> <span class="op">&lt;-</span> <span class="va">Algiers</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">Algiers</span> <span class="op">&lt;-</span> <span class="va">Algiers</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="calculating-thresholds">Calculating thresholds<a class="anchor" aria-label="anchor" href="#calculating-thresholds"></a>
@@ -224,15 +227,15 @@ of 19<span class="math inline">\(^\circ\)</span>C based on the
 <code>tMin</code> data. We use 19<span class="math inline">\(^\circ\)</span>C as the bottom threshold as this
 is roughly the mean <code>tMin</code> for summer temperatures.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># The tMax threshold</span>
-<span class="co"># The current WMO standard climatology period is 1981-01-01 to 2010-12-31 and should be used when possible</span>
-<span class="co"># We rather use 1961-01-01 to 1990-01-01 as this is the oldest 30 year period available in the data</span>
-<span class="va">tMax_clim</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">Algiers</span>, y <span class="op">=</span> <span class="va">tMax</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1961-01-01"</span>, <span class="st">"1990-12-31"</span><span class="op">)</span>, pctile <span class="op">=</span> <span class="fl">90</span><span class="op">)</span>
-
-<span class="co"># The tMin exceedance</span>
-<span class="co"># Note the use here of 'minDuration = 3' and 'maxGap = 1' as the default atmospheric arguments</span>
-<span class="co"># The default marine arguments are 'minDuration = 5' and 'maxGap = 2'</span>
-<span class="va">tMin_exc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/exceedance.html">exceedance</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">Algiers</span>, y <span class="op">=</span> <span class="va">tMin</span>, threshold <span class="op">=</span> <span class="fl">19</span>, minDuration <span class="op">=</span> <span class="fl">3</span>, maxGap <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">$</span><span class="va">threshold</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># The tMax threshold</span></span>
+<span><span class="co"># The current WMO standard climatology period is 1981-01-01 to 2010-12-31 and should be used when possible</span></span>
+<span><span class="co"># We rather use 1961-01-01 to 1990-01-01 as this is the oldest 30 year period available in the data</span></span>
+<span><span class="va">tMax_clim</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">Algiers</span>, y <span class="op">=</span> <span class="va">tMax</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1961-01-01"</span>, <span class="st">"1990-12-31"</span><span class="op">)</span>, pctile <span class="op">=</span> <span class="fl">90</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># The tMin exceedance</span></span>
+<span><span class="co"># Note the use here of 'minDuration = 3' and 'maxGap = 1' as the default atmospheric arguments</span></span>
+<span><span class="co"># The default marine arguments are 'minDuration = 5' and 'maxGap = 2'</span></span>
+<span><span class="va">tMin_exc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/exceedance.html">exceedance</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">Algiers</span>, y <span class="op">=</span> <span class="va">tMin</span>, threshold <span class="op">=</span> <span class="fl">19</span>, minDuration <span class="op">=</span> <span class="fl">3</span>, maxGap <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">$</span><span class="va">threshold</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="calculating-events">Calculating events<a class="anchor" aria-label="anchor" href="#calculating-events"></a>
@@ -242,10 +245,10 @@ is roughly the mean <code>tMin</code> for summer temperatures.</p>
 threshold to the argument <code>threshClim2</code> that would normally
 lay dormant.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Note that because we calculated our 90th percentile threshold on a column named 'tMax' </span>
-<span class="co"># and not the default column name 'temp', we must specify this below with 'y = tMax'</span>
-<span class="va">events</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/detect_event.html">detect_event</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">tMax_clim</span>, y <span class="op">=</span> <span class="va">tMax</span>, <span class="co"># The 90th percentile threshold</span>
-                       threshClim2 <span class="op">=</span> <span class="va">tMin_exc</span><span class="op">$</span><span class="va">exceedance</span><span class="op">)</span> <span class="co"># The flat exceedance threshold</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Note that because we calculated our 90th percentile threshold on a column named 'tMax' </span></span>
+<span><span class="co"># and not the default column name 'temp', we must specify this below with 'y = tMax'</span></span>
+<span><span class="va">events</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/detect_event.html">detect_event</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">tMax_clim</span>, y <span class="op">=</span> <span class="va">tMax</span>, <span class="co"># The 90th percentile threshold</span></span>
+<span>                       threshClim2 <span class="op">=</span> <span class="va">tMin_exc</span><span class="op">$</span><span class="va">exceedance</span><span class="op">)</span> <span class="co"># The flat exceedance threshold</span></span></code></pre></div>
 <p>Please note that even though the use of the second threshold does
 allow for the resultant event metrics to differ, the values themselves
 are still being calculated against the seasonal climatology and daily
@@ -269,22 +272,22 @@ results are output the same as though only one threshold (default) were
 used. This means that we may use the visualisation functions that come
 with <strong><code>heatwaveR</code></strong> without any extra fuss.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># The code to create a bubble plot for the heatwave results</span>
-<span class="va">bubble_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">events</span><span class="op">$</span><span class="va">event</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">date_peak</span>, y <span class="op">=</span> <span class="va">intensity_max</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>size <span class="op">=</span> <span class="va">intensity_cumulative</span><span class="op">)</span>, shape <span class="op">=</span> <span class="fl">21</span>, fill <span class="op">=</span> <span class="st">"salmon"</span>, alpha <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="st">"Maximum Intensity [°C] "</span>, size <span class="op">=</span> <span class="st">"Cumulative Intensity [°C x days]"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_size.html" class="external-link">scale_size_continuous</a></span><span class="op">(</span>range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span><span class="op">)</span>, 
-                        guide <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html" class="external-link">guide_legend</a></span><span class="op">(</span>title.position <span class="op">=</span> <span class="st">"top"</span>, direction <span class="op">=</span> <span class="st">"horizontal"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="fl">0.12</span><span class="op">)</span>,
-        legend.box.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># Don't forget to set 'event_line(y = tMax)'</span>
-<span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">events</span>, y <span class="op">=</span> <span class="va">tMax</span>, metric <span class="op">=</span> <span class="st">"intensity_max"</span><span class="op">)</span>,
-          <span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">events</span>, y <span class="op">=</span> <span class="va">tMax</span>, metric <span class="op">=</span> <span class="st">"intensity_max"</span>, category <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,
-          <span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events</span><span class="op">)</span>,
-          <span class="va">bubble_plot</span>,
-          ncol <span class="op">=</span> <span class="fl">2</span>, nrow <span class="op">=</span> <span class="fl">2</span>, align <span class="op">=</span> <span class="st">"hv"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># The code to create a bubble plot for the heatwave results</span></span>
+<span><span class="va">bubble_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">events</span><span class="op">$</span><span class="va">event</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">date_peak</span>, y <span class="op">=</span> <span class="va">intensity_max</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>size <span class="op">=</span> <span class="va">intensity_cumulative</span><span class="op">)</span>, shape <span class="op">=</span> <span class="fl">21</span>, fill <span class="op">=</span> <span class="st">"salmon"</span>, alpha <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="st">"Maximum Intensity [°C] "</span>, size <span class="op">=</span> <span class="st">"Cumulative Intensity [°C x days]"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_size.html" class="external-link">scale_size_continuous</a></span><span class="op">(</span>range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span><span class="op">)</span>, </span>
+<span>                        guide <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html" class="external-link">guide_legend</a></span><span class="op">(</span>title.position <span class="op">=</span> <span class="st">"top"</span>, direction <span class="op">=</span> <span class="st">"horizontal"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="fl">0.12</span><span class="op">)</span>,</span>
+<span>        legend.box.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Don't forget to set 'event_line(y = tMax)'</span></span>
+<span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">events</span>, y <span class="op">=</span> <span class="va">tMax</span>, metric <span class="op">=</span> <span class="st">"intensity_max"</span><span class="op">)</span>,</span>
+<span>          <span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">events</span>, y <span class="op">=</span> <span class="va">tMax</span>, metric <span class="op">=</span> <span class="st">"intensity_max"</span>, category <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,</span>
+<span>          <span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events</span><span class="op">)</span>,</span>
+<span>          <span class="va">bubble_plot</span>,</span>
+<span>          ncol <span class="op">=</span> <span class="fl">2</span>, nrow <span class="op">=</span> <span class="fl">2</span>, align <span class="op">=</span> <span class="st">"hv"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="complex_clims_files/figure-html/visuals-1.png" width="768"></p>
 </div>
 <div class="section level3">
@@ -314,65 +317,67 @@ that whichever criteria is the most strict, in this case
 <code>minDuration = 3</code> and <code>maxGap = 0</code>, will be the
 predominant filter through which the event metrics are quantified.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Note that because we are not using the standard column name 'temp' we must</span>
-<span class="co"># specify the chosen column name twice, once for ts2clm() and again for detect_event()</span>
-
-<span class="co"># First threshold based on tMin</span>
-<span class="va">thresh_tMin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">Algiers</span>, y <span class="op">=</span> <span class="va">tMin</span>, pctile <span class="op">=</span> <span class="fl">80</span>, 
-                      climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1961-01-01"</span>, <span class="st">"1990-12-31"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># Second threshold based on tMax</span>
-<span class="co"># Be careful here that you put the arguments within the correct brackets</span>
-<span class="va">thresh_tMax</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/detect_event.html">detect_event</a></span><span class="op">(</span><span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">Algiers</span>, y <span class="op">=</span> <span class="va">tMax</span>, pctile <span class="op">=</span> <span class="fl">90</span>, 
-                                   climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1961-01-01"</span>, <span class="st">"1990-12-31"</span><span class="op">)</span><span class="op">)</span>,
-                            <span class="co"># These arguments are passed to detect_event(), not ts2clm()</span>
-                            minDuration <span class="op">=</span> <span class="fl">3</span>, maxGap <span class="op">=</span> <span class="fl">0</span>, y <span class="op">=</span> <span class="va">tMax</span>, protoEvents <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
-
-<span class="co"># Detect/calculate events using the two precalculated thresholds</span>
-<span class="co"># Because detect_event() is not able to deduce which arguments we used above,</span>
-<span class="co"># we must again tell it explicitly here</span>
-<span class="va">events_two_thresh</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/detect_event.html">detect_event</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">thresh_tMin</span>, y <span class="op">=</span> <span class="va">tMin</span>, minDuration <span class="op">=</span> <span class="fl">10</span>, maxGap <span class="op">=</span> <span class="fl">2</span>,
-                                  threshClim2 <span class="op">=</span> <span class="va">thresh_tMax</span><span class="op">$</span><span class="va">event</span>, minDuration2 <span class="op">=</span> <span class="fl">3</span>, maxGap2 <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
-
-<span class="co"># Or to simply use one threshold</span>
-<span class="va">events_one_thresh</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/detect_event.html">detect_event</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">thresh_tMin</span>, y <span class="op">=</span> <span class="va">tMin</span>, minDuration <span class="op">=</span> <span class="fl">10</span>, maxGap <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Note that because we are not using the standard column name 'temp' we must</span></span>
+<span><span class="co"># specify the chosen column name twice, once for ts2clm() and again for detect_event()</span></span>
+<span></span>
+<span><span class="co"># First threshold based on tMin</span></span>
+<span><span class="va">thresh_tMin</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">Algiers</span>, y <span class="op">=</span> <span class="va">tMin</span>, pctile <span class="op">=</span> <span class="fl">80</span>, </span>
+<span>                      climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1961-01-01"</span>, <span class="st">"1990-12-31"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Second threshold based on tMax</span></span>
+<span><span class="co"># Be careful here that you put the arguments within the correct brackets</span></span>
+<span><span class="va">thresh_tMax</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/detect_event.html">detect_event</a></span><span class="op">(</span><span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">Algiers</span>, y <span class="op">=</span> <span class="va">tMax</span>, pctile <span class="op">=</span> <span class="fl">90</span>, </span>
+<span>                                   climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1961-01-01"</span>, <span class="st">"1990-12-31"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                            <span class="co"># These arguments are passed to detect_event(), not ts2clm()</span></span>
+<span>                            minDuration <span class="op">=</span> <span class="fl">3</span>, maxGap <span class="op">=</span> <span class="fl">0</span>, y <span class="op">=</span> <span class="va">tMax</span>, protoEvents <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Detect/calculate events using the two precalculated thresholds</span></span>
+<span><span class="co"># Because detect_event() is not able to deduce which arguments we used above,</span></span>
+<span><span class="co"># we must again tell it explicitly here</span></span>
+<span><span class="va">events_two_thresh</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/detect_event.html">detect_event</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">thresh_tMin</span>, y <span class="op">=</span> <span class="va">tMin</span>, minDuration <span class="op">=</span> <span class="fl">10</span>, maxGap <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>                                  threshClim2 <span class="op">=</span> <span class="va">thresh_tMax</span><span class="op">$</span><span class="va">event</span>, minDuration2 <span class="op">=</span> <span class="fl">3</span>, maxGap2 <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Or to simply use one threshold</span></span>
+<span><span class="va">events_one_thresh</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/detect_event.html">detect_event</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">thresh_tMin</span>, y <span class="op">=</span> <span class="va">tMin</span>, minDuration <span class="op">=</span> <span class="fl">10</span>, maxGap <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <p>Here are the differences in lolliplot format:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events_one_thresh</span><span class="op">)</span>, <span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events_two_thresh</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"One threshold"</span>, <span class="st">"Two thresholds"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events_one_thresh</span><span class="op">)</span>, <span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events_two_thresh</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"One threshold"</span>, <span class="st">"Two thresholds"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="complex_clims_files/figure-html/alt-two-thresh-lollis-1.png" width="768"></p>
 <p>Here is a brief display of the top few events from each method:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">events_one_thresh</span><span class="op">$</span><span class="va">event</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 5 × 22</span></span>
-<span class="co">##   event_no index_start index_peak index_end duration date_start date_peak </span>
-<span class="co">##      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>    </span>
-<span class="co">## <span style="color: #BCBCBC;">1</span>        1        <span style="text-decoration: underline;">6</span>135       <span style="text-decoration: underline;">6</span>137      <span style="text-decoration: underline;">6</span>144       10 1977-10-18 1977-10-20</span>
-<span class="co">## <span style="color: #BCBCBC;">2</span>        2       <span style="text-decoration: underline;">10</span>844      <span style="text-decoration: underline;">10</span>845     <span style="text-decoration: underline;">10</span>856       13 1990-09-09 1990-09-10</span>
-<span class="co">## <span style="color: #BCBCBC;">3</span>        3       <span style="text-decoration: underline;">11</span>191      <span style="text-decoration: underline;">11</span>200     <span style="text-decoration: underline;">11</span>201       11 1991-08-22 1991-08-31</span>
-<span class="co">## <span style="color: #BCBCBC;">4</span>        4       <span style="text-decoration: underline;">13</span>292      <span style="text-decoration: underline;">13</span>300     <span style="text-decoration: underline;">13</span>301       10 1997-05-23 1997-05-31</span>
-<span class="co">## <span style="color: #BCBCBC;">5</span>        5       <span style="text-decoration: underline;">15</span>534      <span style="text-decoration: underline;">15</span>542     <span style="text-decoration: underline;">15</span>546       13 2003-07-13 2003-07-21</span>
-<span class="co">## <span style="color: #949494;"># … with 15 more variables: date_end &lt;date&gt;, intensity_mean &lt;dbl&gt;,</span></span>
-<span class="co">## <span style="color: #949494;">#   intensity_max &lt;dbl&gt;, intensity_var &lt;dbl&gt;, intensity_cumulative &lt;dbl&gt;,</span></span>
-<span class="co">## <span style="color: #949494;">#   intensity_mean_relThresh &lt;dbl&gt;, intensity_max_relThresh &lt;dbl&gt;,</span></span>
-<span class="co">## <span style="color: #949494;">#   intensity_var_relThresh &lt;dbl&gt;, intensity_cumulative_relThresh &lt;dbl&gt;,</span></span>
-<span class="co">## <span style="color: #949494;">#   intensity_mean_abs &lt;dbl&gt;, intensity_max_abs &lt;dbl&gt;, intensity_var_abs &lt;dbl&gt;,</span></span>
-<span class="co">## <span style="color: #949494;">#   intensity_cumulative_abs &lt;dbl&gt;, rate_onset &lt;dbl&gt;, rate_decline &lt;dbl&gt;</span></span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">events_one_thresh</span><span class="op">$</span><span class="va">event</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 22</span></span></span>
+<span><span class="co">##   event_no index_start index_…¹ index…² durat…³ date_start date_peak  date_end  </span></span>
+<span><span class="co">##      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>        1        <span style="text-decoration: underline;">6</span>135     <span style="text-decoration: underline;">6</span>137    <span style="text-decoration: underline;">6</span>144      10 1977-10-18 1977-10-20 1977-10-27</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span>        2       <span style="text-decoration: underline;">10</span>844    <span style="text-decoration: underline;">10</span>845   <span style="text-decoration: underline;">10</span>856      13 1990-09-09 1990-09-10 1990-09-21</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span>        3       <span style="text-decoration: underline;">11</span>191    <span style="text-decoration: underline;">11</span>200   <span style="text-decoration: underline;">11</span>201      11 1991-08-22 1991-08-31 1991-09-01</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span>        4       <span style="text-decoration: underline;">13</span>292    <span style="text-decoration: underline;">13</span>300   <span style="text-decoration: underline;">13</span>301      10 1997-05-23 1997-05-31 1997-06-01</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span>        5       <span style="text-decoration: underline;">15</span>534    <span style="text-decoration: underline;">15</span>542   <span style="text-decoration: underline;">15</span>546      13 2003-07-13 2003-07-21 2003-07-25</span></span>
+<span><span class="co">## <span style="color: #949494;"># … with 14 more variables: intensity_mean &lt;dbl&gt;, intensity_max &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   intensity_var &lt;dbl&gt;, intensity_cumulative &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   intensity_mean_relThresh &lt;dbl&gt;, intensity_max_relThresh &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   intensity_var_relThresh &lt;dbl&gt;, intensity_cumulative_relThresh &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   intensity_mean_abs &lt;dbl&gt;, intensity_max_abs &lt;dbl&gt;, intensity_var_abs &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   intensity_cumulative_abs &lt;dbl&gt;, rate_onset &lt;dbl&gt;, rate_decline &lt;dbl&gt;, and</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   abbreviated variable names ¹​index_peak, ²​index_end, ³​duration</span></span></span></code></pre>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">events_two_thresh</span><span class="op">$</span><span class="va">event</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 5 × 22</span></span>
-<span class="co">##   event_no index_start index_peak index_end duration date_start date_peak </span>
-<span class="co">##      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>    </span>
-<span class="co">## <span style="color: #BCBCBC;">1</span>        1        <span style="text-decoration: underline;">6</span>135       <span style="text-decoration: underline;">6</span>137      <span style="text-decoration: underline;">6</span>137        3 1977-10-18 1977-10-20</span>
-<span class="co">## <span style="color: #BCBCBC;">2</span>        2       <span style="text-decoration: underline;">10</span>851      <span style="text-decoration: underline;">10</span>851     <span style="text-decoration: underline;">10</span>856        6 1990-09-16 1990-09-16</span>
-<span class="co">## <span style="color: #BCBCBC;">3</span>        3       <span style="text-decoration: underline;">11</span>191      <span style="text-decoration: underline;">11</span>200     <span style="text-decoration: underline;">11</span>201       11 1991-08-22 1991-08-31</span>
-<span class="co">## <span style="color: #BCBCBC;">4</span>        4       <span style="text-decoration: underline;">13</span>292      <span style="text-decoration: underline;">13</span>294     <span style="text-decoration: underline;">13</span>294        3 1997-05-23 1997-05-25</span>
-<span class="co">## <span style="color: #BCBCBC;">5</span>        5       <span style="text-decoration: underline;">15</span>540      <span style="text-decoration: underline;">15</span>542     <span style="text-decoration: underline;">15</span>545        6 2003-07-19 2003-07-21</span>
-<span class="co">## <span style="color: #949494;"># … with 15 more variables: date_end &lt;date&gt;, intensity_mean &lt;dbl&gt;,</span></span>
-<span class="co">## <span style="color: #949494;">#   intensity_max &lt;dbl&gt;, intensity_var &lt;dbl&gt;, intensity_cumulative &lt;dbl&gt;,</span></span>
-<span class="co">## <span style="color: #949494;">#   intensity_mean_relThresh &lt;dbl&gt;, intensity_max_relThresh &lt;dbl&gt;,</span></span>
-<span class="co">## <span style="color: #949494;">#   intensity_var_relThresh &lt;dbl&gt;, intensity_cumulative_relThresh &lt;dbl&gt;,</span></span>
-<span class="co">## <span style="color: #949494;">#   intensity_mean_abs &lt;dbl&gt;, intensity_max_abs &lt;dbl&gt;, intensity_var_abs &lt;dbl&gt;,</span></span>
-<span class="co">## <span style="color: #949494;">#   intensity_cumulative_abs &lt;dbl&gt;, rate_onset &lt;dbl&gt;, rate_decline &lt;dbl&gt;</span></span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">events_two_thresh</span><span class="op">$</span><span class="va">event</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 22</span></span></span>
+<span><span class="co">##   event_no index_start index_…¹ index…² durat…³ date_start date_peak  date_end  </span></span>
+<span><span class="co">##      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>        1        <span style="text-decoration: underline;">6</span>135     <span style="text-decoration: underline;">6</span>137    <span style="text-decoration: underline;">6</span>137       3 1977-10-18 1977-10-20 1977-10-20</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span>        2       <span style="text-decoration: underline;">10</span>851    <span style="text-decoration: underline;">10</span>851   <span style="text-decoration: underline;">10</span>856       6 1990-09-16 1990-09-16 1990-09-21</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span>        3       <span style="text-decoration: underline;">11</span>191    <span style="text-decoration: underline;">11</span>200   <span style="text-decoration: underline;">11</span>201      11 1991-08-22 1991-08-31 1991-09-01</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span>        4       <span style="text-decoration: underline;">13</span>292    <span style="text-decoration: underline;">13</span>294   <span style="text-decoration: underline;">13</span>294       3 1997-05-23 1997-05-25 1997-05-25</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span>        5       <span style="text-decoration: underline;">15</span>540    <span style="text-decoration: underline;">15</span>542   <span style="text-decoration: underline;">15</span>545       6 2003-07-19 2003-07-21 2003-07-24</span></span>
+<span><span class="co">## <span style="color: #949494;"># … with 14 more variables: intensity_mean &lt;dbl&gt;, intensity_max &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   intensity_var &lt;dbl&gt;, intensity_cumulative &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   intensity_mean_relThresh &lt;dbl&gt;, intensity_max_relThresh &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   intensity_var_relThresh &lt;dbl&gt;, intensity_cumulative_relThresh &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   intensity_mean_abs &lt;dbl&gt;, intensity_max_abs &lt;dbl&gt;, intensity_var_abs &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   intensity_cumulative_abs &lt;dbl&gt;, rate_onset &lt;dbl&gt;, rate_decline &lt;dbl&gt;, and</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   abbreviated variable names ¹​index_peak, ²​index_end, ³​duration</span></span></span></code></pre>
 <p>If we look at these results we see that the use of two thresholds did
 not detected fewer events than the use of one threshold. This is because
 even though the second threshold was much more ‘difficult’ for the time
@@ -410,9 +415,9 @@ detailed below.</p>
 Before we do so, let’s pull out the list components of our results into
 dataframes for easier use down the line.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Pull out each data.frame as their own object for easier use</span>
-<span class="va">events_one_event</span> <span class="op">&lt;-</span> <span class="va">events_one_thresh</span><span class="op">$</span><span class="va">event</span>
-<span class="va">events_one_climatology</span> <span class="op">&lt;-</span> <span class="va">events_one_thresh</span><span class="op">$</span><span class="va">climatology</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Pull out each data.frame as their own object for easier use</span></span>
+<span><span class="va">events_one_event</span> <span class="op">&lt;-</span> <span class="va">events_one_thresh</span><span class="op">$</span><span class="va">event</span></span>
+<span><span class="va">events_one_climatology</span> <span class="op">&lt;-</span> <span class="va">events_one_thresh</span><span class="op">$</span><span class="va">climatology</span></span></code></pre></div>
 <p>This is where things may get tricky for some users, and where the
 default use of the functions in the
 <strong><code>heatwaveR</code></strong> package ends. We are now going
@@ -424,55 +429,57 @@ of Base R coding.</p>
 two different dataframes that we are using as threshold/filtering guides
 to chose the events that meet all of our selection criteria.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Join the two threshold dataframes</span>
-<span class="va">two_thresh</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">events_one_climatology</span>, <span class="va">thresh_tMax</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"t"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># Remove all days that did not qualify as events in both thresholds</span>
-<span class="va">two_thresh_filtered</span> <span class="op">&lt;-</span> <span class="va">two_thresh</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">event.x</span> <span class="op">==</span> <span class="cn">TRUE</span>,
-         <span class="va">event.y</span> <span class="op">==</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Join the two threshold dataframes</span></span>
+<span><span class="va">two_thresh</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">events_one_climatology</span>, <span class="va">thresh_tMax</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"t"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Remove all days that did not qualify as events in both thresholds</span></span>
+<span><span class="va">two_thresh_filtered</span> <span class="op">&lt;-</span> <span class="va">two_thresh</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">event.x</span> <span class="op">==</span> <span class="cn">TRUE</span>,</span>
+<span>         <span class="va">event.y</span> <span class="op">==</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>With our filtering guide created, we may now apply it to
 <code>events_one_thresh</code> to get our filtered results.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Copy data with a new name</span>
-<span class="va">events_one_thresh_filtered</span> <span class="op">&lt;-</span> <span class="va">events_one_thresh</span>
-
-<span class="co"># Then filter</span>
-<span class="va">events_one_thresh_filtered</span><span class="op">$</span><span class="va">event</span> <span class="op">&lt;-</span> <span class="va">events_one_thresh_filtered</span><span class="op">$</span><span class="va">event</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">event_no</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">two_thresh_filtered</span><span class="op">$</span><span class="va">event_no.x</span><span class="op">)</span>
-
-<span class="co"># Compare results</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">events_one_thresh_filtered</span><span class="op">$</span><span class="va">event</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 5 × 22</span></span>
-<span class="co">##   event_no index_start index_peak index_end duration date_start date_peak </span>
-<span class="co">##      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>    </span>
-<span class="co">## <span style="color: #BCBCBC;">1</span>        1        <span style="text-decoration: underline;">6</span>135       <span style="text-decoration: underline;">6</span>137      <span style="text-decoration: underline;">6</span>144       10 1977-10-18 1977-10-20</span>
-<span class="co">## <span style="color: #BCBCBC;">2</span>        2       <span style="text-decoration: underline;">10</span>844      <span style="text-decoration: underline;">10</span>845     <span style="text-decoration: underline;">10</span>856       13 1990-09-09 1990-09-10</span>
-<span class="co">## <span style="color: #BCBCBC;">3</span>        3       <span style="text-decoration: underline;">11</span>191      <span style="text-decoration: underline;">11</span>200     <span style="text-decoration: underline;">11</span>201       11 1991-08-22 1991-08-31</span>
-<span class="co">## <span style="color: #BCBCBC;">4</span>        4       <span style="text-decoration: underline;">13</span>292      <span style="text-decoration: underline;">13</span>300     <span style="text-decoration: underline;">13</span>301       10 1997-05-23 1997-05-31</span>
-<span class="co">## <span style="color: #BCBCBC;">5</span>        5       <span style="text-decoration: underline;">15</span>534      <span style="text-decoration: underline;">15</span>542     <span style="text-decoration: underline;">15</span>546       13 2003-07-13 2003-07-21</span>
-<span class="co">## <span style="color: #949494;"># … with 15 more variables: date_end &lt;date&gt;, intensity_mean &lt;dbl&gt;,</span></span>
-<span class="co">## <span style="color: #949494;">#   intensity_max &lt;dbl&gt;, intensity_var &lt;dbl&gt;, intensity_cumulative &lt;dbl&gt;,</span></span>
-<span class="co">## <span style="color: #949494;">#   intensity_mean_relThresh &lt;dbl&gt;, intensity_max_relThresh &lt;dbl&gt;,</span></span>
-<span class="co">## <span style="color: #949494;">#   intensity_var_relThresh &lt;dbl&gt;, intensity_cumulative_relThresh &lt;dbl&gt;,</span></span>
-<span class="co">## <span style="color: #949494;">#   intensity_mean_abs &lt;dbl&gt;, intensity_max_abs &lt;dbl&gt;, intensity_var_abs &lt;dbl&gt;,</span></span>
-<span class="co">## <span style="color: #949494;">#   intensity_cumulative_abs &lt;dbl&gt;, rate_onset &lt;dbl&gt;, rate_decline &lt;dbl&gt;</span></span></code></pre>
+<code class="sourceCode R"><span><span class="co"># Copy data with a new name</span></span>
+<span><span class="va">events_one_thresh_filtered</span> <span class="op">&lt;-</span> <span class="va">events_one_thresh</span></span>
+<span></span>
+<span><span class="co"># Then filter</span></span>
+<span><span class="va">events_one_thresh_filtered</span><span class="op">$</span><span class="va">event</span> <span class="op">&lt;-</span> <span class="va">events_one_thresh_filtered</span><span class="op">$</span><span class="va">event</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">event_no</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">two_thresh_filtered</span><span class="op">$</span><span class="va">event_no.x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Compare results</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">events_one_thresh_filtered</span><span class="op">$</span><span class="va">event</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 22</span></span></span>
+<span><span class="co">##   event_no index_start index_…¹ index…² durat…³ date_start date_peak  date_end  </span></span>
+<span><span class="co">##      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>        1        <span style="text-decoration: underline;">6</span>135     <span style="text-decoration: underline;">6</span>137    <span style="text-decoration: underline;">6</span>144      10 1977-10-18 1977-10-20 1977-10-27</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span>        2       <span style="text-decoration: underline;">10</span>844    <span style="text-decoration: underline;">10</span>845   <span style="text-decoration: underline;">10</span>856      13 1990-09-09 1990-09-10 1990-09-21</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span>        3       <span style="text-decoration: underline;">11</span>191    <span style="text-decoration: underline;">11</span>200   <span style="text-decoration: underline;">11</span>201      11 1991-08-22 1991-08-31 1991-09-01</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span>        4       <span style="text-decoration: underline;">13</span>292    <span style="text-decoration: underline;">13</span>300   <span style="text-decoration: underline;">13</span>301      10 1997-05-23 1997-05-31 1997-06-01</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span>        5       <span style="text-decoration: underline;">15</span>534    <span style="text-decoration: underline;">15</span>542   <span style="text-decoration: underline;">15</span>546      13 2003-07-13 2003-07-21 2003-07-25</span></span>
+<span><span class="co">## <span style="color: #949494;"># … with 14 more variables: intensity_mean &lt;dbl&gt;, intensity_max &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   intensity_var &lt;dbl&gt;, intensity_cumulative &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   intensity_mean_relThresh &lt;dbl&gt;, intensity_max_relThresh &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   intensity_var_relThresh &lt;dbl&gt;, intensity_cumulative_relThresh &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   intensity_mean_abs &lt;dbl&gt;, intensity_max_abs &lt;dbl&gt;, intensity_var_abs &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   intensity_cumulative_abs &lt;dbl&gt;, rate_onset &lt;dbl&gt;, rate_decline &lt;dbl&gt;, and</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   abbreviated variable names ¹​index_peak, ²​index_end, ³​duration</span></span></span></code></pre>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">events_two_thresh</span><span class="op">$</span><span class="va">event</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 5 × 22</span></span>
-<span class="co">##   event_no index_start index_peak index_end duration date_start date_peak </span>
-<span class="co">##      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>    </span>
-<span class="co">## <span style="color: #BCBCBC;">1</span>        1        <span style="text-decoration: underline;">6</span>135       <span style="text-decoration: underline;">6</span>137      <span style="text-decoration: underline;">6</span>137        3 1977-10-18 1977-10-20</span>
-<span class="co">## <span style="color: #BCBCBC;">2</span>        2       <span style="text-decoration: underline;">10</span>851      <span style="text-decoration: underline;">10</span>851     <span style="text-decoration: underline;">10</span>856        6 1990-09-16 1990-09-16</span>
-<span class="co">## <span style="color: #BCBCBC;">3</span>        3       <span style="text-decoration: underline;">11</span>191      <span style="text-decoration: underline;">11</span>200     <span style="text-decoration: underline;">11</span>201       11 1991-08-22 1991-08-31</span>
-<span class="co">## <span style="color: #BCBCBC;">4</span>        4       <span style="text-decoration: underline;">13</span>292      <span style="text-decoration: underline;">13</span>294     <span style="text-decoration: underline;">13</span>294        3 1997-05-23 1997-05-25</span>
-<span class="co">## <span style="color: #BCBCBC;">5</span>        5       <span style="text-decoration: underline;">15</span>540      <span style="text-decoration: underline;">15</span>542     <span style="text-decoration: underline;">15</span>545        6 2003-07-19 2003-07-21</span>
-<span class="co">## <span style="color: #949494;"># … with 15 more variables: date_end &lt;date&gt;, intensity_mean &lt;dbl&gt;,</span></span>
-<span class="co">## <span style="color: #949494;">#   intensity_max &lt;dbl&gt;, intensity_var &lt;dbl&gt;, intensity_cumulative &lt;dbl&gt;,</span></span>
-<span class="co">## <span style="color: #949494;">#   intensity_mean_relThresh &lt;dbl&gt;, intensity_max_relThresh &lt;dbl&gt;,</span></span>
-<span class="co">## <span style="color: #949494;">#   intensity_var_relThresh &lt;dbl&gt;, intensity_cumulative_relThresh &lt;dbl&gt;,</span></span>
-<span class="co">## <span style="color: #949494;">#   intensity_mean_abs &lt;dbl&gt;, intensity_max_abs &lt;dbl&gt;, intensity_var_abs &lt;dbl&gt;,</span></span>
-<span class="co">## <span style="color: #949494;">#   intensity_cumulative_abs &lt;dbl&gt;, rate_onset &lt;dbl&gt;, rate_decline &lt;dbl&gt;</span></span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">events_two_thresh</span><span class="op">$</span><span class="va">event</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 22</span></span></span>
+<span><span class="co">##   event_no index_start index_…¹ index…² durat…³ date_start date_peak  date_end  </span></span>
+<span><span class="co">##      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>    </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>        1        <span style="text-decoration: underline;">6</span>135     <span style="text-decoration: underline;">6</span>137    <span style="text-decoration: underline;">6</span>137       3 1977-10-18 1977-10-20 1977-10-20</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span>        2       <span style="text-decoration: underline;">10</span>851    <span style="text-decoration: underline;">10</span>851   <span style="text-decoration: underline;">10</span>856       6 1990-09-16 1990-09-16 1990-09-21</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span>        3       <span style="text-decoration: underline;">11</span>191    <span style="text-decoration: underline;">11</span>200   <span style="text-decoration: underline;">11</span>201      11 1991-08-22 1991-08-31 1991-09-01</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span>        4       <span style="text-decoration: underline;">13</span>292    <span style="text-decoration: underline;">13</span>294   <span style="text-decoration: underline;">13</span>294       3 1997-05-23 1997-05-25 1997-05-25</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span>        5       <span style="text-decoration: underline;">15</span>540    <span style="text-decoration: underline;">15</span>542   <span style="text-decoration: underline;">15</span>545       6 2003-07-19 2003-07-21 2003-07-24</span></span>
+<span><span class="co">## <span style="color: #949494;"># … with 14 more variables: intensity_mean &lt;dbl&gt;, intensity_max &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   intensity_var &lt;dbl&gt;, intensity_cumulative &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   intensity_mean_relThresh &lt;dbl&gt;, intensity_max_relThresh &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   intensity_var_relThresh &lt;dbl&gt;, intensity_cumulative_relThresh &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   intensity_mean_abs &lt;dbl&gt;, intensity_max_abs &lt;dbl&gt;, intensity_var_abs &lt;dbl&gt;,</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   intensity_cumulative_abs &lt;dbl&gt;, rate_onset &lt;dbl&gt;, rate_decline &lt;dbl&gt;, and</span></span></span>
+<span><span class="co">## <span style="color: #949494;">#   abbreviated variable names ¹​index_peak, ²​index_end, ³​duration</span></span></span></code></pre>
 <p>The event numbers found in <code>events_one_thresh_filtered</code>
 are the same as the event numbers found in
 <code>events_two_thresh</code> with the important difference that the
@@ -489,9 +496,9 @@ threshold.</p>
 different techniques may be we will use lolliplots to visualise
 them.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events_two_thresh</span>, metric <span class="op">=</span> <span class="st">"duration"</span><span class="op">)</span>, 
-          <span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events_one_thresh_filtered</span>, metric <span class="op">=</span> <span class="st">"duration"</span><span class="op">)</span>, 
-          labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Double threshold"</span>, <span class="st">"Filter threshold"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events_two_thresh</span>, metric <span class="op">=</span> <span class="va">duration</span><span class="op">)</span>, </span>
+<span>          <span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events_one_thresh_filtered</span>, metric <span class="op">=</span> <span class="va">duration</span><span class="op">)</span>, </span>
+<span>          labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Double threshold"</span>, <span class="st">"Filter threshold"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: centre">
 <img src="complex_clims_files/figure-html/lolliplot-duration-1.png" alt="Difference in duration (days) of events given different applications of thresholds. Note the difference in the y-axes." width="768"><p class="caption">
 Difference in duration (days) of events given different applications of
@@ -499,9 +506,9 @@ thresholds. Note the difference in the y-axes.
 </p>
 </div>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events_two_thresh</span>, metric <span class="op">=</span> <span class="st">"intensity_cumulative"</span><span class="op">)</span>, 
-          <span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events_one_thresh_filtered</span>, metric <span class="op">=</span> <span class="st">"intensity_cumulative"</span><span class="op">)</span>, 
-          labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Double threshold"</span>, <span class="st">"Filter threshold"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events_two_thresh</span>, metric <span class="op">=</span> <span class="va">intensity_cumulative</span><span class="op">)</span>, </span>
+<span>          <span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events_one_thresh_filtered</span>, metric <span class="op">=</span> <span class="va">intensity_cumulative</span><span class="op">)</span>, </span>
+<span>          labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Double threshold"</span>, <span class="st">"Filter threshold"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: centre">
 <img src="complex_clims_files/figure-html/lolliplot-int-cum-1.png" alt="Difference in cumulative intensity (°C x days) of events given different applications of thresholds. Note the difference in the y-axes." width="768"><p class="caption">
 Difference in cumulative intensity (°C x days) of events given different
@@ -563,8 +570,7 @@ Perkins, Sarah E., and Lisa V. Alexander. 2013. <span>“<a href="https://www.nc
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

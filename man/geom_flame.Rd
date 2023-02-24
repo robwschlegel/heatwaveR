@@ -43,7 +43,7 @@ to a position adjustment function.}
 
 \item{...}{other arguments passed on to \code{\link{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
-\code{color = "red"} or \code{size = 3}. They may also be parameters
+\code{color = "red"} or \code{linewidth = 3}. They may also be parameters
 to the paired geom/stat.}
 
 \item{n}{The number of steps along the x-axis (i.e. in a daily time series this
@@ -93,7 +93,7 @@ are in bold):
   \item \strong{\code{y2}}
   \item \code{colour}
   \item \code{fill}
-  \item \code{size}
+  \item \code{linewidth}
   \item \code{alpha}
   \item \code{linetype}
 }

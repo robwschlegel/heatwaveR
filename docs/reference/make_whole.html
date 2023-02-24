@@ -24,7 +24,7 @@ missing dates and fills corresponding temperatures with NAs."><meta property="og
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9003</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@ missing dates and fills corresponding temperatures with NAs."><meta property="og
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
      
     <span class="caret"></span>
@@ -48,10 +48,16 @@ missing dates and fills corresponding temperatures with NAs."><meta property="og
       <a href="../articles/detection_and_visualisation.html">Basic Detection and Visualisation of Events</a>
     </li>
     <li>
+      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+    </li>
+    <li>
       <a href="../articles/exceedance.html">Calculating and Visualising Exceedances</a>
     </li>
     <li>
-      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
+    </li>
+    <li>
+      <a href="../articles/MHW_metric_trends.html">Trend and Breakpoint Analyses</a>
     </li>
     <li>
       <a href="../articles/OISST_preparation.html">Downloading and Preparing OISST Data</a>
@@ -60,13 +66,10 @@ missing dates and fills corresponding temperatures with NAs."><meta property="og
       <a href="../articles/gridded_event_detection.html">Detecting Events in Gridded Data</a>
     </li>
     <li>
-      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse NOAA OISST Data: Alternative Methods</a>
+      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse Data: Alternative</a>
     </li>
     <li>
       <a href="../articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a>
-    </li>
-    <li>
-      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
     </li>
   </ul></li>
 <li>
@@ -107,7 +110,7 @@ missing dates and fills corresponding temperatures with NAs.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">make_whole</span><span class="op">(</span><span class="va">data</span>, x <span class="op">=</span> <span class="va">t</span>, y <span class="op">=</span> <span class="va">temp</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">make_whole</span><span class="op">(</span><span class="va">data</span>, x <span class="op">=</span> <span class="va">t</span>, y <span class="op">=</span> <span class="va">temp</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -117,19 +120,26 @@ missing dates and fills corresponding temperatures with NAs.</p>
 Ordered daily data are expected, and although missing values (NA) can be
 accommodated, the function is only recommended when NAs occur infrequently,
 preferably at no more than 3 consecutive days.</p></dd>
+
+
 <dt>x</dt>
 <dd><p>A column with the daily time vector (see details). For backwards
 compatibility, the column is named <code>t</code> by default.</p></dd>
+
+
 <dt>y</dt>
 <dd><p>A column with the response vector. RmarineHeatWaves version &lt;= 0.15.9
 assumed that this would be daily seawater temperatures, but as of version 0.16.0
 it may be any arbitrary measurement taken at a daily frequency. The default
 remains temperature, and the default column name is therefore <code>temp</code>, again
 hopefully ensuring backwards compatibility.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The function will return a data frame with three columns. The column
+    
+
+<p>The function will return a data frame with three columns. The column
 headed <code>doy</code> (day-of-year) is the Julian day running from 1 to 366, but
 modified so that the day-of-year series for non-leap-years runs 1...59 and
 then 61...366. For leap years the 60th day is February 29. See the example,
@@ -188,8 +198,7 @@ issues.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

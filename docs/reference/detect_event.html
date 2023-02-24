@@ -27,7 +27,7 @@ other means."><meta property="og:image" content="https://robwschlegel.github.io/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9003</span>
       </span>
     </div>
 
@@ -42,7 +42,7 @@ other means."><meta property="og:image" content="https://robwschlegel.github.io/
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
      
     <span class="caret"></span>
@@ -51,10 +51,16 @@ other means."><meta property="og:image" content="https://robwschlegel.github.io/
       <a href="../articles/detection_and_visualisation.html">Basic Detection and Visualisation of Events</a>
     </li>
     <li>
+      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+    </li>
+    <li>
       <a href="../articles/exceedance.html">Calculating and Visualising Exceedances</a>
     </li>
     <li>
-      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
+    </li>
+    <li>
+      <a href="../articles/MHW_metric_trends.html">Trend and Breakpoint Analyses</a>
     </li>
     <li>
       <a href="../articles/OISST_preparation.html">Downloading and Preparing OISST Data</a>
@@ -63,13 +69,10 @@ other means."><meta property="og:image" content="https://robwschlegel.github.io/
       <a href="../articles/gridded_event_detection.html">Detecting Events in Gridded Data</a>
     </li>
     <li>
-      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse NOAA OISST Data: Alternative Methods</a>
+      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse Data: Alternative</a>
     </li>
     <li>
       <a href="../articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a>
-    </li>
-    <li>
-      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
     </li>
   </ul></li>
 <li>
@@ -113,24 +116,24 @@ other means.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">detect_event</span><span class="op">(</span>
-  <span class="va">data</span>,
-  x <span class="op">=</span> <span class="va">t</span>,
-  y <span class="op">=</span> <span class="va">temp</span>,
-  seasClim <span class="op">=</span> <span class="va">seas</span>,
-  threshClim <span class="op">=</span> <span class="va">thresh</span>,
-  threshClim2 <span class="op">=</span> <span class="cn">NA</span>,
-  minDuration <span class="op">=</span> <span class="fl">5</span>,
-  minDuration2 <span class="op">=</span> <span class="va">minDuration</span>,
-  joinAcrossGaps <span class="op">=</span> <span class="cn">TRUE</span>,
-  maxGap <span class="op">=</span> <span class="fl">2</span>,
-  maxGap2 <span class="op">=</span> <span class="va">maxGap</span>,
-  coldSpells <span class="op">=</span> <span class="cn">FALSE</span>,
-  protoEvents <span class="op">=</span> <span class="cn">FALSE</span>,
-  categories <span class="op">=</span> <span class="cn">FALSE</span>,
-  roundRes <span class="op">=</span> <span class="fl">4</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">detect_event</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  x <span class="op">=</span> <span class="va">t</span>,</span>
+<span>  y <span class="op">=</span> <span class="va">temp</span>,</span>
+<span>  seasClim <span class="op">=</span> <span class="va">seas</span>,</span>
+<span>  threshClim <span class="op">=</span> <span class="va">thresh</span>,</span>
+<span>  threshClim2 <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  minDuration <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  minDuration2 <span class="op">=</span> <span class="va">minDuration</span>,</span>
+<span>  joinAcrossGaps <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  maxGap <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  maxGap2 <span class="op">=</span> <span class="va">maxGap</span>,</span>
+<span>  coldSpells <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  protoEvents <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  categories <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  roundRes <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -148,47 +151,69 @@ format are created by the function <code><a href="ts2clm.html">ts2clm</a></code>
 can be supplied if they meet the criteria specified by <code><a href="ts2clm.html">ts2clm</a></code>.
 If the column names of <code>data</code> match those outlined here, the following
 four arguments may be ignored.</p></dd>
+
+
 <dt>x</dt>
 <dd><p>This column is expected to contain a vector of dates as per the
 specification of <code><a href="ts2clm.html">ts2clm</a></code>. If a column headed <code>t</code> is present in
 the dataframe, this argument may be omitted; otherwise, specify the name of
 the column with dates here.</p></dd>
+
+
 <dt>y</dt>
 <dd><p>This is a column containing the measurement variable. If the column
 name differs from the default (i.e. <code>temp</code>), specify the name here.</p></dd>
+
+
 <dt>seasClim</dt>
 <dd><p>The dafault for this argument assumes that the seasonal
 climatology column is called <code>seas</code> as this matches the output of
 <code><a href="ts2clm.html">ts2clm</a></code>. If the column name for the seasonal climatology is
 different, provide that here.</p></dd>
+
+
 <dt>threshClim</dt>
 <dd><p>The threshold climatology column should be called
 <code>thresh</code>. If it is not, provide the name of the threshold column here.</p></dd>
+
+
 <dt>threshClim2</dt>
 <dd><p>If one wishes to provide a second climatology threshold
 filter for the more rigorous detection of events, a vector or column containing
 logical values (i.e. TRUE FALSE) should be provided here. By default this
 argument is ignored. It's primary purpose is to allow for the inclusion of
 tMin and tMax thresholds.</p></dd>
+
+
 <dt>minDuration</dt>
 <dd><p>The minimum duration for acceptance of detected events.
 The default is <code>5</code> days.</p></dd>
+
+
 <dt>minDuration2</dt>
 <dd><p>The minimum duration for acceptance of events after
 filtering by <code>threshClim</code> and <code>threshClim</code>. By default
 <code>minDuration2 = minDuration</code> and is ignored if <code>threshClim2</code> has not
 been specified.</p></dd>
+
+
 <dt>joinAcrossGaps</dt>
 <dd><p>Boolean switch indicating whether to join events which
 occur before/after a short gap as specified by <code>maxGap</code>. The default
 is <code>TRUE</code>.</p></dd>
+
+
 <dt>maxGap</dt>
 <dd><p>The maximum length of gap allowed for the joining of MHWs. The
 default is <code>2</code> days.</p></dd>
+
+
 <dt>maxGap2</dt>
 <dd><p>The maximum gap length after applying both thresholds.
 By default <code>maxGap2 = maxGap</code> and is ignored if <code>threshClim2</code> has not
 been specified.</p></dd>
+
+
 <dt>coldSpells</dt>
 <dd><p>Boolean specifying if the code should detect cold events
 instead of warm events. The default is <code>FALSE</code>. Please note that the
@@ -199,6 +224,8 @@ to use <code>detect_event</code> for MCSs, this threshold would best be generate
 in <code><a href="ts2clm.html">ts2clm</a></code> by setting <code>pctile = 10</code> (see example below).
 Any value may be used, but this is the setting used for the calculation of
 MCSs in Schlegel et al. (2017a).</p></dd>
+
+
 <dt>protoEvents</dt>
 <dd><p>Boolean specifying whether the full time series must be
 returned as a long table, together with columns indicating whether or not the
@@ -207,6 +234,8 @@ have been exceeded, a column showing if a heatwave is present (i.e. both
 <code>threshCriterion</code> and <code>durationCriterion</code> <code>TRUE</code>), and a
 sequential number uniquely identifying the detected event. In this case,
 the heatwave metrics will not be reported. The default is <code>FALSE</code>.</p></dd>
+
+
 <dt>categories</dt>
 <dd><p>Rather than using <code><a href="category.html">category</a></code> as a separate step to determine
 the categories of the detected MHWs, one may choose to set this argument to <code>TRUE</code>.
@@ -214,19 +243,26 @@ One may pass the same arguments used in the <code><a href="category.html">catego
 to affect the output. Note that the default behaviour of <code><a href="category.html">category</a></code> is to
 return the event data only. To return the same list structure that <code>detect_event</code>
 outputs by default, use <code>climatology = TRUE</code>.</p></dd>
+
+
 <dt>roundRes</dt>
 <dd><p>This argument allows the user to choose how many decimal places
 the MHW metric outputs will be rounded to. Default is 4. To
 prevent rounding set <code>roundRes = FALSE</code>. This argument may only be given
 numeric values or FALSE.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Other arguments that will be passed internally to <code><a href="category.html">category</a></code>
 when <code>categories = TRUE</code>. See the documentation for <code><a href="category.html">category</a></code> for the
 list of possible arguments.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The function will return a list of two tibbles (see the <code>tidyverse</code>),
+    
+
+<p>The function will return a list of two tibbles (see the <code>tidyverse</code>),
 <code>climatology</code> and <code>event</code>, which are, surprisingly, the climatology
 and event results, respectively. The climatology contains the full time series of
 daily temperatures, as well as the the seasonal climatology, the threshold
@@ -234,57 +270,79 @@ and various aspects of the events that were detected. The software was
 designed for detecting extreme thermal events, and the units specified below
 reflect that intended purpose. However, various other kinds of extreme
 events may be detected according to the specifications, and if that is the
-case, the appropriate units need to be determined by the user.
-The <code>climatology</code> results will contain the same column produced by
+case, the appropriate units need to be determined by the user.</p>
+
+
+<p>The <code>climatology</code> results will contain the same column produced by
 <code><a href="ts2clm.html">ts2clm</a></code> as well as the following:</p>
 <dl><dt>threshCriterion</dt>
 <dd><p>Boolean indicating if <code>temp</code> exceeds
   <code>thresh</code>.</p></dd>
-<dt>durationCriterion</dt>
+
+  <dt>durationCriterion</dt>
 <dd><p>Boolean indicating whether periods of consecutive
   <code>threshCriterion</code> are &gt;= <code>min_duration</code>.</p></dd>
-<dt>event</dt>
+
+  <dt>event</dt>
 <dd><p>Boolean indicating if all criteria that define an extreme event
   are met.</p></dd>
-<dt>event_no</dt>
+
+  <dt>event_no</dt>
 <dd><p>A sequential number indicating the ID and order of
   occurrence of the events.</p></dd>
-<dt>intensity</dt>
+
+  <dt>intensity</dt>
 <dd><p>The difference between <code>temp</code> (or whichever column is provided
   for <code>y</code>) and <code>seas</code>. Only added if <code>categories = TRUE</code>
   and <code>climatology = TRUE</code>.</p></dd>
-<dt>category</dt>
+
+  <dt>category</dt>
 <dd><p>The category classification per day. Only added
   if <code>categories = TRUE</code> and <code>climatology = TRUE</code>.</p></dd>
+
+
 </dl><p>The <code>event</code> results are summarised using a range of event metrics:</p>
 <dl><dt>event_no</dt>
 <dd><p>A sequential number indicating the ID and order of
   the events.</p></dd>
-<dt>index_start</dt>
+
+  <dt>index_start</dt>
 <dd><p>Start index of event.</p></dd>
-<dt>index_end</dt>
+
+  <dt>index_end</dt>
 <dd><p>End index of event.</p></dd>
-<dt>duration</dt>
+
+  <dt>duration</dt>
 <dd><p>Duration of event [days].</p></dd>
-<dt>date_start</dt>
+
+  <dt>date_start</dt>
 <dd><p>Start date of event [date].</p></dd>
-<dt>date_end</dt>
+
+  <dt>date_end</dt>
 <dd><p>End date of event [date].</p></dd>
-<dt>date_peak</dt>
+
+  <dt>date_peak</dt>
 <dd><p>Date of event peak [date].</p></dd>
-<dt>intensity_mean</dt>
+
+  <dt>intensity_mean</dt>
 <dd><p>Mean intensity [deg. C].</p></dd>
-<dt>intensity_max</dt>
+
+  <dt>intensity_max</dt>
 <dd><p>Maximum (peak) intensity [deg. C].</p></dd>
-<dt>intensity_var</dt>
+
+  <dt>intensity_var</dt>
 <dd><p>Intensity variability (standard deviation) [deg. C].</p></dd>
-<dt>intensity_cumulative</dt>
+
+  <dt>intensity_cumulative</dt>
 <dd><p>Cumulative intensity [deg. C x days].</p></dd>
-<dt>rate_onset</dt>
+
+  <dt>rate_onset</dt>
 <dd><p>Onset rate of event [deg. C / day].</p></dd>
-<dt>rate_decline</dt>
+
+  <dt>rate_decline</dt>
 <dd><p>Decline rate of event [deg. C / day].</p></dd>
-<dt>event_name</dt>
+
+  <dt>event_name</dt>
 <dd><p>The name of the event. Generated from the <code><a href="https://rdrr.io/r/base/name.html" class="external-link">name</a></code>
   value provided and the year of the <code>date_peak</code> of
   the event. If no <code><a href="https://rdrr.io/r/base/name.html" class="external-link">name</a></code> value is provided the default "Event" is used.
@@ -293,22 +351,28 @@ The <code>climatology</code> results will contain the same column produced by
   ranked greater than Moderate are reported within the same year, they will be
   differentiated with the addition of a trailing letter
   (e.g. Event 2001a, Event 2001b). Only added if <code>categories = TRUE</code>.</p></dd>
-<dt>category</dt>
+
+  <dt>category</dt>
 <dd><p>The maximum category threshold reached/exceeded by the event.
   Only added if <code>categories = TRUE</code>.</p></dd>
-<dt>p_moderate</dt>
+
+  <dt>p_moderate</dt>
 <dd><p>The proportion of the total duration (days) spent at or above
   the first threshold, but below any further thresholds. Only added if <code>categories = TRUE</code>.</p></dd>
-<dt>p_strong</dt>
+
+  <dt>p_strong</dt>
 <dd><p>The proportion of the total duration (days) spent at or above
   the second threshold, but below any further thresholds. Only added if <code>categories = TRUE</code>.</p></dd>
-<dt>p_severe</dt>
+
+  <dt>p_severe</dt>
 <dd><p>The proportion of the total duration (days) spent at or above
   the third threshold, but below the fourth threshold. Only added if <code>categories = TRUE</code>.</p></dd>
-<dt>p_extreme</dt>
+
+  <dt>p_extreme</dt>
 <dd><p>The proportion of the total duration (days) spent at or above
   the fourth and final threshold. Only added if <code>categories = TRUE</code>.</p></dd>
-<dt>season</dt>
+
+  <dt>season</dt>
 <dd><p>The season(s) during which the event occurred. If the event
   occurred across two seasons this will be displayed as e.g. "Winter/Spring".
   Across three seasons as e.g. "Winter-Summer". Events lasting across four or more
@@ -316,13 +380,25 @@ The <code>climatology</code> results will contain the same column produced by
   Austral (Boreal) summer. If "start", "peak", or "end" was given to the <code>season</code>
   argument then only the one season during that chosen period will be given.
   Only added if <code>categories = TRUE</code>.</p></dd>
+
+
 </dl><p><code>intensity_max_relThresh</code>, <code>intensity_mean_relThresh</code>,
-<code>intensity_var_relThresh</code>, and <code>intensity_cumulative_relThresh</code>are as above except relative to the threshold (e.g., 90th percentile) rather
-than the seasonal climatology.
-<code>intensity_max_abs</code>, <code>intensity_mean_abs</code>, <code>intensity_var_abs</code>, and
+<code>intensity_var_relThresh</code>, and <code>intensity_cumulative_relThresh</code></p>
+
+
+<p>are as above except relative to the threshold (e.g., 90th percentile) rather
+than the seasonal climatology.</p>
+
+
+<p><code>intensity_max_abs</code>, <code>intensity_mean_abs</code>, <code>intensity_var_abs</code>, and
 <code>intensity_cumulative_abs</code> are as above except as absolute magnitudes
-rather than relative to the seasonal climatology or threshold.
-Note that <code>rate_onset</code> and <code>rate_decline</code> will return <code>NA</code>when the event begins/ends on the first/last day of the time series. This
+rather than relative to the seasonal climatology or threshold.</p>
+
+
+<p>Note that <code>rate_onset</code> and <code>rate_decline</code> will return <code>NA</code></p>
+
+
+<p>when the event begins/ends on the first/last day of the time series. This
 may be particularly evident when the function is applied to large gridded
 data sets. Although the other metrics do not contain any errors and
 provide sensible values, please take this into account in its
@@ -379,92 +455,92 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">res_clim</span> <span class="op">&lt;-</span> <span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">detect_event</span><span class="op">(</span><span class="va">res_clim</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># show a portion of the climatology:</span></span>
-<span class="r-in"><span class="va">out</span><span class="op">$</span><span class="va">climatology</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">res_clim</span> <span class="op">&lt;-</span> <span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">detect_event</span><span class="op">(</span><span class="va">res_clim</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># show a portion of the climatology:</span></span></span>
+<span class="r-in"><span><span class="va">out</span><span class="op">$</span><span class="va">climatology</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 9</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      doy t           temp  seas thresh threshCriterion durationCriterion event</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>     1 1982-01-01  20.9  21.6   23.0 FALSE           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>     2 1982-01-02  21.2  21.6   23.0 FALSE           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>     3 1982-01-03  21.4  21.7   23.0 FALSE           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>     4 1982-01-04  21.2  21.7   23.1 FALSE           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>     5 1982-01-05  21.3  21.7   23.1 FALSE           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>     6 1982-01-06  21.6  21.7   23.1 FALSE           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>     7 1982-01-07  21.7  21.8   23.2 FALSE           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>     8 1982-01-08  21.5  21.8   23.2 FALSE           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>     9 1982-01-09  21.4  21.8   23.2 FALSE           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>    10 1982-01-10  21.4  21.8   23.3 FALSE           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 1 more variable: event_no &lt;int&gt;</span></span>
-<span class="r-in"><span class="co"># show some of the heat waves:</span></span>
-<span class="r-in"><span class="va">out</span><span class="op">$</span><span class="va">event</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      doy t           temp  seas thresh threshCriterion durationC…¹ event event…²</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>     1 1982-01-01  20.9  21.6   23.0 FALSE           FALSE       FALSE      <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>     2 1982-01-02  21.2  21.6   23.0 FALSE           FALSE       FALSE      <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>     3 1982-01-03  21.4  21.7   23.0 FALSE           FALSE       FALSE      <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>     4 1982-01-04  21.2  21.7   23.1 FALSE           FALSE       FALSE      <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>     5 1982-01-05  21.3  21.7   23.1 FALSE           FALSE       FALSE      <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>     6 1982-01-06  21.6  21.7   23.1 FALSE           FALSE       FALSE      <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>     7 1982-01-07  21.7  21.8   23.2 FALSE           FALSE       FALSE      <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>     8 1982-01-08  21.5  21.8   23.2 FALSE           FALSE       FALSE      <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>     9 1982-01-09  21.4  21.8   23.2 FALSE           FALSE       FALSE      <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>    10 1982-01-10  21.4  21.8   23.3 FALSE           FALSE       FALSE      <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with abbreviated variable names ¹​durationCriterion, ²​event_no</span></span>
+<span class="r-in"><span><span class="co"># show some of the heat waves:</span></span></span>
+<span class="r-in"><span><span class="va">out</span><span class="op">$</span><span class="va">event</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 10</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   event_no index_start index_peak index_end duration date_start date_peak </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>        1         885        887       889        5 1984-06-03 1984-06-05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>        2         899        901       904        6 1984-06-17 1984-06-19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>        3         908        922       926       19 1984-06-26 1984-07-10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>        4        <span style="text-decoration: underline;">1</span>023       <span style="text-decoration: underline;">1</span>027      <span style="text-decoration: underline;">1</span>029        7 1984-10-19 1984-10-23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>        5        <span style="text-decoration: underline;">1</span>033       <span style="text-decoration: underline;">1</span>034      <span style="text-decoration: underline;">1</span>037        5 1984-10-29 1984-10-30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 3 more variables: date_end &lt;date&gt;, intensity_mean &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   intensity_max &lt;dbl&gt;</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Or if one wants to calculate MCSs</span></span>
-<span class="r-in"><span class="va">res_clim</span> <span class="op">&lt;-</span> <span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span>,</span>
-<span class="r-in">                   pctile <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">detect_event</span><span class="op">(</span><span class="va">res_clim</span>, coldSpells <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># show a portion of the climatology:</span></span>
-<span class="r-in"><span class="va">out</span><span class="op">$</span><span class="va">climatology</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   event_no index_start index_…¹ index…² durat…³ date_start date_peak  date_end  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>        1         885      887     889       5 1984-06-03 1984-06-05 1984-06-07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>        2         899      901     904       6 1984-06-17 1984-06-19 1984-06-22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>        3         908      922     926      19 1984-06-26 1984-07-10 1984-07-14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>        4        <span style="text-decoration: underline;">1</span>023     <span style="text-decoration: underline;">1</span>027    <span style="text-decoration: underline;">1</span>029       7 1984-10-19 1984-10-23 1984-10-25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>        5        <span style="text-decoration: underline;">1</span>033     <span style="text-decoration: underline;">1</span>034    <span style="text-decoration: underline;">1</span>037       5 1984-10-29 1984-10-30 1984-11-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 2 more variables: intensity_mean &lt;dbl&gt;, intensity_max &lt;dbl&gt;, and</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   abbreviated variable names ¹​index_peak, ²​index_end, ³​duration</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Or if one wants to calculate MCSs</span></span></span>
+<span class="r-in"><span><span class="va">res_clim</span> <span class="op">&lt;-</span> <span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                   pctile <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">detect_event</span><span class="op">(</span><span class="va">res_clim</span>, coldSpells <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># show a portion of the climatology:</span></span></span>
+<span class="r-in"><span><span class="va">out</span><span class="op">$</span><span class="va">climatology</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 9</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      doy t           temp  seas thresh threshCriterion durationCriterion event</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>     1 1982-01-01  20.9  21.6   20.5 FALSE           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>     2 1982-01-02  21.2  21.6   20.6 FALSE           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>     3 1982-01-03  21.4  21.7   20.6 FALSE           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>     4 1982-01-04  21.2  21.7   20.6 FALSE           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>     5 1982-01-05  21.3  21.7   20.6 FALSE           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>     6 1982-01-06  21.6  21.7   20.7 FALSE           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>     7 1982-01-07  21.7  21.8   20.7 FALSE           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>     8 1982-01-08  21.5  21.8   20.7 FALSE           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>     9 1982-01-09  21.4  21.8   20.8 FALSE           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>    10 1982-01-10  21.4  21.8   20.8 FALSE           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 1 more variable: event_no &lt;int&gt;</span></span>
-<span class="r-in"><span class="co"># show some of the cold-spells:</span></span>
-<span class="r-in"><span class="va">out</span><span class="op">$</span><span class="va">event</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      doy t           temp  seas thresh threshCriterion durationC…¹ event event…²</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>     1 1982-01-01  20.9  21.6   20.5 FALSE           FALSE       FALSE      <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>     2 1982-01-02  21.2  21.6   20.6 FALSE           FALSE       FALSE      <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>     3 1982-01-03  21.4  21.7   20.6 FALSE           FALSE       FALSE      <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>     4 1982-01-04  21.2  21.7   20.6 FALSE           FALSE       FALSE      <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>     5 1982-01-05  21.3  21.7   20.6 FALSE           FALSE       FALSE      <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>     6 1982-01-06  21.6  21.7   20.7 FALSE           FALSE       FALSE      <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>     7 1982-01-07  21.7  21.8   20.7 FALSE           FALSE       FALSE      <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>     8 1982-01-08  21.5  21.8   20.7 FALSE           FALSE       FALSE      <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>     9 1982-01-09  21.4  21.8   20.8 FALSE           FALSE       FALSE      <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>    10 1982-01-10  21.4  21.8   20.8 FALSE           FALSE       FALSE      <span style="color: #BB0000;">NA</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with abbreviated variable names ¹​durationCriterion, ²​event_no</span></span>
+<span class="r-in"><span><span class="co"># show some of the cold-spells:</span></span></span>
+<span class="r-in"><span><span class="va">out</span><span class="op">$</span><span class="va">event</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 10</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   event_no index_start index_peak index_end duration date_start date_peak </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>        1          83         83        87        5 1982-03-24 1982-03-24</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>        2         194        199       207       14 1982-07-13 1982-07-18</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>        3         270        272       277        8 1982-09-27 1982-09-29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>        4         296        303       306       11 1982-10-23 1982-10-30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>        5         672        681       685       14 1983-11-03 1983-11-12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 3 more variables: date_end &lt;date&gt;, intensity_mean &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   intensity_max &lt;dbl&gt;</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># It is also possible to calculate the categories of events directly</span></span>
-<span class="r-in"><span class="co"># See the \code{\link{category}} documentation for more functionality</span></span>
-<span class="r-in"><span class="va">res_clim</span> <span class="op">&lt;-</span> <span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">out_event</span> <span class="op">&lt;-</span> <span class="fu">detect_event</span><span class="op">(</span><span class="va">res_clim</span>, categories <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">out_list</span> <span class="op">&lt;-</span> <span class="fu">detect_event</span><span class="op">(</span><span class="va">res_clim</span>, categories <span class="op">=</span> <span class="cn">TRUE</span>, climatology <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># It is also possible to give two separate sets of threshold criteria</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># To use a second static threshold we first use the exceedance function</span></span>
-<span class="r-in"><span class="va">thresh_19</span> <span class="op">&lt;-</span> <span class="fu"><a href="exceedance.html">exceedance</a></span><span class="op">(</span><span class="va">sst_Med</span>, threshold <span class="op">=</span> <span class="fl">19</span>, minDuration <span class="op">=</span> <span class="fl">10</span>, maxGap <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">$</span><span class="va">threshold</span></span>
-<span class="r-in"><span class="co"># Then we use that output when detecting our events</span></span>
-<span class="r-in"><span class="va">events_19</span> <span class="op">&lt;-</span> <span class="fu">detect_event</span><span class="op">(</span><span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_Med</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">                         threshClim2 <span class="op">=</span> <span class="va">thresh_19</span><span class="op">$</span><span class="va">exceedance</span>, minDuration2 <span class="op">=</span> <span class="fl">10</span>, maxGap2 <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># If we want to use two different percentile thresholds we use detect_event</span></span>
-<span class="r-in"><span class="va">thresh_95</span> <span class="op">&lt;-</span> <span class="fu">detect_event</span><span class="op">(</span><span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_Med</span>, pctile <span class="op">=</span> <span class="fl">95</span>,</span>
-<span class="r-in">                                 climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">                          minDuration <span class="op">=</span> <span class="fl">2</span>, maxGap <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">$</span><span class="va">climatology</span></span>
-<span class="r-in"><span class="co"># Then we use that output when detecting our events</span></span>
-<span class="r-in"><span class="va">events_95</span> <span class="op">&lt;-</span> <span class="fu">detect_event</span><span class="op">(</span><span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_Med</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">                          threshClim2 <span class="op">=</span> <span class="va">thresh_95</span><span class="op">$</span><span class="va">event</span>, minDuration2 <span class="op">=</span> <span class="fl">2</span>, maxGap2 <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
-<span class="r-in"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   event_no index_start index_…¹ index…² durat…³ date_start date_peak  date_end  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>        1          83       83      87       5 1982-03-24 1982-03-24 1982-03-28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>        2         194      199     207      14 1982-07-13 1982-07-18 1982-07-26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>        3         270      272     277       8 1982-09-27 1982-09-29 1982-10-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>        4         296      303     306      11 1982-10-23 1982-10-30 1982-11-02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>        5         672      681     685      14 1983-11-03 1983-11-12 1983-11-16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 2 more variables: intensity_mean &lt;dbl&gt;, intensity_max &lt;dbl&gt;, and</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   abbreviated variable names ¹​index_peak, ²​index_end, ³​duration</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># It is also possible to calculate the categories of events directly</span></span></span>
+<span class="r-in"><span><span class="co"># See the \code{\link{category}} documentation for more functionality</span></span></span>
+<span class="r-in"><span><span class="va">res_clim</span> <span class="op">&lt;-</span> <span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">out_event</span> <span class="op">&lt;-</span> <span class="fu">detect_event</span><span class="op">(</span><span class="va">res_clim</span>, categories <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">out_list</span> <span class="op">&lt;-</span> <span class="fu">detect_event</span><span class="op">(</span><span class="va">res_clim</span>, categories <span class="op">=</span> <span class="cn">TRUE</span>, climatology <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># It is also possible to give two separate sets of threshold criteria</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># To use a second static threshold we first use the exceedance function</span></span></span>
+<span class="r-in"><span><span class="va">thresh_19</span> <span class="op">&lt;-</span> <span class="fu"><a href="exceedance.html">exceedance</a></span><span class="op">(</span><span class="va">sst_Med</span>, threshold <span class="op">=</span> <span class="fl">19</span>, minDuration <span class="op">=</span> <span class="fl">10</span>, maxGap <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">$</span><span class="va">threshold</span></span></span>
+<span class="r-in"><span><span class="co"># Then we use that output when detecting our events</span></span></span>
+<span class="r-in"><span><span class="va">events_19</span> <span class="op">&lt;-</span> <span class="fu">detect_event</span><span class="op">(</span><span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_Med</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                         threshClim2 <span class="op">=</span> <span class="va">thresh_19</span><span class="op">$</span><span class="va">exceedance</span>, minDuration2 <span class="op">=</span> <span class="fl">10</span>, maxGap2 <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># If we want to use two different percentile thresholds we use detect_event</span></span></span>
+<span class="r-in"><span><span class="va">thresh_95</span> <span class="op">&lt;-</span> <span class="fu">detect_event</span><span class="op">(</span><span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_Med</span>, pctile <span class="op">=</span> <span class="fl">95</span>,</span></span>
+<span class="r-in"><span>                                 climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                          minDuration <span class="op">=</span> <span class="fl">2</span>, maxGap <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">$</span><span class="va">climatology</span></span></span>
+<span class="r-in"><span><span class="co"># Then we use that output when detecting our events</span></span></span>
+<span class="r-in"><span><span class="va">events_95</span> <span class="op">&lt;-</span> <span class="fu">detect_event</span><span class="op">(</span><span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_Med</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                          threshClim2 <span class="op">=</span> <span class="va">thresh_95</span><span class="op">$</span><span class="va">event</span>, minDuration2 <span class="op">=</span> <span class="fl">2</span>, maxGap2 <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -479,8 +555,7 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

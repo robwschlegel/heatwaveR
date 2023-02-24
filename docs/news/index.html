@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9003</span>
       </span>
     </div>
 
@@ -38,7 +38,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
      
     <span class="caret"></span>
@@ -47,10 +47,16 @@
       <a href="../articles/detection_and_visualisation.html">Basic Detection and Visualisation of Events</a>
     </li>
     <li>
+      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+    </li>
+    <li>
       <a href="../articles/exceedance.html">Calculating and Visualising Exceedances</a>
     </li>
     <li>
-      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
+    </li>
+    <li>
+      <a href="../articles/MHW_metric_trends.html">Trend and Breakpoint Analyses</a>
     </li>
     <li>
       <a href="../articles/OISST_preparation.html">Downloading and Preparing OISST Data</a>
@@ -59,13 +65,10 @@
       <a href="../articles/gridded_event_detection.html">Detecting Events in Gridded Data</a>
     </li>
     <li>
-      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse NOAA OISST Data: Alternative Methods</a>
+      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse Data: Alternative</a>
     </li>
     <li>
       <a href="../articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a>
-    </li>
-    <li>
-      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
     </li>
   </ul></li>
 <li>
@@ -100,6 +103,26 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="0.4.6.9003" id="heatwaver-0469003-2023-01-16">heatwaveR 0.4.6.9003 (2023-01-16)<a class="anchor" aria-label="anchor" href="#heatwaver-0469003-2023-01-16"></a></h2>
+<ul><li>Updated SST data to end of 2022</li>
+<li>Changed behaviour of <code><a href="../reference/lolli_plot.html">lolli_plot()</a></code> and <code><a href="../reference/event_line.html">event_line()</a></code> to now use tidyeval</li>
+<li>Note that this is a backwards compatibility breaking change that was required due to changes in <strong><code>ggplot2 v3.0.0</code></strong>
+</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.4.6.9002" id="heatwaver-0469002-2023-01-09">heatwaveR 0.4.6.9002 (2023-01-09)<a class="anchor" aria-label="anchor" href="#heatwaver-0469002-2023-01-09"></a></h2>
+<ul><li>Updated citations page for all references to <code>heatwaveR</code> from 2022</li>
+<li>Added package names to all functions used in the downloading OISST vignette</li>
+<li>Added the <code>MCSice</code> argument to <code><a href="../reference/category.html">category()</a></code>, which allows users to directly classify a MCS with a threshold below -1.7°C as a category ‘V Ice’ event <em>sensu</em> Schlegel et al. (2021; Marine cold-spells)</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.4.6.9001" id="heatwaver-0469001-2022-06-23">heatwaveR 0.4.6.9001 (2022-06-23)<a class="anchor" aria-label="anchor" href="#heatwaver-0469001-2022-06-23"></a></h2>
+<ul><li>Added two new vignettes
+<ul><li>Alternatives to downloading NOAA OISST data</li>
+<li>Trend and break point analyses for MHW metrics</li>
+</ul></li>
+</ul></div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.6.9000" id="heatwaver-0469000-2022-01-17">heatwaveR 0.4.6.9000 (2022-01-17)<a class="anchor" aria-label="anchor" href="#heatwaver-0469000-2022-01-17"></a></h2>
 <ul><li>Updated SST time series to 2021-12-31</li>
 </ul></div>
@@ -109,31 +132,22 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.6" id="heatwaver-046-2021-10-25">heatwaveR 0.4.6 (2021-10-25)<small>2021-10-27</small><a class="anchor" aria-label="anchor" href="#heatwaver-046-2021-10-25"></a></h2>
-<ul><li>Explicitly loading <strong><code>Rcpp</code></strong> due to a
-change in the behaviour of the package causing ERRORs on CRAN
-checks</li>
+<ul><li>Explicitly loading <strong><code>Rcpp</code></strong> due to a change in the behaviour of the package causing ERRORs on CRAN checks</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.5.9002" id="heatwaver-0459002-2021-09-21">heatwaveR 0.4.5.9002 (2021-09-21)<a class="anchor" aria-label="anchor" href="#heatwaver-0459002-2021-09-21"></a></h2>
 <ul><li>Updated the MCS colour palette throughout the package
-<ul><li>The new colour palette is very similar, but with improved
-contrast</li>
+<ul><li>The new colour palette is very similar, but with improved contrast</li>
 </ul></li>
-<li>Made a minor but important change to <code><a href="../reference/category.html">category()</a></code> so that
-categories are based on temperature greater (lesser) than the thresholds
-and not greater (lesser) than or equal to</li>
+<li>Made a minor but important change to <code><a href="../reference/category.html">category()</a></code> so that categories are based on temperature greater (lesser) than the thresholds and not greater (lesser) than or equal to</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.5.9001" id="heatwaver-0459001-2021-08-25">heatwaveR 0.4.5.9001 (2021-08-25)<a class="anchor" aria-label="anchor" href="#heatwaver-0459001-2021-08-25"></a></h2>
-<ul><li>Updated the visualisation vignette to now include the code necessary
-to get <code><a href="../reference/geom_flame.html">geom_flame()</a></code> to work with
-<strong><code>plotly</code></strong> now that it is no longer directly
-supported</li>
+<ul><li>Updated the visualisation vignette to now include the code necessary to get <code><a href="../reference/geom_flame.html">geom_flame()</a></code> to work with <strong><code>plotly</code></strong> now that it is no longer directly supported</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.5.9001" id="heatwaver-0459001-2021-03-17">heatwaveR 0.4.5.9001 (2021-03-17)<a class="anchor" aria-label="anchor" href="#heatwaver-0459001-2021-03-17"></a></h2>
-<ul><li>Improved error trapping for <code><a href="../reference/ts2clm.html">ts2clm()</a></code>,
-<code><a href="../reference/detect_event.html">detect_event()</a></code>, and <code><a href="../reference/exceedance.html">exceedance()</a></code>
+<ul><li>Improved error trapping for <code><a href="../reference/ts2clm.html">ts2clm()</a></code>, <code><a href="../reference/detect_event.html">detect_event()</a></code>, and <code><a href="../reference/exceedance.html">exceedance()</a></code>
 </li>
 </ul></div>
     <div class="section level2">
@@ -142,17 +156,13 @@ supported</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.5.9000" id="heatwaver-0459000-2021-01-31">heatwaveR 0.4.5.9000 (2021-01-31)<a class="anchor" aria-label="anchor" href="#heatwaver-0459000-2021-01-31"></a></h2>
-<ul><li>Added a <code>categories</code> argument to
-<code><a href="../reference/detect_event.html">detect_event()</a></code>
-<ul><li>This allows one to determine the categories of events directly,
-rather than as a second step using the <code><a href="../reference/category.html">category()</a></code>
-function</li>
+<ul><li>Added a <code>categories</code> argument to <code><a href="../reference/detect_event.html">detect_event()</a></code>
+<ul><li>This allows one to determine the categories of events directly, rather than as a second step using the <code><a href="../reference/category.html">category()</a></code> function</li>
 </ul></li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.5" id="heatwaver-045-2021-01-23">heatwaveR 0.4.5 (2021-01-23)<small>2021-01-07</small><a class="anchor" aria-label="anchor" href="#heatwaver-045-2021-01-23"></a></h2>
-<ul><li>Created a new vignette that shows how to save gridded MHW results to
-a NetCDF file</li>
+<ul><li>Created a new vignette that shows how to save gridded MHW results to a NetCDF file</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.5" id="heatwaver-045-2021-01-07">heatwaveR 0.4.5 (2021-01-07)<small>2021-01-07</small><a class="anchor" aria-label="anchor" href="#heatwaver-045-2021-01-07"></a></h2>
@@ -169,14 +179,10 @@ a NetCDF file</li>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.4.9005" id="heatwaver-0449005-2020-12-22">heatwaveR 0.4.4.9005 (2020-12-22)<a class="anchor" aria-label="anchor" href="#heatwaver-0449005-2020-12-22"></a></h2>
 <ul><li>
-<code>exceedance</code> now outputs a one row all NA data.frame when
-there are no events in exceedance of the threshold</li>
-<li>The previous version would return an error if no exceedances were
-detected, making it generally unusable in gridded data</li>
-<li>All <strong><code>plotly</code></strong> dependencies were removed
-due to the orphaning of the package
-<ul><li>The code to allow <code>geom_flame</code> to work with
-<strong><code>plotly</code></strong> may be found here: <a href="https://github.com/robwschlegel/MHWapp/blob/master/shiny/functions.R" class="external-link uri">https://github.com/robwschlegel/MHWapp/blob/master/shiny/functions.R</a>
+<code>exceedance</code> now outputs a one row all NA data.frame when there are no events in exceedance of the threshold</li>
+<li>The previous version would return an error if no exceedances were detected, making it generally unusable in gridded data</li>
+<li>All <strong><code>plotly</code></strong> dependencies were removed due to the orphaning of the package
+<ul><li>The code to allow <code>geom_flame</code> to work with <strong><code>plotly</code></strong> may be found here: <a href="https://github.com/robwschlegel/MHWapp/blob/master/shiny/functions.R" class="external-link uri">https://github.com/robwschlegel/MHWapp/blob/master/shiny/functions.R</a>
 </li>
 </ul></li>
 </ul></div>
@@ -186,9 +192,7 @@ due to the orphaning of the package
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.4.9004" id="heatwaver-0449004-2020-11-18">heatwaveR 0.4.4.9004 (2020-11-18)<a class="anchor" aria-label="anchor" href="#heatwaver-0449004-2020-11-18"></a></h2>
-<ul><li>Fixed bug in <code>proto_event</code> that caused
-<code>joinAcrossGaps</code> argument to flag the first n days of a time
-series as part of an event</li>
+<ul><li>Fixed bug in <code>proto_event</code> that caused <code>joinAcrossGaps</code> argument to flag the first n days of a time series as part of an event</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.4.9003" id="heatwaver-0449003-2020-11-13">heatwaveR 0.4.4.9003 (2020-11-13)<a class="anchor" aria-label="anchor" href="#heatwaver-0449003-2020-11-13"></a></h2>
@@ -196,27 +200,21 @@ series as part of an event</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.4.9002" id="heatwaver-0449002-2020-11-06">heatwaveR 0.4.4.9002 (2020-11-06)<a class="anchor" aria-label="anchor" href="#heatwaver-0449002-2020-11-06"></a></h2>
-<ul><li>Remove the last offending trace of <strong><code>zoo</code></strong>
-from <code>make_whole</code>.</li>
+<ul><li>Remove the last offending trace of <strong><code>zoo</code></strong> from <code>make_whole</code>.</li>
 <li>Fix miscellaneous typos and formatting inconsistencies.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.4.9001" id="heatwaver-0449001-2020-10-31">heatwaveR 0.4.4.9001 (2020-10-31)<a class="anchor" aria-label="anchor" href="#heatwaver-0449001-2020-10-31"></a></h2>
-<ul><li>Added <code>MCScorrect</code> argument to <code>catgegory</code>
-function that allows the user to bound the bottom threshold for MCS
-categories to -1.8C</li>
+<ul><li>Added <code>MCScorrect</code> argument to <code>catgegory</code> function that allows the user to bound the bottom threshold for MCS categories to -1.8C</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.4.9000" id="heatwaver-0449000-2020-07-30">heatwaveR 0.4.4.9000 (2020-07-30)<a class="anchor" aria-label="anchor" href="#heatwaver-0449000-2020-07-30"></a></h2>
 <ul><li>
 <p>dplyr v1.0.0 no longer handles empty data.frames the same</p>
-<ul><li>It now forces them to logical type, so empty data.frames no longer
-unnest with normal results</li>
-<li>This was fixed by having <code>detect_event</code> and
-<code>category</code> return single row NA data.frames instead</li>
+<ul><li>It now forces them to logical type, so empty data.frames no longer unnest with normal results</li>
+<li>This was fixed by having <code>detect_event</code> and <code>category</code> return single row NA data.frames instead</li>
 </ul></li>
-<li><p>Thinking about phasing out
-<strong><code>data.table</code></strong></p></li>
+<li><p>Thinking about phasing out <strong><code>data.table</code></strong></p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.4" id="heatwaver-044-2020-06-27">heatwaveR 0.4.4 (2020-06-27)<small>2020-06-27</small><a class="anchor" aria-label="anchor" href="#heatwaver-044-2020-06-27"></a></h2>
@@ -224,10 +222,8 @@ unnest with normal results</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.3.9001" id="heatwaver-0439001-2020-06-26">heatwaveR 0.4.3.9001 (2020-06-26)<a class="anchor" aria-label="anchor" href="#heatwaver-0439001-2020-06-26"></a></h2>
-<ul><li>Re-wrote OISST and gridded detection vignettes after finding an
-ERDDAP server that hosts the NOAA OISST v2.1 data.</li>
-<li>Updated the packaged time series to now use v2.1 data from 1982 to
-2019</li>
+<ul><li>Re-wrote OISST and gridded detection vignettes after finding an ERDDAP server that hosts the NOAA OISST v2.1 data.</li>
+<li>Updated the packaged time series to now use v2.1 data from 1982 to 2019</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.3.9000" id="heatwaver-0439000-2020-06-25">heatwaveR 0.4.3.9000 (2020-06-25)<a class="anchor" aria-label="anchor" href="#heatwaver-0439000-2020-06-25"></a></h2>
@@ -236,19 +232,15 @@ ERDDAP server that hosts the NOAA OISST v2.1 data.</li>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.3.9000" id="heatwaver-0439000-2020-06-15">heatwaveR 0.4.3.9000 (2020-06-15)<a class="anchor" aria-label="anchor" href="#heatwaver-0439000-2020-06-15"></a></h2>
 <ul><li>
-<code><a href="../reference/category.html">category()</a></code> now works with MCS generated by
-<code><a href="../reference/detect_event.html">detect_event()</a></code>
+<code><a href="../reference/category.html">category()</a></code> now works with MCS generated by <code><a href="../reference/detect_event.html">detect_event()</a></code>
 </li>
 <li>codecov pushed back up to 100%</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.3" id="heatwaver-043-2020-06-12">heatwaveR 0.4.3 (2020-06-12)<a class="anchor" aria-label="anchor" href="#heatwaver-043-2020-06-12"></a></h2>
-<ul><li>Release pushed to CRAN in light of changes to
-<strong><code>data.table</code></strong> and
-<strong><code>dplyr</code></strong>
+<ul><li>Release pushed to CRAN in light of changes to <strong><code>data.table</code></strong> and <strong><code>dplyr</code></strong>
 </li>
-<li>Waiting until NOAA OISST data area available on an ERDDAP server
-before updating them</li>
+<li>Waiting until NOAA OISST data area available on an ERDDAP server before updating them</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.2.9005" id="heatwaver-0429005-2020-06-06">heatwaveR 0.4.2.9005 (2020-06-06)<a class="anchor" aria-label="anchor" href="#heatwaver-0429005-2020-06-06"></a></h2>
@@ -256,24 +248,20 @@ before updating them</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.2.9005" id="heatwaver-0429005-2020-06-03">heatwaveR 0.4.2.9005 (2020-06-03)<a class="anchor" aria-label="anchor" href="#heatwaver-0429005-2020-06-03"></a></h2>
-<ul><li>Ensured that newly released <strong><code>dplyr</code></strong>
-v1.0.0 did not introduce any bugs</li>
+<ul><li>Ensured that newly released <strong><code>dplyr</code></strong> v1.0.0 did not introduce any bugs</li>
 <li>Updated vignettes to now work with v2.1 of the OISST data</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.2.9004" id="heatwaver-0429004-2020-05-15">heatwaveR 0.4.2.9004 (2020-05-15)<a class="anchor" aria-label="anchor" href="#heatwaver-0429004-2020-05-15"></a></h2>
 <ul><li>
-<p>Fixed bug in <code><a href="../reference/detect_event.html">detect_event()</a></code> caused by
-<strong><code>data.table</code></strong></p>
+<p>Fixed bug in <code><a href="../reference/detect_event.html">detect_event()</a></code> caused by <strong><code>data.table</code></strong></p>
 <ul><li>
-<strong><code>data.table</code></strong> no longer allows rounding
-of NA values</li>
+<strong><code>data.table</code></strong> no longer allows rounding of NA values</li>
 </ul></li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.2.9003" id="heatwaver-0429003-2020-05-08">heatwaveR 0.4.2.9003 (2020-05-08)<a class="anchor" aria-label="anchor" href="#heatwaver-0429003-2020-05-08"></a></h2>
-<ul><li>Fixed bug in <code><a href="../reference/event_line.html">event_line()</a></code> caused by
-<strong><code>data.table</code></strong>
+<ul><li>Fixed bug in <code><a href="../reference/event_line.html">event_line()</a></code> caused by <strong><code>data.table</code></strong>
 </li>
 </ul></div>
     <div class="section level2">
@@ -294,8 +282,7 @@ of NA values</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.2.9001" id="heatwaver-0429001-2020-02-13">heatwaveR 0.4.2.9001 (2020-02-13)<a class="anchor" aria-label="anchor" href="#heatwaver-0429001-2020-02-13"></a></h2>
-<ul><li>Added a new citation that used the <code>heatwaveR</code>
-package</li>
+<ul><li>Added a new citation that used the <code>heatwaveR</code> package</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.2.9001" id="heatwaver-0429001-2020-02-05">heatwaveR 0.4.2.9001 (2020-02-05)<a class="anchor" aria-label="anchor" href="#heatwaver-0429001-2020-02-05"></a></h2>
@@ -307,116 +294,77 @@ package</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.2.9001" id="heatwaver-0429001-2020-01-08">heatwaveR 0.4.2.9001 (2020-01-08)<a class="anchor" aria-label="anchor" href="#heatwaver-0429001-2020-01-08"></a></h2>
-<ul><li>Beginning to phase out <strong><code>dplyr</code></strong> and
-<strong><code>tibble</code></strong> dependencies</li>
-<li>Replacing some <strong><code>dplyr</code></strong> functions with
-<strong><code>plyr</code></strong> as they appear to be slightly faster
-and also don’t have the same multicore issues that more recent
-<strong><code>dplyr</code></strong> developments have created</li>
-<li>Added <code>roundRes</code> argument to <code><a href="../reference/detect_event.html">detect_event()</a></code>
-to allow users to decide the rounding precision of the returned
-results</li>
+<ul><li>Beginning to phase out <strong><code>dplyr</code></strong> and <strong><code>tibble</code></strong> dependencies</li>
+<li>Replacing some <strong><code>dplyr</code></strong> functions with <strong><code>plyr</code></strong> as they appear to be slightly faster and also don’t have the same multicore issues that more recent <strong><code>dplyr</code></strong> developments have created</li>
+<li>Added <code>roundRes</code> argument to <code><a href="../reference/detect_event.html">detect_event()</a></code> to allow users to decide the rounding precision of the returned results</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.2" id="heatwaver-042-2019-12-10">heatwaveR 0.4.2 (2019-12-10)<small>2019-12-01</small><a class="anchor" aria-label="anchor" href="#heatwaver-042-2019-12-10"></a></h2>
-<ul><li>Minor change to <code><a href="../reference/ts2clm.html">ts2clm()</a></code> that does not alter any
-functionality</li>
+<ul><li>Minor change to <code><a href="../reference/ts2clm.html">ts2clm()</a></code> that does not alter any functionality</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.2" id="heatwaver-042-2019-11-29">heatwaveR 0.4.2 (2019-11-29)<small>2019-12-01</small><a class="anchor" aria-label="anchor" href="#heatwaver-042-2019-11-29"></a></h2>
-<ul><li>Publishing new stable version to CRAN due to removal of
-<strong><code>tidyverse</code></strong> from the list of suggested
-packages and the important bug fixes to <code><a href="../reference/category.html">category()</a></code>
+<ul><li>Publishing new stable version to CRAN due to removal of <strong><code>tidyverse</code></strong> from the list of suggested packages and the important bug fixes to <code><a href="../reference/category.html">category()</a></code>
 </li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.2" id="heatwaver-042-2019-11-26">heatwaveR 0.4.2 (2019-11-26)<small>2019-12-01</small><a class="anchor" aria-label="anchor" href="#heatwaver-042-2019-11-26"></a></h2>
 <ul><li>
-<p>Fixed bug in <code><a href="../reference/category.html">category()</a></code> that incorrectly returned
-the difference between <code>seas</code> and <code>thresh</code> as the
-daily intensity value, rather than the actual temperature anomaly above
-<code>seas</code></p>
-<ul><li>Also fixed the labelling of days below <code>thresh</code> as
-<code>Moderate</code>, they are now <code>NA</code>
+<p>Fixed bug in <code><a href="../reference/category.html">category()</a></code> that incorrectly returned the difference between <code>seas</code> and <code>thresh</code> as the daily intensity value, rather than the actual temperature anomaly above <code>seas</code></p>
+<ul><li>Also fixed the labelling of days below <code>thresh</code> as <code>Moderate</code>, they are now <code>NA</code>
 </li>
 </ul></li>
 <li>
-<p><code><a href="../reference/category.html">category()</a></code> now adds lower case letters to the ends
-of event names if there were multiple large events within the same
-year</p>
-<ul><li>This may cause backwards compatibility issues in very rare cases,
-but is a necessary change</li>
+<p><code><a href="../reference/category.html">category()</a></code> now adds lower case letters to the ends of event names if there were multiple large events within the same year</p>
+<ul><li>This may cause backwards compatibility issues in very rare cases, but is a necessary change</li>
 </ul></li>
-<li><p>Added <code>roundVal</code> argument to <code><a href="../reference/category.html">category()</a></code>
-to allow users to decide the rounding precision of the returned
-results</p></li>
+<li><p>Added <code>roundVal</code> argument to <code><a href="../reference/category.html">category()</a></code> to allow users to decide the rounding precision of the returned results</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.1.9004" id="heatwaver-0419004-2019-11-23">heatwaveR 0.4.1.9004 (2019-11-23)<a class="anchor" aria-label="anchor" href="#heatwaver-0419004-2019-11-23"></a></h2>
-<ul><li>Tripled the resolution of the logo in anticipation of creating hex
-stickers</li>
+<ul><li>Tripled the resolution of the logo in anticipation of creating hex stickers</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.1.9004" id="heatwaver-0419004-2019-11-19">heatwaveR 0.4.1.9004 (2019-11-19)<a class="anchor" aria-label="anchor" href="#heatwaver-0419004-2019-11-19"></a></h2>
-<ul><li>Removed <strong><code>tidyverse</code></strong> from the list of
-suggested packages</li>
+<ul><li>Removed <strong><code>tidyverse</code></strong> from the list of suggested packages</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.1.9003" id="heatwaver-0419003-2019-11-03">heatwaveR 0.4.1.9003 (2019-11-03)<a class="anchor" aria-label="anchor" href="#heatwaver-0419003-2019-11-03"></a></h2>
-<ul><li>The potentially backward compatibility breaking design change to
-have empty data.frames returned as one row of <code>NA</code> values was
-not as rare of a problem as first thought</li>
-<li>While still respecting the need to not use <code>1:n</code> vector
-creation, <code><a href="../reference/detect_event.html">detect_event()</a></code> and <code><a href="../reference/category.html">category()</a></code> now
-produce empty data.frames and not one row <code>NA</code> dataframe</li>
+<ul><li>The potentially backward compatibility breaking design change to have empty data.frames returned as one row of <code>NA</code> values was not as rare of a problem as first thought</li>
+<li>While still respecting the need to not use <code>1:n</code> vector creation, <code><a href="../reference/detect_event.html">detect_event()</a></code> and <code><a href="../reference/category.html">category()</a></code> now produce empty data.frames and not one row <code>NA</code> dataframe</li>
 <li>This should ensure continued backwards compatibility</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.1.9002" id="heatwaver-0419002-2019-11-03">heatwaveR 0.4.1.9002 (2019-11-03)<a class="anchor" aria-label="anchor" href="#heatwaver-0419002-2019-11-03"></a></h2>
 <ul><li>
-<p>A bug was discovered where the <code><a href="../reference/ts2clm.html">ts2clm()</a></code> function
-does not first check that the time series being fed to it is in correct
-chronological order</p>
-<ul><li>This was fixed by ordering the data being fed to the function before
-beginning of the further calculations</li>
+<p>A bug was discovered where the <code><a href="../reference/ts2clm.html">ts2clm()</a></code> function does not first check that the time series being fed to it is in correct chronological order</p>
+<ul><li>This was fixed by ordering the data being fed to the function before beginning of the further calculations</li>
 </ul></li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.1.9001" id="heatwaver-0419001-2019-10-30">heatwaveR 0.4.1.9001 (2019-10-30)<a class="anchor" aria-label="anchor" href="#heatwaver-0419001-2019-10-30"></a></h2>
 <ul><li>
-<p>An update to <code>data.table</code> sometime in August, 2019
-reduced the packages tolerance for code with <code>1:n</code> in it</p>
-<ul><li>As this is a potential memory weakness, when this creates an empty
-vector in multicore calculations it causes the entire run to fall
-over</li>
-<li>Therefore, all use of <code>1:n</code> has been replaced with
-<code>seq_len(n)</code>
+<p>An update to <code>data.table</code> sometime in August, 2019 reduced the packages tolerance for code with <code>1:n</code> in it</p>
+<ul><li>As this is a potential memory weakness, when this creates an empty vector in multicore calculations it causes the entire run to fall over</li>
+<li>Therefore, all use of <code>1:n</code> has been replaced with <code>seq_len(n)</code>
 </li>
-<li>This changed the list outputs when no MHWs are detected to be one
-row of NA values, rather than an empty list</li>
-<li>This may cause backward compatibility issues, but is extremely
-unlikely</li>
+<li>This changed the list outputs when no MHWs are detected to be one row of NA values, rather than an empty list</li>
+<li>This may cause backward compatibility issues, but is extremely unlikely</li>
 </ul></li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.1.9000" id="heatwaver-0419000-2019-10-26">heatwaveR 0.4.1.9000 (2019-10-26)<a class="anchor" aria-label="anchor" href="#heatwaver-0419000-2019-10-26"></a></h2>
 <ul><li>
-<p>An update to the <code>ggplot2</code> package some time back in
-August, 2019 changed slightly how Geoms work internally</p>
-<ul><li>This allowed <code><a href="../reference/geom_lolli.html">geom_lolli()</a></code> to fall over in very rare
-circumstances so this issue has been addressed</li>
+<p>An update to the <code>ggplot2</code> package some time back in August, 2019 changed slightly how Geoms work internally</p>
+<ul><li>This allowed <code><a href="../reference/geom_lolli.html">geom_lolli()</a></code> to fall over in very rare circumstances so this issue has been addressed</li>
 </ul></li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.1" id="heatwaver-041-2019-09-09">heatwaveR 0.4.1 (2019-09-09)<small>2019-09-09</small><a class="anchor" aria-label="anchor" href="#heatwaver-041-2019-09-09"></a></h2>
-<ul><li><p>Updated the <code>OISST Preparation</code> vignette to match the
-improvements to the <code>rerddap</code> package</p></li>
-<li><p>Also updated the vignette to be more clear to contact NOAA about
-data retrieval issues</p></li>
+<ul><li><p>Updated the <code>OISST Preparation</code> vignette to match the improvements to the <code>rerddap</code> package</p></li>
+<li><p>Also updated the vignette to be more clear to contact NOAA about data retrieval issues</p></li>
 <li>
-<p>Added <code>season</code> argument to <code><a href="../reference/category.html">category()</a></code>,
-which allows the user to specify which season of the MHWs they are
-interested in:</p>
+<p>Added <code>season</code> argument to <code><a href="../reference/category.html">category()</a></code>, which allows the user to specify which season of the MHWs they are interested in:</p>
 <ul><li>‘range’ - The beginning and ending season of the MHW</li>
 <li>‘start’ - The season during the start of the MHW</li>
 <li>‘peak’ - The season during the peak of the MHW</li>
@@ -425,53 +373,42 @@ interested in:</p>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.0.9000" id="heatwaver-0409000-2019-07-22">heatwaveR 0.4.0.9000 (2019-07-22)<a class="anchor" aria-label="anchor" href="#heatwaver-0409000-2019-07-22"></a></h2>
-<ul><li>Updated NOAA OISST data downloading tutorial to account for minor
-changes to NOAA ERDDAP servers</li>
+<ul><li>Updated NOAA OISST data downloading tutorial to account for minor changes to NOAA ERDDAP servers</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.0" id="heatwaver-040-2019-07-10">heatwaveR 0.4.0 (2019-07-10)<small>2019-07-11</small><a class="anchor" aria-label="anchor" href="#heatwaver-040-2019-07-10"></a></h2>
-<ul><li>Introduced the <code>Algiers</code> time series for examples on
-using multiple thresholds for atmospheric data</li>
+<ul><li>Introduced the <code>Algiers</code> time series for examples on using multiple thresholds for atmospheric data</li>
 <li>Fixed a bug in <code><a href="../reference/event_line.html">event_line()</a></code>
 </li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.0" id="heatwaver-040-2019-07-09">heatwaveR 0.4.0 (2019-07-09)<small>2019-07-11</small><a class="anchor" aria-label="anchor" href="#heatwaver-040-2019-07-09"></a></h2>
-<ul><li>Changed the <code>data.table</code> and <code>ggplot2</code>
-dependencies to imports</li>
+<ul><li>Changed the <code>data.table</code> and <code>ggplot2</code> dependencies to imports</li>
 <li>
 <code>heatwaveR</code> is now dependency free</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.6.9004" id="heatwaver-0369004-2019-05-29">heatwaveR 0.3.6.9004 (2019-05-29)<a class="anchor" aria-label="anchor" href="#heatwaver-0369004-2019-05-29"></a></h2>
-<ul><li>Added the ability to choose the number of digits rounded to for the
-output of <code><a href="../reference/ts2clm.html">ts2clm()</a></code>
+<ul><li>Added the ability to choose the number of digits rounded to for the output of <code><a href="../reference/ts2clm.html">ts2clm()</a></code>
 </li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.6.9003" id="heatwaver-0369003-2019-02-11">heatwaveR 0.3.6.9003 (2019-02-11)<a class="anchor" aria-label="anchor" href="#heatwaver-0369003-2019-02-11"></a></h2>
-<ul><li>Updated the end date for three time series packaged with
-<strong><code>heatwaveR</code></strong> to 2018-12-31</li>
+<ul><li>Updated the end date for three time series packaged with <strong><code>heatwaveR</code></strong> to 2018-12-31</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.6.9002" id="heatwaver-0369002-2019-02-11">heatwaveR 0.3.6.9002 (2019-02-11)<a class="anchor" aria-label="anchor" href="#heatwaver-0369002-2019-02-11"></a></h2>
-<ul><li>Added <code>n</code> and <code>n_gap</code> arguments to
-<code><a href="../reference/geom_flame.html">geom_flame()</a></code> to allow proper screening of heatspikes</li>
-<li>These additions also propagate through to
-<code>geom2trace.GeomFlame</code>
+<ul><li>Added <code>n</code> and <code>n_gap</code> arguments to <code><a href="../reference/geom_flame.html">geom_flame()</a></code> to allow proper screening of heatspikes</li>
+<li>These additions also propagate through to <code>geom2trace.GeomFlame</code>
 </li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.6.9001" id="heatwaver-0369001-2019-01-28">heatwaveR 0.3.6.9001 (2019-01-28)<a class="anchor" aria-label="anchor" href="#heatwaver-0369001-2019-01-28"></a></h2>
-<ul><li>Added some additional options to <code><a href="../reference/event_line.html">event_line()</a></code> to allow
-users to manipulate the output more without having to get into the
-source code.</li>
+<ul><li>Added some additional options to <code><a href="../reference/event_line.html">event_line()</a></code> to allow users to manipulate the output more without having to get into the source code.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.6.9000" id="heatwaver-0369000-2019-01-23">heatwaveR 0.3.6.9000 (2019-01-23)<a class="anchor" aria-label="anchor" href="#heatwaver-0369000-2019-01-23"></a></h2>
-<ul><li>Added S3 object <code>geom2trace.GeomFlame</code> that now allows
-<code><a href="../reference/geom_flame.html">geom_flame()</a></code> to be converted to an interactive plotly
-object via <code><a href="https://rdrr.io/pkg/plotly/man/ggplotly.html" class="external-link">plotly::ggplotly()</a></code>
+<ul><li>Added S3 object <code>geom2trace.GeomFlame</code> that now allows <code><a href="../reference/geom_flame.html">geom_flame()</a></code> to be converted to an interactive plotly object via <code><a href="https://rdrr.io/pkg/plotly/man/ggplotly.html" class="external-link">plotly::ggplotly()</a></code>
 </li>
 </ul></div>
     <div class="section level2">
@@ -480,29 +417,20 @@ object via <code><a href="https://rdrr.io/pkg/plotly/man/ggplotly.html" class="e
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.6" id="heatwaver-036-2019-01-16-1">heatwaveR 0.3.6 (2019-01-16)<small>2019-01-16</small><a class="anchor" aria-label="anchor" href="#heatwaver-036-2019-01-16-1"></a></h2>
-<ul><li><p>Finished Alternative Thresholds (Complex Climatologies)
-vignette</p></li>
+<ul><li><p>Finished Alternative Thresholds (Complex Climatologies) vignette</p></li>
 <li><p>Bumped code coverage back up to 100%</p></li>
 <li>
-<p>AN important potential backwards compatibility breaking change is
-that by default <code><a href="../reference/ts2clm.html">ts2clm()</a></code> and <code><a href="../reference/exceedance.html">exceedance()</a></code> will
-no longer produce a <code>var</code> column</p>
-<ul><li>The argument <code>var = TRUE</code> may be given to produce this
-column</li>
+<p>AN important potential backwards compatibility breaking change is that by default <code><a href="../reference/ts2clm.html">ts2clm()</a></code> and <code><a href="../reference/exceedance.html">exceedance()</a></code> will no longer produce a <code>var</code> column</p>
+<ul><li>The argument <code>var = TRUE</code> may be given to produce this column</li>
 </ul></li>
 <li><p>Submitted v0.3.6 to CRAN</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.5.9006" id="heatwaver-0359006-2019-01-15">heatwaveR 0.3.5.9006 (2019-01-15)<a class="anchor" aria-label="anchor" href="#heatwaver-0359006-2019-01-15"></a></h2>
 <ul><li>Began editing Alternative (Complex) Climatology vignette</li>
-<li>Changed the default argument for
-<code>exceedance(maxPadLength)</code> from <code>3</code> to
-<code>FALSE</code> to match the new default for
-<code><a href="../reference/ts2clm.html">ts2clm()</a></code>
+<li>Changed the default argument for <code>exceedance(maxPadLength)</code> from <code>3</code> to <code>FALSE</code> to match the new default for <code><a href="../reference/ts2clm.html">ts2clm()</a></code>
 </li>
-<li>Changed the default behaviour of <code><a href="../reference/event_line.html">event_line()</a></code> to no
-longer require the user to provide <code>start_date</code> and
-<code>end_date</code> arguments</li>
+<li>Changed the default behaviour of <code><a href="../reference/event_line.html">event_line()</a></code> to no longer require the user to provide <code>start_date</code> and <code>end_date</code> arguments</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.5.9005" id="heatwaver-0359005-2019-01-03">heatwaveR 0.3.5.9005 (2019-01-03)<a class="anchor" aria-label="anchor" href="#heatwaver-0359005-2019-01-03"></a></h2>
@@ -511,9 +439,7 @@ longer require the user to provide <code>start_date</code> and
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.5.9004" id="heatwaver-0359004-2019-01-02">heatwaveR 0.3.5.9004 (2019-01-02)<a class="anchor" aria-label="anchor" href="#heatwaver-0359004-2019-01-02"></a></h2>
 <ul><li>First update of 2019</li>
-<li>Added ‘protoEvents’ argument to <code>detect_events.R()</code> for
-returning the proto events rather than a table for the event
-metrics</li>
+<li>Added ‘protoEvents’ argument to <code>detect_events.R()</code> for returning the proto events rather than a table for the event metrics</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.5.9003" id="heatwaver-0359003-2018-12-26">heatwaveR 0.3.5.9003 (2018-12-26)<a class="anchor" aria-label="anchor" href="#heatwaver-0359003-2018-12-26"></a></h2>
@@ -526,8 +452,7 @@ metrics</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.5.9003" id="heatwaver-0359003-2018-12-19">heatwaveR 0.3.5.9003 (2018-12-19)<a class="anchor" aria-label="anchor" href="#heatwaver-0359003-2018-12-19"></a></h2>
-<ul><li>Updated text on the landing page to better reflect the updates that
-have been made over the past few months</li>
+<ul><li>Updated text on the landing page to better reflect the updates that have been made over the past few months</li>
 <li>Fixed typo in <code><a href="../reference/event_line.html">event_line()</a></code> output</li>
 <li>Updated text for the detection and visualisation vignette</li>
 <li>Updated text for the exceedance vignette</li>
@@ -536,21 +461,18 @@ have been made over the past few months</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.5.9003" id="heatwaver-0359003-2018-12-18">heatwaveR 0.3.5.9003 (2018-12-18)<a class="anchor" aria-label="anchor" href="#heatwaver-0359003-2018-12-18"></a></h2>
-<ul><li>Changed time series checking behaviour of <code><a href="../reference/exceedance.html">exceedance()</a></code>
-so that it is the same as <code><a href="../reference/ts2clm.html">ts2clm()</a></code>
+<ul><li>Changed time series checking behaviour of <code><a href="../reference/exceedance.html">exceedance()</a></code> so that it is the same as <code><a href="../reference/ts2clm.html">ts2clm()</a></code>
 </li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.5.9002" id="heatwaver-0359002-2018-12-12">heatwaveR 0.3.5.9002 (2018-12-12)<a class="anchor" aria-label="anchor" href="#heatwaver-0359002-2018-12-12"></a></h2>
-<ul><li>Fixed bug in <code><a href="../reference/event_line.html">event_line()</a></code> that caused it to graph
-events outside of the <code>spread</code> range</li>
+<ul><li>Fixed bug in <code><a href="../reference/event_line.html">event_line()</a></code> that caused it to graph events outside of the <code>spread</code> range</li>
 <li>Expanded testing back up to 100%</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.5.9001" id="heatwaver-0359001-2018-12-06">heatwaveR 0.3.5.9001 (2018-12-06)<a class="anchor" aria-label="anchor" href="#heatwaver-0359001-2018-12-06"></a></h2>
 <ul><li>Fixed bug caused by R not liking dates older than 1970-01-01</li>
-<li>Changed <code>maxPadLength</code> behaviour in <code><a href="../reference/ts2clm.html">ts2clm()</a></code>
-to match the Python default settings</li>
+<li>Changed <code>maxPadLength</code> behaviour in <code><a href="../reference/ts2clm.html">ts2clm()</a></code> to match the Python default settings</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.5.9000" id="heatwaver-0359000-2018-12-05">heatwaveR 0.3.5.9000 (2018-12-05)<a class="anchor" aria-label="anchor" href="#heatwaver-0359000-2018-12-05"></a></h2>
@@ -569,36 +491,28 @@ to match the Python default settings</li>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.5" id="heatwaver-035-2018-10-26">heatwaveR 0.3.5 (2018-10-26)<a class="anchor" aria-label="anchor" href="#heatwaver-035-2018-10-26"></a></h2>
 <ul><li>
-<code><a href="../reference/clim_calc.html">clim_calc()</a></code> reinstated to allow for calculation of
-clims with missing data</li>
+<code><a href="../reference/clim_calc.html">clim_calc()</a></code> reinstated to allow for calculation of clims with missing data</li>
 <li>
-<code>var</code> calculations reinstated for documentation
-issues</li>
+<code>var</code> calculations reinstated for documentation issues</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.5" id="heatwaver-035-2018-10-20">heatwaveR 0.3.5 (2018-10-20)<a class="anchor" aria-label="anchor" href="#heatwaver-035-2018-10-20"></a></h2>
 <ul><li>
-<code><a href="../reference/ts2clm.html">ts2clm()</a></code> no longer calls <code><a href="../reference/clim_calc.html">clim_calc()</a></code>, but
-<code>clim_calc_cpp()</code> only</li>
+<code><a href="../reference/ts2clm.html">ts2clm()</a></code> no longer calls <code><a href="../reference/clim_calc.html">clim_calc()</a></code>, but <code>clim_calc_cpp()</code> only</li>
 <li>
-<code><a href="../reference/smooth_percentile.html">smooth_percentile()</a></code> no longer provides option to create
-variance climatology (the need to no longer create var seemed to not be
-fully implemented in 0.3.4)</li>
+<code><a href="../reference/smooth_percentile.html">smooth_percentile()</a></code> no longer provides option to create variance climatology (the need to no longer create var seemed to not be fully implemented in 0.3.4)</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.4" id="heatwaver-034-2018-10-19">heatwaveR 0.3.4 (2018-10-19)<a class="anchor" aria-label="anchor" href="#heatwaver-034-2018-10-19"></a></h2>
 <ul><li>
-<code><a href="../reference/ts2clm.html">ts2clm()</a></code> no longer calculates variance column by
-default</li>
+<code><a href="../reference/ts2clm.html">ts2clm()</a></code> no longer calculates variance column by default</li>
 <li>
-<code><a href="../reference/make_whole.html">make_whole()</a></code> has been deprecated in favour of
-<code><a href="../reference/make_whole_fast.html">make_whole_fast()</a></code>
+<code><a href="../reference/make_whole.html">make_whole()</a></code> has been deprecated in favour of <code><a href="../reference/make_whole_fast.html">make_whole_fast()</a></code>
 </li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.4" id="heatwaver-034-2018-10-17">heatwaveR 0.3.4 (2018-10-17)<a class="anchor" aria-label="anchor" href="#heatwaver-034-2018-10-17"></a></h2>
-<ul><li>All major functions now produce results only up to the fourth
-decimal place</li>
+<ul><li>All major functions now produce results only up to the fourth decimal place</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.4" id="heatwaver-034-2018-10-16">heatwaveR 0.3.4 (2018-10-16)<a class="anchor" aria-label="anchor" href="#heatwaver-034-2018-10-16"></a></h2>
@@ -607,38 +521,28 @@ decimal place</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.4" id="heatwaver-034-2018-10-03">heatwaveR 0.3.4 (2018-10-03)<a class="anchor" aria-label="anchor" href="#heatwaver-034-2018-10-03"></a></h2>
-<ul><li>Changed error handling in <code><a href="../reference/proto_event.html">proto_event()</a></code> to return no
-events than to stop message with an error.</li>
-<li>This change was picked up by <code><a href="../reference/detect_event.html">detect_event()</a></code> without any
-required changes</li>
+<ul><li>Changed error handling in <code><a href="../reference/proto_event.html">proto_event()</a></code> to return no events than to stop message with an error.</li>
+<li>This change was picked up by <code><a href="../reference/detect_event.html">detect_event()</a></code> without any required changes</li>
 <li>
-<code><a href="../reference/category.html">category()</a></code> required a bit of cajoling to also output a
-blank dataframe</li>
+<code><a href="../reference/category.html">category()</a></code> required a bit of cajoling to also output a blank dataframe</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.4" id="heatwaver-034-2018-10-01">heatwaveR 0.3.4 (2018-10-01)<a class="anchor" aria-label="anchor" href="#heatwaver-034-2018-10-01"></a></h2>
-<ul><li>Minor tweak to <code><a href="../reference/make_whole_fast.html">make_whole_fast()</a></code> to provide a cleaner
-internal output</li>
+<ul><li>Minor tweak to <code><a href="../reference/make_whole_fast.html">make_whole_fast()</a></code> to provide a cleaner internal output</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.4" id="heatwaver-034-2018-09-28">heatwaveR 0.3.4 (2018-09-28)<a class="anchor" aria-label="anchor" href="#heatwaver-034-2018-09-28"></a></h2>
-<ul><li>Removed several unnecessary columns from category climatology
-output</li>
+<ul><li>Removed several unnecessary columns from category climatology output</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.4" id="heatwaver-034-2018-09-27">heatwaveR 0.3.4 (2018-09-27)<a class="anchor" aria-label="anchor" href="#heatwaver-034-2018-09-27"></a></h2>
-<ul><li>Fixed bug in <code><a href="../reference/ts2clm.html">ts2clm()</a></code> that prevented calculation of
-clims with large contiguous missing periods of data (e.g. ice
-coverage).</li>
-<li>Added argument to <code><a href="../reference/category.html">category()</a></code> that allows one to have
-the function also output the day-to-day (long) category values, rather
-than just the summary (wide) output.</li>
+<ul><li>Fixed bug in <code><a href="../reference/ts2clm.html">ts2clm()</a></code> that prevented calculation of clims with large contiguous missing periods of data (e.g. ice coverage).</li>
+<li>Added argument to <code><a href="../reference/category.html">category()</a></code> that allows one to have the function also output the day-to-day (long) category values, rather than just the summary (wide) output.</li>
 <li>Added lon/lat values to documentation for built-in time series</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.3" id="heatwaver-033-2018-08-23">heatwaveR 0.3.3 (2018-08-23)<small>2018-08-02</small><a class="anchor" aria-label="anchor" href="#heatwaver-033-2018-08-23"></a></h2>
-<ul><li>Added CITATION file so that package citation is now set to JOSS
-article</li>
+<ul><li>Added CITATION file so that package citation is now set to JOSS article</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.3" id="heatwaver-033-2018-07-31">heatwaveR 0.3.3 (2018-07-31)<small>2018-08-02</small><a class="anchor" aria-label="anchor" href="#heatwaver-033-2018-07-31"></a></h2>
@@ -648,10 +552,7 @@ article</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.3" id="heatwaver-033-2018-07-25">heatwaveR 0.3.3 (2018-07-25)<small>2018-08-02</small><a class="anchor" aria-label="anchor" href="#heatwaver-033-2018-07-25"></a></h2>
-<ul><li>BUG FIX: corrected issue with <code>clim_calc_cpp</code> not being
-able to calculate clims from baselines not beginning and ending on the
-Julian year by making <code>clim_spread</code> plug the gaps beforehand
-with row-wise means.</li>
+<ul><li>BUG FIX: corrected issue with <code>clim_calc_cpp</code> not being able to calculate clims from baselines not beginning and ending on the Julian year by making <code>clim_spread</code> plug the gaps beforehand with row-wise means.</li>
 <li>Rebuilt pkgdown site to reflect version increase</li>
 <li>v0.3.3 submitted to CRAN</li>
 </ul></div>
@@ -661,32 +562,23 @@ with row-wise means.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.2" id="heatwaver-032-2018-07-12">heatwaveR 0.3.2 (2018-07-12)<a class="anchor" aria-label="anchor" href="#heatwaver-032-2018-07-12"></a></h2>
-<ul><li>Remove unneeded copies of data from functions to improve memory-use
-efficiency.</li>
+<ul><li>Remove unneeded copies of data from functions to improve memory-use efficiency.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.1" id="heatwaver-031-2018-07-10">heatwaveR 0.3.1 (2018-07-10)<a class="anchor" aria-label="anchor" href="#heatwaver-031-2018-07-10"></a></h2>
-<ul><li>BUG FIX: corrected issue with <code>make_whole_fast</code> which did
-not create a whole, complete time series (i.e. missing dates were still
-present); the missing dates caused <code>clim_calc_cpp</code> to
-fail</li>
+<ul><li>BUG FIX: corrected issue with <code>make_whole_fast</code> which did not create a whole, complete time series (i.e. missing dates were still present); the missing dates caused <code>clim_calc_cpp</code> to fail</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.0" id="heatwaver-030-2018-06-22">heatwaveR 0.3.0 (2018-06-22)<small>2018-06-22</small><a class="anchor" aria-label="anchor" href="#heatwaver-030-2018-06-22"></a></h2>
-<ul><li>Re-submitted to CRAN in anticipation of
-<strong><code>ggplot2</code></strong> changes</li>
+<ul><li>Re-submitted to CRAN in anticipation of <strong><code>ggplot2</code></strong> changes</li>
 <li>
-<code>proto_event</code> now handles all event calculations ‘in
-house’</li>
-<li>This allows <code>detect_event</code> to now be given a
-theoretically limitless number of thresholds</li>
+<code>proto_event</code> now handles all event calculations ‘in house’</li>
+<li>This allows <code>detect_event</code> to now be given a theoretically limitless number of thresholds</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.7.9003" id="heatwaver-0279003-2018-06-08">heatwaveR 0.2.7.9003 (2018-06-08)<a class="anchor" aria-label="anchor" href="#heatwaver-0279003-2018-06-08"></a></h2>
-<ul><li>Logic catch for <code>lolli_plot</code> being asked to highlight
-more events than are present</li>
-<li>New vignette that looks at calculating more complex
-climatologies</li>
+<ul><li>Logic catch for <code>lolli_plot</code> being asked to highlight more events than are present</li>
+<li>New vignette that looks at calculating more complex climatologies</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.7.9002" id="heatwaver-0279002-2018-06-07">heatwaveR 0.2.7.9002 (2018-06-07)<a class="anchor" aria-label="anchor" href="#heatwaver-0279002-2018-06-07"></a></h2>
@@ -703,8 +595,7 @@ climatologies</li>
 <ul><li>Unused Rcpp code removed from master branch</li>
 <li>Logo changed slightly</li>
 <li>Codecov back up to 100%</li>
-<li>Addressed one testthat issue that was causing the OSX CRAN build to
-fail</li>
+<li>Addressed one testthat issue that was causing the OSX CRAN build to fail</li>
 <li>Added CRAN link to pkgdown site</li>
 <li>Added Bug Report link to pkgdown site</li>
 </ul></div>
@@ -721,41 +612,30 @@ fail</li>
 <ul><li>Fixes to <code>make_whole</code> and testing</li>
 <li>Fixes to <code>block_average</code>
 </li>
-<li>No longer exporting <code>make_whole</code> and
-<code>make_whole_fast</code>
+<li>No longer exporting <code>make_whole</code> and <code>make_whole_fast</code>
 </li>
-<li>No longer uses zoo for time series NA handling–made custom function
-to replace it</li>
+<li>No longer uses zoo for time series NA handling–made custom function to replace it</li>
 <li>Additional speed improvements</li>
 <li>Repair testthat tests</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.6.9001" id="heatwaver-0269001-2018-05-24">heatwaveR 0.2.6.9001 (2018-05-24)<a class="anchor" aria-label="anchor" href="#heatwaver-0269001-2018-05-24"></a></h2>
-<ul><li>Moved all vignettes relating to the upcoming MHW_detection paper to
-that repo</li>
-<li>This helps to unclutter this repo as it should be primarily kept for
-package content</li>
+<ul><li>Moved all vignettes relating to the upcoming MHW_detection paper to that repo</li>
+<li>This helps to unclutter this repo as it should be primarily kept for package content</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.6.9000" id="heatwaver-0269000-2018-05-23">heatwaveR 0.2.6.9000 (2018-05-23)<a class="anchor" aria-label="anchor" href="#heatwaver-0269000-2018-05-23"></a></h2>
-<ul><li>Added vignette that shows how tweaking arguments for detect changes
-the outputs between languages and how those outputs may differ</li>
-<li>Changed output of <code>detect_event</code> to better match Python
-version</li>
-<li>Corrections to testthat to match changes to
-<code>detect_event</code> output</li>
+<ul><li>Added vignette that shows how tweaking arguments for detect changes the outputs between languages and how those outputs may differ</li>
+<li>Changed output of <code>detect_event</code> to better match Python version</li>
+<li>Corrections to testthat to match changes to <code>detect_event</code> output</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.5.9003" id="heatwaver-0259003-2018-05-22">heatwaveR 0.2.5.9003 (2018-05-22)<a class="anchor" aria-label="anchor" href="#heatwaver-0259003-2018-05-22"></a></h2>
-<ul><li>Added C++ function, <code>clim_calc_ccp()</code> for faster
-climatology calculations; speed of climatology calculation comes down
-from 50.6 ms in R to 3.4 ms in C++ on my MacBook Pro (15-inch, 2017) 2.9
-GHz Intel Core i7 16 GB RAM computer</li>
+<ul><li>Added C++ function, <code>clim_calc_ccp()</code> for faster climatology calculations; speed of climatology calculation comes down from 50.6 ms in R to 3.4 ms in C++ on my MacBook Pro (15-inch, 2017) 2.9 GHz Intel Core i7 16 GB RAM computer</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.4.9003" id="heatwaver-0249003-2018-05-21">heatwaveR 0.2.4.9003 (2018-05-21)<a class="anchor" aria-label="anchor" href="#heatwaver-0249003-2018-05-21"></a></h2>
-<ul><li>Updated testthat for <code><a href="../reference/lolli_plot.html">lolli_plot()</a></code> and
-<code><a href="../reference/event_line.html">event_line()</a></code>
+<ul><li>Updated testthat for <code><a href="../reference/lolli_plot.html">lolli_plot()</a></code> and <code><a href="../reference/event_line.html">event_line()</a></code>
 </li>
 <li>Updated testthat for <code><a href="../reference/ts2clm.html">ts2clm()</a></code>
 </li>
@@ -764,8 +644,7 @@ GHz Intel Core i7 16 GB RAM computer</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.4.9002" id="heatwaver-0249002-2018-05-17">heatwaveR 0.2.4.9002 (2018-05-17)<a class="anchor" aria-label="anchor" href="#heatwaver-0249002-2018-05-17"></a></h2>
-<ul><li>Take advantage of C++ speed enhancement in
-<code><a href="../reference/smooth_percentile.html">smooth_percentile()</a></code> by using RcppRoll</li>
+<ul><li>Take advantage of C++ speed enhancement in <code><a href="../reference/smooth_percentile.html">smooth_percentile()</a></code> by using RcppRoll</li>
 <li>Update testthat accordingly</li>
 </ul></div>
     <div class="section level2">
@@ -784,30 +663,21 @@ GHz Intel Core i7 16 GB RAM computer</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.3.9000" id="heatwaver-0239000-2018-05-16">heatwaveR 0.2.3.9000 (2018-05-16)<a class="anchor" aria-label="anchor" href="#heatwaver-0239000-2018-05-16"></a></h2>
-<ul><li>Major speed-up in the climatology creation function.
-<code><a href="../reference/clim_spread.html">clim_spread()</a></code> now returns a matrix, not a data frame. This
-makes the loop in <code><a href="../reference/clim_calc.html">clim_calc()</a></code> much faster. In testing with
-the sst_WA data, it leads to a 3.7 fold speed improvement (520 ms down
-to 140 ms).</li>
+<ul><li>Major speed-up in the climatology creation function. <code><a href="../reference/clim_spread.html">clim_spread()</a></code> now returns a matrix, not a data frame. This makes the loop in <code><a href="../reference/clim_calc.html">clim_calc()</a></code> much faster. In testing with the sst_WA data, it leads to a 3.7 fold speed improvement (520 ms down to 140 ms).</li>
 <li>Speed-up of <code><a href="../reference/make_whole.html">make_whole()</a></code> (60 ms down to 40 ms)</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.2.9000" id="heatwaver-0229000-2018-05-15">heatwaveR 0.2.2.9000 (2018-05-15)<a class="anchor" aria-label="anchor" href="#heatwaver-0229000-2018-05-15"></a></h2>
-<ul><li>Removed all instances of <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code> in favour of the new
-pipeline</li>
-<li>Updated <code><a href="../reference/exceedance.html">exceedance()</a></code> to utilise the internal
-functions</li>
+<ul><li>Removed all instances of <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code> in favour of the new pipeline</li>
+<li>Updated <code><a href="../reference/exceedance.html">exceedance()</a></code> to utilise the internal functions</li>
 <li>Updated object names in <code><a href="../reference/block_average.html">block_average()</a></code>
 </li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.1.9001" id="heatwaver-0219001-2018-05-15">heatwaveR 0.2.1.9001 (2018-05-15)<a class="anchor" aria-label="anchor" href="#heatwaver-0219001-2018-05-15"></a></h2>
 <ul><li>Micro edits to documentation</li>
-<li>Testing for all exported and internal functions brought up to
-speed</li>
-<li>Ensuring that new <code><a href="../reference/ts2clm.html">ts2clm()</a></code> and
-<code><a href="../reference/detect_event.html">detect_event()</a></code> pipeline returns the same results as the old
-<code><a href="../reference/make_whole.html">make_whole()</a></code> and <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code> pipeline</li>
+<li>Testing for all exported and internal functions brought up to speed</li>
+<li>Ensuring that new <code><a href="../reference/ts2clm.html">ts2clm()</a></code> and <code><a href="../reference/detect_event.html">detect_event()</a></code> pipeline returns the same results as the old <code><a href="../reference/make_whole.html">make_whole()</a></code> and <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code> pipeline</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.1.9000" id="heatwaver-0219000-2018-05-14">heatwaveR 0.2.1.9000 (2018-05-14)<a class="anchor" aria-label="anchor" href="#heatwaver-0219000-2018-05-14"></a></h2>
@@ -815,37 +685,27 @@ speed</li>
 <li>
 <code><a href="../reference/detect_event.html">detect_event()</a></code> now passing checks</li>
 <li>Must still test for MCSs</li>
-<li>The old <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code> function was unpacked and simplified.
-Internal code is now in new functions, most of which will not be seen by
-the user. They are <code><a href="../reference/make_whole.html">make_whole()</a></code> <code><a href="../reference/proto_event.html">proto_event()</a></code>,
-<code><a href="../reference/clim_calc.html">clim_calc()</a></code>, <code><a href="../reference/smooth_percentile.html">smooth_percentile()</a></code>,
-<code><a href="../reference/clim_spread.html">clim_spread()</a></code>, and <code><a href="../reference/ts2clm.html">ts2clm()</a></code>
+<li>The old <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code> function was unpacked and simplified. Internal code is now in new functions, most of which will not be seen by the user. They are <code><a href="../reference/make_whole.html">make_whole()</a></code> <code><a href="../reference/proto_event.html">proto_event()</a></code>, <code><a href="../reference/clim_calc.html">clim_calc()</a></code>, <code><a href="../reference/smooth_percentile.html">smooth_percentile()</a></code>, <code><a href="../reference/clim_spread.html">clim_spread()</a></code>, and <code><a href="../reference/ts2clm.html">ts2clm()</a></code>
 </li>
 <li>
-<code><a href="../reference/ts2clm.html">ts2clm()</a></code> used instead of
-<code>detect_clim()</code>
+<code><a href="../reference/ts2clm.html">ts2clm()</a></code> used instead of <code>detect_clim()</code>
 </li>
-<li>Climatologies can now be calculated independently of the detect
-functionality</li>
+<li>Climatologies can now be calculated independently of the detect functionality</li>
 <li>
-<code><a href="../reference/exceedance.html">exceedance()</a></code> function testthat checks updated to
-account for change in variable naming</li>
+<code><a href="../reference/exceedance.html">exceedance()</a></code> function testthat checks updated to account for change in variable naming</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.0.9000" id="heatwaver-0209000-2018-05-11">heatwaveR 0.2.0.9000 (2018-05-11)<a class="anchor" aria-label="anchor" href="#heatwaver-0209000-2018-05-11"></a></h2>
 <ul><li>
-<code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code> has now been broken into
-<code>detect_clim()</code> and <code><a href="../reference/detect_event.html">detect_event()</a></code>
+<code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code> has now been broken into <code>detect_clim()</code> and <code><a href="../reference/detect_event.html">detect_event()</a></code>
 </li>
 <li>These now also rely on internal functions</li>
-<li>The purpose of this is to create a family of functions that provide
-different options</li>
+<li>The purpose of this is to create a family of functions that provide different options</li>
 <li>New vignette on making short climatologies.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.1.0.9000" id="heatwaver-0109000-2018-05-10">heatwaveR 0.1.0.9000 (2018-05-10)<a class="anchor" aria-label="anchor" href="#heatwaver-0109000-2018-05-10"></a></h2>
-<ul><li>One may now provide alternative baselines and climatologies to
-<code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code>
+<ul><li>One may now provide alternative baselines and climatologies to <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code>
 </li>
 </ul></div>
     <div class="section level2">
@@ -858,8 +718,7 @@ different options</li>
 </li>
 <li>Testing <code><a href="../reference/exceedance.html">exceedance()</a></code>
 </li>
-<li>Removed default <code>threshold</code> for
-<code><a href="../reference/exceedance.html">exceedance()</a></code>
+<li>Removed default <code>threshold</code> for <code><a href="../reference/exceedance.html">exceedance()</a></code>
 </li>
 <li>Tweaks to <code><a href="../reference/exceedance.html">exceedance()</a></code> error messages</li>
 <li>Testing for <code><a href="../reference/event_line.html">event_line()</a></code>
@@ -870,8 +729,7 @@ different options</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.7.9000" id="heatwaver-0079000-2018-05-04">heatwaveR 0.0.7.9000 (2018-05-04)<a class="anchor" aria-label="anchor" href="#heatwaver-0079000-2018-05-04"></a></h2>
-<ul><li>New <code><a href="../reference/category.html">category()</a></code> function returns the category results
-for events</li>
+<ul><li>New <code><a href="../reference/category.html">category()</a></code> function returns the category results for events</li>
 <li>Still requires testing and improved event naming scheme</li>
 </ul></div>
     <div class="section level2">
@@ -888,26 +746,19 @@ for events</li>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.5.9001" id="heatwaver-0059001-2018-05-02">heatwaveR 0.0.5.9001 (2018-05-02)<a class="anchor" aria-label="anchor" href="#heatwaver-0059001-2018-05-02"></a></h2>
 <ul><li>Fix to <code><a href="../reference/event_line.html">event_line()</a></code> not plotting MCSs correctly</li>
-<li>Fix error with smooth_percentile and smooth_percentile_width
-descriptions that were interchanged in <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code>
+<li>Fix error with smooth_percentile and smooth_percentile_width descriptions that were interchanged in <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code>
 </li>
-<li>Simplify initial lines of leap year calculations (remove redundant
-code)</li>
-<li>change from <code><a href="https://rdrr.io/pkg/raster/man/quantile.html" class="external-link">raster::quantile()</a></code> to
-<code><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">stats::quantile()</a></code>
+<li>Simplify initial lines of leap year calculations (remove redundant code)</li>
+<li>change from <code><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">raster::quantile()</a></code> to <code><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">stats::quantile()</a></code>
 </li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.5.9000" id="heatwaver-0059000-2018-04-29">heatwaveR 0.0.5.9000 (2018-04-29)<a class="anchor" aria-label="anchor" href="#heatwaver-0059000-2018-04-29"></a></h2>
-<ul><li>Add option to use a custom baseline to <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code> as
-requested by Maxime Marin (), The University of Tasmania (IMAS) – CSIRO
-(O&amp;A), and which is present in the python version of the
-package</li>
+<ul><li>Add option to use a custom baseline to <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code> as requested by Maxime Marin (), The University of Tasmania (IMAS) – CSIRO (O&amp;A), and which is present in the python version of the package</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.4.9000" id="heatwaver-0049000-2018-04-28">heatwaveR 0.0.4.9000 (2018-04-28)<a class="anchor" aria-label="anchor" href="#heatwaver-0049000-2018-04-28"></a></h2>
-<ul><li>Remove restriction to require full years for start/end points of
-climatology calculations in <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code>
+<ul><li>Remove restriction to require full years for start/end points of climatology calculations in <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code>
 </li>
 <li>Documentation updated accordingly</li>
 <li>Vignette on OISST data processing added</li>
@@ -925,21 +776,17 @@ climatology calculations in <code><a href="https://purrr.tidyverse.org/reference
 <h2 class="page-header" data-toc-text="0.0.2.9000" id="heatwaver-0029000-2018-04-25">heatwaveR 0.0.2.9000 (2018-04-25)<a class="anchor" aria-label="anchor" href="#heatwaver-0029000-2018-04-25"></a></h2>
 <ul><li>Established theme for changelog</li>
 <li>Synced ganalytics</li>
-<li>Fixed <code><a href="../reference/event_line.html">event_line()</a></code> to acknowledge column names other
-than <code>t</code> and <code>temp</code>
+<li>Fixed <code><a href="../reference/event_line.html">event_line()</a></code> to acknowledge column names other than <code>t</code> and <code>temp</code>
 </li>
-<li>Fixed <code><a href="../reference/lolli_plot.html">lolli_plot()</a></code> to use underlying
-<code><a href="../reference/geom_lolli.html">geom_lolli()</a></code>
+<li>Fixed <code><a href="../reference/lolli_plot.html">lolli_plot()</a></code> to use underlying <code><a href="../reference/geom_lolli.html">geom_lolli()</a></code>
 </li>
 <li>Search bar now live</li>
 <li>Removed all but one use of plyr code</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.1.9000" id="heatwaver-0019000-2018-04-24">heatwaveR 0.0.1.9000 (2018-04-24)<a class="anchor" aria-label="anchor" href="#heatwaver-0019000-2018-04-24"></a></h2>
-<ul><li>Added a <code>NEWS.md</code> file to track changes to the
-package.</li>
-<li>Cloned <strong><code>RmarineHeatWaves</code></strong> package to
-this repo</li>
+<ul><li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
+<li>Cloned <strong><code>RmarineHeatWaves</code></strong> package to this repo</li>
 <li>First build of <strong><code>pkgdown</code></strong> site live</li>
 </ul></div>
   </div>
@@ -956,8 +803,7 @@ this repo</li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

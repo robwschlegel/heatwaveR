@@ -1,3 +1,21 @@
+# heatwaveR 0.4.6.9003 (2023-01-16)
+
+-   Updated SST data to end of 2022
+-   Changed behaviour of `lolli_plot()` and `event_line()` to now use tidyeval
+  -   Note that this is a backwards compatibility breaking change that was required due to changes in **`ggplot2 v3.0.0`**
+
+# heatwaveR 0.4.6.9002 (2023-01-09)
+
+-   Updated citations page for all references to `heatwaveR` from 2022
+-   Added package names to all functions used in the downloading OISST vignette
+-   Added the `MCSice` argument to `category()`, which allows users to directly classify a MCS with a threshold below -1.7°C as a category 'V Ice' event _sensu_ Schlegel et al. (2021; Marine cold-spells)
+
+# heatwaveR 0.4.6.9001 (2022-06-23)
+
+-   Added two new vignettes 
+    - Alternatives to downloading NOAA OISST data
+    - Trend and break point analyses for MHW metrics
+
 # heatwaveR 0.4.6.9000 (2022-01-17)
 
 -   Updated SST time series to 2021-12-31

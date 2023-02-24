@@ -22,7 +22,7 @@
 #'   \item \strong{\code{y2}}
 #'   \item \code{colour}
 #'   \item \code{fill}
-#'   \item \code{size}
+#'   \item \code{linewidth}
 #'   \item \code{alpha}
 #'   \item \code{linetype}
 #' }
@@ -58,7 +58,7 @@
 #'    a warning. If \code{TRUE} silently removes missing values.
 #' @param ... other arguments passed on to \code{\link{layer}}. These are
 #'   often aesthetics, used to set an aesthetic to a fixed value, like
-#'   \code{color = "red"} or \code{size = 3}. They may also be parameters
+#'   \code{color = "red"} or \code{linewidth = 3}. They may also be parameters
 #'   to the paired geom/stat.
 #' @param n The number of steps along the x-axis (i.e. in a daily time series this
 #' would be days) required before the area between \code{y} and \code{y2} will be
@@ -122,7 +122,7 @@ GeomFlame <- ggplot2::ggproto("GeomFlame", ggplot2::Geom,
                               required_aes = c("x", "y", "y2"),
 
                               default_aes = ggplot2::aes(colour = NA, fill = "salmon",
-                                                         size = 0.5, linetype = 1, alpha = NA),
+                                                         linewidth = 0.5, linetype = 1, alpha = NA),
 
                               draw_key = ggplot2::draw_key_polygon,
 
@@ -130,7 +130,7 @@ GeomFlame <- ggplot2::ggproto("GeomFlame", ggplot2::Geom,
                                 if (na.rm) data <- data[stats::complete.cases(data[c("x", "y", "y2")]), ]
 
                                 # Check that aesthetics are constant
-                                aes <- unique(data[c("colour", "fill", "size", "linetype", "alpha")])
+                                aes <- unique(data[c("colour", "fill", "linewidth", "linetype", "alpha")])
                                 if (nrow(aes) > 1) {
                                   stop("Aesthetics must be consistent")
                                 }
@@ -198,7 +198,7 @@ GeomFlame <- ggplot2::ggproto("GeomFlame", ggplot2::Geom,
                                   gp = grid::gpar(
                                     fill = scales::alpha(aes$fill, aes$alpha),
                                     col = aes$colour,
-                                    lwd = aes$size * .pt,
+                                    lwd = aes$linewidth * .pt,
                                     lty = aes$linetype)
                                 )
                               }

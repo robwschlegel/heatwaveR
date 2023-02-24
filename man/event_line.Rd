@@ -8,9 +8,9 @@ event_line(
   data,
   x = t,
   y = temp,
+  metric = intensity_cumulative,
   min_duration = 5,
   spread = 150,
-  metric = "intensity_cumulative",
   start_date = NULL,
   end_date = NULL,
   category = FALSE,
@@ -26,11 +26,16 @@ event_line(
 
 \item{x}{This column is expected to contain a vector of dates as per the
 specification of \code{make_whole}. If a column headed \code{t} is present in
-the dataframe, this argument may be ommitted; otherwise, specify the name of
+the dataframe, this argument may be omitted; otherwise, specify the name of
 the column with dates here.}
 
 \item{y}{This is a column containing the measurement variable. If the column
 name differs from the default (i.e. \code{temp}), specify the name here.}
+
+\item{metric}{This tells the function how to choose the event that should be
+highlighted as the 'greatest' of the events in the chosen period.
+Partial name matching is currently not supported so please specify the metric
+name precisely. The default is \code{intensity_cumulative}.}
 
 \item{min_duration}{The minimum duration (days) the event must be for it to
 qualify as a heatwave or cold-spell.}
@@ -38,17 +43,6 @@ qualify as a heatwave or cold-spell.}
 \item{spread}{The number of days leading and trailing the largest event
 (as per \code{metric}) detected within the time period specified by
 \code{start_date} and \code{end_date}. The default is 150 days.}
-
-\item{metric}{This tells the function how to choose the event that should be
-highlighted as the 'greatest' of the events in the chosen period. One may
-choose from the following options: \code{intensity_mean}, \code{intensity_max},
-\code{intensity_var},\code{intensity_cumulative}, \code{intensity_mean_relThresh},
-\code{intensity_max_relThresh}, \code{intensity_var_relThresh},
-\code{intensity_cumulative_relThresh}, \code{intensity_mean_abs},
-\code{intensity_max_abs}, \code{intensity_var_abs}, \code{intensity_cumulative_abs},
-\code{rate_onset}, \code{rate_decline}. Partial name matching is currently not
-supported so please specify the metric name precisely. The default is
-\code{intensity_cumulative}.}
 
 \item{start_date}{The start date of a period of time within which the largest
 event (as per \code{metric}) is retrieved and plotted. This may not necessarily
@@ -96,7 +90,7 @@ Hobday et al. (2016).
 ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
 res <- detect_event(ts)
 
-event_line(res, spread = 100, metric = "intensity_cumulative",
+event_line(res, spread = 100, metric = duration,
 start_date = "2010-12-01", end_date = "2011-06-30")
 
 event_line(res, spread = 100, start_date = "2010-12-01",

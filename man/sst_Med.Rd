@@ -5,7 +5,7 @@
 \alias{sst_Med}
 \title{NOAA Optimally Interpolated (OI) v2.1 daily 1/4 degree SST for the Mediterranean region.}
 \format{
-A dataframe with 14610 rows and 2 variables:
+A dataframe with 14975 rows and 2 variables:
 \describe{
   \item{t}{date, as.Date() format}
   \item{temp}{SST, in degrees Celsius}
@@ -20,7 +20,7 @@ sst_Med
 }
 \description{
 A dataset containing the sea surface temperature (in degrees Celsius)
-and date for the Mediterranean region from 1982-01-01 to 2021-12-31.
+and date for the Mediterranean region from 1982-01-01 to 2022-12-31.
 }
 \details{
 lon/lat: 9.125/43.625

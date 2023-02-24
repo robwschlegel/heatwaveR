@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9003</span>
       </span>
     </div>
 
@@ -38,7 +38,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
      
     <span class="caret"></span>
@@ -47,10 +47,16 @@
       <a href="../articles/detection_and_visualisation.html">Basic Detection and Visualisation of Events</a>
     </li>
     <li>
+      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+    </li>
+    <li>
       <a href="../articles/exceedance.html">Calculating and Visualising Exceedances</a>
     </li>
     <li>
-      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
+    </li>
+    <li>
+      <a href="../articles/MHW_metric_trends.html">Trend and Breakpoint Analyses</a>
     </li>
     <li>
       <a href="../articles/OISST_preparation.html">Downloading and Preparing OISST Data</a>
@@ -59,13 +65,10 @@
       <a href="../articles/gridded_event_detection.html">Detecting Events in Gridded Data</a>
     </li>
     <li>
-      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse NOAA OISST Data: Alternative Methods</a>
+      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse Data: Alternative</a>
     </li>
     <li>
       <a href="../articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a>
-    </li>
-    <li>
-      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
     </li>
   </ul></li>
 <li>
@@ -105,36 +108,47 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">lolli_plot</span><span class="op">(</span>
-  <span class="va">data</span>,
-  xaxis <span class="op">=</span> <span class="st">"date_peak"</span>,
-  metric <span class="op">=</span> <span class="st">"intensity_max"</span>,
-  event_count <span class="op">=</span> <span class="fl">3</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">lolli_plot</span><span class="op">(</span><span class="va">data</span>, xaxis <span class="op">=</span> <span class="va">date_peak</span>, metric <span class="op">=</span> <span class="va">intensity_max</span>, event_count <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>Output from the <code><a href="detect_event.html">detect_event</a></code> function.</p></dd>
+
+
 <dt>xaxis</dt>
-<dd><p>One of <code>event_no</code>, <code>date_start</code> or <code>date_peak</code>.
-Default is <code>date_start</code>.</p></dd>
+<dd><p>The name of a column from the <code>event</code> data.frame in
+the output of <code><a href="detect_event.html">detect_event</a></code>. Suggested choices are, but not
+limited to, of <code>event_no</code>, <code>date_start</code> or <code>date_peak</code>.
+Default is <code>date_peak</code>.</p></dd>
+
+
 <dt>metric</dt>
-<dd><p>One of <code>intensity_mean</code>, <code>intensity_max</code>,
+<dd><p>The name of a column from the <code>event</code> data.frame in
+the output of <code><a href="detect_event.html">detect_event</a></code>.Suggested choices are, but not
+limited to, <code>intensity_mean</code>, <code>intensity_max</code>,
 <code>intensity_cumulative</code> and <code>duration</code>.
  Default is <code>intensity_max</code>.</p></dd>
+
+
 <dt>event_count</dt>
 <dd><p>The number of top events to highlight, as determined by the
-value given to <code>metric</code>. Default is 3.</p></dd>
+column given to <code>metric</code>. Default is 3.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The function will return a graph of the intensity of the selected
+    
+
+<p>The function will return a graph of the intensity of the selected
 <code>metric</code> along the y-axis and the chosen <code>xaxis</code> value.
 The number of top events as per <code>event_count</code> will be highlighted
-in a brighter colour. This function differs in use from <code><a href="geom_lolli.html">geom_lolli</a></code>in that it creates a stand-alone figure. The benefit of this being
-that one must not have any prior knowledge of <code>ggplot2</code> to create the figure.</p>
+in a brighter colour. This function differs in use from <code><a href="geom_lolli.html">geom_lolli</a></code></p>
+
+
+<p>in that it creates a stand-alone figure. The benefit of this being
+that one does not need any prior knowledge of <code>ggplot2</code> to create the figure.</p>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -143,15 +157,15 @@ that one must not have any prior knowledge of <code>ggplot2</code> to create the
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="detect_event.html">detect_event</a></span><span class="op">(</span><span class="va">ts</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># The default output</span></span>
-<span class="r-in"><span class="fu">lolli_plot</span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="detect_event.html">detect_event</a></span><span class="op">(</span><span class="va">ts</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># The default output</span></span></span>
+<span class="r-in"><span><span class="fu">lolli_plot</span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="lolli_plot-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -166,8 +180,7 @@ that one must not have any prior knowledge of <code>ggplot2</code> to create the
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9003</span>
       </span>
     </div>
 
@@ -38,7 +38,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
      
     <span class="caret"></span>
@@ -47,10 +47,16 @@
       <a href="../articles/detection_and_visualisation.html">Basic Detection and Visualisation of Events</a>
     </li>
     <li>
+      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+    </li>
+    <li>
       <a href="../articles/exceedance.html">Calculating and Visualising Exceedances</a>
     </li>
     <li>
-      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
+    </li>
+    <li>
+      <a href="../articles/MHW_metric_trends.html">Trend and Breakpoint Analyses</a>
     </li>
     <li>
       <a href="../articles/OISST_preparation.html">Downloading and Preparing OISST Data</a>
@@ -59,13 +65,10 @@
       <a href="../articles/gridded_event_detection.html">Detecting Events in Gridded Data</a>
     </li>
     <li>
-      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse NOAA OISST Data: Alternative Methods</a>
+      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse Data: Alternative</a>
     </li>
     <li>
       <a href="../articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a>
-    </li>
-    <li>
-      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
     </li>
   </ul></li>
 <li>
@@ -105,65 +108,93 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">block_average</span><span class="op">(</span><span class="va">data</span>, x <span class="op">=</span> <span class="va">t</span>, y <span class="op">=</span> <span class="va">temp</span>, report <span class="op">=</span> <span class="st">"full"</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">block_average</span><span class="op">(</span><span class="va">data</span>, x <span class="op">=</span> <span class="va">t</span>, y <span class="op">=</span> <span class="va">temp</span>, report <span class="op">=</span> <span class="st">"full"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
 <dd><p>Accepts the data returned by the <code><a href="detect_event.html">detect_event</a></code> function.</p></dd>
+
+
 <dt>x</dt>
 <dd><p>This column is expected to contain a vector of dates as per the
 specification of <code>ts2clm</code>. If a column headed <code>t</code> is present in
 the dataframe, this argument may be ommitted; otherwise, specify the name of
 the column with dates here.</p></dd>
+
+
 <dt>y</dt>
 <dd><p>This is a column containing the measurement variable. If the column
 name differs from the default (i.e. <code>temp</code>), specify the name here.</p></dd>
+
+
 <dt>report</dt>
 <dd><p>Specify either <code>full</code> or <code>partial</code>. Selecting <code>full</code> causes
 the report to contain NAs for any years in which no events were detected
 (except for <code>count</code>, which will be zero in those years), while <code>partial</code>
 reports only the years wherein events were detected. The default is <code>full</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The function will return a data frame of the averaged (or aggregate)
+    
+
+<p>The function will return a data frame of the averaged (or aggregate)
 metrics. It includes the following:</p>
 <dl><dt>year</dt>
 <dd><p>The year over which the metrics were averaged.</p></dd>
-<dt>count</dt>
+
+  <dt>count</dt>
 <dd><p>The number of events per year.</p></dd>
-<dt>duration</dt>
+
+  <dt>duration</dt>
 <dd><p>The average duration of events per year [days].</p></dd>
-<dt>duration_max</dt>
+
+  <dt>duration_max</dt>
 <dd><p>The maximum duration of an event in each year [days].</p></dd>
-<dt>intensity_mean</dt>
+
+  <dt>intensity_mean</dt>
 <dd><p>The average event "mean intensity" in each year [deg. C].</p></dd>
-<dt>intensity_max</dt>
+
+  <dt>intensity_max</dt>
 <dd><p>The average event "maximum (peak) intensity" in each year
   [deg. C].</p></dd>
-<dt>intensity_max_max</dt>
+
+  <dt>intensity_max_max</dt>
 <dd><p>The maximum event "maximum (peak) intensity" in
   each year [deg. C].</p></dd>
-<dt>intensity_var</dt>
+
+  <dt>intensity_var</dt>
 <dd><p>The average event "intensity variability" in each year
   [deg. C].</p></dd>
-<dt>intensity_cumulative</dt>
+
+  <dt>intensity_cumulative</dt>
 <dd><p>The average event "cumulative intensity" in each year
   [deg. C x days].</p></dd>
-<dt>rate_onset</dt>
+
+  <dt>rate_onset</dt>
 <dd><p>Average event onset rate in each year [deg. C / days].</p></dd>
-<dt>rate_decline</dt>
+
+  <dt>rate_decline</dt>
 <dd><p>Average event decline rate in each year [deg. C / days].</p></dd>
-<dt>total_days</dt>
+
+  <dt>total_days</dt>
 <dd><p>Total number of events days in each year [days].</p></dd>
-<dt>total_icum</dt>
+
+  <dt>total_icum</dt>
 <dd><p>Total cumulative intensity over all events in each year [deg. C x days].</p></dd>
+
+
 </dl><p><code>intensity_max_relThresh</code>, <code>intensity_mean_relThresh</code>,
-<code>intensity_var_relThresh</code>, and <code>intensity_cumulative_relThresh</code>are as above except relative to the threshold (e.g., 90th percentile) rather
-than the seasonal climatology.
-<code>intensity_max_abs</code>, <code>intensity_mean_abs</code>, <code>intensity_var_abs</code>, and
+<code>intensity_var_relThresh</code>, and <code>intensity_cumulative_relThresh</code></p>
+
+
+<p>are as above except relative to the threshold (e.g., 90th percentile) rather
+than the seasonal climatology.</p>
+
+
+<p><code>intensity_max_abs</code>, <code>intensity_mean_abs</code>, <code>intensity_var_abs</code>, and
 <code>intensity_cumulative_abs</code> are as above except as absolute magnitudes
 rather than relative to the seasonal climatology or threshold.</p>
     </div>
@@ -194,42 +225,42 @@ doi: 10.1016/j.pocean.2015.12.014</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="detect_event.html">detect_event</a></span><span class="op">(</span><span class="va">ts</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">block_average</span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">count</span> <span class="op">~</span> <span class="va">year</span>, <span class="va">out</span>, family <span class="op">=</span> <span class="st">"poisson"</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="detect_event.html">detect_event</a></span><span class="op">(</span><span class="va">ts</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">block_average</span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">count</span> <span class="op">~</span> <span class="va">year</span>, <span class="va">out</span>, family <span class="op">=</span> <span class="st">"poisson"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> glm(formula = count ~ year, family = "poisson", data = out)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Deviance Residuals: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Min       1Q   Median       3Q      Max  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -2.1428  -1.6759  -0.6056   0.6476   3.1983  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -2.4410  -1.6343  -0.6560   0.9013   3.4377  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              Estimate Std. Error z value Pr(&gt;|z|)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept) -39.67427   22.59280  -1.756   0.0791 .</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> year          0.02006    0.01128   1.779   0.0752 .</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              Estimate Std. Error z value Pr(&gt;|z|)   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept) -63.70416   20.29044  -3.140  0.00169 **</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> year          0.03209    0.01011   3.173  0.00151 **</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Dispersion parameter for poisson family taken to be 1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Null deviance: 103.85  on 38  degrees of freedom</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Residual deviance: 100.63  on 37  degrees of freedom</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> AIC: 163.84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Null deviance: 116.78  on 40  degrees of freedom</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Residual deviance: 106.27  on 39  degrees of freedom</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> AIC: 176.77</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of Fisher Scoring iterations: 6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">out</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">count</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"salmon"</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span class="r-in">  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="st">"Number of events"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">out</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">count</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"salmon"</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="st">"Number of events"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="block_average-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -244,8 +275,7 @@ doi: 10.1016/j.pocean.2015.12.014</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

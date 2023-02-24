@@ -29,3 +29,4 @@ to produce a climatology as desired by the user.
 \author{
 Smit, A. J.
 }
+\keyword{internal}

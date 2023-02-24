@@ -4,7 +4,7 @@ test_that("ts2clm() returns the correct output", {
   res <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   expect_is(res, "data.frame")
   expect_equal(ncol(res), 5)
-  expect_equal(nrow(res), 14610)
+  expect_equal(nrow(res), 14975)
 })
 
 test_that("all starting error checks flag correctly", {
@@ -55,7 +55,7 @@ test_that("the start/end dates must not be before/after the clim limits", {
   expect_error(ts2clm(sst_WA, climatologyPeriod = c("1973-01-01", "2012-12-31")),
                "The specified start date precedes the first day of series, which is 1982-01-01")
   expect_error(ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2023-12-31")),
-               "The specified end date follows the last day of series, which is 2021-12-31")
+               "The specified end date follows the last day of series, which is 2022-12-31")
 })
 
 test_that("smooth_percentile = FALSE prevents smoothing", {
@@ -97,7 +97,7 @@ test_that("contiguous mssing data causes clim_calc() to be used", {
   res <- ts2clm(sst_WA_cont, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   expect_is(res, "data.frame")
   expect_equal(ncol(res), 5)
-  expect_equal(nrow(res), 14579)
+  expect_equal(nrow(res), 14944)
 })
 
 test_that("decimal places are rounded to the fourth place", {
@@ -109,7 +109,7 @@ test_that("var argument functions correctly", {
   res <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), var = T)
   expect_is(res, "data.frame")
   expect_equal(ncol(res), 6)
-  expect_equal(nrow(res), 14610)
+  expect_equal(nrow(res), 14975)
 })
 
 test_that("roundClm argument functions correctly", {

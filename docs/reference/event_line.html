@@ -24,7 +24,7 @@ Hobday et al. (2016)."><meta property="og:image" content="https://robwschlegel.g
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9003</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@ Hobday et al. (2016)."><meta property="og:image" content="https://robwschlegel.g
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Vignettes
      
     <span class="caret"></span>
@@ -48,10 +48,16 @@ Hobday et al. (2016)."><meta property="og:image" content="https://robwschlegel.g
       <a href="../articles/detection_and_visualisation.html">Basic Detection and Visualisation of Events</a>
     </li>
     <li>
+      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+    </li>
+    <li>
       <a href="../articles/exceedance.html">Calculating and Visualising Exceedances</a>
     </li>
     <li>
-      <a href="../articles/event_categories.html">Calculating and Visualising Event Categories</a>
+      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
+    </li>
+    <li>
+      <a href="../articles/MHW_metric_trends.html">Trend and Breakpoint Analyses</a>
     </li>
     <li>
       <a href="../articles/OISST_preparation.html">Downloading and Preparing OISST Data</a>
@@ -60,13 +66,10 @@ Hobday et al. (2016)."><meta property="og:image" content="https://robwschlegel.g
       <a href="../articles/gridded_event_detection.html">Detecting Events in Gridded Data</a>
     </li>
     <li>
-      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse NOAA OISST Data: Alternative Methods</a>
+      <a href="../articles/Download_SST_v2.html">Download, Prepare, and Analyse Data: Alternative</a>
     </li>
     <li>
       <a href="../articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a>
-    </li>
-    <li>
-      <a href="../articles/complex_clims.html">Alternative Thresholds</a>
     </li>
   </ul></li>
 <li>
@@ -107,21 +110,21 @@ Hobday et al. (2016).</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">event_line</span><span class="op">(</span>
-  <span class="va">data</span>,
-  x <span class="op">=</span> <span class="va">t</span>,
-  y <span class="op">=</span> <span class="va">temp</span>,
-  min_duration <span class="op">=</span> <span class="fl">5</span>,
-  spread <span class="op">=</span> <span class="fl">150</span>,
-  metric <span class="op">=</span> <span class="st">"intensity_cumulative"</span>,
-  start_date <span class="op">=</span> <span class="cn">NULL</span>,
-  end_date <span class="op">=</span> <span class="cn">NULL</span>,
-  category <span class="op">=</span> <span class="cn">FALSE</span>,
-  x_axis_title <span class="op">=</span> <span class="cn">NULL</span>,
-  x_axis_text_angle <span class="op">=</span> <span class="cn">NULL</span>,
-  y_axis_title <span class="op">=</span> <span class="cn">NULL</span>,
-  y_axis_range <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">event_line</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  x <span class="op">=</span> <span class="va">t</span>,</span>
+<span>  y <span class="op">=</span> <span class="va">temp</span>,</span>
+<span>  metric <span class="op">=</span> <span class="va">intensity_cumulative</span>,</span>
+<span>  min_duration <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  spread <span class="op">=</span> <span class="fl">150</span>,</span>
+<span>  start_date <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  end_date <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  category <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  x_axis_title <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  x_axis_text_angle <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  y_axis_title <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  y_axis_range <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -129,32 +132,38 @@ Hobday et al. (2016).</p>
     <dl><dt>data</dt>
 <dd><p>The function receives the full (list) output from the
 <code><a href="detect_event.html">detect_event</a></code> function.</p></dd>
+
+
 <dt>x</dt>
 <dd><p>This column is expected to contain a vector of dates as per the
 specification of <code>make_whole</code>. If a column headed <code>t</code> is present in
-the dataframe, this argument may be ommitted; otherwise, specify the name of
+the dataframe, this argument may be omitted; otherwise, specify the name of
 the column with dates here.</p></dd>
+
+
 <dt>y</dt>
 <dd><p>This is a column containing the measurement variable. If the column
 name differs from the default (i.e. <code>temp</code>), specify the name here.</p></dd>
+
+
+<dt>metric</dt>
+<dd><p>This tells the function how to choose the event that should be
+highlighted as the 'greatest' of the events in the chosen period.
+Partial name matching is currently not supported so please specify the metric
+name precisely. The default is <code>intensity_cumulative</code>.</p></dd>
+
+
 <dt>min_duration</dt>
 <dd><p>The minimum duration (days) the event must be for it to
 qualify as a heatwave or cold-spell.</p></dd>
+
+
 <dt>spread</dt>
 <dd><p>The number of days leading and trailing the largest event
 (as per <code>metric</code>) detected within the time period specified by
 <code>start_date</code> and <code>end_date</code>. The default is 150 days.</p></dd>
-<dt>metric</dt>
-<dd><p>This tells the function how to choose the event that should be
-highlighted as the 'greatest' of the events in the chosen period. One may
-choose from the following options: <code>intensity_mean</code>, <code>intensity_max</code>,
-<code>intensity_var</code>,<code>intensity_cumulative</code>, <code>intensity_mean_relThresh</code>,
-<code>intensity_max_relThresh</code>, <code>intensity_var_relThresh</code>,
-<code>intensity_cumulative_relThresh</code>, <code>intensity_mean_abs</code>,
-<code>intensity_max_abs</code>, <code>intensity_var_abs</code>, <code>intensity_cumulative_abs</code>,
-<code>rate_onset</code>, <code>rate_decline</code>. Partial name matching is currently not
-supported so please specify the metric name precisely. The default is
-<code>intensity_cumulative</code>.</p></dd>
+
+
 <dt>start_date</dt>
 <dd><p>The start date of a period of time within which the largest
 event (as per <code>metric</code>) is retrieved and plotted. This may not necessarily
@@ -162,36 +171,54 @@ correspond to the biggest event of the specified metric within the entire
 time series. To plot the largest event within the whole time series, make sure
 <code>start_date</code> and <code>end_date</code> straddle this event, or simply leave them both
 as NULL (default) and <code>event_line</code> will use the entire time series date range.</p></dd>
+
+
 <dt>end_date</dt>
 <dd><p>The end date of a period of time within which the largest
 event (as per <code>metric</code>) is retrieved and plotted. See <code>start_date</code>
 for additional information.</p></dd>
+
+
 <dt>category</dt>
 <dd><p>A boolean choice of TRUE or FALSE. If set to FALSE (default) event_line() will
 produce a figure as per the second row of Figure 3 in Hobday et al. (2016). If set to TRUE a
 figure showing the different categories of the MHWs in the chosen period, highlighted as
 seen in Figure 3 of Hobday et al. (in review), will be produced. If <code>category</code> = TRUE,
 <code>metric</code> will be ignored as a different colouring scheme is used.</p></dd>
+
+
 <dt>x_axis_title</dt>
 <dd><p>If one would like to add a title for the x-axis it may be provided here.</p></dd>
+
+
 <dt>x_axis_text_angle</dt>
 <dd><p>If one would like to change the angle of the x-axis text, provide
 the angle here as a single numeric value.</p></dd>
+
+
 <dt>y_axis_title</dt>
 <dd><p>Provide text here if one would like a title for the y-axis other
 than "Temperature °C" (default)</p></dd>
+
+
 <dt>y_axis_range</dt>
 <dd><p>If one would like to control the y-axis range, provide the desired limits
 here as two numeric values (e.g. c(20, 30)).</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The function will return a line plot indicating the climatology,
+    
+
+<p>The function will return a line plot indicating the climatology,
 threshold and temperature, with the hot or cold events that meet the
 specifications of Hobday et al. (2016) shaded in as appropriate. The plotting
 of hot or cold events depends on which option is specified in <code><a href="detect_event.html">detect_event</a></code>.
 The top event detect during the selected time period will be visible in a
-brighter colour. This function differs in use from <code><a href="geom_flame.html">geom_flame</a></code>in that it creates a stand alone figure. The benefit of this being
+brighter colour. This function differs in use from <code><a href="geom_flame.html">geom_flame</a></code></p>
+
+
+<p>in that it creates a stand alone figure. The benefit of this being
 that one must not have any prior knowledge of ggplot2 to create the figure.</p>
     </div>
     <div id="references">
@@ -207,19 +234,23 @@ doi: 10.1016/j.pocean.2015.12.014</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="detect_event.html">detect_event</a></span><span class="op">(</span><span class="va">ts</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">event_line</span><span class="op">(</span><span class="va">res</span>, spread <span class="op">=</span> <span class="fl">100</span>, metric <span class="op">=</span> <span class="st">"intensity_cumulative"</span>,</span>
-<span class="r-in">start_date <span class="op">=</span> <span class="st">"2010-12-01"</span>, end_date <span class="op">=</span> <span class="st">"2011-06-30"</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>It is deprecated to specify `guide = FALSE` to remove a guide. Please use `guide = "none"` instead.</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="detect_event.html">detect_event</a></span><span class="op">(</span><span class="va">ts</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">event_line</span><span class="op">(</span><span class="va">res</span>, spread <span class="op">=</span> <span class="fl">100</span>, metric <span class="op">=</span> <span class="va">duration</span>,</span></span>
+<span class="r-in"><span>start_date <span class="op">=</span> <span class="st">"2010-12-01"</span>, end_date <span class="op">=</span> <span class="st">"2011-06-30"</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The `guide` argument in `scale_*()` cannot be `FALSE`. This was deprecated in</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> ggplot2 3.3.4.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Please use "none" instead.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">heatwaveR</span> package.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Please report the issue at</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   <span style="color: #0000BB; font-style: italic;">&lt;</span><a href="https://github.com/robwschlegel/heatwaveR/issues" class="external-link"><span style="color: #0000BB; font-style: italic;">https://github.com/robwschlegel/heatwaveR/issues</span></a><span style="color: #0000BB; font-style: italic;">&gt;</span>.</span>
 <span class="r-plt img"><img src="event_line-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">event_line</span><span class="op">(</span><span class="va">res</span>, spread <span class="op">=</span> <span class="fl">100</span>, start_date <span class="op">=</span> <span class="st">"2010-12-01"</span>,</span>
-<span class="r-in">end_date <span class="op">=</span> <span class="st">"2011-06-30"</span>, category <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>It is deprecated to specify `guide = FALSE` to remove a guide. Please use `guide = "none"` instead.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">event_line</span><span class="op">(</span><span class="va">res</span>, spread <span class="op">=</span> <span class="fl">100</span>, start_date <span class="op">=</span> <span class="st">"2010-12-01"</span>,</span></span>
+<span class="r-in"><span>end_date <span class="op">=</span> <span class="st">"2011-06-30"</span>, category <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="event_line-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -234,8 +265,7 @@ doi: 10.1016/j.pocean.2015.12.014</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a>
-2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
