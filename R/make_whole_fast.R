@@ -1,7 +1,7 @@
 #' Constructs a continuous, uninterrupted time series of temperatures (faster).
 #'
 #' Takes a series of dates and temperatures, and if irregular (but ordered), inserts
-#' missing dates and fills correpsonding temperatures with NAs.
+#' missing dates and fills corresponding temperatures with NAs.
 #'
 #' @keywords internal
 #'
@@ -34,19 +34,18 @@
 #'
 #' \item The original \code{make_whole} tests to see if some rows are
 #' duplicated, or if replicate temperature measurements are present per day. In
-#' \code{make_whole_fast} (this function) this has been disabled; also,
-#' the latter function lacks the facility to check if the time series is complete
-#' and regular (i.e. no missing values in the date vector). Effectively,
-#' we now only set up the day-of-year (doy) vector in \code{make_whole_fast}.
+#' \code{make_whole_fast} (this function) this has been disabled. Effectively,
+#' we only set up the day-of-year (doy) vector in \code{make_whole_fast} and
+#' insert rows in cases when the original data set has missing rows for some dates.
 #' Should the user be concerned about the potential for repeated measurements
-#' or worry that the time series is irregular, we suggest that the necessary
+#' or worry that the time series is unordered, we suggest that the necessary
 #' checks and fixes are implemented prior to feeding the time series to \code{ts2clim}
 #' via \code{make_whole_fast}, or to use \code{make_whole} instead. For very large
 #' gridded temperature records it probably makes a measurable difference if the
 #' 'fast' version is used, but it might prevent \code{\link{detect_event}}
 #' from failing should some gridded cells contain missing rows or some duplicated
-#' values. When using the fast algorithm, we assume that the user has done all
-#' the necessary work to ensure that the time vector is regular and without
+#' values. So, when using the fast algorithm, we assume that the user has done all
+#' the necessary work to ensure that the time vector is ordered and without
 #' repeated measurements beforehand.
 #' }
 #'
