@@ -5,8 +5,6 @@
 #'
 #' @keywords internal
 #'
-#' @importFrom dplyr %>%
-#'
 #' @param t_series A dataframe of the correct dimensions inherited
 #' from \code{\link{detect_event}} within which this runs.
 #' @param criterion_column The column to use for the detection of events.
@@ -33,12 +31,11 @@ proto_event <- function(t_series,
 
   ex1 <- rle(criterion_column)
   ind1 <- rep(seq_along(ex1$lengths), ex1$lengths)
-  s1 <- split(base::seq_len(nrow(t_series)), ind1)
+  s1 <- base::split(base::seq_len(nrow(t_series)), ind1)
 
-  proto_events <- do.call(rbind,
-                          lapply(s1[ex1$values == TRUE], function(x)
-                            data.table::data.table(index_start = min(x),
-                                                   index_end = max(x))))
+  proto_events <- do.call(rbind, lapply(s1[ex1$values == TRUE], function(x)
+    data.frame(index_start = min(x), index_end = max(x))))
+
   duration <- proto_events$index_end - proto_events$index_start + 1
 
   suppressWarnings(
@@ -53,7 +50,7 @@ proto_event <- function(t_series,
   }
   )
 
-  proto_events <- proto_events[duration >= minDuration, ]
+  proto_events <- proto_events[proto_events$duration >= minDuration, ]
 
   durationCriterion <- rep(FALSE, nrow(t_series))
   for (i in base::seq_len(nrow(proto_events))) {
@@ -64,16 +61,15 @@ proto_event <- function(t_series,
   if (joinAcrossGaps) {
     ex2 <- rle(durationCriterion)
     ind2 <- rep(seq_along(ex2$lengths), ex2$lengths)
-    s2 <- split(base::seq_len(nrow(t_series)), ind2)
+    s2 <- base::split(base::seq_len(nrow(t_series)), ind2)
 
-    proto_gaps <- do.call(rbind,
-                          lapply(s2[ex2$values == FALSE], function(x)
-                            data.table::data.table(index_start = min(x), index_end = max(x))))
+    proto_gaps <- do.call(rbind, lapply(s2[ex2$values == FALSE], function(x)
+      data.frame(index_start = min(x), index_end = max(x))))
     proto_gaps$duration <- proto_gaps$index_end - proto_gaps$index_start + 1
-    proto_gaps <- proto_gaps[proto_gaps$index_end > proto_events$index_start[1]]
+    proto_gaps <- proto_gaps[proto_gaps$index_end > proto_events$index_start[1], ]
 
     if (any(proto_gaps$duration >= 1 & proto_gaps$duration <= maxGap)) {
-      proto_gaps <- proto_gaps[duration >= 1 & duration <= maxGap, ]
+      proto_gaps <- proto_gaps[proto_gaps$duration >= 1 & proto_gaps$duration <= maxGap, ]
 
       event <- durationCriterion
       for (i in base::seq_len(nrow(proto_gaps))) {
@@ -93,17 +89,15 @@ proto_event <- function(t_series,
 
   }
 
-  ex3  <- rle(event)
+  ex3 <- rle(event)
   ind3 <- rep(seq_along(ex3$lengths), ex3$lengths)
-  s3 <- split(base::seq_len(nrow(t_series)), ind3)
+  s3 <- base::split(base::seq_len(nrow(t_series)), ind3)
 
-  proto_final <- do.call(rbind,
-                          lapply(s3[ex3$values == TRUE], function(x)
-                            data.table::data.table(index_start = min(x), index_end = max(x))))
+  proto_final <- do.call(rbind, lapply(s3[ex3$values == TRUE], function(x)
+    data.frame(index_start = min(x), index_end = max(x))))
   proto_final$duration <- proto_final$index_end - proto_final$index_start + 1
 
   event_no <- rep(NA, nrow(t_series))
-
   for (i in base::seq_len(nrow(proto_final))) {
     event_no[proto_final$index_start[i]:proto_final$index_end[i]] <-
       rep(i, length = proto_final$duration[i])
