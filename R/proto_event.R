@@ -52,6 +52,9 @@ proto_event <- function(t_series,
 
   proto_events <- proto_events[proto_events$duration >= minDuration, ]
 
+  # NB: Apparently using for loops on pre-allocated memory size vectors is faster than using *apply()
+  # https://johanndejong.wordpress.com/2016/07/07/r-are-apply-loops-faster-than-for-loops/
+  # Meaning this is arguably one of the faster ways to do this
   durationCriterion <- rep(FALSE, nrow(t_series))
   for (i in base::seq_len(nrow(proto_events))) {
     durationCriterion[proto_events$index_start[i]:proto_events$index_end[i]] <-

@@ -292,7 +292,7 @@ detect_event <- function(data,
   if (is.null(ts_thresh) | is.function(ts_thresh))
     stop("Please ensure that a column named 'thresh' is present in your data.frame or that you have assigned a column to the 'threshClim' argument.")
   t_series <- data.frame(ts_x, ts_y, ts_seas, ts_thresh)
-  rm(ts_x); rm(ts_y); rm(ts_seas); rm(ts_thresh)
+  rm(ts_x, ts_y, ts_seas, ts_thresh)
 
   if (coldSpells) {
 
@@ -344,6 +344,22 @@ detect_event <- function(data,
                            mhw_rel_seas = events_clim$ts_y - events_clim$ts_seas,
                            mhw_rel_thresh = events_clim$ts_y - events_clim$ts_thresh)
       events <- events[stats::complete.cases(events$event_no),]
+
+      # tapply(input_values, input_factor, sum)
+      # NB: I started writing base R code here, but plyr::ddply is waaaay faster...
+      # ptm <- proc.time()
+      # index_start <- tapply(X = events$row_index, INDEX = events$event_no, FUN = min)
+      # index_peak <- sapply(X = split(events, events$event_no), FUN = function(x) x[x$mhw_rel_seas == max(x$mhw_rel_seas)[1],]$row_index)
+      # index_end <- tapply(X = events$row_index, INDEX = events$event_no, FUN = max)
+      # index_peak <- sapply(X = split(events, events$event_no), FUN = function(x) x[x$mhw_rel_seas == max(x$mhw_rel_seas)[1],]$row_index)
+      # proc.time() - ptm
+
+      # NB: I considered using the Rfast package, but it takes a very long time to make and install...
+      # We need to consider which packages users are most likely to have
+      # Ultimately dplyr may be the way to go...
+
+      # NB: I don't like using plyr here, but it is fast and the package isn't that large...
+      # system.time(
       events <- plyr::ddply(events, c("event_no"), .fun = plyr::summarise,
                             index_start = min(row_index),
                             index_peak = row_index[mhw_rel_seas == max(mhw_rel_seas)][1],
@@ -364,7 +380,8 @@ detect_event <- function(data,
                             intensity_max_abs = max(ts_y),
                             intensity_var_abs = sqrt(stats::var(ts_y)),
                             intensity_cumulative_abs = sum(ts_y))
-      events <- tibble::as_tibble(events)
+      # )
+      # events <- tibble::as_tibble(events)
 
       mhw_rel_seas <- t_series$ts_y - t_series$ts_seas
       A <- mhw_rel_seas[events$index_start]
@@ -418,7 +435,7 @@ detect_event <- function(data,
                            intensity_cumulative_relThresh = NA, intensity_mean_abs = NA,
                            intensity_max_abs = NA, intensity_var_abs = NA,
                            intensity_cumulative_abs = NA, rate_onset = NA, rate_decline = NA)
-      events <- tibble::as_tibble(events)
+      # events <- tibble::as_tibble(events)
     }
 
     event_cols <- names(events)[9:22]
@@ -434,27 +451,50 @@ detect_event <- function(data,
 
     if (is.numeric(roundRes)) {
       if (nrow(events) > 0) {
-        events <- dplyr::mutate(events, dplyr::across(dplyr::all_of(event_cols), round, roundRes))
-        events_clim <- dplyr::mutate(events_clim, dplyr::across(dplyr::all_of(clim_cols), round, roundRes))
+        # events_old <- dplyr::mutate(events, dplyr::across(dplyr::all_of(event_cols), round, roundRes))
+        events[,event_cols] <- round(events[,event_cols], roundRes)
+        # events_clim_old <- dplyr::mutate(events_clim, dplyr::across(dplyr::all_of(clim_cols), round, roundRes))
+        events_clim[,clim_cols] <- round(events_clim[,clim_cols], roundRes)
       }
     }
 
-    data_clim <- tibble::as_tibble(cbind(data, events_clim[,5:8]))
+    data_clim <- cbind(data, events_clim[,5:8])
+    # data_clim <- tibble::as_tibble(cbind(data, events_clim[,5:8]))
 
     data_res <- list(climatology = data_clim, event = events)
 
     if (categories) {
       data_cat <- category(data_res, ...)
+      # data_cat <- category(data_res)
+      # data_cat <- category(data_res, climatology = T)
       if(is.data.frame(data_cat)){
-        data_res <- dplyr::left_join(events, data_cat,
-                                     by = c("event_no", "duration",
-                                            "intensity_max" = "i_max", "date_peak" = "peak_date"))
+        # data_res_old <- dplyr::left_join(events, data_cat,
+        #                              by = c("event_no", "duration",
+        #                                     "intensity_max" = "i_max", "date_peak" = "peak_date"))
+        colnames(data_cat)[c(3,5)] <- c("date_peak", "intensity_max")
+        data_res <- base::merge(x = events, y = data_cat,
+                                by = c("event_no", "duration", "intensity_max", "date_peak"))
+        data_res <- data_res[order(data_res$event_no),]
+        data_res <- data_res[,c(1,5,6,7,2,8,4,9,10,3,11:29)]
+        row.names(data_res) <- NULL
+
       } else {
-        data_res <- list(climatology = dplyr::left_join(data_res$climatology,
-                                                        data_cat$climatology, by = c("t", "event_no")),
-                         event = dplyr::left_join(data_res$event, data_cat$event,
-                                                  by = c("event_no", "duration",
-                                                         "intensity_max" = "i_max", "date_peak" = "peak_date")))
+        # data_res_old <- list(climatology = dplyr::left_join(data_res$climatology,
+        #                                                     data_cat$climatology, by = c("t", "event_no")),
+        #                  event = dplyr::left_join(data_res$event, data_cat$event,
+        #                                           by = c("event_no", "duration",
+        #                                                  "intensity_max" = "i_max", "date_peak" = "peak_date")))
+        colnames(data_cat$event)[c(3,5)] <- c("date_peak", "intensity_max")
+        data_res <- list(climatology = base::merge(x = data_res$climatology, y = data_cat$climatology,
+                                                   by = c("t", "event_no"), all.x = TRUE),
+                         event = base::merge(x = data_res$event, y = data_cat$event,
+                                             by = c("event_no", "duration", "intensity_max", "date_peak")))
+        data_res$climatology <- data_res$climatology[order(data_res$climatology$t),]
+        data_res$climatology <- data_res$climatology[,c(3,1,4:9,2,10,11)]
+        data_res$event <- data_res$event[order(data_res$event$event_no),]
+        data_res$event <- data_res$event[,c(1,5,6,7,2,8,4,9,10,3,11:29)]
+        row.names(data_res$event) <- NULL
+        # data_res_event <- data_res$event; data_res_clim <- data_res$climatology
       }
     }
     return(data_res)
