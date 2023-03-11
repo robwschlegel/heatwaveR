@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9004</span>
       </span>
     </div>
 
@@ -137,7 +137,7 @@
                         <h4 data-toc-skip class="author">AJ Smit and
 Robert W Schlegel</h4>
             
-            <h4 data-toc-skip class="date">2023-01-16</h4>
+            <h4 data-toc-skip class="date">2023-03-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/detection_and_visualisation.Rmd" class="external-link"><code>vignettes/detection_and_visualisation.Rmd</code></a></small>
       <div class="hidden name"><code>detection_and_visualisation.Rmd</code></div>
@@ -202,14 +202,12 @@ al. (2016):</p>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">event_no</span>, <span class="va">duration</span>, <span class="va">date_start</span>, <span class="va">date_peak</span>, <span class="va">intensity_max</span>, <span class="va">intensity_cumulative</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="op">-</span><span class="va">intensity_max</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 6</span></span></span>
-<span><span class="co">##   event_no duration date_start date_peak  intensity_max intensity_cumulative</span></span>
-<span><span class="co">##      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>       52      105 2010-12-24 2011-02-28          6.58                293. </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span>       41       35 2008-03-25 2008-04-14          3.83                 79.3</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span>       29       95 1999-05-13 1999-05-22          3.64                240. </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span>       60       14 2012-12-27 2012-12-31          3.42                 32.3</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span>       59      101 2012-01-10 2012-01-27          3.38                214.</span></span></code></pre>
+<pre><code><span><span class="co">##   event_no duration date_start  date_peak intensity_max intensity_cumulative</span></span>
+<span><span class="co">## 1       52      105 2010-12-24 2011-02-28        6.5798             293.2107</span></span>
+<span><span class="co">## 2       41       35 2008-03-25 2008-04-14        3.8299              79.3307</span></span>
+<span><span class="co">## 3       29       95 1999-05-13 1999-05-22        3.6390             240.2994</span></span>
+<span><span class="co">## 4       60       14 2012-12-27 2012-12-31        3.4230              32.2560</span></span>
+<span><span class="co">## 5       59      101 2012-01-10 2012-01-27        3.3804             214.0509</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="visualising-marine-heatwaves-mhws">Visualising marine heatwaves (MHWs)<a class="anchor" aria-label="anchor" href="#visualising-marine-heatwaves-mhws"></a>
@@ -345,15 +343,18 @@ OISST data for Western Australia:</p>
 <span>                <span class="va">date_peak</span>, <span class="va">intensity_mean</span>, <span class="va">intensity_max</span>, <span class="va">intensity_cumulative</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">intensity_cumulative</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 7</span></span></span>
-<span><span class="co">##   event_no duration date_start date_peak  intensity_mean intensity_max intensi…¹</span></span>
-<span><span class="co">##      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>       15       76 1990-04-13 1990-05-11          -<span style="color: #BB0000;">2.50</span>         -<span style="color: #BB0000;">3.19</span>    -<span style="color: #BB0000;">190.</span> </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span>       49       58 2003-12-19 2004-01-23          -<span style="color: #BB0000;">1.73</span>         -<span style="color: #BB0000;">2.59</span>    -<span style="color: #BB0000;">101.</span> </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span>       83       41 2020-04-26 2020-05-25          -<span style="color: #BB0000;">2.34</span>         -<span style="color: #BB0000;">3.14</span>     -<span style="color: #BB0000;">95.8</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span>       64       52 2014-04-14 2014-05-05          -<span style="color: #BB0000;">1.78</span>         -<span style="color: #BB0000;">2.54</span>     -<span style="color: #BB0000;">92.7</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span>       77       46 2018-07-24 2018-08-02          -<span style="color: #BB0000;">1.81</span>         -<span style="color: #BB0000;">2.43</span>     -<span style="color: #BB0000;">83.2</span></span></span>
-<span><span class="co">## <span style="color: #949494;"># … with abbreviated variable name ¹​intensity_cumulative</span></span></span></code></pre>
+<pre><code><span><span class="co">##   event_no duration date_start  date_peak intensity_mean intensity_max</span></span>
+<span><span class="co">## 1       15       76 1990-04-13 1990-05-11        -2.5027       -3.1883</span></span>
+<span><span class="co">## 2       49       58 2003-12-19 2004-01-23        -1.7341       -2.5865</span></span>
+<span><span class="co">## 3       83       41 2020-04-26 2020-05-25        -2.3374       -3.1433</span></span>
+<span><span class="co">## 4       64       52 2014-04-14 2014-05-05        -1.7824       -2.5358</span></span>
+<span><span class="co">## 5       77       46 2018-07-24 2018-08-02        -1.8096       -2.4311</span></span>
+<span><span class="co">##   intensity_cumulative</span></span>
+<span><span class="co">## 1            -190.2043</span></span>
+<span><span class="co">## 2            -100.5806</span></span>
+<span><span class="co">## 3             -95.8339</span></span>
+<span><span class="co">## 4             -92.6844</span></span>
+<span><span class="co">## 5             -83.2407</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="visualising-marine-cold-spells-mcss">Visualising marine cold-spells (MCSs)<a class="anchor" aria-label="anchor" href="#visualising-marine-cold-spells-mcss"></a>

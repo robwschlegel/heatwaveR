@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9004</span>
       </span>
     </div>
 
@@ -137,7 +137,7 @@
                         <h4 data-toc-skip class="author">Robert W
 Schlegel</h4>
             
-            <h4 data-toc-skip class="date">2023-01-16</h4>
+            <h4 data-toc-skip class="date">2023-03-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/exceedance.Rmd" class="external-link"><code>vignettes/exceedance.Rmd</code></a></small>
       <div class="hidden name"><code>exceedance.Rmd</code></div>
@@ -183,15 +183,18 @@ seen here:</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">exceedance_no</span>, <span class="va">duration</span>, <span class="va">date_start</span>, <span class="va">date_peak</span>, <span class="va">intensity_max</span>, <span class="va">intensity_cumulative</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="op">-</span><span class="va">intensity_cumulative</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 6</span></span></span>
-<span><span class="co">##   exceedance_no duration date_start date_peak  intensity_max intensity_cumulat…¹</span></span>
-<span><span class="co">##           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>             7       52 2011-02-08 2011-02-28          4.74               87.0 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span>             6       25 2008-04-03 2008-04-14          2.19               24.5 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span>            10       41 2012-03-03 2012-04-10          1.37               18.0 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span>             2       17 1999-05-13 1999-05-22          1.4                14.6 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span>             5       10 2000-05-03 2000-05-04          1.01                6.97</span></span>
-<span><span class="co">## <span style="color: #949494;"># … with abbreviated variable name ¹​intensity_cumulative</span></span></span></code></pre>
+<pre><code><span><span class="co">##   exceedance_no duration date_start  date_peak intensity_max</span></span>
+<span><span class="co">## 1             7       52 2011-02-08 2011-02-28          4.74</span></span>
+<span><span class="co">## 2             6       25 2008-04-03 2008-04-14          2.19</span></span>
+<span><span class="co">## 3            10       41 2012-03-03 2012-04-10          1.37</span></span>
+<span><span class="co">## 4             2       17 1999-05-13 1999-05-22          1.40</span></span>
+<span><span class="co">## 5             5       10 2000-05-03 2000-05-04          1.01</span></span>
+<span><span class="co">##   intensity_cumulative</span></span>
+<span><span class="co">## 1                87.05</span></span>
+<span><span class="co">## 2                24.50</span></span>
+<span><span class="co">## 3                17.98</span></span>
+<span><span class="co">## 4                14.55</span></span>
+<span><span class="co">## 5                 6.97</span></span></code></pre>
 <p>Note that the resultant output of <code><a href="../reference/exceedance.html">exceedance()</a></code> is very
 similar to <code><a href="../reference/detect_event.html">detect_event()</a></code>, except that the two dataframes
 within the list are called <code>threshold</code> and
@@ -238,15 +241,18 @@ consecutive days below a threshold as seen here:</p>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">exceedance_no</span>, <span class="va">duration</span>, <span class="va">date_start</span>, <span class="va">date_peak</span>, <span class="va">intensity_mean</span>, <span class="va">intensity_cumulative</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="va">intensity_cumulative</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 5 × 6</span></span></span>
-<span><span class="co">##   exceedance_no duration date_start date_peak  intensity_mean intensity_cumula…¹</span></span>
-<span><span class="co">##           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>            28       61 2017-08-09 2017-08-20         -<span style="color: #BB0000;">0.609</span>              -<span style="color: #BB0000;">37.2</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span>            30       65 2018-07-27 2018-08-22         -<span style="color: #BB0000;">0.530</span>              -<span style="color: #BB0000;">34.5</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span>            16       30 2002-09-09 2002-09-25         -<span style="color: #BB0000;">0.876</span>              -<span style="color: #BB0000;">26.3</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span>            17       34 2003-09-06 2003-09-16         -<span style="color: #BB0000;">0.753</span>              -<span style="color: #BB0000;">25.6</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span>            13       24 1997-09-03 1997-09-15         -<span style="color: #BB0000;">0.769</span>              -<span style="color: #BB0000;">18.5</span></span></span>
-<span><span class="co">## <span style="color: #949494;"># … with abbreviated variable name ¹​intensity_cumulative</span></span></span></code></pre>
+<pre><code><span><span class="co">##   exceedance_no duration date_start  date_peak intensity_mean</span></span>
+<span><span class="co">## 1            28       61 2017-08-09 2017-08-20        -0.6092</span></span>
+<span><span class="co">## 2            30       65 2018-07-27 2018-08-22        -0.5302</span></span>
+<span><span class="co">## 3            16       30 2002-09-09 2002-09-25        -0.8763</span></span>
+<span><span class="co">## 4            17       34 2003-09-06 2003-09-16        -0.7526</span></span>
+<span><span class="co">## 5            13       24 1997-09-03 1997-09-15        -0.7692</span></span>
+<span><span class="co">##   intensity_cumulative</span></span>
+<span><span class="co">## 1               -37.16</span></span>
+<span><span class="co">## 2               -34.46</span></span>
+<span><span class="co">## 3               -26.29</span></span>
+<span><span class="co">## 4               -25.59</span></span>
+<span><span class="co">## 5               -18.46</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="visualising-negative-exceedances">Visualising negative exceedances<a class="anchor" aria-label="anchor" href="#visualising-negative-exceedances"></a>

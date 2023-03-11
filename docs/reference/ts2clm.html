@@ -25,7 +25,7 @@ by an optional moving average smoother as used by Hobday et al. (2016)."><meta p
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9004</span>
       </span>
     </div>
 
@@ -224,7 +224,7 @@ numeric values or FALSE.</p></dd>
 
 <p>The function will return a tibble (see the <code>tidyverse</code>) with the
 input time series and the newly calculated climatology. The climatology contains
-the seasonal climatology and the threshold for calculating MHWs. The software was
+the daily climatology and the threshold for calculating MHWs. The software was
 designed for creating climatologies of daily temperatures, and the units
 specified below reflect that intended purpose. However, various other kinds
 of climatologies may be created, and if that is the case, the appropriate
@@ -244,15 +244,15 @@ units need to be determined by the user.</p>
   will be shown here.</p></dd>
 
   <dt>seas</dt>
-<dd><p>Climatological seasonal cycle [deg. C].</p></dd>
+<dd><p>Daily climatological cycle [deg. C].</p></dd>
 
   <dt>thresh</dt>
-<dd><p>Seasonally varying threshold (e.g., 90th
+<dd><p>Daily varying threshold (e.g., 90th
   percentile) [deg. C]. This is used in <code><a href="detect_event.html">detect_event</a></code> for the
   detection/calculation of events (MHWs).</p></dd>
 
   <dt>var</dt>
-<dd><p>Seasonally varying variance (standard deviation) [deg. C]. This
+<dd><p>Daily varying variance (standard deviation) [deg. C]. This
   column is not returned if <code>var = FALSE</code> (default).</p></dd>
 
 </dl><p>Should <code>clmOnly</code> be enabled, only the 365 or 366 day climatology will be
@@ -266,21 +266,24 @@ daily values with few missing values. Time ranges which start and end
 part-way through the calendar year are supported.</p></li>
 <li><p>It is recommended that a period of at least 30 years is specified in
 order to produce a climatology that smooths out any decadal thermal
-periodicities that may be present. It is further advised that full the start
-and end dates for the climatology period result in full years, e.g.
-"1982-01-01" to "2011-12-31" or "1982-07-01" to "2012-06-30"; if not, this
-may result in an unequal weighting of data belonging with certain months
-within a time series. A daily climatology will be created; that is, the
-climatology will be comprised of one mean temperature for each day of the
-year (365 or 366 days, depending on how leap years are dealt with), and the
-mean will be based on a sample size that is a function of the length of time
-determined by the start and end values given to <code>climatologyPeriod</code> and
-the width of the sliding window specified in <code>windowHalfWidth</code>.</p></li>
+periodicities that may be present. When calculated over at least 30 years of
+data, such a climatology is called a 'climatological normal.' It is further
+advised that full the start and end dates for the climatology period result
+in full years, e.g. "1982-01-01" to "2011-12-31" or "1982-07-01" to
+"2012-06-30"; if not, this may result in an unequal weighting of data
+belonging with certain months within a time series. A daily climatology will
+be created; that is, the climatology will be comprised of one mean
+temperature for each day of the year (365 or 366 days, depending on how
+leap years are dealt with), and the mean will be based on a sample size that
+is a function of the length of time determined by the start and end values
+given to <code>climatologyPeriod</code> and the width of the sliding window
+specified in <code>windowHalfWidth</code>.</p></li>
 <li><p>This function supports leap years. This is done by ignoring Feb 29s
-for the initial calculation of the climatology and threshold. The values for
-Feb 29 are then linearly interpolated from the values for Feb 28 and Mar 1.</p></li>
-<li><p>Previous versions of <code>ts2clm()</code> tested to see if some rows
-are duplicated, or if replicate temperature readings are present per day, but
+for the initial calculation of the climatology and threshold. The values
+for Feb 29 are then linearly interpolated from the values for Feb 28 and
+Mar 1.</p></li>
+<li><p>Previous versions of <code>ts2clm()</code> tested to see if some rows are
+duplicated, or if replicate temperature readings are present per day, but
 this has now been disabled. Should the user be concerned about such repeated
 measurements, we suggest that the necessary checks and fixes are implemented
 prior to feeding the time series to <code>ts2clm()</code>.</p></li>

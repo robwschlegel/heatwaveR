@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.6.9004</span>
       </span>
     </div>
 
@@ -138,7 +138,7 @@ Categories</h1>
                         <h4 data-toc-skip class="author">Robert W
 Schlegel</h4>
             
-            <h4 data-toc-skip class="date">2023-01-16</h4>
+            <h4 data-toc-skip class="date">2023-03-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/event_categories.Rmd" class="external-link"><code>vignettes/event_categories.Rmd</code></a></small>
       <div class="hidden name"><code>event_categories.Rmd</code></div>
@@ -219,17 +219,20 @@ MHWs on the Western Australia data, we provide the name “WA” below:</p>
 <span></span>
 <span><span class="co"># Look at the top few events</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">MHW_cat</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 11</span></span></span>
-<span><span class="co">##   event_no event_name peak_date  category  i_max durat…¹ p_mod…² p_str…³ p_sev…⁴</span></span>
-<span><span class="co">##      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>       60 WA 2012b   2012-12-31 II Strong  3.42      14      64      36       0</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span>       29 WA 1999    1999-05-22 II Strong  3.64      95      63      37       0</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span>       47 WA 2009    2009-03-25 II Strong  2.38       7      57      43       0</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span>       72 WA 2015    2015-10-02 II Strong  2.46       7      57      43       0</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span>       41 WA 2008a   2008-04-14 III Seve…  3.83      35      57      23      17</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">6</span>       52 WA 2011a   2011-02-28 IV Extre…  6.58     105      52      27      11</span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 2 more variables: p_extreme &lt;dbl&gt;, season &lt;chr&gt;, and abbreviated</span></span></span>
-<span><span class="co">## <span style="color: #949494;">#   variable names ¹​duration, ²​p_moderate, ³​p_strong, ⁴​p_severe</span></span></span></code></pre>
+<pre><code><span><span class="co">##    event_no event_name  peak_date   category  i_max duration p_moderate</span></span>
+<span><span class="co">## 85       60   WA 2012b 2012-12-31  II Strong 3.4230       14         64</span></span>
+<span><span class="co">## 86       29    WA 1999 1999-05-22  II Strong 3.6390       95         63</span></span>
+<span><span class="co">## 87       47    WA 2009 2009-03-25  II Strong 2.3773        7         57</span></span>
+<span><span class="co">## 88       72    WA 2015 2015-10-02  II Strong 2.4604        7         57</span></span>
+<span><span class="co">## 89       41   WA 2008a 2008-04-14 III Severe 3.8299       35         57</span></span>
+<span><span class="co">## 90       52   WA 2011a 2011-02-28 IV Extreme 6.5798      105         52</span></span>
+<span><span class="co">##    p_strong p_severe p_extreme        season</span></span>
+<span><span class="co">## 85       36        0         0 Spring/Summer</span></span>
+<span><span class="co">## 86       37        0         0   Fall/Winter</span></span>
+<span><span class="co">## 87       43        0         0        Summer</span></span>
+<span><span class="co">## 88       43        0         0 Winter/Spring</span></span>
+<span><span class="co">## 89       23       17         0   Summer/Fall</span></span>
+<span><span class="co">## 90       27       11        10   Spring-Fall</span></span></code></pre>
 <p>Note that this functions expects the data to have been collected in
 the southern hemisphere, hence the argument <code>S = TRUE</code>. If
 they were not, one must set <code>S = FALSE</code> as seen in the
@@ -239,17 +242,20 @@ the event.</p>
 <code class="sourceCode R"><span><span class="va">res_Med</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/detect_event.html">detect_event</a></span><span class="op">(</span><span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_Med</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">res_Med_cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/category.html">category</a></span><span class="op">(</span><span class="va">res_Med</span>, S <span class="op">=</span> <span class="cn">FALSE</span>, name <span class="op">=</span> <span class="st">"Med"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">res_Med_cat</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 11</span></span></span>
-<span><span class="co">##   event_no event_name peak_date  category  i_max durat…¹ p_mod…² p_str…³ p_sev…⁴</span></span>
-<span><span class="co">##      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>       98 Med 2018b  2018-08-04 II Strong  4.75      44      52      48       0</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span>      123 Med 2022c  2022-11-03 II Strong  3.50      74      46      53       0</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span>       67 Med 2012b  2012-08-20 II Strong  4.32      18      44      56       0</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span>       46 Med 2007c  2007-04-25 III Seve…  4.05      19      42      53       5</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span>       75 Med 2014   2014-10-18 II Strong  3.34     144      39      60       0</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">6</span>       96 Med 2018a  2018-04-28 II Strong  3.32      11      27      73       0</span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 2 more variables: p_extreme &lt;dbl&gt;, season &lt;chr&gt;, and abbreviated</span></span></span>
-<span><span class="co">## <span style="color: #949494;">#   variable names ¹​duration, ²​p_moderate, ³​p_strong, ⁴​p_severe</span></span></span></code></pre>
+<pre><code><span><span class="co">##     event_no event_name  peak_date   category  i_max duration p_moderate</span></span>
+<span><span class="co">## 118       98  Med 2018b 2018-08-04  II Strong 4.7451       44         52</span></span>
+<span><span class="co">## 119      123  Med 2022c 2022-11-03  II Strong 3.5030       74         46</span></span>
+<span><span class="co">## 120       67  Med 2012b 2012-08-20  II Strong 4.3190       18         44</span></span>
+<span><span class="co">## 121       46  Med 2007c 2007-04-25 III Severe 4.0467       19         42</span></span>
+<span><span class="co">## 122       75   Med 2014 2014-10-18  II Strong 3.3443      144         39</span></span>
+<span><span class="co">## 123       96  Med 2018a 2018-04-28  II Strong 3.3185       11         27</span></span>
+<span><span class="co">##     p_strong p_severe p_extreme        season</span></span>
+<span><span class="co">## 118       48        0         0        Summer</span></span>
+<span><span class="co">## 119       53        0         0          Fall</span></span>
+<span><span class="co">## 120       56        0         0        Summer</span></span>
+<span><span class="co">## 121       53        5         0        Spring</span></span>
+<span><span class="co">## 122       60        0         0 Summer-Winter</span></span>
+<span><span class="co">## 123       73        0         0        Spring</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="visualising-mhw-categories">Visualising MHW categories<a class="anchor" aria-label="anchor" href="#visualising-mhw-categories"></a>
@@ -334,17 +340,20 @@ code chunks demonstrates how to calculate MCS categories.</p>
 <span></span>
 <span><span class="co"># Look at the top few events</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">MCS_cat</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 11</span></span></span>
-<span><span class="co">##   event_no event_name peak_date  category  i_max durat…¹ p_mod…² p_str…³ p_sev…⁴</span></span>
-<span><span class="co">##      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>       77 WA 2018a   2018-08-02 II Strong -<span style="color: #BB0000;">2.43</span>      46      67      33       0</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span>       40 WA 2000    2000-08-13 II Strong -<span style="color: #BB0000;">2.27</span>      11      64      36       0</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span>       15 WA 1990    1990-05-11 II Strong -<span style="color: #BB0000;">3.19</span>      76      62      38       0</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">4</span>       53 WA 2005    2005-10-16 II Strong -<span style="color: #BB0000;">1.86</span>      13      62      38       0</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">5</span>       83 WA 2020    2020-05-25 II Strong -<span style="color: #BB0000;">3.14</span>      41      61      39       0</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">6</span>       11 WA 1987    1987-12-10 II Strong -<span style="color: #BB0000;">2.50</span>       9      44      56       0</span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 2 more variables: p_extreme &lt;dbl&gt;, season &lt;chr&gt;, and abbreviated</span></span></span>
-<span><span class="co">## <span style="color: #949494;">#   variable names ¹​duration, ²​p_moderate, ³​p_strong, ⁴​p_severe</span></span></span></code></pre>
+<pre><code><span><span class="co">##    event_no event_name  peak_date  category   i_max duration p_moderate</span></span>
+<span><span class="co">## 81       77   WA 2018a 2018-08-02 II Strong -2.4311       46         67</span></span>
+<span><span class="co">## 82       40    WA 2000 2000-08-13 II Strong -2.2743       11         64</span></span>
+<span><span class="co">## 83       15    WA 1990 1990-05-11 II Strong -3.1883       76         62</span></span>
+<span><span class="co">## 84       53    WA 2005 2005-10-16 II Strong -1.8637       13         62</span></span>
+<span><span class="co">## 85       83    WA 2020 2020-05-25 II Strong -3.1433       41         61</span></span>
+<span><span class="co">## 86       11    WA 1987 1987-12-10 II Strong -2.4968        9         44</span></span>
+<span><span class="co">##    p_strong p_severe p_extreme season</span></span>
+<span><span class="co">## 81       33        0         0 Winter</span></span>
+<span><span class="co">## 82       36        0         0 Winter</span></span>
+<span><span class="co">## 83       38        0         0   Fall</span></span>
+<span><span class="co">## 84       38        0         0 Spring</span></span>
+<span><span class="co">## 85       39        0         0   Fall</span></span>
+<span><span class="co">## 86       56        0         0 Spring</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="visualising-mcs-categories">Visualising MCS categories<a class="anchor" aria-label="anchor" href="#visualising-mcs-categories"></a>
