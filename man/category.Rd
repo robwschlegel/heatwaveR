@@ -59,7 +59,7 @@ prevent rounding set \code{roundClm = FALSE}. This argument may only be given
 numeric values or FALSE.}
 }
 \value{
-The function will return a tibble with results similar to those seen in
+The function will return a data.frame with results similar to those seen in
 Table 2 of Hobday et al. (2018). This provides the information necessary to
 appraise the extent of the events in the output of \code{\link{detect_event}} based on the
 category ranking scale. The category thresholds are calculated based on the difference

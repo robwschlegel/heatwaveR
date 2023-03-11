@@ -114,7 +114,7 @@
 #' of our preparation of Schlegel et al. (2017), wherein the cold events
 #' receive a brief overview.
 #'
-#' @return The function will return a list of two tibbles (see the \code{tidyverse}),
+#' @return The function will return a list of two data.frames,
 #' \code{climatology} and \code{event}, which are, surprisingly, the climatology
 #' and event results, respectively. The climatology contains the full time series of
 #' daily temperatures, as well as the the seasonal climatology, the threshold
@@ -370,18 +370,17 @@ detect_event <- function(data,
                             date_end = max(ts_x),
                             intensity_mean = mean(mhw_rel_seas),
                             intensity_max = max(mhw_rel_seas),
-                            intensity_var = sqrt(stats::var(mhw_rel_seas)),
+                            intensity_var = stats::sd(mhw_rel_seas),
                             intensity_cumulative = sum(mhw_rel_seas),
                             intensity_mean_relThresh = mean(mhw_rel_thresh),
                             intensity_max_relThresh = max(mhw_rel_thresh),
-                            intensity_var_relThresh = sqrt(stats::var(mhw_rel_thresh)),
+                            intensity_var_relThresh = stats::sd(mhw_rel_thresh),
                             intensity_cumulative_relThresh = sum(mhw_rel_thresh),
                             intensity_mean_abs = mean(ts_y),
                             intensity_max_abs = max(ts_y),
-                            intensity_var_abs = sqrt(stats::var(ts_y)),
+                            intensity_var_abs = stats::sd(ts_y),
                             intensity_cumulative_abs = sum(ts_y))
       # )
-      # events <- tibble::as_tibble(events)
 
       mhw_rel_seas <- t_series$ts_y - t_series$ts_seas
       A <- mhw_rel_seas[events$index_start]
@@ -435,7 +434,6 @@ detect_event <- function(data,
                            intensity_cumulative_relThresh = NA, intensity_mean_abs = NA,
                            intensity_max_abs = NA, intensity_var_abs = NA,
                            intensity_cumulative_abs = NA, rate_onset = NA, rate_decline = NA)
-      # events <- tibble::as_tibble(events)
     }
 
     event_cols <- names(events)[9:22]
@@ -459,7 +457,6 @@ detect_event <- function(data,
     }
 
     data_clim <- cbind(data, events_clim[,5:8])
-    # data_clim <- tibble::as_tibble(cbind(data, events_clim[,5:8]))
 
     data_res <- list(climatology = data_clim, event = events)
 
@@ -494,7 +491,6 @@ detect_event <- function(data,
         data_res$event <- data_res$event[order(data_res$event$event_no),]
         data_res$event <- data_res$event[,c(1,5,6,7,2,8,4,9,10,3,11:29)]
         row.names(data_res$event) <- NULL
-        # data_res_event <- data_res$event; data_res_clim <- data_res$climatology
       }
     }
     return(data_res)

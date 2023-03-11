@@ -1,3 +1,12 @@
+# heatwaveR 0.4.6.9004 (2023-03-11)
+
+-   Removed all dependencies from `category()` and `exceedance()` except for `**plyr**`
+
+# heatwaveR 0.4.6.9004 (2023-03-07)
+
+-   Starting to remove as many dependencies as possible
+-   Started by removing all but `**plyr**` dependency from `proto_event()` and `detect_event()`
+
 # heatwaveR 0.4.6.9003 (2023-01-16)
 
 -   Updated SST data to end of 2022

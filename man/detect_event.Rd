@@ -113,7 +113,7 @@ when \code{categories = TRUE}. See the documentation for \code{\link{category}} 
 list of possible arguments.}
 }
 \value{
-The function will return a list of two tibbles (see the \code{tidyverse}),
+The function will return a list of two data.frames,
 \code{climatology} and \code{event}, which are, surprisingly, the climatology
 and event results, respectively. The climatology contains the full time series of
 daily temperatures, as well as the the seasonal climatology, the threshold

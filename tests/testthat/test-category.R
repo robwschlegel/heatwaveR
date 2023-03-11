@@ -4,7 +4,7 @@ test_that("category() returns the correct data.tables and columns", {
   ts <- ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   res <- detect_event(ts)
   cat_res <- category(res)
-  expect_is(cat_res, "tbl_df")
+  expect_is(cat_res, "data.frame")
   expect_equal(ncol(cat_res), 11)
 })
 
@@ -32,7 +32,7 @@ test_that("y = any existing column", {
   ts <- ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   res <- detect_event(ts)
   res$climatology$pawpaw <- res$climatology$temp
-  expect_is(category(res, y = pawpaw), "tbl_df")
+  expect_is(category(res, y = pawpaw), "data.frame")
 })
 
 test_that("season splits work under all circumstances", {
@@ -54,8 +54,8 @@ test_that("climatology = T causes a list output with the time series category da
   res <- detect_event(ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31")))
   cat <- category(res, climatology = T)
   expect_is(cat, "list")
-  expect_is(cat$climatology, "tbl_df")
-  expect_is(cat$event, "tbl_df")
+  expect_is(cat$climatology, "data.frame")
+  expect_is(cat$event, "data.frame")
   expect_equal(ncol(cat$climatology), 4)
   expect_equal(ncol(cat$event), 11)
 })
@@ -63,7 +63,7 @@ test_that("climatology = T causes a list output with the time series category da
 test_that("climatology intensity values are correct", {
   res <- detect_event(ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31")))
   cat_daily <- category(res, climatology = T)$climatology
-  expect_is(cat_daily, "tbl_df")
+  expect_is(cat_daily, "data.frame")
   expect_equal(ncol(cat_daily), 4)
   expect_equal(max(cat_daily$intensity), 5.5064)
   expect_equal(min(cat_daily$intensity), 0.3017)
@@ -79,15 +79,15 @@ test_that("roundVal works as expected", {
   expect_equal(as.character(min(cat_4$climatology$intensity)), "0.3017")
 })
 
-test_that("no detected events returns an 1 row NA dataframe and not an error", {
+test_that("no detected events returns a 1 row NA dataframe and not an error", {
   sst_WA_flat <- sst_WA
   sst_WA_flat$temp <- 1
   res <- detect_event(ts2clm(sst_WA_flat, climatologyPeriod = c("1983-01-01", "2012-12-31")))
   cat_event <- category(res, climatology = F)
   cat_clim <- category(res, climatology = T)
-  expect_is(cat_event, "tbl_df")
+  expect_is(cat_event, "data.frame")
   expect_is(cat_clim, "list")
-  expect_is(cat_clim$climatology, "tbl_df")
+  expect_is(cat_clim$climatology, "data.frame")
   expect_equal(nrow(cat_event), 1)
   expect_equal(ncol(cat_event), 11)
   expect_equal(nrow(cat_clim$climatology), 1)
@@ -109,7 +109,7 @@ test_that("category() returns the correct data.tables and columns for MCSs", {
   ts <- ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31"), pctile = 10)
   res <- detect_event(ts, coldSpells = T)
   cat_res <- category(res)
-  expect_is(cat_res, "tbl_df")
+  expect_is(cat_res, "data.frame")
   expect_equal(ncol(cat_res), 11)
   expect_equal(cat_res$i_max[1], -2.6183)
 })
@@ -119,8 +119,8 @@ test_that("MCS climatology results are correctly inverted to give negative inten
   res <- detect_event(ts, coldSpells = T)
   cat <- category(res, climatology = T)
   expect_is(cat, "list")
-  expect_is(cat$climatology, "tbl_df")
-  expect_is(cat$event, "tbl_df")
+  expect_is(cat$climatology, "data.frame")
+  expect_is(cat$event, "data.frame")
   expect_equal(ncol(cat$climatology), 4)
   expect_equal(ncol(cat$event), 11)
   expect_equal(cat$climatology$intensity[1], -1.4919)

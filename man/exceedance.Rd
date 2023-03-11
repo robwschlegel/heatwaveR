@@ -13,7 +13,8 @@ exceedance(
   minDuration = 5,
   joinAcrossGaps = TRUE,
   maxGap = 2,
-  maxPadLength = FALSE
+  maxPadLength = FALSE,
+  roundRes = 4
 )
 }
 \arguments{
@@ -59,9 +60,14 @@ interpolate (pad) missing data (specified as \code{NA}) in the input
 temperature time series; i.e., any consecutive blocks of NAs with length
 greater than \code{maxPadLength} will be left as \code{NA}. Set as an
 integer. The default is \code{3} days.}
+
+\item{roundRes}{This argument allows the user to choose how many decimal places
+the exceedance metric outputs will be rounded to. Default is 4. To
+prevent rounding set \code{roundRes = FALSE}. This argument may only be given
+numeric values or FALSE.}
 }
 \value{
-The function will return a list of two tibbles (see the \code{tidyverse}).
+The function will return a list of two data.frames.
 The first being \code{threshold}, which shows the daily temperatures and on which
 specific days the given \code{threshold} was exceeded. The second component of the
 list is \code{exceedance}, which shows a medley of statistics for each discrete
