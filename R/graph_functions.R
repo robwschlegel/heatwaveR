@@ -6,9 +6,8 @@
 #' @import ggplot2
 #'
 #' @importFrom ggplot2 ggplot aes geom_polygon geom_line scale_colour_manual
-#' scale_fill_manual scale_x_date xlab ylab theme theme_grey element_text
+#' scale_fill_manual scale_x_date theme element_text
 #' element_blank element_rect element_line guides guide_legend coord_cartesian
-#' @importFrom grid unit
 #'
 #' @param data The function receives the full (list) output from the
 #' \code{\link{detect_event}} function.
@@ -48,6 +47,11 @@
 #' than "Temperature °C" (default)
 #' @param y_axis_range If one would like to control the y-axis range, provide the desired limits
 #' here as two numeric values (e.g. c(20, 30)).
+#' @param line_colours Provide a vector of colours here for the line geoms on the plot.
+#' The default for the base plot is c("black", "blue", "darkgreen"), and for categories
+#' it is: c("black", "gray20", "darkgreen", "darkgreen", "darkgreen", "darkgreen"). Note that
+#' three (\code{category} = FALSE) or six (\code{category} = TRUE) colours must be provided,
+#' with any colours in excess of the requirement being ignored.
 #'
 #' @return The function will return a line plot indicating the climatology,
 #' threshold and temperature, with the hot or cold events that meet the
@@ -76,6 +80,10 @@
 #' event_line(res, spread = 100, start_date = "2010-12-01",
 #' end_date = "2011-06-30", category = TRUE)
 #'
+#' event_line(res, spread = 100, start_date = "2010-12-01",
+#' end_date = "2011-06-30", category = TRUE,
+#' line_colours = c("black", "blue", "gray20", "gray20", "gray20", "gray20"))
+#'
 event_line <- function(data,
                        x = t,
                        y = temp,
@@ -88,7 +96,8 @@ event_line <- function(data,
                        x_axis_title = NULL,
                        x_axis_text_angle = NULL,
                        y_axis_title = NULL,
-                       y_axis_range = NULL) {
+                       y_axis_range = NULL,
+                       line_colours = NULL) {
 
   date_end <- date_start <- duration <- temp <- intensity_cumulative <- NULL
 
@@ -103,47 +112,41 @@ event_line <- function(data,
   if (is.null(start_date)) start_date <- min(data$climatology$ts_x)
   if (is.null(end_date)) end_date <- max(data$climatology$ts_x)
 
-  event <- data$event %>%
-    dplyr::filter(date_end >= start_date & date_start <= end_date) %>%
-    data.frame()
+  event <- data$event[data$event$date_end >= start_date & data$event$date_start <= end_date, ]
 
   if (nrow(event) == 0) stop("No events detected! Consider changing the 'start_date' or 'end_date' values.")
 
   index_start <- index_end <- event_idx <-  NULL
 
-  event_idx <- as.vector(-abs(dplyr::select(event, {{metric}}))[,1])
-  event <- event[base::order(event_idx),]
-  event <- event %>%
-    dplyr::filter(duration >= min_duration) %>%
-    dplyr::mutate(index_start_fix = index_start - 1,
-                  index_end_fix = index_end + 1)
+  event_idx <- -abs(eval(substitute(metric), event))
+  event <- event[base::order(event_idx), ]
+  event <- event[event$duration >= min_duration, ]
+  event$index_start_fix <- event$index_start - 1
+  event$index_end_fix <- event$index_end + 1
 
   event_top <- event[1, ]
 
   date_spread <- seq((event_top$date_start - spread), (event_top$date_end + spread), by = "day")
 
-  event_sub <- event %>%
-    dplyr::filter(date_start >= min(date_spread),
-                  date_end <= max(date_spread))
+  event_sub <- event[event$date_start >= min(date_spread) & event$date_end <= max(date_spread), ]
 
   thresh_2x <- thresh_3x <- thresh_4x <- NULL
 
-  clim_diff <- data$climatology %>%
-    dplyr::mutate(diff = thresh - seas,
-           thresh_2x = thresh + diff,
-           thresh_3x = thresh_2x + diff,
-           thresh_4x = thresh_3x + diff)
+  clim_diff <- data$climatology
+  clim_diff$diff <- clim_diff$thresh - clim_diff$seas
+  clim_diff$thresh_2x <- clim_diff$thresh + clim_diff$diff
+  clim_diff$thresh_3x <- clim_diff$thresh_2x + clim_diff$diff
+  clim_diff$thresh_4x <- clim_diff$thresh_3x + clim_diff$diff
 
   clim_events <- data.frame()
   for (i in seq_len(nrow(event_sub))) {
-    clim_sub <- clim_diff[(event_sub$index_start_fix[i]):(event_sub$index_end_fix[i]),]
+    clim_sub <- clim_diff[(event_sub$index_start_fix[i]):(event_sub$index_end_fix[i]), ]
     clim_events <- rbind(clim_events, clim_sub)
   }
 
-  clim_top <- clim_diff[event_top$index_start_fix:event_top$index_end_fix,]
+  clim_top <- clim_diff[event_top$index_start_fix:event_top$index_end_fix, ]
 
-  clim_spread <- clim_diff %>%
-    dplyr::filter(ts_x %in% date_spread)
+  clim_spread <- clim_diff[clim_diff$ts_x %in% date_spread, ]
 
   thresh <- seas <- y1 <- y2 <-  NULL
 
@@ -191,10 +194,10 @@ event_line <- function(data,
           panel.grid.minor = element_line(colour = NA),
           panel.grid.major = element_line(colour = "black", linewidth = 0.2, linetype = "dotted"),
           axis.text = element_text(colour = "black"),
-          axis.text.x = element_text(margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm"),
+          axis.text.x = element_text(margin = grid::unit(c(0.5, 0.5, 0.5, 0.5), "cm"),
                                      angle = xtangle),
-          axis.text.y = element_text(margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
-          axis.ticks.length = unit(-0.25, "cm"),
+          axis.text.y = element_text(margin = grid::unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
+          axis.ticks.length = grid::unit(-0.25, "cm"),
           legend.background = element_rect(colour = "black"),
           legend.direction = "horizontal",
           legend.justification = c(0, 0),
@@ -212,6 +215,11 @@ event_line <- function(data,
       "3x Threshold" = "darkgreen",
       "4x Threshold" = "darkgreen"
     )
+
+    if(!is.null(line_colours)){
+      if(!is.vector(line_colours)) stop("Please ensure that 'line_colours' is a vector (e.g. c('black', 'gray20', 'darkgreen', 'darkgreen', 'darkgreen', 'darkgreen')).")
+      lineColCat[seq_along(line_colours)] <- line_colours
+    }
 
     if (event_top$intensity_mean < 0) {
       fillColCat <- c(
@@ -262,7 +270,7 @@ event_line <- function(data,
       scale_colour_manual(name = NULL, values = lineColCat,
                           breaks = c("Temperature", "Climatology", "Threshold",
                                      "2x Threshold", "3x Threshold", "4x Threshold")) +
-      scale_fill_manual(name = NULL, values = fillColCat, guide = FALSE) +
+      scale_fill_manual(name = NULL, values = fillColCat, guide = "none") +
       guides(colour = guide_legend(override.aes = list(linetype = c("solid", "solid", "solid",
                                                                     "dashed", "dotdash", "dotted"),
                                                        linewidth = c(0.6, 0.7, 0.7, 0.7, 0.7, 0.7)))) +
@@ -277,6 +285,11 @@ event_line <- function(data,
       "Threshold" = "darkgreen"
     )
 
+    if(!is.null(line_colours)){
+      if(!is.vector(line_colours)) stop("Please ensure that 'line_colours' is a vector (e.g. c('black', 'blue', 'darkgreen')).")
+      lineCol[seq_along(line_colours)] <- line_colours
+    }
+
     ep <- ep +
       geom_flame(data = clim_events, linewidth = 0.5,
                  aes(x = ts_x, y = y1, y2 = y2, fill = "events")) +
@@ -289,7 +302,7 @@ event_line <- function(data,
       geom_line(aes(y = ts_y, col = "Temperature"), linewidth = 0.6) +
       scale_colour_manual(name = NULL, values = lineCol,
                           breaks = c("Temperature", "Climatology", "Threshold")) +
-      scale_fill_manual(name = NULL, values = fillCol, guide = FALSE)
+      scale_fill_manual(name = NULL, values = fillCol, guide = "none")
 
     if(!is.null(y_axis_range)){
       if(length(y_axis_range)!=2) stop("Please ensure that exactly two numbers are provided to 'y_axis_range' (e.g. c(10, 20)).")
@@ -305,9 +318,8 @@ event_line <- function(data,
 #'
 #' Visualise a timeline of several possible event metrics as 'lollipop' graphs.
 #'
-#' @importFrom ggplot2 aes_string geom_segment geom_point scale_x_continuous
+#' @importFrom ggplot2 geom_segment geom_point scale_x_continuous
 #' element_rect element_line labs scale_y_continuous
-#' @importFrom grid unit
 #'
 #' @param data Output from the \code{\link{detect_event}} function.
 #' @param xaxis The name of a column from the \code{event} data.frame in
@@ -385,9 +397,9 @@ lolli_plot <- function(data,
           panel.grid.minor = element_line(colour = NA),
           panel.grid.major = element_line(colour = "black", linewidth = 0.2, linetype = "dotted"),
           axis.text = element_text(colour = "black"),
-          axis.text.x = element_text(margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
-          axis.text.y = element_text(margin = unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
-          axis.ticks.length = unit(-0.25, "cm")
+          axis.text.x = element_text(margin = grid::unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
+          axis.text.y = element_text(margin = grid::unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
+          axis.ticks.length = grid::unit(-0.25, "cm")
           )
   lolli
 }

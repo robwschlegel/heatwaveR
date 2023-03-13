@@ -192,10 +192,12 @@ GeomFlame <- ggplot2::ggproto("GeomFlame", ggplot2::Geom,
                                                         id = c(ids, rev(ids)))
                                 munched <- ggplot2::coord_munch(coord, positions, panel_scales)
 
+                                # NB: grid dependency is necessary and imported by ggplot2 so no worries
                                 grid::polygonGrob(
                                   munched$x, munched$y, id = munched$id,
                                   default.units = "native",
                                   gp = grid::gpar(
+                                    # NB: Not sure about the use of scales here... but it's imported by ggplot2 so no worries
                                     fill = scales::alpha(aes$fill, aes$alpha),
                                     col = aes$colour,
                                     lwd = aes$linewidth * .pt,

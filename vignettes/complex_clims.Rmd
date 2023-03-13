@@ -90,8 +90,8 @@ bubble_plot <- ggplot(data = events$event, aes(x = date_peak, y = intensity_max)
         legend.box.background = element_rect(colour = "black"))
 
 # Don't forget to set 'event_line(y = tMax)'
-ggarrange(event_line(events, y = tMax, metric = "intensity_max"),
-          event_line(events, y = tMax, metric = "intensity_max", category = T),
+ggarrange(event_line(events, y = tMax, metric = intensity_max),
+          event_line(events, y = tMax, metric = intensity_max, category = T),
           lolli_plot(events),
           bubble_plot,
           ncol = 2, nrow = 2, align = "hv")

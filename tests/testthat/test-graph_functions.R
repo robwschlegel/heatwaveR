@@ -93,9 +93,11 @@ test_that("event_line() additional options error traping works", {
   expect_error(event_line(data = res, start_date = "2012-01-01", end_date = "2012-12-31", y_axis_range = 100))
   expect_error(event_line(data = res, start_date = "2012-01-01", end_date = "2012-12-31", y_axis_range = c(2, "A")),
                "Please ensure that only numeric values are provided to 'y_axis_range'.")
+  expect_error(event_line(data = res, line_colours = data.frame(colour = "black", "blue")))
+  expect_error(event_line(data = res, category = TRUE, line_colours = data.frame(colour = "black", "blue")))
 })
 
-test_that("event_line() additional options error traping works", {
+test_that("event_line() additional plotting work", {
   res <- detect_event(data = ts2clm(sst_Med, climatologyPeriod = c("1982-01-01", "2011-12-31")))
   p1 <- event_line(data = res, start_date = "2012-01-01", end_date = "2012-12-31", x_axis_title = "Date")
   expect_equal(p1$labels$x, "Date")
@@ -153,4 +155,3 @@ test_that("lolli_plot() correctly highlights no events when told not to", {
   tp <- lolli_plot(res, event_count = 0)
   expect_is(tp, "ggplot")
 })
-

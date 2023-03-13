@@ -1,6 +1,11 @@
+# heatwaveR 0.4.6.9004 (2023-03-13)
+
+-   Removed all dependencies from `event_line()` and `block_average()` except **`plyr`**
+-   Added `line_colours` argument to `event_line()`, allowing users to choose colours of line geoms
+
 # heatwaveR 0.4.6.9004 (2023-03-11)
 
--   Removed all dependencies from `category()` and `exceedance()` except for `**plyr**`
+-   Removed all dependencies from `category()` and `exceedance()` except for **`plyr`**
 
 # heatwaveR 0.4.6.9004 (2023-03-07)
 

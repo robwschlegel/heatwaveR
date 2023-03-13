@@ -17,7 +17,8 @@ event_line(
   x_axis_title = NULL,
   x_axis_text_angle = NULL,
   y_axis_title = NULL,
-  y_axis_range = NULL
+  y_axis_range = NULL,
+  line_colours = NULL
 )
 }
 \arguments{
@@ -71,6 +72,12 @@ than "Temperature °C" (default)}
 
 \item{y_axis_range}{If one would like to control the y-axis range, provide the desired limits
 here as two numeric values (e.g. c(20, 30)).}
+
+\item{line_colours}{Provide a vector of colours here for the line geoms on the plot.
+The default for the base plot is c("black", "blue", "darkgreen"), and for categories
+it is: c("black", "gray20", "darkgreen", "darkgreen", "darkgreen", "darkgreen"). Note that
+three (\code{category} = FALSE) or six (\code{category} = TRUE) colours must be provided,
+with any colours in excess of the requirement being ignored.}
 }
 \value{
 The function will return a line plot indicating the climatology,
@@ -95,6 +102,10 @@ start_date = "2010-12-01", end_date = "2011-06-30")
 
 event_line(res, spread = 100, start_date = "2010-12-01",
 end_date = "2011-06-30", category = TRUE)
+
+event_line(res, spread = 100, start_date = "2010-12-01",
+end_date = "2011-06-30", category = TRUE,
+line_colours = c("black", "blue", "gray20", "gray20", "gray20", "gray20"))
 
 }
 \references{
