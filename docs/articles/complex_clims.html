@@ -137,7 +137,7 @@
                         <h4 data-toc-skip class="author">Robert W
 Schlegel</h4>
             
-            <h4 data-toc-skip class="date">2023-03-11</h4>
+            <h4 data-toc-skip class="date">2023-03-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/complex_clims.Rmd" class="external-link"><code>vignettes/complex_clims.Rmd</code></a></small>
       <div class="hidden name"><code>complex_clims.Rmd</code></div>
@@ -283,8 +283,8 @@ with <strong><code>heatwaveR</code></strong> without any extra fuss.</p>
 <span>        legend.box.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Don't forget to set 'event_line(y = tMax)'</span></span>
-<span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">events</span>, y <span class="op">=</span> <span class="va">tMax</span>, metric <span class="op">=</span> <span class="st">"intensity_max"</span><span class="op">)</span>,</span>
-<span>          <span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">events</span>, y <span class="op">=</span> <span class="va">tMax</span>, metric <span class="op">=</span> <span class="st">"intensity_max"</span>, category <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,</span>
+<span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">events</span>, y <span class="op">=</span> <span class="va">tMax</span>, metric <span class="op">=</span> <span class="va">intensity_max</span><span class="op">)</span>,</span>
+<span>          <span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">events</span>, y <span class="op">=</span> <span class="va">tMax</span>, metric <span class="op">=</span> <span class="va">intensity_max</span>, category <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,</span>
 <span>          <span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events</span><span class="op">)</span>,</span>
 <span>          <span class="va">bubble_plot</span>,</span>
 <span>          ncol <span class="op">=</span> <span class="fl">2</span>, nrow <span class="op">=</span> <span class="fl">2</span>, align <span class="op">=</span> <span class="st">"hv"</span><span class="op">)</span></span></code></pre></div>
