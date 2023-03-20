@@ -30,7 +30,7 @@ Several steps are involved:
 -   Creating longitude slices
 -   Detecting MHWs in each slice in parallel
 
-![**Figure 1.** OISST data plotted on a Gnomonic Cubed Sphere projection thanks to [Panoply](https://www.giss.nasa.gov/tools/panoply/)---the similarity with certain religious iconography is purely coincidental.](sst_in_oisst-avhrr-v02r01.19810901.png){width="100%"}
+![**Figure 1.** OISST data plotted on a Gnomonic Cubed Sphere projection thanks to [Panoply](https://www.giss.nasa.gov/tools/panoply/)---the similarity with certain religious iconography is purely coincidental.](https://i.imgur.com/8idteKC.png){width="100%"}
 
 Each global, daily file is around 8.3Mb, so they add up to a large amount of data when a time series of at least 30 years duration is downloaded. A time series of at least 30 years is needed for heatwave detection. Currently I have 13,216 of these global files, and this amounts to \~108Gb of total disk space. Since not everyone will need all of these data, we shall subset the data using a python script prior to downloading them.
 

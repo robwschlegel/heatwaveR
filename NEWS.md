@@ -1,3 +1,8 @@
+# heatwaveR 0.5.0 (2023-03-20)
+
+-   Major update in preparation of removing all dependencies and releasing v1.0.0
+-   Also necessary due to cryptic CRAN error
+
 # heatwaveR 0.4.6.9004 (2023-03-13)
 
 -   Removed all dependencies from `event_line()` and `block_average()` except **`plyr`**

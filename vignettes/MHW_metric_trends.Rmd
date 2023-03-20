@@ -65,7 +65,7 @@ lon_range <- c(lon_range[1]-0.25, lon_range[2]+0.25)
 lat_range <- c(lat_range[1]-0.25, lat_range[2]+0.25)
 ```
 
-![MEOW bioregions around New Zealand](MapEcoregions.png){width=500px}
+![MEOW bioregions around New Zealand](https://i.imgur.com/FVEOCNP.png){width=500px}
 
 Once we have our MEOW data for NZ ready it's time to find out which pixels specifically we will want to analyse. The process of assigning bioregions to pixels is simplified by using the `sf` (@sf) package.
 
