@@ -64,7 +64,8 @@
 #' have been exceeded, a column showing if a heatwave is present (i.e. both
 #' \code{threshCriterion} and \code{durationCriterion} \code{TRUE}), and a
 #' sequential number uniquely identifying the detected event. In this case,
-#' the heatwave metrics will not be reported. The default is \code{FALSE}.
+#' the heatwave metrics will not be reported and only the climatology will and
+#' protoevents will be returned. The default is \code{FALSE}.
 #' @param categories Rather than using \code{\link{category}} as a separate step to determine
 #' the categories of the detected MHWs, one may choose to set this argument to \code{TRUE}.
 #' One may pass the same arguments used in the \code{\link{category}} function to this function
@@ -464,7 +465,7 @@ detect_event <- function(data,
       data_cat <- category(data_res, ...)
       # data_cat <- category(data_res)
       # data_cat <- category(data_res, climatology = T)
-      if(is.data.frame(data_cat)){
+      if (is.data.frame(data_cat)) {
         # data_res_old <- dplyr::left_join(events, data_cat,
         #                              by = c("event_no", "duration",
         #                                     "intensity_max" = "i_max", "date_peak" = "peak_date"))
