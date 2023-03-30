@@ -461,9 +461,11 @@ detect_event <- function(data,
     data_res <- list(climatology = data_clim, event = events)
 
     if (categories) {
-      data_cat <- category(data_res, ...)
-      # data_cat <- category(data_res)
-      # data_cat <- category(data_res, climatology = T)
+      data_temp <- data_res
+      colnames(data_temp$climatology)[3] <- "temp"
+      data_cat <- category(data_temp, ...)
+      # data_cat <- category(data_temp)
+      # data_cat <- category(data_temp, climatology = T)
       if(is.data.frame(data_cat)){
         # data_res_old <- dplyr::left_join(events, data_cat,
         #                              by = c("event_no", "duration",
