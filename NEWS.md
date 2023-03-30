@@ -1,3 +1,11 @@
+# heatwaveR 0.5.0.9000 (2023-03-30)
+
+-   Bug hunting in the build-up to v1.0.0
+-   Addressed issue of y column not passing through correctly from `detect_event()` to `category()` when called internally
+-   Changed documentation for `category()` to more accurately match the output of `climatology = TRUE`
+-   Looked into behaviour of `protoEvents` in `detect_event()`
+-   Added `lat_col` argument to `category()` to detect if time series are in N or S hemisphere
+
 # heatwaveR 0.5.0 (2023-03-20)
 
 -   Major update in preparation of removing all dependencies and releasing v1.0.0

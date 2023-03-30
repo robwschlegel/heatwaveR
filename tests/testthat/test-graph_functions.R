@@ -81,6 +81,12 @@ test_that("event_line() category argument works for MCSs", {
   expect_is(tp, "ggplot")
 })
 
+test_that("event_line() line_colours argument works", {
+  res <- detect_event(data = ts2clm(sst_Med, pctile = 90,
+                                    climatologyPeriod = c("1982-01-01", "2011-12-31")))
+  expect_is(event_line(data = res, line_colours = c(colour = "purple", "pink")), "ggplot")
+})
+
 test_that("event_line() additional options error traping works", {
   res <- detect_event(data = ts2clm(sst_Med, pctile = 90,
                                     climatologyPeriod = c("1982-01-01", "2011-12-31")))

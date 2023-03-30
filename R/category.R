@@ -35,15 +35,14 @@
 #' the outputs will be rounded to. Default is 4. To
 #' prevent rounding set \code{roundClm = FALSE}. This argument may only be given
 #' numeric values or FALSE.
-#' @param lat_col The user may specify the column used to calculate the season of
-#' events based on the latitude of the time series. If no column is given, the default behaviour
-#' for the function is to detect columns named first 'lat', then 'latitude', and
-#' use the numeric decimal degree values therein to determine the correct seasons for events.
-#' Note that this will override the \code{S} argument. Meaning that if the given/detected latitude
-#' column has negative values, \code{S} will automatically be set to \code{TRUE} and vice versa.
-#' Also note that if multiple different latitude values are detected this will cause an error,
-#' as this function is not meant to be run on more than one time series at once. Finally,
-#' if latitude is exactly 0, it will be classified as Northern Hemisphere.
+#' @param lat_col The user may set \code{lat_col = TRUE} to detect columns named first 'lat',
+#' then 'latitude', and use the numeric decimal degree values therein to determine the correct
+#' seasons for events. Note that this will override the \code{S} argument. Meaning that if the
+#' given/detected latitude column has negative values, \code{S} will automatically be set to
+#' \code{TRUE} and vice versa. Also note that if multiple different latitude values are detected
+#' this will intentionally cause an error because this function is not meant to be run on more
+#' than one time series at once. Finally, if latitude is exactly 0, it will be classified as
+#' Northern Hemisphere.
 #'
 #' @return The function will return a data.frame with results similar to those seen in
 #' Table 2 of Hobday et al. (2018). This provides the information necessary to
@@ -222,16 +221,14 @@ category <- function(data,
 
     ts_lat_col <- start_season <- peak_season <- end_season <- NULL
 
-    if (!is.null(lat_col)) {
-      ts_lat_col <- eval(substitute(lat_col), data$climatology)
-      if (is.null(ts_lat_col) | is.function(ts_lat_col))
-        stop("Please ensure that you have correctly spelled the column given to the 'lat_col' argument.")
-    } else if ("lat" %in% colnames(data$climatology)) {
-      ts_lat_col <- eval(substitute(lat), data$climatology)
-    } else if ("latitude" %in% colnames(data$climatology)) {
-      ts_lat_col <- eval(substitute(latitude), data$climatology)
-    } else {
-      ts_lat_col <- NULL
+    if (lat_col) {
+      if ("lat" %in% colnames(data$climatology)) {
+        ts_lat_col <- data$climatology[,"lat"]
+      } else if ("latitude" %in% colnames(data$climatology)) {
+        ts_lat_col <- eval(substitute(latitude), data$climatology)
+      } else {
+        ts_lat_col <- NULL
+      }
     }
 
     if (!is.null(ts_lat_col[1])) {
@@ -260,8 +257,6 @@ category <- function(data,
       }
 
     if (season == "range") {
-      # seasons_old <- seasons %>%
-      #   dplyr::mutate(diff_season = as.integer(start_season) - as.integer(end_season))
       seasons$diff_season <- as.integer(seasons$start_season) - as.integer(seasons$end_season)
       for (i in 1:nrow(seasons)) {
         if (seasons$diff_season[i] == 0 & seasons$duration[i] < 100) {
@@ -287,12 +282,6 @@ category <- function(data,
 
     seas <- thresh <- thresh_2x <- thresh_3x <- thresh_4x <- NULL
 
-    # clim_diff_old <- data$climatology %>%
-    #   dplyr::filter(!is.na(event_no)) %>%
-    #   dplyr::mutate(diff = round(thresh - seas, roundVal),
-    #                 thresh_2x = round(thresh + diff, roundVal),
-    #                 thresh_3x = round(thresh_2x + diff, roundVal),
-    #                 thresh_4x = round(thresh_3x + diff, roundVal))
     clim_diff <- data$climatology[!is.na(data$climatology$event_no),]
     clim_diff$diff <- round(clim_diff$thresh - clim_diff$seas, roundVal)
     clim_diff$thresh_2x <- round(clim_diff$thresh + clim_diff$diff, roundVal)
@@ -301,11 +290,6 @@ category <- function(data,
     row.names(clim_diff) <- NULL
 
     if (MCScorrect) {
-      # clim_diff_old <- clim_diff %>%
-      #   dplyr::mutate(diff = round(dplyr::case_when(thresh_4x + diff <= -1.8 ~ -(thresh + 1.8)/4, TRUE ~ diff), roundVal),
-      #                 thresh_2x = round(thresh + diff, roundVal),
-      #                 thresh_3x = round(thresh_2x + diff, roundVal),
-      #                 thresh_4x = round(thresh_3x + diff, roundVal))
       clim_diff$diff <- round(base::ifelse(clim_diff$thresh_4x + clim_diff$diff <= -1.8,
                                            -(clim_diff$thresh + 1.8)/4, clim_diff$diff), roundVal)
       clim_diff$thresh_2x <- round(clim_diff$thresh + clim_diff$diff, roundVal)
@@ -324,15 +308,11 @@ category <- function(data,
       clim_diff$thresh_4x <- -clim_diff$thresh_4x
     }
 
-    # moderate_n_old <- clim_diff %>%
-    #   dplyr::filter(ts_y > thresh) %>%
-    #   dplyr::group_by(event_no) %>%
-    #   dplyr::summarise(moderate = dplyr::n(), .groups = "drop")
     moderate_n <- data.frame(base::table(clim_diff[clim_diff$ts_y > clim_diff$thresh,]$event_no))
     strong_n <- as.data.frame(base::table(clim_diff[clim_diff$ts_y > clim_diff$thresh_2x,]$event_no))
     severe_n <- as.data.frame(base::table(clim_diff[clim_diff$ts_y > clim_diff$thresh_3x,]$event_no))
     extreme_n <- as.data.frame(base::table(clim_diff[clim_diff$ts_y > clim_diff$thresh_4x,]$event_no))
-    if (ncol(moderate_n) == 1) moderate_n <- data.frame(Var1 = NA, Freq = NA)
+    # if (ncol(moderate_n) == 1) moderate_n <- data.frame(Var1 = NA, Freq = NA) # Not necessary
     if (ncol(strong_n) == 1) strong_n <- data.frame(Var1 = NA, Freq = NA)
     if (ncol(severe_n) == 1) severe_n <- data.frame(Var1 = NA, Freq = NA)
     if (ncol(extreme_n) == 1) extreme_n <- data.frame(Var1 = NA, Freq = NA)
@@ -341,9 +321,6 @@ category <- function(data,
 
     event_list <- list(moderate_n, strong_n, severe_n, extreme_n)
     cat_n <- base::Reduce(function(x, y) base::merge(x, y, by = "Var1", all.x = TRUE), event_list)
-    # cat_n_old <- dplyr::left_join(moderate_n, strong_n, by = "Var1") %>%
-    #   dplyr::left_join(severe_n, by = "Var1") %>%
-    #   dplyr::left_join(extreme_n, by = "Var1")
     cat_n[is.na(cat_n)] <- 0
     colnames(cat_n)[1] <- "event_no"
     cat_n$event_no <- as.integer(cat_n$event_no)
@@ -368,28 +345,6 @@ category <- function(data,
     cat_join$event_name <- as.factor(base::ifelse(!is.na(cat_join$event_name_letter),
                                                   paste0(cat_join$event_name, cat_join$event_name_letter), cat_join$event_name))
     cat_join <- cat_join[,1:11]
-    # cat_join_old <- dplyr::left_join(cat_frame, cat_n, by = "event_no") %>%
-    #   dplyr::mutate(p_moderate = round(((moderate - strong) / duration * 100), 0),
-    #          p_strong = round(((strong - severe) / duration * 100), 0),
-    #          p_severe = round(((severe - extreme) / duration * 100), 0),
-    #          p_extreme = round((extreme / duration * 100), 0),
-    #          category = ifelse(p_extreme > 0, "IV Extreme",
-    #                            ifelse(p_severe > 0, "III Severe",
-    #                                   ifelse(p_strong > 0, "II Strong", "I Moderate"))),
-    #          event_name = replace(event_name, which(category == "I Moderate"), NA),
-    #          event_name = as.character(event_name)) %>%
-    #   dplyr::arrange(event_no) %>%
-    #   dplyr::left_join(seasons[, c("event_no", "season")], by = "event_no") %>%
-    #   dplyr::select(event_no:duration, p_moderate:season) %>%
-    #   droplevels() %>%
-    #   dplyr::group_by(event_name) %>%
-    #   dplyr::mutate(event_count = dplyr::row_number()) %>%
-    #   dplyr::mutate(event_name_letter = dplyr::case_when(max(event_count) > 1 &
-    #                                                        !is.na(event_name) ~ letters[event_count])) %>%
-    #   dplyr::ungroup() %>%
-    #   dplyr::mutate(event_name = dplyr::case_when(!is.na(event_name_letter) ~ paste0(event_name, event_name_letter), TRUE  ~  event_name),
-    #                 event_name = as.factor(event_name)) %>%
-    #   dplyr::select(-event_count, -event_name_letter)
 
     if (MCSice) {
 
@@ -398,10 +353,6 @@ category <- function(data,
       ice_test <- data.frame(event_no = base::unique(clim_diff$event_no),
                              max_thresh = base::tapply(clim_diff$thresh, clim_diff$event_no, max))
       ice_test$ice_cat <- base::ifelse(ice_test$max_thresh > 1.7, TRUE, FALSE)
-      # ice_test_old <- clim_diff %>%
-      #   dplyr::group_by(event_no) %>%
-      #   dplyr::summarise(max_thresh = max(thresh, na.rm = T), .groups = "drop") %>%
-      #   dplyr::mutate(ice_cat = dplyr::case_when(max_thresh > 1.7 ~ TRUE, TRUE ~ FALSE))
 
       cat_join <- base::merge(cat_join, ice_test, by = "event_no", all.x = TRUE)
       cat_join$category <- base::ifelse(cat_join$ice_cat, "V Ice", cat_join$category)
@@ -411,8 +362,6 @@ category <- function(data,
     cat_res <- cat_join[base::order(-cat_join$p_moderate, -cat_join$p_strong,
                                     -cat_join$p_severe, -cat_join$p_extreme),]
     row.names(cat_res) <- NULL
-    # cat_res_old <- tibble::as_tibble(cat_join) %>%
-    #   dplyr::arrange(-p_moderate, -p_strong, -p_severe, -p_extreme)
 
     if (climatology) {
 
@@ -425,13 +374,6 @@ category <- function(data,
                                                                  base::ifelse(clim_res$ts_y > clim_res$thresh, "I Moderate", NA))))
       clim_res$intensity = round(clim_res$ts_y - clim_res$seas, roundVal)
       clim_res <- clim_res[,c("t", "event_no", "intensity", "category")]
-      # clim_res_old <- clim_diff %>%
-      #   dplyr::mutate(category = base::ifelse(ts_y > thresh_4x, "IV Extreme",
-      #                                         base::ifelse(ts_y > thresh_3x, "III Severe",
-      #                                                      base::ifelse(ts_y > thresh_2x, "II Strong",
-      #                                                                   base::ifelse(ts_y > thresh, "I Moderate", NA)))),
-      #                 intensity = round(ts_y-seas, roundVal)) %>%
-      #   dplyr::select(t, event_no, intensity, category)
 
       if (max(cat_frame$i_max) < 0) clim_res$intensity <- -clim_res$intensity
 

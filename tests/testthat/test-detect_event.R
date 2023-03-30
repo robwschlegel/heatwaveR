@@ -127,7 +127,7 @@ test_that("built in 'categories' argument works as expected", {
   expect_equal(res_name$p_moderate[3], 100)
 })
 
-test_that("Useful error is returned when incorrect column names exist", {
+test_that("useful error is returned when incorrect column names exist", {
   ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   colnames(ts) <- c("doy", "banana", "temp", "seas", "thresh")
   expect_error(detect_event(ts),
@@ -143,8 +143,11 @@ test_that("Useful error is returned when incorrect column names exist", {
                "Please ensure that a column named 'thresh' is present in your data.frame or that you have assigned a column to the 'threshClim' argument.")
 })
 
-test_that("longitude columns are passed to category internally", {
+test_that("latitude columns are passed to category internally", {
   ts <- ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-  res <- detect_event(ts)
-  cat_res <- category(res)
+  ts$lat <- 10
+  res_S <- detect_event(ts, categories = T)
+  res_N <- detect_event(ts, categories = T, lat_col = T)
+  expect_equal(res_S$season[1], "Fall")
+  expect_equal(res_N$season[1], "Spring")
 })

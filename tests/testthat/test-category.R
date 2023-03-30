@@ -17,27 +17,36 @@ test_that("The seasons by hemisphere come out correctly", {
   expect_equal(cat_res_north$season[1], "Spring")
 })
 
-test_that("longitude columns are detected for seasons instead of S = T/F", {
+test_that("latitude columns are detected for seasons instead of S = T/F", {
   ts_Med <- ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   ts_Med$lat <- 43.625
   ts_WA <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   ts_WA$latitude <- -29.375
-  ts_NW_Atl <- ts2clm(sst_NW_Atl, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-  ts_NW_Atl$lati <- 43.125
-  res_Med <- detect_event(ts_Med)
-  cat_Med <- category(res_Med)
-  res_WA <- detect_event(ts_WA)
-  cat_WA <- category(res_WA)
-  res_NW_Atl <- detect_event(ts_NW_Atl)
-  cat_NW_Atl <- category(res_NW_Atl)
-  expect_error(category(res_Med, lat_col = lat))
-  ## Check for 'lat' column
-  ## check for 'latitude' column
-  ## Incorrect lat_col name provided - error
-  ## Check for non-numeric values
-  ## Check for multiple latitude values
-  ## Check positive lat value
-  ## Check negative lat value
+  ts_WA_N <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  ts_WA_N$latitude <- 29.375
+  ts_NW_Atl_1 <- ts2clm(sst_NW_Atl, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  ts_NW_Atl_1$lati <- 43.125
+  ts_NW_Atl_2 <- ts2clm(sst_NW_Atl, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  ts_NW_Atl_2$lat <- 43.125
+  cat_Med <- category(detect_event(ts_Med), lat_col = T)
+  cat_WA <- category(detect_event(ts_WA), lat_col = T)
+  cat_WA_N <- category(detect_event(ts_WA_N), lat_col = T)
+  cat_NW_Atl_1 <- category(detect_event(ts_NW_Atl_1), lat_col = T)
+  cat_NW_Atl_2 <- category(detect_event(ts_NW_Atl_2), lat_col = T)
+  expect_equal(cat_Med$season[1], "Spring")
+  expect_equal(cat_WA$season[1], "Fall")
+  expect_equal(cat_WA_N$season[1], "Spring")
+  expect_equal(cat_NW_Atl_1$season[1], "Summer")
+  expect_equal(cat_NW_Atl_2$season[1], "Winter")
+})
+
+test_that("latitude column error trapping", {
+  ts_1 <- ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  ts_1$lat <- "43.625"
+  ts_2 <- ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  ts_2$lat <- c(12, rep(5, nrow(ts_2)-1))
+  expect_error(category(detect_event(ts_1), lat_col = T))
+  expect_error(category(detect_event(ts_2), lat_col = T))
 })
 
 test_that("The name argument works correctly", {
@@ -54,9 +63,10 @@ test_that("The name argument works correctly", {
 test_that("y = any existing column", {
   ts <- ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   res <- detect_event(ts)
-  res$climatology$pawpaw <- res$climatology$temp
+  colnames(res$climatology)[3] <- "pawpaw"
   expect_is(category(res, y = pawpaw), "data.frame")
-  ## Incorrect column name - error
+  expect_error(category(res, y = temp),
+               "Please ensure that a column named 'temp' is present in your data.frame or that you have assigned a column to the 'y' argument.")
 })
 
 test_that("season splits work under all circumstances", {
@@ -116,6 +126,17 @@ test_that("no detected events returns a 1 row NA dataframe and not an error", {
   expect_equal(ncol(cat_event), 11)
   expect_equal(nrow(cat_clim$climatology), 1)
   expect_equal(ncol(cat_clim$climatology), 4)
+})
+
+test_that("The presence of only Moderate events is responded to correctly", {
+  res_base <- detect_event(ts2clm(sst_Med, climatologyPeriod = c("1982-01-01", "2011-12-31")))
+  cat_base <- category(res_base, climatology = T)
+  res_Moderate <- res_base
+  res_Moderate$climatology <- base::merge(res_Moderate$climatology, cat_base$climatology, by = c("t", "event_no"))
+  res_Moderate$climatology$temp[res_Moderate$climatology$category != "I Moderate"] <- as.numeric(NA)
+  res_Moderate$climatology <- res_Moderate$climatology[!is.na(res_Moderate$climatology$temp),]
+  cat_flat <- category(res_Moderate)
+  expect_equal(max(cat_flat$p_strong), 0)
 })
 
 test_that("the different `season` option function as expected", {
