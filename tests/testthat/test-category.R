@@ -17,6 +17,29 @@ test_that("The seasons by hemisphere come out correctly", {
   expect_equal(cat_res_north$season[1], "Spring")
 })
 
+test_that("longitude columns are detected for seasons instead of S = T/F", {
+  ts_Med <- ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  ts_Med$lat <- 43.625
+  ts_WA <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  ts_WA$latitude <- -29.375
+  ts_NW_Atl <- ts2clm(sst_NW_Atl, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  ts_NW_Atl$lati <- 43.125
+  res_Med <- detect_event(ts_Med)
+  cat_Med <- category(res_Med)
+  res_WA <- detect_event(ts_WA)
+  cat_WA <- category(res_WA)
+  res_NW_Atl <- detect_event(ts_NW_Atl)
+  cat_NW_Atl <- category(res_NW_Atl)
+  expect_error(category(res_Med, lat_col = lat))
+  ## Check for 'lat' column
+  ## check for 'latitude' column
+  ## Incorrect lat_col name provided - error
+  ## Check for non-numeric values
+  ## Check for multiple latitude values
+  ## Check positive lat value
+  ## Check negative lat value
+})
+
 test_that("The name argument works correctly", {
   ts <- ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   res <- detect_event(ts)
@@ -33,6 +56,7 @@ test_that("y = any existing column", {
   res <- detect_event(ts)
   res$climatology$pawpaw <- res$climatology$temp
   expect_is(category(res, y = pawpaw), "data.frame")
+  ## Incorrect column name - error
 })
 
 test_that("season splits work under all circumstances", {

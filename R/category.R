@@ -15,10 +15,10 @@
 #' If no value is provided the default output is "Event".
 #' @param climatology The default setting of \code{FALSE} will tell this function to output only
 #' the summary (wide) results for the individual events as seen in Hobday et al. (2018). If set
-#' to \code{TRUE}, this function will return a list of two dataframes, same
-#' as \code{\link{detect_event}}. The first dataframe \code{climatology}, contains the same
-#' information as found in \code{\link{detect_event}}, but with the addition of the daily
-#' intensity (anomaly above seasonal doy threshold) and category values. The second dataframe,
+#' to \code{TRUE}, this function will return a list of two dataframes.
+#' The first dataframe \code{climatology}, contains similar information as found in
+#' \code{\link{detect_event}}, with the addition of the daily intensity (anomaly above seasonal doy threshold)
+#' and category values, but only reports the days on which an event was detected. The second dataframe,
 #' \code{event}, is the summary results that this function produces by default.
 #' @param MCScorrect When calculating marine cold-spells (MCSs) it may occur in some areas
 #' that the bottom thresholds for the more intense categories will be below -1.8C,
@@ -35,6 +35,15 @@
 #' the outputs will be rounded to. Default is 4. To
 #' prevent rounding set \code{roundClm = FALSE}. This argument may only be given
 #' numeric values or FALSE.
+#' @param lat_col The user may specify the column used to calculate the season of
+#' events based on the latitude of the time series. If no column is given, the default behaviour
+#' for the function is to detect columns named first 'lat', then 'latitude', and
+#' use the numeric decimal degree values therein to determine the correct seasons for events.
+#' Note that this will override the \code{S} argument. Meaning that if the given/detected latitude
+#' column has negative values, \code{S} will automatically be set to \code{TRUE} and vice versa.
+#' Also note that if multiple different latitude values are detected this will cause an error,
+#' as this function is not meant to be run on more than one time series at once. Finally,
+#' if latitude is exactly 0, it will be classified as Northern Hemisphere.
 #'
 #' @return The function will return a data.frame with results similar to those seen in
 #' Table 2 of Hobday et al. (2018). This provides the information necessary to
@@ -147,11 +156,14 @@ category <- function(data,
                      MCScorrect = F,
                      MCSice = F,
                      season = "range",
-                     roundVal = 4) {
+                     roundVal = 4,
+                     lat_col = FALSE) {
 
     temp <- NULL
 
     ts_y <- eval(substitute(y), data$climatology)
+    if (is.null(ts_y) | is.function(ts_y))
+      stop("Please ensure that a column named 'temp' is present in your data.frame or that you have assigned a column to the 'y' argument.")
     data$climatology$ts_y <- ts_y
     rm(ts_y)
 
@@ -183,7 +195,6 @@ category <- function(data,
       }
 
     cat_frame <- data.frame(event_no = data$event$event_no,
-                            # event_name = paste0(as.character(name), " ", lubridate::year(data$event$date_peak)),
                             event_name = paste0(as.character(name), " ", format(data$event$date_peak, "%Y")),
                             peak_date = data$event$date_peak,
                             category = NA,
@@ -209,7 +220,28 @@ category <- function(data,
     se$day <- 1
     se$mo <- se$mo + 1
 
-    start_season <- peak_season <- end_season <- NULL
+    ts_lat_col <- start_season <- peak_season <- end_season <- NULL
+
+    if (!is.null(lat_col)) {
+      ts_lat_col <- eval(substitute(lat_col), data$climatology)
+      if (is.null(ts_lat_col) | is.function(ts_lat_col))
+        stop("Please ensure that you have correctly spelled the column given to the 'lat_col' argument.")
+    } else if ("lat" %in% colnames(data$climatology)) {
+      ts_lat_col <- eval(substitute(lat), data$climatology)
+    } else if ("latitude" %in% colnames(data$climatology)) {
+      ts_lat_col <- eval(substitute(latitude), data$climatology)
+    } else {
+      ts_lat_col <- NULL
+    }
+
+    if (!is.null(ts_lat_col[1])) {
+      if (!is.numeric(ts_lat_col[1]))
+        stop("Please ensure that the latitude values are numeric (i.e. decimal degrees).")
+      if (length(unique(ts_lat_col)) > 1)
+        stop("Please ensure that only one latitude value is being used per time series.")
+      if (ts_lat_col[1] >= 0) S = FALSE
+      if (ts_lat_col[1] < 0) S = TRUE
+    }
 
     if (S) {
       seasons$start_season <- factor(quarters(ss, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
