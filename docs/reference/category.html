@@ -24,7 +24,7 @@ accordance with the naming scheme proposed in Hobday et al. (2018)."><meta prope
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0.9001</span>
       </span>
     </div>
 
@@ -191,8 +191,8 @@ then 'latitude', and use the numeric decimal degree values therein to determine 
 seasons for events. Note that this will override the <code>S</code> argument. Meaning that if the
 given/detected latitude column has negative values, <code>S</code> will automatically be set to
 <code>TRUE</code> and vice versa. Also note that if multiple different latitude values are detected
-this will intentionally cause an error because this function is not meant to be run on more
-than one time series at once. Finally, if latitude is exactly 0, it will be classified as
+this will intentionally cause an error because the <code>category()</code> function is not meant to be run on more
+than one time series at once. If latitude is exactly 0, it will be classified as
 Northern Hemisphere.</p></dd>
 
 </dl></div>
