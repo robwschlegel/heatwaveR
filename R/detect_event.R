@@ -58,13 +58,15 @@
 #' in \code{\link{ts2clm}} by setting \code{pctile = 10} (see example below).
 #' Any value may be used, but this is the setting used for the calculation of
 #' MCSs in Schlegel et al. (2017a).
-#' @param protoEvents Boolean specifying whether the full time series must be
-#' returned as a long table, together with columns indicating whether or not the
-#' threshold criterion (\code{threshCriterion}) and duration criterion (\code{durationCriterion})
+#' @param protoEvents Boolean specifying whether the original time series will be
+#' returned with only the columns indicating whether or not the threshold criterion
+#' (\code{threshCriterion}) and duration criterion (\code{durationCriterion})
 #' have been exceeded, a column showing if a heatwave is present (i.e. both
 #' \code{threshCriterion} and \code{durationCriterion} \code{TRUE}), and a
-#' sequential number uniquely identifying the detected event. In this case,
-#' the heatwave metrics will not be reported. The default is \code{FALSE}.
+#' sequential number uniquely identifying the detected event(s). Therefore any heatwave
+#' metrics will not be reported. The default is \code{FALSE}. Note also that if
+#' \code{protoEvents = TRUE} it will ignore whatever the user provides to the \code{categories}
+#' argument and anything else passed to \code{...}.
 #' @param categories Rather than using \code{\link{category}} as a separate step to determine
 #' the categories of the detected MHWs, one may choose to set this argument to \code{TRUE}.
 #' One may pass the same arguments used in the \code{\link{category}} function to this function

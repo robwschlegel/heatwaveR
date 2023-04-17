@@ -58,6 +58,29 @@ res_Med_cat <- category(res_Med, S = FALSE, name = "Med")
 tail(res_Med_cat)
 ```
 
+## Multiple time series
+
+If however we may want to determine the categories of event within a set of time series that cross over the equator, we may set the argument `lat_col = TRUE` to allow `category()` to automagically detect the latitude of the events by searching for columns named either 'lat' or 'latitude. See the vignette for [detecting events in gridded data](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html) for more examples of running **`heatwaveR`** code on gridded data.
+
+```{r, eval = FALSE}
+# Add lon/lat to the three default time series
+ts_WA <- sst_WA |> mutate(site = "WA", lon = 112.625, lat = -29.375)
+ts_NW_Atl <- sst_NW_Atl |> mutate(site = "NW_Atl", lon = -66.875, lat = 43.125)
+ts_Med <- sst_Med |> mutate(site = "Med", lon = 9.125, lat = 43.625)
+ts_ALL <- rbind(ts_WA, ts_NW_Atl, ts_Med)
+
+# Calculate MHW categories using purrr
+MHW_cat_ALL <- ts_ALL |> 
+  group_by(site) |> 
+  # nest() |> 
+  # mutate(clim = purrr::map(data ~ts2clm(.x, climatology_period = c("1982-01-01", "2011-12-31"))))
+  group_modify(~ {
+    ts2clm(.x, climatologyPeriod = c("1982-01-01", "2011-12-31"))
+    })
+
+```
+
+
 ## Visualising MHW categories
 
 ### Default MHW category visuals

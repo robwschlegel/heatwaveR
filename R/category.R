@@ -40,8 +40,8 @@
 #' seasons for events. Note that this will override the \code{S} argument. Meaning that if the
 #' given/detected latitude column has negative values, \code{S} will automatically be set to
 #' \code{TRUE} and vice versa. Also note that if multiple different latitude values are detected
-#' this will intentionally cause an error because this function is not meant to be run on more
-#' than one time series at once. Finally, if latitude is exactly 0, it will be classified as
+#' this will intentionally cause an error because the \code{category()} function is not meant to be run on more
+#' than one time series at once. If latitude is exactly 0, it will be classified as
 #' Northern Hemisphere.
 #'
 #' @return The function will return a data.frame with results similar to those seen in
