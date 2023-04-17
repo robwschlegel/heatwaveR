@@ -69,15 +69,24 @@ ts_NW_Atl <- sst_NW_Atl |> mutate(site = "NW_Atl", lon = -66.875, lat = 43.125)
 ts_Med <- sst_Med |> mutate(site = "Med", lon = 9.125, lat = 43.625)
 ts_ALL <- rbind(ts_WA, ts_NW_Atl, ts_Med)
 
-# Calculate MHW categories using purrr
+# Calculate MHW categories by site
 MHW_cat_ALL <- ts_ALL |> 
   group_by(site) |> 
-  # nest() |> 
-  # mutate(clim = purrr::map(data ~ts2clm(.x, climatology_period = c("1982-01-01", "2011-12-31"))))
   group_modify(~ {
-    ts2clm(.x, climatologyPeriod = c("1982-01-01", "2011-12-31"))
-    })
+    .x |> 
+      ts2clm(climatologyPeriod = c("1982-01-01", "2011-12-31")) |> 
+      detect_event() |> 
+      category(season = "peak", lat_col = TRUE)
+    }) |> 
+  # Correct event names by site
+  mutate(event_name = case_when(!is.na(event_name) ~ stringr::str_replace(event_name, "Event", site)))
 
+# View results
+MHW_cat_ALL |> 
+  arrange(-duration) |> 
+  filter(!is.na(event_name)) |> 
+  group_by(site) |> 
+  group_modify(~ head(.x, 2L))
 ```
 
 

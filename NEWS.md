@@ -1,3 +1,7 @@
+# heatwaveR 0.5.0.9001 (2023-04-17)
+
+-   Improvements to main pipeline to ensure `lat` column is passed forward for correct category seasons 
+
 # heatwaveR 0.5.0.9000 (2023-03-30)
 
 -   Bug hunting in the build-up to v1.0.0

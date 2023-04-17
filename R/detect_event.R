@@ -451,9 +451,7 @@ detect_event <- function(data,
 
     if (is.numeric(roundRes)) {
       if (nrow(events) > 0) {
-        # events_old <- dplyr::mutate(events, dplyr::across(dplyr::all_of(event_cols), round, roundRes))
         events[,event_cols] <- round(events[,event_cols], roundRes)
-        # events_clim_old <- dplyr::mutate(events_clim, dplyr::across(dplyr::all_of(clim_cols), round, roundRes))
         events_clim[,clim_cols] <- round(events_clim[,clim_cols], roundRes)
       }
     }
@@ -469,9 +467,6 @@ detect_event <- function(data,
       # data_cat <- category(data_temp)
       # data_cat <- category(data_temp, climatology = T)
       if(is.data.frame(data_cat)){
-        # data_res_old <- dplyr::left_join(events, data_cat,
-        #                              by = c("event_no", "duration",
-        #                                     "intensity_max" = "i_max", "date_peak" = "peak_date"))
         colnames(data_cat)[c(3,5)] <- c("date_peak", "intensity_max")
         data_res <- base::merge(x = events, y = data_cat,
                                 by = c("event_no", "duration", "intensity_max", "date_peak"))
@@ -480,11 +475,6 @@ detect_event <- function(data,
         row.names(data_res) <- NULL
 
       } else {
-        # data_res_old <- list(climatology = dplyr::left_join(data_res$climatology,
-        #                                                     data_cat$climatology, by = c("t", "event_no")),
-        #                  event = dplyr::left_join(data_res$event, data_cat$event,
-        #                                           by = c("event_no", "duration",
-        #                                                  "intensity_max" = "i_max", "date_peak" = "peak_date")))
         colnames(data_cat$event)[c(3,5)] <- c("date_peak", "intensity_max")
         data_res <- list(climatology = base::merge(x = data_res$climatology, y = data_cat$climatology,
                                                    by = c("t", "event_no"), all.x = TRUE),
