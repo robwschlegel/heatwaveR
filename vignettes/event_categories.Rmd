@@ -43,7 +43,7 @@ library(heatwaveR)
 
 # Calculate events
 ts <- ts2clm(sst_WA, climatologyPeriod = c("1982-01-01", "2011-12-31"))
-MHW <- detect_event(ts)
+MHW <- detect_event(ts) 
 MHW_cat <- category(MHW, S = TRUE, name = "WA")
 
 # Look at the top few events
