@@ -10,8 +10,8 @@ category(
   S = TRUE,
   name = "Event",
   climatology = FALSE,
-  MCScorrect = F,
-  MCSice = F,
+  MCScorrect = FALSE,
+  MCSice = FALSE,
   season = "range",
   roundVal = 4,
   lat_col = FALSE

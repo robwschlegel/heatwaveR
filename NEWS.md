@@ -1,3 +1,7 @@
+# heatwaveR 0.5.0.9002 (2023-05-02)
+
+-   Addressed extreme edge case in `category()` when no Moderate I MCS are detected, just higher categories
+
 # heatwaveR 0.5.0.9001 (2023-04-17)
 
 -   Improvements to main pipeline to ensure `lat` column is passed forward for correct category seasons 
