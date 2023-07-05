@@ -1,4 +1,4 @@
-#' Spead a time series wide to allow for a climatology to be calculated.
+#' Spread a time series wide to allow for a climatology to be calculated.
 #'
 #' An internal function that helps to create a wide time series that will
 #' then be used by \code{\link{clim_calc}} within \code{\link{ts2clm}}
