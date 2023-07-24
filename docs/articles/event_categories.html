@@ -100,6 +100,9 @@
   </ul>
 </li>
 <li>
+  <a href="../articles/demoMHW_iframe.html">Tutorial</a>
+</li>
+<li>
   <a href="../CITATIONS.html">Citations</a>
 </li>
 <li>
@@ -138,7 +141,7 @@ Categories</h1>
                         <h4 data-toc-skip class="author">Robert W
 Schlegel</h4>
             
-            <h4 data-toc-skip class="date">2023-05-02</h4>
+            <h4 data-toc-skip class="date">2023-07-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/event_categories.Rmd" class="external-link"><code>vignettes/event_categories.Rmd</code></a></small>
       <div class="hidden name"><code>event_categories.Rmd</code></div>
@@ -214,7 +217,7 @@ MHWs on the Western Australia data, we provide the name “WA” below:</p>
 <span></span>
 <span><span class="co"># Calculate events</span></span>
 <span><span class="va">ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">MHW</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/detect_event.html">detect_event</a></span><span class="op">(</span><span class="va">ts</span><span class="op">)</span></span>
+<span><span class="va">MHW</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/detect_event.html">detect_event</a></span><span class="op">(</span><span class="va">ts</span><span class="op">)</span> </span>
 <span><span class="va">MHW_cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/category.html">category</a></span><span class="op">(</span><span class="va">MHW</span>, S <span class="op">=</span> <span class="cn">TRUE</span>, name <span class="op">=</span> <span class="st">"WA"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Look at the top few events</span></span>
