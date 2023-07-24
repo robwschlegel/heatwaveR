@@ -29,7 +29,7 @@ navbar:
     - text: "Saving MHW Results to NetCDF"
       href: articles/MHW_to_nc.html
   - text: "Tutorial"
-    href: articles/demoMHW_iframe.html
+    href: http://193.50.85.71:3838/demoMHW/
   - text: "Citations"
     href: CITATIONS.html
   - text: "News"
