@@ -120,6 +120,8 @@ test_that("built in 'categories' argument works as expected", {
   res_list <- detect_event(ts, categories = T, climatology = T)
   res_season <- detect_event(ts, categories = T, season = "peak")
   res_name <- detect_event(ts_name, y = temperature, categories = T, climatology = T)
+  res_MCS <- detect_event(ts, coldSpells = T, categories = T, climatology = T,
+                          season = "peak", MCScorrect = TRUE, MCSice = TRUE)
   expect_is(res_event, "data.frame")
   expect_is(res_list, "list")
   expect_contains(colnames(res_list$climatology), "banana")

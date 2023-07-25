@@ -293,7 +293,6 @@ detect_event <- function(data,
   ts_thresh <- eval(substitute(threshClim), data)
   if (is.null(ts_thresh) | is.function(ts_thresh))
     stop("Please ensure that a column named 'thresh' is present in your data.frame or that you have assigned a column to the 'threshClim' argument.")
-  # t_series <- data.frame(ts_x = data$t, ts_y = data$temp, ts_seas = data$seas, ts_thresh = data$thresh)
   t_series <- data.frame(ts_x, ts_y, ts_seas, ts_thresh)
   rm(ts_x, ts_y, ts_seas, ts_thresh)
 
@@ -348,15 +347,6 @@ detect_event <- function(data,
                            mhw_rel_thresh = events_clim$ts_y - events_clim$ts_thresh)
       events <- events[stats::complete.cases(events$event_no),]
 
-      # tapply(input_values, input_factor, sum)
-      # NB: I started writing base R code here, but plyr::ddply is waaaay faster...
-
-      # NB: I considered using the Rfast package, but it takes a very long time to make and install...
-      # We need to consider which packages users are most likely to have
-      # Ultimately dplyr may be the way to go...
-
-      # NB: I don't like using plyr here, but it is fast and the package isn't that large...
-      # system.time(
       events <- plyr::ddply(events, c("event_no"), .fun = plyr::summarise,
                             index_start = min(row_index),
                             index_peak = row_index[mhw_rel_seas == max(mhw_rel_seas)][1],
@@ -377,7 +367,6 @@ detect_event <- function(data,
                             intensity_max_abs = max(ts_y),
                             intensity_var_abs = stats::sd(ts_y),
                             intensity_cumulative_abs = sum(ts_y))
-      # )
 
       mhw_rel_seas <- t_series$ts_y - t_series$ts_seas
       A <- mhw_rel_seas[events$index_start]
@@ -464,7 +453,7 @@ detect_event <- function(data,
       if("latitude" %in% colnames(data)){
         data_temp$climatology$lat <- data$latitude
       }
-      data_cat <- category(data_temp, ...)# climatology = T)
+      data_cat <- category(data_temp, ...)
 
       if(is.data.frame(data_cat)){
         colnames(data_cat)[c(3,5)] <- c("date_peak", "intensity_max")
