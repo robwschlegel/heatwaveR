@@ -293,6 +293,7 @@ detect_event <- function(data,
   ts_thresh <- eval(substitute(threshClim), data)
   if (is.null(ts_thresh) | is.function(ts_thresh))
     stop("Please ensure that a column named 'thresh' is present in your data.frame or that you have assigned a column to the 'threshClim' argument.")
+  # t_series <- data.frame(ts_x = data$t, ts_y = data$temp, ts_seas = data$seas, ts_thresh = data$thresh_MCS)
   t_series <- data.frame(ts_x, ts_y, ts_seas, ts_thresh)
   rm(ts_x, ts_y, ts_seas, ts_thresh)
 
@@ -447,12 +448,20 @@ detect_event <- function(data,
     if (categories) {
       data_temp <- list(climatology = events_clim, event = events)
       colnames(data_temp$climatology)[1:4] <- c("t", "temp", "seas", "thresh")
+
+      if (coldSpells) {
+        data_temp$climatology$temp <- -data_temp$climatology$temp
+        data_temp$climatology$seas <- -data_temp$climatology$seas
+        data_temp$climatology$thresh <- -data_temp$climatology$thresh
+      }
+
       if("lat" %in% colnames(data)){
         data_temp$climatology$lat <- data$lat
       }
       if("latitude" %in% colnames(data)){
         data_temp$climatology$lat <- data$latitude
       }
+
       data_cat <- category(data_temp, ...)
 
       if(is.data.frame(data_cat)){
@@ -469,7 +478,6 @@ detect_event <- function(data,
                                                    by = c("t", "event_no"), all.x = TRUE),
                          event = base::merge(x = data_res$event, y = data_cat$event,
                                              by = c("event_no", "duration", "intensity_max", "date_peak")))
-        data_res$climatology <- data_res$climatology[order(data_res$climatology$t),]
 
         type_cols <- base::sapply(data_res$climatology, class)
         date_cols <- colnames(data_res$climatology)[which(type_cols == "Date")]
@@ -477,6 +485,7 @@ detect_event <- function(data,
         other_cols <- colnames(data_res$climatology)[! colnames(data_res$climatology) %in% c(date_cols, data_cols)]
 
         data_res$climatology <- data_res$climatology[c(date_cols, data_cols, other_cols)]
+        data_res$climatology <- data_res$climatology[base::order(data_res$climatology$t),]
         data_res$event <- data_res$event[order(data_res$event$event_no),]
         data_res$event <- data_res$event[,c(1,5,6,7,2,8,4,9,10,3,11:29)]
         row.names(data_res$event) <- NULL
