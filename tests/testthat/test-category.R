@@ -187,4 +187,5 @@ test_that("MCSice creates a 'V Ice' category", {
   res <- detect_event(ts_ice, coldSpells = T)
   cat_ice <- category(res, climatology = T, MCScorrect = T, MCSice = T)
   expect_equal(as.numeric(table(cat_ice$event$category)[5]), 13)
+  expect_equal(as.numeric(table(cat_ice$climatology$category)[5]), 89)
 })

@@ -1,6 +1,7 @@
 # heatwaveR 0.5.0.9003 (2023-07-25)
 
 -   Changed behaviour of `category()` to address edge case in polar MCS
+-   Corrected bug in `category()` that did not change the 'V Ice' category in the climatology output
 
 # heatwaveR 0.5.0.9002 (2023-05-02)
 
