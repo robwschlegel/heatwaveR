@@ -299,7 +299,7 @@ category <- function(data,
 
     moderate <- strong <- severe <- extreme <- NULL
 
-    if (max(cat_frame$i_max) < 0) {
+    if (min(cat_frame$i_max) < 0) {
       clim_diff$ts_y <- -clim_diff$ts_y
       clim_diff$seas <- -clim_diff$seas
       clim_diff$thresh <- -clim_diff$thresh
@@ -375,7 +375,7 @@ category <- function(data,
       clim_res$intensity = round(clim_res$ts_y - clim_res$seas, roundVal)
       clim_res <- clim_res[,c("t", "event_no", "intensity", "category")]
 
-      if (max(cat_frame$i_max) < 0) clim_res$intensity <- -clim_res$intensity
+      if (min(cat_frame$i_max) < 0) clim_res$intensity <- -clim_res$intensity
 
       list(climatology = clim_res,
            event = cat_res)

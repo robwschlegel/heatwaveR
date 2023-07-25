@@ -1,3 +1,7 @@
+# heatwaveR 0.5.0.9003 (2023-07-25)
+
+-   Changed behaviour of `category()` to address edge case in polar MCS
+
 # heatwaveR 0.5.0.9002 (2023-05-02)
 
 -   Addressed extreme edge case in `category()` when no Moderate I MCS are detected, just higher categories
