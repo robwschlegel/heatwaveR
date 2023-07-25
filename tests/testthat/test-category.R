@@ -181,11 +181,14 @@ test_that("MCScorrect argument bounds the results to -1.8C", {
   expect_equal(as.numeric(table(cat_correct$climatology$category)[4]), 271)
 })
 
-test_that("MCSice creates a 'V Ice' category", {
+test_that("MCSice creates a 'V Ice' category only for MCS", {
   sst_ice <- sst_NW_Atl; sst_ice$temp <- sst_ice$temp-5; sst_ice$temp <- ifelse(sst_ice$temp < -1.8, -1.8, sst_ice$temp)
   ts_ice <- ts2clm(sst_ice, climatologyPeriod = c("1982-01-01", "2011-12-31"), pctile = 10)
   res <- detect_event(ts_ice, coldSpells = T)
   cat_ice <- category(res, climatology = T, MCScorrect = T, MCSice = T)
+  cat_no_ice <- category(detect_event(ts2clm(sst_WA, climatologyPeriod = c("1982-01-01", "2011-12-31"))),
+                         climatology = T, MCScorrect = T, MCSice = T)
   expect_equal(as.numeric(table(cat_ice$event$category)[5]), 13)
   expect_equal(as.numeric(table(cat_ice$climatology$category)[5]), 89)
+  expect_equal(length(table(cat_no_ice$climatology$category)), 4)
 })

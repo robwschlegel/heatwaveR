@@ -110,6 +110,7 @@
 <ul><li>Changed behaviour of <code><a href="../reference/category.html">category()</a></code> to address edge case in polar MCS</li>
 <li>Corrected bug in <code><a href="../reference/category.html">category()</a></code> that did not change the ‘V Ice’ category in the climatology output</li>
 <li>Also a bug that didn’t return all of a users columns that are not part of the normal <code>cqtegory()</code> output</li>
+<li>And a bug that allowed users to unintentionally assign ‘V Ice’ category to MHWs</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.5.0.9002" id="heatwaver-0509002-2023-05-02">heatwaveR 0.5.0.9002 (2023-05-02)<a class="anchor" aria-label="anchor" href="#heatwaver-0509002-2023-05-02"></a></h2>
@@ -717,7 +718,7 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.2.9000" id="heatwaver-0229000-2018-05-15">heatwaveR 0.2.2.9000 (2018-05-15)<a class="anchor" aria-label="anchor" href="#heatwaver-0229000-2018-05-15"></a></h2>
-<ul><li>Removed all instances of <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code> in favour of the new pipeline</li>
+<ul><li>Removed all instances of <code>detect()</code> in favour of the new pipeline</li>
 <li>Updated <code><a href="../reference/exceedance.html">exceedance()</a></code> to utilise the internal functions</li>
 <li>Updated object names in <code><a href="../reference/block_average.html">block_average()</a></code>
 </li>
@@ -726,7 +727,7 @@
 <h2 class="page-header" data-toc-text="0.2.1.9001" id="heatwaver-0219001-2018-05-15">heatwaveR 0.2.1.9001 (2018-05-15)<a class="anchor" aria-label="anchor" href="#heatwaver-0219001-2018-05-15"></a></h2>
 <ul><li>Micro edits to documentation</li>
 <li>Testing for all exported and internal functions brought up to speed</li>
-<li>Ensuring that new <code><a href="../reference/ts2clm.html">ts2clm()</a></code> and <code><a href="../reference/detect_event.html">detect_event()</a></code> pipeline returns the same results as the old <code><a href="../reference/make_whole.html">make_whole()</a></code> and <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code> pipeline</li>
+<li>Ensuring that new <code><a href="../reference/ts2clm.html">ts2clm()</a></code> and <code><a href="../reference/detect_event.html">detect_event()</a></code> pipeline returns the same results as the old <code><a href="../reference/make_whole.html">make_whole()</a></code> and <code>detect()</code> pipeline</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.1.9000" id="heatwaver-0219000-2018-05-14">heatwaveR 0.2.1.9000 (2018-05-14)<a class="anchor" aria-label="anchor" href="#heatwaver-0219000-2018-05-14"></a></h2>
@@ -734,7 +735,7 @@
 <li>
 <code><a href="../reference/detect_event.html">detect_event()</a></code> now passing checks</li>
 <li>Must still test for MCSs</li>
-<li>The old <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code> function was unpacked and simplified. Internal code is now in new functions, most of which will not be seen by the user. They are <code><a href="../reference/make_whole.html">make_whole()</a></code> <code><a href="../reference/proto_event.html">proto_event()</a></code>, <code><a href="../reference/clim_calc.html">clim_calc()</a></code>, <code><a href="../reference/smooth_percentile.html">smooth_percentile()</a></code>, <code><a href="../reference/clim_spread.html">clim_spread()</a></code>, and <code><a href="../reference/ts2clm.html">ts2clm()</a></code>
+<li>The old <code>detect()</code> function was unpacked and simplified. Internal code is now in new functions, most of which will not be seen by the user. They are <code><a href="../reference/make_whole.html">make_whole()</a></code> <code><a href="../reference/proto_event.html">proto_event()</a></code>, <code><a href="../reference/clim_calc.html">clim_calc()</a></code>, <code><a href="../reference/smooth_percentile.html">smooth_percentile()</a></code>, <code><a href="../reference/clim_spread.html">clim_spread()</a></code>, and <code><a href="../reference/ts2clm.html">ts2clm()</a></code>
 </li>
 <li>
 <code><a href="../reference/ts2clm.html">ts2clm()</a></code> used instead of <code>detect_clim()</code>
@@ -746,7 +747,7 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.0.9000" id="heatwaver-0209000-2018-05-11">heatwaveR 0.2.0.9000 (2018-05-11)<a class="anchor" aria-label="anchor" href="#heatwaver-0209000-2018-05-11"></a></h2>
 <ul><li>
-<code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code> has now been broken into <code>detect_clim()</code> and <code><a href="../reference/detect_event.html">detect_event()</a></code>
+<code>detect()</code> has now been broken into <code>detect_clim()</code> and <code><a href="../reference/detect_event.html">detect_event()</a></code>
 </li>
 <li>These now also rely on internal functions</li>
 <li>The purpose of this is to create a family of functions that provide different options</li>
@@ -754,7 +755,7 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.1.0.9000" id="heatwaver-0109000-2018-05-10">heatwaveR 0.1.0.9000 (2018-05-10)<a class="anchor" aria-label="anchor" href="#heatwaver-0109000-2018-05-10"></a></h2>
-<ul><li>One may now provide alternative baselines and climatologies to <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code>
+<ul><li>One may now provide alternative baselines and climatologies to <code>detect()</code>
 </li>
 </ul></div>
     <div class="section level2">
@@ -763,7 +764,7 @@
 </li>
 <li>Testing for <code><a href="../reference/block_average.html">block_average()</a></code>
 </li>
-<li>Testing for <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code>
+<li>Testing for <code>detect()</code>
 </li>
 <li>Testing <code><a href="../reference/exceedance.html">exceedance()</a></code>
 </li>
@@ -788,14 +789,14 @@
 <li>First draft of <code>heatwaveR</code> hex logo added to site</li>
 <li>Added <code>category</code> option to <code><a href="../reference/event_line.html">event_line()</a></code>
 </li>
-<li>Simplifications and consistency checks to <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code>
+<li>Simplifications and consistency checks to <code>detect()</code>
 </li>
 <li>Some writing on Baselines and climatology vignette</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.5.9001" id="heatwaver-0059001-2018-05-02">heatwaveR 0.0.5.9001 (2018-05-02)<a class="anchor" aria-label="anchor" href="#heatwaver-0059001-2018-05-02"></a></h2>
 <ul><li>Fix to <code><a href="../reference/event_line.html">event_line()</a></code> not plotting MCSs correctly</li>
-<li>Fix error with smooth_percentile and smooth_percentile_width descriptions that were interchanged in <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code>
+<li>Fix error with smooth_percentile and smooth_percentile_width descriptions that were interchanged in <code>detect()</code>
 </li>
 <li>Simplify initial lines of leap year calculations (remove redundant code)</li>
 <li>change from <code><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">raster::quantile()</a></code> to <code><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">stats::quantile()</a></code>
@@ -803,11 +804,11 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.5.9000" id="heatwaver-0059000-2018-04-29">heatwaveR 0.0.5.9000 (2018-04-29)<a class="anchor" aria-label="anchor" href="#heatwaver-0059000-2018-04-29"></a></h2>
-<ul><li>Add option to use a custom baseline to <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code> as requested by Maxime Marin (), The University of Tasmania (IMAS) – CSIRO (O&amp;A), and which is present in the python version of the package</li>
+<ul><li>Add option to use a custom baseline to <code>detect()</code> as requested by Maxime Marin (), The University of Tasmania (IMAS) – CSIRO (O&amp;A), and which is present in the python version of the package</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.4.9000" id="heatwaver-0049000-2018-04-28">heatwaveR 0.0.4.9000 (2018-04-28)<a class="anchor" aria-label="anchor" href="#heatwaver-0049000-2018-04-28"></a></h2>
-<ul><li>Remove restriction to require full years for start/end points of climatology calculations in <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code>
+<ul><li>Remove restriction to require full years for start/end points of climatology calculations in <code>detect()</code>
 </li>
 <li>Documentation updated accordingly</li>
 <li>Vignette on OISST data processing added</li>

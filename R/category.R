@@ -289,12 +289,14 @@ category <- function(data,
     clim_diff$thresh_4x <- round(clim_diff$thresh_3x + clim_diff$diff, roundVal)
     row.names(clim_diff) <- NULL
 
-    if (MCScorrect) {
-      clim_diff$diff <- round(base::ifelse(clim_diff$thresh_4x + clim_diff$diff <= -1.8,
-                                           -(clim_diff$thresh + 1.8)/4, clim_diff$diff), roundVal)
-      clim_diff$thresh_2x <- round(clim_diff$thresh + clim_diff$diff, roundVal)
-      clim_diff$thresh_3x <- round(clim_diff$thresh_2x + clim_diff$diff, roundVal)
-      clim_diff$thresh_4x <- round(clim_diff$thresh_3x + clim_diff$diff, roundVal)
+    if (min(cat_frame$i_max) < 0) {
+      if (MCScorrect) {
+        clim_diff$diff <- round(base::ifelse(clim_diff$thresh_4x + clim_diff$diff <= -1.8,
+                                             -(clim_diff$thresh + 1.8)/4, clim_diff$diff), roundVal)
+        clim_diff$thresh_2x <- round(clim_diff$thresh + clim_diff$diff, roundVal)
+        clim_diff$thresh_3x <- round(clim_diff$thresh_2x + clim_diff$diff, roundVal)
+        clim_diff$thresh_4x <- round(clim_diff$thresh_3x + clim_diff$diff, roundVal)
+      }
     }
 
     moderate <- strong <- severe <- extreme <- NULL
@@ -346,17 +348,19 @@ category <- function(data,
                                                   paste0(cat_join$event_name, cat_join$event_name_letter), cat_join$event_name))
     cat_join <- cat_join[,1:11]
 
-    if (MCSice) {
+    if (min(cat_frame$i_max) < 0) {
+      if (MCSice) {
 
-      max_thresh <- ice_cat <- NULL
+        max_thresh <- ice_cat <- NULL
 
-      ice_test <- data.frame(event_no = base::unique(clim_diff$event_no),
-                             max_thresh = base::tapply(clim_diff$thresh, clim_diff$event_no, max))
-      ice_test$ice_cat <- base::ifelse(ice_test$max_thresh > 1.7, TRUE, FALSE)
+        ice_test <- data.frame(event_no = base::unique(clim_diff$event_no),
+                               max_thresh = base::tapply(clim_diff$thresh, clim_diff$event_no, max))
+        ice_test$ice_cat <- base::ifelse(ice_test$max_thresh > 1.7, TRUE, FALSE)
 
-      cat_join <- base::merge(cat_join, ice_test, by = "event_no", all.x = TRUE)
-      cat_join$category <- base::ifelse(cat_join$ice_cat, "V Ice", cat_join$category)
-      cat_join <- cat_join[,1:11]
+        cat_join <- base::merge(cat_join, ice_test, by = "event_no", all.x = TRUE)
+        cat_join$category <- base::ifelse(cat_join$ice_cat, "V Ice", cat_join$category)
+        cat_join <- cat_join[,1:11]
+      }
     }
 
     cat_res <- cat_join[base::order(-cat_join$p_moderate, -cat_join$p_strong,
@@ -372,8 +376,10 @@ category <- function(data,
                                        base::ifelse(clim_res$ts_y > clim_res$thresh_3x, "III Severe",
                                                     base::ifelse(clim_res$ts_y > clim_res$thresh_2x, "II Strong",
                                                                  base::ifelse(clim_res$ts_y > clim_res$thresh, "I Moderate", NA))))
-      if (MCSice) {
-        clim_res$category <- base::ifelse(clim_res$thresh > 1.7, "V Ice", clim_res$category)
+      if (min(cat_frame$i_max) < 0) {
+        if (MCSice) {
+          clim_res$category <- base::ifelse(clim_res$thresh > 1.7, "V Ice", clim_res$category)
+        }
       }
       clim_res$intensity = round(clim_res$ts_y - clim_res$seas, roundVal)
       if (min(cat_frame$i_max) < 0) clim_res$intensity <- -clim_res$intensity
