@@ -72,7 +72,7 @@
 #' One may pass the same arguments used in the \code{\link{category}} function to this function
 #' to affect the output. Note that the default behaviour of \code{\link{category}} is to
 #' return the event data only. To return the same list structure that \code{\link{detect_event}}
-#' outputs by default, use \code{climatology = TRUE}.
+#' outputs by default, add the argument \code{climatology = TRUE}.
 #' @param roundRes This argument allows the user to choose how many decimal places
 #' the MHW metric outputs will be rounded to. Default is 4. To
 #' prevent rounding set \code{roundRes = FALSE}. This argument may only be given
@@ -293,6 +293,7 @@ detect_event <- function(data,
   ts_thresh <- eval(substitute(threshClim), data)
   if (is.null(ts_thresh) | is.function(ts_thresh))
     stop("Please ensure that a column named 'thresh' is present in your data.frame or that you have assigned a column to the 'threshClim' argument.")
+  # t_series <- data.frame(ts_x = data$t, ts_y = data$temp, ts_seas = data$seas, ts_thresh = data$thresh)
   t_series <- data.frame(ts_x, ts_y, ts_seas, ts_thresh)
   rm(ts_x, ts_y, ts_seas, ts_thresh)
 
@@ -349,12 +350,6 @@ detect_event <- function(data,
 
       # tapply(input_values, input_factor, sum)
       # NB: I started writing base R code here, but plyr::ddply is waaaay faster...
-      # ptm <- proc.time()
-      # index_start <- tapply(X = events$row_index, INDEX = events$event_no, FUN = min)
-      # index_peak <- sapply(X = split(events, events$event_no), FUN = function(x) x[x$mhw_rel_seas == max(x$mhw_rel_seas)[1],]$row_index)
-      # index_end <- tapply(X = events$row_index, INDEX = events$event_no, FUN = max)
-      # index_peak <- sapply(X = split(events, events$event_no), FUN = function(x) x[x$mhw_rel_seas == max(x$mhw_rel_seas)[1],]$row_index)
-      # proc.time() - ptm
 
       # NB: I considered using the Rfast package, but it takes a very long time to make and install...
       # We need to consider which packages users are most likely to have
@@ -461,11 +456,16 @@ detect_event <- function(data,
     data_res <- list(climatology = data_clim, event = events)
 
     if (categories) {
-      data_temp <- data_res
-      colnames(data_temp$climatology)[3] <- "temp"
-      data_cat <- category(data_temp, ...)
-      # data_cat <- category(data_temp)
-      # data_cat <- category(data_temp, climatology = T)
+      data_temp <- list(climatology = events_clim, event = events)
+      colnames(data_temp$climatology)[1:4] <- c("t", "temp", "seas", "thresh")
+      if("lat" %in% colnames(data)){
+        data_temp$climatology$lat <- data$lat
+      }
+      if("latitude" %in% colnames(data)){
+        data_temp$climatology$lat <- data$latitude
+      }
+      data_cat <- category(data_temp, ...)# climatology = T)
+
       if(is.data.frame(data_cat)){
         colnames(data_cat)[c(3,5)] <- c("date_peak", "intensity_max")
         data_res <- base::merge(x = events, y = data_cat,
@@ -481,7 +481,13 @@ detect_event <- function(data,
                          event = base::merge(x = data_res$event, y = data_cat$event,
                                              by = c("event_no", "duration", "intensity_max", "date_peak")))
         data_res$climatology <- data_res$climatology[order(data_res$climatology$t),]
-        data_res$climatology <- data_res$climatology[,c(3,1,4:9,2,10,11)]
+
+        type_cols <- base::sapply(data_res$climatology, class)
+        date_cols <- colnames(data_res$climatology)[which(type_cols == "Date")]
+        data_cols <- colnames(data)[!colnames(data) %in% colnames(data_cat$climatology)]
+        other_cols <- colnames(data_res$climatology)[! colnames(data_res$climatology) %in% c(date_cols, data_cols)]
+
+        data_res$climatology <- data_res$climatology[c(date_cols, data_cols, other_cols)]
         data_res$event <- data_res$event[order(data_res$event$event_no),]
         data_res$event <- data_res$event[,c(1,5,6,7,2,8,4,9,10,3,11:29)]
         row.names(data_res$event) <- NULL

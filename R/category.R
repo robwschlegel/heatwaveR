@@ -372,15 +372,12 @@ category <- function(data,
                                        base::ifelse(clim_res$ts_y > clim_res$thresh_3x, "III Severe",
                                                     base::ifelse(clim_res$ts_y > clim_res$thresh_2x, "II Strong",
                                                                  base::ifelse(clim_res$ts_y > clim_res$thresh, "I Moderate", NA))))
-      clim_res$intensity = round(clim_res$ts_y - clim_res$seas, roundVal)
-
       if (MCSice) {
         clim_res$category <- base::ifelse(clim_res$thresh > 1.7, "V Ice", clim_res$category)
       }
-
-      clim_res <- clim_res[,c("t", "event_no", "intensity", "category")]
-
+      clim_res$intensity = round(clim_res$ts_y - clim_res$seas, roundVal)
       if (min(cat_frame$i_max) < 0) clim_res$intensity <- -clim_res$intensity
+      clim_res <- clim_res[,c("t", "event_no", "intensity", "category")]
 
       list(climatology = clim_res,
            event = cat_res)

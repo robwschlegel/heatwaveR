@@ -103,7 +103,7 @@ the categories of the detected MHWs, one may choose to set this argument to \cod
 One may pass the same arguments used in the \code{\link{category}} function to this function
 to affect the output. Note that the default behaviour of \code{\link{category}} is to
 return the event data only. To return the same list structure that \code{\link{detect_event}}
-outputs by default, use \code{climatology = TRUE}.}
+outputs by default, add the argument \code{climatology = TRUE}.}
 
 \item{roundRes}{This argument allows the user to choose how many decimal places
 the MHW metric outputs will be rounded to. Default is 4. To

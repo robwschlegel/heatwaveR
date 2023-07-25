@@ -2,6 +2,7 @@
 
 -   Changed behaviour of `category()` to address edge case in polar MCS
 -   Corrected bug in `category()` that did not change the 'V Ice' category in the climatology output
+-   Also a bug that didn't return all of a users columns that are not part of the normal `cqtegory()` output
 
 # heatwaveR 0.5.0.9002 (2023-05-02)
 
