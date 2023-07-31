@@ -128,15 +128,21 @@ test_that("no detected events returns a 1 row NA dataframe and not an error", {
   expect_equal(ncol(cat_clim$climatology), 4)
 })
 
-test_that("The presence of only Moderate events is responded to correctly", {
+test_that("The presence of only/no I Moderate events is responded to correctly", {
   res_base <- detect_event(ts2clm(sst_Med, climatologyPeriod = c("1982-01-01", "2011-12-31")))
   cat_base <- category(res_base, climatology = T)
   res_Moderate <- res_base
   res_Moderate$climatology <- base::merge(res_Moderate$climatology, cat_base$climatology, by = c("t", "event_no"))
   res_Moderate$climatology$temp[res_Moderate$climatology$category != "I Moderate"] <- as.numeric(NA)
   res_Moderate$climatology <- res_Moderate$climatology[!is.na(res_Moderate$climatology$temp),]
-  cat_flat <- category(res_Moderate)
-  expect_equal(max(cat_flat$p_strong), 0)
+  res_no_Moderate <- res_base
+  res_no_Moderate$climatology <- base::merge(res_no_Moderate$climatology, cat_base$climatology, by = c("t", "event_no"))
+  res_no_Moderate$climatology$temp[res_no_Moderate$climatology$category == "I Moderate"] <- as.numeric(NA)
+  res_no_Moderate$climatology <- res_no_Moderate$climatology[!is.na(res_no_Moderate$climatology$temp),]
+  cat_Moderate <- category(res_Moderate)
+  cat_no_Moderate <- category(res_no_Moderate)
+  expect_equal(max(cat_Moderate$p_strong), 0)
+  expect_equal(sum(cat_no_Moderate$category == "I Moderate", na.rm = T), 0)
 })
 
 test_that("the different `season` option function as expected", {

@@ -110,27 +110,6 @@ test_that("only one event with NA for rate_onset or rate_decline returns NA and 
   expect_equal(res_both$event$rate_decline, NA)
 })
 
-
-test_that("built in 'categories' argument works as expected", {
-  ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-  ts$banana <- "Banana"
-  ts_name <- ts
-  colnames(ts_name)[3] <- "temperature"
-  res_event <- detect_event(ts, categories = T)
-  res_list <- detect_event(ts, categories = T, climatology = T)
-  res_season <- detect_event(ts, categories = T, season = "peak")
-  res_name <- detect_event(ts_name, y = temperature, categories = T, climatology = T)
-  res_MCS <- detect_event(ts, coldSpells = T, categories = T, climatology = T,
-                          season = "peak", MCScorrect = TRUE, MCSice = TRUE)
-  expect_is(res_event, "data.frame")
-  expect_is(res_list, "list")
-  expect_contains(colnames(res_list$climatology), "banana")
-  expect_equal(res_event$category[1], "I Moderate")
-  expect_equal(res_list$climatology$category[889], "I Moderate")
-  expect_equal(res_season$season[3], "Winter")
-  expect_equal(res_name$event$p_moderate[3], 100)
-})
-
 test_that("useful error is returned when incorrect column names exist", {
   ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   colnames(ts) <- c("doy", "banana", "temp", "seas", "thresh")
@@ -154,4 +133,26 @@ test_that("latitude columns are passed to category internally", {
   res_N <- detect_event(ts, categories = T, lat_col = T)
   expect_equal(res_S$season[1], "Fall")
   expect_equal(res_N$season[1], "Spring")
+})
+
+test_that("built in 'categories' argument works as expected", {
+  ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  ts$banana <- "Banana"
+  ts$lat <- 10
+  ts_name <- ts
+  colnames(ts_name)[3] <- "temperature"
+  res_event <- detect_event(ts, categories = T, lat_col = TRUE)
+  res_list <- detect_event(ts, categories = T, climatology = T)
+  res_season <- detect_event(ts, categories = T, season = "peak")
+  res_name <- detect_event(ts_name, y = temperature, categories = T, climatology = T)
+  res_MCS <- detect_event(ts, coldSpells = T, categories = T, climatology = T,
+                          season = "peak", MCScorrect = TRUE, MCSice = TRUE)
+  expect_is(res_event, "data.frame")
+  expect_is(res_list, "list")
+  expect_contains(colnames(res_list$climatology), "banana")
+  expect_equal(res_event$category[1], "I Moderate")
+  expect_equal(res_event$season[1], "Spring")
+  expect_equal(res_list$climatology$category[889], "I Moderate")
+  expect_equal(res_season$season[3], "Winter")
+  expect_equal(res_name$event$p_moderate[3], 100)
 })
