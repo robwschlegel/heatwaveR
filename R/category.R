@@ -314,7 +314,7 @@ category <- function(data,
     strong_n <- as.data.frame(base::table(clim_diff[clim_diff$ts_y > clim_diff$thresh_2x,]$event_no))
     severe_n <- as.data.frame(base::table(clim_diff[clim_diff$ts_y > clim_diff$thresh_3x,]$event_no))
     extreme_n <- as.data.frame(base::table(clim_diff[clim_diff$ts_y > clim_diff$thresh_4x,]$event_no))
-    if (ncol(moderate_n) == 1) moderate_n <- data.frame(Var1 = NA, Freq = NA)
+    # if (ncol(moderate_n) == 1) moderate_n <- data.frame(Var1 = NA, Freq = NA)
     if (ncol(strong_n) == 1) strong_n <- data.frame(Var1 = NA, Freq = NA)
     if (ncol(severe_n) == 1) severe_n <- data.frame(Var1 = NA, Freq = NA)
     if (ncol(extreme_n) == 1) extreme_n <- data.frame(Var1 = NA, Freq = NA)

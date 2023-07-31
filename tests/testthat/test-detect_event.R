@@ -126,32 +126,35 @@ test_that("useful error is returned when incorrect column names exist", {
                "Please ensure that a column named 'thresh' is present in your data.frame or that you have assigned a column to the 'threshClim' argument.")
 })
 
-test_that("latitude columns are passed to category internally", {
+test_that("lat + latitude columns are passed to category internally", {
   ts <- ts2clm(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   ts$lat <- 10
   res_S <- detect_event(ts, categories = T)
   res_N <- detect_event(ts, categories = T, lat_col = T)
   expect_equal(res_S$season[1], "Fall")
   expect_equal(res_N$season[1], "Spring")
+  colnames(ts)[6] <- "latitude"
+  res_S <- detect_event(ts, categories = T)
+  res_N <- detect_event(ts, categories = T, lat_col = T)
+  expect_equal(res_S$season[1], "Fall")
+  expect_equal(res_N$season[1], "Spring")
 })
 
-test_that("built in 'categories' argument works as expected", {
+test_that("Other built in 'categories' argument works as expected", {
   ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   ts$banana <- "Banana"
-  ts$lat <- 10
   ts_name <- ts
   colnames(ts_name)[3] <- "temperature"
-  res_event <- detect_event(ts, categories = T, lat_col = TRUE)
-  res_list <- detect_event(ts, categories = T, climatology = T)
-  res_season <- detect_event(ts, categories = T, season = "peak")
-  res_name <- detect_event(ts_name, y = temperature, categories = T, climatology = T)
-  res_MCS <- detect_event(ts, coldSpells = T, categories = T, climatology = T,
+  res_event <- detect_event(ts, categories = TRUE)
+  res_list <- detect_event(ts, categories = TRUE, climatology = TRUE)
+  res_season <- detect_event(ts, categories = TRUE, season = "peak")
+  res_name <- detect_event(ts_name, y = temperature, categories = TRUE, climatology = TRUE)
+  res_MCS <- detect_event(ts, coldSpells = TRUE, categories = TRUE, climatology = TRUE,
                           season = "peak", MCScorrect = TRUE, MCSice = TRUE)
   expect_is(res_event, "data.frame")
   expect_is(res_list, "list")
   expect_contains(colnames(res_list$climatology), "banana")
   expect_equal(res_event$category[1], "I Moderate")
-  expect_equal(res_event$season[1], "Spring")
   expect_equal(res_list$climatology$category[889], "I Moderate")
   expect_equal(res_season$season[3], "Winter")
   expect_equal(res_name$event$p_moderate[3], 100)
