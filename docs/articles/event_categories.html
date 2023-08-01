@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.1</span>
       </span>
     </div>
 
@@ -100,6 +100,9 @@
   </ul>
 </li>
 <li>
+  <a href="http://193.50.85.71:3838/demoMHW/" class="external-link">Tutorial</a>
+</li>
+<li>
   <a href="../CITATIONS.html">Citations</a>
 </li>
 <li>
@@ -138,7 +141,7 @@ Categories</h1>
                         <h4 data-toc-skip class="author">Robert W
 Schlegel</h4>
             
-            <h4 data-toc-skip class="date">2023-03-25</h4>
+            <h4 data-toc-skip class="date">2023-07-31</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/event_categories.Rmd" class="external-link"><code>vignettes/event_categories.Rmd</code></a></small>
       <div class="hidden name"><code>event_categories.Rmd</code></div>
@@ -214,7 +217,7 @@ MHWs on the Western Australia data, we provide the name “WA” below:</p>
 <span></span>
 <span><span class="co"># Calculate events</span></span>
 <span><span class="va">ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">MHW</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/detect_event.html">detect_event</a></span><span class="op">(</span><span class="va">ts</span><span class="op">)</span></span>
+<span><span class="va">MHW</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/detect_event.html">detect_event</a></span><span class="op">(</span><span class="va">ts</span><span class="op">)</span> </span>
 <span><span class="va">MHW_cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/category.html">category</a></span><span class="op">(</span><span class="va">MHW</span>, S <span class="op">=</span> <span class="cn">TRUE</span>, name <span class="op">=</span> <span class="st">"WA"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Look at the top few events</span></span>
@@ -258,6 +261,53 @@ the event.</p>
 <span><span class="co">## 123       73        0         0        Spring</span></span></code></pre>
 </div>
 <div class="section level2">
+<h2 id="multiple-time-series">Multiple time series<a class="anchor" aria-label="anchor" href="#multiple-time-series"></a>
+</h2>
+<p>If however we may want to determine the categories of event within a
+set of time series that cross over the equator, we may set the argument
+<code>lat_col = TRUE</code> to allow <code><a href="../reference/category.html">category()</a></code> to
+automagically detect the latitude of the events by searching for columns
+named either ‘lat’ or ’latitude. See the vignette for <a href="https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html" class="external-link">detecting
+events in gridded data</a> for more examples of running
+<strong><code>heatwaveR</code></strong> code on gridded data.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Add lon/lat to the three default time series</span></span>
+<span><span class="va">ts_WA</span> <span class="op">&lt;-</span> <span class="va">sst_WA</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>site <span class="op">=</span> <span class="st">"WA"</span>, lon <span class="op">=</span> <span class="fl">112.625</span>, lat <span class="op">=</span> <span class="op">-</span><span class="fl">29.375</span><span class="op">)</span></span>
+<span><span class="va">ts_NW_Atl</span> <span class="op">&lt;-</span> <span class="va">sst_NW_Atl</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>site <span class="op">=</span> <span class="st">"NW_Atl"</span>, lon <span class="op">=</span> <span class="op">-</span><span class="fl">66.875</span>, lat <span class="op">=</span> <span class="fl">43.125</span><span class="op">)</span></span>
+<span><span class="va">ts_Med</span> <span class="op">&lt;-</span> <span class="va">sst_Med</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>site <span class="op">=</span> <span class="st">"Med"</span>, lon <span class="op">=</span> <span class="fl">9.125</span>, lat <span class="op">=</span> <span class="fl">43.625</span><span class="op">)</span></span>
+<span><span class="va">ts_ALL</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">ts_WA</span>, <span class="va">ts_NW_Atl</span>, <span class="va">ts_Med</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Calculate MHW categories by site</span></span>
+<span><span class="va">MHW_cat_ALL</span> <span class="op">&lt;-</span> <span class="va">ts_ALL</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">site</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_map.html" class="external-link">group_modify</a></span><span class="op">(</span><span class="op">~</span> <span class="op">{</span></span>
+<span>    <span class="va">.x</span> <span class="op">|&gt;</span> </span>
+<span>      <span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span>climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>      <span class="fu"><a href="../reference/detect_event.html">detect_event</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>      <span class="fu"><a href="../reference/category.html">category</a></span><span class="op">(</span>season <span class="op">=</span> <span class="st">"peak"</span>, lat_col <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>    <span class="op">}</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="co"># Correct event names by site</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>event_name <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">event_name</span><span class="op">)</span> <span class="op">~</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html" class="external-link">str_replace</a></span><span class="op">(</span><span class="va">event_name</span>, <span class="st">"Event"</span>, <span class="va">site</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># View results</span></span>
+<span><span class="va">MHW_cat_ALL</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="op">-</span><span class="va">duration</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">event_name</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">site</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_map.html" class="external-link">group_modify</a></span><span class="op">(</span><span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">.x</span>, <span class="fl">2L</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">site</span><span class="op">:</span><span class="va">category</span>, <span class="va">duration</span>, <span class="va">season</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 6 × 7</span></span></span>
+<span><span class="co">## <span style="color: #949494;"># Groups:   site [3]</span></span></span>
+<span><span class="co">##   site   event_no event_name   peak_date  category   duration season</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> Med          75 Med 2014     2014-10-18 II Strong       144 Fall  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> Med         122 Med 2022b    2022-07-20 II Strong        79 Summer</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> NW_Atl       72 NW_Atl 2012c 2012-07-15 II Strong       239 Summer</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">4</span> NW_Atl      100 NW_Atl 2018a 2018-01-12 III Severe      171 Winter</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">5</span> WA           52 WA 2011a     2011-02-28 IV Extreme      105 Summer</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">6</span> WA           59 WA 2012a     2012-01-27 II Strong       101 Summer</span></span></code></pre>
+</div>
+<div class="section level2">
 <h2 id="visualising-mhw-categories">Visualising MHW categories<a class="anchor" aria-label="anchor" href="#visualising-mhw-categories"></a>
 </h2>
 <div class="section level3">
@@ -266,7 +316,7 @@ the event.</p>
 <p>A quick and easy visualisation of the categories of a MHW may be
 accomplished with <code><a href="../reference/event_line.html">event_line()</a></code> by setting the
 <code>category</code> argument to <code>TRUE</code>.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">MHW</span>, spread <span class="op">=</span> <span class="fl">100</span>, start_date <span class="op">=</span> <span class="st">"2010-11-01"</span>, end_date <span class="op">=</span> <span class="st">"2011-06-30"</span>, category <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="event_categories_files/figure-html/fig-example-1-1.png" width="768"><!-- ![](vignettes/fig-example-10-1.png) --></p>
 </div>
@@ -275,7 +325,7 @@ accomplished with <code><a href="../reference/event_line.html">event_line()</a><
 </h3>
 <p>Were one to want to visualise the categories of a MHW ‘by hand’, the
 following code will provide a good starting point.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create category breaks and select slice of data.frame</span></span>
 <span><span class="va">clim_cat</span> <span class="op">&lt;-</span> <span class="va">MHW</span><span class="op">$</span><span class="va">clim</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>diff <span class="op">=</span> <span class="va">thresh</span> <span class="op">-</span> <span class="va">seas</span>,</span>
@@ -332,7 +382,7 @@ following code will provide a good starting point.</p>
 function will automagically detect if it has been fed MHWs or MCSs so no
 additional arguments are required. For the sake of clarity the following
 code chunks demonstrates how to calculate MCS categories.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Calculate events</span></span>
 <span><span class="va">ts_MCS</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span><span class="op">)</span>, pctile <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="va">MCS</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/detect_event.html">detect_event</a></span><span class="op">(</span><span class="va">ts_MCS</span>, coldSpells <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
@@ -368,7 +418,7 @@ the colour palette for MCS does have four colours, same as for MHWs, but
 none of the demo time series that come packaged with
 <strong><code>heatwaveR</code></strong> have MCSs that intense so we are
 not able to demonstrate the full colour palette here.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">MCS</span>, spread <span class="op">=</span> <span class="fl">100</span>, start_date <span class="op">=</span> <span class="st">"1989-11-01"</span>, end_date <span class="op">=</span> <span class="st">"1990-06-30"</span>, category <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="event_categories_files/figure-html/fig-example-3-1.png" width="768"></p>
 </div>
@@ -377,7 +427,7 @@ not able to demonstrate the full colour palette here.</p>
 </h3>
 <p>The following code chunk demonstrates how to manually create a figure
 showing the MCS categories.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create category breaks and select slice of data.frame</span></span>
 <span><span class="va">MCS_clim_cat</span> <span class="op">&lt;-</span> <span class="va">MCS</span><span class="op">$</span><span class="va">clim</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>diff <span class="op">=</span> <span class="va">thresh</span> <span class="op">-</span> <span class="va">seas</span>,</span>
@@ -433,7 +483,7 @@ showing the MCS categories.</p>
 </h2>
 <p>For the sake of convenience the MHW and MCS colour palettes are
 provided below with a figure showing the direct comparison.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># The MCS colour palette</span></span>
 <span><span class="va">MCS_colours</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"Moderate"</span> <span class="op">=</span> <span class="st">"#C7ECF2"</span>,</span>

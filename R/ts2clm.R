@@ -187,7 +187,7 @@ ts2clm <- function(data,
     ts_y <- eval(substitute(y), data)
     if (is.null(ts_y) | is.function(ts_y))
       stop("Please ensure that a column named 'temp' is present in your data.frame or that you have assigned a column to the 'y' argument.")
-    rm(data)
+    # rm(data) # Need to keep this for the end
 
     if (!inherits(ts_x[1], "Date"))
       stop("Please ensure your date values are type 'Date'. This may be done with 'as.Date()'.")
@@ -252,6 +252,12 @@ ts2clm <- function(data,
       data.table::setorder(ts_res, ts_x)
       names(ts_res)[2] <- paste(substitute(x))
       names(ts_res)[3] <- paste(substitute(y))
+
+      if (ncol(data) > 2) {
+        # It would be better to order the columns
+        ts_res <- merge(data, ts_res, all = TRUE)
+      }
+
       ts_res <- tibble::as_tibble(ts_res)
       return(ts_res)
 

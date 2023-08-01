@@ -165,7 +165,7 @@ event_line <- function(data,
   }
 
   if (!is.null(y_axis_title)) {
-    if(!is.character(y_axis_title)) stop("Please ensure that the argument provided to 'y_axis_title' is a character string.")
+    if (!is.character(y_axis_title)) stop("Please ensure that the argument provided to 'y_axis_title' is a character string.")
     ylabel <- y_axis_title
   } else {
     ylabel <- expression(paste("Temperature [", degree, "C]"))
@@ -179,7 +179,7 @@ event_line <- function(data,
   }
 
   if (!is.null(x_axis_text_angle)) {
-    if(!is.numeric(x_axis_text_angle)) stop("Please ensure that the argument provided to 'x_axis_text_angle' is a number.")
+    if (!is.numeric(x_axis_text_angle)) stop("Please ensure that the argument provided to 'x_axis_text_angle' is a number.")
     xtangle <- x_axis_text_angle
   } else {
     xtangle <- 0
@@ -216,8 +216,8 @@ event_line <- function(data,
       "4x Threshold" = "darkgreen"
     )
 
-    if(!is.null(line_colours)){
-      if(!is.vector(line_colours)) stop("Please ensure that 'line_colours' is a vector (e.g. c('black', 'gray20', 'darkgreen', 'darkgreen', 'darkgreen', 'darkgreen')).")
+    if (!is.null(line_colours)) {
+      if (!is.vector(line_colours)) stop("Please ensure that 'line_colours' is a vector (e.g. c('black', 'gray20', 'darkgreen', 'darkgreen', 'darkgreen', 'darkgreen')).")
       lineColCat[seq_along(line_colours)] <- line_colours
     }
 
@@ -285,8 +285,8 @@ event_line <- function(data,
       "Threshold" = "darkgreen"
     )
 
-    if(!is.null(line_colours)){
-      if(!is.vector(line_colours)) stop("Please ensure that 'line_colours' is a vector (e.g. c('black', 'blue', 'darkgreen')).")
+    if (!is.null(line_colours)) {
+      if (!is.vector(line_colours)) stop("Please ensure that 'line_colours' is a vector (e.g. c('black', 'blue', 'darkgreen')).")
       lineCol[seq_along(line_colours)] <- line_colours
     }
 
@@ -304,9 +304,9 @@ event_line <- function(data,
                           breaks = c("Temperature", "Climatology", "Threshold")) +
       scale_fill_manual(name = NULL, values = fillCol, guide = "none")
 
-    if(!is.null(y_axis_range)){
-      if(length(y_axis_range)!=2) stop("Please ensure that exactly two numbers are provided to 'y_axis_range' (e.g. c(10, 20)).")
-      if(!is.numeric(y_axis_range[1]) | !is.numeric(y_axis_range[2]))
+    if (!is.null(y_axis_range)) {
+      if (length(y_axis_range)!=2) stop("Please ensure that exactly two numbers are provided to 'y_axis_range' (e.g. c(10, 20)).")
+      if (!is.numeric(y_axis_range[1]) | !is.numeric(y_axis_range[2]))
         stop("Please ensure that only numeric values are provided to 'y_axis_range'.")
       ep <- ep + coord_cartesian(ylim = c(y_axis_range[1], y_axis_range[2]))
     }

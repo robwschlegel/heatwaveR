@@ -28,6 +28,8 @@ navbar:
       href: articles/Download_SST_v2.html
     - text: "Saving MHW Results to NetCDF"
       href: articles/MHW_to_nc.html
+  - text: "Tutorial"
+    href: http://193.50.85.71:3838/demoMHW/
   - text: "Citations"
     href: CITATIONS.html
   - text: "News"

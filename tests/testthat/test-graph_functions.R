@@ -41,7 +41,6 @@ test_that("event_line() metric changes accordingly", {
 test_that("data fed to event_line() is a list with correct dataframes", {
   res <- detect_event(data = ts2clm(sst_Med,
                                     climatologyPeriod = c("1983-01-01", "2012-12-31")))
-  # Error message doesn't sync up for some reason so is omitted here...
   expect_error(event_line(data = res$event, start_date = "2012-01-01", end_date = "2012-12-31"))
 })
 
@@ -79,6 +78,13 @@ test_that("event_line() category argument works for MCSs", {
                       coldSpells = TRUE)
   tp <- event_line(data = res, start_date = "2012-01-01", end_date = "2012-12-31", category = TRUE)
   expect_is(tp, "ggplot")
+})
+
+test_that("event_line() line_colours argument works", {
+  res <- detect_event(data = ts2clm(sst_Med, pctile = 90,
+                                    climatologyPeriod = c("1982-01-01", "2011-12-31")))
+  expect_is(event_line(data = res, line_colours = c(colour = "purple", "pink")), "ggplot")
+  expect_is(event_line(data = res, category = T, line_colours = c(colour = "purple", "pink")), "ggplot")
 })
 
 test_that("event_line() additional options error traping works", {

@@ -130,3 +130,14 @@ test_that("Useful error is returned when incorrect column names exist", {
   expect_error(ts2clm(ts, climatologyPeriod = c("1983-01-01", "2012-12-31")),
                "Please ensure that a column named 'temp' is present in your data.frame or that you have assigned a column to the 'y' argument.")
 })
+
+test_that("additional columns in base data should be passed through the funciton", {
+  ts_WA <- sst_WA
+  ts_WA$site <- "WA"; ts_WA$lon <- 112.625; ts_WA$lat <- -29.375
+  ts_WA <- ts_WA[,c(3, 4, 5, 1, 2)]
+  res <- ts2clm(ts_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  expect_is(res, "data.frame")
+  expect_equal(ncol(res), 8)
+  expect_equal(nrow(res), 14975)
+})
+

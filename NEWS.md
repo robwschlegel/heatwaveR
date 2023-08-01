@@ -1,3 +1,30 @@
+# heatwaveR 0.5.0.9003 (2023-07-31)
+
+-   Addressed CodeCov and created stable version for CRAN
+
+# heatwaveR 0.5.0.9003 (2023-07-25)
+
+-   Changed behaviour of `category()` to address edge case in polar MCS
+-   Corrected bug in `category()` that did not change the 'V Ice' category in the climatology output
+-   Also a bug that didn't return all of a users columns that are not part of the normal `category()` output
+-   And a bug that allowed users to unintentionally assign 'V Ice' category to MHWs
+
+# heatwaveR 0.5.0.9002 (2023-05-02)
+
+-   Addressed extreme edge case in `category()` when no Moderate I MCS are detected, just higher categories
+
+# heatwaveR 0.5.0.9001 (2023-04-17)
+
+-   Improvements to main pipeline to ensure `lat` column is passed forward for correct category seasons 
+
+# heatwaveR 0.5.0.9000 (2023-03-30)
+
+-   Bug hunting in the build-up to v1.0.0
+-   Addressed issue of y column not passing through correctly from `detect_event()` to `category()` when called internally
+-   Changed documentation for `category()` to more accurately match the output of `climatology = TRUE`
+-   Looked into behaviour of `protoEvents` in `detect_event()`
+-   Added `lat_col` argument to `category()` to detect if time series are in N or S hemisphere
+
 # heatwaveR 0.5.0 (2023-03-20)
 
 -   Major update in preparation of removing all dependencies and releasing v1.0.0

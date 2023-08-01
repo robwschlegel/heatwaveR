@@ -27,7 +27,7 @@ other means."><meta property="og:image" content="https://robwschlegel.github.io/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.1</span>
       </span>
     </div>
 
@@ -75,6 +75,9 @@ other means."><meta property="og:image" content="https://robwschlegel.github.io/
       <a href="../articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a>
     </li>
   </ul></li>
+<li>
+  <a href="http://193.50.85.71:3838/demoMHW/" class="external-link">Tutorial</a>
+</li>
 <li>
   <a href="../CITATIONS.html">Citations</a>
 </li>
@@ -227,13 +230,15 @@ MCSs in Schlegel et al. (2017a).</p></dd>
 
 
 <dt>protoEvents</dt>
-<dd><p>Boolean specifying whether the full time series must be
-returned as a long table, together with columns indicating whether or not the
-threshold criterion (<code>threshCriterion</code>) and duration criterion (<code>durationCriterion</code>)
+<dd><p>Boolean specifying whether the original time series will be
+returned with only the columns indicating whether or not the threshold criterion
+(<code>threshCriterion</code>) and duration criterion (<code>durationCriterion</code>)
 have been exceeded, a column showing if a heatwave is present (i.e. both
 <code>threshCriterion</code> and <code>durationCriterion</code> <code>TRUE</code>), and a
-sequential number uniquely identifying the detected event. In this case,
-the heatwave metrics will not be reported. The default is <code>FALSE</code>.</p></dd>
+sequential number uniquely identifying the detected event(s). Therefore any heatwave
+metrics will not be reported. The default is <code>FALSE</code>. Note also that if
+<code>protoEvents = TRUE</code> it will ignore whatever the user provides to the <code>categories</code>
+argument and anything else passed to <code>...</code>.</p></dd>
 
 
 <dt>categories</dt>
@@ -242,7 +247,7 @@ the categories of the detected MHWs, one may choose to set this argument to <cod
 One may pass the same arguments used in the <code><a href="category.html">category</a></code> function to this function
 to affect the output. Note that the default behaviour of <code><a href="category.html">category</a></code> is to
 return the event data only. To return the same list structure that <code>detect_event</code>
-outputs by default, use <code>climatology = TRUE</code>.</p></dd>
+outputs by default, add the argument <code>climatology = TRUE</code>.</p></dd>
 
 
 <dt>roundRes</dt>

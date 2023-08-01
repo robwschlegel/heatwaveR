@@ -24,7 +24,7 @@ accordance with the naming scheme proposed in Hobday et al. (2018)."><meta prope
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.1</span>
       </span>
     </div>
 
@@ -73,6 +73,9 @@ accordance with the naming scheme proposed in Hobday et al. (2018)."><meta prope
     </li>
   </ul></li>
 <li>
+  <a href="http://193.50.85.71:3838/demoMHW/" class="external-link">Tutorial</a>
+</li>
+<li>
   <a href="../CITATIONS.html">Citations</a>
 </li>
 <li>
@@ -116,10 +119,11 @@ accordance with the naming scheme proposed in Hobday et al. (2018).</p>
 <span>  S <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  name <span class="op">=</span> <span class="st">"Event"</span>,</span>
 <span>  climatology <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  MCScorrect <span class="op">=</span> <span class="cn">F</span>,</span>
-<span>  MCSice <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>  MCScorrect <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  MCSice <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  season <span class="op">=</span> <span class="st">"range"</span>,</span>
-<span>  roundVal <span class="op">=</span> <span class="fl">4</span></span>
+<span>  roundVal <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  lat_col <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -150,10 +154,10 @@ If no value is provided the default output is "Event".</p></dd>
 <dt>climatology</dt>
 <dd><p>The default setting of <code>FALSE</code> will tell this function to output only
 the summary (wide) results for the individual events as seen in Hobday et al. (2018). If set
-to <code>TRUE</code>, this function will return a list of two dataframes, same
-as <code><a href="detect_event.html">detect_event</a></code>. The first dataframe <code>climatology</code>, contains the same
-information as found in <code><a href="detect_event.html">detect_event</a></code>, but with the addition of the daily
-intensity (anomaly above seasonal doy threshold) and category values. The second dataframe,
+to <code>TRUE</code>, this function will return a list of two dataframes.
+The first dataframe <code>climatology</code>, contains similar information as found in
+<code><a href="detect_event.html">detect_event</a></code>, with the addition of the daily intensity (anomaly above seasonal doy threshold)
+and category values, but only reports the days on which an event was detected. The second dataframe,
 <code>event</code>, is the summary results that this function produces by default.</p></dd>
 
 
@@ -182,6 +186,17 @@ the corresponding character vector.</p></dd>
 the outputs will be rounded to. Default is 4. To
 prevent rounding set <code>roundClm = FALSE</code>. This argument may only be given
 numeric values or FALSE.</p></dd>
+
+
+<dt>lat_col</dt>
+<dd><p>The user may set <code>lat_col = TRUE</code> to detect columns named first 'lat',
+then 'latitude', and use the numeric decimal degree values therein to determine the correct
+seasons for events. Note that this will override the <code>S</code> argument. Meaning that if the
+given/detected latitude column has negative values, <code>S</code> will automatically be set to
+<code>TRUE</code> and vice versa. Also note that if multiple different latitude values are detected
+this will intentionally cause an error because the <code>category()</code> function is not meant to be run on more
+than one time series at once. If latitude is exactly 0, it will be classified as
+Northern Hemisphere.</p></dd>
 
 </dl></div>
     <div id="value">

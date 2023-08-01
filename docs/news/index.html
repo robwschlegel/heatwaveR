@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.1</span>
       </span>
     </div>
 
@@ -72,6 +72,9 @@
     </li>
   </ul></li>
 <li>
+  <a href="http://193.50.85.71:3838/demoMHW/" class="external-link">Tutorial</a>
+</li>
+<li>
   <a href="../CITATIONS.html">Citations</a>
 </li>
 <li>
@@ -102,6 +105,35 @@
       <small>Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.5.0.9003" id="heatwaver-0509003-2023-07-31">heatwaveR 0.5.0.9003 (2023-07-31)<a class="anchor" aria-label="anchor" href="#heatwaver-0509003-2023-07-31"></a></h2>
+<ul><li>Addressed CodeCov and created stable version for CRAN</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.5.0.9003" id="heatwaver-0509003-2023-07-25">heatwaveR 0.5.0.9003 (2023-07-25)<a class="anchor" aria-label="anchor" href="#heatwaver-0509003-2023-07-25"></a></h2>
+<ul><li>Changed behaviour of <code><a href="../reference/category.html">category()</a></code> to address edge case in polar MCS</li>
+<li>Corrected bug in <code><a href="../reference/category.html">category()</a></code> that did not change the ‘V Ice’ category in the climatology output</li>
+<li>Also a bug that didn’t return all of a users columns that are not part of the normal <code><a href="../reference/category.html">category()</a></code> output</li>
+<li>And a bug that allowed users to unintentionally assign ‘V Ice’ category to MHWs</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.5.0.9002" id="heatwaver-0509002-2023-05-02">heatwaveR 0.5.0.9002 (2023-05-02)<a class="anchor" aria-label="anchor" href="#heatwaver-0509002-2023-05-02"></a></h2>
+<ul><li>Addressed extreme edge case in <code><a href="../reference/category.html">category()</a></code> when no Moderate I MCS are detected, just higher categories</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.5.0.9001" id="heatwaver-0509001-2023-04-17">heatwaveR 0.5.0.9001 (2023-04-17)<a class="anchor" aria-label="anchor" href="#heatwaver-0509001-2023-04-17"></a></h2>
+<ul><li>Improvements to main pipeline to ensure <code>lat</code> column is passed forward for correct category seasons</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.5.0.9000" id="heatwaver-0509000-2023-03-30">heatwaveR 0.5.0.9000 (2023-03-30)<a class="anchor" aria-label="anchor" href="#heatwaver-0509000-2023-03-30"></a></h2>
+<ul><li>Bug hunting in the build-up to v1.0.0</li>
+<li>Addressed issue of y column not passing through correctly from <code><a href="../reference/detect_event.html">detect_event()</a></code> to <code><a href="../reference/category.html">category()</a></code> when called internally</li>
+<li>Changed documentation for <code><a href="../reference/category.html">category()</a></code> to more accurately match the output of <code>climatology = TRUE</code>
+</li>
+<li>Looked into behaviour of <code>protoEvents</code> in <code><a href="../reference/detect_event.html">detect_event()</a></code>
+</li>
+<li>Added <code>lat_col</code> argument to <code><a href="../reference/category.html">category()</a></code> to detect if time series are in N or S hemisphere</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.5.0" id="heatwaver-050-2023-03-20">heatwaveR 0.5.0 (2023-03-20)<a class="anchor" aria-label="anchor" href="#heatwaver-050-2023-03-20"></a></h2>
 <ul><li>Major update in preparation of removing all dependencies and releasing v1.0.0</li>
