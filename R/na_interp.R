@@ -6,9 +6,9 @@
 #'
 #' @keywords internal
 #'
-#' @param doy Date-of-year as per \code{make_whole} or \code{make_whole_fast}.
-#' @param x Date as per \code{make_whole} or \code{make_whole_fast}.
-#' @param y Measurement variable as per \code{make_whole} or \code{make_whole_fast}.
+#' @param doy Date-of-year as per \code{make_whole_fast}.
+#' @param x Date as per \code{make_whole_fast}.
+#' @param y Measurement variable as per \code{make_whole_fast}.
 #' @param maxPadLength Specifies the maximum length of days over which to
 #' interpolate (pad) missing data (specified as \code{NA}) in the input
 #' temperature time series; i.e., any consecutive blocks of NAs with length

@@ -1,4 +1,4 @@
-ts_dat <- make_whole(sst_WA)
+ts_dat <- make_whole_fast(sst_WA)
 colnames(ts_dat) <- c("doy", "ts.x", "ts.y")
 
 data <- ts_dat

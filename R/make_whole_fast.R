@@ -31,21 +31,14 @@
 #' the event metrics can be determined, but also for the number of events that
 #' can be detected.
 #'
-#' \item The original \code{make_whole} tests to see if some rows are
-#' duplicated, or if replicate temperature measurements are present per day. In
-#' \code{make_whole_fast} (this function) this has been disabled. Effectively,
-#' we only set up the day-of-year (doy) vector in \code{make_whole_fast} and
-#' insert rows in cases when the original data set has missing rows for some dates.
+#' The day-of-year (doy) vector is created in \code{make_whole_fast} and
+#' inserts rows in cases when the original data set has missing rows for some dates.
 #' Should the user be concerned about the potential for repeated measurements
 #' or worry that the time series is unordered, we suggest that the necessary
 #' checks and fixes are implemented prior to feeding the time series to \code{ts2clim}
-#' via \code{make_whole_fast}, or to use \code{make_whole} instead. For very large
-#' gridded temperature records it probably makes a measurable difference if the
-#' 'fast' version is used, but it might prevent \code{\link{detect_event}}
-#' from failing should some gridded cells contain missing rows or some duplicated
-#' values. So, when using the fast algorithm, we assume that the user has done all
-#' the necessary work to ensure that the time vector is ordered and without
-#' repeated measurements beforehand.
+#' via \code{make_whole_fast}. When using this fast algorithm,
+#' we assume that the user has done all the necessary work to ensure that the time
+#' vector is ordered and without repeated measurements beforehand.
 #' }
 #'
 #' @return The function will return a data frame with three columns. The column
@@ -61,6 +54,8 @@
 make_whole_fast <- function(data) {
 
   feb28 <- 59
+
+  year <- doy <- ts_x <- NULL
 
   is_leap_year <- function(year) {
     return((year %% 4 == 0 & year %% 100 != 0) | (year %% 400 == 0))

@@ -137,16 +137,6 @@
 #' cat_WA_daily <- category(res_WA, name = "WA", climatology = TRUE)
 #' head(cat_WA_daily$climatology)
 #'
-#' # Note that this will not return the complete time series, only the
-#' # days during which events were detected.
-#' # This was done to reduce the size of the output for those working
-#' # with gridded data.
-#' # Should one want a complete time series, the daily category results
-#' # may simply be left_join() with the detect_event() results
-#' cat_WA_ts <- dplyr::left_join(res_WA$climatology,
-#'                               cat_WA_daily$climatology)
-#' head(cat_WA_ts)
-#'
 category <- function(data,
                      y = temp,
                      S = TRUE,

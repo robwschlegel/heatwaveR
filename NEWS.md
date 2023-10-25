@@ -1,6 +1,7 @@
 # heatwaveR 0.5.1.9000 (2023-10-25)
 
-- Removing dependencies and speeding up code
+-   Removing dependencies and speeding up code
+-   Removed __`lubridate`__ and __`dplyr`__ dependencies
 
 # heatwaveR 0.5.0.9003 (2023-08-31)
 

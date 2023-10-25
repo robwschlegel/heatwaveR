@@ -22,6 +22,7 @@ Depends: R (>= 3.0.2)
 Suggests:
     covr,
     doParallel,
+    dplyr,
     ggpubr,
     knitr,
     lubridate,
@@ -34,7 +35,6 @@ Suggests:
     tidyr,
 Imports:
     data.table,
-    dplyr,
     ggplot2,
     grid,
     plyr,

@@ -349,7 +349,10 @@ detect_event <- function(data,
                            mhw_rel_thresh = events_clim$ts_y - events_clim$ts_thresh)
 
       events <- data.table::as.data.table(events[stats::complete.cases(events$event_no),])
-      events <- events[, .(
+
+      year <- ts_x <- doy <- NULL
+
+      events <- events[, list(
         index_start = min(row_index),
         index_peak = row_index[which.max(mhw_rel_seas)],
         index_end = max(row_index),
@@ -359,17 +362,17 @@ detect_event <- function(data,
         date_end = max(ts_x),
         intensity_mean = mean(mhw_rel_seas),
         intensity_max = max(mhw_rel_seas),
-        intensity_var = sd(mhw_rel_seas),
+        intensity_var = stats::sd(mhw_rel_seas),
         intensity_cumulative = sum(mhw_rel_seas),
         intensity_mean_relThresh = mean(mhw_rel_thresh),
         intensity_max_relThresh = max(mhw_rel_thresh),
-        intensity_var_relThresh = sd(mhw_rel_thresh),
+        intensity_var_relThresh = stats::sd(mhw_rel_thresh),
         intensity_cumulative_relThresh = sum(mhw_rel_thresh),
         intensity_mean_abs = mean(ts_y),
         intensity_max_abs = max(ts_y),
-        intensity_var_abs = sd(ts_y),
+        intensity_var_abs = stats::sd(ts_y),
         intensity_cumulative_abs = sum(ts_y)
-      ), by = .(event_no)]
+      ), by = list(event_no)]
 
       mhw_rel_seas <- t_series$ts_y - t_series$ts_seas
       A <- mhw_rel_seas[events$index_start]
