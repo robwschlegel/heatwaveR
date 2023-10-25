@@ -155,22 +155,15 @@ may be adjusted by setting the <code>maxPadLength</code> argument of the
 the lower the fidelity of the annual climatology and threshold that can be
 calculated, which will not only have repercussions for the accuracy at which
 the event metrics can be determined, but also for the number of events that
-can be detected.</p></li>
-<li><p>The original <code>make_whole</code> tests to see if some rows are
-duplicated, or if replicate temperature measurements are present per day. In
-<code>make_whole_fast</code> (this function) this has been disabled. Effectively,
-we only set up the day-of-year (doy) vector in <code>make_whole_fast</code> and
-insert rows in cases when the original data set has missing rows for some dates.
+can be detected.</p>
+<p>The day-of-year (doy) vector is created in <code>make_whole_fast</code> and
+inserts rows in cases when the original data set has missing rows for some dates.
 Should the user be concerned about the potential for repeated measurements
 or worry that the time series is unordered, we suggest that the necessary
 checks and fixes are implemented prior to feeding the time series to <code>ts2clim</code>
-via <code>make_whole_fast</code>, or to use <code>make_whole</code> instead. For very large
-gridded temperature records it probably makes a measurable difference if the
-'fast' version is used, but it might prevent <code><a href="detect_event.html">detect_event</a></code>
-from failing should some gridded cells contain missing rows or some duplicated
-values. So, when using the fast algorithm, we assume that the user has done all
-the necessary work to ensure that the time vector is ordered and without
-repeated measurements beforehand.</p></li>
+via <code>make_whole_fast</code>. When using this fast algorithm,
+we assume that the user has done all the necessary work to ensure that the time
+vector is ordered and without repeated measurements beforehand.</p></li>
 </ol></div>
     <div id="author">
     <h2>Author</h2>

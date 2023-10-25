@@ -135,13 +135,13 @@ dates. If columns are named differently, their names can be supplied as <code>x<
 and <code>y</code> (see below). The function will not accurately detect consecutive
 days of temperatures in exceedance of the <code>threshold</code> if missing days of
 data are not filled in with <code>NA</code>. Data of the appropriate format are created
-by the function <code>make_whole</code>, but your own data may be used
+by the function <code><a href="make_whole_fast.html">make_whole_fast</a></code>, but your own data may be used
 directly if they meet the given criteria.</p></dd>
 
 
 <dt>x</dt>
 <dd><p>This column is expected to contain a vector of dates as per the
-specification of <code>make_whole</code>. If a column headed <code>t</code> is present in
+specification of <code>make_whole_fast</code>. If a column headed <code>t</code> is present in
 the dataframe, this argument may be omitted; otherwise, specify the name of
 the column with dates here.</p></dd>
 
@@ -296,10 +296,10 @@ than relative to the threshold.</p>
     
 <ol><li><p>This function assumes that the input time series consists of continuous
 daily temperatures, with few missing values. The accompanying function
-<code>make_whole</code> aids in the preparation of a time series that is
+<code><a href="make_whole_fast.html">make_whole_fast</a></code> aids in the preparation of a time series that is
 suitable for use with <code>exceedance</code>, although this may also be accomplished
 'by hand' as long as the criteria are met as discussed in the documentation
-to <code>make_whole</code>.</p></li>
+to <code><a href="make_whole_fast.html">make_whole_fast</a></code>.</p></li>
 <li><p>Future versions seek to accommodate monthly and annual time series, too.</p></li>
 <li><p>The calculation of onset and decline rates assumes that exceedance of the
 <code>threshold</code> started a half-day before the start day and ended a half-day

@@ -364,31 +364,6 @@ Progress in Oceanography 198(102684).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 1984-06-07        1    1.5829 I Moderate</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 1984-06-17        2    2.0198 I Moderate</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Note that this will not return the complete time series, only the</span></span></span>
-<span class="r-in"><span><span class="co"># days during which events were detected.</span></span></span>
-<span class="r-in"><span><span class="co"># This was done to reduce the size of the output for those working</span></span></span>
-<span class="r-in"><span><span class="co"># with gridded data.</span></span></span>
-<span class="r-in"><span><span class="co"># Should one want a complete time series, the daily category results</span></span></span>
-<span class="r-in"><span><span class="co"># may simply be left_join() with the detect_event() results</span></span></span>
-<span class="r-in"><span><span class="va">cat_WA_ts</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">res_WA</span><span class="op">$</span><span class="va">climatology</span>,</span></span>
-<span class="r-in"><span>                              <span class="va">cat_WA_daily</span><span class="op">$</span><span class="va">climatology</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Joining with `by = join_by(t, event_no)`</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cat_WA_ts</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   doy          t  temp    seas  thresh threshCriterion durationCriterion event</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   1 1982-01-01 20.94 21.6080 22.9605           FALSE             FALSE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   2 1982-01-02 21.25 21.6348 22.9987           FALSE             FALSE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   3 1982-01-03 21.38 21.6621 23.0376           FALSE             FALSE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   4 1982-01-04 21.16 21.6895 23.0771           FALSE             FALSE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   5 1982-01-05 21.26 21.7169 23.1130           FALSE             FALSE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   6 1982-01-06 21.61 21.7436 23.1460           FALSE             FALSE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   event_no intensity category</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1       NA        NA     &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       NA        NA     &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3       NA        NA     &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       NA        NA     &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5       NA        NA     &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       NA        NA     &lt;NA&gt;</span>
-<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
