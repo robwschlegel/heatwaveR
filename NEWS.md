@@ -1,3 +1,7 @@
+# heatwaveR 0.5.1.9000 (2023-10-25)
+
+- Removing dependencies and speeding up code
+
 # heatwaveR 0.5.0.9003 (2023-08-31)
 
 -   Added links to __`heatwave3`__ package on home page and gridded detection vignette.

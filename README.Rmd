@@ -143,7 +143,7 @@ For detailed explanations and walkthroughs on the use of the __`heatwaveR`__ pac
 
 ## The Marine Heatwave Tracker
 
-To see the __`heatwaveR`__ package in action, check out the [Marine Heatwave Tracker](http://www.marineheatwaves.org/tracker.html) website. This is a daily updating global analysis of where in the world marine heatwaves are occurring. It has near real-time information as well as historic data going back to January 1st, 1982 and uses the Hobday et al. (2018) colour scheme to show how intense the MHWs are.
+To see the __`heatwaveR`__ package in action, check out the [Marine Heatwave Tracker](https://www.marineheatwaves.org/tracker.html) website. This is a daily updating global analysis of where in the world marine heatwaves are occurring. It has near real-time information as well as historic data going back to January 1st, 1982 and uses the Hobday et al. (2018) colour scheme to show how intense the MHWs are.
 
 ## Contributing to __`heatwaveR`__ 
 

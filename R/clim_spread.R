@@ -50,7 +50,7 @@ clim_spread <- function(data, clim_start, clim_end, windowHalfWidth) {
   ts_spread <- data.table::rbindlist(l)
   rm(l)
 
-  len_yr <- length(lubridate::year(clim_start):lubridate::year(clim_end))
+  len_yr <- length(as.integer(substr(clim_start, 1, 4)):as.integer(substr(clim_end, 1, 4)))
 
   # clim_calc_cpp needs a matrix...
   ts_mat <- as.matrix(ts_spread)[, 2:(len_yr + 1)]

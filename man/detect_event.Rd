@@ -241,6 +241,7 @@ of our preparation of Schlegel et al. (2017), wherein the cold events
 receive a brief overview.
 }
 \examples{
+data.table::setDTthreads(threads = 1)
 res_clim <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
 out <- detect_event(res_clim)
 # show a portion of the climatology:

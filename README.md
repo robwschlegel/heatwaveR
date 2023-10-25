@@ -175,7 +175,7 @@ above, or follow the links below:
 ## The Marine Heatwave Tracker
 
 To see the **`heatwaveR`** package in action, check out the [Marine
-Heatwave Tracker](http://www.marineheatwaves.org/tracker.html) website.
+Heatwave Tracker](https://www.marineheatwaves.org/tracker.html) website.
 This is a daily updating global analysis of where in the world marine
 heatwaves are occurring. It has near real-time information as well as
 historic data going back to January 1st, 1982 and uses the Hobday et

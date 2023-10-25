@@ -212,6 +212,7 @@
 #' @export
 #'
 #' @examples
+#' data.table::setDTthreads(threads = 1)
 #' res_clim <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
 #' out <- detect_event(res_clim)
 #' # show a portion of the climatology:
@@ -346,28 +347,29 @@ detect_event <- function(data,
                            row_index = base::seq_len(nrow(events_clim)),
                            mhw_rel_seas = events_clim$ts_y - events_clim$ts_seas,
                            mhw_rel_thresh = events_clim$ts_y - events_clim$ts_thresh)
-      events <- events[stats::complete.cases(events$event_no),]
 
-      events <- plyr::ddply(events, c("event_no"), .fun = plyr::summarise,
-                            index_start = min(row_index),
-                            index_peak = row_index[mhw_rel_seas == max(mhw_rel_seas)][1],
-                            index_end = max(row_index),
-                            duration = index_end - index_start + 1,
-                            date_start = min(ts_x),
-                            date_peak = ts_x[mhw_rel_seas == max(mhw_rel_seas)][1],
-                            date_end = max(ts_x),
-                            intensity_mean = mean(mhw_rel_seas),
-                            intensity_max = max(mhw_rel_seas),
-                            intensity_var = stats::sd(mhw_rel_seas),
-                            intensity_cumulative = sum(mhw_rel_seas),
-                            intensity_mean_relThresh = mean(mhw_rel_thresh),
-                            intensity_max_relThresh = max(mhw_rel_thresh),
-                            intensity_var_relThresh = stats::sd(mhw_rel_thresh),
-                            intensity_cumulative_relThresh = sum(mhw_rel_thresh),
-                            intensity_mean_abs = mean(ts_y),
-                            intensity_max_abs = max(ts_y),
-                            intensity_var_abs = stats::sd(ts_y),
-                            intensity_cumulative_abs = sum(ts_y))
+      events <- data.table::as.data.table(events[stats::complete.cases(events$event_no),])
+      events <- events[, .(
+        index_start = min(row_index),
+        index_peak = row_index[which.max(mhw_rel_seas)],
+        index_end = max(row_index),
+        duration = max(row_index) - min(row_index) + 1,
+        date_start = min(ts_x),
+        date_peak = ts_x[which.max(mhw_rel_seas)],
+        date_end = max(ts_x),
+        intensity_mean = mean(mhw_rel_seas),
+        intensity_max = max(mhw_rel_seas),
+        intensity_var = sd(mhw_rel_seas),
+        intensity_cumulative = sum(mhw_rel_seas),
+        intensity_mean_relThresh = mean(mhw_rel_thresh),
+        intensity_max_relThresh = max(mhw_rel_thresh),
+        intensity_var_relThresh = sd(mhw_rel_thresh),
+        intensity_cumulative_relThresh = sum(mhw_rel_thresh),
+        intensity_mean_abs = mean(ts_y),
+        intensity_max_abs = max(ts_y),
+        intensity_var_abs = sd(ts_y),
+        intensity_cumulative_abs = sum(ts_y)
+      ), by = .(event_no)]
 
       mhw_rel_seas <- t_series$ts_y - t_series$ts_seas
       A <- mhw_rel_seas[events$index_start]
@@ -436,6 +438,8 @@ detect_event <- function(data,
 
     if (is.numeric(roundRes)) {
       if (nrow(events) > 0) {
+        events <- as.data.frame(events)
+        events_clim <- as.data.frame(events_clim)
         events[,event_cols] <- round(events[,event_cols], roundRes)
         events_clim[,clim_cols] <- round(events_clim[,clim_cols], roundRes)
       }
