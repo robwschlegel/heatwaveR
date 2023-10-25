@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.1.9000</span>
       </span>
     </div>
 
@@ -105,6 +105,10 @@
       <small>Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.5.1.9000" id="heatwaver-0519000-2023-10-25">heatwaveR 0.5.1.9000 (2023-10-25)<a class="anchor" aria-label="anchor" href="#heatwaver-0519000-2023-10-25"></a></h2>
+<ul><li>Removing dependencies and speeding up code</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.5.0.9003" id="heatwaver-0509003-2023-08-31">heatwaveR 0.5.0.9003 (2023-08-31)<a class="anchor" aria-label="anchor" href="#heatwaver-0509003-2023-08-31"></a></h2>
 <ul><li>Added links to <strong><code>heatwave3</code></strong> package on home page and gridded detection vignette.</li>
@@ -565,7 +569,7 @@
 <ul><li>
 <code><a href="../reference/ts2clm.html">ts2clm()</a></code> no longer calculates variance column by default</li>
 <li>
-<code><a href="../reference/make_whole.html">make_whole()</a></code> has been deprecated in favour of <code><a href="../reference/make_whole_fast.html">make_whole_fast()</a></code>
+<code>make_whole()</code> has been deprecated in favour of <code><a href="../reference/make_whole_fast.html">make_whole_fast()</a></code>
 </li>
 </ul></div>
     <div class="section level2">
@@ -715,14 +719,14 @@
 <li>codecov up to 100%</li>
 <li>Fix to <code><a href="../reference/geom_lolli.html">geom_lolli()</a></code> n argument</li>
 <li>Fix to <code><a href="../reference/lolli_plot.html">lolli_plot()</a></code> y-axis range</li>
-<li>Minor fix to <code><a href="../reference/make_whole.html">make_whole()</a></code>
+<li>Minor fix to <code>make_whole()</code>
 </li>
 <li>Skeleton of R vs Python vignette added</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.3.9000" id="heatwaver-0239000-2018-05-16">heatwaveR 0.2.3.9000 (2018-05-16)<a class="anchor" aria-label="anchor" href="#heatwaver-0239000-2018-05-16"></a></h2>
 <ul><li>Major speed-up in the climatology creation function. <code><a href="../reference/clim_spread.html">clim_spread()</a></code> now returns a matrix, not a data frame. This makes the loop in <code><a href="../reference/clim_calc.html">clim_calc()</a></code> much faster. In testing with the sst_WA data, it leads to a 3.7 fold speed improvement (520 ms down to 140 ms).</li>
-<li>Speed-up of <code><a href="../reference/make_whole.html">make_whole()</a></code> (60 ms down to 40 ms)</li>
+<li>Speed-up of <code>make_whole()</code> (60 ms down to 40 ms)</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.2.9000" id="heatwaver-0229000-2018-05-15">heatwaveR 0.2.2.9000 (2018-05-15)<a class="anchor" aria-label="anchor" href="#heatwaver-0229000-2018-05-15"></a></h2>
@@ -735,7 +739,7 @@
 <h2 class="page-header" data-toc-text="0.2.1.9001" id="heatwaver-0219001-2018-05-15">heatwaveR 0.2.1.9001 (2018-05-15)<a class="anchor" aria-label="anchor" href="#heatwaver-0219001-2018-05-15"></a></h2>
 <ul><li>Micro edits to documentation</li>
 <li>Testing for all exported and internal functions brought up to speed</li>
-<li>Ensuring that new <code><a href="../reference/ts2clm.html">ts2clm()</a></code> and <code><a href="../reference/detect_event.html">detect_event()</a></code> pipeline returns the same results as the old <code><a href="../reference/make_whole.html">make_whole()</a></code> and <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code> pipeline</li>
+<li>Ensuring that new <code><a href="../reference/ts2clm.html">ts2clm()</a></code> and <code><a href="../reference/detect_event.html">detect_event()</a></code> pipeline returns the same results as the old <code>make_whole()</code> and <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code> pipeline</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.1.9000" id="heatwaver-0219000-2018-05-14">heatwaveR 0.2.1.9000 (2018-05-14)<a class="anchor" aria-label="anchor" href="#heatwaver-0219000-2018-05-14"></a></h2>
@@ -743,7 +747,7 @@
 <li>
 <code><a href="../reference/detect_event.html">detect_event()</a></code> now passing checks</li>
 <li>Must still test for MCSs</li>
-<li>The old <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code> function was unpacked and simplified. Internal code is now in new functions, most of which will not be seen by the user. They are <code><a href="../reference/make_whole.html">make_whole()</a></code> <code><a href="../reference/proto_event.html">proto_event()</a></code>, <code><a href="../reference/clim_calc.html">clim_calc()</a></code>, <code><a href="../reference/smooth_percentile.html">smooth_percentile()</a></code>, <code><a href="../reference/clim_spread.html">clim_spread()</a></code>, and <code><a href="../reference/ts2clm.html">ts2clm()</a></code>
+<li>The old <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code> function was unpacked and simplified. Internal code is now in new functions, most of which will not be seen by the user. They are <code>make_whole()</code> <code><a href="../reference/proto_event.html">proto_event()</a></code>, <code><a href="../reference/clim_calc.html">clim_calc()</a></code>, <code><a href="../reference/smooth_percentile.html">smooth_percentile()</a></code>, <code><a href="../reference/clim_spread.html">clim_spread()</a></code>, and <code><a href="../reference/ts2clm.html">ts2clm()</a></code>
 </li>
 <li>
 <code><a href="../reference/ts2clm.html">ts2clm()</a></code> used instead of <code>detect_clim()</code>
@@ -826,7 +830,7 @@
 <ul><li>Removed rlang dependency</li>
 <li>Touch-up to <code><a href="../reference/block_average.html">block_average()</a></code>
 </li>
-<li>Tested <code><a href="../reference/make_whole.html">make_whole()</a></code>
+<li>Tested <code>make_whole()</code>
 </li>
 <li>Basic testing for other functions</li>
 </ul></div>

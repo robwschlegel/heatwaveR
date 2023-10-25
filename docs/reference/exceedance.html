@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.1.9000</span>
       </span>
     </div>
 
@@ -135,7 +135,7 @@ dates. If columns are named differently, their names can be supplied as <code>x<
 and <code>y</code> (see below). The function will not accurately detect consecutive
 days of temperatures in exceedance of the <code>threshold</code> if missing days of
 data are not filled in with <code>NA</code>. Data of the appropriate format are created
-by the function <code><a href="make_whole.html">make_whole</a></code>, but your own data may be used
+by the function <code>make_whole</code>, but your own data may be used
 directly if they meet the given criteria.</p></dd>
 
 
@@ -296,10 +296,10 @@ than relative to the threshold.</p>
     
 <ol><li><p>This function assumes that the input time series consists of continuous
 daily temperatures, with few missing values. The accompanying function
-<code><a href="make_whole.html">make_whole</a></code> aids in the preparation of a time series that is
+<code>make_whole</code> aids in the preparation of a time series that is
 suitable for use with <code>exceedance</code>, although this may also be accomplished
 'by hand' as long as the criteria are met as discussed in the documentation
-to <code><a href="make_whole.html">make_whole</a></code>.</p></li>
+to <code>make_whole</code>.</p></li>
 <li><p>Future versions seek to accommodate monthly and annual time series, too.</p></li>
 <li><p>The calculation of onset and decline rates assumes that exceedance of the
 <code>threshold</code> started a half-day before the start day and ended a half-day
