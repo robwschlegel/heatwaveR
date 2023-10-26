@@ -63,16 +63,10 @@
 #' (\code{threshCriterion}) and duration criterion (\code{durationCriterion})
 #' have been exceeded, a column showing if a heatwave is present (i.e. both
 #' \code{threshCriterion} and \code{durationCriterion} \code{TRUE}), and a
-<<<<<<< HEAD
-#' sequential number uniquely identifying the detected event. In this case,
-#' the heatwave metrics will not be reported and only the climatology will and
-#' protoevents will be returned. The default is \code{FALSE}.
-=======
 #' sequential number uniquely identifying the detected event(s). Therefore any heatwave
 #' metrics will not be reported. The default is \code{FALSE}. Note also that if
 #' \code{protoEvents = TRUE} it will ignore whatever the user provides to the \code{categories}
 #' argument and anything else passed to \code{...}.
->>>>>>> master
 #' @param categories Rather than using \code{\link{category}} as a separate step to determine
 #' the categories of the detected MHWs, one may choose to set this argument to \code{TRUE}.
 #' One may pass the same arguments used in the \code{\link{category}} function to this function
@@ -218,6 +212,7 @@
 #' @export
 #'
 #' @examples
+#' data.table::setDTthreads(threads = 1)
 #' res_clim <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
 #' out <- detect_event(res_clim)
 #' # show a portion of the climatology:
@@ -352,28 +347,32 @@ detect_event <- function(data,
                            row_index = base::seq_len(nrow(events_clim)),
                            mhw_rel_seas = events_clim$ts_y - events_clim$ts_seas,
                            mhw_rel_thresh = events_clim$ts_y - events_clim$ts_thresh)
-      events <- events[stats::complete.cases(events$event_no),]
 
-      events <- plyr::ddply(events, c("event_no"), .fun = plyr::summarise,
-                            index_start = min(row_index),
-                            index_peak = row_index[mhw_rel_seas == max(mhw_rel_seas)][1],
-                            index_end = max(row_index),
-                            duration = index_end - index_start + 1,
-                            date_start = min(ts_x),
-                            date_peak = ts_x[mhw_rel_seas == max(mhw_rel_seas)][1],
-                            date_end = max(ts_x),
-                            intensity_mean = mean(mhw_rel_seas),
-                            intensity_max = max(mhw_rel_seas),
-                            intensity_var = stats::sd(mhw_rel_seas),
-                            intensity_cumulative = sum(mhw_rel_seas),
-                            intensity_mean_relThresh = mean(mhw_rel_thresh),
-                            intensity_max_relThresh = max(mhw_rel_thresh),
-                            intensity_var_relThresh = stats::sd(mhw_rel_thresh),
-                            intensity_cumulative_relThresh = sum(mhw_rel_thresh),
-                            intensity_mean_abs = mean(ts_y),
-                            intensity_max_abs = max(ts_y),
-                            intensity_var_abs = stats::sd(ts_y),
-                            intensity_cumulative_abs = sum(ts_y))
+      events <- data.table::as.data.table(events[stats::complete.cases(events$event_no),])
+
+      year <- ts_x <- doy <- NULL
+
+      events <- events[, list(
+        index_start = min(row_index),
+        index_peak = row_index[which.max(mhw_rel_seas)],
+        index_end = max(row_index),
+        duration = max(row_index) - min(row_index) + 1,
+        date_start = min(ts_x),
+        date_peak = ts_x[which.max(mhw_rel_seas)],
+        date_end = max(ts_x),
+        intensity_mean = mean(mhw_rel_seas),
+        intensity_max = max(mhw_rel_seas),
+        intensity_var = stats::sd(mhw_rel_seas),
+        intensity_cumulative = sum(mhw_rel_seas),
+        intensity_mean_relThresh = mean(mhw_rel_thresh),
+        intensity_max_relThresh = max(mhw_rel_thresh),
+        intensity_var_relThresh = stats::sd(mhw_rel_thresh),
+        intensity_cumulative_relThresh = sum(mhw_rel_thresh),
+        intensity_mean_abs = mean(ts_y),
+        intensity_max_abs = max(ts_y),
+        intensity_var_abs = stats::sd(ts_y),
+        intensity_cumulative_abs = sum(ts_y)
+      ), by = list(event_no)]
 
       mhw_rel_seas <- t_series$ts_y - t_series$ts_seas
       A <- mhw_rel_seas[events$index_start]
@@ -442,6 +441,8 @@ detect_event <- function(data,
 
     if (is.numeric(roundRes)) {
       if (nrow(events) > 0) {
+        events <- as.data.frame(events)
+        events_clim <- as.data.frame(events_clim)
         events[,event_cols] <- round(events[,event_cols], roundRes)
         events_clim[,clim_cols] <- round(events_clim[,clim_cols], roundRes)
       }
@@ -452,15 +453,6 @@ detect_event <- function(data,
     data_res <- list(climatology = data_clim, event = events)
 
     if (categories) {
-<<<<<<< HEAD
-      data_cat <- category(data_res, ...)
-      # data_cat <- category(data_res)
-      # data_cat <- category(data_res, climatology = T)
-      if (is.data.frame(data_cat)) {
-        # data_res_old <- dplyr::left_join(events, data_cat,
-        #                              by = c("event_no", "duration",
-        #                                     "intensity_max" = "i_max", "date_peak" = "peak_date"))
-=======
       data_temp <- list(climatology = events_clim, event = events)
       colnames(data_temp$climatology)[1:4] <- c("t", "temp", "seas", "thresh")
 
@@ -480,7 +472,6 @@ detect_event <- function(data,
       data_cat <- category(data_temp, ...)
 
       if(is.data.frame(data_cat)){
->>>>>>> master
         colnames(data_cat)[c(3,5)] <- c("date_peak", "intensity_max")
         data_res <- base::merge(x = events, y = data_cat,
                                 by = c("event_no", "duration", "intensity_max", "date_peak"))
