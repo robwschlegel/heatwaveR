@@ -52,9 +52,12 @@ from i) the liberal use of complex and inefficient non-atomic data structures, s
 data frames; ii) the reliance on non-vectorised calculations such as loops; and iii) lazy
 (but convenient) coding that comes from drawing too heavily on the `tidyverse` suite of
 packages. We will continue to ensure that __`heatwaveR`__ becomes more-and-more efficient
-so that it can be applied to large gridded data products with ease.
+so that it can be applied to large gridded data products with ease. To that end, the extension 
+package [__`heatwave3`__](https://robwschlegel.github.io/heatwave3/index.html) has been developed.
+This helps the user to apply the code from __`heatwaveR`__ directly onto their NetCDF and other
+3D gridded data files.
 
-This new package was developed and released in order to better accommodate the inclusion of
+__`heatwaveR`__ was also developed and released in order to better accommodate the inclusion of
 the definitions of atmospheric heatwaves in addition to MHWs. Additionally, __`heatwaveR`__
 also provides the first implementation of a definition for a 'compound heatwave'.
 There are currently multiple different definitions for this type of event and each of which
@@ -140,7 +143,7 @@ For detailed explanations and walkthroughs on the use of the __`heatwaveR`__ pac
 
 ## The Marine Heatwave Tracker
 
-To see the __`heatwaveR`__ package in action, check out the [Marine Heatwave Tracker](http://www.marineheatwaves.org/tracker.html) website. This is a daily updating global analysis of where in the world marine heatwaves are occurring. It has near real-time information as well as historic data going back to January 1st, 1982 and uses the Hobday et al. (2018) colour scheme to show how intense the MHWs are.
+To see the __`heatwaveR`__ package in action, check out the [Marine Heatwave Tracker](https://www.marineheatwaves.org/tracker.html) website. This is a daily updating global analysis of where in the world marine heatwaves are occurring. It has near real-time information as well as historic data going back to January 1st, 1982 and uses the Hobday et al. (2018) colour scheme to show how intense the MHWs are.
 
 ## Contributing to __`heatwaveR`__ 
 

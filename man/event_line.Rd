@@ -26,7 +26,7 @@ event_line(
 \code{\link{detect_event}} function.}
 
 \item{x}{This column is expected to contain a vector of dates as per the
-specification of \code{make_whole}. If a column headed \code{t} is present in
+specification of \code{make_whole_fast}. If a column headed \code{t} is present in
 the dataframe, this argument may be omitted; otherwise, specify the name of
 the column with dates here.}
 

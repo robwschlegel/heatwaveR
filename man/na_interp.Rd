@@ -7,11 +7,11 @@
 na_interp(doy = doy, x = ts_x, y = ts_y, maxPadLength)
 }
 \arguments{
-\item{doy}{Date-of-year as per \code{make_whole} or \code{make_whole_fast}.}
+\item{doy}{Date-of-year as per \code{make_whole_fast}.}
 
-\item{x}{Date as per \code{make_whole} or \code{make_whole_fast}.}
+\item{x}{Date as per \code{make_whole_fast}.}
 
-\item{y}{Measurement variable as per \code{make_whole} or \code{make_whole_fast}.}
+\item{y}{Measurement variable as per \code{make_whole_fast}.}
 
 \item{maxPadLength}{Specifies the maximum length of days over which to
 interpolate (pad) missing data (specified as \code{NA}) in the input

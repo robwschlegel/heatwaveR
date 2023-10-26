@@ -41,12 +41,12 @@ test_that("all starting error checks flag correctly", {
   expect_error(ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
                       roundClm = TRUE),
                "Please ensure that 'roundClm' is either a numeric value or FALSE.")
-  sst_WA_dummy1 <- sst_WA %>%
-    dplyr::mutate(t = as.POSIXct(t))
+  sst_WA_dummy1 <- sst_WA
+  sst_WA_dummy1$t <- as.POSIXct(sst_WA_dummy1$t)
   expect_error(ts2clm(sst_WA_dummy1, climatologyPeriod = c("1983-01-01", "2012-12-31")),
                "Please ensure your date values are type 'Date'. This may be done with 'as.Date()")
-  sst_WA_dummy2 <- sst_WA %>%
-    dplyr::mutate(temp = as.character(temp))
+  sst_WA_dummy2 <- sst_WA
+  sst_WA_dummy2$temp <- as.character(sst_WA_dummy2$temp)
   expect_error(ts2clm(sst_WA_dummy2, climatologyPeriod = c("1983-01-01", "2012-12-31")),
                "Please ensure the temperature values you are providing are type 'num' for numeric.")
 })
@@ -90,10 +90,10 @@ test_that("mssing data causes na_interp() to be used if a value is provided for 
 })
 
 test_that("contiguous mssing data causes clim_calc() to be used", {
-  sst_WA_cont <- sst_WA %>%
-    dplyr::mutate(month = lubridate::month(t)) %>%
-    dplyr::filter(month != 1) %>%
-    dplyr::select(-month)
+  sst_WA_cont <- sst_WA
+  sst_WA_cont$month <- as.numeric(format(sst_WA_cont$t, "%m"))
+  sst_WA_cont <- sst_WA_cont[sst_WA_cont$month != 1,]
+  sst_WA_cont$month <- NULL
   res <- ts2clm(sst_WA_cont, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   expect_is(res, "data.frame")
   expect_equal(ncol(res), 5)

@@ -20,7 +20,7 @@ knitr::opts_chunk$set(fig.width = 4, fig.align = 'center',
 
 ## Overview
 
-In the previous vignette we saw how to [download and prepare OISST data](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html). In this vignette we will use the subsetted data we downloaded (not global) for our example on how to detect MHWs in gridded data.
+In the previous vignette we saw how to [download and prepare OISST data](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html). In this vignette we will use the subsetted data we downloaded (not global) for our example on how to detect MHWs in gridded data. It is now also possible to perform this task using [__`heatwave3`__](https://robwschlegel.github.io/heatwave3/index.html) , which has been created to apply __`heatwaveR`__ code directly to gridded data files. It can return the results as CSV or NetCDF.
 
 ```{r load-pkg}
 library(dplyr) # For basic data manipulation

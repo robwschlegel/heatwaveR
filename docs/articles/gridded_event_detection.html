@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.1.9000</span>
       </span>
     </div>
 
@@ -140,7 +140,7 @@
                         <h4 data-toc-skip class="author">Robert W
 Schlegel and AJ Smit</h4>
             
-            <h4 data-toc-skip class="date">2023-07-31</h4>
+            <h4 data-toc-skip class="date">2023-10-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/gridded_event_detection.Rmd" class="external-link"><code>vignettes/gridded_event_detection.Rmd</code></a></small>
       <div class="hidden name"><code>gridded_event_detection.Rmd</code></div>
@@ -155,7 +155,10 @@ Schlegel and AJ Smit</h4>
 <p>In the previous vignette we saw how to <a href="https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html" class="external-link">download
 and prepare OISST data</a>. In this vignette we will use the subsetted
 data we downloaded (not global) for our example on how to detect MHWs in
-gridded data.</p>
+gridded data. It is now also possible to perform this task using <a href="https://robwschlegel.github.io/heatwave3/index.html" class="external-link"><strong><code>heatwave3</code></strong></a>
+, which has been created to apply
+<strong><code>heatwaveR</code></strong> code directly to gridded data
+files. It can return the results as CSV or NetCDF.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span> <span class="co"># For basic data manipulation</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span> <span class="co"># For visualising data</span></span>

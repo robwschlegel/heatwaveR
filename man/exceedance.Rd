@@ -25,11 +25,11 @@ dates. If columns are named differently, their names can be supplied as \code{x}
 and \code{y} (see below). The function will not accurately detect consecutive
 days of temperatures in exceedance of the \code{threshold} if missing days of
 data are not filled in with \code{NA}. Data of the appropriate format are created
-by the function \code{\link{make_whole}}, but your own data may be used
+by the function \code{\link{make_whole_fast}}, but your own data may be used
 directly if they meet the given criteria.}
 
 \item{x}{This column is expected to contain a vector of dates as per the
-specification of \code{make_whole}. If a column headed \code{t} is present in
+specification of \code{make_whole_fast}. If a column headed \code{t} is present in
 the dataframe, this argument may be omitted; otherwise, specify the name of
 the column with dates here.}
 
@@ -123,10 +123,10 @@ Detect consecutive days in exceedance of a given threshold.
 \enumerate{
 \item This function assumes that the input time series consists of continuous
 daily temperatures, with few missing values. The accompanying function
-\code{\link{make_whole}} aids in the preparation of a time series that is
+\code{\link{make_whole_fast}} aids in the preparation of a time series that is
 suitable for use with \code{exceedance}, although this may also be accomplished
 'by hand' as long as the criteria are met as discussed in the documentation
-to \code{\link{make_whole}}.
+to \code{\link{make_whole_fast}}.
 \item Future versions seek to accommodate monthly and annual time series, too.
 \item The calculation of onset and decline rates assumes that exceedance of the
 \code{threshold} started a half-day before the start day and ended a half-day

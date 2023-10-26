@@ -6,7 +6,6 @@
 #' @keywords internal
 #'
 #' @importFrom data.table := data.table
-#' @importFrom dplyr %>%
 #'
 #' @param data A data frame with columns for date (\code{ts_x}) and
 #' temperature (\code{ts_y}) data. Ordered daily data are expected, and
@@ -32,21 +31,14 @@
 #' the event metrics can be determined, but also for the number of events that
 #' can be detected.
 #'
-#' \item The original \code{make_whole} tests to see if some rows are
-#' duplicated, or if replicate temperature measurements are present per day. In
-#' \code{make_whole_fast} (this function) this has been disabled. Effectively,
-#' we only set up the day-of-year (doy) vector in \code{make_whole_fast} and
-#' insert rows in cases when the original data set has missing rows for some dates.
+#' The day-of-year (doy) vector is created in \code{make_whole_fast} and
+#' inserts rows in cases when the original data set has missing rows for some dates.
 #' Should the user be concerned about the potential for repeated measurements
 #' or worry that the time series is unordered, we suggest that the necessary
 #' checks and fixes are implemented prior to feeding the time series to \code{ts2clim}
-#' via \code{make_whole_fast}, or to use \code{make_whole} instead. For very large
-#' gridded temperature records it probably makes a measurable difference if the
-#' 'fast' version is used, but it might prevent \code{\link{detect_event}}
-#' from failing should some gridded cells contain missing rows or some duplicated
-#' values. So, when using the fast algorithm, we assume that the user has done all
-#' the necessary work to ensure that the time vector is ordered and without
-#' repeated measurements beforehand.
+#' via \code{make_whole_fast}. When using this fast algorithm,
+#' we assume that the user has done all the necessary work to ensure that the time
+#' vector is ordered and without repeated measurements beforehand.
 #' }
 #'
 #' @return The function will return a data frame with three columns. The column
@@ -63,27 +55,23 @@ make_whole_fast <- function(data) {
 
   feb28 <- 59
 
-  # create full, complete time series for joining against
-  date_start <- lubridate::ymd(utils::head(data$ts_x, 1))
-  date_end <- lubridate::ymd(utils::tail(data$ts_x, 1))
+  year <- doy <- ts_x <- NULL
+
+  is_leap_year <- function(year) {
+    return((year %% 4 == 0 & year %% 100 != 0) | (year %% 400 == 0))
+  }
+
+  date_start <- as.Date(data$ts_x[1])
+  date_end <- as.Date(data$ts_x[nrow(data)], origin = "1970-01-01")
+
   ts_full <- data.table::data.table(ts_x = seq.Date(date_start, date_end, "day"))
 
-  ts_merged <- merge(ts_full, data, all.x = TRUE)
-  rm(ts_full)
+  ts_merged <- base::merge(ts_full, data, by = "ts_x", all.x = TRUE)
+  ts_merged[, year := as.integer(format(ts_x, "%Y"))]
+  ts_merged[, doy := as.integer(format(ts_x, "%j"))]
+  ts_merged[!is_leap_year(year) & doy > feb28, doy := doy + 1]
+  ts_merged[, year := NULL]
+  data.table::setcolorder(ts_merged, c("doy", "ts_x", "ts_y"))
 
-  v_date <- ts_merged$ts_x
-  v_doy <- lubridate::yday(v_date)
-  v_doy <- as.integer(ifelse(
-    lubridate::leap_year(lubridate::year(ts_merged$ts_x)) == FALSE,
-    ifelse(v_doy > feb28, v_doy + 1, v_doy),
-    v_doy)
-  )
-  v_ts_y <- as.numeric(ts_merged$ts_y)
-
-  t_series <- data.table::data.table(doy = v_doy,
-                                     ts_x = v_date,
-                                     ts_y = v_ts_y)
-  rm(list = c("v_date", "v_doy", "v_ts_y"))
-
-  return(t_series)
+  return(ts_merged)
 }

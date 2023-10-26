@@ -1,6 +1,6 @@
 # heatwaveR <img src="vignettes/logo.png" width=200 align="right" />
 
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/heatwaveR)](https://cran.r-project.org/package=heatwaveR)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/heatwaveR)](https://cran.r-project.org/package=heatwaveR)
 [![R-CMD-check](https://github.com/robwschlegel/heatwaveR/workflows/R-CMD-check/badge.svg)](https://github.com/robwschlegel/heatwaveR/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/robwschlegel/heatwaveR/branch/master/graph/badge.svg)](https://app.codecov.io/gh/robwschlegel/heatwaveR?branch=master)
@@ -40,9 +40,14 @@ ii) the reliance on non-vectorised calculations such as loops; and iii)
 lazy (but convenient) coding that comes from drawing too heavily on the
 `tidyverse` suite of packages. We will continue to ensure that
 **`heatwaveR`** becomes more-and-more efficient so that it can be
-applied to large gridded data products with ease.
+applied to large gridded data products with ease. To that end, the
+extension package
+[**`heatwave3`**](https://robwschlegel.github.io/heatwave3/index.html)
+has been developed. This helps the user to apply the code from
+**`heatwaveR`** directly onto their NetCDF and other 3D gridded data
+files.
 
-This new package was developed and released in order to better
+**`heatwaveR`** was also developed and released in order to better
 accommodate the inclusion of the definitions of atmospheric heatwaves in
 addition to MHWs. Additionally, **`heatwaveR`** also provides the first
 implementation of a definition for a ‘compound heatwave’. There are
@@ -100,7 +105,7 @@ need to be determined by the user.
 | `thresh`            | Seasonally varying threshold (e.g., 90th percentile) (deg. C).                                                                                                                                                                                              |
 | `var`               | Variance (standard deviation) per `doy` of `temp` (deg. C). (not returned by default as of v0.3.5)                                                                                                                                                          |
 | `threshCriterion`   | Boolean indicating if `temp` exceeds `thresh`.                                                                                                                                                                                                              |
-| `durationCriterion` | Boolean indicating whether periods of consecutive `threshCriterion` are &gt;= `minDuration`.                                                                                                                                                                |
+| `durationCriterion` | Boolean indicating whether periods of consecutive `threshCriterion` are \>= `minDuration`.                                                                                                                                                                  |
 | `event`             | Boolean indicating if all criteria that define a MHW or MCS are met.                                                                                                                                                                                        |
 | `event_no`          | A sequential number indicating the ID and order of occurrence of the MHWs or MCSs.                                                                                                                                                                          |
 
@@ -149,28 +154,28 @@ For detailed explanations and walkthroughs on the use of the
 **`heatwaveR`** package please click on the Vignettes tab in the toolbar
 above, or follow the links below:
 
--   For a basic introduction to the [detection and
-    visualisation](https://robwschlegel.github.io/heatwaveR/articles/detection_and_visualisation.html)
-    of events.
--   For an explanation on the use of the
-    [exceedance](https://robwschlegel.github.io/heatwaveR/articles/exceedance.html)
-    function.
--   For a walkthrough on the calculation and visualisation of [event
-    categories](https://robwschlegel.github.io/heatwaveR/articles/event_categories.html).
--   For examples on the calculation of atmospheric events with
-    [alternative
-    thresholds](https://robwschlegel.github.io/heatwaveR/articles/complex_clims.html).
--   For a demonstration on how to [download and prepare OISST
-    data](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html).
--   Which may then have the `detect_event()` function applied to the
-    [gridded
-    data](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html),
-    and then fit a GLM and plot the results.
+- For a basic introduction to the [detection and
+  visualisation](https://robwschlegel.github.io/heatwaveR/articles/detection_and_visualisation.html)
+  of events.
+- For an explanation on the use of the
+  [exceedance](https://robwschlegel.github.io/heatwaveR/articles/exceedance.html)
+  function.
+- For a walkthrough on the calculation and visualisation of [event
+  categories](https://robwschlegel.github.io/heatwaveR/articles/event_categories.html).
+- For examples on the calculation of atmospheric events with
+  [alternative
+  thresholds](https://robwschlegel.github.io/heatwaveR/articles/complex_clims.html).
+- For a demonstration on how to [download and prepare OISST
+  data](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html).
+- Which may then have the `detect_event()` function applied to the
+  [gridded
+  data](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html),
+  and then fit a GLM and plot the results.
 
 ## The Marine Heatwave Tracker
 
 To see the **`heatwaveR`** package in action, check out the [Marine
-Heatwave Tracker](http://www.marineheatwaves.org/tracker.html) website.
+Heatwave Tracker](https://www.marineheatwaves.org/tracker.html) website.
 This is a daily updating global analysis of where in the world marine
 heatwaves are occurring. It has near real-time information as well as
 historic data going back to January 1st, 1982 and uses the Hobday et

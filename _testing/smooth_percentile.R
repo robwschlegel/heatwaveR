@@ -3,8 +3,6 @@
 #' An internal function that helps to create climatologies in
 #' accordance with the Hobday et al. (2016) standard.
 #'
-#' @importFrom dplyr %>%
-#'
 #' @param data The data given to this function during the calculations
 #' performed by \code{\link{ts2clm}}.
 #' @param smoothPercentileWidth The width of the smoothing window

@@ -20,7 +20,7 @@ knitr::opts_chunk$set(fig.width = 4, fig.align = 'center',
 
 ## Overview
 
-In this vignette we shall look at retrieving and processing the [Reynolds Optimally Interpolated Sea Surface Temperature](https://journals.ametsoc.org/view/journals/clim/20/22/2007jcli1824.1.xml) (OISST), which is a global data set of Advanced Very High Resolution Radiometer (AVHRR) derived SSTs at a daily resolution, starting on 1 September 1981. The source of the data is the [Physical Oceanography Distributed Active Archive Centre (PODAAC)](https://podaac.jpl.nasa.gov/).
+In this vignette we shall look at retrieving and processing the Reynolds Optimally Interpolated Sea Surface Temperature (Reynolds et al. 2007; OISST), which is a global data set of Advanced Very High Resolution Radiometer (AVHRR) derived SSTs at a daily resolution, starting on 1 September 1981. The source of the data is the [Physical Oceanography Distributed Active Archive Centre (PODAAC)](https://podaac.jpl.nasa.gov/).
 
 Several steps are involved:
 
@@ -162,3 +162,7 @@ system.time(
 ```
 
 Please let me know if there are issues with the scripts, or if you have suggesations about how to improve them.
+
+## References
+
+Reynolds, R. W., Smith, T. M., Liu, C., Chelton, D. B., Casey, K. S., & Schlax, M. G. (2007). Daily high-resolution-blended analyses for sea surface temperature. Journal of climate, 20(22), 5473-5496.
