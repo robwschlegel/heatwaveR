@@ -462,16 +462,16 @@ detect_event <- function(data,
         data_temp$climatology$thresh <- -data_temp$climatology$thresh
       }
 
-      if("lat" %in% colnames(data)){
+      if ("lat" %in% colnames(data)) {
         data_temp$climatology$lat <- data$lat
       }
-      if("latitude" %in% colnames(data)){
+      if ("latitude" %in% colnames(data)) {
         data_temp$climatology$lat <- data$latitude
       }
 
       data_cat <- category(data_temp, ...)
 
-      if(is.data.frame(data_cat)){
+      if (is.data.frame(data_cat)) {
         colnames(data_cat)[c(3,5)] <- c("date_peak", "intensity_max")
         data_res <- base::merge(x = events, y = data_cat,
                                 by = c("event_no", "duration", "intensity_max", "date_peak"))
@@ -489,7 +489,7 @@ detect_event <- function(data,
         type_cols <- base::sapply(data_res$climatology, class)
         date_cols <- colnames(data_res$climatology)[which(type_cols == "Date")]
         data_cols <- colnames(data)[!colnames(data) %in% colnames(data_cat$climatology)]
-        other_cols <- colnames(data_res$climatology)[! colnames(data_res$climatology) %in% c(date_cols, data_cols)]
+        other_cols <- colnames(data_res$climatology)[!colnames(data_res$climatology) %in% c(date_cols, data_cols)]
 
         data_res$climatology <- data_res$climatology[c(date_cols, data_cols, other_cols)]
         data_res$climatology <- data_res$climatology[base::order(data_res$climatology$t),]
