@@ -1,3 +1,10 @@
+# heatwaveR 0.5.2.9000 (2023-10-29)
+
+-   Fully data.table compliant `ts2clm3()`, a drop-in replacement for `ts2clm()`
+-   `make_whole_fast()`, `na_interp()`, `clim_spread()`, and `smooth_percentile()` included within the main function
+-   Significantly faster climatology calculation
+-   Correct error with climatological variance calculation
+
 # heatwaveR 0.5.1.9000 (2023-10-25)
 
 -   Removing dependencies and speeding up code
