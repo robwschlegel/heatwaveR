@@ -280,6 +280,10 @@ detect_event <- function(data,
     }
   }
 
+  # Ensure ts2clm returns a data.table
+  # Do a check: if already a data.table, carry on; setDT if a data.frame
+  # Ensure all code from here on is translated to data.table, incl. proto_events
+
   temp <- seas <- thresh <- threshCriterion <- durationCriterion <- event <- NULL
 
   ts_x <- eval(substitute(x), data)
@@ -295,20 +299,24 @@ detect_event <- function(data,
   if (is.null(ts_thresh) | is.function(ts_thresh))
     stop("Please ensure that a column named 'thresh' is present in your data.frame or that you have assigned a column to the 'threshClim' argument.")
   # t_series <- data.frame(ts_x = data$t, ts_y = data$temp, ts_seas = data$seas, ts_thresh = data$thresh_MCS)
-  t_series <- data.frame(ts_x, ts_y, ts_seas, ts_thresh)
+  t_series <- data.table::data.table(ts_x,
+                                     ts_y,
+                                     ts_seas,
+                                     ts_thresh)
   rm(ts_x, ts_y, ts_seas, ts_thresh)
 
   if (coldSpells) {
 
-    t_series$ts_y <- -t_series$ts_y
-    t_series$ts_seas <- -t_series$ts_seas
-    t_series$ts_thresh <- -t_series$ts_thresh
+    t_series[, ts_y := -ts_y]
+    t_series[, ts_seas := -ts_seas]
+    t_series[, ts_thresh := -ts_thresh]
 
   }
 
-  t_series$ts_y[is.na(t_series$ts_y)] <- t_series$ts_seas[is.na(t_series$ts_y)]
-  t_series$threshCriterion <- t_series$ts_y > t_series$ts_thresh
-  t_series$threshCriterion[is.na(t_series$threshCriterion)] <- FALSE
+  t_series[is.na(ts_y), ts_y := ts_seas]
+  t_series[, threshCriterion := !is.na(ts_y) & ts_y > ts_thresh]
+
+  # Below: make sure proto_events returns a data.table
 
   events_clim <- proto_event(t_series,
                              criterion_column = t_series$threshCriterion,
@@ -327,11 +335,11 @@ detect_event <- function(data,
   }
 
   if (protoEvents) {
-    events_clim <- data.frame(data,
-                              threshCriterion = events_clim$threshCriterion,
-                              durationCriterion = events_clim$durationCriterion,
-                              event = events_clim$event,
-                              event_no = events_clim$event_no)
+    events_clim <- data.table::data.table(data,
+                                          threshCriterion = events_clim$threshCriterion,
+                                          durationCriterion = events_clim$durationCriterion,
+                                          event = events_clim$event,
+                                          event_no = events_clim$event_no)
     return(events_clim)
 
   } else {
@@ -343,12 +351,12 @@ detect_event <- function(data,
       index_end <- NULL
 
     if (nrow(stats::na.omit(events_clim)) > 0) {
-      events <- data.frame(events_clim,
+      events <- data.table(events_clim,
                            row_index = base::seq_len(nrow(events_clim)),
                            mhw_rel_seas = events_clim$ts_y - events_clim$ts_seas,
                            mhw_rel_thresh = events_clim$ts_y - events_clim$ts_thresh)
 
-      events <- data.table::as.data.table(events[stats::complete.cases(events$event_no),])
+      events <- events[!is.na(event_no)]
 
       year <- ts_x <- doy <- NULL
 

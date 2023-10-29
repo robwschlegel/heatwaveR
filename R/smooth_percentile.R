@@ -37,7 +37,7 @@ smooth_percentile <- function(data, smoothPercentileWidth, var_calc) {
 
   if (var_calc) {
     var <- NULL
-
+    # the below line is incorrect! calculating mean not var
     var <- RcppRoll::roll_mean(as.numeric(prep[,3]), n = smoothPercentileWidth, na.rm = FALSE)
 
     clim$var <- var[(smoothPercentileWidth/2 + 2):((smoothPercentileWidth/2 + 1) + len_clim_year)]
