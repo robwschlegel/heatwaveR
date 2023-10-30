@@ -213,15 +213,14 @@ ts2clm3 <- function(data,
     return((year %% 4 == 0 & year %% 100 != 0) | (year %% 400 == 0))
   }
 
-  ts_full <- data.table::data.table(ts_x = seq.Date(as.Date(ts_xy[1, ts_x]),
-                                                    as.Date(ts_xy[.N, ts_x],
-                                                            origin = "1970-01-01"),
-                                                    "day"))
+    ts_full <- data.table::data.table(ts_x = seq.Date(ts_xy[1, ts_x],
+                                                      ts_xy[.N, ts_x],
+                                                      "day"))
 
   ts_whole <- ts_full[
     ts_xy, on = .(ts_x), allow.cartesian = TRUE
   ][,`:=`(
-    year = as.integer(format(ts_x, "%Y")),
+    year = as.integer(substr(ts_x, 1, 4)),
     doy = as.integer(format(ts_x, "%j"))
   )
   ][, doy := ifelse(!.is_leap_year(year) & doy > 59, doy + 1, doy)
@@ -282,7 +281,8 @@ ts2clm3 <- function(data,
     return(x)
   }
 
-  ts_clim <- ts_whole[ts_x %between% c(clim_start, clim_end), .(ts_x = format(as.Date(ts_x), "%Y"), doy, ts_y)]
+  ts_clim <- ts_whole[ts_x %between% c(clim_start, clim_end),
+                      .(ts_x = format(ts_x, "%Y"), doy, ts_y)]
 
   ts_clim[, mean_ts_y := mean(ts_y, na.rm = TRUE), by = .(doy, ts_x)]
   ts_spread <- data.table::dcast(ts_clim, doy ~ ts_x, value.var = "mean_ts_y")
@@ -294,7 +294,9 @@ ts2clm3 <- function(data,
   ts_spread[60, (names(ts_spread)) := ts_spread_filled[2, .SD, .SDcols = names(ts_spread)]]
   rm(ts_spread_filled)
 
-  l <- list(ts_spread[(.N - windowHalfWidth + 1):.N, ], ts_spread, ts_spread[1:windowHalfWidth, ])
+  l <- list(ts_spread[(.N - windowHalfWidth + 1):.N, ],
+            ts_spread,
+            ts_spread[1:windowHalfWidth, ])
   ts_spread <- data.table::rbindlist(l)
   rm(l)
 
