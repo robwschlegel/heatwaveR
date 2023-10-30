@@ -135,7 +135,7 @@
 #'                   var = TRUE)
 #' res_var[1:10, ]
 #'
-ts2clm3 <- function(data,
+ts2clm <- function(data,
                     x = t,
                     y = temp,
                     climatologyPeriod,
