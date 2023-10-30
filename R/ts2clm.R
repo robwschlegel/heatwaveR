@@ -24,8 +24,6 @@
 #' the climatology period, and the second value the end date of said period. This
 #' chosen period (preferably 30 years in length) is then used to calculate the
 #' seasonal cycle and the extreme value threshold.
-#' @param robust This argument has been deprecated and no longer has affects how
-#' the function operates.
 #' @param maxPadLength Specifies the maximum length of days over which to
 #' interpolate (pad) missing data (specified as \code{NA}) in the input
 #' temperature time series; i.e., any consecutive blocks of NAs with length
@@ -141,7 +139,6 @@ ts2clm <- function(data,
                    x = t,
                    y = temp,
                    climatologyPeriod,
-                   robust = FALSE,
                    maxPadLength = FALSE,
                    windowHalfWidth = 5,
                    pctile = 90,
@@ -155,10 +152,6 @@ ts2clm <- function(data,
     stop("Oops! Please provide a period (two dates) for calculating the climatology.")
   if (length(climatologyPeriod) != 2)
     stop("Bummer! Please provide BOTH start and end dates for the climatology period.")
-  if (!(is.logical(robust)))
-    stop("Please ensure that 'robust' is either TRUE or FALSE.")
-  if (robust)
-    message("The 'robust' argument has been deprecated and will be removed from future versions.")
   if (maxPadLength != FALSE & !is.numeric(maxPadLength))
     stop("Please ensure that 'maxPadLength' is either FALSE or a numeric/integer value.")
   if (!(is.numeric(pctile)))

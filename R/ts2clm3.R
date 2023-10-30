@@ -179,7 +179,7 @@ ts2clm3 <- function(data,
     }
   }
 
-  data.table::setDT(data)
+  # data.table::setDT(data) # Unecessary as a new data.table is created below
 
   clim_start <- climatologyPeriod[1]
   clim_end <- climatologyPeriod[2]
@@ -209,18 +209,25 @@ ts2clm3 <- function(data,
 
   feb28 <- 59
 
-    .is_leap_year <- function(year) {
+  .is_leap_year <- function(year) {
     return((year %% 4 == 0 & year %% 100 != 0) | (year %% 400 == 0))
   }
 
-  ts_full <- data.table::data.table(ts_x = seq.Date(as.Date(ts_xy[1, ts_x]),
-                                                    as.Date(ts_xy[.N, ts_x],
-                                                            origin = "1970-01-01"),
-                                                    "day"))
+  # Hypothetically this could be done with min/max date column because there is a logic gate to ensure these are date values
+    # But I'm thinking the data.table indexing might actually be faster than the min/max functions...
+  # ts_full <- data.table::data.table(ts_x = seq.Date(as.Date(ts_xy[1, ts_x]),
+  #                                                   as.Date(ts_xy[.N, ts_x],
+  #                                                           origin = "1970-01-01"), "day"))
+  ts_full <- data.table::data.table(ts_x = seq.Date(ts_xy[1, ts_x],
+                                                    ts_xy[.N, ts_x], "day"))
+  # ts_full <- data.table::data.table(ts_x = seq.Date(min(ts_x),
+  #                                                   max(ts_xy), "day"))
 
-  ts_whole <- ts_full[
-    ts_xy, on = .(ts_x), allow.cartesian = TRUE
-  ][,`:=`(
+  # ts_merged <- base::merge(ts_full, ts_xy, by = "ts_x", all.x = TRUE)
+
+  # ts_whole <- ts_full[
+  #   ts_xy, on = list(ts_x), allow.cartesian = TRUE
+  ts_whole <- data.table::merge.data.table(ts_full, ts_xy, by = "ts_x", all.x = TRUE)[,`:=`(
     year = as.integer(format(ts_x, "%Y")),
     doy = as.integer(format(ts_x, "%j"))
   )
@@ -232,7 +239,7 @@ ts2clm3 <- function(data,
 
   if (sum(stats::complete.cases(ts_whole$ts_y)) < nrow(ts_whole) & is.numeric(maxPadLength)) {
 
-  # BEGIN INSERT na_interp >>>
+    # BEGIN INSERT na_interp >>>
 
     .na_pad <- function(x, fill, maxPadLength) {
       if (maxPadLength <= 0)
@@ -259,7 +266,7 @@ ts2clm3 <- function(data,
 
     ts_whole[, ts_y := .na_fun(ts_x, ts_y)]
 
-  # END INSERT na_interp <<<
+    # END INSERT na_interp <<<
   }
 
   if (ts_whole$ts_x[1] > clim_start)
