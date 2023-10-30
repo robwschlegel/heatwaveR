@@ -375,19 +375,11 @@ ts2clm3 <- function(data,
     names(ts_res)[2] <- paste(substitute(x))
     names(ts_res)[3] <- paste(substitute(y))
 
-    # I don't see why the next lines until before return() are necessary;
-    # `data` will always only have two columns as this is the expected
-    # format as per the help file -- unless we want to give the user the option
-    # to carry over into ts_res other extra columns that might initially be
-    # present in `data` but not used in the calculations? If that is the case
-    # we may simply want to add only _that_ column(s) to ts_res
-    # if (ncol(data) > 2) {
-    #     # The commented code does not join columns via the expected behaviour
-    #     # data.table::setkey(data)
-    #     # data.table::setkey(ts_res)
-    #     # ts_res <- data[ts_res, nomatch = NA]
-    #     ts_res <- merge(data, ts_res, all = TRUE)
-    #   }
+    # Implement a data.table method
+    if (ncol(data) > 2) {
+      merge_cols <- colnames(ts_res)[2:3]
+      ts_res <- data.table::merge.data.table(data, ts_res, by = merge_cols, all = TRUE)
+    }
 
     return(ts_res)
 
