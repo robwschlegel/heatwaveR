@@ -9,7 +9,6 @@ ts2clm(
   x = t,
   y = temp,
   climatologyPeriod,
-  robust = FALSE,
   maxPadLength = FALSE,
   windowHalfWidth = 5,
   pctile = 90,
@@ -39,9 +38,6 @@ name differs from the default (i.e. \code{temp}), specify the name here.}
 the climatology period, and the second value the end date of said period. This
 chosen period (preferably 30 years in length) is then used to calculate the
 seasonal cycle and the extreme value threshold.}
-
-\item{robust}{This argument has been deprecated and no longer has affects how
-the function operates.}
 
 \item{maxPadLength}{Specifies the maximum length of days over which to
 interpolate (pad) missing data (specified as \code{NA}) in the input

@@ -31,6 +31,7 @@ Suggests:
     rmarkdown,
     stringr,
     testthat,
+    tibble,
     tidync,
     tidyr,
 Imports:
@@ -41,7 +42,6 @@ Imports:
     Rcpp,
     RcppRoll,
     stats,
-    tibble,
     utils
 LinkingTo: Rcpp (>= 0.12.16), RcppArmadillo
 NeedsCompilation: yes

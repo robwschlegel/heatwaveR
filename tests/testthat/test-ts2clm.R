@@ -12,9 +12,6 @@ test_that("all starting error checks flag correctly", {
   expect_error(ts2clm(sst_WA, climatologyPeriod = "1983-01-01"),
                "Bummer! Please provide BOTH start and end dates for the climatology period.")
   expect_error(ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
-                      robust = "TRUE"),
-               "Please ensure that 'robust' is either TRUE or FALSE.")
-  expect_error(ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
                       maxPadLength = "2"),
                "Please ensure that 'maxPadLength' is either FALSE or a numeric/integer value.")
   expect_error(ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
@@ -85,7 +82,7 @@ test_that("mssing data causes na_interp() to be used if a value is provided for 
   expect_equal(round(res$temp[21], 2), 13.57)
 })
 
-test_that("contiguous mssing data causes clim_calc() to be used", {
+test_that("contiguous missing data causes clim_calc() to be used", {
   sst_WA_cont <- sst_WA
   sst_WA_cont$month <- as.numeric(format(sst_WA_cont$t, "%m"))
   sst_WA_cont <- sst_WA_cont[sst_WA_cont$month != 1,]

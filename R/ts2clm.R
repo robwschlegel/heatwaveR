@@ -251,7 +251,7 @@ ts2clm <- function(data,
       ts_res <- merge(data, ts_res, all = TRUE)
     }
 
-    ts_res <- tibble::as_tibble(ts_res)
+    # ts_res <- tibble::as_tibble(ts_res)
     return(ts_res)
 
   }

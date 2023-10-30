@@ -24,7 +24,8 @@ smooth_percentile <- function(data, smoothPercentileWidth) {
   thresh <- RcppRoll::roll_mean(as.numeric(clim[,2]), n = smoothPercentileWidth, na.rm = FALSE)
   var <- RcppRoll::roll_mean(as.numeric(clim[,3]), n = smoothPercentileWidth, na.rm = FALSE)
 
-  clim <- tibble::tibble(doy = 1:len_clim_year,
+  # clim <- tibble::tibble(doy = 1:len_clim_year,
+  clim <- data.frame(doy = 1:len_clim_year,
                          seas = seas[(smoothPercentileWidth/2 + 2):((smoothPercentileWidth/2 + 1) + len_clim_year)],
                          thresh = thresh[(smoothPercentileWidth/2 + 2):((smoothPercentileWidth/2 + 1) + len_clim_year)],
                          var = var[(smoothPercentileWidth/2 + 2):((smoothPercentileWidth/2 + 1) + len_clim_year)])
