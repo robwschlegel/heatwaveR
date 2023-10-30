@@ -46,9 +46,9 @@ the climatology period, and the second value the end date of said period. This
 chosen period (preferably 30 years in length) is then used to calculate the
 seasonal cycle and the extreme value threshold.}
 
-\item{maxPadLength}{Specifies the maximum length of days over which to
-interpolate (pad) missing data (specified as \code{NA}) in the input
-temperature time series; i.e., any consecutive blocks of NAs with length
+\item{maxPadLength}{Specifies the maximum length of days over which to apply
+linear interpolation (padding) across the missing values (specified as \code{NA})
+in the measured variable; i.e., any consecutive blocks of NAs with length
 greater than \code{maxPadLength} will be left as \code{NA}. The default is
 \code{FALSE}. Set as an integer to interpolate. Setting \code{maxPadLength}
 to \code{TRUE} will return an error.}
@@ -61,24 +61,25 @@ series of 11 days.}
 
 \item{pctile}{Threshold percentile (\%) for detection of events (MHWs).
 Default is \code{90}th percentile. Should the intent be to use these
-threshold data for MCSs, set \code{pctile = 10}. Or some other low value.}
+threshold data for MCSs, set \code{pctile = 10} or some other low value.}
 
-\item{smoothPercentile}{Boolean switch selecting whether to smooth the
-climatology and threshold percentile time series with a moving average of
-\code{smoothPercentileWidth}. Default is \code{TRUE}.}
+\item{smoothPercentile}{Boolean. Select whether to smooth the climatology
+and threshold percentile time series with a moving average of
+\code{smoothPercentileWidth}. The default is \code{TRUE}.}
 
 \item{smoothPercentileWidth}{Full width of moving average window for smoothing
-climatology and threshold. The default is \code{31} days.}
+the climatology and threshold. The default is \code{31} days.}
 
-\item{clmOnly}{Choose to calculate and return only the climatologies.
+\item{clmOnly}{Boolean. Choose to calculate and return only the climatologies.
 The default is \code{FALSE}.}
 
-\item{var}{This argument has been introduced to allow the user to choose if
-the variance of the seasonal signal per doy should be calculated. The default of
-\code{FALSE} will prevent the calculation, potentially increasing speed of calculations
-on gridded data and reducing the size of the output. The variance was initially
-introduced as part of the standard output from Hobday et al. (2016), but few
-researchers use it and so it is generally regarded now as unnecessary.}
+\item{var}{Boolean. This argument has been introduced to allow the user to
+choose if the variance of the seasonal signal per doy should be calculated.
+The default of \code{FALSE} will prevent the calculation. Setting it to
+\code{TRUE} might potentially increase the speed of calculations on gridded
+data and increase the size of the output. The variance was initially introduced
+as part of the standard output from Hobday et al. (2016), but few researchers
+use it and so it is generally regarded now as unnecessary.}
 
 \item{roundClm}{This argument allows the user to choose how many decimal places
 the \code{seas} and \code{thresh} outputs will be rounded to. Default is 4. To
