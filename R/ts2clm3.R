@@ -379,11 +379,7 @@ ts2clm3 <- function(data,
     if (ncol(data) > 2) {
       merge_cols <- colnames(ts_res)[2:3]
       ts_res <- data.table::merge.data.table(data, ts_res, by = merge_cols, all = TRUE)
-<<<<<<< HEAD
     }
-=======
-      }
->>>>>>> c98372c6f10fa402242e10b8e64a81265666f92b
 
     return(ts_res)
 
