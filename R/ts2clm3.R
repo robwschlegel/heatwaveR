@@ -10,11 +10,13 @@
 #' @importFrom data.table %between% .N
 #' @useDynLib heatwaveR
 #'
-#' @param data A data frame with two columns. In the default setting (i.e. omitting
-#' the arguments \code{x} and \code{y}; see immediately below), the data set is
-#' expected to have the headers \code{t} and \code{temp}. The \code{t} column is a
-#' vector of dates of class \code{Date}, while \code{temp} is the measured variable
-#' (by default it is assumed to be temperature).
+#' @param data A data frame with at least two columns. In the default setting
+#' (i.e. omitting the arguments \code{x} and \code{y}; see immediately below),
+#' the data set is expected to have the headers \code{t} and \code{temp}. The
+#' \code{t} column is a vector of dates of class \code{Date}, while \code{temp}
+#' is the measured variable (by default it is assumed to be temperature). Any
+#' additional columns are not used in calculations but will be correctly
+#' carried over into the output climatology.
 #' @param x This column is expected to contain a vector of dates. If a column
 #' headed \code{t} is present in the data frame, this argument may be omitted;
 #' otherwise, specify the name of the column with dates here.
