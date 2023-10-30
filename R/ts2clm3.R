@@ -7,8 +7,7 @@
 #'
 #' @import Rcpp
 #'
-#' @importFrom data.table %between%
-#' @importFrom data.table .N
+#' @importFrom data.table %between% .N
 #' @useDynLib heatwaveR
 #'
 #' @param data A data frame with two columns. In the default setting (i.e. omitting
@@ -26,8 +25,6 @@
 #' the climatology period, and the second value the end date of said period. This
 #' chosen period (preferably 30 years in length) is then used to calculate the
 #' seasonal cycle and the extreme value threshold.
-#' @param robust This argument has been deprecated and no longer has affects how
-#' the function operates.
 #' @param maxPadLength Specifies the maximum length of days over which to
 #' interpolate (pad) missing data (specified as \code{NA}) in the input
 #' temperature time series; i.e., any consecutive blocks of NAs with length
@@ -143,7 +140,6 @@ ts2clm3 <- function(data,
                     x = t,
                     y = temp,
                     climatologyPeriod,
-                    robust = FALSE,
                     maxPadLength = FALSE,
                     windowHalfWidth = 5,
                     pctile = 90,
@@ -157,10 +153,6 @@ ts2clm3 <- function(data,
     stop("Oops! Please provide a period (two dates) for calculating the climatology.")
   if (length(climatologyPeriod) != 2)
     stop("Bummer! Please provide BOTH start and end dates for the climatology period.")
-  if (!(is.logical(robust)))
-    stop("Please ensure that 'robust' is either TRUE or FALSE.")
-  if (robust)
-    message("The 'robust' argument has been deprecated and will be removed from future versions.")
   if (maxPadLength != FALSE & !is.numeric(maxPadLength))
     stop("Please ensure that 'maxPadLength' is either FALSE or a numeric/integer value.")
   if (!(is.numeric(pctile)))
@@ -209,10 +201,11 @@ ts2clm3 <- function(data,
 
   feb28 <- 59
 
-    .is_leap_year <- function(year) {
+  .is_leap_year <- function(year) {
     return((year %% 4 == 0 & year %% 100 != 0) | (year %% 400 == 0))
   }
 
+<<<<<<< HEAD
     ts_full <- data.table::data.table(ts_x = seq.Date(ts_xy[1, ts_x],
                                                       ts_xy[.N, ts_x],
                                                       "day"))
@@ -221,6 +214,24 @@ ts2clm3 <- function(data,
     ts_xy, on = .(ts_x), allow.cartesian = TRUE
   ][,`:=`(
     year = as.integer(substr(ts_x, 1, 4)),
+=======
+  # Hypothetically this could be done with min/max date column because there is a logic gate to ensure these are date values
+    # But I'm thinking the data.table indexing might actually be faster than the min/max functions...
+  # ts_full <- data.table::data.table(ts_x = seq.Date(as.Date(ts_xy[1, ts_x]),
+  #                                                   as.Date(ts_xy[.N, ts_x],
+  #                                                           origin = "1970-01-01"), "day"))
+  ts_full <- data.table::data.table(ts_x = seq.Date(ts_xy[1, ts_x],
+                                                    ts_xy[.N, ts_x], "day"))
+  # ts_full <- data.table::data.table(ts_x = seq.Date(min(ts_x),
+  #                                                   max(ts_xy), "day"))
+
+  # ts_merged <- base::merge(ts_full, ts_xy, by = "ts_x", all.x = TRUE)
+
+  # ts_whole <- ts_full[
+  #   ts_xy, on = list(ts_x), allow.cartesian = TRUE
+  ts_whole <- data.table::merge.data.table(ts_full, ts_xy, by = "ts_x", all.x = TRUE)[,`:=`(
+    year = as.integer(format(ts_x, "%Y")),
+>>>>>>> 945b063348318a10b10140ca5ba4c49d3a95b704
     doy = as.integer(format(ts_x, "%j"))
   )
   ][, doy := ifelse(!.is_leap_year(year) & doy > 59, doy + 1, doy)
@@ -231,7 +242,7 @@ ts2clm3 <- function(data,
 
   if (sum(stats::complete.cases(ts_whole$ts_y)) < nrow(ts_whole) & is.numeric(maxPadLength)) {
 
-  # BEGIN INSERT na_interp >>>
+    # BEGIN INSERT na_interp >>>
 
     .na_pad <- function(x, fill, maxPadLength) {
       if (maxPadLength <= 0)
@@ -258,7 +269,7 @@ ts2clm3 <- function(data,
 
     ts_whole[, ts_y := .na_fun(ts_x, ts_y)]
 
-  # END INSERT na_interp <<<
+    # END INSERT na_interp <<<
   }
 
   if (ts_whole$ts_x[1] > clim_start)
@@ -281,10 +292,14 @@ ts2clm3 <- function(data,
     return(x)
   }
 
+<<<<<<< HEAD
   ts_clim <- ts_whole[ts_x %between% c(clim_start, clim_end),
                       .(ts_x = format(ts_x, "%Y"), doy, ts_y)]
+=======
+  ts_clim <- ts_whole[ts_x %between% c(clim_start, clim_end), list(ts_x = format(as.Date(ts_x), "%Y"), doy, ts_y)]
+>>>>>>> 945b063348318a10b10140ca5ba4c49d3a95b704
 
-  ts_clim[, mean_ts_y := mean(ts_y, na.rm = TRUE), by = .(doy, ts_x)]
+  ts_clim[, mean_ts_y := mean(ts_y, na.rm = TRUE), by = list(doy, ts_x)]
   ts_spread <- data.table::dcast(ts_clim, doy ~ ts_x, value.var = "mean_ts_y")
   rm(ts_clim)
 
@@ -327,9 +342,10 @@ ts2clm3 <- function(data,
 
     # BEGIN INSERT smooth_percentile >>>
 
-    prep <- data.table::rbindlist(list(utils::tail(ts_mat, smoothPercentileWidth),
-                                       ts_mat,
-                                       utils::head(ts_mat, smoothPercentileWidth)))
+    # NB: For some reason it is necessary to explicitly state the object type here...
+    prep <- data.table::rbindlist(list(data.table::data.table(utils::tail(ts_mat, smoothPercentileWidth)),
+                                       data.table::data.table(ts_mat),
+                                       data.table::data.table(utils::head(ts_mat, smoothPercentileWidth))))
 
     prep[,`:=`(doy = doy,
                seas_roll = data.table::frollmean(seas, n = smoothPercentileWidth,
@@ -337,12 +353,13 @@ ts2clm3 <- function(data,
                thresh_roll = data.table::frollmean(thresh, n = smoothPercentileWidth,
                                                    na.rm = FALSE, align = "center"))]
     ts_clim <- prep[(smoothPercentileWidth + 1):(nrow(prep) - smoothPercentileWidth),
-                    .(doy = doy, seas = seas_roll, thresh = thresh_roll)]
+                    list(doy = doy, seas = seas_roll, thresh = thresh_roll)]
 
     if (var) {
-      prep <- data.table::rbindlist(list(utils::tail(ts_mat, smoothPercentileWidth),
-                                         ts_mat,
-                                         utils::head(ts_mat, smoothPercentileWidth)))
+      # NB: For some reason it is necessary to explicitly state the object type here...
+      prep <- data.table::rbindlist(list(data.table::data.table(utils::tail(ts_mat, smoothPercentileWidth)),
+                                         data.table::data.table(ts_mat),
+                                         data.table::data.table(utils::head(ts_mat, smoothPercentileWidth))))
 
       prep[,`:=`(doy = doy,
                  seas_roll = data.table::frollmean(seas, n = smoothPercentileWidth,
@@ -353,7 +370,7 @@ ts2clm3 <- function(data,
                                                           var, na.rm = FALSE, align = "center"))]
 
       ts_clim <- prep[(smoothPercentileWidth + 1):(nrow(prep) - smoothPercentileWidth),
-                      .(doy = doy, seas = seas_roll,
+                      list(doy = doy, seas = seas_roll,
                         thresh = thresh_roll, var = thresh_var_roll)]
     }
     rm(prep)
@@ -363,6 +380,7 @@ ts2clm3 <- function(data,
   } else {
 
     ts_clim <- ts_mat
+
   }
 
   if (is.numeric(roundClm)) {
@@ -376,15 +394,17 @@ ts2clm3 <- function(data,
 
   } else {
 
-    ts_res <- ts_whole[ts_clim, on = .(doy), nomatch = 0][order(ts_x)]
+    ts_res <- ts_whole[ts_clim, on = list(doy), nomatch = 0][order(ts_x)]
     rm(ts_whole); rm(ts_clim)
     names(ts_res)[2] <- paste(substitute(x))
     names(ts_res)[3] <- paste(substitute(y))
 
     if (ncol(data) > 2) {
-      data.table::setkey(data)
-      data.table::setkey(ts_res)
-      ts_res <- data[ts_res, nomatch = NA]
+      # The commented code does not join columns via the expected behaviour
+      # data.table::setkey(data)
+      # data.table::setkey(ts_res)
+      # ts_res <- data[ts_res, nomatch = NA]
+      ts_res <- merge(data, ts_res, all = TRUE)
     }
 
     return(ts_res)

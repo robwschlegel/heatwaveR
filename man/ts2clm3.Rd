@@ -9,7 +9,6 @@ ts2clm3(
   x = t,
   y = temp,
   climatologyPeriod,
-  robust = FALSE,
   maxPadLength = FALSE,
   windowHalfWidth = 5,
   pctile = 90,
@@ -28,7 +27,7 @@ vector of dates of class \code{Date}, while \code{temp} is the measured variable
 (by default it is assumed to be temperature).}
 
 \item{x}{This column is expected to contain a vector of dates. If a column
-headed \code{t} is present in the dataframe, this argument may be omitted;
+headed \code{t} is present in the data frame, this argument may be omitted;
 otherwise, specify the name of the column with dates here.}
 
 \item{y}{This is a column containing the measurement variable. If the column
@@ -39,9 +38,6 @@ name differs from the default (i.e. \code{temp}), specify the name here.}
 the climatology period, and the second value the end date of said period. This
 chosen period (preferably 30 years in length) is then used to calculate the
 seasonal cycle and the extreme value threshold.}
-
-\item{robust}{This argument has been deprecated and no longer has affects how
-the function operates.}
 
 \item{maxPadLength}{Specifies the maximum length of days over which to
 interpolate (pad) missing data (specified as \code{NA}) in the input
@@ -83,7 +79,7 @@ prevent rounding set \code{roundClm = FALSE}. This argument may only be given
 numeric values or FALSE.}
 }
 \value{
-The function will return a tibble (see the \code{tidyverse}) with the
+The function will return a data.table (see the \code{data.table}) with the
 input time series and the newly calculated climatology. The climatology contains
 the daily climatology and the threshold for calculating MHWs. The software was
 designed for creating climatologies of daily temperatures, and the units
@@ -108,7 +104,8 @@ Should \code{clmOnly} be enabled, only the 365 or 366 day climatology will be
 returned.
 }
 \description{
-Creates a daily climatology from a time series of daily temperatures using a
+This is the fully data.table-based version of ts2clm. The function creates
+a daily climatology from a time series of daily temperatures using a
 user-specified sliding window for the mean and threshold calculation, followed
 by an optional moving average smoother as used by Hobday et al. (2016).
 }
@@ -146,16 +143,16 @@ Marine and Antarctic Studies, University of Tasmania, Feb 2015, and is
 documented by Hobday et al. (2016).
 }
 \examples{
-res <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+res <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
 res[1:10, ]
 
 # Or if one only wants the 366 day climatology
-res_clim <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
+res_clim <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
                    clmOnly = TRUE)
 res_clim[1:10, ]
 
 # Or if one wants the variance column included in the results
-res_var <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
+res_var <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
                   var = TRUE)
 res_var[1:10, ]
 

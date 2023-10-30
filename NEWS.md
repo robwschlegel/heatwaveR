@@ -1,3 +1,9 @@
+# heatwaveR 0.5.2.9001 (2023-10-30)
+
+-   Removed `robust` argument from `ts2clm()` that was deprecated years ago
+-   Replaced `ts2clm()` with `ts2clm3()` throughout package
+-   Removed __`tibble`__ dependency
+
 # heatwaveR 0.5.2.9000 (2023-10-29)
 
 -   Fully data.table compliant `ts2clm3()`, a drop-in replacement for `ts2clm()`

@@ -213,7 +213,8 @@ category <- function(data,
 
     if (lat_col) {
       if ("lat" %in% colnames(data$climatology)) {
-        ts_lat_col <- data$climatology[,"lat"]
+        # ts_lat_col <- data$climatology[,"lat"]
+        ts_lat_col <- eval(substitute(lat), data$climatology)
       } else if ("latitude" %in% colnames(data$climatology)) {
         ts_lat_col <- eval(substitute(latitude), data$climatology)
       } else {

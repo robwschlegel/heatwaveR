@@ -499,8 +499,9 @@ detect_event <- function(data,
         data_cols <- colnames(data)[!colnames(data) %in% colnames(data_cat$climatology)]
         other_cols <- colnames(data_res$climatology)[!colnames(data_res$climatology) %in% c(date_cols, data_cols)]
 
-        data_res$climatology <- data_res$climatology[c(date_cols, data_cols, other_cols)]
-        data_res$climatology <- data_res$climatology[base::order(data_res$climatology$t),]
+        # data_res$climatology <- data_res$climatology[c(date_cols, data_cols, other_cols)]
+        data_res$climatology <- data_res$climatology[, c(date_cols, data_cols, other_cols), with = FALSE]
+        data_res$climatology <- data_res$climatology[base::order(t)]
         data_res$event <- data_res$event[order(data_res$event$event_no),]
         data_res$event <- data_res$event[,c(1,5,6,7,2,8,4,9,10,3,11:29)]
         row.names(data_res$event) <- NULL

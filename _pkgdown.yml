@@ -44,6 +44,7 @@ reference:
   desc: ~
   contents:
   - '`ts2clm`'
+  - '`ts2clm3`'
   - '`detect_event`'
   - '`block_average`'
   - '`category`'
