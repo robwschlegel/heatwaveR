@@ -205,33 +205,15 @@ ts2clm3 <- function(data,
     return((year %% 4 == 0 & year %% 100 != 0) | (year %% 400 == 0))
   }
 
-<<<<<<< HEAD
-    ts_full <- data.table::data.table(ts_x = seq.Date(ts_xy[1, ts_x],
-                                                      ts_xy[.N, ts_x],
-                                                      "day"))
-
-  ts_whole <- ts_full[
-    ts_xy, on = .(ts_x), allow.cartesian = TRUE
-  ][,`:=`(
-    year = as.integer(substr(ts_x, 1, 4)),
-=======
-  # Hypothetically this could be done with min/max date column because there is a logic gate to ensure these are date values
-    # But I'm thinking the data.table indexing might actually be faster than the min/max functions...
-  # ts_full <- data.table::data.table(ts_x = seq.Date(as.Date(ts_xy[1, ts_x]),
-  #                                                   as.Date(ts_xy[.N, ts_x],
-  #                                                           origin = "1970-01-01"), "day"))
   ts_full <- data.table::data.table(ts_x = seq.Date(ts_xy[1, ts_x],
-                                                    ts_xy[.N, ts_x], "day"))
-  # ts_full <- data.table::data.table(ts_x = seq.Date(min(ts_x),
-  #                                                   max(ts_xy), "day"))
+                                                    ts_xy[.N, ts_x],
+                                                    "day"))
 
-  # ts_merged <- base::merge(ts_full, ts_xy, by = "ts_x", all.x = TRUE)
-
-  # ts_whole <- ts_full[
-  #   ts_xy, on = list(ts_x), allow.cartesian = TRUE
+  # Hypothetically this could be done with min/max date column because there is a logic gate to ensure these are date values
+  # But I'm thinking the data.table indexing might actually be faster than the min/max functions...
+  # Yes, one of the reasons data.table is faster is because of the speed of indexed operations
   ts_whole <- data.table::merge.data.table(ts_full, ts_xy, by = "ts_x", all.x = TRUE)[,`:=`(
     year = as.integer(format(ts_x, "%Y")),
->>>>>>> 945b063348318a10b10140ca5ba4c49d3a95b704
     doy = as.integer(format(ts_x, "%j"))
   )
   ][, doy := ifelse(!.is_leap_year(year) & doy > 59, doy + 1, doy)
@@ -292,12 +274,8 @@ ts2clm3 <- function(data,
     return(x)
   }
 
-<<<<<<< HEAD
   ts_clim <- ts_whole[ts_x %between% c(clim_start, clim_end),
-                      .(ts_x = format(ts_x, "%Y"), doy, ts_y)]
-=======
-  ts_clim <- ts_whole[ts_x %between% c(clim_start, clim_end), list(ts_x = format(as.Date(ts_x), "%Y"), doy, ts_y)]
->>>>>>> 945b063348318a10b10140ca5ba4c49d3a95b704
+                      list(ts_x = format(as.Date(ts_x), "%Y"), doy, ts_y)]
 
   ts_clim[, mean_ts_y := mean(ts_y, na.rm = TRUE), by = list(doy, ts_x)]
   ts_spread <- data.table::dcast(ts_clim, doy ~ ts_x, value.var = "mean_ts_y")
@@ -342,7 +320,6 @@ ts2clm3 <- function(data,
 
     # BEGIN INSERT smooth_percentile >>>
 
-    # NB: For some reason it is necessary to explicitly state the object type here...
     prep <- data.table::rbindlist(list(data.table::data.table(utils::tail(ts_mat, smoothPercentileWidth)),
                                        data.table::data.table(ts_mat),
                                        data.table::data.table(utils::head(ts_mat, smoothPercentileWidth))))
@@ -356,7 +333,6 @@ ts2clm3 <- function(data,
                     list(doy = doy, seas = seas_roll, thresh = thresh_roll)]
 
     if (var) {
-      # NB: For some reason it is necessary to explicitly state the object type here...
       prep <- data.table::rbindlist(list(data.table::data.table(utils::tail(ts_mat, smoothPercentileWidth)),
                                          data.table::data.table(ts_mat),
                                          data.table::data.table(utils::head(ts_mat, smoothPercentileWidth))))
@@ -371,7 +347,7 @@ ts2clm3 <- function(data,
 
       ts_clim <- prep[(smoothPercentileWidth + 1):(nrow(prep) - smoothPercentileWidth),
                       list(doy = doy, seas = seas_roll,
-                        thresh = thresh_roll, var = thresh_var_roll)]
+                           thresh = thresh_roll, var = thresh_var_roll)]
     }
     rm(prep)
 
@@ -399,13 +375,19 @@ ts2clm3 <- function(data,
     names(ts_res)[2] <- paste(substitute(x))
     names(ts_res)[3] <- paste(substitute(y))
 
-    if (ncol(data) > 2) {
-      # The commented code does not join columns via the expected behaviour
-      # data.table::setkey(data)
-      # data.table::setkey(ts_res)
-      # ts_res <- data[ts_res, nomatch = NA]
-      ts_res <- merge(data, ts_res, all = TRUE)
-    }
+    # I don't see why the next lines until before return() are necessary;
+    # `data` will always only have two columns as this is the expected
+    # format as per the help file -- unless we want to give the user the option
+    # to carry over into ts_res other extra columns that might initially be
+    # present in `data` but not used in the calculations? If that is the case
+    # we may simply want to add only _that_ column(s) to ts_res
+    # if (ncol(data) > 2) {
+    #     # The commented code does not join columns via the expected behaviour
+    #     # data.table::setkey(data)
+    #     # data.table::setkey(ts_res)
+    #     # ts_res <- data[ts_res, nomatch = NA]
+    #     ts_res <- merge(data, ts_res, all = TRUE)
+    #   }
 
     return(ts_res)
 
