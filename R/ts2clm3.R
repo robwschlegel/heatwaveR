@@ -64,7 +64,7 @@
 #' the \code{seas} and \code{thresh} outputs will be rounded to. Default is 4. To
 #' prevent rounding set \code{roundClm = FALSE}. This argument may only be given
 #' numeric values or FALSE.
-#' @param retrunDF Boolean. The default (\code{FALSE}) returns the results as
+#' @param returnDF Boolean. The default (\code{FALSE}) returns the results as
 #' type \code{data.table}. Setting it to \code{TRUE} returns a \code{data.frame}.
 #'
 #' @details

@@ -1,10 +1,13 @@
 context("Test ts2clm3.R")
 
 test_that("ts2clm3() returns the correct output", {
-  res <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-  expect_is(res, "data.frame")
-  expect_equal(ncol(res), 5)
-  expect_equal(nrow(res), 14975)
+  res1 <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  expect_s3_class(res1, "data.table")
+  expect_equal(ncol(res1), 5)
+  expect_equal(nrow(res1), 14975)
+  res2 <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), returnDF = TRUE)
+  expect_s3_class(res2, "data.frame")
+  expect_false(S3Class(res2) == "data.table")
 })
 
 test_that("all starting error checks flag correctly", {
