@@ -75,11 +75,16 @@ test_that("climatologyPeriod less than three years is rejected", {
                "The climatologyPeriod must be at least three years to calculate thresholds")
 })
 
-test_that("mssing data causes na_interp() to be used if a value is provided for maxPadLength", {
+test_that("maxPadLength behaves as expected", {
   sst_Med_NA <- sst_Med[c(1:20,22:12000),]
-  res <- ts2clm3(data = sst_Med_NA, climatologyPeriod = c("1983-01-01", "2012-12-31"), maxPadLength = 2)
-  expect_equal(nrow(res), 12000)
-  expect_equal(round(res$temp[21], 2), 13.57)
+  res1 <- ts2clm3(data = sst_Med_NA, climatologyPeriod = c("1983-01-01", "2012-12-31"), maxPadLength = 2)
+  res2 <- ts2clm3(data = sst_Med_NA, climatologyPeriod = c("1983-01-01", "2012-12-31"), maxPadLength = 0)
+  res3 <- ts2clm3(data = sst_Med_NA, climatologyPeriod = c("1983-01-01", "2012-12-31"), maxPadLength = -1)
+  res4 <- ts2clm3(data = sst_Med_NA, climatologyPeriod = c("1983-01-01", "2012-12-31"), maxPadLength = 15000)
+  expect_equal(nrow(res1), 12000); expect_equal(nrow(res2), 12000)
+  expect_equal(nrow(res3), 12000); expect_equal(nrow(res4), 12000)
+  expect_equal(round(res1$temp[21], 2), 13.57); expect_equal(round(res4$temp[21], 2), 13.57)
+  expect_equal(res2$temp[21], as.numeric(NA)); expect_equal(res3$temp[21], as.numeric(NA))
 })
 
 test_that("contiguous missing data causes clim_calc() to be used", {
@@ -133,4 +138,3 @@ test_that("additional columns in base data should be passed through the funciton
   expect_equal(ncol(res), 8)
   expect_equal(nrow(res), 14975)
 })
-

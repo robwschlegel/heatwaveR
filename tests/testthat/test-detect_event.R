@@ -1,13 +1,21 @@
 context("Test detect_event.R")
 
-test_that("detect() returns the correct lists, data.table, and columns", {
+test_that("detect() returns the correct lists, data.frame, data.table, and columns", {
   ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-  res <- detect_event(ts)
-  expect_is(res, "list")
-  expect_is(res$climatology, "data.frame")
-  expect_is(res$event, "data.frame")
-  expect_equal(ncol(res$climatology),9)
-  expect_equal(ncol(res$event), 22)
+  res1 <- detect_event(ts)
+  expect_is(res1, "list")
+  expect_s3_class(res1$climatology, "data.frame")
+  expect_s3_class(res1$event, "data.frame")
+  expect_false(S3Class(res1$climatology) == "data.table")
+  expect_false(S3Class(res1$event) == "data.table")
+  expect_equal(ncol(res1$climatology), 9)
+  expect_equal(ncol(res1$event), 22)
+  res2 <- detect_event(ts, returnDF = FALSE)
+  expect_is(res2, "list")
+  expect_s3_class(res2$climatology, "data.table")
+  expect_s3_class(res2$event, "data.table")
+  expect_equal(ncol(res2$climatology), 9)
+  expect_equal(ncol(res2$event), 22)
 })
 
 test_that("all starting error checks flag correctly", {

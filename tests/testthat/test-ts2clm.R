@@ -1,10 +1,13 @@
 context("Test ts2clm.R")
 
 test_that("ts2clm() returns the correct output", {
-  res <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-  expect_is(res, "data.frame")
-  expect_equal(ncol(res), 5)
-  expect_equal(nrow(res), 14975)
+  res1 <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  res2 <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), returnDF = FALSE)
+  expect_s3_class(res1, "data.frame")
+  expect_false(S3Class(res1) == "data.table")
+  expect_s3_class(res2, "data.table")
+  expect_equal(ncol(res1), 5)
+  expect_equal(nrow(res1), 14975)
 })
 
 test_that("all starting error checks flag correctly", {
@@ -75,7 +78,7 @@ test_that("climatologyPeriod less than three years is rejected", {
                "The climatologyPeriod must be at least three years to calculate thresholds")
 })
 
-test_that("mssing data causes na_interp() to be used if a value is provided for maxPadLength", {
+test_that("missing data causes na_interp() to be used if a value is provided for maxPadLength", {
   sst_Med_NA <- sst_Med[c(1:20,22:12000),]
   res <- ts2clm(data = sst_Med_NA, climatologyPeriod = c("1983-01-01", "2012-12-31"), maxPadLength = 2)
   expect_equal(nrow(res), 12000)
