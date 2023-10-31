@@ -66,11 +66,15 @@ test_that("smooth_percentile = FALSE prevents smoothing", {
 })
 
 test_that("clmOnly = TRUE returns only the clim data", {
-  res <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
+  res1 <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
                 clmOnly = TRUE)
-  expect_is(res, "data.frame")
-  expect_equal(ncol(res), 3)
-  expect_equal(nrow(res), 366)
+  expect_s3_class(res1, "data.table")
+  expect_equal(ncol(res1), 3)
+  expect_equal(nrow(res1), 366)
+  res2 <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
+                  clmOnly = TRUE, returnDF = TRUE)
+  expect_s3_class(res2, "data.frame")
+  expect_false(S3Class(res2) == "data.table")
 })
 
 test_that("climatologyPeriod less than three years is rejected", {
