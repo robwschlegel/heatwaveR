@@ -194,10 +194,7 @@ event_line <- function(data,
           panel.grid.minor = element_line(colour = NA),
           panel.grid.major = element_line(colour = "black", linewidth = 0.2, linetype = "dotted"),
           axis.text = element_text(colour = "black"),
-          axis.text.x = element_text(margin = grid::unit(c(0.5, 0.5, 0.5, 0.5), "cm"),
-                                     angle = xtangle),
-          axis.text.y = element_text(margin = grid::unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
-          axis.ticks.length = grid::unit(-0.25, "cm"),
+          axis.text.x = element_text(angle = xtangle),
           legend.background = element_rect(colour = "black"),
           legend.direction = "horizontal",
           legend.justification = c(0, 0),
@@ -396,10 +393,7 @@ lolli_plot <- function(data,
           panel.border = element_rect(colour = "black", fill = NA, linewidth = 0.75),
           panel.grid.minor = element_line(colour = NA),
           panel.grid.major = element_line(colour = "black", linewidth = 0.2, linetype = "dotted"),
-          axis.text = element_text(colour = "black"),
-          axis.text.x = element_text(margin = grid::unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
-          axis.text.y = element_text(margin = grid::unit(c(0.5, 0.5, 0.5, 0.5), "cm")),
-          axis.ticks.length = grid::unit(-0.25, "cm")
+          axis.text = element_text(colour = "black")
           )
   lolli
 }

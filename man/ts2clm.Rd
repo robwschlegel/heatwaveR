@@ -16,7 +16,8 @@ ts2clm(
   smoothPercentileWidth = 31,
   clmOnly = FALSE,
   var = FALSE,
-  roundClm = 4
+  roundClm = 4,
+  returnDF = TRUE
 )
 }
 \arguments{
@@ -77,6 +78,9 @@ researchers use it and so it is generally regarded now as unnecessary.}
 the \code{seas} and \code{thresh} outputs will be rounded to. Default is 4. To
 prevent rounding set \code{roundClm = FALSE}. This argument may only be given
 numeric values or FALSE.}
+
+\item{returnDF}{The default (\code{TRUE}) tells the function to return the results as
+type \code{data.frame}. \code{FALSE} will return the results as a \code{data.table}.}
 }
 \value{
 The function will return a tibble (see the \code{tidyverse}) with the

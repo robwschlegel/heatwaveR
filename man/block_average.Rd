@@ -4,7 +4,7 @@
 \alias{block_average}
 \title{Calculate yearly means for event metrics.}
 \usage{
-block_average(data, x = t, y = temp, report = "full")
+block_average(data, x = t, y = temp, report = "full", returnDF = TRUE)
 }
 \arguments{
 \item{data}{Accepts the data returned by the \code{\link{detect_event}} function.}
@@ -21,6 +21,9 @@ name differs from the default (i.e. \code{temp}), specify the name here.}
 the report to contain NAs for any years in which no events were detected
 (except for \code{count}, which will be zero in those years), while \code{partial}
 reports only the years wherein events were detected. The default is \code{full}.}
+
+\item{returnDF}{The default (\code{TRUE}) tells the function to return the results as
+type \code{data.frame}. \code{FALSE} will return the results as a \code{data.table}.}
 }
 \value{
 The function will return a data frame of the averaged (or aggregate)

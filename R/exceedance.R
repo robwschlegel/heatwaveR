@@ -38,6 +38,8 @@
 #' the exceedance metric outputs will be rounded to. Default is 4. To
 #' prevent rounding set \code{roundRes = FALSE}. This argument may only be given
 #' numeric values or FALSE.
+#' @param returnDF The default (\code{TRUE}) tells the function to return the results as
+#' type \code{data.frame}. \code{FALSE} will return the results as a \code{data.table}.
 #'
 #' @details
 #' \enumerate{
@@ -135,7 +137,8 @@ exceedance <- function(data,
                        joinAcrossGaps = TRUE,
                        maxGap = 2,
                        maxPadLength = FALSE,
-                       roundRes = 4) {
+                       roundRes = 4,
+                       returnDF = TRUE) {
 
   # message("exceedance() is deprecated and will not be included in the next release of heatwaveR")
   # message("please use detecet_event() directly and set 'threshClim =' whatever your static threshold is")
@@ -193,23 +196,25 @@ exceedance <- function(data,
     exceedances$row_index <- seq_len(nrow(exceedances_clim))
     exceedances$exceedance_rel_thresh <- exceedances$ts_y - exceedances$thresh
     exceedances <- exceedances[stats::complete.cases(exceedances$exceedance_no)]
-    # NB: I don't like using plyr here, but it is fast and the package isn't that large...
-    exceedances <- plyr::ddply(exceedances, c("exceedance_no"), .fun = plyr::summarise,
-                               index_start = min(row_index),
-                               index_peak = row_index[exceedance_rel_thresh == max(exceedance_rel_thresh)][1],
-                               index_end = max(row_index),
-                               duration = index_end - index_start + 1,
-                               date_start = min(ts_x),
-                               date_peak = ts_x[exceedance_rel_thresh == max(exceedance_rel_thresh)][1],
-                               date_end = max(ts_x),
-                               intensity_mean = mean(exceedance_rel_thresh),
-                               intensity_max = max(exceedance_rel_thresh),
-                               intensity_var = stats::sd(exceedance_rel_thresh),
-                               intensity_cumulative = max(cumsum(exceedance_rel_thresh)),
-                               intensity_mean_abs = mean(ts_y),
-                               intensity_max_abs = max(ts_y),
-                               intensity_var_abs = stats::sd(ts_y),
-                               intensity_cum_abs = max(cumsum(ts_y)))
+    exceedances <- data.table::setDT(exceedances)
+
+    exceedances <- exceedances[, list(
+      index_start = min(row_index),
+      index_peak = row_index[which.max(exceedance_rel_thresh)][1],
+      index_end = max(row_index),
+      duration = max(row_index) - min(row_index) + 1,
+      date_start = min(ts_x),
+      date_peak = ts_x[which.max(exceedance_rel_thresh)][1],
+      date_end = max(ts_x),
+      intensity_mean = mean(exceedance_rel_thresh),
+      intensity_max = max(exceedance_rel_thresh),
+      intensity_var = stats::sd(exceedance_rel_thresh),
+      intensity_cumulative = sum(exceedance_rel_thresh),
+      intensity_mean_abs = mean(ts_y),
+      intensity_max_abs = max(ts_y),
+      intensity_var_abs = stats::sd(ts_y),
+      intensity_cum_abs = sum(ts_y)
+    ), by = list(exceedance_no)]
 
     exceedance_rel_thresh <- ts_whole$ts_y - ts_whole$thresh
     A <- exceedance_rel_thresh[exceedances$index_start]
@@ -264,6 +269,13 @@ exceedance <- function(data,
   names(exceedances_clim)[1] <- paste(substitute(x))
   names(exceedances_clim)[2] <- paste(substitute(y))
 
-  list(threshold = exceedances_clim,
-       exceedance = exceedances)
+  if (returnDF) {
+    exc_res <- list(threshold = data.table::setDF(exceedances_clim),
+                    exceedance = data.table::setDF(exceedances))
+  } else {
+    exc_res <- list(threshold = data.table::setDT(exceedances_clim),
+                    exceedance = data.table::setDT(exceedances))
+  }
+  return(exc_res)
+
 }
