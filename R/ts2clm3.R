@@ -64,6 +64,8 @@
 #' the \code{seas} and \code{thresh} outputs will be rounded to. Default is 4. To
 #' prevent rounding set \code{roundClm = FALSE}. This argument may only be given
 #' numeric values or FALSE.
+#' @param retrunDF Boolean. The default (\code{FALSE}) returns the results as
+#' type \code{data.table}. Setting it to \code{TRUE} returns a \code{data.frame}.
 #'
 #' @details
 #' \enumerate{
@@ -155,7 +157,8 @@ ts2clm3 <- function(data,
                     smoothPercentileWidth = 31,
                     clmOnly = FALSE,
                     var = FALSE, # the version in ts2clm is incorrect
-                    roundClm = 4) {
+                    roundClm = 4,
+                    returnDF = FALSE) {
 
   if (missing(climatologyPeriod))
     stop("Oops! Please provide a period (two dates) for calculating the climatology.")
@@ -371,6 +374,9 @@ ts2clm3 <- function(data,
 
   if (clmOnly) {
 
+    if (returnDF) {
+      data.table::setDF(ts_clim)
+    }
     return(ts_clim)
 
   } else {
@@ -386,6 +392,9 @@ ts2clm3 <- function(data,
       ts_res <- data.table::merge.data.table(data, ts_res, by = merge_cols, all = TRUE)
     }
 
+    if (returnDF) {
+      data.table::setDF(ts_res)
+    }
     return(ts_res)
 
   }
