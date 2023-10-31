@@ -77,6 +77,8 @@
 #' the MHW metric outputs will be rounded to. Default is 4. To
 #' prevent rounding set \code{roundRes = FALSE}. This argument may only be given
 #' numeric values or FALSE.
+#' @param returnDF The default (\code{TRUE}) tells the function to return the results as
+#' type \code{data.frame}. \code{FALSE} will return the results as a \code{data.table}.
 #' @param ... Other arguments that will be passed internally to \code{\link{category}}
 #' when \code{categories = TRUE}. See the documentation for \code{\link{category}} for the
 #' list of possible arguments.
@@ -266,6 +268,7 @@ detect_event <- function(data,
                          protoEvents = FALSE,
                          categories = FALSE,
                          roundRes = 4,
+                         returnDF = TRUE,
                          ...) {
 
   if (!(is.numeric(minDuration)))
@@ -335,11 +338,14 @@ detect_event <- function(data,
   }
 
   if (protoEvents) {
+
     events_clim <- data.table::data.table(data,
                                           threshCriterion = events_clim$threshCriterion,
                                           durationCriterion = events_clim$durationCriterion,
                                           event = events_clim$event,
                                           event_no = events_clim$event_no)
+
+    if(returnDF) data.table::setDF(events_clim)
     return(events_clim)
 
   } else {
@@ -507,6 +513,15 @@ detect_event <- function(data,
         row.names(data_res$event) <- NULL
       }
     }
+
+    if(returnDF){
+      data.table::setDF(data_res$climatology)
+      data.table::setDF(data_res$event)
+    } else {
+      data.table::setDT(data_res$climatology)
+      data.table::setDT(data_res$event)
+    }
     return(data_res)
+
   }
 }

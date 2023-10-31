@@ -217,9 +217,6 @@ ts2clm3 <- function(data,
                                                     ts_xy[.N, ts_x],
                                                     "day"))
 
-  # Hypothetically this could be done with min/max date column because there is a logic gate to ensure these are date values
-  # But I'm thinking the data.table indexing might actually be faster than the min/max functions...
-  # Yes, one of the reasons data.table is faster is because of the speed of indexed operations
   ts_whole <- data.table::merge.data.table(ts_full, ts_xy, by = "ts_x", all.x = TRUE)[,`:=`(
     year = as.integer(format(ts_x, "%Y")),
     doy = as.integer(format(ts_x, "%j"))
