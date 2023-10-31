@@ -87,7 +87,7 @@ the \code{seas} and \code{thresh} outputs will be rounded to. Default is 4. To
 prevent rounding set \code{roundClm = FALSE}. This argument may only be given
 numeric values or FALSE.}
 
-\item{retrunDF}{Boolean. The default (\code{FALSE}) returns the results as
+\item{returnDF}{Boolean. The default (\code{FALSE}) returns the results as
 type \code{data.table}. Setting it to \code{TRUE} returns a \code{data.frame}.}
 }
 \value{
