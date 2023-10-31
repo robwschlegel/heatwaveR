@@ -11,6 +11,8 @@
 #' the report to contain NAs for any years in which no events were detected
 #' (except for \code{count}, which will be zero in those years), while \code{partial}
 #' reports only the years wherein events were detected. The default is \code{full}.
+#' @param returnDF The default (\code{TRUE}) tells the function to return the results as
+#' type \code{data.frame}. \code{FALSE} will return the results as a \code{data.table}.
 #'
 #' @details
 #' This function needs to be provided with the full output from the \code{detect_event}
@@ -80,7 +82,8 @@
 block_average <- function(data,
                           x = t,
                           y = temp,
-                          report = "full") {
+                          report = "full",
+                          returnDF = TRUE) {
 
   if("climatology" %in% names(data)) {
     clim <- data$climatology
@@ -98,6 +101,7 @@ block_average <- function(data,
 
   clim$t <- ts_x
   clim$temp <- ts_y
+  event$year <- as.numeric(format(event$date_start, "%Y"))
 
   year <- temp <- date_start <- temp_mean <- temp_min <- temp_max <- NULL
 
@@ -109,49 +113,50 @@ block_average <- function(data,
     intensity_cumulative_abs <- rate_onset <- rate_decline <- total_days <- total_icum <-
     duration_mean <- intensity_max_mean <- intensity_cumulative_mean <- intensity_cum_abs <-  NULL
 
-  # NB: I don't like using plyr here, but it is fast and the package isn't that large...
-  event_block <- event
-  event_block$year <- as.numeric(format(event_block$date_start, "%Y"))
+  event_block <- data.table::setDT(event)
   if ("intensity_cumulative_relThresh" %in% names(event_block)) {
-    event_block <- plyr::ddply(event_block, c("year"), .fun = plyr::summarise,
-                               count = length(duration),
-                               duration_mean = mean(duration, na.rm = T),
-                               duration_max = max(duration, na.rm = T),
-                               intensity_mean = mean(intensity_mean, na.rm = T),
-                               intensity_max_mean = mean(intensity_max, na.rm = T),
-                               intensity_max_max = max(intensity_max, na.rm = T),
-                               intensity_var = mean(intensity_var, na.rm = T),
-                               intensity_cumulative_mean = mean(intensity_cumulative, na.rm = T),
-                               intensity_mean_relThresh = mean(intensity_mean_relThresh, na.rm = T),
-                               intensity_max_relThresh = mean(intensity_max_relThresh, na.rm = T),
-                               intensity_var_relThresh = mean(intensity_var_relThresh, na.rm = T),
-                               intensity_cumulative_relThresh = mean(intensity_cumulative_relThresh, na.rm = T),
-                               intensity_mean_abs = mean(intensity_mean_abs, na.rm = T),
-                               intensity_max_abs = mean(intensity_max_abs, na.rm = T),
-                               intensity_var_abs = mean(intensity_var_abs, na.rm = T),
-                               intensity_cumulative_abs = mean(intensity_cumulative_abs, na.rm = T),
-                               rate_onset = mean(rate_onset, na.rm = T),
-                               rate_decline = mean(rate_decline, na.rm = T),
-                               total_days = sum(duration, na.rm = T),
-                               total_icum = sum(intensity_cumulative, na.rm = T))
+    event_block <- event_block[, list(
+      count = length(duration),
+      duration_mean = mean(duration, na.rm = T),
+      duration_max = max(duration, na.rm = T),
+      intensity_mean = mean(intensity_mean, na.rm = T),
+      intensity_max_mean = mean(intensity_max, na.rm = T),
+      intensity_max_max = max(intensity_max, na.rm = T),
+      intensity_var = mean(intensity_var, na.rm = T),
+      intensity_cumulative_mean = mean(intensity_cumulative, na.rm = T),
+      intensity_mean_relThresh = mean(intensity_mean_relThresh, na.rm = T),
+      intensity_max_relThresh = mean(intensity_max_relThresh, na.rm = T),
+      intensity_var_relThresh = mean(intensity_var_relThresh, na.rm = T),
+      intensity_cumulative_relThresh = mean(intensity_cumulative_relThresh, na.rm = T),
+      intensity_mean_abs = mean(intensity_mean_abs, na.rm = T),
+      intensity_max_abs = mean(intensity_max_abs, na.rm = T),
+      intensity_var_abs = mean(intensity_var_abs, na.rm = T),
+      intensity_cumulative_abs = mean(intensity_cumulative_abs, na.rm = T),
+      rate_onset = mean(rate_onset, na.rm = T),
+      rate_decline = mean(rate_decline, na.rm = T),
+      total_days = sum(duration, na.rm = T),
+      total_icum = sum(intensity_cumulative, na.rm = T)
+    ), by = list(year)]
+
   } else {
-    event_block <- plyr::ddply(event_block, c("year"), .fun = plyr::summarise,
-                               count = length(duration),
-                               duration_mean = mean(duration, na.rm = T),
-                               duration_max = max(duration, na.rm = T),
-                               intensity_mean = mean(intensity_mean, na.rm = T),
-                               intensity_max_mean = mean(intensity_max, na.rm = T),
-                               intensity_max_max = max(intensity_max, na.rm = T),
-                               intensity_var = mean(intensity_var, na.rm = T),
-                               intensity_cumulative_mean = mean(intensity_cumulative, na.rm = T),
-                               intensity_mean_abs = mean(intensity_mean_abs, na.rm = T),
-                               intensity_max_abs = mean(intensity_max_abs, na.rm = T),
-                               intensity_var_abs = mean(intensity_var_abs, na.rm = T),
-                               intensity_cum_abs = mean(intensity_cum_abs, na.rm = T),
-                               rate_onset = mean(rate_onset, na.rm = T),
-                               rate_decline = mean(rate_decline, na.rm = T),
-                               total_days = sum(duration, na.rm = T),
-                               total_icum = sum(intensity_cumulative, na.rm = T))
+    event_block <-  event_block[, list(
+      count = length(duration),
+      duration_mean = mean(duration, na.rm = T),
+      duration_max = max(duration, na.rm = T),
+      intensity_mean = mean(intensity_mean, na.rm = T),
+      intensity_max_mean = mean(intensity_max, na.rm = T),
+      intensity_max_max = max(intensity_max, na.rm = T),
+      intensity_var = mean(intensity_var, na.rm = T),
+      intensity_cumulative_mean = mean(intensity_cumulative, na.rm = T),
+      intensity_mean_abs = mean(intensity_mean_abs, na.rm = T),
+      intensity_max_abs = mean(intensity_max_abs, na.rm = T),
+      intensity_var_abs = mean(intensity_var_abs, na.rm = T),
+      intensity_cum_abs = mean(intensity_cum_abs, na.rm = T),
+      rate_onset = mean(rate_onset, na.rm = T),
+      rate_decline = mean(rate_decline, na.rm = T),
+      total_days = sum(duration, na.rm = T),
+      total_icum = sum(intensity_cumulative, na.rm = T)
+    ), by = list(year)]
   }
 
   colnames(event_block)[c(3, 6, 9)] <- c("duration", "intensity_max", "intensity_cumulative")
@@ -164,5 +169,10 @@ block_average <- function(data,
 
   event_block$count[is.na(event_block$count)] <- 0
 
+  if(returnDF) {
+    data.table::setDF(event_block)
+  } else {
+    data.table::setDT(event_block)
+  }
   return(event_block)
 }

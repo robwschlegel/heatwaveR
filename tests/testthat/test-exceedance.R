@@ -1,12 +1,20 @@
 context("Test exceedance.R")
 
-test_that("exceedance() returns the correct lists, tibbles, and columns", {
-  res <- exceedance(data = sst_Med, threshold = 20)
-  expect_is(res, "list")
-  expect_is(res$threshold, "data.frame")
-  expect_is(res$exceedance, "data.frame")
-  expect_equal(ncol(res$threshold), 7)
-  expect_equal(ncol(res$exceedance), 18)
+test_that("exceedance() returns the correct lists, data.frames, data.tables, and columns", {
+  res1 <- exceedance(data = sst_Med, threshold = 20)
+  expect_is(res1, "list")
+  expect_s3_class(res1$threshold, "data.frame")
+  expect_s3_class(res1$exceedance, "data.frame")
+  expect_false(S3Class(res1$threshold) == "data.table")
+  expect_false(S3Class(res1$exceedance) == "data.table")
+  expect_equal(ncol(res1$threshold), 7)
+  expect_equal(ncol(res1$exceedance), 18)
+  res2 <- exceedance(data = sst_Med, threshold = 20, returnDF = FALSE)
+  expect_is(res2, "list")
+  expect_s3_class(res2$threshold, "data.table")
+  expect_s3_class(res2$exceedance, "data.table")
+  expect_equal(ncol(res1$threshold), 7)
+  expect_equal(ncol(res1$exceedance), 18)
 })
 
 test_that("threshold may not be missing", {

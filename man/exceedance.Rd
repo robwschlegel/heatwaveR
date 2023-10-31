@@ -14,7 +14,8 @@ exceedance(
   joinAcrossGaps = TRUE,
   maxGap = 2,
   maxPadLength = FALSE,
-  roundRes = 4
+  roundRes = 4,
+  returnDF = TRUE
 )
 }
 \arguments{
@@ -65,6 +66,9 @@ integer. The default is \code{3} days.}
 the exceedance metric outputs will be rounded to. Default is 4. To
 prevent rounding set \code{roundRes = FALSE}. This argument may only be given
 numeric values or FALSE.}
+
+\item{returnDF}{The default (\code{TRUE}) tells the function to return the results as
+type \code{data.frame}. \code{FALSE} will return the results as a \code{data.table}.}
 }
 \value{
 The function will return a list of two data.frames.

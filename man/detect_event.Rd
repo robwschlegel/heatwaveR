@@ -20,6 +20,7 @@ detect_event(
   protoEvents = FALSE,
   categories = FALSE,
   roundRes = 4,
+  returnDF = TRUE,
   ...
 )
 }
@@ -109,6 +110,9 @@ outputs by default, add the argument \code{climatology = TRUE}.}
 the MHW metric outputs will be rounded to. Default is 4. To
 prevent rounding set \code{roundRes = FALSE}. This argument may only be given
 numeric values or FALSE.}
+
+\item{returnDF}{The default (\code{TRUE}) tells the function to return the results as
+type \code{data.frame}. \code{FALSE} will return the results as a \code{data.table}.}
 
 \item{...}{Other arguments that will be passed internally to \code{\link{category}}
 when \code{categories = TRUE}. See the documentation for \code{\link{category}} for the

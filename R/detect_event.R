@@ -345,7 +345,7 @@ detect_event <- function(data,
                                           event = events_clim$event,
                                           event_no = events_clim$event_no)
 
-    if(returnDF) data.table::setDF(events_clim)
+    if (returnDF) data.table::setDF(events_clim)
     return(events_clim)
 
   } else {
@@ -368,11 +368,11 @@ detect_event <- function(data,
 
       events <- events[, list(
         index_start = min(row_index),
-        index_peak = row_index[which.max(mhw_rel_seas)],
+        index_peak = row_index[which.max(mhw_rel_seas)][1],
         index_end = max(row_index),
         duration = max(row_index) - min(row_index) + 1,
         date_start = min(ts_x),
-        date_peak = ts_x[which.max(mhw_rel_seas)],
+        date_peak = ts_x[which.max(mhw_rel_seas)][1],
         date_end = max(ts_x),
         intensity_mean = mean(mhw_rel_seas),
         intensity_max = max(mhw_rel_seas),
@@ -505,21 +505,28 @@ detect_event <- function(data,
         data_cols <- colnames(data)[!colnames(data) %in% colnames(data_cat$climatology)]
         other_cols <- colnames(data_res$climatology)[!colnames(data_res$climatology) %in% c(date_cols, data_cols)]
 
-        # data_res$climatology <- data_res$climatology[c(date_cols, data_cols, other_cols)]
-        data_res$climatology <- data_res$climatology[, c(date_cols, data_cols, other_cols), with = FALSE]
-        data_res$climatology <- data_res$climatology[base::order(t)]
+        data_res$climatology <- data_res$climatology[, c(date_cols, data_cols, other_cols)]
+        data_res$climatology <- data_res$climatology[base::order(data_res$climatology$t),]
         data_res$event <- data_res$event[order(data_res$event$event_no),]
         data_res$event <- data_res$event[,c(1,5,6,7,2,8,4,9,10,3,11:29)]
         row.names(data_res$event) <- NULL
       }
     }
 
-    if(returnDF){
-      data.table::setDF(data_res$climatology)
-      data.table::setDF(data_res$event)
+    if (returnDF) {
+      if(base::class(data_res) == "list") {
+        data.table::setDF(data_res$climatology)
+        data.table::setDF(data_res$event)
+      } else {
+        data.table::setDF(data_res)
+      }
     } else {
-      data.table::setDT(data_res$climatology)
-      data.table::setDT(data_res$event)
+      if(base::class(data_res) == "list") {
+        data.table::setDT(data_res$climatology)
+        data.table::setDT(data_res$event)
+      } else {
+        data.table::setDT(data_res)
+      }
     }
     return(data_res)
 

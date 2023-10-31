@@ -3,6 +3,7 @@ context("Test detect_event.R")
 test_that("detect() returns the correct lists, data.frame, data.table, and columns", {
   ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   res1 <- detect_event(ts)
+  res_event <- res1$event
   expect_is(res1, "list")
   expect_s3_class(res1$climatology, "data.frame")
   expect_s3_class(res1$event, "data.frame")

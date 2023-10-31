@@ -1,3 +1,13 @@
+# heatwaveR 0.5.2.9002 (2023-10-31)
+
+-   Rolled back overwrite of `ts2clm()` with `ts2clm3()` for now
+-   Set default behaviour of `detect_event()` to return a data.frame, rather than a data.table
+-   A new argument was introduced for most top level functions: `returnDF` with the default behaviour of `TRUE`
+  -   This explicitly ensures that the functions return data.frames
+  -   If `returnDF == FALSE` the functions will return data.tables
+-   Removed __`plyr`__ and __`grid`__ dependencies from package
+-   Added the package development script to the root directory
+
 # heatwaveR 0.5.2.9001 (2023-10-30)
 
 -   Removed `robust` argument from `ts2clm()` that was deprecated years ago
