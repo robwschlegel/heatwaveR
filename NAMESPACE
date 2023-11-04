@@ -3,6 +3,7 @@
 export(block_average)
 export(category)
 export(detect_event)
+export(detect_event3)
 export(event_line)
 export(exceedance)
 export(geom_flame)

@@ -98,8 +98,8 @@ designed for creating climatologies of daily temperatures, and the units
 specified below reflect that intended purpose. However, various other kinds
 of climatologies may be created, and if that is the case, the appropriate
 units need to be determined by the user.
-  \item{doy}{Julian day (day-of-year). For non-leap years it runs 1...59 and
-  61...366, while leap years run 1...366.}
+  \item{doy}{Julian day (day-of-year) returned when \code{clmOnly = TRUE}. For non-leap
+  years it runs 1...59 and 61...366, while leap years run 1...366.}
   \item{t}{The date vector in the original time series supplied in \code{data}. If
   an alternate column was provided to the \code{x} argument, that name will rather
   be used for this column.}
