@@ -24,9 +24,26 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// seqDates
+IntegerVector seqDates(int startYear, int startMonth, int startDay, int endYear, int endMonth, int endDay);
+RcppExport SEXP _heatwaveR_seqDates(SEXP startYearSEXP, SEXP startMonthSEXP, SEXP startDaySEXP, SEXP endYearSEXP, SEXP endMonthSEXP, SEXP endDaySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type startYear(startYearSEXP);
+    Rcpp::traits::input_parameter< int >::type startMonth(startMonthSEXP);
+    Rcpp::traits::input_parameter< int >::type startDay(startDaySEXP);
+    Rcpp::traits::input_parameter< int >::type endYear(endYearSEXP);
+    Rcpp::traits::input_parameter< int >::type endMonth(endMonthSEXP);
+    Rcpp::traits::input_parameter< int >::type endDay(endDaySEXP);
+    rcpp_result_gen = Rcpp::wrap(seqDates(startYear, startMonth, startDay, endYear, endMonth, endDay));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_heatwaveR_clim_calc_cpp", (DL_FUNC) &_heatwaveR_clim_calc_cpp, 3},
+    {"_heatwaveR_seqDates", (DL_FUNC) &_heatwaveR_seqDates, 6},
     {NULL, NULL, 0}
 };
 

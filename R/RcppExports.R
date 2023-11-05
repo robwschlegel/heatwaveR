@@ -5,3 +5,7 @@ clim_calc_cpp <- function(x, windowHalfWidth, pctile) {
     .Call('_heatwaveR_clim_calc_cpp', PACKAGE = 'heatwaveR', x, windowHalfWidth, pctile)
 }
 
+seqDates <- function(startYear, startMonth, startDay, endYear, endMonth, endDay) {
+    .Call('_heatwaveR_seqDates', PACKAGE = 'heatwaveR', startYear, startMonth, startDay, endYear, endMonth, endDay)
+}
+

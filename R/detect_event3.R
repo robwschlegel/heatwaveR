@@ -272,100 +272,101 @@ detect_event3 <- function(data,
                           categories = FALSE,
                           roundRes = 4,
                           ...) {
+  temp <-
+    seas <-
+    thresh <- threshCriterion <- durationCriterion <- event <- NULL
 
-  if (!(is.numeric(minDuration)))
-    stop("Please ensure that 'minDuration' is a numeric/integer value.")
-  if (!(is.logical(joinAcrossGaps)))
-    stop("Please ensure that 'joinAcrossGaps' is either TRUE or FALSE.")
-  if (!(is.numeric(maxGap)))
-    stop("Please ensure that 'maxGap' is a numeric/integer value.")
-  if (!(is.numeric(roundRes))) {
-    if (!roundRes == FALSE) {
-      stop("Please ensure that 'roundRes' is either a numeric value or FALSE.")
-    }
-  }
-
-  # browser()
-
-  temp <- seas <- thresh <- threshCriterion <- durationCriterion <- event <- NULL
-
-  if (ncol(data) < 4) {
-    stop("data.table must contain a column of daily dates ('Date'), temperature('numeric'),\nthe daily climatology ('numeric'), and daily climatological threshold ('numeric').")
-  }
-
-  if (class(data)[1] == "data.table") {
-    data
-  } else {
-    data.table::setDT(data)
-  }
+  if (!is.numeric(minDuration))
+    stop("'minDuration' must be numeric.")
+  if (!is.logical(joinAcrossGaps))
+    stop("'joinAcrossGaps' must be a boolean value.")
+  if (!is.numeric(maxGap))
+    stop("'maxGap' must be numeric.")
+  if (!(is.numeric(roundRes) ||
+        roundRes == FALSE))
+    stop("'roundRes' must be numeric or FALSE.")
+  if (ncol(data) < 4)
+    stop("Data must contain columns: Date, temp, seas, thresh.")
+  if (!inherits(data, "data.table"))
+    data <- data.table::setDT(data)
 
   expected_classes <- c("Date", "numeric", "numeric", "numeric")
-  actual_classes <- sapply(data, class)
-  actual_first_classes <- sapply(actual_classes, function(x) x[1])
-  for (i in 1:4) {
-    if (actual_first_classes[i] != expected_classes[i]) {
-      stop(paste0("Column '", names(data)[i],
-                  "' is not of class '", expected_classes[i],
-                  "'. It's of class '", actual_first_classes[i], "'."))
-    }
+  actual_classes <- sapply(data[, .SD, .SDcols = 1:4], class)
+  if (!all(actual_classes == expected_classes)) {
+    stop("The first four columns must be of types: ",
+         paste(expected_classes, collapse = ", "))
   }
 
-  t_series <- data.table::data.table(ts_x = data[[deparse(substitute(x))]],
-                                     ts_y = data[[deparse(substitute(y))]],
-                                     ts_seas = data[[deparse(substitute(seasClim))]],
-                                     ts_thresh = data[[deparse(substitute(threshClim))]])
+  t_series <-
+    data.table::data.table(
+      ts_x = data[[deparse(substitute(x))]],
+      ts_y = data[[deparse(substitute(y))]],
+      ts_seas = data[[deparse(substitute(seasClim))]],
+      ts_thresh = data[[deparse(substitute(threshClim))]]
+    )
 
   if (coldSpells) {
-
-    t_series[, c(ts_y, ts_seas, ts_thresh) := list(-ts_y, -ts_seas, -ts_thresh)]
-
+    t_series[, (2:4) := .(-ts_y, -ts_seas, -ts_thresh)]
   }
 
   t_series[is.na(ts_y), ts_y := ts_seas]
   t_series[, threshCriterion := !is.na(ts_y) & ts_y > ts_thresh]
 
-  # Below: make sure proto_events returns a data.table
-
-  events_clim <- heatwaveR:::proto_event3(p_series = t_series,
-                                          criterion_column = t_series$threshCriterion,
-                                          minDuration = minDuration,
-                                          joinAcrossGaps = joinAcrossGaps,
-                                          maxGap = maxGap)
+  events_clim <- heatwaveR:::proto_event3(
+    p_series = t_series,
+    criterion_column = t_series$threshCriterion,
+    minDuration = minDuration,
+    joinAcrossGaps = joinAcrossGaps,
+    maxGap = maxGap
+  )
 
   if (!is.na(threshClim2[1])) {
     if (!is.logical(threshClim2[1]))
-      stop("Please ensure 'threshClim2' contains logical values (e.g. TRUE and/or FALSE)")
-    events_clim <- heatwaveR:::proto_event3(p_series = t_series,
-                                            criterion_column = events_clim$event & threshClim2,
-                                            minDuration = minDuration2,
-                                            joinAcrossGaps = joinAcrossGaps,
-                                            maxGap = maxGap2)
+      stop("'threshClim2' must be logical.")
+    # t_series[, secondCriterion := events_clim$event & ts_y > threshClim2] # if one wants a numeric threshold
+    events_clim <- heatwaveR:::proto_event3(
+      p_series = t_series,
+      # criterion_column = "secondCriterion", # for the numeric threshold
+      criterion_column = events_clim$event &
+        threshClim2,
+      minDuration = minDuration,
+      joinAcrossGaps = joinAcrossGaps,
+      maxGap = maxGap
+    )
   }
 
   rm(t_series)
 
   if (protoEvents) {
-
-    events_clim <- data.table::data.table(data,
-                                          threshCriterion = events_clim$threshCriterion,
-                                          durationCriterion = events_clim$durationCriterion,
-                                          event = events_clim$event,
-                                          event_no = events_clim$event_no)
+    events_clim <- data.table::data.table(
+      data,
+      threshCriterion = events_clim$threshCriterion,
+      durationCriterion = events_clim$durationCriterion,
+      event = events_clim$event,
+      event_no = events_clim$event_no
+    )
     return(events_clim)
 
   } else {
-
-    intensity_mean <- intensity_max <- intensity_cumulative <- intensity_mean_relThresh <-
-      intensity_max_relThresh <- intensity_cumulative_relThresh <- intensity_mean_abs <-
-      intensity_max_abs <- intensity_cumulative_abs <- rate_onset <- rate_decline <-
-      mhw_rel_thresh <- mhw_rel_seas <- event_no <- row_index <- index_start <- index_peak <-
+    intensity_mean <-
+      intensity_max <-
+      intensity_cumulative <- intensity_mean_relThresh <-
+      intensity_max_relThresh <-
+      intensity_cumulative_relThresh <- intensity_mean_abs <-
+      intensity_max_abs <-
+      intensity_cumulative_abs <- rate_onset <- rate_decline <-
+      mhw_rel_thresh <-
+      mhw_rel_seas <-
+      event_no <- row_index <- index_start <- index_peak <-
       index_end <- NULL
 
     if (nrow(stats::na.omit(events_clim)) > 0) {
-      events <- data.table::data.table(events_clim,
-                                       row_index = base::seq_len(nrow(events_clim)),
-                                       mhw_rel_seas = events_clim$ts_y - events_clim$ts_seas,
-                                       mhw_rel_thresh = events_clim$ts_y - events_clim$ts_thresh)
+      events <- data.table::data.table(
+        events_clim,
+        row_index = base::seq_len(nrow(events_clim)),
+        mhw_rel_seas = events_clim$ts_y - events_clim$ts_seas,
+        mhw_rel_thresh = events_clim$ts_y - events_clim$ts_thresh
+      )
 
       events <- events[!is.na(event_no)]
 
@@ -405,7 +406,9 @@ detect_event3 <- function(data,
 
       events[, rate_onset := data.table::fifelse(
         index_start > 1,
-        (intensity_max - mhw_rel_seas_start) / (as.numeric(difftime(date_peak, date_start, units = "days")) + 0.5),
+        (intensity_max - mhw_rel_seas_start) / (as.numeric(
+          difftime(date_peak, date_start, units = "days")
+        ) + 0.5),
         NA_real_  # Use NA_real_ to specify that the NA values are of type double/numeric
       )]
 
@@ -416,12 +419,13 @@ detect_event3 <- function(data,
 
       events[, rate_decline := data.table::fifelse(
         index_end < nrow(events_clim),
-        (intensity_max - mhw_rel_seas_end) / (as.numeric(difftime(date_end, date_peak, units = "days")) + 0.5),
+        (intensity_max - mhw_rel_seas_end) / (as.numeric(
+          difftime(date_end, date_peak, units = "days")
+        ) + 0.5),
         NA_real_  # To specify that the NA values are of type double/numeric
       )]
 
       if (coldSpells) {
-
         events[, `:=`(
           intensity_mean = -intensity_mean,
           intensity_max = -intensity_max,
@@ -435,115 +439,136 @@ detect_event3 <- function(data,
           rate_onset = -rate_onset,
           rate_decline = -rate_decline
         )]
-
-
       }
 
     } else {
-
-      events <- data.table::data.table(event_no = NA, index_start = NA, index_peak = NA, index_end = NA,
-                                       duration = NA, date_start = NA, date_peak = NA, date_end = NA,
-                                       intensity_mean = NA, intensity_max = NA, intensity_var = NA,
-                                       intensity_cumulative = NA, intensity_mean_relThresh = NA,
-                                       intensity_max_relThresh = NA, intensity_var_relThresh = NA,
-                                       intensity_cumulative_relThresh = NA, intensity_mean_abs = NA,
-                                       intensity_max_abs = NA, intensity_var_abs = NA,
-                                       intensity_cumulative_abs = NA, rate_onset = NA, rate_decline = NA)
-
+      events <-
+        data.table::data.table(
+          event_no = NA,
+          index_start = NA,
+          index_peak = NA,
+          index_end = NA,
+          duration = NA,
+          date_start = NA,
+          date_peak = NA,
+          date_end = NA,
+          intensity_mean = NA,
+          intensity_max = NA,
+          intensity_var = NA,
+          intensity_cumulative = NA,
+          intensity_mean_relThresh = NA,
+          intensity_max_relThresh = NA,
+          intensity_var_relThresh = NA,
+          intensity_cumulative_relThresh = NA,
+          intensity_mean_abs = NA,
+          intensity_max_abs = NA,
+          intensity_var_abs = NA,
+          intensity_cumulative_abs = NA,
+          rate_onset = NA,
+          rate_decline = NA
+        )
     }
 
     event_cols <- names(events)[9:22]
     clim_cols <- names(events_clim)[2:4]
 
     if (nrow(events) == 1) {
-
       if (is.na(events$rate_onset)) {
-
-        event_cols <- event_cols[-grep(pattern = "rate_onset", x = event_cols, value = FALSE)]
+        event_cols <-
+          event_cols[-grep(pattern = "rate_onset",
+                           x = event_cols,
+                           value = FALSE)]
 
       }
 
       if (is.na(events$rate_decline)) {
-
-        event_cols <- event_cols[-grep(pattern = "rate_decline", x = event_cols, value = FALSE)]
-
+        event_cols <-
+          event_cols[-grep(pattern = "rate_decline",
+                           x = event_cols,
+                           value = FALSE)]
       }
     }
 
     if (is.numeric(roundRes)) {
-
       if (nrow(events) > 0) {
-
         events[, (event_cols) := lapply(.SD, round, roundRes), .SDcols = event_cols]
         events_clim[, (clim_cols) := lapply(.SD, round, roundRes), .SDcols = clim_cols]
-
       }
     }
 
     data_res <- list(climatology = events_clim, event = events)
 
     if (categories) {
-
       data_temp <- list(climatology = events_clim, event = events)
-      colnames(data_temp$climatology)[1:4] <- c("t", "temp", "seas", "thresh") # update to return user specified names
+      colnames(data_temp$climatology)[1:4] <-
+        c("t", "temp", "seas", "thresh") # update to return user specified names
 
       if (coldSpells) {
-
-        data_temp$climatology[,`:=`(
+        data_temp$climatology[, `:=`(
           temp = -temp,
           seas = -seas,
           thresh = -thresh
         )]
-
       }
 
-      if ("lat" %in% colnames(data)) { # this is weird...
-
+      if ("lat" %in% colnames(data)) {
+        # this is weird...
         data_temp$climatology$lat <- data$lat
-
       }
+
       if ("latitude" %in% colnames(data)) {
-
         data_temp$climatology$lat <- data$latitude
-
       }
 
       data_cat <- category(data_temp, ...) # update to data.table
 
       if (is.data.frame(data_cat)) {
-
-        colnames(data_cat)[c(3,5)] <- c("date_peak", "intensity_max")
-        data_res <- base::merge(x = events, y = data_cat,
-                                by = c("event_no", "duration", "intensity_max", "date_peak"))
-        data_res <- data_res[order(data_res$event_no),]
-        data_res <- data_res[,c(1,5,6,7,2,8,4,9,10,3,11:29)]
+        colnames(data_cat)[c(3, 5)] <- c("date_peak", "intensity_max")
+        data_res <- base::merge(
+          x = events,
+          y = data_cat,
+          by = c("event_no", "duration", "intensity_max", "date_peak")
+        )
+        data_res <- data_res[order(data_res$event_no), ]
+        data_res <- data_res[, c(1, 5, 6, 7, 2, 8, 4, 9, 10, 3, 11:29)]
         row.names(data_res) <- NULL
 
       } else {
-
-        colnames(data_cat$event)[c(3,5)] <- c("date_peak", "intensity_max")
-        data_res <- list(climatology = base::merge(x = data_res$climatology, y = data_cat$climatology,
-                                                   by = c("t", "event_no"), all.x = TRUE),
-                         event = base::merge(x = data_res$event, y = data_cat$event,
-                                             by = c("event_no", "duration", "intensity_max", "date_peak")))
+        colnames(data_cat$event)[c(3, 5)] <- c("date_peak", "intensity_max")
+        data_res <-
+          list(
+            climatology = base::merge(
+              x = data_res$climatology,
+              y = data_cat$climatology,
+              by = c("t", "event_no"),
+              all.x = TRUE
+            ),
+            event = base::merge(
+              x = data_res$event,
+              y = data_cat$event,
+              by = c("event_no", "duration", "intensity_max", "date_peak")
+            )
+          )
 
         type_cols <- base::sapply(data_res$climatology, class)
-        date_cols <- colnames(data_res$climatology)[which(type_cols == "Date")]
-        data_cols <- colnames(data)[!colnames(data) %in% colnames(data_cat$climatology)]
-        other_cols <- colnames(data_res$climatology)[!colnames(data_res$climatology) %in% c(date_cols, data_cols)]
+        date_cols <-
+          colnames(data_res$climatology)[which(type_cols == "Date")]
+        data_cols <-
+          colnames(data)[!colnames(data) %in% colnames(data_cat$climatology)]
+        other_cols <-
+          colnames(data_res$climatology)[!colnames(data_res$climatology) %in% c(date_cols, data_cols)]
 
         # data_res$climatology <- data_res$climatology[c(date_cols, data_cols, other_cols)]
-        data_res$climatology <- data_res$climatology[, c(date_cols, data_cols, other_cols), with = FALSE]
+        data_res$climatology <-
+          data_res$climatology[, c(date_cols, data_cols, other_cols), with = FALSE]
         data_res$climatology <- data_res$climatology[base::order(t)]
-        data_res$event <- data_res$event[order(data_res$event$event_no),]
-        data_res$event <- data_res$event[,c(1,5,6,7,2,8,4,9,10,3,11:29)]
+        data_res$event <-
+          data_res$event[order(data_res$event$event_no), ]
+        data_res$event <-
+          data_res$event[, c(1, 5, 6, 7, 2, 8, 4, 9, 10, 3, 11:29)]
         row.names(data_res$event) <- NULL
-
       }
-
     }
-
     return(data_res)
   }
 }
-

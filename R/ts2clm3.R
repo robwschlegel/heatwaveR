@@ -156,26 +156,34 @@ ts2clm3 <- function(data,
                     smoothPercentile = TRUE,
                     smoothPercentileWidth = 31,
                     clmOnly = FALSE,
-                    var = FALSE, # the version in ts2clm is incorrect
+                    var = FALSE,
+                    # the version in ts2clm is incorrect
                     roundClm = 4,
                     returnDF = FALSE) {
-
   if (missing(climatologyPeriod))
     stop("Oops! Please provide a period (two dates) for calculating the climatology.")
+
   if (length(climatologyPeriod) != 2)
     stop("Bummer! Please provide BOTH start and end dates for the climatology period.")
+
   if (maxPadLength != FALSE & !is.numeric(maxPadLength))
     stop("Please ensure that 'maxPadLength' is either FALSE or a numeric/integer value.")
+
   if (!(is.numeric(pctile)))
     stop("Please ensure that 'pctile' is a numeric/integer value.")
+
   if (!(is.numeric(windowHalfWidth)))
     stop("Please ensure that 'windowHalfWidth' is a numeric/integer value.")
+
   if (!(is.logical(smoothPercentile)))
     stop("Please ensure that 'smoothPercentile' is either TRUE or FALSE.")
+
   if (!(is.numeric(smoothPercentileWidth)))
     stop("Please ensure that 'smoothPercentileWidth' is a numeric/integer value.")
+
   if (!(is.logical(clmOnly)))
     stop("Please ensure that 'clmOnly' is either TRUE or FALSE.")
+
   if (!(is.numeric(roundClm))) {
     if (!roundClm == FALSE) {
       stop("Please ensure that 'roundClm' is either a numeric value or FALSE.")
@@ -184,8 +192,8 @@ ts2clm3 <- function(data,
 
   data.table::setDT(data)
 
-  clim_start <- climatologyPeriod[1]
-  clim_end <- climatologyPeriod[2]
+  clim_start <- fasttime::fastDate(climatologyPeriod[1])
+  clim_end <- fasttime::fastDate(climatologyPeriod[2])
 
   mean_ts_y <- temp <- seas <- thresh <- .SD <-  NULL
   year <- doy <- ts_x <- NULL
@@ -193,11 +201,15 @@ ts2clm3 <- function(data,
 
   ts_x <- eval(substitute(x), data)
   if (is.null(ts_x) | is.function(ts_x))
-    stop("Please ensure that a column named 't' is present in your data.frame or that you have assigned a column to the 'x' argument.")
+    stop(
+      "Please ensure that a column named 't' is present in your data.frame or that you have assigned a column to the 'x' argument."
+    )
 
   ts_y <- eval(substitute(y), data)
   if (is.null(ts_y) | is.function(ts_y))
-    stop("Please ensure that a column named 'temp' is present in your data.frame or that you have assigned a column to the 'y' argument.")
+    stop(
+      "Please ensure that a column named 'temp' is present in your data.frame or that you have assigned a column to the 'y' argument."
+    )
 
   if (!inherits(ts_x[1], "Date"))
     stop("Please ensure your date values are type 'Date'. This may be done with 'as.Date()'.")
@@ -205,7 +217,8 @@ ts2clm3 <- function(data,
   if (!is.numeric(ts_y[1]))
     stop("Please ensure the temperature values you are providing are type 'num' for numeric.")
 
-  ts_xy <- data.table::data.table(ts_x = ts_x, ts_y = ts_y)[base::order(ts_x)]
+  ts_xy <-
+    data.table::data.table(ts_x = ts_x, ts_y = ts_y)[base::order(ts_x)]
   rm(list = c("ts_x", "ts_y"))
 
   # BEGIN INSERT make_whole_fast >>>
@@ -220,18 +233,18 @@ ts2clm3 <- function(data,
                                                     ts_xy[.N, ts_x],
                                                     "day"))
 
-  ts_whole <- data.table::merge.data.table(ts_full, ts_xy, by = "ts_x", all.x = TRUE)[,`:=`(
-    year = as.integer(format(ts_x, "%Y")),
-    doy = as.integer(format(ts_x, "%j"))
-  )
-  ][, doy := ifelse(!.is_leap_year(year) & doy > 59, doy + 1, doy)
-  ][, year := NULL
-  ][, data.table::setcolorder(.SD, c("doy", "ts_x", "ts_y"))]
+  ts_whole <-
+    data.table::merge.data.table(ts_full, ts_xy, by = "ts_x", all.x = TRUE)[, `:=`(year = as.integer(format(ts_x, "%Y")),
+                                                                                   doy = as.integer(format(ts_x, "%j")))][, doy := ifelse(!.is_leap_year(year) &
+                                                                                                                                            doy > 59, doy + 1, doy)][, year := NULL][, data.table::setcolorder(.SD, c("doy", "ts_x", "ts_y"))]
+  data.table::setkey(ts_whole, NULL)
+
+  rm(ts_full)
 
   # END INSERT make_whole_fast <<<
 
-  if (sum(stats::complete.cases(ts_whole$ts_y)) < nrow(ts_whole) & is.numeric(maxPadLength)) {
-
+  if (sum(stats::complete.cases(ts_whole$ts_y)) < nrow(ts_whole) &
+      is.numeric(maxPadLength)) {
     # BEGIN INSERT na_interp >>>
 
     .na_pad <- function(x, fill, maxPadLength) {
@@ -263,14 +276,20 @@ ts2clm3 <- function(data,
   }
 
   if (ts_whole$ts_x[1] > clim_start)
-    stop(paste("The specified start date precedes the first day of series, which is",
-               ts_whole$ts_x[1]))
+    stop(
+      paste(
+        "The specified start date precedes the first day of series, which is",
+        ts_whole$ts_x[1]
+      )
+    )
 
   if (clim_end > utils::tail(ts_whole$ts_x, 1))
-    stop(paste("The specified end date follows the last day of series, which is",
-               ts_whole$ts_x[nrow(ts_whole)]))
+    stop(paste(
+      "The specified end date follows the last day of series, which is",
+      ts_whole$ts_x[nrow(ts_whole)]
+    ))
 
-  if (as.Date(clim_end) - as.Date(clim_start) < 1095)
+  if (clim_end - clim_start < 1095)
     stop("The climatologyPeriod must be at least three years to calculate thresholds")
 
   # BEGIN INSERT clim_spread >>>
@@ -282,32 +301,36 @@ ts2clm3 <- function(data,
     return(x)
   }
 
-  ts_clim <- ts_whole[ts_x %between% c(clim_start, clim_end),
-                      list(ts_x = format(as.Date(ts_x), "%Y"), doy, ts_y)]
+  ts_clim <- ts_whole[ts_x >= clim_start & ts_x <= clim_end,
+                      list(ts_x = format(ts_x, "%Y"), doy, ts_y)]
 
   ts_clim[, mean_ts_y := mean(ts_y, na.rm = TRUE), by = list(doy, ts_x)]
-  ts_spread <- data.table::dcast(ts_clim, doy ~ ts_x, value.var = "mean_ts_y")
+  ts_spread <-
+    data.table::dcast(ts_clim, doy ~ ts_x, value.var = "mean_ts_y")
   rm(ts_clim)
 
-  ts_spread_filled <- data.table::data.table((sapply(ts_spread[59:61, ],
-                                                     function(x) .NA2mean(x))))
+  ts_spread_filled <-
+    data.table::data.table((sapply(ts_spread[59:61,],
+                                   function(x)
+                                     .NA2mean(x))))
 
   ts_spread[60, (names(ts_spread)) := ts_spread_filled[2, .SD, .SDcols = names(ts_spread)]]
   rm(ts_spread_filled)
 
-  l <- list(ts_spread[(.N - windowHalfWidth + 1):.N, ],
+  l <- list(ts_spread[(.N - windowHalfWidth + 1):.N,],
             ts_spread,
-            ts_spread[1:windowHalfWidth, ])
+            ts_spread[1:windowHalfWidth,])
   ts_spread <- data.table::rbindlist(l)
   rm(l)
 
-  len_yr <- length(as.integer(substr(clim_start, 1, 4)):as.integer(substr(clim_end, 1, 4)))
+  len_yr <-
+    length(as.integer(substr(clim_start, 1, 4)):as.integer(substr(clim_end, 1, 4)))
 
   ts_mat <- as.matrix(ts_spread)[, 2:(len_yr + 1)]
 
   if (nrow(stats::na.omit(ts_mat)) < nrow(ts_mat)) {
     plugs <- which(is.na(ts_mat), arr.ind = TRUE)
-    ts_mat[plugs] <- rowMeans(ts_mat, na.rm = TRUE)[plugs[,1]]
+    ts_mat[plugs] <- rowMeans(ts_mat, na.rm = TRUE)[plugs[, 1]]
   }
 
   # END INSERT clim_spread <<<
@@ -319,77 +342,119 @@ ts2clm3 <- function(data,
     ts_mat[is.nan(ts_mat)] <- NA
 
   } else {
-
     ts_mat <- clim_calc_cpp(ts_mat, windowHalfWidth, pctile)
     ts_mat <- data.table::data.table(ts_mat)
   }
 
   if (smoothPercentile) {
-
     # BEGIN INSERT smooth_percentile >>>
 
-    prep <- data.table::rbindlist(list(data.table::data.table(utils::tail(ts_mat, smoothPercentileWidth)),
-                                       data.table::data.table(ts_mat),
-                                       data.table::data.table(utils::head(ts_mat, smoothPercentileWidth))))
+    prep <-
+      data.table::rbindlist(
+        list(
+          data.table::data.table(utils::tail(ts_mat, smoothPercentileWidth)),
+          data.table::data.table(ts_mat),
+          data.table::data.table(utils::head(ts_mat, smoothPercentileWidth))
+        )
+      )
 
-    prep[,`:=`(doy = doy,
-               seas_roll = data.table::frollmean(seas, n = smoothPercentileWidth,
-                                                 na.rm = FALSE, align = "center"),
-               thresh_roll = data.table::frollmean(thresh, n = smoothPercentileWidth,
-                                                   na.rm = FALSE, align = "center"))]
-    ts_clim <- prep[(smoothPercentileWidth + 1):(nrow(prep) - smoothPercentileWidth),
-                    list(doy = doy, seas = seas_roll, thresh = thresh_roll)]
+    prep[, `:=`(
+      doy = doy,
+      seas_roll = data.table::frollmean(
+        seas,
+        n = smoothPercentileWidth,
+        na.rm = FALSE,
+        align = "center"
+      ),
+      thresh_roll = data.table::frollmean(
+        thresh,
+        n = smoothPercentileWidth,
+        na.rm = FALSE,
+        align = "center"
+      )
+    )]
+    ts_clim <-
+      prep[(smoothPercentileWidth + 1):(nrow(prep) - smoothPercentileWidth),
+           list(doy = doy,
+                seas = seas_roll,
+                thresh = thresh_roll)]
 
     if (var) {
-      prep <- data.table::rbindlist(list(data.table::data.table(utils::tail(ts_mat, smoothPercentileWidth)),
-                                         data.table::data.table(ts_mat),
-                                         data.table::data.table(utils::head(ts_mat, smoothPercentileWidth))))
+      prep <-
+        data.table::rbindlist(
+          list(
+            data.table::data.table(utils::tail(ts_mat, smoothPercentileWidth)),
+            data.table::data.table(ts_mat),
+            data.table::data.table(utils::head(ts_mat, smoothPercentileWidth))
+          )
+        )
 
-      prep[,`:=`(doy = doy,
-                 seas_roll = data.table::frollmean(seas, n = smoothPercentileWidth,
-                                                   na.rm = FALSE, align = "center"),
-                 thresh_roll = data.table::frollmean(thresh, n = smoothPercentileWidth,
-                                                     na.rm = FALSE, align = "center"),
-                 thresh_var_roll = data.table::frollapply(thresh, n = smoothPercentileWidth,
-                                                          var, na.rm = FALSE, align = "center"))]
+      prep[, `:=`(
+        doy = doy,
+        seas_roll = data.table::frollmean(
+          seas,
+          n = smoothPercentileWidth,
+          na.rm = FALSE,
+          align = "center"
+        ),
+        thresh_roll = data.table::frollmean(
+          thresh,
+          n = smoothPercentileWidth,
+          na.rm = FALSE,
+          align = "center"
+        ),
+        thresh_var_roll = data.table::frollapply(
+          thresh,
+          n = smoothPercentileWidth,
+          var,
+          na.rm = FALSE,
+          align = "center"
+        )
+      )]
 
-      ts_clim <- prep[(smoothPercentileWidth + 1):(nrow(prep) - smoothPercentileWidth),
-                      list(doy = doy, seas = seas_roll,
-                           thresh = thresh_roll, var = thresh_var_roll)]
+      ts_clim <-
+        prep[(smoothPercentileWidth + 1):(nrow(prep) - smoothPercentileWidth),
+             list(
+               doy = doy,
+               seas = seas_roll,
+               thresh = thresh_roll,
+               var = thresh_var_roll
+             )]
     }
     rm(prep)
 
     # END INSERT smooth_percentile <<<
 
   } else {
-
     ts_clim <- ts_mat
 
   }
 
   if (is.numeric(roundClm)) {
-    ts_clim[, (names(ts_clim)) := lapply(.SD, function(x) round(x, digits = roundClm))]
+    ts_clim[, (names(ts_clim)) := lapply(.SD, function(x)
+      round(x, digits = roundClm))]
   }
   rm(ts_mat)
 
   if (clmOnly) {
-
     if (returnDF) {
       data.table::setDF(ts_clim)
     }
     return(ts_clim)
 
   } else {
-
-    ts_res <- ts_whole[ts_clim, on = list(doy), nomatch = 0][order(ts_x)]
-    rm(ts_whole); rm(ts_clim)
+    ts_res <-
+      ts_whole[ts_clim, on = list(doy), nomatch = 0][order(ts_x)]
+    rm(ts_whole)
+    rm(ts_clim)
     names(ts_res)[2] <- paste(substitute(x))
     names(ts_res)[3] <- paste(substitute(y))
 
     # Implement a data.table method
     if (ncol(data) > 2) {
       merge_cols <- colnames(ts_res)[2:3]
-      ts_res <- data.table::merge.data.table(data, ts_res, by = merge_cols, all = TRUE)
+      ts_res <-
+        data.table::merge.data.table(data, ts_res, by = merge_cols, all = TRUE)
     }
 
     ts_res[, doy := NULL]

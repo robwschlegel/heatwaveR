@@ -30,79 +30,69 @@ proto_event3 <- function(p_series,
                          minDuration,
                          joinAcrossGaps,
                          maxGap) {
-
   index_start <- index_end <- duration <- NULL
 
   p_series[, grp := data.table::rleid(criterion_column)]
-  proto_events <- p_series[criterion_column == TRUE, .(
-    index_start = min(.I),
-    index_end = max(.I)
-  ), by = grp][, grp := NULL]
+  proto_events <- p_series[criterion_column == TRUE, .(index_start = min(.I),
+                                                       index_end = max(.I)), by = grp][, grp := NULL]
   p_series[, grp := NULL]
 
   duration <- proto_events$index_end - proto_events$index_start + 1
 
-  suppressWarnings(
-    if (is.null(proto_events) | max(duration) < minDuration) {
-      res <- data.table::copy(p_series)
-      res[, `:=`(durationCriterion = FALSE,
-                 event = FALSE,
-                 event_no = NA)]
-      return(res)
-    } else {
-      proto_events[, duration := duration]
-    }
-  )
+  suppressWarnings(if (is.null(proto_events) |
+                       max(duration) < minDuration) {
+    res <- data.table::copy(p_series)
+    res[, `:=`(
+      durationCriterion = FALSE,
+      event = FALSE,
+      event_no = NA
+    )]
+    return(res)
+  } else {
+    proto_events[, duration := duration]
+  })
 
-  proto_events <- proto_events[proto_events$duration >= minDuration, ]
+  proto_events <-
+    proto_events[proto_events$duration >= minDuration,]
 
   p_series[, durationCriterion := FALSE]
   for (i in seq_len(nrow(proto_events))) {
-
     p_series[proto_events$index_start[i]:proto_events$index_end[i], durationCriterion := TRUE]
-
   }
 
   if (joinAcrossGaps) {
-
     p_series[, rleid := data.table::rleid(durationCriterion)]
-    proto_gaps <- p_series[durationCriterion == FALSE, .(index_start = min(.I), index_end = max(.I)), by = rleid
-    ][, duration := index_end - index_start + 1]
+    proto_gaps <-
+      p_series[durationCriterion == FALSE, .(index_start = min(.I), index_end = max(.I)), by = rleid][, duration := index_end - index_start + 1]
     p_series[, rleid := NULL]
-    proto_gaps <- proto_gaps[index_end > proto_events$index_start[1]][, rleid := NULL]
+    proto_gaps <-
+      proto_gaps[index_end > proto_events$index_start[1]][, rleid := NULL]
 
-    if (any(proto_gaps$duration >= 1 & proto_gaps$duration <= maxGap)) {
-
+    if (any(proto_gaps$duration >= 1 &
+            proto_gaps$duration <= maxGap)) {
       proto_gaps <- proto_gaps[duration >= 1 & duration <= maxGap]
       p_series[, event := durationCriterion]
 
       for (i in seq_len(nrow(proto_gaps))) {
-
         p_series[proto_gaps$index_start[i]:proto_gaps$index_end[i], event := TRUE]
       }
 
     } else {
-
       p_series[, event := durationCriterion]
-
     }
 
   } else {
-
     p_series[, event := durationCriterion]
-
   }
 
   p_series[, rleid_event := data.table::rleid(event)]
-  proto_final <- p_series[event == TRUE, .(index_start = min(.I), index_end = max(.I)), by = rleid_event
-  ][, duration := index_end - index_start + 1]
+  proto_final <-
+    p_series[event == TRUE, .(index_start = min(.I), index_end = max(.I)), by = rleid_event][, duration := index_end - index_start + 1]
   p_series[, c("rleid_event", "event_no") := list(NULL, NA_integer_)]
 
   for (i in seq_len(nrow(proto_final))) {
-
     p_series[proto_final$index_start[i]:proto_final$index_end[i], event_no := i]
   }
 
   return(p_series)
-
 }
