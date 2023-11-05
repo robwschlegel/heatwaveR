@@ -300,6 +300,9 @@ detect_event3 <- function(data,
          paste(expected_classes, collapse = ", "))
   }
 
+  # Output issue:
+  # The names of x and y do not carry through to the output.
+
   t_series <-
     data.table::data.table(
       ts_x = data[[deparse(substitute(x))]],
