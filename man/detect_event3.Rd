@@ -45,7 +45,7 @@ the column with dates here.}
 \item{y}{This is a column containing the measurement variable. If the column
 name differs from the default (i.e. \code{temp}), specify the name here.}
 
-\item{seasClim}{The dafault for this argument assumes that the seasonal
+\item{seasClim}{The default for this argument assumes that the seasonal
 climatology column is called \code{seas} as this matches the output of
 \code{\link{ts2clm3}}. If the column name for the seasonal climatology is
 different, provide that here.}
@@ -204,7 +204,8 @@ provide sensible values, please take this into account in its
 interpretation.
 }
 \description{
-Applies the Hobday et al. (2016) marine heat wave definition to an input time
+\code{detect_event3} is a data.table version of the earlier \code{\link{detect_event}}.
+It applies the Hobday et al. (2016) marine heat wave definition to an input time
 series of a given value (usually, but not necessarily limited to, temperature)
 along with a daily date vector and pre-calculated seasonal and threshold
 climatologies, which may either be created with \code{\link{ts2clm3}} or some
@@ -246,18 +247,18 @@ of our preparation of Schlegel et al. (2017), wherein the cold events
 receive a brief overview.
 }
 \examples{
-data.table::setDTthreads(threads = 1)
-res_clim <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-out <- detect_event(res_clim)
+data.table::setDTthreads(threads = 1) # optimise for your code and local computer
+res_clim <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+out <- detect_event3(res_clim)
 # show a portion of the climatology:
 out$climatology[1:10, ]
 # show some of the heat waves:
 out$event[1:5, 1:10]
 
 # Or if one wants to calculate MCSs
-res_clim <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
-                   pctile = 10)
-out <- detect_event(res_clim, coldSpells = TRUE)
+res_clim <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
+                    pctile = 10)
+out <- detect_event3(res_clim, coldSpells = TRUE)
 # show a portion of the climatology:
 out$climatology[1:10, ]
 # show some of the cold-spells:
@@ -265,25 +266,25 @@ out$event[1:5, 1:10]
 
 # It is also possible to calculate the categories of events directly
 # See the \code{\link{category}} documentation for more functionality
-res_clim <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-out_event <- detect_event(res_clim, categories = TRUE)
-out_list <- detect_event(res_clim, categories = TRUE, climatology = TRUE)
+res_clim <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+out_event <- detect_event3(res_clim, categories = TRUE)
+out_list <- detect_event3(res_clim, categories = TRUE, climatology = TRUE)
 
 # It is also possible to give two separate sets of threshold criteria
 
 # To use a second static threshold we first use the exceedance function
 thresh_19 <- exceedance(sst_Med, threshold = 19, minDuration = 10, maxGap = 0)$threshold
 # Then we use that output when detecting our events
-events_19 <- detect_event(ts2clm(sst_Med, climatologyPeriod = c("1982-01-01", "2011-12-31")),
-                         threshClim2 = thresh_19$exceedance, minDuration2 = 10, maxGap2 = 0)
+events_19 <- detect_event3(ts2clm3(sst_Med, climatologyPeriod = c("1982-01-01", "2011-12-31")),
+                           threshClim2 = thresh_19$exceedance, minDuration2 = 10, maxGap2 = 0)
 
 # If we want to use two different percentile thresholds we use detect_event
-thresh_95 <- detect_event(ts2clm(sst_Med, pctile = 95,
-                                 climatologyPeriod = c("1982-01-01", "2011-12-31")),
-                          minDuration = 2, maxGap = 0)$climatology
+thresh_95 <- detect_event3(ts2clm3(sst_Med, pctile = 95,
+                                   climatologyPeriod = c("1982-01-01", "2011-12-31")),
+                           minDuration = 2, maxGap = 0)$climatology
 # Then we use that output when detecting our events
-events_95 <- detect_event(ts2clm(sst_Med, climatologyPeriod = c("1982-01-01", "2011-12-31")),
-                          threshClim2 = thresh_95$event, minDuration2 = 2, maxGap2 = 0)
+events_95 <- detect_event3(ts2clm3(sst_Med, climatologyPeriod = c("1982-01-01", "2011-12-31")),
+                           threshClim2 = thresh_95$event, minDuration2 = 2, maxGap2 = 0)
 
 }
 \references{

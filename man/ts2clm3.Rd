@@ -108,7 +108,7 @@ units need to be determined by the user.
   will be shown here.}
   \item{seas}{Daily climatological cycle [deg. C].}
   \item{thresh}{Daily varying threshold (e.g., 90th
-  percentile) [deg. C]. This is used in \code{\link{detect_event}} for the
+  percentile) [deg. C]. This is used in \code{\link{detect_event3}} for the
   detection/calculation of events (MHWs).}
   \item{var}{Daily varying variance (standard deviation) [deg. C]. This
   column is not returned if \code{var = FALSE} (default).}
@@ -116,7 +116,7 @@ Should \code{clmOnly} be enabled, only the 365 or 366 day climatology will be
 returned.
 }
 \description{
-This is the fully data.table-based version of ts2clm. The function creates
+This is the fully data.table-based version of \code{\link{ts2clm}}. The function creates
 a daily climatology from a time series of daily temperatures using a
 user-specified sliding window for the mean and threshold calculation, followed
 by an optional moving average smoother as used by Hobday et al. (2016).
@@ -155,17 +155,18 @@ Marine and Antarctic Studies, University of Tasmania, Feb 2015, and is
 documented by Hobday et al. (2016).
 }
 \examples{
+data.table::setDTthreads(threads = 1) # optimise for your code and local computer
 res <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
 res[1:10, ]
 
 # Or if one only wants the 366 day climatology
 res_clim <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
-                   clmOnly = TRUE)
+                    clmOnly = TRUE)
 res_clim[1:10, ]
 
 # Or if one wants the variance column included in the results
 res_var <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
-                  var = TRUE)
+                   var = TRUE)
 res_var[1:10, ]
 
 }

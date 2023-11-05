@@ -1,3 +1,10 @@
+# heatwaveR 0.5.2.9003 (2023-11-05)
+
+-   Created `detect_event3()` and `proto_event3()` with a new code base to benefit
+    from the speed gains due to data.table internals
+-   Output results (climatologies and metrics) as data.table
+-   Updated and improved documentation
+
 # heatwaveR 0.5.2.9002 (2023-10-31)
 
 -   Rolled back overwrite of `ts2clm()` with `ts2clm3()` for now

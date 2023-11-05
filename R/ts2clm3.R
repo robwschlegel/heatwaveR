@@ -1,13 +1,13 @@
 #' Make a climatology from a daily time series.
 #'
-#' This is the fully data.table-based version of ts2clm. The function creates
+#' This is the fully data.table-based version of \code{\link{ts2clm}}. The function creates
 #' a daily climatology from a time series of daily temperatures using a
 #' user-specified sliding window for the mean and threshold calculation, followed
 #' by an optional moving average smoother as used by Hobday et al. (2016).
 #'
 #' @import Rcpp
 #'
-#' @importFrom data.table %between% .N
+#' @importFrom data.table .N
 #' @useDynLib heatwaveR
 #'
 #' @param data A data frame with at least two columns. In the default setting
@@ -117,7 +117,7 @@
 #'   will be shown here.}
 #'   \item{seas}{Daily climatological cycle [deg. C].}
 #'   \item{thresh}{Daily varying threshold (e.g., 90th
-#'   percentile) [deg. C]. This is used in \code{\link{detect_event}} for the
+#'   percentile) [deg. C]. This is used in \code{\link{detect_event3}} for the
 #'   detection/calculation of events (MHWs).}
 #'   \item{var}{Daily varying variance (standard deviation) [deg. C]. This
 #'   column is not returned if \code{var = FALSE} (default).}
@@ -133,17 +133,18 @@
 #' @export
 #'
 #' @examples
+#' data.table::setDTthreads(threads = 1) # optimise for your code and local computer
 #' res <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
 #' res[1:10, ]
 #'
 #' # Or if one only wants the 366 day climatology
 #' res_clim <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
-#'                    clmOnly = TRUE)
+#'                     clmOnly = TRUE)
 #' res_clim[1:10, ]
 #'
 #' # Or if one wants the variance column included in the results
 #' res_var <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
-#'                   var = TRUE)
+#'                    var = TRUE)
 #' res_var[1:10, ]
 #'
 ts2clm3 <- function(data,
@@ -234,18 +235,24 @@ ts2clm3 <- function(data,
                                                     "day"))
 
   ts_whole <-
-    data.table::merge.data.table(ts_full, ts_xy, by = "ts_x", all.x = TRUE)[, `:=`(year = as.integer(format(ts_x, "%Y")),
-                                                                                   doy = as.integer(format(ts_x, "%j")))][, doy := ifelse(!.is_leap_year(year) &
-                                                                                                                                            doy > 59, doy + 1, doy)][, year := NULL][, data.table::setcolorder(.SD, c("doy", "ts_x", "ts_y"))]
+    data.table::merge.data.table(ts_full,
+                                 ts_xy,
+                                 by = "ts_x",
+                                 all.x = TRUE)[,
+                                               `:=`(year = as.integer(format(ts_x, "%Y")),
+                                                    doy = as.integer(format(ts_x, "%j")))][,
+                                                                                           doy := ifelse(!.is_leap_year(year) &
+                                                                                                           doy > 59, doy + 1, doy)][, year := NULL][, data.table::setcolorder(.SD, c("doy", "ts_x", "ts_y"))]
   data.table::setkey(ts_whole, NULL)
 
   rm(ts_full)
 
   # END INSERT make_whole_fast <<<
 
+  # BEGIN INSERT na_interp >>>
+
   if (sum(stats::complete.cases(ts_whole$ts_y)) < nrow(ts_whole) &
       is.numeric(maxPadLength)) {
-    # BEGIN INSERT na_interp >>>
 
     .na_pad <- function(x, fill, maxPadLength) {
       if (maxPadLength <= 0)
@@ -335,8 +342,6 @@ ts2clm3 <- function(data,
 
   # END INSERT clim_spread <<<
 
-  # browser() # very useful for debugging!
-
   if (nrow(stats::na.omit(ts_mat)) < nrow(ts_mat) | var) {
     ts_mat <- clim_calc(ts_mat, windowHalfWidth, pctile)
     ts_mat[is.nan(ts_mat)] <- NA
@@ -346,8 +351,9 @@ ts2clm3 <- function(data,
     ts_mat <- data.table::data.table(ts_mat)
   }
 
+  # BEGIN INSERT smooth_percentile >>>
+
   if (smoothPercentile) {
-    # BEGIN INSERT smooth_percentile >>>
 
     prep <-
       data.table::rbindlist(
@@ -427,7 +433,6 @@ ts2clm3 <- function(data,
 
   } else {
     ts_clim <- ts_mat
-
   }
 
   if (is.numeric(roundClm)) {
@@ -462,6 +467,5 @@ ts2clm3 <- function(data,
       data.table::setDF(ts_res)
     }
     return(ts_res)
-
   }
 }
