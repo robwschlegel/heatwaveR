@@ -69,7 +69,9 @@ Or the development version may be installed from GitHub with:
 | Function          | Description                                                                                                    |
 |-------------------|----------------------------------------------------------------------------------------------------------------|
 | `ts2clm()`        | Constructs seasonal and threshold climatologies as per the definition of Hobday et al. (2016).                 |
+| `ts2clm3()`       | As `ts2clm()` but built entirely on data.table for an up to 200% speed improvement                             |
 | `detect_event()`  | The main function which detects the events as per the definition of Hobday et al. (2016).                      |
+| `detect_event3()` | As `detect_event()` but with data.table internals (not yet for category classification–to follow)              |
 | `block_average()` | Calculates annual means for event metrics.                                                                     |
 | `category()`      | Applies event categories to the output of `detect_event()` based on Hobday et al. (2018).                      |
 | `exceedance()`    | A function similar to `detect_event()` but that detects consecutive days above/below a given static threshold. |
