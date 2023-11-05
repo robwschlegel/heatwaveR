@@ -39,7 +39,7 @@ four arguments may be ignored.}
 
 \item{x}{This column is expected to contain a vector of dates as per the
 specification of \code{\link{ts2clm3}}. If a column headed \code{t} is present in
-the dataframe, this argument may be omitted; otherwise, specify the name of
+the data.table, this argument may be omitted; otherwise, specify the name of
 the column with dates here.}
 
 \item{y}{This is a column containing the measurement variable. If the column
