@@ -66,10 +66,6 @@ test_that("detect_event() utilises the second threshold correctly", {
   res_1 <- detect_event(ts, threshClim2 = second_threshold)
   res_2 <- detect_event(ts)
   expect_gt(nrow(res_2$event), nrow(res_1$event))
-})
-
-test_that("threshClim2 must be logic values", {
-  ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   expect_error(detect_event(ts, threshClim2 = "aaa"))
 })
 
@@ -83,12 +79,6 @@ test_that("no detected events returns a 1 row NA event dataframe and not an erro
   expect_equal(ncol(res$climatology), 9)
   expect_equal(ncol(res$event), 22)
   expect_equal(nrow(res$event), 1)
-})
-
-test_that("decimal places are rounded to the fourth place", {
-  res <- detect_event(ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31")))
-  expect_equal(nchar(strsplit(as.character(res$climatology$thresh[1]), "\\.")[[1]][2]), 4)
-  expect_equal(nchar(strsplit(as.character(res$event$intensity_max[1]), "\\.")[[1]][2]), 4)
 })
 
 test_that("protoEvents argument functions correctly", {

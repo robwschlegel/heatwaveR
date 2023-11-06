@@ -64,8 +64,6 @@
 #' the \code{seas} and \code{thresh} outputs will be rounded to. Default is 4. To
 #' prevent rounding set \code{roundClm = FALSE}. This argument may only be given
 #' numeric values or FALSE.
-#' @param returnDF Boolean. The default (\code{FALSE}) returns the results as
-#' type \code{data.table}. Setting it to \code{TRUE} returns a \code{data.frame}.
 #'
 #' @details
 #' \enumerate{
@@ -158,9 +156,7 @@ ts2clm3 <- function(data,
                     smoothPercentileWidth = 31,
                     clmOnly = FALSE,
                     var = FALSE,
-                    # the version in ts2clm is incorrect
-                    roundClm = 4,
-                    returnDF = FALSE) {
+                    roundClm = 4) {
   if (missing(climatologyPeriod))
     stop("Oops! Please provide a period (two dates) for calculating the climatology.")
 
@@ -203,13 +199,13 @@ ts2clm3 <- function(data,
   ts_x <- eval(substitute(x), data)
   if (is.null(ts_x) | is.function(ts_x))
     stop(
-      "Please ensure that a column named 't' is present in your data.frame or that you have assigned a column to the 'x' argument."
+      "Please ensure that a column named 't' is present in your data.table or that you have assigned a column to the 'x' argument."
     )
 
   ts_y <- eval(substitute(y), data)
   if (is.null(ts_y) | is.function(ts_y))
     stop(
-      "Please ensure that a column named 'temp' is present in your data.frame or that you have assigned a column to the 'y' argument."
+      "Please ensure that a column named 'temp' is present in your data.table or that you have assigned a column to the 'y' argument."
     )
 
   if (!inherits(ts_x[1], "Date"))
@@ -442,9 +438,7 @@ ts2clm3 <- function(data,
   rm(ts_mat)
 
   if (clmOnly) {
-    if (returnDF) {
-      data.table::setDF(ts_clim)
-    }
+
     return(ts_clim)
 
   } else {
@@ -463,9 +457,7 @@ ts2clm3 <- function(data,
     }
 
     ts_res[, doy := NULL]
-    if (returnDF) {
-      data.table::setDF(ts_res)
-    }
+
     return(ts_res)
   }
 }

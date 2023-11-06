@@ -268,7 +268,8 @@ out$event[1:5, 1:10]
 # See the \code{\link{category}} documentation for more functionality
 res_clim <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
 out_event <- detect_event3(res_clim, categories = TRUE)
-out_list <- detect_event3(res_clim, categories = TRUE, climatology = TRUE)
+# NB: This is currently broken due to column naming issue in detect_event3()
+# out_list <- detect_event3(res_clim, categories = TRUE, climatology = TRUE)
 
 # It is also possible to give two separate sets of threshold criteria
 

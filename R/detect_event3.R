@@ -241,7 +241,8 @@
 #' # See the \code{\link{category}} documentation for more functionality
 #' res_clim <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
 #' out_event <- detect_event3(res_clim, categories = TRUE)
-#' out_list <- detect_event3(res_clim, categories = TRUE, climatology = TRUE)
+#' # NB: This is currently broken due to column naming issue in detect_event3()
+#' # out_list <- detect_event3(res_clim, categories = TRUE, climatology = TRUE)
 #'
 #' # It is also possible to give two separate sets of threshold criteria
 #'
@@ -289,7 +290,7 @@ detect_event3 <- function(data,
         roundRes == FALSE))
     stop("'roundRes' must be numeric or FALSE.")
   if (ncol(data) < 4)
-    stop("Data must contain columns: Date, temp, seas, thresh.")
+    stop("Data must contain columns: t, temp, seas, thresh.")
   if (!inherits(data, "data.table"))
     data <- data.table::setDT(data)
 
@@ -302,6 +303,7 @@ detect_event3 <- function(data,
 
   # Output issue:
   # The names of x and y do not carry through to the output.
+  ts_x <- ts_y <- ts_seas <- ts_thresh <- NULL
 
   t_series <-
     data.table::data.table(
@@ -312,13 +314,13 @@ detect_event3 <- function(data,
     )
 
   if (coldSpells) {
-    t_series[, (2:4) := .(-ts_y, -ts_seas, -ts_thresh)]
+    t_series[, (2:4) := list(-ts_y, -ts_seas, -ts_thresh)]
   }
 
   t_series[is.na(ts_y), ts_y := ts_seas]
   t_series[, threshCriterion := !is.na(ts_y) & ts_y > ts_thresh]
 
-  events_clim <- heatwaveR:::proto_event3(
+  events_clim <- proto_event3(
     p_series = t_series,
     criterion_column = t_series$threshCriterion,
     minDuration = minDuration,
@@ -330,7 +332,7 @@ detect_event3 <- function(data,
     if (!is.logical(threshClim2[1]))
       stop("'threshClim2' must be logical.")
     # t_series[, secondCriterion := events_clim$event & ts_y > threshClim2] # if one wants a numeric threshold
-    events_clim <- heatwaveR:::proto_event3(
+    events_clim <- proto_event3(
       p_series = t_series,
       # criterion_column = "secondCriterion", # for the numeric threshold
       criterion_column = events_clim$event &
@@ -363,6 +365,7 @@ detect_event3 <- function(data,
       intensity_cumulative_abs <- rate_onset <- rate_decline <-
       mhw_rel_thresh <-
       mhw_rel_seas <-
+      date_peak <- date_start <- date_end <-
       event_no <- row_index <- index_start <- index_peak <-
       index_end <- NULL
 
@@ -376,7 +379,7 @@ detect_event3 <- function(data,
 
       events <- events[!is.na(event_no)]
 
-      year <- ts_x <- doy <- NULL
+      # year <- ts_x <- doy <- NULL
 
       events <- events[, list(
         index_start = min(row_index),

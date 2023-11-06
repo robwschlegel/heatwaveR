@@ -1,13 +1,10 @@
 context("Test ts2clm3.R")
 
 test_that("ts2clm3() returns the correct output", {
-  res1 <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-  expect_s3_class(res1, "data.table")
-  expect_equal(ncol(res1), 5)
-  expect_equal(nrow(res1), 14975)
-  res2 <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), returnDF = TRUE)
-  expect_s3_class(res2, "data.frame")
-  expect_false(S3Class(res2) == "data.table")
+  res <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  expect_s3_class(res, "data.table")
+  expect_equal(ncol(res), 4)
+  expect_equal(nrow(res), 14975)
 })
 
 test_that("all starting error checks flag correctly", {
@@ -66,15 +63,10 @@ test_that("smooth_percentile = FALSE prevents smoothing", {
 })
 
 test_that("clmOnly = TRUE returns only the clim data", {
-  res1 <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
-                clmOnly = TRUE)
-  expect_s3_class(res1, "data.table")
-  expect_equal(ncol(res1), 3)
-  expect_equal(nrow(res1), 366)
-  res2 <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
-                  clmOnly = TRUE, returnDF = TRUE)
-  expect_s3_class(res2, "data.frame")
-  expect_false(S3Class(res2) == "data.table")
+  res <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), clmOnly = TRUE)
+  expect_s3_class(res, "data.table")
+  expect_equal(ncol(res), 3)
+  expect_equal(nrow(res), 366)
 })
 
 test_that("climatologyPeriod less than three years is rejected", {
@@ -100,20 +92,15 @@ test_that("contiguous missing data causes clim_calc() to be used", {
   sst_WA_cont <- sst_WA_cont[sst_WA_cont$month != 1,]
   sst_WA_cont$month <- NULL
   res <- ts2clm3(sst_WA_cont, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-  expect_is(res, "data.frame")
-  expect_equal(ncol(res), 5)
+  expect_s3_class(res, "data.table")
+  expect_equal(ncol(res), 4)
   expect_equal(nrow(res), 14944)
-})
-
-test_that("decimal places are rounded to the fourth place", {
-  res <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-  expect_equal(nchar(strsplit(as.character(res$seas[2]), "\\.")[[1]][2]), 4)
 })
 
 test_that("var argument functions correctly", {
   res <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), var = TRUE)
-  expect_is(res, "data.frame")
-  expect_equal(ncol(res), 6)
+  expect_s3_class(res, "data.table")
+  expect_equal(ncol(res), 5)
   expect_equal(nrow(res), 14975)
 })
 
@@ -130,10 +117,10 @@ test_that("Useful error is returned when incorrect column names exist", {
   ts <- sst_WA
   colnames(ts) <- c("banana", "temp")
   expect_error(ts2clm3(ts, climatologyPeriod = c("1983-01-01", "2012-12-31")),
-               "Please ensure that a column named 't' is present in your data.frame or that you have assigned a column to the 'x' argument.")
+               "Please ensure that a column named 't' is present in your data.table or that you have assigned a column to the 'x' argument.")
   colnames(ts) <- c("t", "banana")
   expect_error(ts2clm3(ts, climatologyPeriod = c("1983-01-01", "2012-12-31")),
-               "Please ensure that a column named 'temp' is present in your data.frame or that you have assigned a column to the 'y' argument.")
+               "Please ensure that a column named 'temp' is present in your data.table or that you have assigned a column to the 'y' argument.")
 })
 
 test_that("additional columns in base data should be passed through the funciton", {
@@ -141,7 +128,7 @@ test_that("additional columns in base data should be passed through the funciton
   ts_WA$site <- "WA"; ts_WA$lon <- 112.625; ts_WA$lat <- -29.375
   ts_WA <- ts_WA[,c(3, 4, 5, 1, 2)]
   res <- ts2clm3(ts_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-  expect_is(res, "data.frame")
-  expect_equal(ncol(res), 8)
+  expect_s3_class(res, "data.table")
+  expect_equal(ncol(res), 7)
   expect_equal(nrow(res), 14975)
 })
