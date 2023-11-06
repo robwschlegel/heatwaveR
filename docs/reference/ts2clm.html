@@ -25,7 +25,7 @@ by an optional moving average smoother as used by Hobday et al. (2016)."><meta p
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2.9004</span>
       </span>
     </div>
 
@@ -127,7 +127,8 @@ by an optional moving average smoother as used by Hobday et al. (2016).</p>
 <span>  smoothPercentileWidth <span class="op">=</span> <span class="fl">31</span>,</span>
 <span>  clmOnly <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  var <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  roundClm <span class="op">=</span> <span class="fl">4</span></span>
+<span>  roundClm <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  returnDF <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -213,6 +214,11 @@ researchers use it and so it is generally regarded now as unnecessary.</p></dd>
 the <code>seas</code> and <code>thresh</code> outputs will be rounded to. Default is 4. To
 prevent rounding set <code>roundClm = FALSE</code>. This argument may only be given
 numeric values or FALSE.</p></dd>
+
+
+<dt>returnDF</dt>
+<dd><p>The default (<code>TRUE</code>) tells the function to return the results as
+type <code>data.frame</code>. <code>FALSE</code> will return the results as a <code>data.table</code>.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -303,49 +309,49 @@ doi:10.1016/j.pocean.2015.12.014</p>
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">ts2clm</span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">res</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     doy          t  temp    seas  thresh</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:   1 1982-01-01 20.94 21.6080 22.9605</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:   2 1982-01-02 21.25 21.6348 22.9987</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:   3 1982-01-03 21.38 21.6621 23.0376</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   4 1982-01-04 21.16 21.6895 23.0771</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   5 1982-01-05 21.26 21.7169 23.1130</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:   6 1982-01-06 21.61 21.7436 23.1460</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:   7 1982-01-07 21.74 21.7699 23.1775</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:   8 1982-01-08 21.50 21.7958 23.2080</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:   9 1982-01-09 21.40 21.8217 23.2366</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:  10 1982-01-10 21.36 21.8478 23.2649</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    doy          t  temp    seas  thresh</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    1 1982-01-01 20.94 21.6080 22.9605</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    2 1982-01-02 21.25 21.6348 22.9987</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    3 1982-01-03 21.38 21.6621 23.0376</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    4 1982-01-04 21.16 21.6895 23.0771</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    5 1982-01-05 21.26 21.7169 23.1130</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    6 1982-01-06 21.61 21.7436 23.1460</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    7 1982-01-07 21.74 21.7699 23.1775</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    8 1982-01-08 21.50 21.7958 23.2080</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    9 1982-01-09 21.40 21.8217 23.2366</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  10 1982-01-10 21.36 21.8478 23.2649</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Or if one only wants the 366 day climatology</span></span></span>
 <span class="r-in"><span><span class="va">res_clim</span> <span class="op">&lt;-</span> <span class="fu">ts2clm</span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                   clmOnly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">res_clim</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     doy    seas  thresh</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:   1 21.6080 22.9605</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:   2 21.6348 22.9987</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:   3 21.6621 23.0376</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   4 21.6895 23.0771</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   5 21.7169 23.1130</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:   6 21.7436 23.1460</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:   7 21.7699 23.1775</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:   8 21.7958 23.2080</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:   9 21.8217 23.2366</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:  10 21.8478 23.2649</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    doy    seas  thresh</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    1 21.6080 22.9605</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    2 21.6348 22.9987</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    3 21.6621 23.0376</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    4 21.6895 23.0771</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    5 21.7169 23.1130</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    6 21.7436 23.1460</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    7 21.7699 23.1775</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    8 21.7958 23.2080</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    9 21.8217 23.2366</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  10 21.8478 23.2649</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Or if one wants the variance column included in the results</span></span></span>
 <span class="r-in"><span><span class="va">res_var</span> <span class="op">&lt;-</span> <span class="fu">ts2clm</span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                  var <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">res_var</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     doy          t  temp    seas  thresh    var</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:   1 1982-01-01 20.94 21.6080 22.9605 0.0772</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:   2 1982-01-02 21.25 21.6348 22.9987 0.0779</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:   3 1982-01-03 21.38 21.6621 23.0376 0.0763</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   4 1982-01-04 21.16 21.6895 23.0771 0.0780</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   5 1982-01-05 21.26 21.7169 23.1130 0.0817</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:   6 1982-01-06 21.61 21.7436 23.1460 0.0869</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:   7 1982-01-07 21.74 21.7699 23.1775 0.0914</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:   8 1982-01-08 21.50 21.7958 23.2080 0.0947</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:   9 1982-01-09 21.40 21.8217 23.2366 0.0977</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:  10 1982-01-10 21.36 21.8478 23.2649 0.0989</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    doy          t  temp    seas  thresh    var</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    1 1982-01-01 20.94 21.6080 22.9605 0.9585</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    2 1982-01-02 21.25 21.6348 22.9987 0.9636</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    3 1982-01-03 21.38 21.6621 23.0376 0.9684</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    4 1982-01-04 21.16 21.6895 23.0771 0.9728</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    5 1982-01-05 21.26 21.7169 23.1130 0.9764</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    6 1982-01-06 21.61 21.7436 23.1460 0.9797</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    7 1982-01-07 21.74 21.7699 23.1775 0.9828</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    8 1982-01-08 21.50 21.7958 23.2080 0.9860</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    9 1982-01-09 21.40 21.8217 23.2366 0.9884</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  10 1982-01-10 21.36 21.8478 23.2649 0.9906</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

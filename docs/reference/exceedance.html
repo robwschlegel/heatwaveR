@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2.9004</span>
       </span>
     </div>
 
@@ -121,7 +121,8 @@
 <span>  joinAcrossGaps <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  maxGap <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  maxPadLength <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  roundRes <span class="op">=</span> <span class="fl">4</span></span>
+<span>  roundRes <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  returnDF <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -193,6 +194,11 @@ integer. The default is <code>3</code> days.</p></dd>
 the exceedance metric outputs will be rounded to. Default is 4. To
 prevent rounding set <code>roundRes = FALSE</code>. This argument may only be given
 numeric values or FALSE.</p></dd>
+
+
+<dt>returnDF</dt>
+<dd><p>The default (<code>TRUE</code>) tells the function to return the results as
+type <code>data.frame</code>. <code>FALSE</code> will return the results as a <code>data.table</code>.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -328,28 +334,28 @@ Feb 2015, and is documented by Hobday et al. (2016).</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">exceedance</span><span class="op">(</span><span class="va">sst_WA</span>, threshold <span class="op">=</span> <span class="fl">25</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># show first ten days of daily data:</span></span></span>
 <span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">threshold</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              t  temp thresh threshCriterion durationCriterion exceedance</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: 1982-01-01 20.94     25           FALSE             FALSE      FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: 1982-01-02 21.25     25           FALSE             FALSE      FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: 1982-01-03 21.38     25           FALSE             FALSE      FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: 1982-01-04 21.16     25           FALSE             FALSE      FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: 1982-01-05 21.26     25           FALSE             FALSE      FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: 1982-01-06 21.61     25           FALSE             FALSE      FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: 1982-01-07 21.74     25           FALSE             FALSE      FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: 1982-01-08 21.50     25           FALSE             FALSE      FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: 1982-01-09 21.40     25           FALSE             FALSE      FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: 1982-01-10 21.36     25           FALSE             FALSE      FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     exceedance_no</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:            NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             t  temp thresh threshCriterion durationCriterion exceedance</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1982-01-01 20.94     25           FALSE             FALSE      FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  1982-01-02 21.25     25           FALSE             FALSE      FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  1982-01-03 21.38     25           FALSE             FALSE      FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  1982-01-04 21.16     25           FALSE             FALSE      FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  1982-01-05 21.26     25           FALSE             FALSE      FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  1982-01-06 21.61     25           FALSE             FALSE      FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  1982-01-07 21.74     25           FALSE             FALSE      FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  1982-01-08 21.50     25           FALSE             FALSE      FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  1982-01-09 21.40     25           FALSE             FALSE      FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 1982-01-10 21.36     25           FALSE             FALSE      FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    exceedance_no</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1             NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2             NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3             NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4             NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5             NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6             NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7             NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8             NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9             NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10            NA</span>
 <span class="r-in"><span><span class="co"># show first five exceedances:</span></span></span>
 <span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">exceedance</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   exceedance_no index_start index_peak index_end duration date_start  date_peak</span>

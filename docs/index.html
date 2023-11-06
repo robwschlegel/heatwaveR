@@ -51,7 +51,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2.9004</span>
       </span>
     </div>
 
@@ -168,8 +168,16 @@
 <td>Constructs seasonal and threshold climatologies as per the definition of Hobday et al. (2016).</td>
 </tr>
 <tr class="even">
+<td><code><a href="reference/ts2clm3.html">ts2clm3()</a></code></td>
+<td>As <code><a href="reference/ts2clm.html">ts2clm()</a></code> but built entirely on data.table for an up to 200% speed improvement</td>
+</tr>
+<tr class="odd">
 <td><code><a href="reference/detect_event.html">detect_event()</a></code></td>
 <td>The main function which detects the events as per the definition of Hobday et al. (2016).</td>
+</tr>
+<tr class="even">
+<td><code><a href="reference/detect_event3.html">detect_event3()</a></code></td>
+<td>As <code><a href="reference/detect_event.html">detect_event()</a></code> but with data.table internals (not yet for category classification–to follow)</td>
 </tr>
 <tr class="odd">
 <td><code><a href="reference/block_average.html">block_average()</a></code></td>
