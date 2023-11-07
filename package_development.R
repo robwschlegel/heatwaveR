@@ -179,9 +179,6 @@ Sys.setenv('_R_CHECK_SYSTEM_CLOCK_' = 0)
 
 # pkgdown -----------------------------------------------------------------
 
-# Went over this only briefly
-# Good to do, but a bit more finicky
-
 # Start with this to build skeleton:
 # use_pkgdown()
 
@@ -224,9 +221,9 @@ build_site()
 # Package logs ------------------------------------------------------------
 
 # An example of how to check package downloads
-ggplot2_logs <- cranlogs::cran_downloads(packages = c("ggplot2", "dplyr"),
+package_logs <- cranlogs::cran_downloads(packages = c("heatwaveR"),
                                          when = "last-month")
-ggplot2::ggplot(ggplot2_logs) +
+ggplot2::ggplot(package_logs) +
   ggplot2::geom_line(aes(date, count, col = package)) +
   viridis::scale_color_viridis(discrete = TRUE)
 
@@ -285,4 +282,5 @@ rhub::check(platform = "debian-gcc-devel")
 library(profvis)
 library(heatwaveR)
 profvis(detect_event(ts2clm(sst_WA, climatologyPeriod = c("1982-01-01", "2011-12-31"))))
-profvis(detect_event(ts2clm3(sst_WA, climatologyPeriod = c("1982-01-01", "2011-12-31"))))
+profvis(detect_event3(ts2clm3(sst_WA, climatologyPeriod = c("1982-01-01", "2011-12-31"))))
+
