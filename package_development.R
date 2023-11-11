@@ -10,7 +10,9 @@
 library(usethis)
 library(devtools)
 library(testthat)
+library(checkhelper)
 library(pkgdown)
+# For examples: https://thinkr-open.github.io/checkhelper/
 
 # Disable package build note about not finding local time
 Sys.setenv('_R_CHECK_SYSTEM_CLOCK_' = 0)
@@ -125,6 +127,12 @@ Sys.setenv('_R_CHECK_SYSTEM_CLOCK_' = 0)
 # devtools::check()
 # One must have zero errors, warnings, notes
 
+# A better way to check as CRAN
+checkhelper::check_as_cran()
+
+# Check if any fils are created during check
+checkhelper::check_clean_userspace()
+
 
 # Importing data ----------------------------------------------------------
 
@@ -238,8 +246,9 @@ ggplot2::ggplot(package_logs) +
 # Run check and make sure there are no ERROR, WARNING, or NOTE
 
 # After that run the following command to check the package on a
-# windows OS if you are not currently running on that
+# windows or Mac OS if you are not currently running on that
 devtools::check_win_release()
+devtools::check_mac_release()
 
 # Or check specific CRAN flavours via the rhub package
 # https://blog.r-hub.io/2019/04/25/r-devel-linux-x86-64-debian-clang/

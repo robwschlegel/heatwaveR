@@ -159,34 +159,6 @@ The \code{event} results are summarised using a range of event metrics:
   \item{rate_onset}{Onset rate of event [deg. C / day].}
   \item{rate_decline}{Decline rate of event [deg. C / day].}
 
-When \code{categories = TRUE} the following will also be included with
-the \code{event} list component:
-  \item{event_name}{The name of the event. Generated from the \code{\link{name}}
-  value provided and the year of the \code{date_peak} of
-  the event. If no \code{\link{name}} value is provided the default "Event" is used.
-  As proposed in Hobday et al. (2018), \code{Moderate} events are not given a name
-  so as to prevent multiple repeat names within the same year. If two or more events
-  ranked greater than Moderate are reported within the same year, they will be
-  differentiated with the addition of a trailing letter
-  (e.g. Event 2001a, Event 2001b). Only added if \code{categories = TRUE}.}
-  \item{category}{The maximum category threshold reached/exceeded by the event.
-  Only added if \code{categories = TRUE}.}
-  \item{p_moderate}{The proportion of the total duration (days) spent at or above
-  the first threshold, but below any further thresholds. Only added if \code{categories = TRUE}.}
-  \item{p_strong}{The proportion of the total duration (days) spent at or above
-  the second threshold, but below any further thresholds. Only added if \code{categories = TRUE}.}
-  \item{p_severe}{The proportion of the total duration (days) spent at or above
-  the third threshold, but below the fourth threshold. Only added if \code{categories = TRUE}.}
-  \item{p_extreme}{The proportion of the total duration (days) spent at or above
-  the fourth and final threshold. Only added if \code{categories = TRUE}.}
-  \item{season}{The season(s) during which the event occurred. If the event
-  occurred across two seasons this will be displayed as e.g. "Winter/Spring".
-  Across three seasons as e.g. "Winter-Summer". Events lasting across four or more
-  seasons are listed as "Year-round". December (June) is used here as the start of
-  Austral (Boreal) summer. If "start", "peak", or "end" was given to the \code{season}
-  argument then only the one season during that chosen period will be given.
-  Only added if \code{categories = TRUE}.}
-
 \code{intensity_max_relThresh}, \code{intensity_mean_relThresh},
 \code{intensity_var_relThresh}, and \code{intensity_cumulative_relThresh}
 are as above except relative to the threshold (e.g., 90th percentile) rather
@@ -264,13 +236,6 @@ out$climatology[1:10, ]
 # show some of the cold-spells:
 out$event[1:5, 1:10]
 
-# It is also possible to calculate the categories of events directly
-# See the \code{\link{category}} documentation for more functionality
-res_clim <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-out_event <- detect_event3(res_clim, categories = TRUE)
-# NB: This is currently broken due to column naming issue in detect_event3()
-# out_list <- detect_event3(res_clim, categories = TRUE, climatology = TRUE)
-
 # It is also possible to give two separate sets of threshold criteria
 
 # To use a second static threshold we first use the exceedance function
@@ -279,7 +244,7 @@ thresh_19 <- exceedance(sst_Med, threshold = 19, minDuration = 10, maxGap = 0)$t
 events_19 <- detect_event3(ts2clm3(sst_Med, climatologyPeriod = c("1982-01-01", "2011-12-31")),
                            threshClim2 = thresh_19$exceedance, minDuration2 = 10, maxGap2 = 0)
 
-# If we want to use two different percentile thresholds we use detect_event
+# If we want to use two different percentile thresholds
 thresh_95 <- detect_event3(ts2clm3(sst_Med, pctile = 95,
                                    climatologyPeriod = c("1982-01-01", "2011-12-31")),
                            minDuration = 2, maxGap = 0)$climatology

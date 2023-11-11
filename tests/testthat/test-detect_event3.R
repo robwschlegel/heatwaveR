@@ -21,6 +21,15 @@ test_that("all starting error checks flag correctly", {
                "'maxGap' must be numeric.")
 })
 
+test_that("incoming object is converted to data.table internally", {
+  ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  ts$doy <- NULL
+  expect_s3_class(ts, "data.frame")
+  expect_false(S3Class(ts) == "data.table")
+  res <- detect_event3(ts)
+  expect_s3_class(res$event, "data.table")
+})
+
 test_that("coldSpells = TRUE returns MCS calculations", {
   ts <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), pctile = 10)
   res <- detect_event3(ts, coldSpells = TRUE)
@@ -129,40 +138,4 @@ test_that("useful error is returned when incorrect columns, types, or names exis
   # But it does correctly recognise name changes
   expect_s3_class(detect_event3(ts_name1, x = banana)$event, "data.table")
   expect_s3_class(detect_event3(ts_name2, y = mango)$event, "data.table")
-})
-
-test_that("lat + latitude columns are passed to category internally", {
-  ts <- ts2clm3(sst_Med, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-  ts$lat <- 10
-  res_S <- detect_event3(ts, categories = T)
-  res_N <- detect_event3(ts, categories = T, lat_col = T)
-  expect_equal(res_S$season[1], "Fall")
-  expect_equal(res_N$season[1], "Spring")
-  colnames(ts)[5] <- "latitude"
-  res_S <- detect_event3(ts, categories = T)
-  res_N <- detect_event3(ts, categories = T, lat_col = T)
-  expect_equal(res_S$season[1], "Fall")
-  expect_equal(res_N$season[1], "Spring")
-})
-
-test_that("Other built in 'categories' argument works as expected", {
-  ts <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-  ts$banana <- "Banana"
-  ts_name <- ts
-  colnames(ts_name)[2] <- "temperature"
-  res_event <- detect_event3(ts, categories = TRUE)
-
-  # NB: This throws an error
-  # res_list <- detect_event3(ts, categories = TRUE, climatology = TRUE)
-  # res_name <- detect_event3(ts_name, y = temperature, categories = TRUE, climatology = TRUE)
-  # res_MCS <- detect_event3(ts, coldSpells = TRUE, categories = TRUE, climatology = TRUE,
-  #                         season = "peak", MCScorrect = TRUE, MCSice = TRUE)
-  res_season <- detect_event3(ts, categories = TRUE, season = "peak")
-  expect_s3_class(res_event, "data.frame")
-  # expect_is(res_list, "list")
-  # expect_contains(colnames(res_list$climatology), "banana")
-  expect_equal(res_event$category[1], "I Moderate")
-  # expect_equal(res_list$climatology$category[889], "I Moderate")
-  expect_equal(res_season$season[3], "Winter")
-  # expect_equal(res_name$event$p_moderate[3], 100)
 })

@@ -8,7 +8,7 @@ using namespace Rcpp;
 IntegerVector seqDates(int startYear, int startMonth, int startDay, int endYear, int endMonth, int endDay) {
   Date startDate(startYear, startMonth, startDay);
   Date endDate(endYear, endMonth, endDay);
-  int len = endDate - startDate;
+  int len = endDate - startDate + 1;
 
   IntegerVector out(len);
 

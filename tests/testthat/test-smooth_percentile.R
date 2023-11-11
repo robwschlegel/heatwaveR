@@ -1,4 +1,4 @@
-context("test-smooth_percentile.R")
+context("Test smooth_percentile.R")
 
 test_that("smooth_percentile() returns the correct output", {
   ts_xy <- sst_Med

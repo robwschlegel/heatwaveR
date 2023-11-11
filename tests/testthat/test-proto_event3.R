@@ -18,11 +18,14 @@ test_that("joinAcrossGaps = FALSE creates more events", {
   ts_xy$threshCriterion <- ts_xy$ts_y > ts_xy$ts_thresh
   res1 <- heatwaveR:::proto_event3(ts_xy, joinAcrossGaps = TRUE,
                                    criterion_column = ts_xy$threshCriterion,
-                                   minDuration = 5, maxGap = 2)
+                                   minDuration = 5, maxGap = 5)
   res2 <- heatwaveR:::proto_event3(ts_xy, joinAcrossGaps = FALSE,
                                    criterion_column = ts_xy$threshCriterion,
                                    minDuration = 5, maxGap = 2)
-  # NB: Replace this with a test once joinAcrossGaps funcitons as expected
+  res3 <- heatwaveR:::proto_event3(ts_xy, joinAcrossGaps = FALSE,
+                                   criterion_column = ts_xy$threshCriterion,
+                                   minDuration = 5, maxGap = 5)
+  # NB: Replace this with a test once joinAcrossGaps functions as expected
   expect_s3_class(res1, "data.table"); expect_s3_class(res2, "data.table")
   # expect_gt(max(res2$event_no, na.rm = T), max(res1$event_no, na.rm = T))
 })
