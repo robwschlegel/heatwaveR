@@ -28,7 +28,7 @@ other means."><meta property="og:image" content="https://robwschlegel.github.io/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2.9005</span>
       </span>
     </div>
 
@@ -352,48 +352,6 @@ of the arguments <code>protoEvents</code>, <code>categories</code>, and <code>cl
 <dd><p>Decline rate of event [deg. C / day].</p></dd>
 
 
-</dl><p>When <code>categories = TRUE</code> the following will also be included with
-the <code>event</code> list component:</p>
-<dl><dt>event_name</dt>
-<dd><p>The name of the event. Generated from the <code><a href="https://rdrr.io/r/base/name.html" class="external-link">name</a></code>
-  value provided and the year of the <code>date_peak</code> of
-  the event. If no <code><a href="https://rdrr.io/r/base/name.html" class="external-link">name</a></code> value is provided the default "Event" is used.
-  As proposed in Hobday et al. (2018), <code>Moderate</code> events are not given a name
-  so as to prevent multiple repeat names within the same year. If two or more events
-  ranked greater than Moderate are reported within the same year, they will be
-  differentiated with the addition of a trailing letter
-  (e.g. Event 2001a, Event 2001b). Only added if <code>categories = TRUE</code>.</p></dd>
-
-  <dt>category</dt>
-<dd><p>The maximum category threshold reached/exceeded by the event.
-  Only added if <code>categories = TRUE</code>.</p></dd>
-
-  <dt>p_moderate</dt>
-<dd><p>The proportion of the total duration (days) spent at or above
-  the first threshold, but below any further thresholds. Only added if <code>categories = TRUE</code>.</p></dd>
-
-  <dt>p_strong</dt>
-<dd><p>The proportion of the total duration (days) spent at or above
-  the second threshold, but below any further thresholds. Only added if <code>categories = TRUE</code>.</p></dd>
-
-  <dt>p_severe</dt>
-<dd><p>The proportion of the total duration (days) spent at or above
-  the third threshold, but below the fourth threshold. Only added if <code>categories = TRUE</code>.</p></dd>
-
-  <dt>p_extreme</dt>
-<dd><p>The proportion of the total duration (days) spent at or above
-  the fourth and final threshold. Only added if <code>categories = TRUE</code>.</p></dd>
-
-  <dt>season</dt>
-<dd><p>The season(s) during which the event occurred. If the event
-  occurred across two seasons this will be displayed as e.g. "Winter/Spring".
-  Across three seasons as e.g. "Winter-Summer". Events lasting across four or more
-  seasons are listed as "Year-round". December (June) is used here as the start of
-  Austral (Boreal) summer. If "start", "peak", or "end" was given to the <code>season</code>
-  argument then only the one season during that chosen period will be given.
-  Only added if <code>categories = TRUE</code>.</p></dd>
-
-
 </dl><p><code>intensity_max_relThresh</code>, <code>intensity_mean_relThresh</code>,
 <code>intensity_var_relThresh</code>, and <code>intensity_cumulative_relThresh</code></p>
 
@@ -552,13 +510,6 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4: 1982-11-02        -1.0167       -1.2813</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5: 1983-11-16        -1.1806       -1.4954</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># It is also possible to calculate the categories of events directly</span></span></span>
-<span class="r-in"><span><span class="co"># See the \code{\link{category}} documentation for more functionality</span></span></span>
-<span class="r-in"><span><span class="va">res_clim</span> <span class="op">&lt;-</span> <span class="fu"><a href="ts2clm3.html">ts2clm3</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">out_event</span> <span class="op">&lt;-</span> <span class="fu">detect_event3</span><span class="op">(</span><span class="va">res_clim</span>, categories <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># NB: This is currently broken due to column naming issue in detect_event3()</span></span></span>
-<span class="r-in"><span><span class="co"># out_list &lt;- detect_event3(res_clim, categories = TRUE, climatology = TRUE)</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># It is also possible to give two separate sets of threshold criteria</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To use a second static threshold we first use the exceedance function</span></span></span>
@@ -567,7 +518,7 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
 <span class="r-in"><span><span class="va">events_19</span> <span class="op">&lt;-</span> <span class="fu">detect_event3</span><span class="op">(</span><span class="fu"><a href="ts2clm3.html">ts2clm3</a></span><span class="op">(</span><span class="va">sst_Med</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                           threshClim2 <span class="op">=</span> <span class="va">thresh_19</span><span class="op">$</span><span class="va">exceedance</span>, minDuration2 <span class="op">=</span> <span class="fl">10</span>, maxGap2 <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># If we want to use two different percentile thresholds we use detect_event</span></span></span>
+<span class="r-in"><span><span class="co"># If we want to use two different percentile thresholds</span></span></span>
 <span class="r-in"><span><span class="va">thresh_95</span> <span class="op">&lt;-</span> <span class="fu">detect_event3</span><span class="op">(</span><span class="fu"><a href="ts2clm3.html">ts2clm3</a></span><span class="op">(</span><span class="va">sst_Med</span>, pctile <span class="op">=</span> <span class="fl">95</span>,</span></span>
 <span class="r-in"><span>                                   climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                           minDuration <span class="op">=</span> <span class="fl">2</span>, maxGap <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">$</span><span class="va">climatology</span></span></span>

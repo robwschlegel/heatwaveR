@@ -26,7 +26,7 @@ by an optional moving average smoother as used by Hobday et al. (2016)."><meta p
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2.9005</span>
       </span>
     </div>
 
@@ -129,7 +129,8 @@ by an optional moving average smoother as used by Hobday et al. (2016).</p>
 <span>  smoothPercentileWidth <span class="op">=</span> <span class="fl">31</span>,</span>
 <span>  clmOnly <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  var <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  roundClm <span class="op">=</span> <span class="fl">4</span></span>
+<span>  roundClm <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  cppDate <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -223,6 +224,12 @@ use it and so it is generally regarded now as unnecessary.</p></dd>
 the <code>seas</code> and <code>thresh</code> outputs will be rounded to. Default is 4. To
 prevent rounding set <code>roundClm = FALSE</code>. This argument may only be given
 numeric values or FALSE.</p></dd>
+
+
+<dt>cppDate</dt>
+<dd><p>Boolean (default = <code>FALSE</code>) to indicate if the pre-compiled
+C++ function <code>seqDates</code> should be used to fill any potential gaps in the given
+time series.</p></dd>
 
 </dl></div>
     <div id="value">
