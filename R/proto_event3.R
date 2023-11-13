@@ -30,16 +30,18 @@ proto_event3 <- function(p_series,
                          minDuration,
                          joinAcrossGaps,
                          maxGap) {
-  index_start <- index_end <- duration <- NULL
+  index_start <- index_end <- duration <- grp <-
+    durationCriterion <- rleid <- event <- rleid_event <- event_no <- NULL
 
   p_series[, grp := data.table::rleid(criterion_column)]
-  proto_events <- p_series[criterion_column == TRUE, .(index_start = min(.I),
-                                                       index_end = max(.I)), by = grp][, grp := NULL]
+  suppressWarnings(proto_events <- p_series[criterion_column == TRUE,
+                                            list(index_start = min(.I),
+                                                 index_end = max(.I)), by = grp][, grp := NULL])
   p_series[, grp := NULL]
 
   duration <- proto_events$index_end - proto_events$index_start + 1
 
-  suppressWarnings(if (is.null(proto_events) |
+  suppressWarnings(if (is.null(proto_events) | nrow(proto_events) == 0 |
                        max(duration) < minDuration) {
     res <- data.table::copy(p_series)
     res[, `:=`(
@@ -63,7 +65,7 @@ proto_event3 <- function(p_series,
   if (joinAcrossGaps) {
     p_series[, rleid := data.table::rleid(durationCriterion)]
     proto_gaps <-
-      p_series[durationCriterion == FALSE, .(index_start = min(.I), index_end = max(.I)), by = rleid][, duration := index_end - index_start + 1]
+      p_series[durationCriterion == FALSE, list(index_start = min(.I), index_end = max(.I)), by = rleid][, duration := index_end - index_start + 1]
     p_series[, rleid := NULL]
     proto_gaps <-
       proto_gaps[index_end > proto_events$index_start[1]][, rleid := NULL]
@@ -87,7 +89,7 @@ proto_event3 <- function(p_series,
 
   p_series[, rleid_event := data.table::rleid(event)]
   proto_final <-
-    p_series[event == TRUE, .(index_start = min(.I), index_end = max(.I)), by = rleid_event][, duration := index_end - index_start + 1]
+    p_series[event == TRUE, list(index_start = min(.I), index_end = max(.I)), by = rleid_event][, duration := index_end - index_start + 1]
   p_series[, c("rleid_event", "event_no") := list(NULL, NA_integer_)]
 
   for (i in seq_len(nrow(proto_final))) {

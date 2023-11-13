@@ -17,7 +17,7 @@ ts2clm3(
   clmOnly = FALSE,
   var = FALSE,
   roundClm = 4,
-  returnDF = FALSE
+  cppDate = FALSE
 )
 }
 \arguments{
@@ -87,8 +87,9 @@ the \code{seas} and \code{thresh} outputs will be rounded to. Default is 4. To
 prevent rounding set \code{roundClm = FALSE}. This argument may only be given
 numeric values or FALSE.}
 
-\item{returnDF}{Boolean. The default (\code{FALSE}) returns the results as
-type \code{data.table}. Setting it to \code{TRUE} returns a \code{data.frame}.}
+\item{cppDate}{Boolean (default = \code{FALSE}) to indicate if the pre-compiled
+C++ function \code{seqDates} should be used to fill any potential gaps in the given
+time series.}
 }
 \value{
 The function will return a data.table (see the \code{data.table}) with the

@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2.9005</span>
       </span>
     </div>
 
@@ -105,6 +105,31 @@
       <small>Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.5.2.9005" id="heatwaver-0529005-2023-11-11">heatwaveR 0.5.2.9005 (2023-11-11)<a class="anchor" aria-label="anchor" href="#heatwaver-0529005-2023-11-11"></a></h2>
+<ul><li>Removed <code>category</code> functionality from <code><a href="../reference/detect_event3.html">detect_event3()</a></code> to keep it more streamlined</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.5.2.9004" id="heatwaver-0529004-2023-11-06">heatwaveR 0.5.2.9004 (2023-11-06)<a class="anchor" aria-label="anchor" href="#heatwaver-0529004-2023-11-06"></a></h2>
+<ul><li>Minor tweaks to new functions and CodeCov testing implemented</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.5.2.9003" id="heatwaver-0529003-2023-11-05">heatwaveR 0.5.2.9003 (2023-11-05)<a class="anchor" aria-label="anchor" href="#heatwaver-0529003-2023-11-05"></a></h2>
+<ul><li>Created <code><a href="../reference/detect_event3.html">detect_event3()</a></code> and <code><a href="../reference/proto_event3.html">proto_event3()</a></code> with a new code base to benefit from the speed gains due to data.table internals</li>
+<li>Output results (climatologies and metrics) as data.table</li>
+<li>Updated and improved documentation</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.5.2.9002" id="heatwaver-0529002-2023-10-31">heatwaveR 0.5.2.9002 (2023-10-31)<a class="anchor" aria-label="anchor" href="#heatwaver-0529002-2023-10-31"></a></h2>
+<ul><li>Rolled back overwrite of <code><a href="../reference/ts2clm.html">ts2clm()</a></code> with <code><a href="../reference/ts2clm3.html">ts2clm3()</a></code> for now</li>
+<li>Set default behaviour of <code><a href="../reference/detect_event.html">detect_event()</a></code> to return a data.frame, rather than a data.table</li>
+<li>A new argument was introduced for most top level functions: <code>returnDF</code> with the default behaviour of <code>TRUE</code>
+</li>
+<li>This explicitly ensures that the functions return data.frames</li>
+<li>If <code>returnDF == FALSE</code> the functions will return data.tables</li>
+<li>Removed <strong><code>plyr</code></strong> and <strong><code>grid</code></strong> dependencies from package</li>
+<li>Added the package development script to the root directory</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.5.2.9001" id="heatwaver-0529001-2023-10-30">heatwaveR 0.5.2.9001 (2023-10-30)<a class="anchor" aria-label="anchor" href="#heatwaver-0529001-2023-10-30"></a></h2>
 <ul><li>Removed <code>robust</code> argument from <code><a href="../reference/ts2clm.html">ts2clm()</a></code> that was deprecated years ago</li>

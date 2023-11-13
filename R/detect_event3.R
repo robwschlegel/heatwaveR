@@ -163,34 +163,6 @@
 #'   \item{rate_onset}{Onset rate of event [deg. C / day].}
 #'   \item{rate_decline}{Decline rate of event [deg. C / day].}
 #'
-#' When \code{categories = TRUE} the following will also be included with
-#' the \code{event} list component:
-#'   \item{event_name}{The name of the event. Generated from the \code{\link{name}}
-#'   value provided and the year of the \code{date_peak} of
-#'   the event. If no \code{\link{name}} value is provided the default "Event" is used.
-#'   As proposed in Hobday et al. (2018), \code{Moderate} events are not given a name
-#'   so as to prevent multiple repeat names within the same year. If two or more events
-#'   ranked greater than Moderate are reported within the same year, they will be
-#'   differentiated with the addition of a trailing letter
-#'   (e.g. Event 2001a, Event 2001b). Only added if \code{categories = TRUE}.}
-#'   \item{category}{The maximum category threshold reached/exceeded by the event.
-#'   Only added if \code{categories = TRUE}.}
-#'   \item{p_moderate}{The proportion of the total duration (days) spent at or above
-#'   the first threshold, but below any further thresholds. Only added if \code{categories = TRUE}.}
-#'   \item{p_strong}{The proportion of the total duration (days) spent at or above
-#'   the second threshold, but below any further thresholds. Only added if \code{categories = TRUE}.}
-#'   \item{p_severe}{The proportion of the total duration (days) spent at or above
-#'   the third threshold, but below the fourth threshold. Only added if \code{categories = TRUE}.}
-#'   \item{p_extreme}{The proportion of the total duration (days) spent at or above
-#'   the fourth and final threshold. Only added if \code{categories = TRUE}.}
-#'   \item{season}{The season(s) during which the event occurred. If the event
-#'   occurred across two seasons this will be displayed as e.g. "Winter/Spring".
-#'   Across three seasons as e.g. "Winter-Summer". Events lasting across four or more
-#'   seasons are listed as "Year-round". December (June) is used here as the start of
-#'   Austral (Boreal) summer. If "start", "peak", or "end" was given to the \code{season}
-#'   argument then only the one season during that chosen period will be given.
-#'   Only added if \code{categories = TRUE}.}
-#'
 #' \code{intensity_max_relThresh}, \code{intensity_mean_relThresh},
 #' \code{intensity_var_relThresh}, and \code{intensity_cumulative_relThresh}
 #' are as above except relative to the threshold (e.g., 90th percentile) rather
@@ -237,12 +209,6 @@
 #' # show some of the cold-spells:
 #' out$event[1:5, 1:10]
 #'
-#' # It is also possible to calculate the categories of events directly
-#' # See the \code{\link{category}} documentation for more functionality
-#' res_clim <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-#' out_event <- detect_event3(res_clim, categories = TRUE)
-#' out_list <- detect_event3(res_clim, categories = TRUE, climatology = TRUE)
-#'
 #' # It is also possible to give two separate sets of threshold criteria
 #'
 #' # To use a second static threshold we first use the exceedance function
@@ -251,7 +217,7 @@
 #' events_19 <- detect_event3(ts2clm3(sst_Med, climatologyPeriod = c("1982-01-01", "2011-12-31")),
 #'                            threshClim2 = thresh_19$exceedance, minDuration2 = 10, maxGap2 = 0)
 #'
-#' # If we want to use two different percentile thresholds we use detect_event
+#' # If we want to use two different percentile thresholds
 #' thresh_95 <- detect_event3(ts2clm3(sst_Med, pctile = 95,
 #'                                    climatologyPeriod = c("1982-01-01", "2011-12-31")),
 #'                            minDuration = 2, maxGap = 0)$climatology
@@ -289,7 +255,7 @@ detect_event3 <- function(data,
         roundRes == FALSE))
     stop("'roundRes' must be numeric or FALSE.")
   if (ncol(data) < 4)
-    stop("Data must contain columns: Date, temp, seas, thresh.")
+    stop("Data must contain columns: t, temp, seas, thresh.")
   if (!inherits(data, "data.table"))
     data <- data.table::setDT(data)
 
@@ -302,6 +268,7 @@ detect_event3 <- function(data,
 
   # Output issue:
   # The names of x and y do not carry through to the output.
+  ts_x <- ts_y <- ts_seas <- ts_thresh <- NULL
 
   t_series <-
     data.table::data.table(
@@ -312,13 +279,13 @@ detect_event3 <- function(data,
     )
 
   if (coldSpells) {
-    t_series[, (2:4) := .(-ts_y, -ts_seas, -ts_thresh)]
+    t_series[, (2:4) := list(-ts_y, -ts_seas, -ts_thresh)]
   }
 
   t_series[is.na(ts_y), ts_y := ts_seas]
   t_series[, threshCriterion := !is.na(ts_y) & ts_y > ts_thresh]
 
-  events_clim <- heatwaveR:::proto_event3(
+  events_clim <- proto_event3(
     p_series = t_series,
     criterion_column = t_series$threshCriterion,
     minDuration = minDuration,
@@ -330,7 +297,7 @@ detect_event3 <- function(data,
     if (!is.logical(threshClim2[1]))
       stop("'threshClim2' must be logical.")
     # t_series[, secondCriterion := events_clim$event & ts_y > threshClim2] # if one wants a numeric threshold
-    events_clim <- heatwaveR:::proto_event3(
+    events_clim <- proto_event3(
       p_series = t_series,
       # criterion_column = "secondCriterion", # for the numeric threshold
       criterion_column = events_clim$event &
@@ -363,6 +330,7 @@ detect_event3 <- function(data,
       intensity_cumulative_abs <- rate_onset <- rate_decline <-
       mhw_rel_thresh <-
       mhw_rel_seas <-
+      date_peak <- date_start <- date_end <-
       event_no <- row_index <- index_start <- index_peak <-
       index_end <- NULL
 
@@ -375,8 +343,6 @@ detect_event3 <- function(data,
       )
 
       events <- events[!is.na(event_no)]
-
-      year <- ts_x <- doy <- NULL
 
       events <- events[, list(
         index_start = min(row_index),
@@ -504,77 +470,6 @@ detect_event3 <- function(data,
 
     data_res <- list(climatology = events_clim, event = events)
 
-    if (categories) {
-      data_temp <- list(climatology = events_clim, event = events)
-      colnames(data_temp$climatology)[1:4] <-
-        c("t", "temp", "seas", "thresh") # update to return user specified names
-
-      if (coldSpells) {
-        data_temp$climatology[, `:=`(
-          temp = -temp,
-          seas = -seas,
-          thresh = -thresh
-        )]
-      }
-
-      if ("lat" %in% colnames(data)) {
-        # this is weird...
-        data_temp$climatology$lat <- data$lat
-      }
-
-      if ("latitude" %in% colnames(data)) {
-        data_temp$climatology$lat <- data$latitude
-      }
-
-      data_cat <- category(data_temp, ...) # update to data.table
-
-      if (is.data.frame(data_cat)) {
-        colnames(data_cat)[c(3, 5)] <- c("date_peak", "intensity_max")
-        data_res <- base::merge(
-          x = events,
-          y = data_cat,
-          by = c("event_no", "duration", "intensity_max", "date_peak")
-        )
-        data_res <- data_res[order(data_res$event_no), ]
-        data_res <- data_res[, c(1, 5, 6, 7, 2, 8, 4, 9, 10, 3, 11:29)]
-        row.names(data_res) <- NULL
-
-      } else {
-        colnames(data_cat$event)[c(3, 5)] <- c("date_peak", "intensity_max")
-        data_res <-
-          list(
-            climatology = base::merge(
-              x = data_res$climatology,
-              y = data_cat$climatology,
-              by = c("t", "event_no"),
-              all.x = TRUE
-            ),
-            event = base::merge(
-              x = data_res$event,
-              y = data_cat$event,
-              by = c("event_no", "duration", "intensity_max", "date_peak")
-            )
-          )
-
-        type_cols <- base::sapply(data_res$climatology, class)
-        date_cols <-
-          colnames(data_res$climatology)[which(type_cols == "Date")]
-        data_cols <-
-          colnames(data)[!colnames(data) %in% colnames(data_cat$climatology)]
-        other_cols <-
-          colnames(data_res$climatology)[!colnames(data_res$climatology) %in% c(date_cols, data_cols)]
-
-        # data_res$climatology <- data_res$climatology[c(date_cols, data_cols, other_cols)]
-        data_res$climatology <-
-          data_res$climatology[, c(date_cols, data_cols, other_cols), with = FALSE]
-        data_res$climatology <- data_res$climatology[base::order(t)]
-        data_res$event <-
-          data_res$event[order(data_res$event$event_no), ]
-        data_res$event <-
-          data_res$event[, c(1, 5, 6, 7, 2, 8, 4, 9, 10, 3, 11:29)]
-        row.names(data_res$event) <- NULL
-      }
-    }
     return(data_res)
   }
 }

@@ -10,7 +10,9 @@
 library(usethis)
 library(devtools)
 library(testthat)
+library(checkhelper)
 library(pkgdown)
+# For examples: https://thinkr-open.github.io/checkhelper/
 
 # Disable package build note about not finding local time
 Sys.setenv('_R_CHECK_SYSTEM_CLOCK_' = 0)
@@ -125,6 +127,12 @@ Sys.setenv('_R_CHECK_SYSTEM_CLOCK_' = 0)
 # devtools::check()
 # One must have zero errors, warnings, notes
 
+# A better way to check as CRAN
+checkhelper::check_as_cran()
+
+# Check if any fils are created during check
+checkhelper::check_clean_userspace()
+
 
 # Importing data ----------------------------------------------------------
 
@@ -179,9 +187,6 @@ Sys.setenv('_R_CHECK_SYSTEM_CLOCK_' = 0)
 
 # pkgdown -----------------------------------------------------------------
 
-# Went over this only briefly
-# Good to do, but a bit more finicky
-
 # Start with this to build skeleton:
 # use_pkgdown()
 
@@ -224,9 +229,9 @@ build_site()
 # Package logs ------------------------------------------------------------
 
 # An example of how to check package downloads
-ggplot2_logs <- cranlogs::cran_downloads(packages = c("ggplot2", "dplyr"),
+package_logs <- cranlogs::cran_downloads(packages = c("heatwaveR"),
                                          when = "last-month")
-ggplot2::ggplot(ggplot2_logs) +
+ggplot2::ggplot(package_logs) +
   ggplot2::geom_line(aes(date, count, col = package)) +
   viridis::scale_color_viridis(discrete = TRUE)
 
@@ -241,8 +246,9 @@ ggplot2::ggplot(ggplot2_logs) +
 # Run check and make sure there are no ERROR, WARNING, or NOTE
 
 # After that run the following command to check the package on a
-# windows OS if you are not currently running on that
+# windows or Mac OS if you are not currently running on that
 devtools::check_win_release()
+devtools::check_mac_release()
 
 # Or check specific CRAN flavours via the rhub package
 # https://blog.r-hub.io/2019/04/25/r-devel-linux-x86-64-debian-clang/
@@ -285,4 +291,5 @@ rhub::check(platform = "debian-gcc-devel")
 library(profvis)
 library(heatwaveR)
 profvis(detect_event(ts2clm(sst_WA, climatologyPeriod = c("1982-01-01", "2011-12-31"))))
-profvis(detect_event(ts2clm3(sst_WA, climatologyPeriod = c("1982-01-01", "2011-12-31"))))
+profvis(detect_event3(ts2clm3(sst_WA, climatologyPeriod = c("1982-01-01", "2011-12-31"))))
+

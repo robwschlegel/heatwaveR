@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2.9005</span>
       </span>
     </div>
 
@@ -111,7 +111,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">block_average</span><span class="op">(</span><span class="va">data</span>, x <span class="op">=</span> <span class="va">t</span>, y <span class="op">=</span> <span class="va">temp</span>, report <span class="op">=</span> <span class="st">"full"</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">block_average</span><span class="op">(</span><span class="va">data</span>, x <span class="op">=</span> <span class="va">t</span>, y <span class="op">=</span> <span class="va">temp</span>, report <span class="op">=</span> <span class="st">"full"</span>, returnDF <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -137,6 +137,11 @@ name differs from the default (i.e. <code>temp</code>), specify the name here.</
 the report to contain NAs for any years in which no events were detected
 (except for <code>count</code>, which will be zero in those years), while <code>partial</code>
 reports only the years wherein events were detected. The default is <code>full</code>.</p></dd>
+
+
+<dt>returnDF</dt>
+<dd><p>The default (<code>TRUE</code>) tells the function to return the results as
+type <code>data.frame</code>. <code>FALSE</code> will return the results as a <code>data.table</code>.</p></dd>
 
 </dl></div>
     <div id="value">

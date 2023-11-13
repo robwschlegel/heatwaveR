@@ -46,6 +46,7 @@ reference:
   - '`ts2clm`'
   - '`ts2clm3`'
   - '`detect_event`'
+  - '`detect_event3`'
   - '`block_average`'
   - '`category`'
   - '`exceedance`'

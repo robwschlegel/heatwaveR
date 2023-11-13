@@ -27,7 +27,7 @@ other means."><meta property="og:image" content="https://robwschlegel.github.io/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2.9005</span>
       </span>
     </div>
 
@@ -135,6 +135,7 @@ other means.</p>
 <span>  protoEvents <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  categories <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  roundRes <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  returnDF <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -255,6 +256,11 @@ outputs by default, add the argument <code>climatology = TRUE</code>.</p></dd>
 the MHW metric outputs will be rounded to. Default is 4. To
 prevent rounding set <code>roundRes = FALSE</code>. This argument may only be given
 numeric values or FALSE.</p></dd>
+
+
+<dt>returnDF</dt>
+<dd><p>The default (<code>TRUE</code>) tells the function to return the results as
+type <code>data.frame</code>. <code>FALSE</code> will return the results as a <code>data.table</code>.</p></dd>
 
 
 <dt>...</dt>
@@ -465,28 +471,28 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
 <span class="r-in"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">detect_event</span><span class="op">(</span><span class="va">res_clim</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># show a portion of the climatology:</span></span></span>
 <span class="r-in"><span><span class="va">out</span><span class="op">$</span><span class="va">climatology</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     doy          t  temp    seas  thresh threshCriterion durationCriterion</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:   1 1982-01-01 20.94 21.6080 22.9605           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:   2 1982-01-02 21.25 21.6348 22.9987           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:   3 1982-01-03 21.38 21.6621 23.0376           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   4 1982-01-04 21.16 21.6895 23.0771           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   5 1982-01-05 21.26 21.7169 23.1130           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:   6 1982-01-06 21.61 21.7436 23.1460           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:   7 1982-01-07 21.74 21.7699 23.1775           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:   8 1982-01-08 21.50 21.7958 23.2080           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:   9 1982-01-09 21.40 21.8217 23.2366           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:  10 1982-01-10 21.36 21.8478 23.2649           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     event event_no</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: FALSE       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    doy          t  temp    seas  thresh threshCriterion durationCriterion event</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    1 1982-01-01 20.94 21.6080 22.9605           FALSE             FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    2 1982-01-02 21.25 21.6348 22.9987           FALSE             FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    3 1982-01-03 21.38 21.6621 23.0376           FALSE             FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    4 1982-01-04 21.16 21.6895 23.0771           FALSE             FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    5 1982-01-05 21.26 21.7169 23.1130           FALSE             FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    6 1982-01-06 21.61 21.7436 23.1460           FALSE             FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    7 1982-01-07 21.74 21.7699 23.1775           FALSE             FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    8 1982-01-08 21.50 21.7958 23.2080           FALSE             FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    9 1982-01-09 21.40 21.8217 23.2366           FALSE             FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  10 1982-01-10 21.36 21.8478 23.2649           FALSE             FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    event_no</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10       NA</span>
 <span class="r-in"><span><span class="co"># show some of the heat waves:</span></span></span>
 <span class="r-in"><span><span class="va">out</span><span class="op">$</span><span class="va">event</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   event_no index_start index_peak index_end duration date_start  date_peak</span>
@@ -508,28 +514,28 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
 <span class="r-in"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">detect_event</span><span class="op">(</span><span class="va">res_clim</span>, coldSpells <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># show a portion of the climatology:</span></span></span>
 <span class="r-in"><span><span class="va">out</span><span class="op">$</span><span class="va">climatology</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     doy          t  temp    seas  thresh threshCriterion durationCriterion</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:   1 1982-01-01 20.94 21.6080 20.5471           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:   2 1982-01-02 21.25 21.6348 20.5713           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:   3 1982-01-03 21.38 21.6621 20.5961           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   4 1982-01-04 21.16 21.6895 20.6218           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   5 1982-01-05 21.26 21.7169 20.6499           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:   6 1982-01-06 21.61 21.7436 20.6776           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:   7 1982-01-07 21.74 21.7699 20.7053           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:   8 1982-01-08 21.50 21.7958 20.7362           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:   9 1982-01-09 21.40 21.8217 20.7655           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:  10 1982-01-10 21.36 21.8478 20.7927           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     event event_no</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: FALSE       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    doy          t  temp    seas  thresh threshCriterion durationCriterion event</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    1 1982-01-01 20.94 21.6080 20.5471           FALSE             FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    2 1982-01-02 21.25 21.6348 20.5713           FALSE             FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    3 1982-01-03 21.38 21.6621 20.5961           FALSE             FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    4 1982-01-04 21.16 21.6895 20.6218           FALSE             FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    5 1982-01-05 21.26 21.7169 20.6499           FALSE             FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6    6 1982-01-06 21.61 21.7436 20.6776           FALSE             FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7    7 1982-01-07 21.74 21.7699 20.7053           FALSE             FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8    8 1982-01-08 21.50 21.7958 20.7362           FALSE             FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9    9 1982-01-09 21.40 21.8217 20.7655           FALSE             FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  10 1982-01-10 21.36 21.8478 20.7927           FALSE             FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    event_no</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10       NA</span>
 <span class="r-in"><span><span class="co"># show some of the cold-spells:</span></span></span>
 <span class="r-in"><span><span class="va">out</span><span class="op">$</span><span class="va">event</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   event_no index_start index_peak index_end duration date_start  date_peak</span>

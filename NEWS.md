@@ -1,3 +1,11 @@
+# heatwaveR 0.5.2.9005 (2023-11-11)
+
+-  Removed `category` functionality from `detect_event3()` to keep it more streamlined
+
+# heatwaveR 0.5.2.9004 (2023-11-06)
+
+-   Minor tweaks to new functions and CodeCov testing implemented
+
 # heatwaveR 0.5.2.9003 (2023-11-05)
 
 -   Created `detect_event3()` and `proto_event3()` with a new code base to benefit
