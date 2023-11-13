@@ -13,20 +13,26 @@ test_that("proto_event3() returns the correct output", {
 })
 
 test_that("joinAcrossGaps = FALSE creates more events", {
-  ts_xy <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-  colnames(ts_xy) <- c("ts_x", "ts_y", "ts_seas", "ts_thresh")
-  ts_xy$threshCriterion <- ts_xy$ts_y > ts_xy$ts_thresh
-  res1 <- heatwaveR:::proto_event3(ts_xy, joinAcrossGaps = TRUE,
-                                   criterion_column = ts_xy$threshCriterion,
-                                   minDuration = 5, maxGap = 5)
-  res2 <- heatwaveR:::proto_event3(ts_xy, joinAcrossGaps = FALSE,
-                                   criterion_column = ts_xy$threshCriterion,
+  ts1 <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  colnames(ts1) <- c("ts_x", "ts_y", "ts_seas", "ts_thresh")
+  ts1$threshCriterion <- ts1$ts_y > ts1$ts_thresh
+  res1 <- heatwaveR:::proto_event3(ts1, joinAcrossGaps = TRUE,
+                                   criterion_column = ts1$threshCriterion,
                                    minDuration = 5, maxGap = 2)
-  res3 <- heatwaveR:::proto_event3(ts_xy, joinAcrossGaps = FALSE,
-                                   criterion_column = ts_xy$threshCriterion,
+  res2 <- heatwaveR:::proto_event3(ts1, joinAcrossGaps = TRUE,
+                                   criterion_column = ts1$threshCriterion,
+                                   minDuration = 5, maxGap = 5)
+  res3 <- heatwaveR:::proto_event3(ts1, joinAcrossGaps = FALSE,
+                                   criterion_column = ts1$threshCriterion,
+                                   minDuration = 5, maxGap = 2)
+  res4 <- heatwaveR:::proto_event3(ts1, joinAcrossGaps = TRUE,
+                                   criterion_column = ts1$threshCriterion,
                                    minDuration = 5, maxGap = 5)
   # NB: Replace this with a test once joinAcrossGaps functions as expected
+  # This is particularly strange considering that
+  # proto_event3 works correctly when called within detect_event3...
   expect_s3_class(res1, "data.table"); expect_s3_class(res2, "data.table")
+  expect_s3_class(res3, "data.table"); expect_s3_class(res4, "data.table")
   # expect_gt(max(res2$event_no, na.rm = T), max(res1$event_no, na.rm = T))
 })
 
