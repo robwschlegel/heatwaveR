@@ -43,8 +43,9 @@ This package does what **`RmarineHeatWaves`** does, but faster. The entire packa
 been deconstructed and modularised, and we are continuing to implement slow portions of the
 code in C++. This has alleviated the bottlenecks that slowed down the climatology creation 
 portions of the code as well as generally creating an overall increase in the speed of the 
-calculations. Currently the R code runs about as fast as the original
-python functions, at least in as far as applying it to single time series of temperatures.
+calculations. Currently the R code runs about as fast as the original python functions, at
+least in as far as applying it to single time series of temperatures.
+
 Readers familiar with both languages will know about the ongoing debate around the relative
 speed of the two languages. In our experience, R can be as fast as python, provided that
 attention is paid to finding ways to reduce the computational inefficiencies that stem

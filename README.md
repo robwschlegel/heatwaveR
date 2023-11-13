@@ -30,16 +30,17 @@ alleviated the bottlenecks that slowed down the climatology creation
 portions of the code as well as generally creating an overall increase
 in the speed of the calculations. Currently the R code runs about as
 fast as the original python functions, at least in as far as applying it
-to single time series of temperatures. Readers familiar with both
-languages will know about the ongoing debate around the relative speed
-of the two languages. In our experience, R can be as fast as python,
-provided that attention is paid to finding ways to reduce the
-computational inefficiencies that stem from i) the liberal use of
-complex and inefficient non-atomic data structures, such as data frames;
-ii) the reliance on non-vectorised calculations such as loops; and iii)
-lazy (but convenient) coding that comes from drawing too heavily on the
-`tidyverse` suite of packages. We will continue to ensure that
-**`heatwaveR`** becomes more-and-more efficient so that it can be
+to single time series of temperatures.
+
+Readers familiar with both languages will know about the ongoing debate
+around the relative speed of the two languages. In our experience, R can
+be as fast as python, provided that attention is paid to finding ways to
+reduce the computational inefficiencies that stem from i) the liberal
+use of complex and inefficient non-atomic data structures, such as data
+frames; ii) the reliance on non-vectorised calculations such as loops;
+and iii) lazy (but convenient) coding that comes from drawing too
+heavily on the `tidyverse` suite of packages. We will continue to ensure
+that **`heatwaveR`** becomes more-and-more efficient so that it can be
 applied to large gridded data products with ease. To that end, the
 extension package
 [**`heatwave3`**](https://robwschlegel.github.io/heatwave3/index.html)
