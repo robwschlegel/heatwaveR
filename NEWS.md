@@ -1,3 +1,7 @@
+# heatwaveR 0.5.2.9006 (2023-12-05)
+
+-  Removed cpp function `seqDates()` from package
+
 # heatwaveR 0.5.2.9005 (2023-11-11)
 
 -  Removed `category` functionality from `detect_event3()` to keep it more streamlined

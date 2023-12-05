@@ -64,9 +64,6 @@
 #' the \code{seas} and \code{thresh} outputs will be rounded to. Default is 4. To
 #' prevent rounding set \code{roundClm = FALSE}. This argument may only be given
 #' numeric values or FALSE.
-#' @param cppDate Boolean (default = \code{FALSE}) to indicate if the pre-compiled
-#' C++ function \code{seqDates} should be used to fill any potential gaps in the given
-#' time series.
 #'
 #' @details
 #' \enumerate{
@@ -159,8 +156,7 @@ ts2clm3 <- function(data,
                     smoothPercentileWidth = 31,
                     clmOnly = FALSE,
                     var = FALSE,
-                    roundClm = 4,
-                    cppDate = FALSE) {
+                    roundClm = 4) {
   if (missing(climatologyPeriod))
     stop("Oops! Please provide a period (two dates) for calculating the climatology.")
 
@@ -224,22 +220,9 @@ ts2clm3 <- function(data,
 
   # BEGIN INSERT make_whole_fast >>>
 
-  if(cppDate){
-    date_start <- ts_xy[1, ts_x]
-    date_end <- ts_xy[.N, ts_x]
-    ts_full <- data.table::data.table(ts_x = seqDates(as.integer(format(date_start, "%Y")),
-                                                      as.integer(format(date_start, "%m")),
-                                                      as.integer(format(date_start, "%d")),
-                                                      as.integer(format(date_end, "%Y")),
-                                                      as.integer(format(date_end, "%m")),
-                                                      as.integer(format(date_end, "%d"))))
-    ts_full[, ts_x := as.Date(ts_x)]
-    rm(date_start, date_end)
-  } else  {
-    ts_full <- data.table::data.table(ts_x = seq.Date(ts_xy[1, ts_x],
-                                                      ts_xy[.N, ts_x],
-                                                      "day"))
-  }
+  ts_full <- data.table::data.table(ts_x = seq.Date(ts_xy[1, ts_x],
+                                                    ts_xy[.N, ts_x],
+                                                    "day"))
 
   feb28 <- 59
 

@@ -74,16 +74,6 @@ test_that("climatologyPeriod less than three years is rejected", {
                "The climatologyPeriod must be at least three years to calculate thresholds")
 })
 
-test_that("different date filling methods are used as desired", {
-  sst_WA_gap <- sst_WA[c(1:100, 120:12000),]
-  res1 <- ts2clm3(sst_WA_gap, climatologyPeriod = c("1983-01-01", "2012-12-31"))
-  res2 <- ts2clm3(sst_WA_gap, climatologyPeriod = c("1983-01-01", "2012-12-31"), cppDate = TRUE)
-  expect_s3_class(res1, "data.table")
-  expect_s3_class(res2, "data.table")
-  expect_equal(ncol(res1), ncol(res2))
-  expect_equal(nrow(res1), nrow(res2))
-})
-
 test_that("maxPadLength behaves as expected", {
   sst_Med_NA <- sst_Med[c(1:20,22:12000),]
   res1 <- ts2clm3(data = sst_Med_NA, climatologyPeriod = c("1983-01-01", "2012-12-31"), maxPadLength = 2)
