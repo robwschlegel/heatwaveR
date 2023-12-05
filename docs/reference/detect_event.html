@@ -27,7 +27,7 @@ other means."><meta property="og:image" content="https://robwschlegel.github.io/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2.9006</span>
       </span>
     </div>
 
@@ -231,15 +231,18 @@ MCSs in Schlegel et al. (2017a).</p></dd>
 
 
 <dt>protoEvents</dt>
-<dd><p>Boolean specifying whether the original time series will be
-returned with only the columns indicating whether or not the threshold criterion
+<dd><p>The default, <code>protoEvents = FALSE</code>, will return the full
+output comprised of a list of two data frames, one with the <code>climatology</code>
+and the other with the <code>event</code> metrics. See <strong>Value</strong> below.
+If <code>protoEvents = TRUE</code>, the output will contain the original time series
+together with columns indicating if the threshold criterion
 (<code>threshCriterion</code>) and duration criterion (<code>durationCriterion</code>)
-have been exceeded, a column showing if a heatwave is present (i.e. both
-<code>threshCriterion</code> and <code>durationCriterion</code> <code>TRUE</code>), and a
-sequential number uniquely identifying the detected event(s). Therefore any heatwave
-metrics will not be reported. The default is <code>FALSE</code>. Note also that if
-<code>protoEvents = TRUE</code> it will ignore whatever the user provides to the <code>categories</code>
-argument and anything else passed to <code>...</code>.</p></dd>
+have been exceeded, a column showing if a heatwave is present
+(i.e. both <code>threshCriterion</code> and <code>durationCriterion</code>
+<code>TRUE</code>), and a sequential number uniquely identifying the detected event(s);
+heatwave metrics will not be reported in the <code>event</code> dataframe. Note also that
+if <code>protoEvents = TRUE</code> it will ignore whatever the user provides to the
+<code>categories</code> argument and anything else passed to <code>...</code>.</p></dd>
 
 
 <dt>categories</dt>
