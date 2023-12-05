@@ -296,12 +296,9 @@ detect_event3 <- function(data,
   if (!is.na(threshClim2[1])) {
     if (!is.logical(threshClim2[1]))
       stop("'threshClim2' must be logical.")
-    # t_series[, secondCriterion := events_clim$event & ts_y > threshClim2] # if one wants a numeric threshold
     events_clim <- proto_event3(
       p_series = t_series,
-      # criterion_column = "secondCriterion", # for the numeric threshold
-      criterion_column = events_clim$event &
-        threshClim2,
+      criterion_column = events_clim$event & threshClim2,
       minDuration = minDuration,
       joinAcrossGaps = joinAcrossGaps,
       maxGap = maxGap
@@ -381,7 +378,7 @@ detect_event3 <- function(data,
         (intensity_max - mhw_rel_seas_start) / (as.numeric(
           difftime(date_peak, date_start, units = "days")
         ) + 0.5),
-        NA_real_  # Use NA_real_ to specify that the NA values are of type double/numeric
+        NA_real_
       )]
 
       D <- mhw_rel_seas[events$index_end]
@@ -394,7 +391,7 @@ detect_event3 <- function(data,
         (intensity_max - mhw_rel_seas_end) / (as.numeric(
           difftime(date_end, date_peak, units = "days")
         ) + 0.5),
-        NA_real_  # To specify that the NA values are of type double/numeric
+        NA_real_
       )]
 
       if (coldSpells) {
