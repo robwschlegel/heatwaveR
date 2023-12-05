@@ -112,9 +112,7 @@ the MHW metric outputs will be rounded to. Default is 4. To
 prevent rounding set \code{roundRes = FALSE}. This argument may only be given
 numeric values or FALSE.}
 
-\item{...}{Other arguments that will be passed internally to \code{\link{category}}
-when \code{categories = TRUE}. See the documentation for \code{\link{category}} for the
-list of possible arguments.}
+\item{...}{Allows unused arguments to pass through the functions.}
 }
 \value{
 The function will return a list of two data.frames,

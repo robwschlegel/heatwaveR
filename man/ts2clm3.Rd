@@ -16,7 +16,8 @@ ts2clm3(
   smoothPercentileWidth = 31,
   clmOnly = FALSE,
   var = FALSE,
-  roundClm = 4
+  roundClm = 4,
+  ...
 )
 }
 \arguments{
@@ -85,6 +86,8 @@ use it and so it is generally regarded now as unnecessary.}
 the \code{seas} and \code{thresh} outputs will be rounded to. Default is 4. To
 prevent rounding set \code{roundClm = FALSE}. This argument may only be given
 numeric values or FALSE.}
+
+\item{...}{Allows unused arguments to pass through the functions.}
 }
 \value{
 The function will return a data.table (see the \code{data.table}) with the

@@ -64,6 +64,7 @@
 #' the \code{seas} and \code{thresh} outputs will be rounded to. Default is 4. To
 #' prevent rounding set \code{roundClm = FALSE}. This argument may only be given
 #' numeric values or FALSE.
+#' @param ... Allows unused arguments to pass through the functions.
 #'
 #' @details
 #' \enumerate{
@@ -156,7 +157,8 @@ ts2clm3 <- function(data,
                     smoothPercentileWidth = 31,
                     clmOnly = FALSE,
                     var = FALSE,
-                    roundClm = 4) {
+                    roundClm = 4,
+                    ...) {
   if (missing(climatologyPeriod))
     stop("Oops! Please provide a period (two dates) for calculating the climatology.")
 
