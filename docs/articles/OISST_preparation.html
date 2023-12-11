@@ -140,7 +140,7 @@
                         <h4 data-toc-skip class="author">Robert W
 Schlegel and AJ Smit</h4>
             
-            <h4 data-toc-skip class="date">2023-12-05</h4>
+            <h4 data-toc-skip class="date">2023-12-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/OISST_preparation.Rmd" class="external-link"><code>vignettes/OISST_preparation.Rmd</code></a></small>
       <div class="hidden name"><code>OISST_preparation.Rmd</code></div>
@@ -322,10 +322,10 @@ aforementioned criteria.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Date download range by start and end dates per year</span></span>
 <span><span class="va">dl_years</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>date_index <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,</span>
-<span>                       start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"1990-01-01"</span>, </span>
-<span>                                         <span class="st">"1998-01-01"</span>, <span class="st">"2006-01-01"</span>, <span class="st">"2014-01-01"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                       end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1989-12-31"</span>, <span class="st">"1997-12-31"</span>, </span>
-<span>                                       <span class="st">"2005-12-31"</span>, <span class="st">"2013-12-31"</span>, <span class="st">"2019-12-31"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>                       start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"1990-01-01"</span>, </span>
+<span>                                 <span class="st">"1998-01-01"</span>, <span class="st">"2006-01-01"</span>, <span class="st">"2014-01-01"</span><span class="op">)</span>,</span>
+<span>                       end <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1989-12-31"</span>, <span class="st">"1997-12-31"</span>, </span>
+<span>                               <span class="st">"2005-12-31"</span>, <span class="st">"2013-12-31"</span>, <span class="st">"2019-12-31"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="downloadprep-data">Download/prep data<a class="anchor" aria-label="anchor" href="#downloadprep-data"></a>
@@ -346,6 +346,9 @@ change anything or write a second script for loading data.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Download all of the data with one nested request</span></span>
 <span><span class="co"># The time this takes will vary greatly based on connection speed</span></span>
+<span></span>
+<span><span class="va">test1</span> <span class="op">&lt;-</span> <span class="fu">OISST_sub_dl</span><span class="op">(</span><span class="va">dl_years</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span></span>
 <span>  <span class="va">OISST_data</span> <span class="op">&lt;-</span> <span class="va">dl_years</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">date_index</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
