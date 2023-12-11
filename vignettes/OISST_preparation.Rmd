@@ -101,10 +101,10 @@ With our wrapper function written we would now need to run it several times in o
 ```{r year-index}
 # Date download range by start and end dates per year
 dl_years <- data.frame(date_index = 1:5,
-                       start = as.Date(c("1982-01-01", "1990-01-01", 
-                                         "1998-01-01", "2006-01-01", "2014-01-01")),
-                       end = as.Date(c("1989-12-31", "1997-12-31", 
-                                       "2005-12-31", "2013-12-31", "2019-12-31")))
+                       start = c("1982-01-01", "1990-01-01", 
+                                 "1998-01-01", "2006-01-01", "2014-01-01"),
+                       end = c("1989-12-31", "1997-12-31", 
+                               "2005-12-31", "2013-12-31", "2019-12-31"))
 ```
 
 ### Download/prep data
@@ -116,6 +116,9 @@ It is worth pointing out here that these data are downloaded as cached files on 
 ```{r download-data}
 # Download all of the data with one nested request
 # The time this takes will vary greatly based on connection speed
+
+test1 <- OISST_sub_dl(dl_years[1,])
+
 base::system.time(
   OISST_data <- dl_years %>% 
     dplyr::group_by(date_index) %>% 
