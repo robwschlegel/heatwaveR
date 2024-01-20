@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2.9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2.9007</span>
       </span>
     </div>
 
@@ -105,6 +105,13 @@
       <small>Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.5.2.9007" id="heatwaver-0529007-2024-01-20">heatwaveR 0.5.2.9007 (2024-01-20)<a class="anchor" aria-label="anchor" href="#heatwaver-0529007-2024-01-20"></a></h2>
+<ul><li>Fixed a bug in <code><a href="../reference/proto_event.html">proto_event()</a></code> when an event lasts for the entire time series</li>
+<li>
+<code><a href="../reference/exceedance.html">exceedance()</a></code> now correctly returns extra columns in the original data.frame</li>
+<li>Corrected rare edge case in <code><a href="../reference/detect_event.html">detect_event()</a></code> and <code><a href="../reference/exceedance.html">exceedance()</a></code> where if a single MCS was detected the returned threshold columns would be negative values</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.5.2.9006" id="heatwaver-0529006-2023-12-11">heatwaveR 0.5.2.9006 (2023-12-11)<a class="anchor" aria-label="anchor" href="#heatwaver-0529006-2023-12-11"></a></h2>
 <ul><li>Updated NOAA OISST vignette to account for a change they made to the data query process</li>
