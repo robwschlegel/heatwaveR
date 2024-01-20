@@ -44,3 +44,16 @@ test_that("no detected events returns columns that all say FALSE/NA and not an e
   expect_equal(sum(is.na(res$event_no)), 14975)
 })
 
+test_that("no error when only one event lasts for the entire timeframe", {
+  ts_xy <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  ts_xy <- ts_xy[, 2:5]
+  colnames(ts_xy) <- c("ts_x", "ts_y", "ts_seas", "ts_thresh")
+  ts_xy$threshCriterion <- TRUE
+  res <- heatwaveR:::proto_event(ts_xy, joinAcrossGaps = TRUE,
+                                 criterion_column = ts_xy$threshCriterion,
+                                 minDuration = 5, maxGap = 2)
+  expect_is(res, "data.frame")
+  expect_equal(ncol(res), 8)
+  expect_equal(nrow(res), 14975)
+  expect_equal(sum(is.na(res$event_no)), 0)
+})

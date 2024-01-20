@@ -313,9 +313,14 @@ detect_event <- function(data,
 
   if (coldSpells) {
 
-    t_series[, ts_y := -ts_y]
-    t_series[, ts_seas := -ts_seas]
-    t_series[, ts_thresh := -ts_thresh]
+    t_series$ts_y <- -t_series$ts_y
+    t_series$ts_seas <- -t_series$ts_seas
+    t_series$ts_thresh <- -t_series$ts_thresh
+    # NB: This only internally attributes negative values
+    # Meaning the following threshCriterion code does not work as expected
+    # t_series[, ts_y := -ts_y]
+    # t_series[, ts_seas := -ts_seas]
+    # t_series[, ts_thresh := -ts_thresh]
 
   }
 
@@ -324,7 +329,7 @@ detect_event <- function(data,
 
   # Below: make sure proto_events returns a data.table
 
-  events_clim <- proto_event(t_series,
+  events_clim <- heatwaveR:::proto_event(t_series,
                              criterion_column = t_series$threshCriterion,
                              minDuration = minDuration,
                              joinAcrossGaps = joinAcrossGaps,

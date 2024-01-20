@@ -140,9 +140,6 @@ exceedance <- function(data,
                        roundRes = 4,
                        returnDF = TRUE) {
 
-  # message("exceedance() is deprecated and will not be included in the next release of heatwaveR")
-  # message("please use detecet_event() directly and set 'threshClim =' whatever your static threshold is")
-
   temp <- threshCriterion <- durationCriterion <- event <- event_no <- doy <- NULL
 
   ts_x <- eval(substitute(x), data)

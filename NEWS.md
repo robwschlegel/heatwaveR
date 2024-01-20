@@ -1,5 +1,9 @@
 # heatwaveR 0.5.2.9006 (2023-12-11)
 
+-  Fixed a bug in `proto_event()` when an event lasts for the entire time series
+
+# heatwaveR 0.5.2.9006 (2023-12-11)
+
 -  Updated NOAA OISST vignette to account for a change they made to the data query process
 
 # heatwaveR 0.5.2.9006 (2023-12-05)

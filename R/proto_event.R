@@ -69,7 +69,12 @@ proto_event <- function(t_series,
     proto_gaps <- do.call(rbind, lapply(s2[ex2$values == FALSE], function(x)
       data.frame(index_start = min(x), index_end = max(x))))
     proto_gaps$duration <- proto_gaps$index_end - proto_gaps$index_start + 1
-    proto_gaps <- proto_gaps[proto_gaps$index_end > proto_events$index_start[1], ]
+
+    if(length(proto_gaps) == 1 & is.na(proto_gaps$duration[1])){
+      proto_gaps <- proto_gaps
+    } else {
+      proto_gaps <- proto_gaps[proto_gaps$index_end > proto_events$index_start[1], ]
+    }
 
     if (any(proto_gaps$duration >= 1 & proto_gaps$duration <= maxGap)) {
       proto_gaps <- proto_gaps[proto_gaps$duration >= 1 & proto_gaps$duration <= maxGap, ]
