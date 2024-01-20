@@ -2,7 +2,7 @@
 % Please edit documentation in R/exceedance.R
 \name{exceedance}
 \alias{exceedance}
-\title{Detect consecutive days in exceedance of a given threshold.}
+\title{Detect consecutive days in exceedance above or below of a given threshold.}
 \usage{
 exceedance(
   data,
@@ -26,7 +26,7 @@ dates. If columns are named differently, their names can be supplied as \code{x}
 and \code{y} (see below). The function will not accurately detect consecutive
 days of temperatures in exceedance of the \code{threshold} if missing days of
 data are not filled in with \code{NA}. Data of the appropriate format are created
-by the function \code{\link{make_whole_fast}}, but your own data may be used
+by the internal function \code{\link{make_whole_fast}}, but your own data may be used
 directly if they meet the given criteria.}
 
 \item{x}{This column is expected to contain a vector of dates as per the
@@ -121,7 +121,7 @@ and \code{intensity_cum_abs} are as above except as absolute magnitudes rather
 than relative to the threshold.
 }
 \description{
-Detect consecutive days in exceedance of a given threshold.
+Detect consecutive days in exceedance above or below of a given threshold.
 }
 \details{
 \enumerate{

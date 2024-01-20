@@ -151,10 +151,10 @@ exceedance <- function(data,
   ts_xy <- data.frame(ts_x = ts_x, ts_y = ts_y)
   rm(ts_x, ts_y)
 
-  ts_whole <- heatwaveR:::make_whole_fast(ts_xy)
+  ts_whole <- make_whole_fast(ts_xy)
 
   if (length(stats::na.omit(ts_whole$ts_y)) < length(ts_whole$ts_y) & is.numeric(maxPadLength)) {
-    ts_whole <- heatwaveR:::na_interp(doy = ts_whole$doy,
+    ts_whole <- na_interp(doy = ts_whole$doy,
                           x = ts_whole$ts_x,
                           y = ts_whole$ts_y,
                           maxPadLength = maxPadLength)
@@ -174,7 +174,7 @@ exceedance <- function(data,
   ts_whole$threshCriterion <- ts_whole$ts_y > ts_whole$thresh
   ts_whole$threshCriterion[is.na(ts_whole$threshCriterion)] <- FALSE
 
-  exceedances_clim <- heatwaveR:::proto_event(ts_whole,
+  exceedances_clim <- proto_event(ts_whole,
                                   criterion_column = ts_whole$threshCriterion,
                                   minDuration = minDuration,
                                   joinAcrossGaps = joinAcrossGaps,
