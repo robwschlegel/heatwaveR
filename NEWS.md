@@ -1,6 +1,8 @@
-# heatwaveR 0.5.2.9006 (2023-12-11)
+# heatwaveR 0.5.2.9007 (2024-01-20)
 
 -  Fixed a bug in `proto_event()` when an event lasts for the entire time series
+-  `exceedance()` now correctly returns extra columns in the original data.frame
+-  Corrected rare edge case in `detect_event()` and `exceedance()` where if a single MCS was detected the returned threshold columns would be negative values
 
 # heatwaveR 0.5.2.9006 (2023-12-11)
 

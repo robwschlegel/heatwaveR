@@ -329,7 +329,7 @@ detect_event <- function(data,
 
   # Below: make sure proto_events returns a data.table
 
-  events_clim <- heatwaveR:::proto_event(t_series,
+  events_clim <- proto_event(t_series,
                              criterion_column = t_series$threshCriterion,
                              minDuration = minDuration,
                              joinAcrossGaps = joinAcrossGaps,

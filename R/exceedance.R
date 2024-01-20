@@ -1,4 +1,4 @@
-#' Detect consecutive days in exceedance of a given threshold.
+#' Detect consecutive days in exceedance above or below of a given threshold.
 #'
 #' @param data A data frame with at least the two following columns:
 #' a \code{t} column which is a vector of dates of class \code{Date},
@@ -7,7 +7,7 @@
 #' and \code{y} (see below). The function will not accurately detect consecutive
 #' days of temperatures in exceedance of the \code{threshold} if missing days of
 #' data are not filled in with \code{NA}. Data of the appropriate format are created
-#' by the function \code{\link{make_whole_fast}}, but your own data may be used
+#' by the internal function \code{\link{make_whole_fast}}, but your own data may be used
 #' directly if they meet the given criteria.
 #' @param x This column is expected to contain a vector of dates as per the
 #' specification of \code{make_whole_fast}. If a column headed \code{t} is present in
@@ -151,10 +151,10 @@ exceedance <- function(data,
   ts_xy <- data.frame(ts_x = ts_x, ts_y = ts_y)
   rm(ts_x, ts_y)
 
-  ts_whole <- make_whole_fast(ts_xy)
+  ts_whole <- heatwaveR:::make_whole_fast(ts_xy)
 
   if (length(stats::na.omit(ts_whole$ts_y)) < length(ts_whole$ts_y) & is.numeric(maxPadLength)) {
-    ts_whole <- na_interp(doy = ts_whole$doy,
+    ts_whole <- heatwaveR:::na_interp(doy = ts_whole$doy,
                           x = ts_whole$ts_x,
                           y = ts_whole$ts_y,
                           maxPadLength = maxPadLength)
@@ -174,7 +174,7 @@ exceedance <- function(data,
   ts_whole$threshCriterion <- ts_whole$ts_y > ts_whole$thresh
   ts_whole$threshCriterion[is.na(ts_whole$threshCriterion)] <- FALSE
 
-  exceedances_clim <- proto_event(ts_whole,
+  exceedances_clim <- heatwaveR:::proto_event(ts_whole,
                                   criterion_column = ts_whole$threshCriterion,
                                   minDuration = minDuration,
                                   joinAcrossGaps = joinAcrossGaps,
@@ -249,9 +249,6 @@ exceedance <- function(data,
       exceedances$intensity_mean_abs <- -exceedances$intensity_mean_abs
       exceedances$intensity_max_abs <- -exceedances$intensity_max_abs
       exceedances$intensity_cum_abs <- -exceedances$intensity_cum_abs
-
-      exceedances_clim$ts_y <- -exceedances_clim$ts_y
-      exceedances_clim$thresh <- -exceedances_clim$thresh
     }
 
   } else {
@@ -263,8 +260,22 @@ exceedance <- function(data,
                               intensity_cum_abs = NA, rate_onset = NA, rate_decline = NA)
   }
   exceedances[,9:18] <- round(exceedances[,9:18], roundRes)
+
+  if (below) {
+    exceedances_clim$ts_y <- -exceedances_clim$ts_y
+    exceedances_clim$thresh <- -exceedances_clim$thresh
+  }
+
   names(exceedances_clim)[1] <- paste(substitute(x))
   names(exceedances_clim)[2] <- paste(substitute(y))
+
+  if(nrow(data) < nrow(exceedances_clim)){
+    exceedances_clim <- base::merge(x = data, y = exceedances_clim, all.y = TRUE,
+                                    by = c(paste(substitute(x)), paste(substitute(y))))
+  } else {
+    exceedances_clim <- cbind(data, exceedances_clim[,3:7])
+  }
+
 
   if (returnDF) {
     exc_res <- list(threshold = data.table::setDF(exceedances_clim),

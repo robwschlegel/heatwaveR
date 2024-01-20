@@ -76,8 +76,8 @@ test_that("maxPadLength argument works correctly throughout", {
                "Please ensure that 'maxPadLength' is either FALSE or a numeric/integer value.")
   expect_error(exceedance(data = sst_Med, threshold = 20, maxPadLength = TRUE),
                "Please ensure that 'maxPadLength' is either FALSE or a numeric/integer value.")
-  sst_Med_NA <- sst_Med[c(1:20,22:1200),]
-  res <- exceedance(data = sst_Med_NA, threshold = 20, maxPadLength = 2)
+  sst_Med_miss <- sst_Med[c(1:20,22:1200),]
+  res <- exceedance(data = sst_Med_miss, threshold = 20, maxPadLength = 2)
   expect_equal(round(res$threshold$temp[21], 2), 13.57)
 })
 
@@ -89,4 +89,15 @@ test_that("Useful error is returned when incorrect column names exist", {
   colnames(ts) <- c("t", "banana")
   expect_error(exceedance(ts, threshold = 20),
                "Please ensure that a column named 'temp' is present in your data.frame or that you have assigned a column to the 'y' argument.")
+})
+
+test_that("Extra columns are passed forwards as desired", {
+  ts <- sst_WA
+  ts$banana <- 1
+  ts$mango <- 2
+  res1 <- exceedance(data = ts, threshold = 20, maxPadLength = 2)
+  ts_miss <- ts[c(1:20, 21:1200),]
+  res2 <- exceedance(data = ts_miss, threshold = 20, maxPadLength = 2)
+  expect_equal(ncol(res1$threshold), 9)
+  expect_equal(nrow(res2$threshold), 1200)
 })
