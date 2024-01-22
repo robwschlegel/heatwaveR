@@ -268,19 +268,13 @@ exceedance <- function(data,
 
   names(exceedances_clim)[1] <- paste(substitute(x))
   names(exceedances_clim)[2] <- paste(substitute(y))
+  clim_names <- colnames(exceedances_clim)[3:7]
+  data_names <- colnames(data)
+  merge_names <- c(data_names, clim_names)
 
-  if (ncol(data) > 2) {
-    if(nrow(data) < nrow(exceedances_clim)){
-      clim_names <- colnames(exceedances_clim)[3:7]
-      data_names <- colnames(data)
-      merge_names <- c(data_names, clim_names)
-      exceedances_clim <- as.data.frame(base::merge(x = data, y = exceedances_clim, all.y = TRUE,
-                                                    by = c(paste(substitute(x)), paste(substitute(y)))))
-      exceedances_clim <- exceedances_clim[, merge_names]
-    } else {
-      exceedances_clim <- cbind(data, exceedances_clim[,3:7])
-    }
-  }
+  exceedances_clim <- as.data.frame(base::merge(x = exceedances_clim, y = data, all.x = TRUE,
+                                                by = c(paste(substitute(x)), paste(substitute(y)))))
+  exceedances_clim <- exceedances_clim[, merge_names]
 
   if (returnDF) {
     exc_res <- list(threshold = as.data.frame(exceedances_clim),
