@@ -1,3 +1,7 @@
+# heatwaveR 0.5.2.9008 (2024-01-22)
+
+-  Corrected return behaviour of `exceedance()` to keep backwards compatibility
+
 # heatwaveR 0.5.2.9007 (2024-01-20)
 
 -  Fixed a bug in `proto_event()` when an event lasts for the entire time series
