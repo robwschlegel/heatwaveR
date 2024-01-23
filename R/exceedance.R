@@ -272,8 +272,11 @@ exceedance <- function(data,
   data_names <- colnames(data)
   merge_names <- c(data_names, clim_names)
 
-  exceedances_clim <- as.data.frame(base::merge(x = exceedances_clim, y = data, all.x = TRUE,
-                                                by = c(paste(substitute(x)), paste(substitute(y)))))
+  exceedances_clim <- as.data.frame(base::merge(x = data[, names(data) != paste(substitute(y))],
+                                                y = exceedances_clim, all.y = TRUE,
+                                                by = c(paste(substitute(x)))))
+#   exceedances_clim <- as.data.frame(base::merge(x = data, y = exceedances_clim, all.y = TRUE,
+#                                                 by = c(paste(substitute(x)), paste(substitute(y)))))
   exceedances_clim <- exceedances_clim[, merge_names]
 
   if (returnDF) {

@@ -1,3 +1,7 @@
+# heatwaveR 0.5.2.9009 (2024-01-23)
+
+- More tweaks to return behaviour of `exceedance()`
+
 # heatwaveR 0.5.2.9008 (2024-01-22)
 
 -  Corrected return behaviour of `exceedance()` to keep backwards compatibility

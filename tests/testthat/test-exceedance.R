@@ -91,22 +91,26 @@ test_that("Useful error is returned when incorrect column names exist", {
                "Please ensure that a column named 'temp' is present in your data.frame or that you have assigned a column to the 'y' argument.")
 })
 
-test_that("Extra columns are passed forwards as desired", {
+test_that("Extra columns are passed forward correctly", {
   ts <- sst_WA
   ts$banana <- 1
   ts$mango <- 2
   ts <- ts[, c(3, 4, 1, 2)]
   res1 <- exceedance(data = ts, threshold = 20, maxPadLength = 2)
   res1_thresh <- res1$threshold
-  ts_miss <- ts[c(1:20, 22:1200),]
-  res2 <- exceedance(data = ts_miss, threshold = 20, maxPadLength = 2)
+  ts_miss1 <- ts[c(1:20, 22:1200),]
+  res2 <- exceedance(data = ts_miss1, threshold = 20, maxPadLength = 2)
   res2_thresh <- res2$threshold
-  ts_miss2 <- ts_miss[, c(1, 3, 2, 4)]
+  ts_miss2 <- ts_miss1[, c(1, 3, 2, 4)]
   res3 <- exceedance(data = ts_miss2, threshold = 20, maxPadLength = 2)
   res3_thresh <- res3$threshold
+  ts_miss3 <- ts; ts_miss3$temp[21] <- NA
+  res4 <- exceedance(data = ts_miss3, threshold = 20, maxPadLength = 2)
+  res4_thresh <- res4$threshold
   expect_equal(ncol(res1$threshold), 9)
   expect_is(res2$threshold, "data.frame")
   expect_is(res3$threshold, "data.frame")
   expect_equal(nrow(res2$threshold), 1200)
   expect_true(is.na(res3$threshold[21,3]))
+  expect_equal(res4$threshold[21,1], 1)
 })
