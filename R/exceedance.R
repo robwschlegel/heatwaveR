@@ -266,8 +266,9 @@ exceedance <- function(data,
     exceedances_clim$thresh <- -exceedances_clim$thresh
   }
 
-  data_merge <- as.data.frame(data)[ , !(colnames(data) == paste(substitute(y)))]
-  if(!is.data.frame(data_merge)) data_merge <- data.frame(paste(substitute(x)) = data_merge)
+  col_x <- paste(substitute(x))
+  col_y <- paste(substitute(y))
+  data_merge <- as.data.frame(data)[ , !(colnames(data) == col_y), drop = FALSE]
   exceedances_merge <- as.data.frame(exceedances_clim)
 
   names(exceedances_merge)[1] <- paste(substitute(x))
