@@ -266,18 +266,20 @@ exceedance <- function(data,
     exceedances_clim$thresh <- -exceedances_clim$thresh
   }
 
-  names(exceedances_clim)[1] <- paste(substitute(x))
-  names(exceedances_clim)[2] <- paste(substitute(y))
-  clim_names <- colnames(exceedances_clim)[3:7]
+  data_merge <- as.data.frame(data)[ , !(colnames(data) == paste(substitute(y)))]
+  if(!is.data.frame(data_merge)) data_merge <- data.frame(paste(substitute(x)) = data_merge)
+  exceedances_merge <- as.data.frame(exceedances_clim)
+
+  names(exceedances_merge)[1] <- paste(substitute(x))
+  names(exceedances_merge)[2] <- paste(substitute(y))
+  clim_names <- colnames(exceedances_merge)[3:7]
   data_names <- colnames(data)
   merge_names <- c(data_names, clim_names)
 
-  exceedances_clim <- as.data.frame(base::merge(x = data[, names(data) != paste(substitute(y))],
-                                                y = exceedances_clim, all.y = TRUE,
-                                                by = c(paste(substitute(x)))))
-#   exceedances_clim <- as.data.frame(base::merge(x = data, y = exceedances_clim, all.y = TRUE,
-#                                                 by = c(paste(substitute(x)), paste(substitute(y)))))
-  exceedances_clim <- exceedances_clim[, merge_names]
+  exceedances_clim <- base::merge(x = data_merge,
+                                  y = exceedances_merge,
+                                  all.y = TRUE, by = paste(substitute(x)))
+  exceedances_clim <- exceedances_clim[,merge_names]
 
   if (returnDF) {
     exc_res <- list(threshold = as.data.frame(exceedances_clim),
