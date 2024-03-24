@@ -186,9 +186,14 @@ ts2clm <- function(data,
   # rm(data) # Need to keep this for the end
 
   if (!inherits(ts_x[1], "Date"))
-    stop("Please ensure your date values are type 'Date'. This may be done with 'as.Date()'.")
+    if (!inherits(ts_x[1], "POSIXct"))
+      stop("Please ensure your date values are either type 'Date' or 'POSIXct'.
+           This may be done with either 'as.Date()' or 'as.POSIXct()'.")
   if (!is.numeric(ts_y[1]))
     stop("Please ensure the temperature values you are providing are type 'num' for numeric.")
+
+  # testing...
+  # ts_x <- ts_WA_hourly$t; ts_y <- ts_WA_hourly$temp
 
   ts_xy <- data.table::data.table(ts_x = ts_x, ts_y = ts_y)[base::order(ts_x)]
   rm(list = c("ts_x", "ts_y"))
@@ -196,10 +201,20 @@ ts2clm <- function(data,
   ts_whole <- make_whole_fast(ts_xy)
 
   if (length(stats::na.omit(ts_whole$ts_y)) < length(ts_whole$ts_y) & is.numeric(maxPadLength)) {
-    ts_whole <- na_interp(doy = ts_whole$doy,
-                          x = ts_whole$ts_x,
-                          y = ts_whole$ts_y,
-                          maxPadLength = maxPadLength)
+    # hoy_col <- NULL
+    if("hoy" %in% colnames(ts_whole)){
+      hoy_col <- ts_whole$hoy
+      ts_whole <- na_interp(doy = ts_whole$doy,
+                            x = ts_whole$ts_x,
+                            y = ts_whole$ts_y,
+                            maxPadLength = maxPadLength)
+      ts_whole$hoy <- hoy_col; rm(hoy_col)
+    } else {
+      ts_whole <- na_interp(doy = ts_whole$doy,
+                            x = ts_whole$ts_x,
+                            y = ts_whole$ts_y,
+                            maxPadLength = maxPadLength)
+    }
   }
 
   if (ts_whole$ts_x[1] > clim_start)

@@ -137,3 +137,19 @@ test_that("additional columns in base data should be passed through the funciton
   expect_equal(nrow(res), 14975)
 })
 
+test_that("hourly functions are acknowledged and used", {
+  Sys.setenv(TZ = "UTC")
+  ts_WA <- sst_WA
+  ts_hours <- expand.grid(ts_WA$t, seq(1:24)-1)
+  colnames(ts_hours) <- c("t", "hour")
+  ts_hours$hourly <- fasttime::fastPOSIXct(paste0(ts_hours$t," ",ts_hours$hour,":00:00"))
+  ts_WA_hourly <- merge(ts_hours, ts_WA)
+  ts_WA_hourly$temp <- ts_WA_hourly$temp + runif(n = nrow(ts_WA_hourly), min = 0.01, max = 0.1)
+  ts_WA_hourly <- ts_WA_hourly[,c("hourly", "temp")]
+  colnames(ts_WA_hourly) <- c("t", "temp")
+  ts_WA_hourly <- ts_WA_hourly[order(ts_WA_hourly$t),]
+  res <- ts2clm(ts_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  expect_is(res, "data.frame")
+  expect_equal(ncol(res), 8)
+  expect_equal(nrow(res), 14975)
+})

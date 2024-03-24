@@ -49,29 +49,44 @@
 #' measured variable. This time series will be uninterrupted and continuous daily
 #' values between the first and last dates of the input data.
 #'
-#' @author Smit, A. J., Schlegel, R. W.
+#' @author Smit, A. J., Villeneuve, A., Schlegel, R. W.
 #'
 make_whole_fast <- function(data) {
 
   feb28 <- 59
+  feb28_hour <- 1415
 
-  year <- doy <- ts_x <- NULL
+  # testing...
+  # data <- ts_whole
+
+  year <- doy <- hoy <- ts_x <- NULL
 
   is_leap_year <- function(year) {
     return((year %% 4 == 0 & year %% 100 != 0) | (year %% 400 == 0))
   }
 
-  date_start <- as.Date(data$ts_x[1])
-  date_end <- as.Date(data$ts_x[nrow(data)], origin = "1970-01-01")
+  date_start <- data$ts_x[1]
+  date_end <- data$ts_x[nrow(data)]
 
-  ts_full <- data.table::data.table(ts_x = seq.Date(date_start, date_end, "day"))
-
-  ts_merged <- base::merge(ts_full, data, by = "ts_x", all.x = TRUE)
-  ts_merged[, year := as.integer(format(ts_x, "%Y"))]
-  ts_merged[, doy := as.integer(format(ts_x, "%j"))]
-  ts_merged[!is_leap_year(year) & doy > feb28, doy := doy + 1]
-  ts_merged[, year := NULL]
-  data.table::setcolorder(ts_merged, c("doy", "ts_x", "ts_y"))
+  if (inherits(data$ts_x[1], "POSIXct")) {
+    ts_full <- data.table::data.table(ts_x = seq.POSIXt(date_start, date_end, "hour"))
+    ts_merged <- base::merge(ts_full, data, all.x = TRUE)
+    ts_merged[, year := as.integer(format(ts_x, "%Y"))]
+    ts_merged[, doy := as.integer(format(ts_x, "%j"))]
+    ts_merged[, hoy := data.table::hour(ts_x) + (data.table::yday(ts_x) - 1) * 24]
+    ts_merged[!is_leap_year(year) & doy > feb28, doy := doy + 1]
+    ts_merged[!is_leap_year(year) & hoy > feb28_hour, hoy := hoy + 24]
+    ts_merged[, year := NULL]
+    data.table::setcolorder(ts_merged, c("doy", "hoy", "ts_x", "ts_y"))
+  } else {
+    ts_full <- data.table::data.table(ts_x = seq.Date(date_start, date_end, "day"))
+    ts_merged <- base::merge(ts_full, data, by = "ts_x", all.x = TRUE)
+    ts_merged[, year := as.integer(format(ts_x, "%Y"))]
+    ts_merged[, doy := as.integer(format(ts_x, "%j"))]
+    ts_merged[!is_leap_year(year) & doy > feb28, doy := doy + 1]
+    ts_merged[, year := NULL]
+    data.table::setcolorder(ts_merged, c("doy", "ts_x", "ts_y"))
+  }
 
   return(ts_merged)
 }
