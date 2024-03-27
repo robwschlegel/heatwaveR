@@ -148,6 +148,7 @@ exceedance <- function(data,
   ts_y <- eval(substitute(y), data)
   if (is.null(ts_y) | is.function(ts_y))
     stop("Please ensure that a column named 'temp' is present in your data.frame or that you have assigned a column to the 'y' argument.")
+  # ts_xy <- data.frame(ts_x = ts_Med_hourly$t, ts_y = ts_Med_hourly$temp)
   ts_xy <- data.frame(ts_x = ts_x, ts_y = ts_y)
   rm(ts_x, ts_y)
 
@@ -179,7 +180,13 @@ exceedance <- function(data,
                                   minDuration = minDuration,
                                   joinAcrossGaps = joinAcrossGaps,
                                   maxGap = maxGap)
-  exceedances_clim <- exceedances_clim[,-1]
+
+  if("hoy" %in% colnames(exceedances_clim)) {
+    exceedances_clim <- exceedances_clim[,-c(1, 2)]
+  } else {
+    exceedances_clim <- exceedances_clim[,-1]
+  }
+
   colnames(exceedances_clim)[c(6,7)] <- c("exceedance", "exceedance_no")
 
   thresh <- intensity_mean <- intensity_max <- intensity_cumulative <-

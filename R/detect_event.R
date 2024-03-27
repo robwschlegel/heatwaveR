@@ -289,6 +289,8 @@ detect_event <- function(data,
   # Ensure ts2clm returns a data.table
   # Do a check: if already a data.table, carry on; setDT if a data.frame
   # Ensure all code from here on is translated to data.table, incl. proto_events
+  # testing...
+  # data <- res_ts
 
   temp <- seas <- thresh <- threshCriterion <- durationCriterion <- event <- NULL
 
@@ -304,7 +306,7 @@ detect_event <- function(data,
   ts_thresh <- eval(substitute(threshClim), data)
   if (is.null(ts_thresh) | is.function(ts_thresh))
     stop("Please ensure that a column named 'thresh' is present in your data.frame or that you have assigned a column to the 'threshClim' argument.")
-  # t_series <- data.frame(ts_x = data$t, ts_y = data$temp, ts_seas = data$seas, ts_thresh = data$thresh_MCS)
+  # t_series <- data.table::data.table(ts_x = data$t, ts_y = data$temp, ts_seas = data$seas, ts_thresh = data$thresh)
   t_series <- data.table::data.table(ts_x,
                                      ts_y,
                                      ts_seas,

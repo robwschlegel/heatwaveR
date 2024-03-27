@@ -160,3 +160,26 @@ test_that("Other built in 'categories' argument works as expected", {
   res_event_DT <- detect_event(ts, categories = TRUE, returnDF = FALSE)
   expect_s3_class(res_event_DT, "data.table")
 })
+
+test_that("hourly functions are acknowledged and used", {
+  Sys.setenv(TZ = "UTC")
+  ts_WA <- sst_WA
+  ts_hours <- expand.grid(ts_WA$t, seq(1:24)-1)
+  colnames(ts_hours) <- c("t", "hour")
+  ts_hours$hourly <- fasttime::fastPOSIXct(paste0(ts_hours$t," ",ts_hours$hour,":00:00"))
+  ts_WA_hourly <- merge(ts_hours, ts_WA)
+  ts_WA_hourly$temp <- ts_WA_hourly$temp + runif(n = nrow(ts_WA_hourly), min = 0.01, max = 0.1)
+  ts_WA_hourly <- ts_WA_hourly[,c("hourly", "temp")]
+  colnames(ts_WA_hourly) <- c("t", "temp")
+  ts_WA_hourly <- ts_WA_hourly[order(ts_WA_hourly$t),]
+  ts_90 <- ts2clm(ts_WA_hourly, climatologyPeriod = c("1983-01-01", "2012-12-31"),
+                  windowHalfWidth = 5*24, smoothPercentileWidth = 31*24)
+  res_MHW <- detect_event(ts_90, minDuration = 5*24, maxGap = 2*24)
+  expect_is(res_MHW$event, "data.frame")
+  expect_equal(ncol(res_MHW$event), 22)
+  ts_10 <- ts2clm(ts_WA_hourly, climatologyPeriod = c("1983-01-01", "2012-12-31"),
+                  windowHalfWidth = 5*24, smoothPercentileWidth = 31*24, pctile = 10)
+  res_MCS <- detect_event(ts_10, minDuration = 5*24, maxGap = 2*24, coldSpells = TRUE)
+  expect_is(res_MCS$event, "data.frame")
+  expect_equal(ncol(res_MCS$event), 22)
+})
