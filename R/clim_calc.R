@@ -19,6 +19,9 @@
 #'
 clim_calc <- function(data, windowHalfWidth, pctile) {
 
+  # testing...
+  # data <- ts_wide
+
   seas <- rep(NA, nrow(data))
   thresh <- rep(NA, nrow(data))
   var <- rep(NA, nrow(data))
@@ -44,14 +47,23 @@ clim_calc <- function(data, windowHalfWidth, pctile) {
   }
 
   len_clim_year <- 366
-  doy <- seq_len(366)
+  len_hour_clim_year <- 8784
+  doy <- seq_len(len_clim_year)
+  hoy <- seq_len(len_hour_clim_year)
 
-  seas <- seas[(windowHalfWidth + 1):((windowHalfWidth) + len_clim_year)]
-  thresh <- thresh[(windowHalfWidth + 1):((windowHalfWidth) + len_clim_year)]
-  var <- var[(windowHalfWidth + 1):((windowHalfWidth) + len_clim_year)]
-
-  clim <- matrix(c(doy, seas, thresh, var), ncol = 4, byrow = FALSE,
-                 dimnames = list(NULL, c("doy", "seas", "thresh", "var")))
+  if (nrow(data) > 400) {
+    seas <- seas[(windowHalfWidth + 1):((windowHalfWidth) + len_hour_clim_year)]
+    thresh <- thresh[(windowHalfWidth + 1):((windowHalfWidth) + len_hour_clim_year)]
+    var <- var[(windowHalfWidth + 1):((windowHalfWidth) + len_hour_clim_year)]
+    clim <- matrix(c(rep(doy, each = 24), hoy, seas, thresh, var), ncol = 5, byrow = FALSE,
+                   dimnames = list(NULL, c("doy", "hoy", "seas", "thresh", "var")))
+  } else {
+    seas <- seas[(windowHalfWidth + 1):((windowHalfWidth) + len_clim_year)]
+    thresh <- thresh[(windowHalfWidth + 1):((windowHalfWidth) + len_clim_year)]
+    var <- var[(windowHalfWidth + 1):((windowHalfWidth) + len_clim_year)]
+    clim <- matrix(c(doy, seas, thresh, var), ncol = 4, byrow = FALSE,
+                   dimnames = list(NULL, c("doy", "seas", "thresh", "var")))
+  }
 
   return(clim)
 }

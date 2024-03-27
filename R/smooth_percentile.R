@@ -15,34 +15,52 @@
 #' @return The function returns the data in the same format it was
 #' input as, with the climatology values smoothed as desired.
 #'
-#' @author Smit, A. J.
+#' @author Smit, A. J., Schlegel, R. W.
 #'
 smooth_percentile <- function(data, smoothPercentileWidth, var_calc) {
 
   seas <- thresh <- NULL
 
-  prep <- rbind(utils::tail(data[,-1], smoothPercentileWidth),
-                data[,-1],
-                utils::head(data[,-1], smoothPercentileWidth))
-  rm(data)
+  # testing...
+  # data <- ts_mat
+
+  if("hoy" %in% colnames(data)) {
+    prep <- rbind(utils::tail(data[,-c(1, 2)], smoothPercentileWidth),
+                  data[,-c(1, 2)],
+                  utils::head(data[,-c(1, 2)], smoothPercentileWidth))
+  } else {
+    prep <- rbind(utils::tail(data[,-1], smoothPercentileWidth),
+                  data[,-1],
+                  utils::head(data[,-1], smoothPercentileWidth))
+  }
 
   len_clim_year <- 366
+  len_hour_clim_year <- 8784
 
   seas <- RcppRoll::roll_mean(as.numeric(prep[,1]), n = smoothPercentileWidth, na.rm = FALSE)
   thresh <- RcppRoll::roll_mean(as.numeric(prep[,2]), n = smoothPercentileWidth, na.rm = FALSE)
 
-  clim <- data.table::data.table(doy = seq_len(len_clim_year),
-                                 seas = seas[(smoothPercentileWidth/2 + 2):((smoothPercentileWidth/2 + 1) + len_clim_year)],
-                                 thresh = thresh[(smoothPercentileWidth/2 + 2):((smoothPercentileWidth/2 + 1) + len_clim_year)])
+  if("hoy" %in% colnames(data)) {
+    clim <- data.table::data.table(doy = rep(seq_len(len_clim_year), each = 24),
+                                   hoy = seq_len(len_hour_clim_year),
+                                   seas = seas[(smoothPercentileWidth/2 + 2):((smoothPercentileWidth/2 + 1) + len_hour_clim_year)],
+                                   thresh = thresh[(smoothPercentileWidth/2 + 2):((smoothPercentileWidth/2 + 1) + len_hour_clim_year)])
+  } else {
+    clim <- data.table::data.table(doy = seq_len(len_clim_year),
+                                   seas = seas[(smoothPercentileWidth/2 + 2):((smoothPercentileWidth/2 + 1) + len_clim_year)],
+                                   thresh = thresh[(smoothPercentileWidth/2 + 2):((smoothPercentileWidth/2 + 1) + len_clim_year)])
+  }
 
   if (var_calc) {
     var <- NULL
-    # the below line is incorrect! calculating mean not var
     var <- RcppRoll::roll_mean(as.numeric(prep[,3]), n = smoothPercentileWidth, na.rm = FALSE)
-
-    clim$var <- var[(smoothPercentileWidth/2 + 2):((smoothPercentileWidth/2 + 1) + len_clim_year)]
+    if("hoy" %in% colnames(data)) {
+      clim$var <- var[(smoothPercentileWidth/2 + 2):((smoothPercentileWidth/2 + 1) + len_hour_clim_year)]
+    } else {
+      clim$var <- var[(smoothPercentileWidth/2 + 2):((smoothPercentileWidth/2 + 1) + len_clim_year)]
+    }
   }
-  rm(prep)
+  rm(data, prep)
 
   return(clim)
 }

@@ -42,9 +42,8 @@ test_that("all starting error checks flag correctly", {
                       roundClm = TRUE),
                "Please ensure that 'roundClm' is either a numeric value or FALSE.")
   sst_WA_dummy1 <- sst_WA
-  sst_WA_dummy1$t <- as.POSIXct(sst_WA_dummy1$t)
-  expect_error(ts2clm(sst_WA_dummy1, climatologyPeriod = c("1983-01-01", "2012-12-31")),
-               "Please ensure your date values are type 'Date'. This may be done with 'as.Date()")
+  sst_WA_dummy1$t <- as.character(sst_WA_dummy1$t)
+  expect_error(ts2clm(sst_WA_dummy1, climatologyPeriod = c("1983-01-01", "2012-12-31")))
   sst_WA_dummy2 <- sst_WA
   sst_WA_dummy2$temp <- as.character(sst_WA_dummy2$temp)
   expect_error(ts2clm(sst_WA_dummy2, climatologyPeriod = c("1983-01-01", "2012-12-31")),
@@ -148,8 +147,15 @@ test_that("hourly functions are acknowledged and used", {
   ts_WA_hourly <- ts_WA_hourly[,c("hourly", "temp")]
   colnames(ts_WA_hourly) <- c("t", "temp")
   ts_WA_hourly <- ts_WA_hourly[order(ts_WA_hourly$t),]
-  res <- ts2clm(ts_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  res <- ts2clm(ts_WA_hourly, climatologyPeriod = c("1983-01-01", "2012-12-31"),
+                windowHalfWidth = 5*24, smoothPercentileWidth = 31*24)
   expect_is(res, "data.frame")
-  expect_equal(ncol(res), 8)
-  expect_equal(nrow(res), 14975)
+  expect_equal(ncol(res), 6)
+  expect_equal(nrow(res), 359400)
+  ts_WA_hourly_NA <- ts_WA_hourly; ts_WA_hourly_NA$temp[502] <- NA
+  res_var_NA <- ts2clm(ts_WA_hourly_NA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
+                       windowHalfWidth = 5*24, smoothPercentileWidth = 31*24, var = TRUE, returnDF = FALSE)
+  expect_is(res_var_NA, "data.table")
+  expect_equal(ncol(res_var_NA), 7)
+  expect_equal(nrow(res_var_NA), 359400)
 })

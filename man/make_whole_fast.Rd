@@ -55,6 +55,6 @@ vector is ordered and without repeated measurements beforehand.
 }
 }
 \author{
-Smit, A. J., Schlegel, R. W.
+Smit, A. J., Villeneuve, A., Schlegel, R. W.
 }
 \keyword{internal}

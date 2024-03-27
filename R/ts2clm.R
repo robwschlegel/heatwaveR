@@ -175,7 +175,7 @@ ts2clm <- function(data,
 
   clim_start <- climatologyPeriod[1]
   clim_end <- climatologyPeriod[2]
-  temp <- doy <- .SD <-  NULL
+  temp <- doy <- hoy <- .SD <-  NULL
 
   ts_x <- eval(substitute(x), data)
   if (is.null(ts_x) | is.function(ts_x))
@@ -193,7 +193,8 @@ ts2clm <- function(data,
     stop("Please ensure the temperature values you are providing are type 'num' for numeric.")
 
   # testing...
-  # ts_x <- ts_WA_hourly$t; ts_y <- ts_WA_hourly$temp
+  # data <- ts_WA; ts_x <- ts_WA$t; ts_y <- ts_WA$temp
+  # data <- ts_WA_hourly; ts_x <- ts_WA_hourly$t; ts_y <- ts_WA_hourly$temp
 
   ts_xy <- data.table::data.table(ts_x = ts_x, ts_y = ts_y)[base::order(ts_x)]
   rm(list = c("ts_x", "ts_y"))
@@ -201,7 +202,6 @@ ts2clm <- function(data,
   ts_whole <- make_whole_fast(ts_xy)
 
   if (length(stats::na.omit(ts_whole$ts_y)) < length(ts_whole$ts_y) & is.numeric(maxPadLength)) {
-    # hoy_col <- NULL
     if("hoy" %in% colnames(ts_whole)){
       hoy_col <- ts_whole$hoy
       ts_whole <- na_interp(doy = ts_whole$doy,
@@ -209,6 +209,7 @@ ts2clm <- function(data,
                             y = ts_whole$ts_y,
                             maxPadLength = maxPadLength)
       ts_whole$hoy <- hoy_col; rm(hoy_col)
+      data.table::setcolorder(ts_whole, c("doy", "hoy", "ts_x", "ts_y"))
     } else {
       ts_whole <- na_interp(doy = ts_whole$doy,
                             x = ts_whole$ts_x,
@@ -230,7 +231,7 @@ ts2clm <- function(data,
 
   ts_wide <- clim_spread(ts_whole, clim_start, clim_end, windowHalfWidth)
 
-  if (nrow(stats::na.omit(ts_wide)) < nrow(ts_wide) | var) {
+  if (any(nrow(stats::na.omit(ts_wide)) < nrow(ts_wide) | var | nrow(ts_wide) > 400)) {
     ts_mat <- clim_calc(ts_wide, windowHalfWidth, pctile)
     ts_mat[is.nan(ts_mat)] <- NA
   } else {
@@ -257,18 +258,31 @@ ts2clm <- function(data,
 
   } else {
 
-    data.table::setkey(ts_whole, doy)
-    data.table::setkey(ts_clim, doy)
+    if("hoy" %in% colnames(ts_whole)) {
+      data.table::setkey(ts_whole, doy, hoy)
+      data.table::setkey(ts_clim, doy, hoy)
+    } else {
+      data.table::setkey(ts_whole, doy)
+      data.table::setkey(ts_clim, doy)
+    }
+
     ts_res <- merge(ts_whole, ts_clim, all = TRUE)
     rm(ts_whole); rm(ts_clim)
     data.table::setorder(ts_res, ts_x)
-    names(ts_res)[2] <- paste(substitute(x))
-    names(ts_res)[3] <- paste(substitute(y))
+
+    if("hoy" %in% colnames(ts_res)) {
+      names(ts_res)[3] <- paste(substitute(x))
+      names(ts_res)[4] <- paste(substitute(y))
+    } else {
+      names(ts_res)[2] <- paste(substitute(x))
+      names(ts_res)[3] <- paste(substitute(y))
+    }
 
     if (ncol(data) > 2) {
       # It would be better to order the columns
       ts_res <- merge(data, ts_res, all = TRUE)
     }
+    rm(data)
 
     if(returnDF) data.table::setDF(ts_res)
     return(ts_res)

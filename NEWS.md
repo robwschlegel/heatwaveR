@@ -1,3 +1,7 @@
+# heatwaveR 0.5.3.9000 (2024-03-27)
+
+- Basic hourly functionality added to `ts2clm()`
+
 # heatwaveR 0.5.2.9009 (2024-01-23)
 
 - More tweaks to return behaviour of `exceedance()`

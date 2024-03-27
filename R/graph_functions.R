@@ -198,7 +198,7 @@ event_line <- function(data,
           legend.background = element_rect(colour = "black"),
           legend.direction = "horizontal",
           legend.justification = c(0, 0),
-          legend.position = c(0.005, 0.015),
+          legend.position.inside = c(0.005, 0.015),
           legend.key = element_blank()
           )
 

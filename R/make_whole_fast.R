@@ -54,7 +54,7 @@
 make_whole_fast <- function(data) {
 
   feb28 <- 59
-  feb28_hour <- 1415
+  feb28_hour <- 1416
 
   # testing...
   # data <- ts_whole
@@ -73,7 +73,7 @@ make_whole_fast <- function(data) {
     ts_merged <- base::merge(ts_full, data, all.x = TRUE)
     ts_merged[, year := as.integer(format(ts_x, "%Y"))]
     ts_merged[, doy := as.integer(format(ts_x, "%j"))]
-    ts_merged[, hoy := data.table::hour(ts_x) + (data.table::yday(ts_x) - 1) * 24]
+    ts_merged[, hoy := (data.table::hour(ts_x)+1) + (data.table::yday(ts_x) - 1) * 24]
     ts_merged[!is_leap_year(year) & doy > feb28, doy := doy + 1]
     ts_merged[!is_leap_year(year) & hoy > feb28_hour, hoy := hoy + 24]
     ts_merged[, year := NULL]
