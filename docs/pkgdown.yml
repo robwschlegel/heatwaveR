@@ -11,7 +11,7 @@ articles:
   event_categories: event_categories.html
   exceedance: exceedance.html
   gridded_event_detection: gridded_event_detection.html
-last_built: 2024-01-23T08:23Z
+last_built: 2024-03-27T16:02Z
 urls:
   reference: https://robwschlegel.github.io/heatwaveR/index.html/reference
   article: https://robwschlegel.github.io/heatwaveR/index.html/articles

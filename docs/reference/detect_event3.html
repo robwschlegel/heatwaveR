@@ -28,7 +28,7 @@ other means."><meta property="og:image" content="https://robwschlegel.github.io/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3.9000</span>
       </span>
     </div>
 
@@ -428,18 +428,20 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
 <span class="r-in"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">detect_event3</span><span class="op">(</span><span class="va">res_clim</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># show a portion of the climatology:</span></span></span>
 <span class="r-in"><span><span class="va">out</span><span class="op">$</span><span class="va">climatology</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           ts_x  ts_y ts_seas ts_thresh threshCriterion durationCriterion event</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: 1982-01-01 20.94 21.6080   22.9605           FALSE             FALSE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: 1982-01-02 21.25 21.6348   22.9987           FALSE             FALSE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: 1982-01-03 21.38 21.6621   23.0376           FALSE             FALSE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: 1982-01-04 21.16 21.6895   23.0771           FALSE             FALSE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: 1982-01-05 21.26 21.7169   23.1130           FALSE             FALSE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: 1982-01-06 21.61 21.7436   23.1460           FALSE             FALSE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: 1982-01-07 21.74 21.7699   23.1775           FALSE             FALSE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: 1982-01-08 21.50 21.7958   23.2080           FALSE             FALSE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: 1982-01-09 21.40 21.8217   23.2366           FALSE             FALSE FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: 1982-01-10 21.36 21.8478   23.2649           FALSE             FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           ts_x  ts_y ts_seas ts_thresh threshCriterion durationCriterion  event</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;Date&gt; &lt;num&gt;   &lt;num&gt;     &lt;num&gt;          &lt;lgcl&gt;            &lt;lgcl&gt; &lt;lgcl&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: 1982-01-01 20.94 21.6080   22.9605           FALSE             FALSE  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: 1982-01-02 21.25 21.6348   22.9987           FALSE             FALSE  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: 1982-01-03 21.38 21.6621   23.0376           FALSE             FALSE  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: 1982-01-04 21.16 21.6895   23.0771           FALSE             FALSE  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: 1982-01-05 21.26 21.7169   23.1130           FALSE             FALSE  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: 1982-01-06 21.61 21.7436   23.1460           FALSE             FALSE  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: 1982-01-07 21.74 21.7699   23.1775           FALSE             FALSE  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: 1982-01-08 21.50 21.7958   23.2080           FALSE             FALSE  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: 1982-01-09 21.40 21.8217   23.2366           FALSE             FALSE  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: 1982-01-10 21.36 21.8478   23.2649           FALSE             FALSE  FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     event_no</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;int&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:       NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:       NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  3:       NA</span>
@@ -453,12 +455,14 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
 <span class="r-in"><span><span class="co"># show some of the heat waves:</span></span></span>
 <span class="r-in"><span><span class="va">out</span><span class="op">$</span><span class="va">event</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    event_no index_start index_peak index_end duration date_start  date_peak</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;int&gt;       &lt;int&gt;      &lt;int&gt;     &lt;int&gt;    &lt;num&gt;     &lt;Date&gt;     &lt;Date&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:        1         885        887       889        5 1984-06-03 1984-06-05</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:        2         899        901       904        6 1984-06-17 1984-06-19</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3:        3         908        922       926       19 1984-06-26 1984-07-10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4:        4        1023       1027      1029        7 1984-10-19 1984-10-23</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5:        5        1033       1034      1037        5 1984-10-29 1984-10-30</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      date_end intensity_mean intensity_max</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;Date&gt;          &lt;num&gt;         &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: 1984-06-07         1.7042        1.9218</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2: 1984-06-22         1.9851        2.1063</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3: 1984-07-14         1.9094        2.2165</span>
@@ -472,6 +476,7 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
 <span class="r-in"><span><span class="co"># show a portion of the climatology:</span></span></span>
 <span class="r-in"><span><span class="va">out</span><span class="op">$</span><span class="va">climatology</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           ts_x   ts_y  ts_seas ts_thresh threshCriterion durationCriterion</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;Date&gt;  &lt;num&gt;    &lt;num&gt;     &lt;num&gt;          &lt;lgcl&gt;            &lt;lgcl&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1: 1982-01-01 -20.94 -21.6080  -20.5471           FALSE             FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2: 1982-01-02 -21.25 -21.6348  -20.5713           FALSE             FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  3: 1982-01-03 -21.38 -21.6621  -20.5961           FALSE             FALSE</span>
@@ -482,26 +487,29 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  8: 1982-01-08 -21.50 -21.7958  -20.7362           FALSE             FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  9: 1982-01-09 -21.40 -21.8217  -20.7655           FALSE             FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10: 1982-01-10 -21.36 -21.8478  -20.7927           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     event event_no</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: FALSE       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      event event_no</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;lgcl&gt;    &lt;int&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:  FALSE       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:  FALSE       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:  FALSE       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:  FALSE       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:  FALSE       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:  FALSE       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:  FALSE       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:  FALSE       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:  FALSE       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:  FALSE       NA</span>
 <span class="r-in"><span><span class="co"># show some of the cold-spells:</span></span></span>
 <span class="r-in"><span><span class="va">out</span><span class="op">$</span><span class="va">event</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    event_no index_start index_peak index_end duration date_start  date_peak</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;int&gt;       &lt;int&gt;      &lt;int&gt;     &lt;int&gt;    &lt;num&gt;     &lt;Date&gt;     &lt;Date&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:        1          83         83        87        5 1982-03-24 1982-03-24</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:        2         194        199       207       14 1982-07-13 1982-07-18</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3:        3         270        272       277        8 1982-09-27 1982-09-29</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4:        4         296        303       306       11 1982-10-23 1982-10-30</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5:        5         672        681       685       14 1983-11-03 1983-11-12</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      date_end intensity_mean intensity_max</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;Date&gt;          &lt;num&gt;         &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: 1982-03-28        -1.4543       -1.5877</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2: 1982-07-26        -1.8033       -2.7304</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3: 1982-10-04        -1.2378       -1.3891</span>

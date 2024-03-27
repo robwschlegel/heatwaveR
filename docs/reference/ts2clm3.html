@@ -26,7 +26,7 @@ by an optional moving average smoother as used by Hobday et al. (2016)."><meta p
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3.9000</span>
       </span>
     </div>
 
@@ -320,6 +320,7 @@ doi:10.1016/j.pocean.2015.12.014</p>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">ts2clm3</span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">res</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              t  temp    seas  thresh</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;Date&gt; &lt;num&gt;   &lt;num&gt;   &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1: 1982-01-01 20.94 21.6080 22.9605</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2: 1982-01-02 21.25 21.6348 22.9987</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  3: 1982-01-03 21.38 21.6621 23.0376</span>
@@ -335,23 +336,25 @@ doi:10.1016/j.pocean.2015.12.014</p>
 <span class="r-in"><span><span class="va">res_clim</span> <span class="op">&lt;-</span> <span class="fu">ts2clm3</span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                    clmOnly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">res_clim</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     doy    seas  thresh</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:   1 21.6080 22.9605</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:   2 21.6348 22.9987</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:   3 21.6621 23.0376</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:   4 21.6895 23.0771</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:   5 21.7169 23.1130</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:   6 21.7436 23.1460</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:   7 21.7699 23.1775</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:   8 21.7958 23.2080</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:   9 21.8217 23.2366</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:  10 21.8478 23.2649</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       doy    seas  thresh</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;num&gt;   &lt;num&gt;   &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:     1 21.6080 22.9605</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:     2 21.6348 22.9987</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:     3 21.6621 23.0376</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:     4 21.6895 23.0771</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:     5 21.7169 23.1130</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:     6 21.7436 23.1460</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:     7 21.7699 23.1775</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:     8 21.7958 23.2080</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:     9 21.8217 23.2366</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:    10 21.8478 23.2649</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Or if one wants the variance column included in the results</span></span></span>
 <span class="r-in"><span><span class="va">res_var</span> <span class="op">&lt;-</span> <span class="fu">ts2clm3</span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1983-01-01"</span>, <span class="st">"2012-12-31"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                   var <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">res_var</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              t  temp    seas  thresh    var</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;Date&gt; &lt;num&gt;   &lt;num&gt;   &lt;num&gt;  &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1: 1982-01-01 20.94 21.6080 22.9605 0.0772</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2: 1982-01-02 21.25 21.6348 22.9987 0.0779</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  3: 1982-01-03 21.38 21.6621 23.0376 0.0763</span>

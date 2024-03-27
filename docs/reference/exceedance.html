@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.2.9009</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3.9000</span>
       </span>
     </div>
 
@@ -332,13 +332,56 @@ Feb 2015, and is documented by Hobday et al. (2016).</p>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">exceedance</span><span class="op">(</span><span class="va">sst_WA</span>, threshold <span class="op">=</span> <span class="fl">25</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in fix.by(by.x, x):</span> 'by' must specify a uniquely valid column</span>
 <span class="r-in"><span><span class="co"># show first ten days of daily data:</span></span></span>
 <span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">threshold</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'res' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             t  temp thresh threshCriterion durationCriterion exceedance</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1982-01-01 20.94     25           FALSE             FALSE      FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  1982-01-02 21.25     25           FALSE             FALSE      FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  1982-01-03 21.38     25           FALSE             FALSE      FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  1982-01-04 21.16     25           FALSE             FALSE      FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  1982-01-05 21.26     25           FALSE             FALSE      FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  1982-01-06 21.61     25           FALSE             FALSE      FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  1982-01-07 21.74     25           FALSE             FALSE      FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  1982-01-08 21.50     25           FALSE             FALSE      FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  1982-01-09 21.40     25           FALSE             FALSE      FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 1982-01-10 21.36     25           FALSE             FALSE      FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    exceedance_no</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1             NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2             NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3             NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4             NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5             NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6             NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7             NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8             NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9             NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10            NA</span>
 <span class="r-in"><span><span class="co"># show first five exceedances:</span></span></span>
 <span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">exceedance</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'res' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   exceedance_no index_start index_peak index_end duration date_start  date_peak</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1             1        2682       2683      2686        5 1989-05-05 1989-05-06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2             2        6342       6351      6358       17 1999-05-13 1999-05-22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3             3        6362       6363      6368        7 1999-06-02 1999-06-03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4             4        6686       6688      6691        6 2000-04-21 2000-04-23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5             5        6698       6699      6707       10 2000-05-03 2000-05-04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     date_end intensity_mean intensity_max intensity_var intensity_cumulative</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1989-05-09         0.2860          0.36        0.0462                 1.43</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 1999-05-29         0.8559          1.40        0.3859                14.55</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 1999-06-08         0.2071          0.27        0.0512                 1.45</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 2000-04-26         0.1550          0.41        0.1803                 0.93</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 2000-05-12         0.6970          1.01        0.2747                 6.97</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   intensity_mean_abs intensity_max_abs intensity_var_abs intensity_cum_abs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1            25.2860             25.36            0.0462            126.43</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2            25.8559             26.40            0.3859            439.55</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3            25.2071             25.27            0.0512            176.45</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4            25.1550             25.41            0.1803            150.93</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5            25.6970             26.01            0.2747            256.97</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   rate_onset rate_decline</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1     0.1900       0.1171</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2     0.1826       0.1787</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3     0.1400       0.0555</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     0.2540       0.1214</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5     0.5600       0.1371</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
