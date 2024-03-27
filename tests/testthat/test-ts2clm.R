@@ -153,7 +153,7 @@ test_that("hourly functions are acknowledged and used", {
   expect_equal(ncol(res), 6)
   expect_equal(nrow(res), 359400)
   ts_WA_hourly_NA <- ts_WA_hourly; ts_WA_hourly_NA$temp[502] <- NA
-  res_var_NA <- ts2clm(ts_WA_hourly_NA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
+  res_var_NA <- ts2clm(ts_WA_hourly_NA, climatologyPeriod = c("1983-01-01", "2012-12-31"), maxPadLength = 2,
                        windowHalfWidth = 5*24, smoothPercentileWidth = 31*24, var = TRUE, returnDF = FALSE)
   expect_is(res_var_NA, "data.table")
   expect_equal(ncol(res_var_NA), 7)
