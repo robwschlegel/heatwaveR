@@ -1,3 +1,7 @@
+# heatwaveR 0.5.3.9000 (2024-04-09)
+
+- Updated URL for MHW tutorial
+
 # heatwaveR 0.5.3.9000 (2024-03-27)
 
 - Basic hourly functionality added to `ts2clm()`
