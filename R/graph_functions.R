@@ -14,14 +14,18 @@
 #' @param x This column is expected to contain a vector of dates as per the
 #' specification of \code{make_whole_fast}. If a column headed \code{t} is present in
 #' the dataframe, this argument may be omitted; otherwise, specify the name of
-#' the column with dates here.
+#' the column with dates here. This may also be hourly data.
 #' @param y This is a column containing the measurement variable. If the column
 #' name differs from the default (i.e. \code{temp}), specify the name here.
 #' @param min_duration The minimum duration (days) the event must be for it to
-#' qualify as a heatwave or cold-spell.
+#' qualify as a heatwave or cold-spell. Note this is
+#' ALWAYS in units of days, even if hourly data are provided. The correction
+#' to hourly values is made internally within this function.
 #' @param spread The number of days leading and trailing the largest event
 #' (as per \code{metric}) detected within the time period specified by
-#' \code{start_date} and \code{end_date}. The default is 150 days.
+#' \code{start_date} and \code{end_date}. The default is 150 days. Note this is
+#' ALWAYS in units of days, even if hourly data are provided. The correction
+#' to hourly values is made internally within this function.
 #' @param metric This tells the function how to choose the event that should be
 #' highlighted as the 'greatest' of the events in the chosen period.
 #' Partial name matching is currently not supported so please specify the metric
@@ -115,18 +119,24 @@ event_line <- function(data,
   event <- data$event[data$event$date_end >= start_date & data$event$date_start <= end_date, ]
 
   if (nrow(event) == 0) stop("No events detected! Consider changing the 'start_date' or 'end_date' values.")
+  if(inherits(data$climatology$ts_x[1], "POSIXct")){
+    time_alt <- 24; time_spread <- "hour"
+  } else {
+    time_alt <- 1; time_spread <- "day"
+  }
 
   index_start <- index_end <- event_idx <-  NULL
 
   event_idx <- -abs(eval(substitute(metric), event))
   event <- event[base::order(event_idx), ]
-  event <- event[event$duration >= min_duration, ]
-  event$index_start_fix <- event$index_start - 1
-  event$index_end_fix <- event$index_end + 1
+  event <- event[event$duration >= min_duration * time_alt, ]
+  event$index_start_fix <- event$index_start - 1 * time_alt
+  event$index_end_fix <- event$index_end + 1 * time_alt
 
   event_top <- event[1, ]
 
-  date_spread <- seq((event_top$date_start - spread), (event_top$date_end + spread), by = "day")
+  date_spread <- seq((event_top$date_start - spread * time_alt),
+                     (event_top$date_end + spread * time_alt), by = time_spread)
 
   event_sub <- event[event$date_start >= min(date_spread) & event$date_end <= max(date_spread), ]
 
@@ -185,9 +195,14 @@ event_line <- function(data,
     xtangle <- 0
   }
 
-  ep <- ggplot(data = clim_spread, aes(x = ts_x, y = ts_y)) +
-    scale_x_date(expand = c(0, 0), date_labels = "%b %Y") +
-    labs(x = xlabel, y = ylabel) +
+  if(inherits(clim_spread$ts_x[1], "POSIXct")){
+    ep <- ggplot(data = clim_spread, aes(x = ts_x, y = ts_y)) +
+      scale_x_time(expand = c(0, 0))
+  } else {
+    ep <- ggplot(data = clim_spread, aes(x = ts_x, y = ts_y)) +
+      scale_x_date(expand = c(0, 0), date_labels = "%b %Y")
+  }
+  ep <- ep + labs(x = xlabel, y = ylabel) +
     theme(plot.background = element_blank(),
           panel.background = element_rect(fill = "white"),
           panel.border = element_rect(colour = "black", fill = NA, linewidth = 0.75),
