@@ -27,12 +27,14 @@ and \code{y} (see below). The function will not accurately detect consecutive
 days of temperatures in exceedance of the \code{threshold} if missing days of
 data are not filled in with \code{NA}. Data of the appropriate format are created
 by the internal function \code{\link{make_whole_fast}}, but your own data may be used
-directly if they meet the given criteria.}
+directly if they meet the given criteria. Note that it is also possible to provide hourly
+data in the \code{x} column as class \code{POSIXct}.}
 
 \item{x}{This column is expected to contain a vector of dates as per the
 specification of \code{make_whole_fast}. If a column headed \code{t} is present in
 the dataframe, this argument may be omitted; otherwise, specify the name of
-the column with dates here.}
+the column with dates here. Note that it is also possible to provide hourly
+data as class \code{POSIXct}.}
 
 \item{y}{This is a column containing the measurement variable. If the column
 name differs from the default (i.e. \code{temp}), specify the name here.}
@@ -60,7 +62,8 @@ consecutive days in exceedance of the \code{threshold} when
 interpolate (pad) missing data (specified as \code{NA}) in the input
 temperature time series; i.e., any consecutive blocks of NAs with length
 greater than \code{maxPadLength} will be left as \code{NA}. Set as an
-integer. The default is \code{3} days.}
+integer. The default is \code{3} days. Note this will be units of hours if
+hourly data were provided.}
 
 \item{roundRes}{This argument allows the user to choose how many decimal places
 the exceedance metric outputs will be rounded to. Default is 4. To

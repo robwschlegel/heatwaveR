@@ -1,3 +1,7 @@
+# heatwaveR 0.5.3.9001 (2024-04-22)
+
+- Addressing bugs in the calculation of hourly values not ending on even hour steps
+
 # heatwaveR 0.5.3.9000 (2024-04-09)
 
 - Updated URL for MHW tutorial

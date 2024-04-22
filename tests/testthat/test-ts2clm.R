@@ -138,7 +138,7 @@ test_that("additional columns in base data should be passed through the funciton
 
 test_that("hourly functions are acknowledged and used", {
   Sys.setenv(TZ = "UTC")
-  ts_WA <- sst_WA
+  ts_WA <- sst_WA[1:3652,]
   ts_hours <- expand.grid(ts_WA$t, seq(1:24)-1)
   colnames(ts_hours) <- c("t", "hour")
   ts_hours$hourly <- fasttime::fastPOSIXct(paste0(ts_hours$t," ",ts_hours$hour,":00:00"))
@@ -147,15 +147,18 @@ test_that("hourly functions are acknowledged and used", {
   ts_WA_hourly <- ts_WA_hourly[,c("hourly", "temp")]
   colnames(ts_WA_hourly) <- c("t", "temp")
   ts_WA_hourly <- ts_WA_hourly[order(ts_WA_hourly$t),]
-  res <- ts2clm(ts_WA_hourly, climatologyPeriod = c("1983-01-01", "2012-12-31"),
+  res <- ts2clm(ts_WA_hourly, climatologyPeriod = c("1982-01-01", "1991-12-31"),
                 windowHalfWidth = 5*24, smoothPercentileWidth = 31*24)
   expect_is(res, "data.frame")
   expect_equal(ncol(res), 6)
-  expect_equal(nrow(res), 359400)
+  expect_equal(nrow(res), 87648)
   ts_WA_hourly_NA <- ts_WA_hourly; ts_WA_hourly_NA$temp[502] <- NA
-  res_var_NA <- ts2clm(ts_WA_hourly_NA, climatologyPeriod = c("1983-01-01", "2012-12-31"), maxPadLength = 2,
+  res_var_NA <- ts2clm(ts_WA_hourly_NA, climatologyPeriod = c("1982-01-01", "1991-12-31"), maxPadLength = 2,
                        windowHalfWidth = 5*24, smoothPercentileWidth = 31*24, var = TRUE, returnDF = FALSE)
   expect_is(res_var_NA, "data.table")
   expect_equal(ncol(res_var_NA), 7)
-  expect_equal(nrow(res_var_NA), 359400)
+  expect_equal(nrow(res_var_NA), 87648)
+  ts_WA_nonhourly <- ts_WA_hourly
+  ts_WA_nonhourly$t[1] <- ts_WA_nonhourly$t[1]+61
+  expect_error(ts2clm(ts_WA_nonhourly, climatologyPeriod = c("1982-01-01", "1991-12-31")))
 })

@@ -13,7 +13,9 @@
 #' the arguments \code{x} and \code{y}; see immediately below), the data set is
 #' expected to have the headers \code{t} and \code{temp}. The \code{t} column is a
 #' vector of dates of class \code{Date}, while \code{temp} is the measured variable
-#' (by default it is assumed to be temperature).
+#' (by default it is assumed to be temperature). Note that one may also provide
+#' hourly time series with the class \code{POSIXct}, but these values must be
+#' in even hourly steps (e.g. 2012-01-22 23:00:00 not 2012-01-22 23:01:33).
 #' @param x This column is expected to contain a vector of dates. If a column
 #' headed \code{t} is present in the dataframe, this argument may be omitted;
 #' otherwise, specify the name of the column with dates here.
@@ -23,18 +25,21 @@
 #' (see example below). The first value should be the chosen date for the start of
 #' the climatology period, and the second value the end date of said period. This
 #' chosen period (preferably 30 years in length) is then used to calculate the
-#' seasonal cycle and the extreme value threshold.
+#' seasonal cycle and the extreme value threshold. Note that these values are
+#' always provided as dates, even if hourly data are being input into the function.
 #' @param maxPadLength Specifies the maximum length of days over which to
 #' interpolate (pad) missing data (specified as \code{NA}) in the input
 #' temperature time series; i.e., any consecutive blocks of NAs with length
 #' greater than \code{maxPadLength} will be left as \code{NA}. The default is
 #' \code{FALSE}. Set as an integer to interpolate. Setting \code{maxPadLength}
-#' to \code{TRUE} will return an error.
+#' to \code{TRUE} will return an error. Note that this will be the number of hours
+#' over which to interpolate if an hourly time series is provided.
 #' @param windowHalfWidth Width of sliding window about day-of-year (to one
 #' side of the center day-of-year) used for the pooling of values and
 #' calculation of climatology and threshold percentile. Default is \code{5}
 #' days, which gives a window width of 11 days centred on the 6th day of the
-#' series of 11 days.
+#' series of 11 days. Note that this will be the number of hours
+#' over which to smooth if an hourly time series is provided.
 #' @param pctile Threshold percentile (\%) for detection of events (MHWs).
 #' Default is \code{90}th percentile. Should the intent be to use these
 #' threshold data for MCSs, set \code{pctile = 10}. Or some other low value.
@@ -42,7 +47,7 @@
 #' climatology and threshold percentile time series with a moving average of
 #' \code{smoothPercentileWidth}. Default is \code{TRUE}.
 #' @param smoothPercentileWidth Full width of moving average window for smoothing
-#' climatology and threshold. The default is \code{31} days.
+#' climatology and threshold. The default is \code{31}.
 #' @param clmOnly Choose to calculate and return only the climatologies.
 #' The default is \code{FALSE}.
 #' @param var This argument has been introduced to allow the user to choose if
@@ -183,12 +188,18 @@ ts2clm <- function(data,
   ts_y <- eval(substitute(y), data)
   if (is.null(ts_y) | is.function(ts_y))
     stop("Please ensure that a column named 'temp' is present in your data.frame or that you have assigned a column to the 'y' argument.")
-  # rm(data) # Need to keep this for the end
+  # rm(data) # NB: Need to keep this for the end
 
   if (!inherits(ts_x[1], "Date"))
     if (!inherits(ts_x[1], "POSIXct"))
       stop("Please ensure your date values are either type 'Date' or 'POSIXct'.
            This may be done with either 'as.Date()' or 'as.POSIXct()'.")
+  if (inherits(ts_x[1], "POSIXct")){
+    ts_x_hourly <- round(ts_x, units = "hours")
+    if (any(!ts_x == ts_x_hourly))
+      stop("Please ensure that timesteps are even hours.
+           E.g. data$x <- round(data$x, units = 'hours')")
+  }
   if (!is.numeric(ts_y[1]))
     stop("Please ensure the temperature values you are providing are type 'num' for numeric.")
 

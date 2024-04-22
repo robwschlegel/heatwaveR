@@ -115,6 +115,23 @@ test_that("event_line() additional plotting work", {
   expect_equal(p4$coordinates$limits$y, c(20, 30))
 })
 
+test_that("event_line() responds correctly to hourly data", {
+  Sys.setenv(TZ = "UTC")
+  ts_WA <- sst_WA[1:3652,]
+  ts_hours <- expand.grid(ts_WA$t, seq(1:24)-1)
+  colnames(ts_hours) <- c("t", "hour")
+  ts_hours$hourly <- fasttime::fastPOSIXct(paste0(ts_hours$t," ",ts_hours$hour,":00:00"))
+  ts_WA_hourly <- merge(ts_hours, ts_WA)
+  ts_WA_hourly$temp <- ts_WA_hourly$temp + runif(n = nrow(ts_WA_hourly), min = 0.01, max = 0.1)
+  ts_WA_hourly <- ts_WA_hourly[,c("hourly", "temp")]
+  colnames(ts_WA_hourly) <- c("t", "temp")
+  ts_WA_hourly <- ts_WA_hourly[order(ts_WA_hourly$t),]
+  ts_res <- ts2clm(ts_WA_hourly, climatologyPeriod = c("1982-01-01", "1991-12-31"),
+                windowHalfWidth = 5*24, smoothPercentileWidth = 31*24)
+  event_res <- detect_event(data = ts_res)
+  expect_error(event_line(data = event_res))
+})
+
 
 # lolli_plot tests --------------------------------------------------------
 
