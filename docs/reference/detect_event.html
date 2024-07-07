@@ -27,7 +27,7 @@ other means."><meta property="og:image" content="https://robwschlegel.github.io/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3.9001</span>
       </span>
     </div>
 
@@ -154,14 +154,16 @@ daily threshold above which events may be detected. Data of the appropriate
 format are created by the function <code><a href="ts2clm.html">ts2clm</a></code>, but your own data
 can be supplied if they meet the criteria specified by <code><a href="ts2clm.html">ts2clm</a></code>.
 If the column names of <code>data</code> match those outlined here, the following
-four arguments may be ignored.</p></dd>
+four arguments may be ignored. Note that it is also possible to provide hourly
+data in the <code>x</code> column as class <code>POSIXct</code>.</p></dd>
 
 
 <dt>x</dt>
 <dd><p>This column is expected to contain a vector of dates as per the
 specification of <code><a href="ts2clm.html">ts2clm</a></code>. If a column headed <code>t</code> is present in
 the dataframe, this argument may be omitted; otherwise, specify the name of
-the column with dates here.</p></dd>
+the column with dates here. Note that it is also possible to provide hourly
+data as class <code>POSIXct</code>.</p></dd>
 
 
 <dt>y</dt>
@@ -209,7 +211,7 @@ is <code>TRUE</code>.</p></dd>
 
 <dt>maxGap</dt>
 <dd><p>The maximum length of gap allowed for the joining of MHWs. The
-default is <code>2</code> days.</p></dd>
+default is <code>2</code> time steps.</p></dd>
 
 
 <dt>maxGap2</dt>

@@ -17,11 +17,13 @@
 #' format are created by the function \code{\link{ts2clm}}, but your own data
 #' can be supplied if they meet the criteria specified by \code{\link{ts2clm}}.
 #' If the column names of \code{data} match those outlined here, the following
-#' four arguments may be ignored.
+#' four arguments may be ignored. Note that it is also possible to provide hourly
+#' data in the \code{x} column as class \code{POSIXct}.
 #' @param x This column is expected to contain a vector of dates as per the
 #' specification of \code{\link{ts2clm}}. If a column headed \code{t} is present in
 #' the dataframe, this argument may be omitted; otherwise, specify the name of
-#' the column with dates here.
+#' the column with dates here. Note that it is also possible to provide hourly
+#' data as class \code{POSIXct}.
 #' @param y This is a column containing the measurement variable. If the column
 #' name differs from the default (i.e. \code{temp}), specify the name here.
 #' @param seasClim The dafault for this argument assumes that the seasonal
@@ -45,7 +47,7 @@
 #' occur before/after a short gap as specified by \code{maxGap}. The default
 #' is \code{TRUE}.
 #' @param maxGap The maximum length of gap allowed for the joining of MHWs. The
-#' default is \code{2} days.
+#' default is \code{2} time steps.
 #' @param maxGap2 The maximum gap length after applying both thresholds.
 #' By default \code{maxGap2 = maxGap} and is ignored if \code{threshClim2} has not
 #' been specified.

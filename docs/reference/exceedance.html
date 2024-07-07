@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">heatwaveR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.5.3.9001</span>
       </span>
     </div>
 
@@ -137,14 +137,16 @@ and <code>y</code> (see below). The function will not accurately detect consecut
 days of temperatures in exceedance of the <code>threshold</code> if missing days of
 data are not filled in with <code>NA</code>. Data of the appropriate format are created
 by the internal function <code><a href="make_whole_fast.html">make_whole_fast</a></code>, but your own data may be used
-directly if they meet the given criteria.</p></dd>
+directly if they meet the given criteria. Note that it is also possible to provide hourly
+data in the <code>x</code> column as class <code>POSIXct</code>.</p></dd>
 
 
 <dt>x</dt>
 <dd><p>This column is expected to contain a vector of dates as per the
 specification of <code>make_whole_fast</code>. If a column headed <code>t</code> is present in
 the dataframe, this argument may be omitted; otherwise, specify the name of
-the column with dates here.</p></dd>
+the column with dates here. Note that it is also possible to provide hourly
+data as class <code>POSIXct</code>.</p></dd>
 
 
 <dt>y</dt>
@@ -186,7 +188,8 @@ consecutive days in exceedance of the <code>threshold</code> when
 interpolate (pad) missing data (specified as <code>NA</code>) in the input
 temperature time series; i.e., any consecutive blocks of NAs with length
 greater than <code>maxPadLength</code> will be left as <code>NA</code>. Set as an
-integer. The default is <code>3</code> days.</p></dd>
+integer. The default is <code>3</code> days. Note this will be units of hours if
+hourly data were provided.</p></dd>
 
 
 <dt>roundRes</dt>

@@ -8,11 +8,13 @@
 #' days of temperatures in exceedance of the \code{threshold} if missing days of
 #' data are not filled in with \code{NA}. Data of the appropriate format are created
 #' by the internal function \code{\link{make_whole_fast}}, but your own data may be used
-#' directly if they meet the given criteria.
+#' directly if they meet the given criteria. Note that it is also possible to provide hourly
+#' data in the \code{x} column as class \code{POSIXct}.
 #' @param x This column is expected to contain a vector of dates as per the
 #' specification of \code{make_whole_fast}. If a column headed \code{t} is present in
 #' the dataframe, this argument may be omitted; otherwise, specify the name of
-#' the column with dates here.
+#' the column with dates here. Note that it is also possible to provide hourly
+#' data as class \code{POSIXct}.
 #' @param y This is a column containing the measurement variable. If the column
 #' name differs from the default (i.e. \code{temp}), specify the name here.
 #' @param threshold The static threshold used to determine how many consecutive
@@ -33,7 +35,8 @@
 #' interpolate (pad) missing data (specified as \code{NA}) in the input
 #' temperature time series; i.e., any consecutive blocks of NAs with length
 #' greater than \code{maxPadLength} will be left as \code{NA}. Set as an
-#' integer. The default is \code{3} days.
+#' integer. The default is \code{3} days. Note this will be units of hours if
+#' hourly data were provided.
 #' @param roundRes This argument allows the user to choose how many decimal places
 #' the exceedance metric outputs will be rounded to. Default is 4. To
 #' prevent rounding set \code{roundRes = FALSE}. This argument may only be given
@@ -148,6 +151,13 @@ exceedance <- function(data,
   ts_y <- eval(substitute(y), data)
   if (is.null(ts_y) | is.function(ts_y))
     stop("Please ensure that a column named 'temp' is present in your data.frame or that you have assigned a column to the 'y' argument.")
+  if (inherits(ts_x[1], "POSIXct")){
+    ts_x_hourly <- round(ts_x, units = "hours")
+    if (any(!ts_x == ts_x_hourly))
+      stop("Please ensure that timesteps are even hours.
+           E.g. data$x <- round(data$x, units = 'hours')")
+  }
+
   # ts_xy <- data.frame(ts_x = ts_Med_hourly$t, ts_y = ts_Med_hourly$temp)
   ts_xy <- data.frame(ts_x = ts_x, ts_y = ts_y)
   rm(ts_x, ts_y)

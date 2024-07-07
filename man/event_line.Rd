@@ -28,7 +28,8 @@ event_line(
 \item{x}{This column is expected to contain a vector of dates as per the
 specification of \code{make_whole_fast}. If a column headed \code{t} is present in
 the dataframe, this argument may be omitted; otherwise, specify the name of
-the column with dates here.}
+the column with dates here. Note that this function will not work with
+hourly data.}
 
 \item{y}{This is a column containing the measurement variable. If the column
 name differs from the default (i.e. \code{temp}), specify the name here.}

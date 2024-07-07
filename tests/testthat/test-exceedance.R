@@ -117,7 +117,7 @@ test_that("Extra columns are passed forward correctly", {
 
 test_that("hourly functions are acknowledged and used", {
   Sys.setenv(TZ = "UTC")
-  ts_Med <- sst_Med
+  ts_Med <- sst_Med[1:3652,]
   ts_hours <- expand.grid(ts_Med$t, seq(1:24)-1)
   colnames(ts_hours) <- c("t", "hour")
   ts_hours$hourly <- fasttime::fastPOSIXct(paste0(ts_hours$t," ",ts_hours$hour,":00:00"))
@@ -129,5 +129,8 @@ test_that("hourly functions are acknowledged and used", {
   res <- exceedance(data = ts_Med_hourly, threshold = 20, minDuration = 5*24, maxGap = 2*24)
   expect_is(res$exceedance, "data.frame")
   expect_equal(ncol(res$exceedance), 18)
-  expect_equal(nrow(res$exceedance), 65)
+  expect_equal(nrow(res$exceedance), 15)
+  ts_Med_nonhourly <- ts_Med_hourly
+  ts_Med_nonhourly$t[1] <- ts_Med_nonhourly$t[1]+61
+  expect_error(exceedance(ts_Med_nonhourly, threshold = 20))
 })

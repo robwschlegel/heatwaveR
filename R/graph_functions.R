@@ -14,7 +14,8 @@
 #' @param x This column is expected to contain a vector of dates as per the
 #' specification of \code{make_whole_fast}. If a column headed \code{t} is present in
 #' the dataframe, this argument may be omitted; otherwise, specify the name of
-#' the column with dates here.
+#' the column with dates here. Note that this function will not work with
+#' hourly data.
 #' @param y This is a column containing the measurement variable. If the column
 #' name differs from the default (i.e. \code{temp}), specify the name here.
 #' @param min_duration The minimum duration (days) the event must be for it to
@@ -109,6 +110,9 @@ event_line <- function(data,
   ts_y <- eval(substitute(y), data$climatology)
   data$climatology$ts_y <- ts_y
 
+  if (inherits(ts_x[1], "POSIXct"))
+    stop("event_line() will only work with daily data")
+
   if (is.null(start_date)) start_date <- min(data$climatology$ts_x)
   if (is.null(end_date)) end_date <- max(data$climatology$ts_x)
 
@@ -200,7 +204,7 @@ event_line <- function(data,
           legend.justification = c(0, 0),
           legend.position.inside = c(0.005, 0.015),
           legend.key = element_blank()
-          )
+    )
 
   if (category) {
 
