@@ -97,7 +97,7 @@
 #' as detailed above.
 #'
 #' @details An explanation for the categories is as follows:
-#' \enumerate{
+#' \describe{
 #'   \item{I Moderate-}{Events that have been detected, but with a maximum intensity that does not
 #'   double the distance between the seasonal climatology and the threshold value.}
 #'   \item{II Strong-}{Events with a maximum intensity that doubles the distance from the seasonal

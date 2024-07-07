@@ -7,6 +7,9 @@
 proto_event3(p_series, criterion_column, minDuration, joinAcrossGaps, maxGap)
 }
 \arguments{
+\item{p_series}{A data.table of the correct dimensions received
+from \code{\link{detect_event3}} within which this runs.}
+
 \item{criterion_column}{The column to use for the detection of events.}
 
 \item{minDuration}{Minimum duration for acceptance of detected events.}
@@ -17,9 +20,6 @@ default it inherits is \code{TRUE}.}
 
 \item{maxGap}{This is the number of rows (days) across which distinct
 events will be combined into one event if \code{joinAcrossGaps = TRUE}.}
-
-\item{t_series}{A data.table of the correct dimensions received
-from \code{\link{detect_event3}} within which this runs.}
 }
 \value{
 A dataframe that will be used within \code{\link{detect_event}},

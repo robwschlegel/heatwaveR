@@ -9,7 +9,7 @@
 #'
 #' @keywords internal
 #'
-#' @param t_series A data.table of the correct dimensions received
+#' @param p_series A data.table of the correct dimensions received
 #' from \code{\link{detect_event3}} within which this runs.
 #' @param criterion_column The column to use for the detection of events.
 #' @param minDuration Minimum duration for acceptance of detected events.
