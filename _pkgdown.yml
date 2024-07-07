@@ -63,6 +63,7 @@ reference:
   - '`sst_WA`'
 
 template:
+  bootstrap: 5
   params:
     bootswatch: spacelab
     ganalytics: UA-118123016-1

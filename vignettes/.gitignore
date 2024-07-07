@@ -1,3 +1,5 @@
 *.html
 *.R
 .DS_Store
+
+/.quarto/
