@@ -180,8 +180,8 @@ category <- function(data,
         return(res)
       } else {
         return(cat_res)
-        }
       }
+    }
 
     cat_frame <- data.frame(event_no = data$event$event_no,
                             event_name = paste0(as.character(name), " ", format(data$event$date_peak, "%Y")),
@@ -301,7 +301,7 @@ category <- function(data,
       clim_diff$thresh_4x <- -clim_diff$thresh_4x
     }
 
-    moderate_n <- data.frame(base::table(clim_diff[clim_diff$ts_y > clim_diff$thresh,]$event_no))
+    moderate_n <- data.frame(base::table(clim_diff[clim_diff$ts_y >= clim_diff$thresh,]$event_no))
     strong_n <- as.data.frame(base::table(clim_diff[clim_diff$ts_y > clim_diff$thresh_2x,]$event_no))
     severe_n <- as.data.frame(base::table(clim_diff[clim_diff$ts_y > clim_diff$thresh_3x,]$event_no))
     extreme_n <- as.data.frame(base::table(clim_diff[clim_diff$ts_y > clim_diff$thresh_4x,]$event_no))
