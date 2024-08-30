@@ -1,3 +1,11 @@
+# heatwaveR 0.5.3.9003 (2024-08-30)
+
+- Minor tweak to `event_line()` to match new __`ggplot2`__ syntax
+
+# heatwaveR 0.5.3.9002 (2024-07-07)
+
+- Changed moderate category calculation from '>' to '>='
+
 # heatwaveR 0.5.3.9001 (2024-04-22)
 
 - Addressing bugs in the calculation of hourly values not ending on even hour steps

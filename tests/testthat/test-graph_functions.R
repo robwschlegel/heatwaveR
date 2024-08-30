@@ -154,7 +154,6 @@ test_that("lolli_plot() argument names can be changed", {
 test_that("data fed to lolli_plot() is a list with correct dataframes", {
   res <- detect_event(data = ts2clm(sst_Med,
                                     climatologyPeriod = c("1983-01-01", "2012-12-31")))
-  # Error message doesn't sync up for some reason so is omitted here...
   expect_error(lolli_plot(res$event))
 })
 
