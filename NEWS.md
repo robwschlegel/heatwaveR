@@ -1,3 +1,7 @@
+# heatwaveR 0.5.3.9004 (2024-09-25)
+
+- Updated OISST vignette to account for changes in the behaviour of __`tidync`__ functions
+
 # heatwaveR 0.5.3.9003 (2024-08-30)
 
 - Minor tweak to `event_line()` to match new __`ggplot2`__ syntax
