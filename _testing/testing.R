@@ -1,3 +1,6 @@
+library(tidyverse)
+library(heatwaveR)
+
 ts_dat <- make_whole_fast(sst_WA)
 colnames(ts_dat) <- c("doy", "ts.x", "ts.y")
 
@@ -64,3 +67,4 @@ clim <-
   )
 
 t_series <- merge(data, clim, by = "doy") # <--- construct a 366-day climatology and merge with doy in data
+

@@ -1,3 +1,7 @@
+# heatwaveR 0.5.3.9005 (2025-01-12)
+
+- Minor tweak to `ebent_line()` to keep up with changes to __`ggplot2`__
+
 # heatwaveR 0.5.3.9004 (2024-09-25)
 
 - Updated OISST vignette to account for changes in the behaviour of __`tidync`__ functions
