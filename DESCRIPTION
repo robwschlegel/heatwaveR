@@ -1,5 +1,5 @@
 Package: heatwaveR
-Version: 0.5.3.9006
+Version: 0.5.4
 Date: 2025-04-07
 Title: Detect Heatwaves and Cold-Spells
 Description: The different methods for defining, detecting, and categorising the extreme events 
