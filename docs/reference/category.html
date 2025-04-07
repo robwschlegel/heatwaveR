@@ -15,7 +15,7 @@ accordance with the naming scheme proposed in Hobday et al. (2018)."><meta prope
 
     <a class="navbar-brand me-2" href="../index.html">heatwaveR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.3.9005</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -156,15 +156,27 @@ appraise the extent of the events in the output of <code><a href="detect_event.h
 category ranking scale. The category thresholds are calculated based on the difference
 between the given seasonal climatology and threshold climatology. The four category levels
 are then the difference multiplied by the category level.</p>
-<p>The definitions for the default output columns are as follows:</p>
-<dl><dt>event_no</dt>
+<p>The definitions for the default output columns are as follows:</p><dl><dt>t</dt>
+<dd><p>The column containing the daily date values.</p></dd>
+
+  <dt>event_no</dt>
+<dd><p>The numeric event number label.</p></dd>
+
+  <dt>intensity</dt>
+<dd><p>The daily exceedance (default is degrees C) above the
+  seasonal climatology.</p></dd>
+
+  <dt>category</dt>
+<dd><p>The category classification per day.</p></dd>
+
+  <dt>event_no</dt>
 <dd><p>The number of the event as determined by <code><a href="detect_event.html">detect_event</a></code>
   to allow for joining between the outputs.</p></dd>
 
   <dt>event_name</dt>
-<dd><p>The name of the event. Generated from the <code><a href="https://rdrr.io/r/base/name.html" class="external-link">name</a></code>
+<dd><p>The name of the event. Generated from the <code>name</code>
   value provided and the year of the <code>peak_date</code> (see following) of
-  the event. If no <code><a href="https://rdrr.io/r/base/name.html" class="external-link">name</a></code> value is provided the default "Event" is used.
+  the event. If no <code>name</code> value is provided the default "Event" is used.
   As proposed in Hobday et al. (2018), <code>Moderate</code> events are not given a name
   so as to prevent multiple repeat names within the same year. If two or more events
   ranked greater than Moderate are reported within the same year, they will be
@@ -183,7 +195,7 @@ are then the difference multiplied by the category level.</p>
 
   <dt>duration</dt>
 <dd><p>The total duration (days) of the event. Note that this includes
-  any possible days when the measurement value <code><a href="https://ggplot2.tidyverse.org/reference/aes_position.html" class="external-link">y</a></code>) may have dropped below the
+  any possible days when the measurement value <code>y</code> may have dropped below the
   threshold value. Therefore, the proportion of the event duration (days) spent above
   certain thresholds may not add up to 100% (see following four items).</p></dd>
 
@@ -213,8 +225,7 @@ are then the difference multiplied by the category level.</p>
 
 
 </dl><p>If <code>climatology = TRUE</code>, this function will output a list of two dataframes.
-The first dataframe, <code>climatology</code>, will contain the following columns:</p>
-<dl><dt>t</dt>
+The first dataframe, <code>climatology</code>, will contain the following columns:</p><dl><dt>t</dt>
 <dd><p>The column containing the daily date values.</p></dd>
 
   <dt>event_no</dt>
@@ -249,7 +260,7 @@ as detailed above.</p>
   aforementioned distance.</p></dd>
 
   <dt>V Ice-</dt>
-<dd><p>If `MCSice = T`, a MCS with an event threshold below -1.7°C will be classified here.</p></dd>
+<dd><p>If <code>MCSice = TRUE</code>, a MCS with an event threshold below -1.7°C will be classified here.</p></dd>
 
 
 </dl></div>
