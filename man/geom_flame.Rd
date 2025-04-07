@@ -41,7 +41,7 @@ as a string.}
 \item{position}{Position adjustment, either as a string, or the result of a call
 to a position adjustment function.}
 
-\item{...}{other arguments passed on to \code{\link{layer}}. These are
+\item{...}{other arguments passed on to \code{\link[ggplot2]{layer}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{color = "red"} or \code{linewidth = 3}. They may also be parameters
 to the paired geom/stat.}
@@ -73,7 +73,7 @@ specification, e.g. \code{borders()}.}
 }
 \description{
 This function will create polygons between two lines. If given a
-temperature and theshold time series, like that produced by
+temperature and threshold time series, like that produced by
 \code{\link{detect_event}}, the output will meet the specifications
 of Hobday et al. (2016) shown as 'flame polygons.' If one wishes to
 plot polygons below a given threshold, and not above, switch the values

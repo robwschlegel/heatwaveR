@@ -1,7 +1,7 @@
 #' Create 'flame' polygons.
 #'
 #' This function will create polygons between two lines. If given a
-#' temperature and theshold time series, like that produced by
+#' temperature and threshold time series, like that produced by
 #' \code{\link{detect_event}}, the output will meet the specifications
 #' of Hobday et al. (2016) shown as 'flame polygons.' If one wishes to
 #' plot polygons below a given threshold, and not above, switch the values
@@ -56,7 +56,7 @@
 #' specification, e.g. \code{borders()}.
 #' @param na.rm If \code{FALSE} (the default), removes missing values with
 #'    a warning. If \code{TRUE} silently removes missing values.
-#' @param ... other arguments passed on to \code{\link{layer}}. These are
+#' @param ... other arguments passed on to \code{\link[ggplot2]{layer}}. These are
 #'   often aesthetics, used to set an aesthetic to a fixed value, like
 #'   \code{color = "red"} or \code{linewidth = 3}. They may also be parameters
 #'   to the paired geom/stat.
@@ -243,7 +243,7 @@ GeomFlame <- ggplot2::ggproto("GeomFlame", ggplot2::Geom,
 #' specification, e.g. \code{borders()}.
 #' @param na.rm If \code{FALSE} (the default), removes missing values with
 #' a warning. If \code{TRUE} silently removes missing values.
-#' @param ... other arguments passed on to \code{\link{layer}}. These are
+#' @param ... other arguments passed on to \code{\link[ggplot2]{layer}}. These are
 #' often aesthetics, used to set an aesthetic to a fixed value, like
 #' \code{color = "red"} or \code{size = 3}. They may also be parameters
 #' to the paired geom/stat.

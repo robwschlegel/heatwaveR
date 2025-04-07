@@ -165,9 +165,9 @@ The \code{event} results are summarised using a range of event metrics:
   \item{intensity_cumulative}{Cumulative intensity [deg. C x days].}
   \item{rate_onset}{Onset rate of event [deg. C / day].}
   \item{rate_decline}{Decline rate of event [deg. C / day].}
-  \item{event_name}{The name of the event. Generated from the \code{\link{name}}
+  \item{event_name}{The name of the event. Generated from the \code{name}
   value provided and the year of the \code{date_peak} of
-  the event. If no \code{\link{name}} value is provided the default "Event" is used.
+  the event. If no \code{name} value is provided the default "Event" is used.
   As proposed in Hobday et al. (2018), \code{Moderate} events are not given a name
   so as to prevent multiple repeat names within the same year. If two or more events
   ranked greater than Moderate are reported within the same year, they will be

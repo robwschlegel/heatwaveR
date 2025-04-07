@@ -52,11 +52,17 @@
 #' are then the difference multiplied by the category level.
 #'
 #' The definitions for the default output columns are as follows:
+#' \describe{
+#'   \item{t}{The column containing the daily date values.}
+#'   \item{event_no}{The numeric event number label.}
+#'   \item{intensity}{The daily exceedance (default is degrees C) above the
+#'   seasonal climatology.}
+#'   \item{category}{The category classification per day.}
 #'   \item{event_no}{The number of the event as determined by \code{\link{detect_event}}
 #'   to allow for joining between the outputs.}
-#'   \item{event_name}{The name of the event. Generated from the \code{\link{name}}
+#'   \item{event_name}{The name of the event. Generated from the \code{name}
 #'   value provided and the year of the \code{peak_date} (see following) of
-#'   the event. If no \code{\link{name}} value is provided the default "Event" is used.
+#'   the event. If no \code{name} value is provided the default "Event" is used.
 #'   As proposed in Hobday et al. (2018), \code{Moderate} events are not given a name
 #'   so as to prevent multiple repeat names within the same year. If two or more events
 #'   ranked greater than Moderate are reported within the same year, they will be
@@ -67,7 +73,7 @@
 #'   \item{category}{The maximum category threshold reached/exceeded by the event.}
 #'   \item{i_max}{The maximum intensity of the event above the threshold value.}
 #'   \item{duration}{The total duration (days) of the event. Note that this includes
-#'   any possible days when the measurement value \code{\link{y}}) may have dropped below the
+#'   any possible days when the measurement value \code{y} may have dropped below the
 #'   threshold value. Therefore, the proportion of the event duration (days) spent above
 #'   certain thresholds may not add up to 100\% (see following four items).}
 #'   \item{p_moderate}{The proportion of the total duration (days) spent at or above
@@ -84,14 +90,17 @@
 #'   seasons are listed as "Year-round". December (June) is used here as the start of
 #'   Austral (Boreal) summer. If "start", "peak", or "end" was given to the \code{season}
 #'   argument then only the one season during that chosen period will be given.}
+#'   }
 #'
 #' If \code{climatology = TRUE}, this function will output a list of two dataframes.
 #' The first dataframe, \code{climatology}, will contain the following columns:
+#' \describe{
 #'   \item{t}{The column containing the daily date values.}
 #'   \item{event_no}{The numeric event number label.}
 #'   \item{intensity}{The daily exceedance (default is degrees C) above the
 #'   seasonal climatology.}
 #'   \item{category}{The category classification per day.}
+#'   }
 #'
 #' The second dataframe, \code{event}, contains the default output of this function,
 #' as detailed above.
@@ -105,7 +114,7 @@
 #'   \item{III Severe-}{Events that triple the aforementioned distance, but do not quadruple it.}
 #'   \item{IV Extreme-}{Events with a maximum intensity that is four times or greater than the
 #'   aforementioned distance.}
-#'   \item{V Ice-}{If `MCSice = T`, a MCS with an event threshold below -1.7°C will be classified here.}
+#'   \item{V Ice-}{If \code{MCSice = TRUE}, a MCS with an event threshold below -1.7°C will be classified here.}
 #'   }
 #'
 #' @author Robert W. Schlegel

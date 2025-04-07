@@ -130,7 +130,7 @@ Sys.setenv('_R_CHECK_SYSTEM_CLOCK_' = 0)
 # A better way to check as CRAN
 checkhelper::check_as_cran()
 
-# Check if any fils are created during check
+# Check if any files are created during check
 checkhelper::check_clean_userspace()
 
 
@@ -257,7 +257,7 @@ devtools::check_mac_release()
 # Local check - Requires bash and Docker
 # rhub::local_check_linux(image = "rhub/debian-gcc-devel")
 
-# Online check
+# On-line check
 rhub::check(platform = "debian-gcc-devel")
 
 # Then use the gear button in the top right pane to 'Build Source Package'
