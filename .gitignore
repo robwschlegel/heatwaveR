@@ -12,3 +12,5 @@ src/heatwaveR.so
 src/rep_vec.cpp
 src/rep_vec.so
 .vscode
+/doc/
+/Meta/

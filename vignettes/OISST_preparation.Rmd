@@ -84,10 +84,10 @@ OISST_sub_dl <- function(time_df){
                                 zlev = c(0, 0),
                                 latitude = c(-40, -35),
                                 longitude = c(15, 21),
-                                fields = "sst")$data %>% 
-    dplyr::mutate(time = base::as.Date(stringr::str_remove(time, "T12:00:00Z"))) %>% 
-    dplyr::rename(t = time, temp = sst, lon = longitude, lat = latitude) %>% 
-    dplyr::select(lon, lat, t, temp) %>% 
+                                fields = "sst")$data |> 
+    dplyr::mutate(time = base::as.Date(stringr::str_remove(time, "T12:00:00Z"))) |> 
+    dplyr::rename(t = time, temp = sst, lon = longitude, lat = latitude) |> 
+    dplyr::select(lon, lat, t, temp) |> 
     stats::na.omit()
 }
 ```
@@ -118,14 +118,11 @@ It is worth pointing out here that these data are downloaded as cached files on 
 ```{r download-data}
 # Download all of the data with one nested request
 # The time this takes will vary greatly based on connection speed
-
-test1 <- OISST_sub_dl(dl_years[1,])
-
 base::system.time(
-  OISST_data <- dl_years %>% 
-    dplyr::group_by(date_index) %>% 
-    dplyr::group_modify(~OISST_sub_dl(.x)) %>% 
-    dplyr::ungroup() %>% 
+  OISST_data <- dl_years |> 
+    dplyr::group_by(date_index) |> 
+    dplyr::group_modify(~OISST_sub_dl(.x)) |> 
+    dplyr::ungroup() |> 
     dplyr::select(lon, lat, t, temp)
 ) # 518 seconds, ~100 seconds per batch
 ```
@@ -137,8 +134,8 @@ If the above code chunk is giving errors it is likely due to one's Internet conn
 Before we save our data for later use it is good practice to visualise them.
 
 ```{r SA-visual}
-OISST_data %>% 
-  dplyr::filter(t == "2019-12-01") %>% 
+OISST_data |> 
+  dplyr::filter(t == "2019-12-01") |> 
   ggplot2::ggplot(aes(x = lon, y = lat)) +
   ggplot2::geom_tile(aes(fill = temp)) +
   # ggplot2::borders() + # Activate this line to see the global map
@@ -177,7 +174,7 @@ OISST_base_url <- "https://www.ncei.noaa.gov/data/sea-surface-temperature-optimu
 OISST_dates <- base::data.frame(t = seq(as.Date("2019-12-01"), as.Date("2019-12-31"), by = "day"))
 
 # To finish up this step we add some text to those dates so they match the OISST file names
-OISST_files <- OISST_dates %>% 
+OISST_files <- OISST_dates |> 
   dplyr::mutate(t_day = base::gsub("-", "", t),
                 t_month = base::substr(t_day, 1, 6),
                 t_year = lubridate::year(t),
@@ -227,13 +224,15 @@ The following code chunk contains the function we may use to load and prepare ou
   # This means it will use much less RAM and is viable for use on most laptops
   # Assuming one's study area is not too large
 OISST_load <- function(file_name, lon1, lon2, lat1, lat2){
-      OISST_dat <- tidync::tidync(file_name) %>%
+      OISST_dat <- tidync::tidync(file_name) |>
         tidync::hyper_filter(lon = dplyr::between(lon, lon1, lon2),
-                             lat = dplyr::between(lat, lat1, lat2)) %>% 
-        tidync::hyper_tibble() %>% 
-        dplyr::select(lon, lat, time, sst) %>% 
-        dplyr::rename(t = time, temp = sst) %>% 
-        dplyr::mutate(t = as.Date(t, origin = "1978-01-01"))
+                             lat = dplyr::between(lat, lat1, lat2)) |> 
+        tidync::hyper_tibble(select_var = c("sst"), drop = FALSE) |> 
+        dplyr::select(lon, lat, time, sst) |> 
+        dplyr::rename(t = time, temp = sst) |> 
+        dplyr::mutate(t = as.Date(t),
+                      lon = as.numeric(lon),
+                      lat = as.numeric(lat))
       return(OISST_dat)
 }
 
@@ -241,7 +240,7 @@ OISST_load <- function(file_name, lon1, lon2, lat1, lat2){
 OISST_files <- dir("~/data/OISST", full.names = T)
 
 # Load the data in parallel
-OISST_dat <- plyr::ldply(.data = OISST_files, .fun = OISST_load, .parallel = T,
+OISST_dat <- plyr::ldply(.data = OISST_files[1:365], .fun = OISST_load, .parallel = T,
                          lon1 = 270, lon2 = 320, lat1 = 30, lat2 = 50)
 
 # It should only take a few seconds to load one month of data depending on the size of the lon/lat extent chosen
@@ -256,8 +255,8 @@ Again, please note that trying to load too much data at once may be too much for
 It is always good to visualise data early and often in any workflow. The code pipeline below shows how we can visualise a day of data from those we've loaded.
 
 ```{r NOAA-visual}
-OISST_dat %>% 
-  dplyr::filter(t == "2019-12-01") %>% 
+OISST_dat |> 
+  dplyr::filter(t == "2019-12-01") |> 
   ggplot2::ggplot(aes(x = lon, y = lat)) +
   ggplot2::geom_tile(aes(fill = temp)) +
   ggplot2::scale_fill_viridis_c() +

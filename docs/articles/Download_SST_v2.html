@@ -14,8 +14,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Download, Prepare, and Analyse NOAA OISST Data: Alternative Methods">
 <meta name="description" content="This vignette demonstrates an alternative method for downloading NOAA OISST data (using a python script) and preparing and detecting marine heatwaves.">
 <meta property="og:description" content="This vignette demonstrates an alternative method for downloading NOAA OISST data (using a python script) and preparing and detecting marine heatwaves.">
@@ -36,7 +36,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">heatwaveR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.3.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.3.9005</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,7 +82,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Download, Prepare, and Analyse NOAA OISST Data: Alternative Methods</h1>
                         <h4 data-toc-skip class="author">AJ Smit</h4>
             
-            <h4 data-toc-skip class="date">2024-08-30</h4>
+            <h4 data-toc-skip class="date">2025-01-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/Download_SST_v2.Rmd" class="external-link"><code>vignettes/Download_SST_v2.Rmd</code></a></small>
       <div class="d-none name"><code>Download_SST_v2.Rmd</code></div>
@@ -237,7 +237,7 @@ cores.</p>
 <span><span class="co"># A load and slice function for the combined netCDF</span></span>
 <span><span class="va">OISST_load</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">file_name</span>, <span class="va">lon1</span>, <span class="va">lon2</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">OISST_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://docs.ropensci.org/tidync/reference/tidync.html" class="external-link">tidync</a></span><span class="op">(</span><span class="va">file_name</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>    <span class="fu"><a href="https://docs.ropensci.org/tidync/reference/hyper_filter.html" class="external-link">hyper_filter</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/between.html" class="external-link">between</a></span><span class="op">(</span><span class="va">lon</span>, <span class="va">lon1</span>, <span class="va">lon2</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://docs.ropensci.org/tidync/reference/hyper_filter.html" class="external-link">hyper_filter</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/between.html" class="external-link">between</a></span><span class="op">(</span><span class="va">lon</span>, <span class="va">lon1</span>, <span class="va">lon2</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="https://docs.ropensci.org/tidync/reference/hyper_tibble.html" class="external-link">hyper_tibble</a></span><span class="op">(</span>select_var <span class="op">=</span> <span class="st">"sst"</span>, force <span class="op">=</span> <span class="cn">TRUE</span>, drop <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">zlev</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>t <span class="op">=</span> <span class="va">time</span>, temp <span class="op">=</span> <span class="va">sst</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -280,7 +280,7 @@ cores.</p>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">sst</span><span class="op">)</span></span>
 <span>    <span class="co"># save results to disk</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/noquote.html" class="external-link">noquote</a></span><span class="op">(</span><span class="st">"  &gt; 3. saving events to csv\n"</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fwrite.html" class="external-link">fwrite</a></span><span class="op">(</span><span class="va">MHW</span>, file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">datadir</span>, <span class="st">"/MHW_slice_"</span>, <span class="va">i</span>, <span class="st">"_"</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fwrite.html" class="external-link">fwrite</a></span><span class="op">(</span><span class="va">MHW</span>, file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">datadir</span>, <span class="st">"/MHW_slice_"</span>, <span class="va">i</span>, <span class="st">"_"</span>,</span>
 <span>                              <span class="va">slice_df</span><span class="op">$</span><span class="va">lon1</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">"-"</span>, <span class="va">slice_df</span><span class="op">$</span><span class="va">lon2</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, <span class="st">".csv"</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/rm.html" class="external-link">rm</a></span><span class="op">(</span><span class="va">MHW</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/noquote.html" class="external-link">noquote</a></span><span class="op">(</span><span class="st">"SLICE DONE!\n"</span><span class="op">)</span><span class="op">)</span></span>
@@ -308,7 +308,7 @@ sea surface temperature. Journal of climate, 20(22), 5473-5496.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>

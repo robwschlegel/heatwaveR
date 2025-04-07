@@ -1,3 +1,6 @@
+library(tidyverse)
+library(heatwaveR)
+
 ts_dat <- make_whole_fast(sst_WA)
 colnames(ts_dat) <- c("doy", "ts.x", "ts.y")
 
@@ -64,3 +67,35 @@ clim <-
   )
 
 t_series <- merge(data, clim, by = "doy") # <--- construct a 366-day climatology and merge with doy in data
+
+# Load and prep data
+header <- read.table('~/Downloads/CIM-ENCIMAT_CTD.tab', skip = 16, nrows = 1, header = FALSE, sep ='\t', stringsAsFactors = FALSE)
+pier_df <- read.table('~/Downloads/CIM-ENCIMAT_CTD.tab', skip = 17, header = FALSE, sep ='\t')
+colnames(pier_df) <- unlist(header)
+
+# Hourly means
+pier_df_hourly <- pier_df |>
+  mutate(t = str_replace(`Date/Time`, "T", " "), # Remove 'T' from date string
+         t = as.POSIXct(t, format = "%Y-%m-%d %H", tz = "UTC")) |>  # Convert to POSIXct and keep only hours
+  dplyr::rename(temp = `Temp [°C]`) |>  # Rename 'Temp [°C]' to 't'
+  dplyr::select(t, temp) |>
+  summarise(temp = mean(temp, na.rm = TRUE), .by = "t") # Calculate mean temperature per hour
+
+# Daily means
+pier_df_daily <- pier_df |>
+  mutate(t = str_replace(`Date/Time`, "T", " "), # Remove 'T' from date string
+         t = as.Date(t, tz = "UTC")) |>  # Convert to POSIXct and keep only hours
+  dplyr::rename(temp = `Temp [°C]`) |>  # Rename 'Temp [°C]' to 't'
+  dplyr::select(t, temp) |>
+  summarise(temp = mean(temp, na.rm = TRUE), .by = "t") # Calculate mean temperature per day
+
+# Hourly results
+ts_clima_hourly <- ts2clm(pier_df_hourly, climatologyPeriod = c(as.POSIXct("2014-01-01 00"), as.POSIXct("2018-12-31 23")))
+mhw_hourly <- detect_event(ts_clima_hourly, minDuration = 120, maxGap = 48) # 5 day duration X 24 hours, 2 day gap X 24 hours
+mhw_hourly_event <- mhw_hourly$event
+
+# Daily results
+ts_clima_daily <- ts2clm(pier_df_daily, climatologyPeriod = c(as.Date("2014-01-01"), as.Date("2018-12-31")))
+mhw_daily <- detect_event(ts_clima_daily, minDuration = 5) # 5 days
+mhw_daily_event <- mhw_daily$event
+

@@ -20,3 +20,5 @@
 ^CITATIONS.md
 ^\.github$
 package_development.R
+^doc$
+^Meta$
