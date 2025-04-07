@@ -23,7 +23,7 @@ knitr::opts_chunk$set(fig.width = 8, fig.height = 8, fig.align = 'centre',
 
 One may see in other vignettes how to [download and prepare OISST data](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html) and how to [detect MHWs in gridded data](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html). In this vignette we will use data subsetted around the New Zealand (NZ) Exclusive Economic Zone (EEZ) for our example to calculate trends and breakpoints for bioregions (from @spalding2007) and seasons as shown in @thoral2022.
 
-```{r load-pkg, eval=F}
+```{r load-pkg, eval=FALSE}
 library(heatwaveR)
 library(lubridate)
 library(dplyr)
@@ -96,7 +96,7 @@ lon_lat_NZ_df <- lon_lat_NZ %>%
 
 We begin by downloading daily OISST v2.1 data for all pixels around New Zealand (lat 25-55°S, lon 160-190°E) and use the functions `heatwaveR::ts2clim()` and `heatwaveR::detect_event()` to get the climatology from the time series. Note that this full process will take roughly one hour on a desktop computer given the number of pixels and days. Even though we know the exact coordinates of the pixels that we want, it is still faster to use the `rerddap::griddap()` function to extract a bounding box around NZ rather than to use the functions in the __`raster`__ package to extract the EEZ polygons.
 
-```{r load-data, eval=F}
+```{r load-data, eval=FALSE}
 # Get SST for around NZ + Islands and for all years
 OISST_sub_dl <- function(time_df){
   OISST_dat <- griddap(x = "ncdcOisst21Agg", 
@@ -152,7 +152,7 @@ OISST_clim <- OISST_data_NZ %>%
 
 ## Summarise MHW metrics by year, season, and bioregion
 
-```{r summarize-metrics, eval=F}
+```{r summarize-metrics, eval=FALSE}
 # Get summary
 MHW_summary <- OISST_clim %>% 
   dplyr::select(-c(doy, thresh, threshCriterion, durationCriterion, event)) %>% 
@@ -350,7 +350,7 @@ According to the previous tables, the trend and break point analyses are useful 
 
 We use the time series of SST available within the `heatwaveR` package (sst_WA) and investigate the trend analysis in 5 metrics by grouping metric values per year as we have done above.
 
-```{r pixel, eval=F}
+```{r pixel, eval=FALSE}
 # Simple event detection
 MHW_WA <- detect_event(ts2clm(sst_WA, climatologyPeriod = c("1982-01-01", "2011-12-31")))
 
@@ -388,7 +388,7 @@ p
 
 The `lm` regression seems to detect some upward trends in the metrics. What does Mann-Kendall have to say about these?
 
-```{r, eval=F}
+```{r, eval=FALSE}
 MHW_WA_trends <- MHW_WA_metrics_year %>% 
   group_by(Metrics) %>% 
   nest() %>% 
