@@ -109,8 +109,8 @@ library(ggplot2)
 
 ggplot(mhw, aes(x = t, y = temp)) +
   geom_flame(aes(y2 = thresh)) +
-  geom_text(aes(x = as.Date("2011-02-01"), y = 28,
-            label = "That's not a heatwave.\nThis, is a heatwave.")) +
+  annotate(geom = "text", x = as.Date("2011-02-01"), y = 28,
+           label = "That's not a heatwave.\nThis, is a heatwave.") +
   xlab("Date") + ylab(expression(paste("Temperature [", degree, "C]")))
 
 }
