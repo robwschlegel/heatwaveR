@@ -1,6 +1,10 @@
+# heatwaveR 0.5.4 (2025-04-10)
+
+- A lot of small fiddly tweaks to meet new CRAN documentation standards
+
 # heatwaveR 0.5.3.9005 (2025-01-12)
 
-- Minor tweak to `ebent_line()` to keep up with changes to __`ggplot2`__
+- Minor tweak to `event_line()` to keep up with changes to __`ggplot2`__
 
 # heatwaveR 0.5.3.9004 (2024-09-25)
 

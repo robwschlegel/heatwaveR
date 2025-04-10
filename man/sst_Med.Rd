@@ -12,9 +12,6 @@ A dataframe with 14975 rows and 2 variables:
   ...
 }
 }
-\source{
-\url{https://www.ncei.noaa.gov/products/optimum-interpolation-sst}
-}
 \usage{
 sst_Med
 }

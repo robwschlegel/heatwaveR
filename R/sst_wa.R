@@ -11,5 +11,4 @@
 #'   \item{temp}{SST, in degrees Celsius}
 #'   ...
 #' }
-#' @source \url{https://www.ncei.noaa.gov/products/optimum-interpolation-sst}
 "sst_WA"
