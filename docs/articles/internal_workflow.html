@@ -82,7 +82,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>heatwaveR internal workflow</h1>
                         <h4 data-toc-skip class="author">AJ Smit</h4>
             
-            <h4 data-toc-skip class="date">2025-04-07</h4>
+            <h4 data-toc-skip class="date">2025-04-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/internal_workflow.Rmd" class="external-link"><code>vignettes/internal_workflow.Rmd</code></a></small>
       <div class="d-none name"><code>internal_workflow.Rmd</code></div>
@@ -245,8 +245,8 @@ supplied to the function. If a different column was given to the
 <td><code>thresh</code></td>
 <td>Seasonally varying threshold (e.g., 90th percentile)
 <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mi>e</mi><mi>g</mi><mi>.</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">deg. C</annotation></semantics></math>.
-This is used in <a href="http://127.0.0.1:46723/help/library/heatwaveR/help/detect_event" class="external-link"><code>detect_event</code></a>
-for the detection/calculation of events (MHWs).</td>
+This is used in <code>detect_event</code> for the detection/calculation
+of events (MHWs).</td>
 </tr>
 <tr class="even">
 <td><code>var</code></td>
@@ -295,15 +295,15 @@ monthly</strong>.</li>
 licence to actually use these data for the detection of anomalous
 thermal events. Hobday et al. (2016) recommend gaps of no more than 3
 days, which may be adjusted by setting the <code>maxPadLength</code>
-argument of the <a href="http://127.0.0.1:46723/help/library/heatwaveR/help/ts2clm" class="external-link"><code>ts2clm</code></a>
-function. The longer and more frequent the gaps become the lower the
-fidelity of the annual climatology and threshold that can be calculated,
-which will not only have repercussions for the accuracy at which the
-event metrics can be determined, but also for the number of events that
-can be detected. <strong>Currently there is no check for the number of
-<code>NA</code>s in the time series provided to <code><a href="../reference/ts2clm.html">ts2clm()</a></code>
-and this can be added to future updates such that it fails (or sends a
-loud warning) when a threshold of maximum allowable <code>NA</code>s is
+argument of the <code>ts2clm</code> function. The longer and more
+frequent the gaps become the lower the fidelity of the annual
+climatology and threshold that can be calculated, which will not only
+have repercussions for the accuracy at which the event metrics can be
+determined, but also for the number of events that can be detected.
+<strong>Currently there is no check for the number of <code>NA</code>s
+in the time series provided to <code><a href="../reference/ts2clm.html">ts2clm()</a></code> and this can be
+added to future updates such that it fails (or sends a loud warning)
+when a threshold of maximum allowable <code>NA</code>s is
 exceeded</strong>.</li>
 <li>In this function we only set up the day-of-year (<code>doy</code>)
 vector in and insert rows in cases when the original data set has

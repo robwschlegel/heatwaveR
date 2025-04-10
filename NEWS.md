@@ -1,6 +1,7 @@
 # heatwaveR 0.5.4 (2025-04-10)
 
 - A lot of small fiddly tweaks to meet new CRAN documentation standards
+- Added the scientific citations of the package for 2023 and 2024
 
 # heatwaveR 0.5.3.9005 (2025-01-12)
 
