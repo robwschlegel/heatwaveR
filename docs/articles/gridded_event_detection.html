@@ -83,7 +83,7 @@
                         <h4 data-toc-skip class="author">Robert W
 Schlegel and AJ Smit</h4>
             
-            <h4 data-toc-skip class="date">2025-04-10</h4>
+            <h4 data-toc-skip class="date">2025-04-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/gridded_event_detection.Rmd" class="external-link"><code>vignettes/gridded_event_detection.Rmd</code></a></small>
       <div class="d-none name"><code>gridded_event_detection.Rmd</code></div>
@@ -325,7 +325,7 @@ will grab the base global map from the
 <strong><code>maps</code></strong> package.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># The base map</span></span>
-<span><span class="va">map_base</span> <span class="op">&lt;-</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/fortify.html" class="external-link">fortify</a></span><span class="op">(</span><span class="fu">maps</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/maps/man/map.html" class="external-link">map</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="cn">TRUE</span>, plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span><span class="va">map_base</span> <span class="op">&lt;-</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/fortify.html" class="external-link">fortify</a></span><span class="op">(</span><span class="fu">maps</span><span class="fu">::</span><span class="fu">map</span><span class="op">(</span>fill <span class="op">=</span> <span class="cn">TRUE</span>, plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>lon <span class="op">=</span> <span class="va">long</span><span class="op">)</span></span></code></pre></div>
 <p>Then we will create two maps that we will stick together using
 <strong><code>ggpubr</code></strong>. The first map will show the slope
