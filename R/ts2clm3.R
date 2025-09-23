@@ -366,13 +366,13 @@ ts2clm3 <- function(data,
       doy = doy,
       seas_roll = data.table::frollmean(
         seas,
-        n = smoothPercentileWidth,
+        smoothPercentileWidth,
         na.rm = FALSE,
         align = "center"
       ),
       thresh_roll = data.table::frollmean(
         thresh,
-        n = smoothPercentileWidth,
+        smoothPercentileWidth,
         na.rm = FALSE,
         align = "center"
       )
@@ -397,19 +397,19 @@ ts2clm3 <- function(data,
         doy = doy,
         seas_roll = data.table::frollmean(
           seas,
-          n = smoothPercentileWidth,
+          smoothPercentileWidth,
           na.rm = FALSE,
           align = "center"
         ),
         thresh_roll = data.table::frollmean(
           thresh,
-          n = smoothPercentileWidth,
+          smoothPercentileWidth,
           na.rm = FALSE,
           align = "center"
         ),
         thresh_var_roll = data.table::frollapply(
           thresh,
-          n = smoothPercentileWidth,
+          smoothPercentileWidth,
           var,
           na.rm = FALSE,
           align = "center"

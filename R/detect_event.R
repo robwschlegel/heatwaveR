@@ -26,7 +26,7 @@
 #' data as class \code{POSIXct}.
 #' @param y This is a column containing the measurement variable. If the column
 #' name differs from the default (i.e. \code{temp}), specify the name here.
-#' @param seasClim The dafault for this argument assumes that the seasonal
+#' @param seasClim The default for this argument assumes that the seasonal
 #' climatology column is called \code{seas} as this matches the output of
 #' \code{\link{ts2clm}}. If the column name for the seasonal climatology is
 #' different, provide that here.

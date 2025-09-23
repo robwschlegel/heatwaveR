@@ -1,3 +1,9 @@
+# heatwaveR 0.5.4.9000 (2025-09-23)
+
+- Updated the function calls to `data.table::frollapply()` to match changes in the function arguments
+- Updated package description to note that one may also use hourly data
+- Removed link to the interactive tutorial because the server it was running on has been shut down
+
 # heatwaveR 0.5.4 (2025-04-10)
 
 - A lot of small fiddly tweaks to meet new CRAN documentation standards
