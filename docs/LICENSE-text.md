@@ -1,0 +1,4 @@
+# License
+
+    YEAR: 2019
+    COPYRIGHT HOLDER: Robert William Schlegel

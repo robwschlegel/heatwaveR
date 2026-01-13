@@ -35,7 +35,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">heatwaveR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.4.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,7 +81,7 @@
                         <h4 data-toc-skip class="author">Robert W
 Schlegel</h4>
             
-            <h4 data-toc-skip class="date">2025-09-23</h4>
+            <h4 data-toc-skip class="date">2026-01-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/complex_clims.Rmd" class="external-link"><code>vignettes/complex_clims.Rmd</code></a></small>
       <div class="d-none name"><code>complex_clims.Rmd</code></div>
@@ -236,7 +236,7 @@ with <strong><code>heatwaveR</code></strong> without any extra fuss.</p>
 <span>          <span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events</span><span class="op">)</span>,</span>
 <span>          <span class="va">bubble_plot</span>,</span>
 <span>          ncol <span class="op">=</span> <span class="fl">2</span>, nrow <span class="op">=</span> <span class="fl">2</span>, align <span class="op">=</span> <span class="st">"hv"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="complex_clims_files/figure-html/visuals-1.png" width="768"></p>
+<p><img src="complex_clims_files/figure-html/visuals-1.png" class="r-plt" width="768"></p>
 </div>
 <div class="section level3">
 <h3 id="alternative-second-thresholds">Alternative second thresholds<a class="anchor" aria-label="anchor" href="#alternative-second-thresholds"></a>
@@ -290,7 +290,7 @@ predominant filter through which the event metrics are quantified.</p>
 <p>Here are the differences in lolliplot format:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events_one_thresh</span><span class="op">)</span>, <span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events_two_thresh</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"One threshold"</span>, <span class="st">"Two thresholds"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="complex_clims_files/figure-html/alt-two-thresh-lollis-1.png" width="768"></p>
+<p><img src="complex_clims_files/figure-html/alt-two-thresh-lollis-1.png" class="r-plt" width="768"></p>
 <p>Here is a brief display of the top few events from each method:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">events_one_thresh</span><span class="op">$</span><span class="va">event</span><span class="op">)</span></span></code></pre></div>
@@ -508,7 +508,7 @@ them.</p>
 <span>          <span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events_one_thresh_filtered</span>, metric <span class="op">=</span> <span class="va">duration</span><span class="op">)</span>, </span>
 <span>          labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Double threshold"</span>, <span class="st">"Filter threshold"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: centre">
-<img src="complex_clims_files/figure-html/lolliplot-duration-1.png" alt="Difference in duration (days) of events given different applications of thresholds. Note the difference in the y-axes." width="768"><p class="caption">
+<img src="complex_clims_files/figure-html/lolliplot-duration-1.png" class="r-plt" alt="Difference in duration (days) of events given different applications of thresholds. Note the difference in the y-axes." width="768"><p class="caption">
 Difference in duration (days) of events given different applications of
 thresholds. Note the difference in the y-axes.
 </p>
@@ -518,7 +518,7 @@ thresholds. Note the difference in the y-axes.
 <span>          <span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events_one_thresh_filtered</span>, metric <span class="op">=</span> <span class="va">intensity_cumulative</span><span class="op">)</span>, </span>
 <span>          labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Double threshold"</span>, <span class="st">"Filter threshold"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: centre">
-<img src="complex_clims_files/figure-html/lolliplot-int-cum-1.png" alt="Difference in cumulative intensity (°C x days) of events given different applications of thresholds. Note the difference in the y-axes." width="768"><p class="caption">
+<img src="complex_clims_files/figure-html/lolliplot-int-cum-1.png" class="r-plt" alt="Difference in cumulative intensity (°C x days) of events given different applications of thresholds. Note the difference in the y-axes." width="768"><p class="caption">
 Difference in cumulative intensity (°C x days) of events given different
 applications of thresholds. Note the difference in the y-axes.
 </p>
@@ -570,7 +570,7 @@ Perkins, Sarah E., and Lisa V. Alexander. 2013. <span>“<span class="nocase">On
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

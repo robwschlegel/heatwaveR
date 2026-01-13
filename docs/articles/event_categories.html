@@ -35,7 +35,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">heatwaveR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.4.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,7 +81,7 @@
                         <h4 data-toc-skip class="author">Robert W
 Schlegel</h4>
             
-            <h4 data-toc-skip class="date">2025-09-23</h4>
+            <h4 data-toc-skip class="date">2026-01-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/event_categories.Rmd" class="external-link"><code>vignettes/event_categories.Rmd</code></a></small>
       <div class="d-none name"><code>event_categories.Rmd</code></div>
@@ -257,7 +257,7 @@ accomplished with <code><a href="../reference/event_line.html">event_line()</a><
 <code>category</code> argument to <code>TRUE</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">MHW</span>, spread <span class="op">=</span> <span class="fl">100</span>, start_date <span class="op">=</span> <span class="st">"2010-11-01"</span>, end_date <span class="op">=</span> <span class="st">"2011-06-30"</span>, category <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="event_categories_files/figure-html/fig-example-1-1.png" width="768"><!-- ![](vignettes/fig-example-10-1.png) --></p>
+<p><img src="event_categories_files/figure-html/fig-example-1-1.png" class="r-plt" width="768"><!-- ![](vignettes/fig-example-10-1.png) --></p>
 </div>
 <div class="section level3">
 <h3 id="custom-mhw-category-visuals">Custom MHW category visuals<a class="anchor" aria-label="anchor" href="#custom-mhw-category-visuals"></a>
@@ -311,7 +311,7 @@ following code will provide a good starting point.</p>
 <span>                                                                <span class="st">"dashed"</span>, <span class="st">"dotdash"</span>, <span class="st">"dotted"</span><span class="op">)</span>,</span>
 <span>                                                   size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Temperature [°C]"</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
-<p><img src="event_categories_files/figure-html/fig-example-2-1.png" width="768"><!-- ![](vignettes/fig-example-11-1.png) --></p>
+<p><img src="event_categories_files/figure-html/fig-example-2-1.png" class="r-plt" width="768"><!-- ![](vignettes/fig-example-11-1.png) --></p>
 </div>
 </div>
 <div class="section level2">
@@ -359,7 +359,7 @@ none of the demo time series that come packaged with
 not able to demonstrate the full colour palette here.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">MCS</span>, spread <span class="op">=</span> <span class="fl">100</span>, start_date <span class="op">=</span> <span class="st">"1989-11-01"</span>, end_date <span class="op">=</span> <span class="st">"1990-06-30"</span>, category <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="event_categories_files/figure-html/fig-example-3-1.png" width="768"></p>
+<p><img src="event_categories_files/figure-html/fig-example-3-1.png" class="r-plt" width="768"></p>
 </div>
 <div class="section level3">
 <h3 id="custom-mcs-category-visuals">Custom MCS category visuals<a class="anchor" aria-label="anchor" href="#custom-mcs-category-visuals"></a>
@@ -414,7 +414,7 @@ showing the MCS categories.</p>
 <span>                                                                <span class="st">"dashed"</span>, <span class="st">"dotdash"</span>, <span class="st">"dotted"</span><span class="op">)</span>,</span>
 <span>                                                   size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Temperature [°C]"</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
-<p><img src="event_categories_files/figure-html/fig-example-4-1.png" width="768"></p>
+<p><img src="event_categories_files/figure-html/fig-example-4-1.png" class="r-plt" width="768"></p>
 </div>
 </div>
 <div class="section level2">
@@ -451,7 +451,7 @@ provided below with a figure showing the direct comparison.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">geom_tile</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">colour_palette</span><span class="op">$</span><span class="va">colour</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
-<p><img src="event_categories_files/figure-html/comp-fig-1.png" width="768"></p>
+<p><img src="event_categories_files/figure-html/comp-fig-1.png" class="r-plt" width="768"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -464,7 +464,7 @@ provided below with a figure showing the direct comparison.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>
