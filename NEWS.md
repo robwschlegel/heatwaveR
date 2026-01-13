@@ -1,3 +1,8 @@
+# heatwaveR 0.5.5 (2026-01-13)
+
+- Pushing `data.table` changes to CRAN to address errors in `testhat.R`
+- Addressed CRAN flavour issues with `C++` version requirements
+
 # heatwaveR 0.5.4.9000 (2025-09-23)
 
 - Updated the function calls to `data.table::frollapply()` to match changes in the function arguments
