@@ -1,5 +1,5 @@
 bibentry(bibtype = "Article",
-    	 title   = "{heatwaveR}: A central algorithm for the detection of heatwaves and cold-spells",
+    	 title   = "heatwaveR: A central algorithm for the detection of heatwaves and cold-spells",
     	 author  = c(person(given = c("Robert", "W."),
                             family = "Schlegel",
                             email = "robwschlegel@gmail.com"),

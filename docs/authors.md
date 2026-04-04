@@ -19,7 +19,7 @@ Software*, **3**(27), 821.
 [doi:10.21105/joss.00821](https://doi.org/10.21105/joss.00821).
 
     @Article{,
-      title = {{heatwaveR}: A central algorithm for the detection of heatwaves and cold-spells},
+      title = {heatwaveR: A central algorithm for the detection of heatwaves and cold-spells},
       author = {Robert W. Schlegel and Albertus J. Smit},
       journal = {Journal of Open Source Software},
       year = {2018},
