@@ -14,3 +14,4 @@ src/rep_vec.so
 .vscode
 /doc/
 /Meta/
+/.quarto/

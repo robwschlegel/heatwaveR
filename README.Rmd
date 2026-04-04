@@ -186,11 +186,9 @@ The translation from Python to R was done by A. J. Smit and the graphing functio
 
 ## Contact
 
-Robert W. Schlegel  
-  
-Data Scientist  
-  
-Director, Ecomonitor
-  
+Robert W. Schlegel
+
+Data Scientist
+
 robwschlegel@gmail.com
   

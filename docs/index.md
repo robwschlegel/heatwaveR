@@ -256,6 +256,4 @@ Robert W. Schlegel
 
 Data Scientist
 
-Director, Ecomonitor
-
 <robwschlegel@gmail.com>
