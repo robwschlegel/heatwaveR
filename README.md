@@ -1,16 +1,6 @@
----
-output:
-  md_document:
-    variant: gfm
-    fig_width: 8
-    fig_height: 3
----
-
-
-
 # heatwaveR
 
-<p><strong>heatwaveR</strong> provides fast, research-grade tools to detect, classify, and visualise heatwaves and cold-spells in daily or hourly temperature data.</p><p>Use it to build climatologies, identify events, summarise metrics, make publication-ready figures.</p><p><strong>heatwaveR</strong> is the modern, faster successor to <a href="https://github.com/ajsmit/RmarineHeatWaves"><strong>RmarineHeatWaves</strong></a>, which in turn was the original R translation of [marineHeatWvaes](https://github.com/ecjoliver/marineHeatWaves). This package implements the Hobday et al. conventions that are used by many marine heatwave researchers around the world.</p>
+<p><strong>heatwaveR</strong> provides fast, research-grade tools to detect, classify, and visualise heatwaves and cold-spells in daily or hourly temperature data.</p><p>Use it to build climatologies, identify events, summarise metrics, make publication-ready figures.</p><p><strong>heatwaveR</strong> is the modern, faster successor to <a href="https://github.com/ajsmit/RmarineHeatWaves"><strong>RmarineHeatWaves</strong></a>, which in turn was the original R translation of <a href="https://github.com/ecjoliver/marineHeatWaves"><strong>marineHeatWaves</strong></a>. This package implements the Hobday et al. conventions that are used by many marine heatwave researchers around the world.</p>
 
 <div class="pkgdown-badges">
   <a href="https://cran.r-project.org/package=heatwaveR"><img src="https://www.r-pkg.org/badges/version/heatwaveR" alt="CRAN version badge" /></a>
