@@ -1,7 +1,8 @@
 # heatwaveR 0.5.5 (2026-04-04)
 
 - Updated package citations for 2025
-- Re-inserted link to interactive tutorial, now called 'Demo', which is hosted on ShinyApps.io
+- Re-inserted access to interactive tutorial hosted on ShinyApps.io
+- Rather extensive rewrite and rework of website (no changes to code)
 
 # heatwaveR 0.5.5 (2026-01-13)
 

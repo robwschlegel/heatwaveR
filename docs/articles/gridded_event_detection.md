@@ -192,7 +192,7 @@ data, which is the only way that we can assess if this trend is
 unfolding across large ocean regions. Using the gridded 0.25 degree
 Reynolds OISST, we will detect marine heatwaves (MHWs) around South
 Africa by applying the
-[`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+[`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
 function pixel-by-pixel to the data we downloaded in [the previous
 vignette](https://robwschlegel.github.io/heatwaveR/articles/OISST_preparation.html).
 After detecting the events, we will fit a generalised linear model (GLM)

@@ -1,7 +1,7 @@
 # Make a climatology from a daily time series.
 
 This is the fully data.table-based version of
-[`ts2clm`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md).
+[`ts2clm`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md).
 The function creates a daily climatology from a time series of daily
 temperatures using a user-specified sliding window for the mean and
 threshold calculation, followed by an optional moving average smoother
@@ -161,7 +161,7 @@ the user.
 
   Daily varying threshold (e.g., 90th percentile) \[deg. C\]. This is
   used in
-  [`detect_event3`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event3.md)
+  [`detect_event3`](https://robwschlegel.github.io/heatwaveR/reference/detect_event3.md)
   for the detection/calculation of events (MHWs).
 
 - var:
@@ -200,13 +200,13 @@ returned.
     Feb 28 and Mar 1.
 
 4.  Previous versions of
-    [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+    [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
     tested to see if some rows are duplicated, or if replicate
     temperature readings are present per day, but this has now been
     disabled. Should the user be concerned about such repeated
     measurements, we suggest that the necessary checks and fixes are
     implemented prior to feeding the time series to
-    [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md).
+    [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md).
 
 The original Python algorithm was written by Eric Oliver, Institute for
 Marine and Antarctic Studies, University of Tasmania, Feb 2015, and is

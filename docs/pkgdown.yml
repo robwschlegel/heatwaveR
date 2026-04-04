@@ -12,7 +12,7 @@ articles:
   MHW_metric_trends: MHW_metric_trends.html
   MHW_to_nc: MHW_to_nc.html
   OISST_preparation: OISST_preparation.html
-last_built: 2026-04-04T16:38Z
+last_built: 2026-04-04T21:26Z
 urls:
-  reference: https://robwschlegel.github.io/heatwaveR/index.html/reference
-  article: https://robwschlegel.github.io/heatwaveR/index.html/articles
+  reference: https://robwschlegel.github.io/heatwaveR/reference
+  article: https://robwschlegel.github.io/heatwaveR/articles

@@ -1,7 +1,7 @@
 # Calculate the categories of events.
 
 Calculates the categories of MHWs or MCSs produced by
-[`detect_event`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+[`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
 in accordance with the naming scheme proposed in Hobday et al. (2018).
 
 ## Usage
@@ -26,7 +26,7 @@ category(
 - data:
 
   The function receives the full (list) output from the
-  [`detect_event`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+  [`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
   function.
 
 - y:
@@ -53,7 +53,7 @@ category(
   et al. (2018). If set to `TRUE`, this function will return a list of
   two dataframes. The first dataframe `climatology`, contains similar
   information as found in
-  [`detect_event`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md),
+  [`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md),
   with the addition of the daily intensity (anomaly above seasonal doy
   threshold) and category values, but only reports the days on which an
   event was detected. The second dataframe, `event`, is the summary
@@ -107,7 +107,7 @@ category(
 The function will return a data.frame with results similar to those seen
 in Table 2 of Hobday et al. (2018). This provides the information
 necessary to appraise the extent of the events in the output of
-[`detect_event`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+[`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
 based on the category ranking scale. The category thresholds are
 calculated based on the difference between the given seasonal
 climatology and threshold climatology. The four category levels are then
@@ -135,7 +135,7 @@ The definitions for the default output columns are as follows:
 - event_no:
 
   The number of the event as determined by
-  [`detect_event`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+  [`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
   to allow for joining between the outputs.
 
 - event_name:

@@ -13,7 +13,7 @@ block_average(data, x = t, y = temp, report = "full", returnDF = TRUE)
 - data:
 
   Accepts the data returned by the
-  [`detect_event`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+  [`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
   function.
 
 - x:

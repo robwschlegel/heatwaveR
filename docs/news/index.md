@@ -2,15 +2,11 @@
 
 ## heatwaveR 0.5.5 (2026-04-04)
 
-CRAN release: 2026-01-13
-
 - Updated package citations for 2025
 - Re-inserted link to interactive tutorial, now called ‘Demo’, which is
   hosted on ShinyApps.io
 
 ## heatwaveR 0.5.5 (2026-01-13)
-
-CRAN release: 2026-01-13
 
 - Pushing `data.table` changes to CRAN to address errors in `testhat.R`
 - Addressed CRAN flavour issues with `C++` version requirements
@@ -26,15 +22,13 @@ CRAN release: 2026-01-13
 
 ## heatwaveR 0.5.4 (2025-04-10)
 
-CRAN release: 2025-04-10
-
 - A lot of small fiddly tweaks to meet new CRAN documentation standards
 - Added the scientific citations of the package for 2023 and 2024
 
 ## heatwaveR 0.5.3.9005 (2025-01-12)
 
 - Minor tweak to
-  [`event_line()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.md)
+  [`event_line()`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)
   to keep up with changes to **`ggplot2`**
 
 ## heatwaveR 0.5.3.9004 (2024-09-25)
@@ -45,7 +39,7 @@ CRAN release: 2025-04-10
 ## heatwaveR 0.5.3.9003 (2024-08-30)
 
 - Minor tweak to
-  [`event_line()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.md)
+  [`event_line()`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)
   to match new **`ggplot2`** syntax
 
 ## heatwaveR 0.5.3.9002 (2024-07-07)
@@ -64,35 +58,35 @@ CRAN release: 2025-04-10
 ## heatwaveR 0.5.3.9000 (2024-03-27)
 
 - Basic hourly functionality added to
-  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
 - Tests added for
-  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
 - Minor tweak to
-  [`exceedance()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/exceedance.md)
+  [`exceedance()`](https://robwschlegel.github.io/heatwaveR/reference/exceedance.md)
   to work with hourly data
 
 ## heatwaveR 0.5.2.9009 (2024-01-23)
 
 - More tweaks to return behaviour of
-  [`exceedance()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/exceedance.md)
+  [`exceedance()`](https://robwschlegel.github.io/heatwaveR/reference/exceedance.md)
 
 ## heatwaveR 0.5.2.9008 (2024-01-22)
 
 - Corrected return behaviour of
-  [`exceedance()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/exceedance.md)
+  [`exceedance()`](https://robwschlegel.github.io/heatwaveR/reference/exceedance.md)
   to keep backwards compatibility
 
 ## heatwaveR 0.5.2.9007 (2024-01-20)
 
 - Fixed a bug in
-  [`proto_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/proto_event.md)
+  [`proto_event()`](https://robwschlegel.github.io/heatwaveR/reference/proto_event.md)
   when an event lasts for the entire time series
-- [`exceedance()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/exceedance.md)
+- [`exceedance()`](https://robwschlegel.github.io/heatwaveR/reference/exceedance.md)
   now correctly returns extra columns in the original data.frame
 - Corrected rare edge case in
-  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
   and
-  [`exceedance()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/exceedance.md)
+  [`exceedance()`](https://robwschlegel.github.io/heatwaveR/reference/exceedance.md)
   where if a single MCS was detected the returned threshold columns
   would be negative values
 
@@ -108,7 +102,7 @@ CRAN release: 2025-04-10
 ## heatwaveR 0.5.2.9005 (2023-11-11)
 
 - Removed `category` functionality from
-  [`detect_event3()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event3.md)
+  [`detect_event3()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event3.md)
   to keep it more streamlined
 
 ## heatwaveR 0.5.2.9004 (2023-11-06)
@@ -118,9 +112,9 @@ CRAN release: 2025-04-10
 ## heatwaveR 0.5.2.9003 (2023-11-05)
 
 - Created
-  [`detect_event3()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event3.md)
+  [`detect_event3()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event3.md)
   and
-  [`proto_event3()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/proto_event3.md)
+  [`proto_event3()`](https://robwschlegel.github.io/heatwaveR/reference/proto_event3.md)
   with a new code base to benefit from the speed gains due to data.table
   internals
 - Output results (climatologies and metrics) as data.table
@@ -129,12 +123,12 @@ CRAN release: 2025-04-10
 ## heatwaveR 0.5.2.9002 (2023-10-31)
 
 - Rolled back overwrite of
-  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
   with
-  [`ts2clm3()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm3.md)
+  [`ts2clm3()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm3.md)
   for now
 - Set default behaviour of
-  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
   to return a data.frame, rather than a data.table
 - A new argument was introduced for most top level functions: `returnDF`
   with the default behaviour of `TRUE`
@@ -146,26 +140,26 @@ CRAN release: 2025-04-10
 ## heatwaveR 0.5.2.9001 (2023-10-30)
 
 - Removed `robust` argument from
-  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
   that was deprecated years ago
 - Replaced
-  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
   with
-  [`ts2clm3()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm3.md)
+  [`ts2clm3()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm3.md)
   throughout package
 - Removed **`tibble`** dependency
 
 ## heatwaveR 0.5.2.9000 (2023-10-29)
 
 - Fully data.table compliant
-  [`ts2clm3()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm3.md),
+  [`ts2clm3()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm3.md),
   a drop-in replacement for
-  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
-- [`make_whole_fast()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/make_whole_fast.md),
-  [`na_interp()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/na_interp.md),
-  [`clim_spread()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/clim_spread.md),
+  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
+- [`make_whole_fast()`](https://robwschlegel.github.io/heatwaveR/reference/make_whole_fast.md),
+  [`na_interp()`](https://robwschlegel.github.io/heatwaveR/reference/na_interp.md),
+  [`clim_spread()`](https://robwschlegel.github.io/heatwaveR/reference/clim_spread.md),
   and
-  [`smooth_percentile()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/smooth_percentile.md)
+  [`smooth_percentile()`](https://robwschlegel.github.io/heatwaveR/reference/smooth_percentile.md)
   included within the main function
 - Significantly faster climatology calculation
 - Correct error with climatological variance calculation
@@ -187,14 +181,14 @@ CRAN release: 2025-04-10
 ## heatwaveR 0.5.0.9003 (2023-07-25)
 
 - Changed behaviour of
-  [`category()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md)
+  [`category()`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
   to address edge case in polar MCS
 - Corrected bug in
-  [`category()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md)
+  [`category()`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
   that did not change the ‘V Ice’ category in the climatology output
 - Also a bug that didn’t return all of a users columns that are not part
   of the normal
-  [`category()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md)
+  [`category()`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
   output
 - And a bug that allowed users to unintentionally assign ‘V Ice’
   category to MHWs
@@ -202,7 +196,7 @@ CRAN release: 2025-04-10
 ## heatwaveR 0.5.0.9002 (2023-05-02)
 
 - Addressed extreme edge case in
-  [`category()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md)
+  [`category()`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
   when no Moderate I MCS are detected, just higher categories
 
 ## heatwaveR 0.5.0.9001 (2023-04-17)
@@ -214,17 +208,17 @@ CRAN release: 2025-04-10
 
 - Bug hunting in the build-up to v1.0.0
 - Addressed issue of y column not passing through correctly from
-  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
   to
-  [`category()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md)
+  [`category()`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
   when called internally
 - Changed documentation for
-  [`category()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md)
+  [`category()`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
   to more accurately match the output of `climatology = TRUE`
 - Looked into behaviour of `protoEvents` in
-  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
 - Added `lat_col` argument to
-  [`category()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md)
+  [`category()`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
   to detect if time series are in N or S hemisphere
 
 ## heatwaveR 0.5.0 (2023-03-20)
@@ -236,37 +230,37 @@ CRAN release: 2025-04-10
 ## heatwaveR 0.4.6.9004 (2023-03-13)
 
 - Removed all dependencies from
-  [`event_line()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.md)
+  [`event_line()`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)
   and
-  [`block_average()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/block_average.md)
+  [`block_average()`](https://robwschlegel.github.io/heatwaveR/reference/block_average.md)
   except **`plyr`**
 - Added `line_colours` argument to
-  [`event_line()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.md),
+  [`event_line()`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md),
   allowing users to choose colours of line geoms
 
 ## heatwaveR 0.4.6.9004 (2023-03-11)
 
 - Removed all dependencies from
-  [`category()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md)
+  [`category()`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
   and
-  [`exceedance()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/exceedance.md)
+  [`exceedance()`](https://robwschlegel.github.io/heatwaveR/reference/exceedance.md)
   except for **`plyr`**
 
 ## heatwaveR 0.4.6.9004 (2023-03-07)
 
 - Starting to remove as many dependencies as possible
 - Started by removing all but `**plyr**` dependency from
-  [`proto_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/proto_event.md)
+  [`proto_event()`](https://robwschlegel.github.io/heatwaveR/reference/proto_event.md)
   and
-  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
 
 ## heatwaveR 0.4.6.9003 (2023-01-16)
 
 - Updated SST data to end of 2022
 - Changed behaviour of
-  [`lolli_plot()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/lolli_plot.md)
+  [`lolli_plot()`](https://robwschlegel.github.io/heatwaveR/reference/lolli_plot.md)
   and
-  [`event_line()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.md)
+  [`event_line()`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)
   to now use tidyeval
 - Note that this is a backwards compatibility breaking change that was
   required due to changes in **`ggplot2 v3.0.0`**
@@ -277,7 +271,7 @@ CRAN release: 2025-04-10
 - Added package names to all functions used in the downloading OISST
   vignette
 - Added the `MCSice` argument to
-  [`category()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md),
+  [`category()`](https://robwschlegel.github.io/heatwaveR/reference/category.md),
   which allows users to directly classify a MCS with a threshold below
   -1.7°C as a category ‘V Ice’ event *sensu* Schlegel et al. (2021;
   Marine cold-spells)
@@ -294,13 +288,9 @@ CRAN release: 2025-04-10
 
 ## heatwaveR 0.4.6 (2021-10-26)
 
-CRAN release: 2021-10-27
-
 - Updated SST time series to 2020-12-31
 
 ## heatwaveR 0.4.6 (2021-10-25)
-
-CRAN release: 2021-10-27
 
 - Explicitly loading **`Rcpp`** due to a change in the behaviour of the
   package causing ERRORs on CRAN checks
@@ -310,7 +300,7 @@ CRAN release: 2021-10-27
 - Updated the MCS colour palette throughout the package
   - The new colour palette is very similar, but with improved contrast
 - Made a minor but important change to
-  [`category()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md)
+  [`category()`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
   so that categories are based on temperature greater (lesser) than the
   thresholds and not greater (lesser) than or equal to
 
@@ -318,16 +308,16 @@ CRAN release: 2021-10-27
 
 - Updated the visualisation vignette to now include the code necessary
   to get
-  [`geom_flame()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/geom_flame.md)
+  [`geom_flame()`](https://robwschlegel.github.io/heatwaveR/reference/geom_flame.md)
   to work with **`plotly`** now that it is no longer directly supported
 
 ## heatwaveR 0.4.5.9001 (2021-03-17)
 
 - Improved error trapping for
-  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md),
-  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md),
+  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md),
+  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md),
   and
-  [`exceedance()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/exceedance.md)
+  [`exceedance()`](https://robwschlegel.github.io/heatwaveR/reference/exceedance.md)
 
 ## heatwaveR 0.4.5.9000 (2021-02-10)
 
@@ -336,22 +326,18 @@ CRAN release: 2021-10-27
 ## heatwaveR 0.4.5.9000 (2021-01-31)
 
 - Added a `categories` argument to
-  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
   - This allows one to determine the categories of events directly,
     rather than as a second step using the
-    [`category()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md)
+    [`category()`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
     function
 
 ## heatwaveR 0.4.5 (2021-01-23)
-
-CRAN release: 2021-01-07
 
 - Created a new vignette that shows how to save gridded MHW results to a
   NetCDF file
 
 ## heatwaveR 0.4.5 (2021-01-07)
-
-CRAN release: 2021-01-07
 
 - Pushed new major version to CRAN
 
@@ -411,8 +397,6 @@ CRAN release: 2021-01-07
 
 ## heatwaveR 0.4.4 (2020-06-27)
 
-CRAN release: 2020-06-27
-
 - Released v0.4.4 to CRAN
 
 ## heatwaveR 0.4.3.9001 (2020-06-26)
@@ -428,9 +412,9 @@ CRAN release: 2020-06-27
 
 ## heatwaveR 0.4.3.9000 (2020-06-15)
 
-- [`category()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md)
+- [`category()`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
   now works with MCS generated by
-  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
 - codecov pushed back up to 100%
 
 ## heatwaveR 0.4.3 (2020-06-12)
@@ -453,7 +437,7 @@ CRAN release: 2020-06-27
 ## heatwaveR 0.4.2.9004 (2020-05-15)
 
 - Fixed bug in
-  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
   caused by **`data.table`**
 
   - **`data.table`** no longer allows rounding of NA values
@@ -461,7 +445,7 @@ CRAN release: 2020-06-27
 ## heatwaveR 0.4.2.9003 (2020-05-08)
 
 - Fixed bug in
-  [`event_line()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.md)
+  [`event_line()`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)
   caused by **`data.table`**
 
 ## heatwaveR 0.4.2.9002 (2020-05-05)
@@ -471,14 +455,14 @@ CRAN release: 2020-06-27
 ## heatwaveR 0.4.2.9002 (2020-03-23)
 
 - Improvement to legend appearance for
-  [`event_line()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.md)
+  [`event_line()`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)
 - Improvement to plotting in category vignette
 
 ## heatwaveR 0.4.2.9001 (2020-02-24)
 
 - Minor spelling error fixes
 - Minor tweak to
-  [`make_whole_fast()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/make_whole_fast.md)
+  [`make_whole_fast()`](https://robwschlegel.github.io/heatwaveR/reference/make_whole_fast.md)
 
 ## heatwaveR 0.4.2.9001 (2020-02-13)
 
@@ -499,33 +483,27 @@ CRAN release: 2020-06-27
   be slightly faster and also don’t have the same multicore issues that
   more recent **`dplyr`** developments have created
 - Added `roundRes` argument to
-  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
   to allow users to decide the rounding precision of the returned
   results
 
 ## heatwaveR 0.4.2 (2019-12-10)
 
-CRAN release: 2019-12-01
-
 - Minor change to
-  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
   that does not alter any functionality
 
 ## heatwaveR 0.4.2 (2019-11-29)
 
-CRAN release: 2019-12-01
-
 - Publishing new stable version to CRAN due to removal of
   **`tidyverse`** from the list of suggested packages and the important
   bug fixes to
-  [`category()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md)
+  [`category()`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
 
 ## heatwaveR 0.4.2 (2019-11-26)
 
-CRAN release: 2019-12-01
-
 - Fixed bug in
-  [`category()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md)
+  [`category()`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
   that incorrectly returned the difference between `seas` and `thresh`
   as the daily intensity value, rather than the actual temperature
   anomaly above `seas`
@@ -533,7 +511,7 @@ CRAN release: 2019-12-01
   - Also fixed the labelling of days below `thresh` as `Moderate`, they
     are now `NA`
 
-- [`category()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md)
+- [`category()`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
   now adds lower case letters to the ends of event names if there were
   multiple large events within the same year
 
@@ -541,7 +519,7 @@ CRAN release: 2019-12-01
     but is a necessary change
 
 - Added `roundVal` argument to
-  [`category()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md)
+  [`category()`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
   to allow users to decide the rounding precision of the returned
   results
 
@@ -560,16 +538,16 @@ CRAN release: 2019-12-01
   empty data.frames returned as one row of `NA` values was not as rare
   of a problem as first thought
 - While still respecting the need to not use `1:n` vector creation,
-  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
   and
-  [`category()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md)
+  [`category()`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
   now produce empty data.frames and not one row `NA` dataframe
 - This should ensure continued backwards compatibility
 
 ## heatwaveR 0.4.1.9002 (2019-11-03)
 
 - A bug was discovered where the
-  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
   function does not first check that the time series being fed to it is
   in correct chronological order
 
@@ -596,13 +574,11 @@ CRAN release: 2019-12-01
   changed slightly how Geoms work internally
 
   - This allowed
-    [`geom_lolli()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/geom_lolli.md)
+    [`geom_lolli()`](https://robwschlegel.github.io/heatwaveR/reference/geom_lolli.md)
     to fall over in very rare circumstances so this issue has been
     addressed
 
 ## heatwaveR 0.4.1 (2019-09-09)
-
-CRAN release: 2019-09-09
 
 - Updated the `OISST Preparation` vignette to match the improvements to
   the `rerddap` package
@@ -611,7 +587,7 @@ CRAN release: 2019-09-09
   retrieval issues
 
 - Added `season` argument to
-  [`category()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md),
+  [`category()`](https://robwschlegel.github.io/heatwaveR/reference/category.md),
   which allows the user to specify which season of the MHWs they are
   interested in:
 
@@ -627,16 +603,12 @@ CRAN release: 2019-09-09
 
 ## heatwaveR 0.4.0 (2019-07-10)
 
-CRAN release: 2019-07-11
-
 - Introduced the `Algiers` time series for examples on using multiple
   thresholds for atmospheric data
 - Fixed a bug in
-  [`event_line()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.md)
+  [`event_line()`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)
 
 ## heatwaveR 0.4.0 (2019-07-09)
-
-CRAN release: 2019-07-11
 
 - Changed the `data.table` and `ggplot2` dependencies to imports
 - `heatwaveR` is now dependency free
@@ -645,7 +617,7 @@ CRAN release: 2019-07-11
 
 - Added the ability to choose the number of digits rounded to for the
   output of
-  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
 
 ## heatwaveR 0.3.6.9003 (2019-02-11)
 
@@ -655,33 +627,29 @@ CRAN release: 2019-07-11
 ## heatwaveR 0.3.6.9002 (2019-02-11)
 
 - Added `n` and `n_gap` arguments to
-  [`geom_flame()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/geom_flame.md)
+  [`geom_flame()`](https://robwschlegel.github.io/heatwaveR/reference/geom_flame.md)
   to allow proper screening of heatspikes
 - These additions also propagate through to `geom2trace.GeomFlame`
 
 ## heatwaveR 0.3.6.9001 (2019-01-28)
 
 - Added some additional options to
-  [`event_line()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.md)
+  [`event_line()`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)
   to allow users to manipulate the output more without having to get
   into the source code.
 
 ## heatwaveR 0.3.6.9000 (2019-01-23)
 
 - Added S3 object `geom2trace.GeomFlame` that now allows
-  [`geom_flame()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/geom_flame.md)
+  [`geom_flame()`](https://robwschlegel.github.io/heatwaveR/reference/geom_flame.md)
   to be converted to an interactive plotly object via
   [`plotly::ggplotly()`](https://rdrr.io/pkg/plotly/man/ggplotly.html)
 
 ## heatwaveR 0.3.6 (2019-01-16)
 
-CRAN release: 2019-01-16
-
 - Updated Zenodo badge to reflect the upload of v0.3.6
 
 ## heatwaveR 0.3.6 (2019-01-16)
-
-CRAN release: 2019-01-16
 
 - Finished Alternative Thresholds (Complex Climatologies) vignette
 
@@ -689,9 +657,9 @@ CRAN release: 2019-01-16
 
 - AN important potential backwards compatibility breaking change is that
   by default
-  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
   and
-  [`exceedance()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/exceedance.md)
+  [`exceedance()`](https://robwschlegel.github.io/heatwaveR/reference/exceedance.md)
   will no longer produce a `var` column
 
   - The argument `var = TRUE` may be given to produce this column
@@ -703,9 +671,9 @@ CRAN release: 2019-01-16
 - Began editing Alternative (Complex) Climatology vignette
 - Changed the default argument for `exceedance(maxPadLength)` from `3`
   to `FALSE` to match the new default for
-  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
 - Changed the default behaviour of
-  [`event_line()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.md)
+  [`event_line()`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)
   to no longer require the user to provide `start_date` and `end_date`
   arguments
 
@@ -733,7 +701,7 @@ CRAN release: 2019-01-16
 - Updated text on the landing page to better reflect the updates that
   have been made over the past few months
 - Fixed typo in
-  [`event_line()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.md)
+  [`event_line()`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)
   output
 - Updated text for the detection and visualisation vignette
 - Updated text for the exceedance vignette
@@ -743,14 +711,14 @@ CRAN release: 2019-01-16
 ## heatwaveR 0.3.5.9003 (2018-12-18)
 
 - Changed time series checking behaviour of
-  [`exceedance()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/exceedance.md)
+  [`exceedance()`](https://robwschlegel.github.io/heatwaveR/reference/exceedance.md)
   so that it is the same as
-  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
 
 ## heatwaveR 0.3.5.9002 (2018-12-12)
 
 - Fixed bug in
-  [`event_line()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.md)
+  [`event_line()`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)
   that caused it to graph events outside of the `spread` range
 - Expanded testing back up to 100%
 
@@ -758,20 +726,20 @@ CRAN release: 2019-01-16
 
 - Fixed bug caused by R not liking dates older than 1970-01-01
 - Changed `maxPadLength` behaviour in
-  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
   to match the Python default settings
 
 ## heatwaveR 0.3.5.9000 (2018-12-05)
 
 - Added ‘duration_max’ to
-  [`block_average()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/block_average.md)
+  [`block_average()`](https://robwschlegel.github.io/heatwaveR/reference/block_average.md)
   output
 - Resumed correct version numbering
 
 ## heatwaveR 0.3.5 (2018-12-03)
 
 - Increased functionality of
-  [`block_average()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/block_average.md)
+  [`block_average()`](https://robwschlegel.github.io/heatwaveR/reference/block_average.md)
 
 ## heatwaveR 0.3.5 (2018-11-01)
 
@@ -779,26 +747,26 @@ CRAN release: 2019-01-16
 
 ## heatwaveR 0.3.5 (2018-10-26)
 
-- [`clim_calc()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/clim_calc.md)
+- [`clim_calc()`](https://robwschlegel.github.io/heatwaveR/reference/clim_calc.md)
   reinstated to allow for calculation of clims with missing data
 - `var` calculations reinstated for documentation issues
 
 ## heatwaveR 0.3.5 (2018-10-20)
 
-- [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+- [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
   no longer calls
-  [`clim_calc()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/clim_calc.md),
+  [`clim_calc()`](https://robwschlegel.github.io/heatwaveR/reference/clim_calc.md),
   but `clim_calc_cpp()` only
-- [`smooth_percentile()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/smooth_percentile.md)
+- [`smooth_percentile()`](https://robwschlegel.github.io/heatwaveR/reference/smooth_percentile.md)
   no longer provides option to create variance climatology (the need to
   no longer create var seemed to not be fully implemented in 0.3.4)
 
 ## heatwaveR 0.3.4 (2018-10-19)
 
-- [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+- [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
   no longer calculates variance column by default
 - `make_whole()` has been deprecated in favour of
-  [`make_whole_fast()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/make_whole_fast.md)
+  [`make_whole_fast()`](https://robwschlegel.github.io/heatwaveR/reference/make_whole_fast.md)
 
 ## heatwaveR 0.3.4 (2018-10-17)
 
@@ -813,18 +781,18 @@ CRAN release: 2019-01-16
 ## heatwaveR 0.3.4 (2018-10-03)
 
 - Changed error handling in
-  [`proto_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/proto_event.md)
+  [`proto_event()`](https://robwschlegel.github.io/heatwaveR/reference/proto_event.md)
   to return no events than to stop message with an error.
 - This change was picked up by
-  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
   without any required changes
-- [`category()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md)
+- [`category()`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
   required a bit of cajoling to also output a blank dataframe
 
 ## heatwaveR 0.3.4 (2018-10-01)
 
 - Minor tweak to
-  [`make_whole_fast()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/make_whole_fast.md)
+  [`make_whole_fast()`](https://robwschlegel.github.io/heatwaveR/reference/make_whole_fast.md)
   to provide a cleaner internal output
 
 ## heatwaveR 0.3.4 (2018-09-28)
@@ -834,33 +802,27 @@ CRAN release: 2019-01-16
 ## heatwaveR 0.3.4 (2018-09-27)
 
 - Fixed bug in
-  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
   that prevented calculation of clims with large contiguous missing
   periods of data (e.g. ice coverage).
 - Added argument to
-  [`category()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md)
+  [`category()`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
   that allows one to have the function also output the day-to-day (long)
   category values, rather than just the summary (wide) output.
 - Added lon/lat values to documentation for built-in time series
 
 ## heatwaveR 0.3.3 (2018-08-23)
 
-CRAN release: 2018-08-02
-
 - Added CITATION file so that package citation is now set to JOSS
   article
 
 ## heatwaveR 0.3.3 (2018-07-31)
-
-CRAN release: 2018-08-02
 
 - Added Zenodo DOI badge
 - JOSS review process complete
 - Added JOSS DOI badge
 
 ## heatwaveR 0.3.3 (2018-07-25)
-
-CRAN release: 2018-08-02
 
 - BUG FIX: corrected issue with `clim_calc_cpp` not being able to
   calculate clims from baselines not beginning and ending on the Julian
@@ -885,8 +847,6 @@ CRAN release: 2018-08-02
   the missing dates caused `clim_calc_cpp` to fail
 
 ## heatwaveR 0.3.0 (2018-06-22)
-
-CRAN release: 2018-06-22
 
 - Re-submitted to CRAN in anticipation of **`ggplot2`** changes
 - `proto_event` now handles all event calculations ‘in house’
@@ -919,13 +879,9 @@ CRAN release: 2018-06-22
 
 ## heatwaveR 0.2.7 (2018-05-30)
 
-CRAN release: 2018-05-30
-
 - Accepted on CRAN
 
 ## heatwaveR 0.2.7 (2018-05-28)
-
-CRAN release: 2018-05-30
 
 - Submitted to CRAN
 
@@ -963,18 +919,18 @@ CRAN release: 2018-05-30
 ## heatwaveR 0.2.4.9003 (2018-05-21)
 
 - Updated testthat for
-  [`lolli_plot()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/lolli_plot.md)
+  [`lolli_plot()`](https://robwschlegel.github.io/heatwaveR/reference/lolli_plot.md)
   and
-  [`event_line()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.md)
+  [`event_line()`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)
 - Updated testthat for
-  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
 - Updated testthat for
-  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
 
 ## heatwaveR 0.2.4.9002 (2018-05-17)
 
 - Take advantage of C++ speed enhancement in
-  [`smooth_percentile()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/smooth_percentile.md)
+  [`smooth_percentile()`](https://robwschlegel.github.io/heatwaveR/reference/smooth_percentile.md)
   by using RcppRoll
 - Update testthat accordingly
 
@@ -987,10 +943,10 @@ CRAN release: 2018-05-30
 - Minor fix to testthat
 - codecov up to 100%
 - Fix to
-  [`geom_lolli()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/geom_lolli.md)
+  [`geom_lolli()`](https://robwschlegel.github.io/heatwaveR/reference/geom_lolli.md)
   n argument
 - Fix to
-  [`lolli_plot()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/lolli_plot.md)
+  [`lolli_plot()`](https://robwschlegel.github.io/heatwaveR/reference/lolli_plot.md)
   y-axis range
 - Minor fix to `make_whole()`
 - Skeleton of R vs Python vignette added
@@ -998,9 +954,9 @@ CRAN release: 2018-05-30
 ## heatwaveR 0.2.3.9000 (2018-05-16)
 
 - Major speed-up in the climatology creation function.
-  [`clim_spread()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/clim_spread.md)
+  [`clim_spread()`](https://robwschlegel.github.io/heatwaveR/reference/clim_spread.md)
   now returns a matrix, not a data frame. This makes the loop in
-  [`clim_calc()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/clim_calc.md)
+  [`clim_calc()`](https://robwschlegel.github.io/heatwaveR/reference/clim_calc.md)
   much faster. In testing with the sst_WA data, it leads to a 3.7 fold
   speed improvement (520 ms down to 140 ms).
 - Speed-up of `make_whole()` (60 ms down to 40 ms)
@@ -1011,19 +967,19 @@ CRAN release: 2018-05-30
   [`detect()`](https://purrr.tidyverse.org/reference/detect.html) in
   favour of the new pipeline
 - Updated
-  [`exceedance()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/exceedance.md)
+  [`exceedance()`](https://robwschlegel.github.io/heatwaveR/reference/exceedance.md)
   to utilise the internal functions
 - Updated object names in
-  [`block_average()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/block_average.md)
+  [`block_average()`](https://robwschlegel.github.io/heatwaveR/reference/block_average.md)
 
 ## heatwaveR 0.2.1.9001 (2018-05-15)
 
 - Micro edits to documentation
 - Testing for all exported and internal functions brought up to speed
 - Ensuring that new
-  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
   and
-  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
   pipeline returns the same results as the old `make_whole()` and
   [`detect()`](https://purrr.tidyverse.org/reference/detect.html)
   pipeline
@@ -1031,7 +987,7 @@ CRAN release: 2018-05-30
 ## heatwaveR 0.2.1.9000 (2018-05-14)
 
 - Phasing in identical names as in the python version
-- [`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+- [`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
   now passing checks
 - Must still test for MCSs
 - The old
@@ -1039,17 +995,17 @@ CRAN release: 2018-05-30
   function was unpacked and simplified. Internal code is now in new
   functions, most of which will not be seen by the user. They are
   `make_whole()`
-  [`proto_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/proto_event.md),
-  [`clim_calc()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/clim_calc.md),
-  [`smooth_percentile()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/smooth_percentile.md),
-  [`clim_spread()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/clim_spread.md),
+  [`proto_event()`](https://robwschlegel.github.io/heatwaveR/reference/proto_event.md),
+  [`clim_calc()`](https://robwschlegel.github.io/heatwaveR/reference/clim_calc.md),
+  [`smooth_percentile()`](https://robwschlegel.github.io/heatwaveR/reference/smooth_percentile.md),
+  [`clim_spread()`](https://robwschlegel.github.io/heatwaveR/reference/clim_spread.md),
   and
-  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
-- [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+  [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
+- [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
   used instead of `detect_clim()`
 - Climatologies can now be calculated independently of the detect
   functionality
-- [`exceedance()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/exceedance.md)
+- [`exceedance()`](https://robwschlegel.github.io/heatwaveR/reference/exceedance.md)
   function testthat checks updated to account for change in variable
   naming
 
@@ -1057,7 +1013,7 @@ CRAN release: 2018-05-30
 
 - [`detect()`](https://purrr.tidyverse.org/reference/detect.html) has
   now been broken into `detect_clim()` and
-  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+  [`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
 - These now also rely on internal functions
 - The purpose of this is to create a family of functions that provide
   different options
@@ -1071,30 +1027,30 @@ CRAN release: 2018-05-30
 ## heatwaveR 0.0.7.9001 (2018-05-05)
 
 - Testing for
-  [`category()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md)
+  [`category()`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
 - Testing for
-  [`block_average()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/block_average.md)
+  [`block_average()`](https://robwschlegel.github.io/heatwaveR/reference/block_average.md)
 - Testing for
   [`detect()`](https://purrr.tidyverse.org/reference/detect.html)
 - Testing
-  [`exceedance()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/exceedance.md)
+  [`exceedance()`](https://robwschlegel.github.io/heatwaveR/reference/exceedance.md)
 - Removed default `threshold` for
-  [`exceedance()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/exceedance.md)
+  [`exceedance()`](https://robwschlegel.github.io/heatwaveR/reference/exceedance.md)
 - Tweaks to
-  [`exceedance()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/exceedance.md)
+  [`exceedance()`](https://robwschlegel.github.io/heatwaveR/reference/exceedance.md)
   error messages
 - Testing for
-  [`event_line()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.md)
+  [`event_line()`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)
 - Testing for
-  [`lolli_plot()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/lolli_plot.md)
+  [`lolli_plot()`](https://robwschlegel.github.io/heatwaveR/reference/lolli_plot.md)
 - Tweaks to
-  [`lolli_plot()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/lolli_plot.md)
+  [`lolli_plot()`](https://robwschlegel.github.io/heatwaveR/reference/lolli_plot.md)
   error messages
 
 ## heatwaveR 0.0.7.9000 (2018-05-04)
 
 - New
-  [`category()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md)
+  [`category()`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
   function returns the category results for events
 - Still requires testing and improved event naming scheme
 
@@ -1103,7 +1059,7 @@ CRAN release: 2018-05-30
 - Minor touch up to examples in `geoms.R`
 - First draft of `heatwaveR` hex logo added to site
 - Added `category` option to
-  [`event_line()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.md)
+  [`event_line()`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)
 - Simplifications and consistency checks to
   [`detect()`](https://purrr.tidyverse.org/reference/detect.html)
 - Some writing on Baselines and climatology vignette
@@ -1111,7 +1067,7 @@ CRAN release: 2018-05-30
 ## heatwaveR 0.0.5.9001 (2018-05-02)
 
 - Fix to
-  [`event_line()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.md)
+  [`event_line()`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)
   not plotting MCSs correctly
 - Fix error with smooth_percentile and smooth_percentile_width
   descriptions that were interchanged in
@@ -1141,7 +1097,7 @@ CRAN release: 2018-05-30
 
 - Removed rlang dependency
 - Touch-up to
-  [`block_average()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/block_average.md)
+  [`block_average()`](https://robwschlegel.github.io/heatwaveR/reference/block_average.md)
 - Tested `make_whole()`
 - Basic testing for other functions
 
@@ -1150,12 +1106,12 @@ CRAN release: 2018-05-30
 - Established theme for changelog
 - Synced ganalytics
 - Fixed
-  [`event_line()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.md)
+  [`event_line()`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)
   to acknowledge column names other than `t` and `temp`
 - Fixed
-  [`lolli_plot()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/lolli_plot.md)
+  [`lolli_plot()`](https://robwschlegel.github.io/heatwaveR/reference/lolli_plot.md)
   to use underlying
-  [`geom_lolli()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/geom_lolli.md)
+  [`geom_lolli()`](https://robwschlegel.github.io/heatwaveR/reference/geom_lolli.md)
 - Search bar now live
 - Removed all but one use of plyr code
 

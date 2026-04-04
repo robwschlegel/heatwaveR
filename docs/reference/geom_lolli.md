@@ -5,7 +5,7 @@ along the \*y\*-axis versus a time variable along the \*x\*-axis. The
 number of top events (`n`) from the chosen metric may be highlighted in
 a brighter colour with the aesthetic value `colour_n`. This function
 differs in use from
-[`lolli_plot`](https://robwschlegel.github.io/heatwaveR/index.html/reference/lolli_plot.md)
+[`lolli_plot`](https://robwschlegel.github.io/heatwaveR/reference/lolli_plot.md)
 in that it must be created as a ggplot2 'geom' object. The benefit of
 this being that one may add additional information layer by layer to the
 figure as geoms as necessary.
@@ -118,7 +118,7 @@ are in bold):
 
 ## See also
 
-[`lolli_plot`](https://robwschlegel.github.io/heatwaveR/index.html/reference/lolli_plot.md)
+[`lolli_plot`](https://robwschlegel.github.io/heatwaveR/reference/lolli_plot.md)
 for a non-geom based lolliplot function.
 
 ## Author

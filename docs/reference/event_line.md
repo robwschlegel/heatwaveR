@@ -29,7 +29,7 @@ event_line(
 - data:
 
   The function receives the full (list) output from the
-  [`detect_event`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+  [`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
   function.
 
 - x:
@@ -124,10 +124,10 @@ The function will return a line plot indicating the climatology,
 threshold and temperature, with the hot or cold events that meet the
 specifications of Hobday et al. (2016) shaded in as appropriate. The
 plotting of hot or cold events depends on which option is specified in
-[`detect_event`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md).
+[`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md).
 The top event detect during the selected time period will be visible in
 a brighter colour. This function differs in use from
-[`geom_flame`](https://robwschlegel.github.io/heatwaveR/index.html/reference/geom_flame.md)
+[`geom_flame`](https://robwschlegel.github.io/heatwaveR/reference/geom_flame.md)
 in that it creates a stand alone figure. The benefit of this being that
 one must not have any prior knowledge of ggplot2 to create the figure.
 

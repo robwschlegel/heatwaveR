@@ -1,0 +1,197 @@
+$hw-deep: #102733;
+$hw-ink: #14303a;
+$hw-primary: #0b7285;
+$hw-primary-soft: #d9eff2;
+$hw-border: #cfe0e4;
+$hw-surface: rgba(255, 255, 255, 0.84);
+$hw-surface-dark: rgba(16, 39, 51, 0.86);
+$hw-shadow: 0 18px 36px rgba(16, 39, 51, 0.09);
+
+body {
+  background:
+    radial-gradient(circle at top right, rgba(11, 114, 133, 0.12), transparent 24rem),
+    linear-gradient(180deg, #f7fcfd 0%, #f4fbfc 20rem, #ffffff 42rem);
+}
+
+.navbar {
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(16, 39, 51, 0.08);
+  border-bottom: 1px solid rgba(20, 48, 58, 0.08);
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.navbar-brand::before {
+  content: "";
+  width: 1.9rem;
+  height: 1.9rem;
+  background: url("logo.png") center / contain no-repeat;
+  flex: none;
+}
+
+.navbar-nav .nav-link,
+.dropdown-item {
+  font-weight: 600;
+}
+
+.template-home main h1 {
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+  margin-bottom: 1.25rem;
+}
+
+.hw-hero {
+  display: grid;
+  gap: 1.5rem;
+  align-items: center;
+  margin: 1.5rem 0 2rem;
+  padding: 1.75rem;
+  border: 1px solid rgba(11, 114, 133, 0.14);
+  border-radius: 1.5rem;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(228, 245, 247, 0.92)),
+    linear-gradient(180deg, rgba(11, 114, 133, 0.05), rgba(255, 255, 255, 0));
+  box-shadow: $hw-shadow;
+}
+
+.hw-hero-copy p:last-child {
+  margin-bottom: 0;
+}
+
+.hw-lead {
+  font-size: 1.15rem;
+  line-height: 1.65;
+  max-width: 60ch;
+}
+
+.hw-hero-mark {
+  display: flex;
+  justify-content: center;
+}
+
+.hw-hero-mark img {
+  width: 100%;
+  max-width: 220px;
+  filter: drop-shadow(0 16px 32px rgba(11, 114, 133, 0.16));
+}
+
+.pkgdown-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin: 1rem 0 2.25rem;
+}
+
+.pkgdown-badges a {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 8px 18px rgba(16, 39, 51, 0.06);
+}
+
+.pkgdown-badges img {
+  display: block;
+}
+
+.hw-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.hw-card {
+  height: 100%;
+  padding: 1.25rem;
+  border: 1px solid rgba(11, 114, 133, 0.14);
+  border-radius: 1.25rem;
+  background: $hw-surface;
+  box-shadow: 0 16px 32px rgba(16, 39, 51, 0.07);
+}
+
+.hw-card h3 {
+  margin-top: 0;
+  margin-bottom: 0.6rem;
+  font-size: 1.05rem;
+}
+
+.hw-card p:last-child {
+  margin-bottom: 0;
+}
+
+.template-home h2 {
+  margin-top: 2.75rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.03em;
+}
+
+.template-home table {
+  background: rgba(255, 255, 255, 0.78);
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(16, 39, 51, 0.05);
+}
+
+.template-home pre,
+.template-home .sourceCode {
+  border-radius: 1rem;
+  box-shadow: 0 14px 30px rgba(16, 39, 51, 0.08);
+}
+
+.template-home .page-link,
+.template-home a {
+  text-underline-offset: 0.16em;
+}
+
+.sidebar,
+.contents,
+.reference-index,
+.article-meta {
+  border-radius: 1rem;
+}
+
+@media (min-width: 992px) {
+  .hw-hero {
+    grid-template-columns: minmax(0, 1.9fr) minmax(180px, 0.8fr);
+    padding: 2rem 2.1rem;
+  }
+}
+
+html[data-bs-theme="dark"] body {
+  background:
+    radial-gradient(circle at top right, rgba(66, 192, 212, 0.14), transparent 24rem),
+    linear-gradient(180deg, #0d1c24 0%, #102733 22rem, #11212a 42rem);
+}
+
+html[data-bs-theme="dark"] .navbar {
+  border-bottom-color: rgba(217, 239, 242, 0.08);
+}
+
+html[data-bs-theme="dark"] .hw-hero {
+  background:
+    linear-gradient(150deg, rgba(16, 39, 51, 0.92), rgba(14, 57, 70, 0.84)),
+    linear-gradient(180deg, rgba(66, 192, 212, 0.08), rgba(16, 39, 51, 0));
+  border-color: rgba(132, 209, 221, 0.14);
+  box-shadow: 0 22px 40px rgba(0, 0, 0, 0.22);
+}
+
+html[data-bs-theme="dark"] .hw-card,
+html[data-bs-theme="dark"] .pkgdown-badges a,
+html[data-bs-theme="dark"] .template-home table {
+  background: $hw-surface-dark;
+  border-color: rgba(132, 209, 221, 0.12);
+}
+
+html[data-bs-theme="dark"] .template-home pre,
+html[data-bs-theme="dark"] .template-home .sourceCode {
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.24);
+}

@@ -17,9 +17,9 @@ intensity. The naming convention and a brief description are as follows:
 
 The categories of MHWs under the Hobday et al. (2018) naming scheme may
 be calculated with the **`heatwaveR`** package using the
-[`category()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md)
+[`category()`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
 function on the output of the
-[`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+[`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
 function. By default this function will order events from most to least
 intense. Note that one may control the output for the names of the
 events by providing ones own character string for the `name` argument.
@@ -88,7 +88,7 @@ tail(res_Med_cat)
 If however we may want to determine the categories of event within a set
 of time series that cross over the equator, we may set the argument
 `lat_col = TRUE` to allow
-[`category()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md)
+[`category()`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
 to automagically detect the latitude of the events by searching for
 columns named either ‘lat’ or ’latitude. See the vignette for [detecting
 events in gridded
@@ -140,7 +140,7 @@ MHW_cat_ALL |>
 
 A quick and easy visualisation of the categories of a MHW may be
 accomplished with
-[`event_line()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.md)
+[`event_line()`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)
 by setting the `category` argument to `TRUE`.
 
 ``` r
@@ -208,7 +208,7 @@ ggplot(data = clim_cat, aes(x = t, y = temp)) +
 ## Calculating MCS categories
 
 MCSs are calculated the same as for MHWs. The
-[`category()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md)
+[`category()`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
 function will automagically detect if it has been fed MHWs or MCSs so no
 additional arguments are required. For the sake of clarity the following
 code chunks demonstrates how to calculate MCS categories.
@@ -243,7 +243,7 @@ tail(MCS_cat)
 ### Default MCS category visuals
 
 The
-[`event_line()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.md)
+[`event_line()`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)
 function also works for visualising MCS categories. The function will
 automagically detect that it is being fed MCSs so we do not need to
 provide it with any new arguments. Note that the colour palette for MCS

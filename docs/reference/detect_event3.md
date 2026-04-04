@@ -1,12 +1,12 @@
 # Detect heatwaves and cold-spells.
 
 `detect_event3` is a data.table version of the earlier
-[`detect_event`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md).
+[`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md).
 It applies the Hobday et al. (2016) marine heat wave definition to an
 input time series of a given value (usually, but not necessarily limited
 to, temperature) along with a daily date vector and pre-calculated
 seasonal and threshold climatologies, which may either be created with
-[`ts2clm3`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm3.md)
+[`ts2clm3`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm3.md)
 or some other means.
 
 ## Usage
@@ -45,10 +45,10 @@ detect_event3(
   days), and `thresh` is the seasonal cycle daily threshold above which
   events may be detected. Data of the appropriate format are created by
   the function
-  [`ts2clm3`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm3.md),
+  [`ts2clm3`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm3.md),
   but your own data can be supplied if they meet the criteria specified
   by
-  [`ts2clm3`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm3.md).
+  [`ts2clm3`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm3.md).
   If the column names of `data` match those outlined here, the following
   four arguments may be ignored.
 
@@ -56,7 +56,7 @@ detect_event3(
 
   This column is expected to contain a vector of dates as per the
   specification of
-  [`ts2clm3`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm3.md).
+  [`ts2clm3`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm3.md).
   If a column headed `t` is present in the data.table, this argument may
   be omitted; otherwise, specify the name of the column with dates here.
 
@@ -69,7 +69,7 @@ detect_event3(
 
   The default for this argument assumes that the seasonal climatology
   column is called `seas` as this matches the output of
-  [`ts2clm3`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm3.md).
+  [`ts2clm3`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm3.md).
   If the column name for the seasonal climatology is different, provide
   that here.
 
@@ -121,10 +121,10 @@ detect_event3(
   climatological thresholds for cold-spells are considered to be the
   inverse of those for MHWs. For example, the default setting for the
   detection of MHWs is `pctile = 90`, as seen in
-  [`ts2clm3`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm3.md).
+  [`ts2clm3`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm3.md).
   Should one want to use `detect_event3` for MCSs, this threshold would
   best be generated in
-  [`ts2clm3`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm3.md)
+  [`ts2clm3`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm3.md)
   by setting `pctile = 10` (see example below). Any value may be used,
   but this is the setting used for the calculation of MCSs in Schlegel
   et al. (2017a).
@@ -134,7 +134,7 @@ detect_event3(
   Boolean. With the default setting of `protoEvents = FALSE` a list with
   two components will be reported. The first component (`climatology`)
   will have the original time series returned by
-  [`ts2clm3`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm3.md)
+  [`ts2clm3`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm3.md)
   augmented with columns indicating if the threshold criterion
   (`threshCriterion`) and duration criterion (`durationCriterion`) have
   been exceeded, a column showing if a heatwave is present (i.e. both
@@ -149,14 +149,14 @@ detect_event3(
 - categories:
 
   Boolean. Rather than using
-  [`category`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md)
+  [`category`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
   as a separate step to determine the categories of the detected MHWs,
   one may choose to set this argument to `TRUE`. One may pass the same
   arguments used in the
-  [`category`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md)
+  [`category`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
   function to this function to affect the output. Note that the default
   behaviour of
-  [`category`](https://robwschlegel.github.io/heatwaveR/index.html/reference/category.md)
+  [`category`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
   is to return the event data only. To return the same list structure
   that `detect_event3` outputs by default, add the argument
   `climatology = TRUE`. By default `categories = FALSE`.
@@ -293,12 +293,12 @@ sensible values, please take this into account in its interpretation.
     continuous daily values with few missing values. Time ranges which
     start and end part-way through the calendar year are supported. The
     accompanying function
-    [`ts2clm3`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm3.md)
+    [`ts2clm3`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm3.md)
     aids in the preparation of a time series that is suitable for use
     with `detect_event3`, although this may also be accomplished 'by
     hand' as long as the criteria are met as discussed in the
     documentation to
-    [`ts2clm3`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm3.md).
+    [`ts2clm3`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm3.md).
 
 2.  The calculation of onset and decline rates assumes that the events
     started a half-day before the start day and ended a half-day after
@@ -312,7 +312,7 @@ sensible values, please take this into account in its interpretation.
 
 3.  For the purposes of event detection, any missing temperature values
     not interpolated over (through optional `maxPadLength` in
-    [`ts2clm3`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm3.md))
+    [`ts2clm3`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm3.md))
     will be set equal to the seasonal climatology. This means they will
     trigger the end/start of any adjacent temperature values which
     satisfy the event definition criteria.

@@ -2,9 +2,9 @@
 
 An internal function that helps to create a time series that will then
 be used by
-[`clim_calc`](https://robwschlegel.github.io/heatwaveR/index.html/reference/clim_calc.md)
+[`clim_calc`](https://robwschlegel.github.io/heatwaveR/reference/clim_calc.md)
 within
-[`ts2clm`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+[`ts2clm`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
 to produce a climatology as desired by the user.
 
 ## Usage

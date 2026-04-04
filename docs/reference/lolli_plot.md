@@ -14,20 +14,20 @@ lolli_plot(data, xaxis = date_peak, metric = intensity_max, event_count = 3)
 - data:
 
   Output from the
-  [`detect_event`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+  [`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
   function.
 
 - xaxis:
 
   The name of a column from the `event` data.frame in the output of
-  [`detect_event`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md).
+  [`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md).
   Suggested choices are, but not limited to, of `event_no`, `date_start`
   or `date_peak`. Default is `date_peak`.
 
 - metric:
 
   The name of a column from the `event` data.frame in the output of
-  [`detect_event`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md).Suggested
+  [`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md).Suggested
   choices are, but not limited to, `intensity_mean`, `intensity_max`,
   `intensity_cumulative` and `duration`. Default is `intensity_max`.
 
@@ -42,7 +42,7 @@ The function will return a graph of the intensity of the selected
 `metric` along the y-axis and the chosen `xaxis` value. The number of
 top events as per `event_count` will be highlighted in a brighter
 colour. This function differs in use from
-[`geom_lolli`](https://robwschlegel.github.io/heatwaveR/index.html/reference/geom_lolli.md)
+[`geom_lolli`](https://robwschlegel.github.io/heatwaveR/reference/geom_lolli.md)
 in that it creates a stand-alone figure. The benefit of this being that
 one does not need any prior knowledge of `ggplot2` to create the figure.
 

@@ -5,7 +5,7 @@
 In addition to the calculation of events based on a given percentile,
 this package also allows for the calculation of events based on a given
 static threshold with the
-[`exceedance()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/exceedance.md)
+[`exceedance()`](https://robwschlegel.github.io/heatwaveR/reference/exceedance.md)
 function. This is most useful if one is more interested in testing a
 time series for events that exceed a pre-determined static threshold
 that is already known to be of particular significance in a given part
@@ -15,11 +15,11 @@ atmospheric events with ‘tMin’ and ‘tMax’ daily values. For a detailed
 explanation for how to do this please see [this
 vignette](https://robwschlegel.github.io/heatwaveR/articles/complex_clims.html).
 The data requirements for
-[`exceedance()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/exceedance.md)
+[`exceedance()`](https://robwschlegel.github.io/heatwaveR/reference/exceedance.md)
 are the same as for
-[`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+[`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
 and
-[`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md).
+[`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md).
 
 ## Calculating exceedances
 
@@ -57,22 +57,22 @@ exc_25$exceedance %>%
     ## 5                 6.97
 
 Note that the resultant output of
-[`exceedance()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/exceedance.md)
+[`exceedance()`](https://robwschlegel.github.io/heatwaveR/reference/exceedance.md)
 is very similar to
-[`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md),
+[`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md),
 except that the two dataframes within the list are called `threshold`
 and `exceedance`, rather than `climatology` and `event`.
 
 ## Visualising exceedances
 
 Because
-[`event_line()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.md)
+[`event_line()`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)
 and
-[`lolli_plot()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/lolli_plot.md)
+[`lolli_plot()`](https://robwschlegel.github.io/heatwaveR/reference/lolli_plot.md)
 are designed to work on the output of
-[`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md),
+[`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md),
 if we want to visualise the results of
-[`exceedance()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/exceedance.md)
+[`exceedance()`](https://robwschlegel.github.io/heatwaveR/reference/exceedance.md)
 we will need to do so ‘by hand’ with **`ggplot2`**. The code below works
 as an example of how to do so:
 
@@ -102,7 +102,7 @@ threshold somewhat awkward. For the purposes of clarity here we will
 refer to these as negative exceedances.
 
 The
-[`exceedance()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/exceedance.md)
+[`exceedance()`](https://robwschlegel.github.io/heatwaveR/reference/exceedance.md)
 function may be used to calculate consecutive days below a threshold as
 seen here:
 

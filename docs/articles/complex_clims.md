@@ -9,10 +9,10 @@ this end we made a very large change in the event detection pipeline
 when we moved from the **`RmarineHeatWaves`** package to
 **`heatwaveR`**. This change may primarily be seen with the inclusion of
 the
-[`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+[`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
 function and the removal of the climatology performed in
 `RmarineHeatWaves::detect()` in favour of
-[`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md),
+[`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md),
 which does not calculate climatologies. In this way we have allowed for
 the introduction of a multitude of more complex climatology calculation
 and event detection/filtering methods. It is our overarching goal to
@@ -44,7 +44,7 @@ the days when the corresponding `tMin` also exceeds a pre-determined
 flat bottom boundary on the same days to quantify the heatwave metrics.
 We will finish by visualising the results with the built-in
 **`heatwaveR`** graphing functions of
-[`event_line()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.md)
+[`event_line()`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)
 and `lolli_plot` as well as a bubble plot. The data we will use for
 these examples will be a 45 year time series of daily atmospheric `tMin`
 and `tMax` temperatures over Algiers, Algeria contributed by
@@ -97,7 +97,7 @@ tMin_exc <- exceedance(data = Algiers, y = tMin, threshold = 19, minDuration = 3
 ### Calculating events
 
 Now that the two thresholds have been calculated we use the
-[`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+[`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
 function as usual, but provide the second threshold to the argument
 `threshClim2` that would normally lay dormant.
 
@@ -155,9 +155,9 @@ ggarrange(event_line(events, y = tMax, metric = intensity_max),
 
 Using a percentile based second threshold is not much different than
 using a static second threshold. Rather than using
-[`exceedance()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/exceedance.md)
+[`exceedance()`](https://robwschlegel.github.io/heatwaveR/reference/exceedance.md)
 to get our second threshold we can use `ts2clm` nested within
-[`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md).
+[`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md).
 It must also be pointed out that in addition to using multiple
 thresholds, we can adjust the minimum duration (`minDuration`) and
 maximum gap (`maxGap`) arguments for our multiple thresholds, too. This
@@ -302,7 +302,7 @@ with two thresholds is somewhat cumbersome. A potential issue with this
 technique is that the multiple filters do not affect the calculation of
 the event metrics (e.g. `intensity_cumulative`), as only the primary
 threshold given to
-[`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+[`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
 is used when calculating event metrics. This may however be the desired
 case if one is still interested in knowing the cumulative intensity
 above the given percentile threshold, but only wants to filter the full
@@ -465,9 +465,9 @@ applications of thresholds. Note the difference in the y-axes.
 
 One may of course visualise the outputs from the events calculated here
 with
-[`geom_flame()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/geom_flame.md)
+[`geom_flame()`](https://robwschlegel.github.io/heatwaveR/reference/geom_flame.md)
 and
-[`geom_lolli()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/geom_lolli.md)
+[`geom_lolli()`](https://robwschlegel.github.io/heatwaveR/reference/geom_lolli.md)
 as well, but this will not differ from the default method of using these
 functions as outlined in their help files so we will not go into that
 here.
@@ -479,7 +479,7 @@ methodologies for using two thresholds (`tMin` and `tMax`) with
 atmospheric data. We also showed in this vignette a more straight
 forward approach to using a second threshold through the built-in
 arguments in
-[`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md).
+[`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md).
 The use of a second threshold in this way, whether it be based on a
 static threshold or one derived from a percentile, is useful for the
 consideration of events that may be more specifically relevant to a

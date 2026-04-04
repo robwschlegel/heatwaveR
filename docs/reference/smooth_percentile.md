@@ -14,7 +14,7 @@ smooth_percentile(data, smoothPercentileWidth, var_calc)
 - data:
 
   The data given to this function during the calculations performed by
-  [`ts2clm`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md).
+  [`ts2clm`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md).
 
 - smoothPercentileWidth:
 

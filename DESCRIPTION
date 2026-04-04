@@ -47,5 +47,5 @@ Imports:
 LinkingTo: Rcpp (>= 0.12.16), RcppArmadillo
 NeedsCompilation: yes
 VignetteBuilder: knitr
-URL: https://robwschlegel.github.io/heatwaveR/index.html, https://github.com/robwschlegel/heatwaveR
+URL: https://robwschlegel.github.io/heatwaveR/, https://github.com/robwschlegel/heatwaveR
 BugReports: https://github.com/robwschlegel/heatwaveR/issues

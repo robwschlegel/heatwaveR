@@ -94,7 +94,7 @@ lon_lat_NZ_df <- lon_lat_NZ %>%
 We begin by downloading daily OISST v2.1 data for all pixels around New
 Zealand (lat 25-55°S, lon 160-190°E) and use the functions
 `heatwaveR::ts2clim()` and
-[`heatwaveR::detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+[`heatwaveR::detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
 to get the climatology from the time series. Note that this full process
 will take roughly one hour on a desktop computer given the number of
 pixels and days. Even though we know the exact coordinates of the pixels

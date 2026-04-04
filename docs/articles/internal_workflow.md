@@ -25,7 +25,7 @@ flowchart TD
 
 ## `ts2clm()`
 
-[`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+[`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
 accepts a dataframe with date (`x = t`) and temperature (`y = temp`).
 Additional function arguments include:
 
@@ -89,7 +89,7 @@ durations.
 3.  Should the user be concerned about repeated measurements per day, we
     suggest that the necessary checks and fixes are implemented prior to
     feeding the time series to
-    [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md).
+    [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md).
 
 4.  Much of the interval function depends on **data.table** because it
     is fast. **I suggest removing this dependence in favour of C++
@@ -140,7 +140,7 @@ temperatures. It takes a series of dates and temperatures, and if
 irregular (but ordered), inserts missing dates and fills corresponding
 temperatures with `NA`s. It has only one argument and is fed data in a
 consistent format by early steps in
-[`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md):
+[`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md):
 
 1.  `data` A data frame with columns for date (`ts_x`) and temperature
     (`ts_y`) data. Ordered daily data are expected, and although missing
@@ -167,7 +167,7 @@ consistent format by early steps in
     determined, but also for the number of events that can be detected.
     **Currently there is no check for the number of `NA`s in the time
     series provided to
-    [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+    [`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
     and this can be added to future updates such that it fails (or sends
     a loud warning) when a threshold of maximum allowable `NA`s is
     exceeded**.
@@ -177,7 +177,7 @@ consistent format by early steps in
     repeated measurements or worry that the time series is unordered, we
     suggest that the necessary checks and fixes are implemented prior to
     feeding the time series to `ts2clim()` via
-    [`make_whole_fast()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/make_whole_fast.md).
+    [`make_whole_fast()`](https://robwschlegel.github.io/heatwaveR/reference/make_whole_fast.md).
     When using the fast algorithm, we assume that the user has done all
     the necessary work to ensure that the time vector is ordered and
     without repeated measurements beforehand.

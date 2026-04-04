@@ -33,7 +33,7 @@ exceedance(
   temperatures in exceedance of the `threshold` if missing days of data
   are not filled in with `NA`. Data of the appropriate format are
   created by the internal function
-  [`make_whole_fast`](https://robwschlegel.github.io/heatwaveR/index.html/reference/make_whole_fast.md),
+  [`make_whole_fast`](https://robwschlegel.github.io/heatwaveR/reference/make_whole_fast.md),
   but your own data may be used directly if they meet the given
   criteria. Note that it is also possible to provide hourly data in the
   `x` column as class `POSIXct`.
@@ -110,7 +110,7 @@ discrete group of days in exceedance of the given `threshold`. Note that
 any additional columns left in the data frame given to this function
 will be output in the `threshold` component of the output. For example,
 if one uses
-[`ts2clm`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+[`ts2clm`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
 to prepare a time series for analysis and leaves in the `doy` column,
 this column will appear in the output.
 
@@ -219,11 +219,11 @@ than relative to the threshold.
 1.  This function assumes that the input time series consists of
     continuous daily temperatures, with few missing values. The
     accompanying function
-    [`make_whole_fast`](https://robwschlegel.github.io/heatwaveR/index.html/reference/make_whole_fast.md)
+    [`make_whole_fast`](https://robwschlegel.github.io/heatwaveR/reference/make_whole_fast.md)
     aids in the preparation of a time series that is suitable for use
     with `exceedance`, although this may also be accomplished 'by hand'
     as long as the criteria are met as discussed in the documentation to
-    [`make_whole_fast`](https://robwschlegel.github.io/heatwaveR/index.html/reference/make_whole_fast.md).
+    [`make_whole_fast`](https://robwschlegel.github.io/heatwaveR/reference/make_whole_fast.md).
 
 2.  Future versions seek to accommodate monthly and annual time series,
     too.

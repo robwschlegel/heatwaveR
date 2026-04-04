@@ -22,5 +22,5 @@ example](https://www.tidyverse.org/help/#reprex) where possible.
 ## Code of Conduct
 
 Please note that this project is released with a [Contributor Code of
-Conduct](https://robwschlegel.github.io/heatwaveR/index.html/CODE_OF_CONDUCT.md).
+Conduct](https://robwschlegel.github.io/heatwaveR/CODE_OF_CONDUCT.md).
 By participating in this project you agree to abide by its terms.

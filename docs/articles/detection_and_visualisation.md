@@ -3,12 +3,12 @@
 ## Data
 
 The
-[`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+[`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
 function is the core of this package, and it expects to be fed the
 output of the second core function,
-[`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md).
+[`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md).
 By default,
-[`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+[`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
 wants to receive a two-column dataframe with one column labelled `t`
 containing all of the date values, and a second column `temp` containing
 all of the temperature values. Please note that the date format it
@@ -31,9 +31,9 @@ head(heatwaveR::sst_WA)
 
 It is possible to use different column names other than `t` and `temp`
 with which to calculate events. Please see the help files for
-[`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+[`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
 or
-[`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+[`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
 for a thorough explanation of how to do so.
 
 Loading ones data from a `.csv` file or other text based format is the
@@ -46,9 +46,9 @@ gridded data.
 ## Calculating marine heatwaves (MHWs)
 
 Here are the
-[`ts2clm()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+[`ts2clm()`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
 and
-[`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+[`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
 function applied to the Western Australia test data included with this
 package (`sst_WA`), which are also discussed by Hobday et al. (2016):
 
@@ -81,11 +81,11 @@ mhw$event %>%
 ### Default MHW visuals
 
 One may use
-[`event_line()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.md)
+[`event_line()`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)
 and
-[`lolli_plot()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/lolli_plot.md)
+[`lolli_plot()`](https://robwschlegel.github.io/heatwaveR/reference/lolli_plot.md)
 directly on the output of
-[`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+[`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
 in order to visualise MHWs. Here are the functions being used to
 visualise the massive Western Australian heatwave of 2011:
 
@@ -105,22 +105,22 @@ lolli_plot(mhw, metric = intensity_max)
 ### Custom MHW visuals
 
 The
-[`event_line()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.md)
+[`event_line()`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)
 and
-[`lolli_plot()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/lolli_plot.md)
+[`lolli_plot()`](https://robwschlegel.github.io/heatwaveR/reference/lolli_plot.md)
 functions were designed to work directly on the list returned by
-[`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md).
+[`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md).
 If more control over the figures is required, it may be useful to create
 them in **`ggplot2`** by stacking `geoms`. We specifically created two
 new **`ggplot2`** `geoms` to reproduce the functionality of
-[`event_line()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.md)
+[`event_line()`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)
 and
-[`lolli_plot()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/lolli_plot.md).
+[`lolli_plot()`](https://robwschlegel.github.io/heatwaveR/reference/lolli_plot.md).
 These functions are more general in their functionality and can be used
 outside of the **`heatwaveR`** package, too. To apply them to MHWs and
 MCSs first requires that we access the `climatology` or `event`
 dataframes within the list that is produced by
-[`detect_event()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md).
+[`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md).
 Here is how:
 
 ``` r
@@ -179,7 +179,7 @@ ggplot(data = mhw2, aes(x = t)) +
 ![](detection_and_visualisation_files/figure-html/fig-example3-1.png)
 
 It is also worth pointing out that when we use
-[`geom_flame()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/geom_flame.md)
+[`geom_flame()`](https://robwschlegel.github.io/heatwaveR/reference/geom_flame.md)
 directly like this, but we don’t want to highlight events greater less
 than our standard five day length, allowing for a two day gap, we want
 to use the arguments `n` and `n_gap` respectively.
@@ -200,7 +200,7 @@ ggplot(mhw3, aes(x = t, y = temp, y2 = thresh)) +
 ![](detection_and_visualisation_files/figure-html/flame_gaps-1.png)
 
 Should we not wish to highlight any events with
-[`geom_lolli()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/geom_lolli.md),
+[`geom_lolli()`](https://robwschlegel.github.io/heatwaveR/reference/geom_lolli.md),
 plot them with a colour other than the default, and use a different
 theme, it would look like this:
 
@@ -303,9 +303,9 @@ ggplot(mcs$event, aes(x = date_start, y = intensity_max)) +
 ### Minty MCS visuals
 
 Again, because
-[`geom_flame()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/geom_flame.md)
+[`geom_flame()`](https://robwschlegel.github.io/heatwaveR/reference/geom_flame.md)
 and
-[`geom_lolli()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/geom_lolli.md)
+[`geom_lolli()`](https://robwschlegel.github.io/heatwaveR/reference/geom_lolli.md)
 are simple **`ggplot2`** geoms, one can go completely bananas with them:
 
 ``` r
@@ -339,17 +339,17 @@ ggplot(mcs$event, aes(x = date_start, y = intensity_cumulative)) +
 ## Interactive visuals
 
 As of **`heatwaveR`** v0.3.6.9002,
-[`geom_flame()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/geom_flame.md)
+[`geom_flame()`](https://robwschlegel.github.io/heatwaveR/reference/geom_flame.md)
 was also able to be used with **`plotly`** to allow for interactive MHW
 visuals. Unfortunately around December of 2020 the **`plotly`** packaged
 was orphaned and CRAN decided it didn’t want packages to include it as
 an imported package. Therefore as of v0.4.4.9005 **`heatwaveR`** no
 longer has built in support for using
-[`geom_flame()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/geom_flame.md)
+[`geom_flame()`](https://robwschlegel.github.io/heatwaveR/reference/geom_flame.md)
 with **`plotly`**. It is however still possible with a bit of work and a
 simple working example is given below. It is not currently possible to
 use
-[`geom_lolli()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/geom_lolli.md)
+[`geom_lolli()`](https://robwschlegel.github.io/heatwaveR/reference/geom_lolli.md)
 with **`plotly`**. Rather one is advised to just create the dots and
 segments separately with
 [`geom_point()`](https://ggplot2.tidyverse.org/reference/geom_point.html)

@@ -2,7 +2,7 @@
 
 An internal function that helps to create the climatologies that are
 then output with
-[`ts2clm`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md).
+[`ts2clm`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md).
 
 ## Usage
 
@@ -15,7 +15,7 @@ clim_calc(data, windowHalfWidth, pctile)
 - data:
 
   The data given to this function during the calculations performed by
-  [`ts2clm`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md).
+  [`ts2clm`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md).
 
 - windowHalfWidth:
 

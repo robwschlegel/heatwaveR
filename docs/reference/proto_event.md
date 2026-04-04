@@ -14,7 +14,7 @@ proto_event(t_series, criterion_column, minDuration, joinAcrossGaps, maxGap)
 - t_series:
 
   A dataframe of the correct dimensions inherited from
-  [`detect_event`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+  [`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
   within which this runs.
 
 - criterion_column:
@@ -39,9 +39,9 @@ proto_event(t_series, criterion_column, minDuration, joinAcrossGaps, maxGap)
 ## Value
 
 A dataframe that will be used within
-[`detect_event`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md),
+[`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md),
 or which can be returned by
-[`detect_event`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+[`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
 if the switch 'protoEvent' is specified as TRUE.
 
 ## Author

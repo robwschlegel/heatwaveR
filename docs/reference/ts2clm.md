@@ -158,7 +158,7 @@ the user.
 
   Daily varying threshold (e.g., 90th percentile) \[deg. C\]. This is
   used in
-  [`detect_event`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+  [`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
   for the detection/calculation of events (MHWs).
 
 - var:

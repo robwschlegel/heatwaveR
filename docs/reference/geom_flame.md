@@ -2,12 +2,12 @@
 
 This function will create polygons between two lines. If given a
 temperature and threshold time series, like that produced by
-[`detect_event`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md),
+[`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md),
 the output will meet the specifications of Hobday et al. (2016) shown as
 'flame polygons.' If one wishes to plot polygons below a given
 threshold, and not above, switch the values being fed to the `y` and
 `y2` aesthetics. This function differs in use from
-[`event_line`](https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.md)
+[`event_line`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)
 in that it must be created as a `ggplot` 'geom' object. The benefit of
 this being that one may add additional information to the figure as geom
 layers to ggplot2 graphs as may be necessary.
@@ -140,7 +140,7 @@ heatwaves, Progress in Oceanography, 141, pp. 227-238, doi:
 
 ## See also
 
-[`event_line`](https://robwschlegel.github.io/heatwaveR/index.html/reference/event_line.md)
+[`event_line`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)
 for a non-ggplot2 based flame function.
 
 ## Author

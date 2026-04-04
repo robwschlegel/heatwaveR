@@ -43,7 +43,7 @@ daily values between the first and last dates of the input data.
     thermal events. Hobday et al. (2016) recommend gaps of no more than
     3 days, which may be adjusted by setting the `maxPadLength` argument
     of the
-    [`ts2clm`](https://robwschlegel.github.io/heatwaveR/index.html/reference/ts2clm.md)
+    [`ts2clm`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)
     function. The longer and more frequent the gaps become the lower the
     fidelity of the annual climatology and threshold that can be
     calculated, which will not only have repercussions for the accuracy

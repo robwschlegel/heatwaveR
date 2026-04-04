@@ -2,7 +2,7 @@
 
 An internal function that detects the events according to the heatwave
 definition, and joins across the gaps if desired. This is an update of
-[`detect_event`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+[`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
 and is made entirely within data.table to benefit from the speed
 improvements.
 
@@ -17,7 +17,7 @@ proto_event3(p_series, criterion_column, minDuration, joinAcrossGaps, maxGap)
 - p_series:
 
   A data.table of the correct dimensions received from
-  [`detect_event3`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event3.md)
+  [`detect_event3`](https://robwschlegel.github.io/heatwaveR/reference/detect_event3.md)
   within which this runs.
 
 - criterion_column:
@@ -42,9 +42,9 @@ proto_event3(p_series, criterion_column, minDuration, joinAcrossGaps, maxGap)
 ## Value
 
 A dataframe that will be used within
-[`detect_event`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md),
+[`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md),
 or which can be returned by
-[`detect_event`](https://robwschlegel.github.io/heatwaveR/index.html/reference/detect_event.md)
+[`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
 if the switch 'protoEvent' is specified as TRUE.
 
 ## Author

@@ -1,71 +1,107 @@
-url: https://robwschlegel.github.io/heatwaveR/index.html
+url: https://robwschlegel.github.io/heatwaveR/
+
+home:
+  title: Detect, classify, and visualise heatwaves and cold-spells in R
+  description: Fast, research-grade tools for marine and atmospheric heatwave analysis across time series and gridded workflows.
+  sidebar: false
 
 navbar:
-  title: heatwaveR
-  type: default
-  left:
-  - icon: fa-home fa-lg
-    href: index.html
-  - text: "Reference"
-    href: reference/index.html
-  - text: "Vignettes"
-    menu:
-    - text: "Basic Detection and Visualisation of Events"
-      href: articles/detection_and_visualisation.html
-    - text: "Calculating and Visualising Event Categories"
-      href: articles/event_categories.html
-    - text: "Calculating and Visualising Exceedances"
-      href: articles/exceedance.html
-    - text: "Alternative Thresholds"
-      href: articles/complex_clims.html
-    - text: "Trend and Breakpoint Analyses"
-      href: articles/MHW_metric_trends.html
-    - text: "Downloading and Preparing OISST Data"
-      href: articles/OISST_preparation.html
-    - text: "Detecting Events in Gridded Data"
-      href: articles/gridded_event_detection.html
-    - text: "Download, Prepare, and Analyse Data: Alternative"
-      href: articles/Download_SST_v2.html
-    - text: "Saving MHW Results to NetCDF"
-      href: articles/MHW_to_nc.html
-  - text: "Demo"
-    href: https://robert-schlegel.shinyapps.io/demoMHW/
-  - text: "Citations"
-    href: CITATIONS.html
-  - text: "News"
-    href: news/index.html
-  right:
-  - icon: fa-github fa-lg
-    text: "github"
-    href: https://github.com/robwschlegel/heatwaveR
+  structure:
+    left: [home, reference, articles, resources, news]
+    right: [search, github, lightswitch]
+  components:
+    home:
+      text: Overview
+      href: index.html
+    resources:
+      text: Resources
+      menu:
+      - text: Marine Heatwave Tracker
+        href: https://www.marineheatwaves.org/tracker.html
+      - text: Interactive demo
+        href: https://robert-schlegel.shinyapps.io/demoMHW/
+      - text: Citations
+        href: CITATIONS.html
+
+footer:
+  structure:
+    left: [package, developed_by]
+    right: [built_with]
+  components:
+    package: Research-grade tools for heatwave and cold-spell analysis in R.
 
 reference:
-- title: Functions
-  desc: ~
+- title: Detect and Classify
+  desc: Core tools for building climatologies and identifying events.
   contents:
   - '`ts2clm`'
   - '`ts2clm3`'
   - '`detect_event`'
   - '`detect_event3`'
-  - '`block_average`'
-  - '`category`'
   - '`exceedance`'
+  - '`category`'
+- title: Summarise and Visualise
+  desc: Event summaries and publication-ready plotting helpers.
+  contents:
+  - '`block_average`'
   - '`event_line`'
   - '`lolli_plot`'
   - '`geom_flame`'
   - '`geom_lolli`'
-- title: Data
-  desc: ~
+- title: Example Data
+  desc: Observed temperature records used throughout the documentation.
   contents:
   - '`Algiers`'
   - '`sst_Med`'
   - '`sst_NW_Atl`'
   - '`sst_WA`'
 
+articles:
+- title: Get Started
+  desc: Core workflows for day-to-day package use.
+  contents:
+  - detection_and_visualisation
+  - event_categories
+  - exceedance
+- title: Advanced Workflows
+  desc: Alternative thresholds, trend analysis, gridded data, and export pipelines.
+  contents:
+  - complex_clims
+  - MHW_metric_trends
+  - OISST_preparation
+  - gridded_event_detection
+  - Download_SST_v2
+  - MHW_to_nc
+- title: Package Internals
+  desc: Development notes and internal workflow documentation.
+  contents:
+  - internal_workflow
+
+news:
+  cran_dates: false
+
 template:
   bootstrap: 5
+  light-switch: true
+  theme: github-light
+  theme-dark: github-dark
+  bslib:
+    bg: "#F4FBFC"
+    fg: "#14303A"
+    primary: "#0B7285"
+    secondary: "#5F7E88"
+    success: "#2C7A5B"
+    info: "#2B8CBE"
+    warning: "#D97706"
+    danger: "#A61E4D"
+    border-color: "#CFE0E4"
+    navbar-light-bg: "#EEF7F9"
+    navbar-dark-bg: "#102733"
+  opengraph:
+    image:
+      src: logo.png
+      alt: heatwaveR logo
   params:
-    bootswatch: spacelab
     ganalytics: G-6HDM047PDY
     docsearch:
       api_key: '2edc7627dae0471f3d765c3355bebbf3'
