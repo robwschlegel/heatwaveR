@@ -19,12 +19,12 @@
 <meta name="description" content="This vignette demonstrates the basic use of the heatwaveR package for the detection and visualisation of events.">
 <meta property="og:description" content="This vignette demonstrates the basic use of the heatwaveR package for the detection and visualisation of events.">
 <meta property="og:image" content="https://robwschlegel.github.io/heatwaveR/index.html/logo.png">
-<!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-118123016-1"></script><script>
+<!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-6HDM047PDY"></script><script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'UA-118123016-1');
+  gtag('config', 'G-6HDM047PDY');
 </script>
 </head>
 <body>
@@ -60,6 +60,7 @@
     <li><a class="dropdown-item" href="../articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="external-link nav-link" href="https://robert-schlegel.shinyapps.io/demoMHW/">Demo</a></li>
 <li class="nav-item"><a class="nav-link" href="../CITATIONS.html">Citations</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">News</a></li>
       </ul>
@@ -81,7 +82,7 @@
                         <h4 data-toc-skip class="author">AJ Smit and
 Robert W Schlegel</h4>
             
-            <h4 data-toc-skip class="date">2026-01-13</h4>
+            <h4 data-toc-skip class="date">2026-04-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/detection_and_visualisation.Rmd" class="external-link"><code>vignettes/detection_and_visualisation.Rmd</code></a></small>
       <div class="d-none name"><code>detection_and_visualisation.Rmd</code></div>
@@ -165,10 +166,10 @@ massive Western Australian heatwave of 2011:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">mhw</span>, spread <span class="op">=</span> <span class="fl">180</span>, metric <span class="op">=</span> <span class="va">intensity_max</span>, </span>
 <span>           start_date <span class="op">=</span> <span class="st">"1982-01-01"</span>, end_date <span class="op">=</span> <span class="st">"2014-12-31"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="detection_and_visualisation_files/figure-html/fig-example1-1.png" class="r-plt" width="768"></p>
+<p><img src="detection_and_visualisation_files/figure-html/fig-example1-1.png" class="r-plt" alt="" width="768"></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">mhw</span>, metric <span class="op">=</span> <span class="va">intensity_max</span><span class="op">)</span></span></code></pre></div>
-<p><img src="detection_and_visualisation_files/figure-html/fig-example1-2.png" class="r-plt" width="768"><!-- ![](vignettes/fig-example1-1.png) --><!-- ![](vignettes/fig-example2-1.png) --></p>
+<p><img src="detection_and_visualisation_files/figure-html/fig-example1-2.png" class="r-plt" alt="" width="768"><!-- ![](vignettes/fig-example1-1.png) --><!-- ![](vignettes/fig-example2-1.png) --></p>
 </div>
 <div class="section level3">
 <h3 id="custom-mhw-visuals">Custom MHW visuals<a class="anchor" aria-label="anchor" href="#custom-mhw-visuals"></a>
@@ -194,14 +195,14 @@ or <code>event</code> dataframes within the list that is produced by
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mhw2</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">t</span>, y <span class="op">=</span> <span class="va">temp</span>, y2 <span class="op">=</span> <span class="va">thresh</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/geom_flame.html">geom_flame</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2011-02-25"</span><span class="op">)</span>, y <span class="op">=</span> <span class="fl">25.8</span>, label <span class="op">=</span> <span class="st">"the Destroyer\nof Kelps"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="detection_and_visualisation_files/figure-html/fig-example2-1.png" class="r-plt" width="768"></p>
+<p><img src="detection_and_visualisation_files/figure-html/fig-example2-1.png" class="r-plt" alt="" width="768"></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mhw</span><span class="op">$</span><span class="va">event</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">date_start</span>, y <span class="op">=</span> <span class="va">intensity_max</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/geom_lolli.html">geom_lolli</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"salmon"</span>, colour_n <span class="op">=</span> <span class="st">"red"</span>, n <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"black"</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2006-08-01"</span><span class="op">)</span>, y <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>                label <span class="op">=</span> <span class="st">"The marine heatwaves\nTend to be left skewed in a\nGiven time series"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Max. intensity ["</span>, <span class="va">degree</span>, <span class="st">"C]"</span><span class="op">)</span><span class="op">)</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
-<p><img src="detection_and_visualisation_files/figure-html/fig-example2-2.png" class="r-plt" width="768"><!-- ![](vignettes/fig-example3-1.png) --><!-- ![](vignettes/fig-example3-2.png) --></p>
+<p><img src="detection_and_visualisation_files/figure-html/fig-example2-2.png" class="r-plt" alt="" width="768"><!-- ![](vignettes/fig-example3-1.png) --><!-- ![](vignettes/fig-example3-2.png) --></p>
 </div>
 <div class="section level3">
 <h3 id="spicy-mhw-visuals">Spicy MHW visuals<a class="anchor" aria-label="anchor" href="#spicy-mhw-visuals"></a>
@@ -233,7 +234,7 @@ al. (2016), the code would look something like this:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html" class="external-link">scale_x_date</a></span><span class="op">(</span>date_labels <span class="op">=</span> <span class="st">"%b %Y"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html" class="external-link">guide_legend</a></span><span class="op">(</span>override.aes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Temperature ["</span>, <span class="va">degree</span>, <span class="st">"C]"</span><span class="op">)</span><span class="op">)</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
-<p><img src="detection_and_visualisation_files/figure-html/fig-example3-1.png" class="r-plt" width="768"><!-- ![](vignettes/fig-example4-1.png) --></p>
+<p><img src="detection_and_visualisation_files/figure-html/fig-example3-1.png" class="r-plt" alt="" width="768"><!-- ![](vignettes/fig-example4-1.png) --></p>
 <p>It is also worth pointing out that when we use
 <code><a href="../reference/geom_flame.html">geom_flame()</a></code> directly like this, but we don’t want to
 highlight events greater less than our standard five day length,
@@ -250,7 +251,7 @@ and <code>n_gap</code> respectively.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">ylim</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">22</span>, <span class="fl">25</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"black"</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"1984-05-16"</span><span class="op">)</span>, y <span class="op">=</span> <span class="fl">24.5</span>,</span>
 <span>                label <span class="op">=</span> <span class="st">"heat\n\n\n\n\nspike"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="detection_and_visualisation_files/figure-html/flame_gaps-1.png" class="r-plt" width="768"></p>
+<p><img src="detection_and_visualisation_files/figure-html/flame_gaps-1.png" class="r-plt" alt="" width="768"></p>
 <p>Should we not wish to highlight any events with
 <code><a href="../reference/geom_lolli.html">geom_lolli()</a></code>, plot them with a colour other than the
 default, and use a different theme, it would look like this:</p>
@@ -260,7 +261,7 @@ default, and use a different theme, it would look like this:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Peak Date"</span>, </span>
 <span>       y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Max. intensity ["</span>, <span class="va">degree</span>, <span class="st">"C]"</span><span class="op">)</span><span class="op">)</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_linedraw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="detection_and_visualisation_files/figure-html/fig-example4-1.png" class="r-plt" width="768"><!-- ![](vignettes/fig-example5-1.png) --></p>
+<p><img src="detection_and_visualisation_files/figure-html/fig-example4-1.png" class="r-plt" alt="" width="768"><!-- ![](vignettes/fig-example5-1.png) --></p>
 <p>Because these are simple <strong><code>ggplot2</code></strong> geoms
 possibilities are nearly infinite.</p>
 </div>
@@ -309,10 +310,10 @@ OISST data for Western Australia:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">mcs</span>, spread <span class="op">=</span> <span class="fl">200</span>, metric <span class="op">=</span> <span class="va">intensity_cumulative</span>,</span>
 <span>           start_date <span class="op">=</span> <span class="st">"1982-01-01"</span>, end_date <span class="op">=</span> <span class="st">"2014-12-31"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="detection_and_visualisation_files/figure-html/fig-example5-1.png" class="r-plt" width="768"></p>
+<p><img src="detection_and_visualisation_files/figure-html/fig-example5-1.png" class="r-plt" alt="" width="768"></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">mcs</span>, metric <span class="op">=</span> <span class="va">intensity_cumulative</span>, xaxis <span class="op">=</span> <span class="va">event_no</span><span class="op">)</span></span></code></pre></div>
-<p><img src="detection_and_visualisation_files/figure-html/fig-example5-2.png" class="r-plt" width="768"><!-- ![](vignettes/fig-example6-1.png) --><!-- ![](vignettes/fig-example6-2.png) --></p>
+<p><img src="detection_and_visualisation_files/figure-html/fig-example5-2.png" class="r-plt" alt="" width="768"><!-- ![](vignettes/fig-example6-1.png) --><!-- ![](vignettes/fig-example6-2.png) --></p>
 <p>Note that one does not need to specify that MCSs are to be
 visualised, the functions are able to understand this on their own.</p>
 </div>
@@ -329,13 +330,13 @@ visualised, the functions are able to understand this on their own.</p>
 <span><span class="co"># Note that one must specify a colour other than the default 'salmon'</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mcs2</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">t</span>, y <span class="op">=</span> <span class="va">thresh</span>, y2 <span class="op">=</span> <span class="va">temp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/geom_flame.html">geom_flame</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"steelblue3"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="detection_and_visualisation_files/figure-html/fig-example6-1.png" class="r-plt" width="768"></p>
+<p><img src="detection_and_visualisation_files/figure-html/fig-example6-1.png" class="r-plt" alt="" width="768"></p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mcs</span><span class="op">$</span><span class="va">event</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">date_start</span>, y <span class="op">=</span> <span class="va">intensity_max</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/geom_lolli.html">geom_lolli</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"steelblue3"</span>, colour_n <span class="op">=</span> <span class="st">"navy"</span>, n <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Start Date"</span>,</span>
 <span>       y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Max. intensity ["</span>, <span class="va">degree</span>, <span class="st">"C]"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="detection_and_visualisation_files/figure-html/fig-example6-2.png" class="r-plt" width="768"></p>
+<p><img src="detection_and_visualisation_files/figure-html/fig-example6-2.png" class="r-plt" alt="" width="768"></p>
 </div>
 <div class="section level3">
 <h3 id="minty-mcs-visuals">Minty MCS visuals<a class="anchor" aria-label="anchor" href="#minty-mcs-visuals"></a>
@@ -360,12 +361,12 @@ bananas with them:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html" class="external-link">scale_x_date</a></span><span class="op">(</span>date_labels <span class="op">=</span> <span class="st">"%b %Y"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html" class="external-link">guide_legend</a></span><span class="op">(</span>override.aes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Temperature ["</span>, <span class="va">degree</span>, <span class="st">"C]"</span><span class="op">)</span><span class="op">)</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
-<p><img src="detection_and_visualisation_files/figure-html/fig-example7-1.png" class="r-plt" width="768"></p>
+<p><img src="detection_and_visualisation_files/figure-html/fig-example7-1.png" class="r-plt" alt="" width="768"></p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mcs</span><span class="op">$</span><span class="va">event</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">date_start</span>, y <span class="op">=</span> <span class="va">intensity_cumulative</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/geom_lolli.html">geom_lolli</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"steelblue3"</span>, colour_n <span class="op">=</span> <span class="st">"navy"</span>, n <span class="op">=</span> <span class="fl">7</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span> x <span class="op">=</span> <span class="st">"Start Date"</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Cumulative intensity [days x "</span>, <span class="va">degree</span>, <span class="st">"C]"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="detection_and_visualisation_files/figure-html/fig-example7-2.png" class="r-plt" width="768"><!-- ![](vignettes/fig-example7-1.png) --><!-- ![](vignettes/fig-example7-2.png) --></p>
+<p><img src="detection_and_visualisation_files/figure-html/fig-example7-2.png" class="r-plt" alt="" width="768"><!-- ![](vignettes/fig-example7-1.png) --><!-- ![](vignettes/fig-example7-2.png) --></p>
 </div>
 </div>
 <div class="section level2">
@@ -465,7 +466,7 @@ vignette a bit too large.</p>
 <span>                          ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">ids</span>, <span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="va">ids</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span>  </span>
 <span>  <span class="co"># Convert to a format geom2trace is happy with</span></span>
-<span>  <span class="va">positions</span> <span class="op">&lt;-</span> <span class="fu">plotly</span><span class="fu">::</span><span class="fu">group2NA</span><span class="op">(</span><span class="va">positions</span>, groupNames <span class="op">=</span> <span class="st">"ids"</span><span class="op">)</span></span>
+<span>  <span class="va">positions</span> <span class="op">&lt;-</span> <span class="fu">plotly</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/plotly/man/group2NA.html" class="external-link">group2NA</a></span><span class="op">(</span><span class="va">positions</span>, groupNames <span class="op">=</span> <span class="st">"ids"</span><span class="op">)</span></span>
 <span>  <span class="va">positions</span> <span class="op">&lt;-</span> <span class="va">positions</span><span class="op">[</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/complete.cases.html" class="external-link">complete.cases</a></span><span class="op">(</span><span class="va">positions</span><span class="op">$</span><span class="va">ids</span><span class="op">)</span>,<span class="op">]</span></span>
 <span>  <span class="va">positions</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">positions</span>, <span class="va">data</span><span class="op">[</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span><span class="op">]</span>, by <span class="op">=</span> <span class="st">"x"</span><span class="op">)</span></span>
 <span>  <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/complete.cases.html" class="external-link">complete.cases</a></span><span class="op">(</span><span class="va">positions</span><span class="op">$</span><span class="va">PANEL</span><span class="op">)</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span> </span>
@@ -495,7 +496,7 @@ vignette a bit too large.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">""</span>, y <span class="op">=</span> <span class="st">"Temperature (°C)"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create interactive visuals</span></span>
-<span><span class="fu">ggplotly</span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/pkg/plotly/man/ggplotly.html" class="external-link">ggplotly</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

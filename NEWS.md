@@ -1,3 +1,8 @@
+# heatwaveR 0.5.5 (2026-04-04)
+
+- Updated package citations for 2025
+- Re-inserted link to interactive tutorial, now called 'Demo', which is hosted on ShinyApps.io
+
 # heatwaveR 0.5.5 (2026-01-13)
 
 - Pushing `data.table` changes to CRAN to address errors in `testhat.R`

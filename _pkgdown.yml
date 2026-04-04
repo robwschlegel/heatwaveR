@@ -28,6 +28,8 @@ navbar:
       href: articles/Download_SST_v2.html
     - text: "Saving MHW Results to NetCDF"
       href: articles/MHW_to_nc.html
+  - text: "Demo"
+    href: https://robert-schlegel.shinyapps.io/demoMHW/
   - text: "Citations"
     href: CITATIONS.html
   - text: "News"
@@ -64,7 +66,7 @@ template:
   bootstrap: 5
   params:
     bootswatch: spacelab
-    ganalytics: UA-118123016-1
+    ganalytics: G-6HDM047PDY
     docsearch:
       api_key: '2edc7627dae0471f3d765c3355bebbf3'
       index_name: 'heatwaver'

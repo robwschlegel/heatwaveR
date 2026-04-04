@@ -1,5 +1,141 @@
 # Scientific literature
 
+## 2025
+
+- Ackland, S. J., Martin, N., & Robinson, T. B. (2025). A temperate whelk overcomes winter cold spells but not summer heatwaves. Marine Biology Research, 21(4-5), 198-205. https://doi.org/10.1080/17451000.2025.2512435
+
+- Arafeh-Dalmau, N., Schoeman, D. S., Montaño-Moctezuma, G., Torres-Moye, G., Cavanaugh, K. C., Munguía-Vega, A., Aburto-Oropeza, O., García-Pantoja, J. A., Olguín-Jacobson, C., & Micheli, F. (2025). Marine heatwaves drive range contraction and alternative states of kelp forests at their warm limit. bioRxiv. https://doi.org/10.1101/2025.10.17.682914
+
+- Arafeh-Dalmau, N., Villaseñor-Derbez, J. C., Schoeman, D. S., Mora-Soto, A., Bell, T. W., Butler, C. L., Costa, M., Dunga, L. V., Houskeeper, H. F., Lagger, C., Pantano, C., del Pozo, D. L., Sink, K. J., Sletten, J., Vincent, T., Micheli, F., & Cavanaugh, K. C. (2025). Global floating kelp forests have limited protection despite intensifying marine heatwave threats. Nature Communications, 16(1), Article 3173. https://doi.org/10.1038/s41467-025-58054-4
+
+- Barkhordarian, A., Brunet, E., & Baehr, J. (2025). Compound coastal marine-terrestrial heatwaves associated with humid-heat stress in Europe. Scientific Reports, 15(1). https://doi.org/10.1038/s41598-025-32049-z
+
+- Barkhordarian, A., Brunet, E., & Baehr, J. (2025). Human-induced escalation of compound coastal marine-terrestrial heatwave associated with humid-heat stress on European coasts. Research Square. https://doi.org/10.21203/rs.3.rs-7636199/v1
+
+- Behr, L., Xoplaki, E., Luther, N., Josey, S. A., & Luterbacher, J. (2025). Atmospheric patterns drive marine heatwaves in the North Atlantic and Mediterranean Sea during summer 2023. Environmental Research Letters, 20(10), 104020. https://doi.org/10.1088/1748-9326/ae0055
+
+- Bettim, A. L., Marochi, M. Z., Metri, R., & Guilherme, P. D. (2025). Impacts of marine heatwaves on benthic estuarine populations. Climatic Change, 178(10). https://doi.org/10.1007/s10584-025-04022-2
+
+- Beyraghdar Kashkooli, O., Mohit Isfahani, P., & Modarres, R. (2025). Revisiting marine heatwaves baselines in warming oceans under nonstationary condition. Science of The Total Environment, 958, 178194. https://doi.org/10.1016/j.scitotenv.2024.178194
+
+- Borburema, H. D. S., Almeida-Faria, G., Silveira, S. L. C., de Souza Gomes, V., Nauer, F., & Marinho-Soriano, E. (2025). Agarophyte seaweeds exhibit differential responses to marine heatwaves depending on the species and climatic season. Journal of Applied Phycology, 37(2), 1479-1491. https://doi.org/10.1007/s10811-025-03460-w
+
+- Bustos Usta, D. F., Rodríguez-López, L., Torres Parra, R. R., & Bourrel, L. (2025). Sea surface temperature forecasting using foundational models: A novel approach assessed in the Caribbean Sea. Remote Sensing, 17(3), 517. https://doi.org/10.3390/rs17030517
+
+- Byrne, M., Clements, M., Kingsford, M., Foo, S. A., Ramjus, N., & Waller, A. (2025). Marine heatwave-driven mortality of bleached colonies of the massive coral Goniopora is exacerbated by a black band disease epizootic. Proceedings of the Royal Society B: Biological Sciences, 292(2060), 20251912. https://doi.org/10.1098/rspb.2025.1912
+
+- Capdevila, P., Zentner, Y., Rovira, G., Garrabou, J., Medrano, A., & Linares, C. (2025). Mediterranean octocoral populations exposed to marine heatwaves are less resilient to disturbances. Journal of Animal Ecology, 94(8), 1528-1541. https://doi.org/10.1111/1365-2656.14147
+
+- Carugati, L., Moccia, D., Cau, A., Donnarumma, V., & Pusceddu, A. (2025). A train of marine heat waves affected benthic local beta but not alpha diversity. Marine Environmental Research, 213, 107705. https://doi.org/10.1016/j.marenvres.2025.107705
+
+- Cusano, L. M., Mazzella, V., Chiarore, A., Mirasole, A., Teixidó, N., Efremova, J., & Núñez-Pons, L. (2025). Too hot for my bugs: Mediterranean heatwaves disrupt associated microbiomes in the sponge Petrosia ficiformis. Research Square. https://doi.org/10.21203/rs.3.rs-6485806/v1
+
+- de la Hoz, C. F., Brooks, P. R., Coughlan, J., Mazarrasa, I., Ramos, E., Sainz-Villegas, S., Puente, A., Juanes, J. A., & Crowe, T. P. (2025). Unveiling growth and carbon composition of macroalgae with different strategies under global change. Marine Environmental Research, 208, 107128. https://doi.org/10.1016/j.marenvres.2025.107128
+
+- de Souza, V. S., & de Assis, E. S. (2025). Caracterização de ondas de calor da cidade de João Pessoa/PB por três diferentes definições. Revista Brasileira de Climatologia.
+
+- Des, M., Castro-Olivares, A., deCastro, M., & Gómez-Gesteira, M. (2025). Analysis of estuarine marine heatwaves in an upwelling system: The Ría de Arousa as a case study. Global and Planetary Change, 249, 104776. https://doi.org/10.1016/j.gloplacha.2025.104776
+
+- Di Credico, G., Gioia, V., & Pauli, F. (2025). Markov-switching models for heat wave detection and projection in Friuli Venezia Giulia, Italy. Environmental and Ecological Statistics, 32(2), 771-801. https://doi.org/10.1007/s10651-025-00658-6
+
+- Dinh, D. A. H. (2025). Remote sensing of surface water temperature in South American lakes. Dundalk Institute of Technology.
+
+- Dowd, S. C., van Putten, I., Colburn, L. L., Pecl, G. T., Mullany, B., Holbrook, N. J., Hobday, A. J., & Nye, J. A. (2025). Rising heat, rising risks: Understanding the nexus of marine heatwaves, fishing dependence, and vulnerability to coastal communities. Global Change Biology, 31(8), e70454. https://doi.org/10.1111/gcb.70454
+
+- Dye, B. (2025). The heat is on: Yet various factors influence fish performance. University of Groningen.
+
+- Eskeab, A., Semmourib, I., Mortelmansa, J., & Janssenc, C. (2025). Zooplankton and phytoplankton time series analysis for the Belgian North Sea. Flanders Marine Institute.
+
+- Faccin, C., & Specht, L. P. (2025). Caracterização de eventos extremos de calor: Análises com foco no impacto na pavimentação asfáltica. Revista Brasileira de Meteorologia.
+
+- Faria, A. V. F., Godfroy, O., Cock, J. M., & Plastino, E. M. (2025). De novo transcriptome of the red alga Gracilariopsis tenuifrons (Gracilariales, Rhodophyta) in response to prolonged temperature stress. Journal of Phycology, 61(5), 1106-1115. https://doi.org/10.1111/jpy.70067
+
+- Ferris, Z., Walker, A. S., Rue, H., & van Woesik, R. (2025). Coral bleaching: The equatorial-refugia hypothesis. Global Change Biology, 31(11), e70594. https://doi.org/10.1111/gcb.70594
+
+- Gendall, L., Hessing-Lewis, M., Wachmann, A., Schroeder, S., Reshitnyk, L., Crawford, S., Lee, L. C., Guujaaw, N., & Costa, M. (2025). From archives to satellites: Uncovering loss and resilience in the kelp forests of Haida Gwaii. Frontiers in Marine Science, 12, 1504701. https://doi.org/10.3389/fmars.2025.1504701
+
+- Giménez, L., Boersma, M., & Wiltshire, K. H. (2025). A multiple baseline approach for marine heatwaves. Bangor University Research Portal.
+
+- Guibourd de Luzinais, V., Cheung, W. W. L., & Gascuel, D. (2025). Marine heatwaves deeply alter marine food web structure and function. Biogeosciences, 22(21), 6583-6606. https://doi.org/10.5194/bg-22-6583-2025
+
+- Göbeler, N., Kauppi, L., Norkko, A., & Norkko, J. (2025). Marine heatwaves amplify benthic community metabolism and solute flux in a seafloor heating experiment. Functional Ecology, 39(8), 1856-1868. https://doi.org/10.1111/1365-2435.70028
+
+- Hani, I., St-Hilaire, A., & Ouarda, T. B. M. J. (2025). Trends, teleconnections and nonstationary frequency modeling of riverine heatwaves in North American Atlantic salmon rivers (1979-2100). Science of The Total Environment, 989, 179866. https://doi.org/10.1016/j.scitotenv.2025.179866
+
+- Hattich, G. S. I., Jahnke, M., Enge, S., Niemi, N., Bernal-Gómez, M., De Wit, P., Havenhand, J. N., & Pansch, C. (2025). Small-scale thermal habitat variability may not determine seagrass resilience to climate change. Limnology and Oceanography, 70(8), 2039-2052. https://doi.org/10.1002/lno.70049
+
+- Hemraj, D. A., & Russell, B. D. (2025). Consistency in marine heatwave experiments for ecological relevance and application: Key problems and solutions. Limnology and Oceanography Letters, 10(1), 1-4. https://doi.org/10.1002/lol2.10418
+
+- Koch, M., Jungblut, S., Götze, S., Bock, C., & Saborowski, R. (2025). Marine heatwaves in the Subarctic and the effect of acute temperature change on the key grazer Strongylocentrotus droebachiensis (Echinoidea, Echinodermata). ICES Journal of Marine Science, 82(5). https://doi.org/10.1093/icesjms/fsae181
+
+- Lee, S. C. (2025). Flux insights: Forging new understanding of expanding drylands and squeezing coastlines. Journal of Geophysical Research: Biogeosciences, 130(11), e2025JG009249. https://doi.org/10.1029/2025JG009249
+
+- Liao, H., Jin, P., Feng, Z., Ji, Z., Cao, J., & Yu, W. (2025). Impacts of marine heatwaves on the abundance and distribution of Illex argentinus on the Patagonian Shelf. Reviews in Fish Biology and Fisheries, 35(4), 2261-2280. https://doi.org/10.1007/s11160-025-10002-7
+
+- Marmelo, I., Chainho, T., Bolotas, D., Pereira, A., Özkan, B., Marques, C., Silva, I. A. L., Soares, F., Pousão-Ferreira, P., Vieira, E. F., Delerue-Matos, C., Silva, Z., Videira, P. A., Repolho, T., Diniz, M. S., Marques, A., & Maulvault, A. L. (2025). Laminaria digitata supplementation as a climate-smart strategy to counteract the interactive effects of marine heatwaves and disease outbreaks in farmed gilthead seabream (Sparus aurata). Environments, 12(7), 226. https://doi.org/10.3390/environments12070226
+
+- Martins, N. T., Faria, A. V. F., Ferreira, A. P., Gurgel, C. F. D., & Plastino, E. M. (2025). Could seasonal upwelling act as a refugium for Ulva lactuca (Ulvales, Chlorophyta) in a warming scenario? Brazilian Journal of Botany, 48(1). https://doi.org/10.1007/s40415-025-01113-3
+
+- Martínez, P. C. N., Charton, J. A. G., & Esteller, J. B. (2025). Variaciones espacio-temporales de las praderas de Posidonia oceanica en el contexto actual de cambio climático y presiones antropogénicas. Universidad de Murcia.
+
+- Motta, G., Olmo, V., Xamin, L., Terlizzi, A., Petruzzellis, F., Bacaro, G., Iudicone, D., & Bevilacqua, S. (2025). Idiosyncratic patterns of chlorophyll-a anomalies in response to marine heatwaves in the Adriatic Sea (Mediterranean Sea) over the last two decades. Marine Environmental Research, 208, 107144. https://doi.org/10.1016/j.marenvres.2025.107144
+
+- Núñez-Pons, L., Cusano, L. M., Chiarore, A., Mirasole, A., Teixidó, N., Efremova, J., & Mazzella, V. (2025). Too hot for my bugs: Mediterranean heatwave disrupts associated microbiomes in the sponge Petrosia ficiformis. Environmental Microbiome, 21(1). https://doi.org/10.1186/s40793-025-00830-2
+
+- Olguín-Jacobson, C., Arafeh-Dalmau, N., Early-Capistrán, M., Kumagai, J. A., Schoeman, D. S., Espinoza Montes, J. A., Hernández-Velasco, A., Martínez, R., Romero, A., Torre, J., Woodson, C. B., De Leo, G., & Micheli, F. (2025). Recovery mode: Marine protected areas enhance climate resilience of invertebrate species to marine heatwaves. Functional Ecology, 39(8), 1879-1893. https://doi.org/10.1111/1365-2435.70060
+
+- Otjacques, E., Jatico, B., Marques, T. A., Xavier, J. C., Ruby, E., McFall-Ngai, M., & Rosa, R. (2025). Climate-driven warming disrupts the symbiosis of bobtail squid *Euprymna scolopes* and the luminous bacterium *Vibrio fischeri*. Global Change Biology, 31(5), e70243. https://doi.org/10.1111/gcb.70243
+
+- Pereira, A., Marmelo, I., Chainho, T., Bolotas, D., Dias, M., Cereja, R., Barata, M., Pousão-Ferreira, P., Vieira, E. F., Delerue-Matos, C., Diniz, M. S., Marques, A., & Maulvault, A. L. (2025). Improving farmed juvenile gilthead seabream (Sparus aurata) stress response to marine heatwaves and vibriosis through seaweed-based dietary modulation. Animals, 15(13), 1970. https://doi.org/10.3390/ani15131970
+
+- Pidd, A. M., Schoeman, D. S., Richardson, A. J., & Scales, K. L. (2025). Climate refugia could disappear from Australia's marine protected areas by 2040. Earth's Future, 13(10), e2025EF006457. https://doi.org/10.1029/2025EF006457
+
+- Pieraccini, R., Vanreusel, A., Koedam, N., Marulli, C., Dolch, T., & Van der Stocken, T. (2025). Marine heatwaves disrupt germination and seedling physiology in Zostera marina. Marine Environmental Research, 215, 107789. https://doi.org/10.1016/j.marenvres.2025.107789
+
+- Rohwer, R. R., Kirkpatrick, M., Garcia, S. L., Kellom, M., McMahon, K. D., & Baker, B. J. (2025). Two decades of bacterial ecology and evolution in a freshwater lake. Nature Microbiology, 10(1), 246-257. https://doi.org/10.1038/s41564-024-01888-3
+
+- Rosemond, R. C., Head, M. A., & Heppell, S. A. (2025). Elevated fish growth yet postponed maturation during intense marine heatwaves. Ecological Applications, 35(4), e70033. https://doi.org/10.1002/eap.70033
+
+- Sadayappan, K., & Li, L. (2025). Riverine heat waves on the rise, outpacing air heat waves. Proceedings of the National Academy of Sciences, 122(39), e2503160122. https://doi.org/10.1073/pnas.2503160122
+
+- Saldanha-Ferrari, C. H., Bravo, J. M., Tavares, M. H., da Motta Marques, D., & Rodrigues, L. H. R. (2025). Climate change effects on a subtropical coastal shallow lake from heatwave indexes. Earth Systems and Environment, 9(4), 3737-3751. https://doi.org/10.1007/s41748-024-00538-2
+
+- Skrynyk, O., Aguilar, E., & Cimolai, C. (2025). The sensitivity of heatwave climatology to input gridded datasets: A case study of Ukraine. Atmosphere, 16(3), 289. https://doi.org/10.3390/atmos16030289
+
+- Staniek, M. A., Pansch, C., Shama, L. N. S., Mehler, K., Steinmann, A., Middelburg, J. J., & Meysick, L. (2025). Heatwave intensity drives eco-physiological responses in infaunal bivalves: A mesocosm experiment. Limnology and Oceanography, 70(S2), e70012. https://doi.org/10.1002/lno.70012
+
+- Szydlowski, D. K., Bollini, K. A., Pace, M. L., & Wilkinson, G. M. (2025). Aquatic heatwaves increase surface chlorophyll concentrations in experimental and reference lakes. Limnology and Oceanography Letters, 10(4), 453-463. https://doi.org/10.1002/lol2.70024
+
+- Tassone, S. J., Kelly, M. C., Beidler, O. N., Pace, M. L., & Marcarelli, A. M. (2025). Impacts of riverine heatwaves on rates of ecosystem metabolism in the United States. Limnology and Oceanography Letters, 10(4), 464-472. https://doi.org/10.1002/lol2.70014
+
+- Tietbohl, M. D., Genevier, L. G. C., Krieger, E. C., Kattan, A., Wang, Y., Gokul, E. A., Rodriguez Bravo, L. M., Palm, L., Mele, G., Hoteit, I., & Johnson, M. D. (2025). Extreme marine heatwave linked to mass fish kill in the Red Sea. Science of The Total Environment, 975, 179073. https://doi.org/10.1016/j.scitotenv.2025.179073
+
+- Tognonato, H. R. (2025). Ondas de calor marinhas: simulações em laboratório para duas populações de Gracilaria caudata (Gracilariales, Rhodophyta) da costa brasileira. https://doi.org/10.11606/d.41.2025.tde-05092025-193729
+
+- Vermandele, F., Roy, E., Sasaki, M., Winkler, G., Dam, H. G., Calosi, P., & Madeira, D. (2025). You are on your own, kid: Parental effects impair a ubiquitous copepod's ability to recover from extreme events. Marine Environmental Research, 210, 107286. https://doi.org/10.1016/j.marenvres.2025.107286
+
+- Villeneuve, A. R., & White, E. R. (2025). Predicting organismal response to marine heatwaves using dynamic thermal tolerance landscape models. Journal of Animal Ecology, 94(8), 1515-1527. https://doi.org/10.1111/1365-2656.14120
+
+- Wachmann, A. (2025). Centennial persistence and multi-decadal resilience of kelp forest ecosystems on the West Coast of Vancouver Island, Canada. University of Victoria.
+
+- Wallace, J., Yakola, K., Kress, S. W., & Lyons, D. E. (2025). Behavioral response of Atlantic puffins Fratercula arctica to marine heatwaves in the Gulf of Maine, USA: A webcam study. Marine Ornithology, 53(2), 285-297. https://doi.org/10.5038/2074-1235.53.2.1655
+
+- Wemegah, C. S., Yamba, E. I., Quansah, E., Nyantakyi, E. K., & Amekudzi, L. K. (2025). Evidence of heatwaves: Characteristics and trends in selected Ghanaian cities. International Journal of Climatology, 45(10). https://doi.org/10.1002/joc.8889
+
+- Wilson, M. N., Brodeur, R. D., Auth, T. D., Roegner, G. C., Morgan, C. A., Zeman, S. M., & Sponaugle, S. (2025). A tale of two heatwaves: Variable daily growth and a broad diet enable neustonic larval cabezon to thrive during warm oceanic conditions. Frontiers in Marine Science, 12, 1569581. https://doi.org/10.3389/fmars.2025.1569581
+
+- Winck, B., Klumpp, K., & Bloor, J. M. G. (2025). Interactive effects of management and temperature anomalies on CO2 fluxes recorded over 18 years in a temperate upland grassland system. Agricultural and Forest Meteorology, 362, 110343. https://doi.org/10.1016/j.agrformet.2024.110343
+
+- Windoloski, S., & Santelmann, M. (2025). The relationship between atmospheric heat waves and stream temperatures in streams of the Oregon Coast Range. Hydrological Processes, 39(10), e70290. https://doi.org/10.1002/hyp.70290
+
+- Wong, R. H. X., Monk, J., Perkins, N. R., & Barrett, N. S. (2025). Temporal change in the abundance and size distribution patterns of temperate deep reef sessile communities under multiple climate disturbances. Estuarine, Coastal and Shelf Science, 318, 109224. https://doi.org/10.1016/j.ecss.2025.109224
+
+- Wong, R., Perkins, N., Monk, J., Prall, M., Lauermann, A., & Barrett, N. (2025). Decadal changes in California's temperate mesophotic reef invertebrate community through the 2014-2016 Northeast Pacific marine heatwave. Marine Environmental Research, 213, 107644. https://doi.org/10.1016/j.marenvres.2025.107644
+
+- Woolway, R. I., Kayastha, M. B., Tong, Y., Feng, L., Shi, H., & Xue, P. (2025). Subsurface heatwaves in lakes. Nature Climate Change, 15(5), 554-559. https://doi.org/10.1038/s41558-025-02314-0
+
+- Yao, M., Liu, K., Yang, L., & Luo, Y. (2025). Heatwaves and gradual warming differentially alter freshwater fish biodiversity and functional structure. Research Square. https://doi.org/10.21203/rs.3.rs-8043228/v1
+
 ## 2024
 
 - Almeida, L. Z., Laurel, B. J., Thalmann, H. L., & Miller, J. A. (2024). Warmer, earlier, faster: Cumulative effects of Gulf of Alaska heatwaves on the early life history of Pacific cod. Elem Sci Anth, 12(1), 00050.

@@ -19,12 +19,12 @@
 <meta name="description" content="This vignette walks the user through multiple different options for creating and applying thresholds outside of the default settings.">
 <meta property="og:description" content="This vignette walks the user through multiple different options for creating and applying thresholds outside of the default settings.">
 <meta property="og:image" content="https://robwschlegel.github.io/heatwaveR/index.html/logo.png">
-<!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-118123016-1"></script><script>
+<!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-6HDM047PDY"></script><script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'UA-118123016-1');
+  gtag('config', 'G-6HDM047PDY');
 </script>
 </head>
 <body>
@@ -60,6 +60,7 @@
     <li><a class="dropdown-item" href="../articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="external-link nav-link" href="https://robert-schlegel.shinyapps.io/demoMHW/">Demo</a></li>
 <li class="nav-item"><a class="nav-link" href="../CITATIONS.html">Citations</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">News</a></li>
       </ul>
@@ -81,7 +82,7 @@
                         <h4 data-toc-skip class="author">Robert W
 Schlegel</h4>
             
-            <h4 data-toc-skip class="date">2026-01-13</h4>
+            <h4 data-toc-skip class="date">2026-04-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/complex_clims.Rmd" class="external-link"><code>vignettes/complex_clims.Rmd</code></a></small>
       <div class="d-none name"><code>complex_clims.Rmd</code></div>
@@ -236,7 +237,7 @@ with <strong><code>heatwaveR</code></strong> without any extra fuss.</p>
 <span>          <span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events</span><span class="op">)</span>,</span>
 <span>          <span class="va">bubble_plot</span>,</span>
 <span>          ncol <span class="op">=</span> <span class="fl">2</span>, nrow <span class="op">=</span> <span class="fl">2</span>, align <span class="op">=</span> <span class="st">"hv"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="complex_clims_files/figure-html/visuals-1.png" class="r-plt" width="768"></p>
+<p><img src="complex_clims_files/figure-html/visuals-1.png" class="r-plt" alt="" width="768"></p>
 </div>
 <div class="section level3">
 <h3 id="alternative-second-thresholds">Alternative second thresholds<a class="anchor" aria-label="anchor" href="#alternative-second-thresholds"></a>
@@ -290,7 +291,7 @@ predominant filter through which the event metrics are quantified.</p>
 <p>Here are the differences in lolliplot format:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events_one_thresh</span><span class="op">)</span>, <span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events_two_thresh</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"One threshold"</span>, <span class="st">"Two thresholds"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="complex_clims_files/figure-html/alt-two-thresh-lollis-1.png" class="r-plt" width="768"></p>
+<p><img src="complex_clims_files/figure-html/alt-two-thresh-lollis-1.png" class="r-plt" alt="" width="768"></p>
 <p>Here is a brief display of the top few events from each method:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">events_one_thresh</span><span class="op">$</span><span class="va">event</span><span class="op">)</span></span></code></pre></div>

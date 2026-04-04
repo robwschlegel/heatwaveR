@@ -19,12 +19,12 @@
 <meta name="description" content="This vignette demonstrates the use of the exceedence function.">
 <meta property="og:description" content="This vignette demonstrates the use of the exceedence function.">
 <meta property="og:image" content="https://robwschlegel.github.io/heatwaveR/index.html/logo.png">
-<!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-118123016-1"></script><script>
+<!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-6HDM047PDY"></script><script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'UA-118123016-1');
+  gtag('config', 'G-6HDM047PDY');
 </script>
 </head>
 <body>
@@ -60,6 +60,7 @@
     <li><a class="dropdown-item" href="../articles/MHW_to_nc.html">Saving MHW Results to NetCDF</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="external-link nav-link" href="https://robert-schlegel.shinyapps.io/demoMHW/">Demo</a></li>
 <li class="nav-item"><a class="nav-link" href="../CITATIONS.html">Citations</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">News</a></li>
       </ul>
@@ -81,7 +82,7 @@
                         <h4 data-toc-skip class="author">Robert W
 Schlegel</h4>
             
-            <h4 data-toc-skip class="date">2026-01-13</h4>
+            <h4 data-toc-skip class="date">2026-04-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/exceedance.Rmd" class="external-link"><code>vignettes/exceedance.Rmd</code></a></small>
       <div class="d-none name"><code>exceedance.Rmd</code></div>
@@ -166,7 +167,7 @@ below works as an example of how to do so:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html" class="external-link">guide_legend</a></span><span class="op">(</span>override.aes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html" class="external-link">scale_x_date</a></span><span class="op">(</span>date_labels <span class="op">=</span> <span class="st">"%b %Y"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Temperature ["</span>, <span class="va">degree</span>, <span class="st">"C]"</span><span class="op">)</span><span class="op">)</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
-<p><img src="exceedance_files/figure-html/fig-example1-1.png" class="r-plt" width="768"><!-- ![](vignettes/fig-example1-1.png) --></p>
+<p><img src="exceedance_files/figure-html/fig-example1-1.png" class="r-plt" alt="" width="768"><!-- ![](vignettes/fig-example1-1.png) --></p>
 </div>
 <div class="section level2">
 <h2 id="calculating-negative-exceedances">Calculating negative exceedances<a class="anchor" aria-label="anchor" href="#calculating-negative-exceedances"></a>
@@ -215,7 +216,7 @@ with the following code:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span>limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">18</span>, <span class="fl">23.5</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_date.html" class="external-link">scale_x_date</a></span><span class="op">(</span>date_labels <span class="op">=</span> <span class="st">"%b %Y"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Temperature ["</span>, <span class="va">degree</span>, <span class="st">"C]"</span><span class="op">)</span><span class="op">)</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
-<p><img src="exceedance_files/figure-html/fig-example2-1.png" class="r-plt" width="768"><!-- ![](vignettes/fig-example2-1.png) --></p>
+<p><img src="exceedance_files/figure-html/fig-example2-1.png" class="r-plt" alt="" width="768"><!-- ![](vignettes/fig-example2-1.png) --></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

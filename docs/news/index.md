@@ -1,6 +1,16 @@
 # Changelog
 
+## heatwaveR 0.5.5 (2026-04-04)
+
+CRAN release: 2026-01-13
+
+- Updated package citations for 2025
+- Re-inserted link to interactive tutorial, now called ‘Demo’, which is
+  hosted on ShinyApps.io
+
 ## heatwaveR 0.5.5 (2026-01-13)
+
+CRAN release: 2026-01-13
 
 - Pushing `data.table` changes to CRAN to address errors in `testhat.R`
 - Addressed CRAN flavour issues with `C++` version requirements
@@ -8,7 +18,7 @@
 ## heatwaveR 0.5.4.9000 (2025-09-23)
 
 - Updated the function calls to
-  [`data.table::frollapply()`](https://rdatatable.gitlab.io/data.table/reference/froll.html)
+  [`data.table::frollapply()`](https://rdrr.io/pkg/data.table/man/frollapply.html)
   to match changes in the function arguments
 - Updated package description to note that one may also use hourly data
 - Removed link to the interactive tutorial because the server it was
@@ -661,7 +671,7 @@ CRAN release: 2019-07-11
 - Added S3 object `geom2trace.GeomFlame` that now allows
   [`geom_flame()`](https://robwschlegel.github.io/heatwaveR/index.html/reference/geom_flame.md)
   to be converted to an interactive plotly object via
-  `plotly::ggplotly()`
+  [`plotly::ggplotly()`](https://rdrr.io/pkg/plotly/man/ggplotly.html)
 
 ## heatwaveR 0.3.6 (2019-01-16)
 
