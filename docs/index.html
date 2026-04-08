@@ -145,6 +145,26 @@ Prepare OISST or other gridded inputs, then move into larger workflows with <str
 </div>
 </div>
 <div class="section level2">
+<h2 id="where-to-go-next">Where to go next<a class="anchor" aria-label="anchor" href="#where-to-go-next"></a>
+</h2>
+<ul>
+<li>Browse the <a href="https://robwschlegel.github.io/heatwaveR/reference/index.html">reference index</a> for function-level details.</li>
+<li>Work through the <a href="https://robwschlegel.github.io/heatwaveR/articles/index.html">articles index</a> for practical workflows.</li>
+<li>Explore the <a href="https://robert-schlegel.shinyapps.io/demoMHW/" class="external-link">interactive demo</a> for a quick hands-on overview.</li>
+<li>See the <a href="https://www.marineheatwaves.org/tracker.html" class="external-link">Marine Heatwave Tracker</a> for a live global application.</li>
+<li>Check the <a href="https://robwschlegel.github.io/heatwaveR/CITATIONS.html">citations page</a> for published uses of the package.</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
+</h2>
+<p>If you use <strong><code>heatwaveR</code></strong> in research or reporting, please cite:</p>
+<p>Schlegel, R. W., &amp; Smit, A. J. (2018). <em>heatwaveR: A central algorithm for the detection of heatwaves and cold-spells</em>. Journal of Open Source Software, 3(27), 821. <a href="https://doi.org/10.21105/joss.00821" class="external-link uri">https://doi.org/10.21105/joss.00821</a></p>
+<p>In R:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"heatwaveR"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
 <h2 id="core-functions">Core functions<a class="anchor" aria-label="anchor" href="#core-functions"></a>
 </h2>
 <table class="table">
@@ -191,24 +211,140 @@ Prepare OISST or other gridded inputs, then move into larger workflows with <str
 </table>
 </div>
 <div class="section level2">
-<h2 id="where-to-go-next">Where to go next<a class="anchor" aria-label="anchor" href="#where-to-go-next"></a>
+<h2 id="output-and-metrics">Output and metrics<a class="anchor" aria-label="anchor" href="#output-and-metrics"></a>
 </h2>
-<ul>
-<li>Browse the <a href="https://robwschlegel.github.io/heatwaveR/reference/index.html">reference index</a> for function-level details.</li>
-<li>Work through the <a href="https://robwschlegel.github.io/heatwaveR/articles/index.html">articles index</a> for practical workflows.</li>
-<li>Explore the <a href="https://robert-schlegel.shinyapps.io/demoMHW/" class="external-link">interactive demo</a> for a quick hands-on overview.</li>
-<li>See the <a href="https://www.marineheatwaves.org/tracker.html" class="external-link">Marine Heatwave Tracker</a> for a live global application.</li>
-<li>Check the <a href="https://robwschlegel.github.io/heatwaveR/CITATIONS.html">citations page</a> for published uses of the package.</li>
-</ul>
+<p>The <code><a href="reference/detect_event.html">detect_event()</a></code> function will return a list of two tibbles (see the <strong><code>tidyverse</code></strong>), <code>climatology</code> and <code>event</code>, which are the time series climatology and MHW (or MCS) events, respectively. The climatology contains the full time series of daily temperatures, as well as the the seasonal climatology, the threshold and various aspects of the events that were detected. The software was designed for detecting extreme thermal events, and the units specified below reflect that intended purpose. However, various other kinds of extreme events (e.g. rainfall) may be detected according to the ‘heatwave’ specifications, and if that is the case, the appropriate <code>minDuration</code> etc. and units of measurement need to be determined by the user.</p>
+<table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<thead><tr>
+<th>Climatology metric</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>doy</code></td>
+<td>Julian day (day-of-year). For non-leap years it runs 1…59 and 61…366, while leap years run 1…366. This column will be named differently if another name was specified to the <code>doy</code> argument.</td>
+</tr>
+<tr>
+<td><code>t</code></td>
+<td>The date of the temperature measurement. This column will be named differently if another name was specified to the <code>x</code> argument.</td>
+</tr>
+<tr>
+<td><code>temp</code></td>
+<td>If the software was used for the purpose for which it was designed, seawater temperature (deg. C) on the specified date will be returned. This column will of course be named differently if another kind of measurement was specified to the <code>y</code> argument.</td>
+</tr>
+<tr>
+<td><code>seas</code></td>
+<td>Climatological seasonal cycle (deg. C).</td>
+</tr>
+<tr>
+<td><code>thresh</code></td>
+<td>Seasonally varying threshold (e.g., 90th percentile) (deg. C).</td>
+</tr>
+<tr>
+<td><code>var</code></td>
+<td>Variance (standard deviation) per <code>doy</code> of <code>temp</code> (deg. C). (not returned by default as of v0.3.5)</td>
+</tr>
+<tr>
+<td><code>threshCriterion</code></td>
+<td>Boolean indicating if <code>temp</code> exceeds <code>thresh</code>.</td>
+</tr>
+<tr>
+<td><code>durationCriterion</code></td>
+<td>Boolean indicating whether periods of consecutive <code>threshCriterion</code> are &gt;= <code>minDuration</code>.</td>
+</tr>
+<tr>
+<td><code>event</code></td>
+<td>Boolean indicating if all criteria that define a MHW or MCS are met.</td>
+</tr>
+<tr>
+<td><code>event_no</code></td>
+<td>A sequential number indicating the ID and order of occurrence of the MHWs or MCSs.</td>
+</tr>
+</tbody>
+</table>
+<p>The events are summarised using a range of event metrics:</p>
+<table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<thead><tr>
+<th>Event metric</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>event_no</code></td>
+<td>A sequential number indicating the ID and order of the events. This allows one to match/join results between the <code>climatology</code> and <code>event</code> outputs.</td>
+</tr>
+<tr>
+<td><code>index_start</code></td>
+<td>Row number from the given time series where the event starts.</td>
+</tr>
+<tr>
+<td><code>index_peak</code></td>
+<td>Row number from the given time series where the event peaks.</td>
+</tr>
+<tr>
+<td><code>index_end</code></td>
+<td>Row number from the given time series where the event ends.</td>
+</tr>
+<tr>
+<td><code>duration</code></td>
+<td>Duration of event (days).</td>
+</tr>
+<tr>
+<td><code>date_start</code></td>
+<td>Start date of event (date).</td>
+</tr>
+<tr>
+<td><code>date_peak</code></td>
+<td>Date of event peak (date).</td>
+</tr>
+<tr>
+<td><code>date_end</code></td>
+<td>End date of event (date).</td>
+</tr>
+<tr>
+<td><code>intensity_mean</code></td>
+<td>Mean intensity (deg. C).</td>
+</tr>
+<tr>
+<td><code>intensity_max</code></td>
+<td>Maximum (peak) intensity (deg. C).</td>
+</tr>
+<tr>
+<td><code>intensity_var</code></td>
+<td>Intensity variability (standard deviation) (deg. C).</td>
+</tr>
+<tr>
+<td><code>intensity_cumulative</code></td>
+<td>Cumulative intensity (deg. C x days).</td>
+</tr>
+<tr>
+<td><code>rate_onset</code></td>
+<td>Onset rate of event (deg. C / day).</td>
+</tr>
+<tr>
+<td><code>rate_decline</code></td>
+<td>Decline rate of event (deg. C / day).</td>
+</tr>
+</tbody>
+</table>
+<p><code>intensity_max_relThresh</code>, <code>intensity_mean_relThresh</code>, <code>intensity_var_relThresh</code>, and <code>intensity_cumulative_relThresh</code> are as above except relative to the threshold (e.g., 90th percentile) rather than the seasonal climatology.</p>
+<p><code>intensity_max_abs</code>, <code>intensity_mean_abs</code>, <code>intensity_var_abs</code>, and <code>intensity_cumulative_abs</code> are as above except as absolute magnitudes rather than relative to the seasonal climatology or threshold.</p>
+<p>Note that <code>rate_onset</code> and <code>rate_decline</code> will return <code>NA</code> when the event begins/ends on the first/last day of the time series. This may be particularly evident when the function is applied to large gridded datasets. Although the other metrics do not contain any errors and provide sensible values, please take this into account in the interpretation of the output. It must also be noted that events whose <code>date_peak</code> occur on the same day as the <code>date_start</code> or <code>date_end</code> of the event will return small negative values. This tends to only occur in areas with persistent ice cover.</p>
 </div>
 <div class="section level2">
-<h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
+<h2 id="technical-note">Technical note<a class="anchor" aria-label="anchor" href="#technical-note"></a>
 </h2>
-<p>If you use <strong><code>heatwaveR</code></strong> in research or reporting, please cite:</p>
-<p>Schlegel, R. W., &amp; Smit, A. J. (2018). <em>heatwaveR: A central algorithm for the detection of heatwaves and cold-spells</em>. Journal of Open Source Software, 3(27), 821. <a href="https://doi.org/10.21105/joss.00821" class="external-link uri">https://doi.org/10.21105/joss.00821</a></p>
-<p>In R:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"heatwaveR"</span><span class="op">)</span></span></code></pre></div>
+<p>This package does what <a href="https://github.com/ajsmit/RmarineHeatWaves" class="external-link">RmarineHeatWaves</a> does, but faster. The entire package has been deconstructed, modularised, and we are continuing to implement slow portions of the code in C++. This has alleviated the bottlenecks that slowed down the climatology creation portions of the code as well as generally creating an overall increase in the speed of the calculations. Currently the R code runs about as fast as the original python functions, at least in as far as applying it to single time series of temperatures.</p>
+<p>Readers familiar with both languages will know about the ongoing debate around the relative speed of the two. In our experience, R can be as fast as python, provided that attention is paid to finding ways to reduce the computational inefficiencies that stem from i) the liberal use of complex and inefficient non-atomic data structures, such as data frames; ii) the reliance on non-vectorised calculations such as loops; and iii) lazy (but convenient) coding that comes from drawing too heavily on the <strong><code>tidyverse</code></strong> suite of packages. We will continue to ensure that heatwaveR becomes more-and-more efficient so that it can be applied to large gridded data products with ease. To that end, the extension package <strong><code>heatwave3</code></strong> has been developed. This helps the user to apply the code from <strong><code>heatwaveR</code></strong> directly onto their NetCDF and other 3D gridded data files.</p>
+<p><strong><code>heatwaveR</code></strong> was also developed and released in order to better accommodate the inclusion of the definitions of atmospheric heatwaves. Additionally, <strong><code>heatwaveR</code></strong> also provides the first implementation of a definition for a ‘compound heatwave’. There are currently multiple different definitions for this type of event and each of which has arguments provided for it within the <code><a href="reference/ts2clm.html">ts2clm()</a></code> and <code><a href="reference/detect_event.html">detect_event()</a></code> functions.</p>
 </div>
 <div class="section level2">
 <h2 id="contributing-and-support">Contributing and support<a class="anchor" aria-label="anchor" href="#contributing-and-support"></a>
@@ -229,7 +365,7 @@ Prepare OISST or other gridded inputs, then move into larger workflows with <str
 <div class="section level2">
 <h2 id="contact">Contact<a class="anchor" aria-label="anchor" href="#contact"></a>
 </h2>
-<p>Robert W. Schlegel <a href="mailto:robwschlegel@gmail.com" class="email">robwschlegel@gmail.com</a></p>
+<p>Robert W. Schlegel : <a href="mailto:robwschlegel@gmail.com" class="email">robwschlegel@gmail.com</a></p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
