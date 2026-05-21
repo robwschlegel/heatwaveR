@@ -11,6 +11,40 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// label_components_3d_cpp
+IntegerVector label_components_3d_cpp(IntegerVector mask, int nx, int ny, int nt, bool wrap_dateline);
+RcppExport SEXP _heatwaveR_label_components_3d_cpp(SEXP maskSEXP, SEXP nxSEXP, SEXP nySEXP, SEXP ntSEXP, SEXP wrap_datelineSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type mask(maskSEXP);
+    Rcpp::traits::input_parameter< int >::type nx(nxSEXP);
+    Rcpp::traits::input_parameter< int >::type ny(nySEXP);
+    Rcpp::traits::input_parameter< int >::type nt(ntSEXP);
+    Rcpp::traits::input_parameter< bool >::type wrap_dateline(wrap_datelineSEXP);
+    rcpp_result_gen = Rcpp::wrap(label_components_3d_cpp(mask, nx, ny, nt, wrap_dateline));
+    return rcpp_result_gen;
+END_RCPP
+}
+// blob_daily_summary_cpp
+List blob_daily_summary_cpp(IntegerVector labels, IntegerVector ix, IntegerVector iy, IntegerVector it, NumericVector delta, NumericVector cell_area_lat, NumericVector lons, NumericVector lats, int nt);
+RcppExport SEXP _heatwaveR_blob_daily_summary_cpp(SEXP labelsSEXP, SEXP ixSEXP, SEXP iySEXP, SEXP itSEXP, SEXP deltaSEXP, SEXP cell_area_latSEXP, SEXP lonsSEXP, SEXP latsSEXP, SEXP ntSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerVector >::type labels(labelsSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type ix(ixSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type iy(iySEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type it(itSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type delta(deltaSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type cell_area_lat(cell_area_latSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type lons(lonsSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type lats(latsSEXP);
+    Rcpp::traits::input_parameter< int >::type nt(ntSEXP);
+    rcpp_result_gen = Rcpp::wrap(blob_daily_summary_cpp(labels, ix, iy, it, delta, cell_area_lat, lons, lats, nt));
+    return rcpp_result_gen;
+END_RCPP
+}
 // clim_calc_cpp
 Rcpp::NumericMatrix clim_calc_cpp(arma::mat x, int windowHalfWidth, double pctile);
 RcppExport SEXP _heatwaveR_clim_calc_cpp(SEXP xSEXP, SEXP windowHalfWidthSEXP, SEXP pctileSEXP) {
@@ -26,6 +60,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_heatwaveR_label_components_3d_cpp", (DL_FUNC) &_heatwaveR_label_components_3d_cpp, 5},
+    {"_heatwaveR_blob_daily_summary_cpp", (DL_FUNC) &_heatwaveR_blob_daily_summary_cpp, 9},
     {"_heatwaveR_clim_calc_cpp", (DL_FUNC) &_heatwaveR_clim_calc_cpp, 3},
     {NULL, NULL, 0}
 };

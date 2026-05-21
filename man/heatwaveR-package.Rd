@@ -11,7 +11,7 @@ The different methods for defining, detecting, and categorising the extreme even
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://robwschlegel.github.io/heatwaveR/index.html}
+  \item \url{https://robwschlegel.github.io/heatwaveR/}
   \item \url{https://github.com/robwschlegel/heatwaveR}
   \item Report bugs at \url{https://github.com/robwschlegel/heatwaveR/issues}
 }

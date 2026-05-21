@@ -11,6 +11,10 @@
 ^TODO.txt
 ^_testing$
 ^_private$
+^dev_doc$
+^CLAUDE\.md$
+^AGENTS\.md$
+^SOUL\.md$
 ^heatwaveR.code-workspace
 ^hex_sticker.R
 ^\.vscode

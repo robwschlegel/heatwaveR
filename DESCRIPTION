@@ -31,6 +31,8 @@ Suggests:
     plyr,
     rerddap,
     rmarkdown,
+    rnaturalearth,
+    sf,
     stringr,
     testthat,
     tibble,

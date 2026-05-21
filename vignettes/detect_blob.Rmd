@@ -1,0 +1,189 @@
+---
+title: "Detecting contiguous heatwave-affected regions"
+author: "AJ Smit and Robert W. Schlegel"
+date: "`r Sys.Date()`"
+description: >
+  Build spatial heatwave or cold-spell events as 3-D connected components from
+  per-pixel detections produced by detect_event3(), and quantify them with
+  integrated metrics.
+output:
+  rmarkdown::html_vignette:
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{Detecting contiguous heatwave-affected regions}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE, comment = "#>",
+  fig.width = 7, fig.height = 4.2, dpi = 110
+)
+library(heatwaveR)
+library(data.table)
+library(ggplot2)
+```
+
+## Background
+
+The functions `ts2clm()`, `detect_event()` and their `data.table`-only
+counterparts `ts2clm3()`, `detect_event3()` treat each grid cell as an
+independent time series. Run across a region, they produce a four-dimensional
+boolean dataset of per-pixel events.
+
+`detect_blob3()` reads that per-pixel result and identifies contiguous
+heatwave-affected regions as 3-D connected components in (lon, lat, time),
+under 6-connectivity (face-adjacent). For each component it returns:
+
+- a per-event row with duration, voxel count, peak area, cumulative
+  intensity-weighted volume (`cumI_km2_day`), and bounding box,
+- a per-day row with area, area-weighted centroid, mean and max anomaly,
+- optionally, the full footprint as one row per (event, lon, lat, date).
+
+Events are ranked by a user-chosen metric (default `cumI_km2_day`, by
+magnitude so the same default behaves correctly for cold spells).
+
+## Input contract
+
+`detect_blob3()` reads a long `data.table` from `detect_event3()` that has been
+bound across grid cells. Each row is one (lon, lat, date) sample with the
+columns `lon`, `lat`, `t`, `temp`, `seas`, `event`. The function does not run
+the per-pixel detection itself; the user controls per-pixel arguments
+(climatology window, `pctile`, `minDuration`) and any parallelisation outside.
+
+## A worked example with synthetic data
+
+Build a small 21 x 21 grid over 30 days and plant one spatially compact warm
+patch and one isolated singleton:
+
+```{r build-synth}
+set.seed(2026)
+lons  <- seq(0.0, 1.0, by = 0.05)
+lats  <- seq(-32.0, -31.0, by = 0.05)
+dates <- as.Date("2020-01-01") + 0:29
+nx <- length(lons); ny <- length(lats); nt <- length(dates)
+
+delta <- array(rnorm(nx * ny * nt, 0, 0.3), dim = c(nx, ny, nt))
+delta[6:14, 6:14, 10:20] <- 3.0       # planted warm blob
+delta[19, 18, 15]         <- 4.0       # high-intensity singleton
+
+# Long form. Column-major order: i (lon) fastest, j (lat) middle, k (time) slowest.
+long <- data.table(
+  lon   = rep(lons, times = ny * nt),
+  lat   = rep(rep(lats, each = nx), times = nt),
+  t     = rep(dates, each = nx * ny),
+  temp  = as.vector(delta),
+  seas  = 0,
+  event = as.vector(delta) > 1.5
+)
+sum(long$event)
+```
+
+Run the spatial detector:
+
+```{r run}
+res <- detect_blob3(long, topN = 5L, return = c("event", "daily", "voxel"))
+res$event[, .(rank, blob, duration, n_voxels,
+              peakArea_km2 = round(peakArea_km2, 1),
+              cumI_km2_day = round(cumI_km2_day, 1),
+              mean_delta = round(mean_delta, 2),
+              max_delta  = round(max_delta, 2))]
+```
+
+The planted block ranks first. The singleton ranks second on intensity, even
+though its volume is one voxel.
+
+## Mapping the footprints
+
+The daily area trajectory tells you how each event grew and shrank:
+
+```{r daily-area}
+top <- res$event[rank <= 3]
+daily <- merge(res$daily, top[, .(blob, rank)], by = "blob")
+ggplot(daily, aes(date, area_km2, colour = factor(rank))) +
+  geom_line(linewidth = 0.9) +
+  scale_colour_viridis_d(name = "rank", option = "turbo") +
+  labs(x = NULL, y = expression(Area ~ (km^2))) +
+  theme_minimal(base_size = 11)
+```
+
+The peak-day footprint as a raster, with a coastline if `sf` and
+`rnaturalearth` are installed:
+
+```{r footprint, fig.height = 4.5}
+have_geo <- requireNamespace("sf", quietly = TRUE) &&
+            requireNamespace("rnaturalearth", quietly = TRUE)
+
+top1   <- res$event[rank == 1]
+vox1   <- res$voxel[blob == top1$blob & date == top1$date_peak]
+
+p <- ggplot()
+if (have_geo) {
+  land <- rnaturalearth::ne_countries(scale = 50, returnclass = "sf")
+  land_clip <- suppressWarnings(
+    sf::st_crop(land, c(xmin = min(lons), xmax = max(lons),
+                        ymin = min(lats), ymax = max(lats)))
+  )
+  p <- p + ggplot2::geom_sf(data = land_clip, fill = "grey92",
+                            colour = "grey60", linewidth = 0.2)
+}
+p +
+  geom_raster(data = vox1, aes(lon, lat, fill = delta)) +
+  scale_fill_viridis_c(name = expression(Delta), option = "inferno") +
+  { if (have_geo) ggplot2::coord_sf(xlim = range(lons), ylim = range(lats), expand = FALSE)
+    else coord_quickmap(xlim = range(lons), ylim = range(lats)) } +
+  labs(title = sprintf("Top blob peak-day footprint: %s", top1$date_peak),
+       x = "Longitude", y = "Latitude") +
+  theme_minimal(base_size = 10)
+```
+
+## Exporting an event as `sf` polygons
+
+`blob_footprint()` converts the voxel table to an `sf` object, one polygon per
+voxel by default, or one union per blob with `by = "event"`. This is the only
+function in `heatwaveR` that touches `sf`.
+
+```{r footprint-sf, eval = requireNamespace("sf", quietly = TRUE)}
+foot <- blob_footprint(res$voxel, which = top1$blob, by = "event")
+foot
+```
+
+The resulting `sf` object can be saved with `sf::st_write()` to GeoJSON, a
+shapefile, or a GeoPackage for downstream GIS analysis.
+
+## Cold spells
+
+The function operates on a boolean event flag without inspecting polarity.
+Pass per-pixel cold-spell input (from `detect_event3()` with `pctile = 10`)
+to get cold-spell blobs. Signed metrics retain sign, and ranking by
+`cumI_km2_day` uses magnitude so the most extreme cold spells appear first.
+
+```{r mcs}
+long_mcs <- copy(long)
+long_mcs[, temp := -temp]              # flip to a synthetic cold-spell case
+long_mcs[, event := temp - seas < -1.5]
+
+res_mcs <- detect_blob3(long_mcs, topN = 3L)
+res_mcs$event[, .(rank, blob, cumI_km2_day = round(cumI_km2_day, 1),
+                  mean_delta = round(mean_delta, 2))]
+attr(res_mcs$event, "polarity")
+```
+
+## Scaling to real gridded SST
+
+In practice the input to `detect_blob3()` comes from a per-pixel application
+of `detect_event3()` over a regional subset of OISST, OSTIA, or another daily
+gridded SST product. The companion vignette `gridded_event_detection` shows
+how to assemble that input from a NetCDF source. The per-pixel step is the
+expensive one and is best parallelised over chunks of pixels; the spatial
+detection runs in a single shot on the bound result.
+
+## Memory and chunking
+
+`detect_blob3()` allocates a 3-D integer mask of size `nx * ny * nt` plus a
+matching label array. For a 0.05 degree grid over 2 years (the OSTIA East
+Coast example), that is around 60 MB and 240 MB respectively, comfortable on
+a laptop. For a 0.25 degree global grid over 30 years the allocations exceed
+typical RAM. A chunked-along-time labelling routine with union-find stitching
+across chunk boundaries is planned for a follow-up release.
