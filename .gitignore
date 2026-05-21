@@ -5,6 +5,9 @@ inst/doc
 _private/**
 _testing/**
 heatwaveR.code-workspace
+CLAUDE.md
+AGENTS.md
+SOUL.md
 .DS_Store
 src/RcppExports.o
 src/clim_calc.o
