@@ -407,10 +407,9 @@ ts2clm3 <- function(data,
           na.rm = FALSE,
           align = "center"
         ),
-        thresh_var_roll = data.table::frollapply(
+        thresh_var_roll = data.table::frollvar(
           thresh,
           smoothPercentileWidth,
-          var,
           na.rm = FALSE,
           align = "center"
         )
