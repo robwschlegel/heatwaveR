@@ -1,3 +1,7 @@
+# heatwaveR 0.5.5.9000 (2026-07-27)
+
+- User contribution to increase speed of internal variance calculations
+
 # heatwaveR 0.5.5 (2026-04-04)
 
 - Updated package citations for 2025

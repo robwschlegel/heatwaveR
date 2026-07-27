@@ -27,6 +27,7 @@ Because we have calculated MHWs on the Western Australia data, we
 provide the name “WA” below:
 
 ``` r
+
 # Load libraries
 library(dplyr)
 library(tidyr)
@@ -63,6 +64,7 @@ one must set `S = FALSE` as seen in the example below. This ensures that
 the correct seasons are attributed to the event.
 
 ``` r
+
 res_Med <- detect_event(ts2clm(sst_Med, climatologyPeriod = c("1982-01-01", "2011-12-31")))
 res_Med_cat <- category(res_Med, S = FALSE, name = "Med")
 tail(res_Med_cat)
@@ -96,6 +98,7 @@ data](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.
 for more examples of running **`heatwaveR`** code on gridded data.
 
 ``` r
+
 # Add lon/lat to the three default time series
 ts_WA <- sst_WA |> mutate(site = "WA", lon = 112.625, lat = -29.375)
 ts_NW_Atl <- sst_NW_Atl |> mutate(site = "NW_Atl", lon = -66.875, lat = 43.125)
@@ -144,6 +147,7 @@ accomplished with
 by setting the `category` argument to `TRUE`.
 
 ``` r
+
 event_line(MHW, spread = 100, start_date = "2010-11-01", end_date = "2011-06-30", category = TRUE)
 ```
 
@@ -155,6 +159,7 @@ Were one to want to visualise the categories of a MHW ‘by hand’, the
 following code will provide a good starting point.
 
 ``` r
+
 # Create category breaks and select slice of data.frame
 clim_cat <- MHW$clim %>%
   dplyr::mutate(diff = thresh - seas,
@@ -214,6 +219,7 @@ additional arguments are required. For the sake of clarity the following
 code chunks demonstrates how to calculate MCS categories.
 
 ``` r
+
 # Calculate events
 ts_MCS <- ts2clm(sst_WA, climatologyPeriod = c("1982-01-01", "2011-12-31"), pctile = 10)
 MCS <- detect_event(ts_MCS, coldSpells = T)
@@ -252,6 +258,7 @@ series that come packaged with **`heatwaveR`** have MCSs that intense so
 we are not able to demonstrate the full colour palette here.
 
 ``` r
+
 event_line(MCS, spread = 100, start_date = "1989-11-01", end_date = "1990-06-30", category = TRUE)
 ```
 
@@ -263,6 +270,7 @@ The following code chunk demonstrates how to manually create a figure
 showing the MCS categories.
 
 ``` r
+
 # Create category breaks and select slice of data.frame
 MCS_clim_cat <- MCS$clim %>%
   dplyr::mutate(diff = thresh - seas,
@@ -320,6 +328,7 @@ For the sake of convenience the MHW and MCS colour palettes are provided
 below with a figure showing the direct comparison.
 
 ``` r
+
 # The MCS colour palette
 MCS_colours <- c(
   "Moderate" = "#C7ECF2",

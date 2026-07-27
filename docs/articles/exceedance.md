@@ -27,6 +27,7 @@ The calculation of exceedances may be done with only one function as
 seen here:
 
 ``` r
+
 # Activate libraries
 library(dplyr)
 library(ggplot2)
@@ -77,6 +78,7 @@ we will need to do so ‘by hand’ with **`ggplot2`**. The code below works
 as an example of how to do so:
 
 ``` r
+
 exc_25_thresh <- exc_25$threshold %>% 
   slice(9500:9866)
 
@@ -107,6 +109,7 @@ function may be used to calculate consecutive days below a threshold as
 seen here:
 
 ``` r
+
 exc_19 <- exceedance(sst_WA, threshold = 19, below = TRUE)
 exc_19$exceedance %>%
   dplyr::ungroup() %>%
@@ -134,6 +137,7 @@ Were one to desire a visualisation of these data it could be produced
 with the following code:
 
 ``` r
+
 exc_19_thresh <- exc_19$threshold %>% 
   slice(1500:1866)
 

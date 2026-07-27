@@ -12,6 +12,7 @@ breakpoints for bioregions (from Spalding et al. (2007)) and seasons as
 shown in Thoral et al. (2022).
 
 ``` r
+
 library(heatwaveR)
 library(lubridate)
 library(dplyr)
@@ -34,6 +35,7 @@ with the following code chunks. For more information on the MEOW please
 see Spalding et al. (2007).
 
 ``` r
+
 # Load and process the MEOW shapefile
 # NB: Change your file path to where the files were unzipped
 MEOW_NZ <- st_read('~/Desktop/meow_ecos.shp') %>% 
@@ -67,6 +69,7 @@ bioregions to pixels is simplified by using the `sf` (Pebesma (2018))
 package.
 
 ``` r
+
 # Create OISST grid
 lon_lat_OISST <- base::expand.grid(seq(0.125, 359.875, by = 0.25), 
                                    seq(-89.875, 89.875, by = 0.25)) %>% 
@@ -104,6 +107,7 @@ function to extract a bounding box around NZ rather than to use the
 functions in the **`raster`** package to extract the EEZ polygons.
 
 ``` r
+
 # Get SST for around NZ + Islands and for all years
 OISST_sub_dl <- function(time_df){
   OISST_dat <- griddap(x = "ncdcOisst21Agg", 
@@ -160,6 +164,7 @@ OISST_clim <- OISST_data_NZ %>%
 ## Summarise MHW metrics by year, season, and bioregion
 
 ``` r
+
 # Get summary
 MHW_summary <- OISST_clim %>% 
   dplyr::select(-c(doy, thresh, threshCriterion, durationCriterion, event)) %>% 
@@ -185,6 +190,7 @@ saveRDS(MHW_summary,"~/Desktop/MHW_summary_NZ_1982_2021_OISST.Rds")
 ## Trends in MHW metrics at NZ scale + Bioregions
 
 ``` r
+
 # Load data from previous code chunk
 MHW_summary_NZ <- readRDS("~/Desktop/MHW_summary_NZ_1982_2021_OISST.Rds")
 
@@ -236,6 +242,7 @@ breakpoints (Pettitt test) using the `trend` (Pohlert (2020)) package as
 well as the more usual and parametric `lm` function.
 
 ``` r
+
 # Get annual trends
 MHW_annual_trends_NZ <- MHW_annual_summary_NZ %>% 
   group_by(Metrics) %>% 
@@ -276,6 +283,7 @@ One can be more interested in finding patterns in MHW trends between
 ecoregions.
 
 ``` r
+
 # Count pixels per realm
 MHW_summary_NZ_npix_realms <- MHW_summary_NZ %>% 
   group_by(lon, lat, ECOREGION) %>% 
@@ -328,6 +336,7 @@ We could also show similar graphs for other metrics, like number of
 events, min, max or cumulative intensity.
 
 ``` r
+
 # Get trends
 MHW_trends_NZ_realms <- MHW_summary_NZ_realms %>% 
   group_by(Metrics, ECOREGION, season) %>% 
@@ -374,6 +383,7 @@ We use the time series of SST available within the `heatwaveR` package
 metric values per year as we have done above.
 
 ``` r
+
 # Simple event detection
 MHW_WA <- detect_event(ts2clm(sst_WA, climatologyPeriod = c("1982-01-01", "2011-12-31")))
 
@@ -413,6 +423,7 @@ The `lm` regression seems to detect some upward trends in the metrics.
 What does Mann-Kendall have to say about these?
 
 ``` r
+
 MHW_WA_trends <- MHW_WA_metrics_year %>% 
   group_by(Metrics) %>% 
   nest() %>% 
@@ -462,8 +473,7 @@ Spatial Vector Data.” *The R Journal* 10 (1): 439–46.
 Pohlert, Thorsten. 2020. *Trend: Non-Parametric Trend Tests and
 Change-Point Detection*. <https://CRAN.R-project.org/package=trend>.
 
-Spalding, Mark D, Helen E Fox, Gerald R Allen, Nick Davidson, Zach A
-Ferdaña, MAX Finlayson, Benjamin S Halpern, et al. 2007. “Marine
+Spalding, Mark D, Helen E Fox, Gerald R Allen, et al. 2007. “Marine
 Ecoregions of the World: A Bioregionalization of Coastal and Shelf
 Areas.” *BioScience* 57 (7): 573–83.
 

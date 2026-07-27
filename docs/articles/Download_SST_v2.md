@@ -132,6 +132,7 @@ detect the events within each slice scales with the number of CPU cores.
 Here is a set of steps that does the job for me:
 
 ``` r
+
 # Load packages -----------------------------------------------------------
 
 library(tidyverse)
@@ -176,6 +177,7 @@ event_only <- function(df) {
 ```
 
 ``` r
+
 # Execute the code --------------------------------------------------------
 
 # Define the slices

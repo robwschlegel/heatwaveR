@@ -9,6 +9,7 @@ In this vignette we will use those gridded MHW results to see how to
 save them as a NetCDF file.
 
 ``` r
+
 library(dplyr) # For basic data manipulation
 library(ncdf4) # For creating NetCDF files
 library(tidync) # For easily dealing with NetCDF data
@@ -26,6 +27,7 @@ vignettes first if you have not yet worked through them. We will be
 using the MHW results created from those two vignettes below.
 
 ``` r
+
 MHW_res_grid <- readRDS("~/Desktop/MHW_result.Rds")
 ```
 
@@ -45,6 +47,7 @@ be. We will create two functions below that will help us along in this
 process.
 
 ``` r
+
 # Function for creating arrays from data.frames
 df_acast <- function(df, lon_lat){
   
@@ -98,6 +101,7 @@ dimensions of the arrays we created match up to the dimensions of the
 NetCDF file.
 
 ``` r
+
 # Get file attributes
 lon_step <- mean(diff(sort(unique(MHW_res_grid$lon))))
 lat_step <- mean(diff(sort(unique(MHW_res_grid$lat))))
@@ -119,6 +123,7 @@ shell we have constructed. The **`ncdf4`** package helps to make this
 all a relatively straight forward process.
 
 ``` r
+
 # Path and file name
   # NB: We are net setting time dimensions here because we are using event_no as our "time" dimension
 ncpath <- "~/Desktop/"
@@ -180,6 +185,7 @@ correctly we want to load it back into our workspace and plot the
 results.
 
 ``` r
+
 # Convenience function for comparing files
 quick_grid <- function(df, var_choice){
   df %>% 

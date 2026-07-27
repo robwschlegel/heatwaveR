@@ -72,6 +72,7 @@ install the problem package and run it before trying to load the library
 again.
 
 ``` r
+
 # The packages we will need
 # install.packages("dplyr")
 # install.packages("lubridate")
@@ -112,6 +113,7 @@ Finding the server on which these data are located can be a cup game at
 times.
 
 ``` r
+
 # The information for the NOAA OISST data
 rerddap::info(datasetid = "ncdcOisst21Agg_LonPM180", url = "https://coastwatch.pfeg.noaa.gov/erddap/")
 
@@ -132,6 +134,7 @@ redundant coding we would otherwise need to do.
 ### Download function
 
 ``` r
+
 # This function downloads and prepares data based on user provided start and end dates
 OISST_sub_dl <- function(time_df){
   OISST_dat <- rerddap::griddap(datasetx = "ncdcOisst21Agg_LonPM180",
@@ -185,6 +188,7 @@ and end dates that will allow us to automate the entire download while
 meeting the aforementioned criteria.
 
 ``` r
+
 # Date download range by start and end dates per year
 dl_years <- data.frame(date_index = 1:5,
                        start = c("1982-01-01", "1990-01-01", 
@@ -210,6 +214,7 @@ there. No need to change anything or write a second script for loading
 data.
 
 ``` r
+
 # Download all of the data with one nested request
 # The time this takes will vary greatly based on connection speed
 base::system.time(
@@ -233,6 +238,7 @@ Before we save our data for later use it is good practice to visualise
 them.
 
 ``` r
+
 OISST_data |> 
   dplyr::filter(t == "2019-12-01") |> 
   ggplot2::ggplot(aes(x = lon, y = lat)) +
@@ -250,6 +256,7 @@ With the data downloaded and prepared for further use (and a test visual
 run), all that’s left to do is save them.
 
 ``` r
+
 # Save the data as an .Rds file because it has a much better compression rate than .RData
 base::saveRDS(OISST_data, file = "~/Desktop/OISST_vignette.Rds")
 ```
@@ -283,6 +290,7 @@ vignette as simple and direct as possible. For our purposes today we
 will manually create the URLs of the files we want to download.
 
 ``` r
+
 # First we tell R where the data are on the interwebs
 OISST_base_url <- "https://www.ncei.noaa.gov/data/sea-surface-temperature-optimum-interpolation/v2.1/access/avhrr/"
 # Note that one may go to this URL in any web browser to manually inspect the files
@@ -306,6 +314,7 @@ we want to download we’ll create a function that will crawl through
 those URLs and download the files for us.
 
 ``` r
+
 # This function will go about downloading each day of data as a NetCDF file
 # Note that this will download files into a 'data/OISST' folder in the root directory
   # If this folder does not exist it will create it
@@ -340,6 +349,7 @@ The following code chunk contains the function we may use to load and
 prepare our OISST data for further use in R.
 
 ``` r
+
 # This function will load and subset daily data into one data.frame
 # Note that the subsetting by lon/lat is done before the data are loaded
   # This means it will use much less RAM and is viable for use on most laptops
@@ -387,6 +397,7 @@ code pipeline below shows how we can visualise a day of data from those
 we’ve loaded.
 
 ``` r
+
 OISST_dat |> 
   dplyr::filter(t == "2019-12-01") |> 
   ggplot2::ggplot(aes(x = lon, y = lat)) +

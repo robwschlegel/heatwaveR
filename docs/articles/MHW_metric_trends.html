@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Trend and Breakpoint analyses in MHW metrics">
 <meta name="description" content="This vignette demonstrates the utility and limitation of running a trend and break point analyses in MHW metrics.">
@@ -36,7 +36,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">heatwaveR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.5.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -87,7 +87,7 @@
                         <h4 data-toc-skip class="author">Francois
 Thoral</h4>
             
-            <h4 data-toc-skip class="date">2026-04-04</h4>
+            <h4 data-toc-skip class="date">2026-07-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/MHW_metric_trends.Rmd" class="external-link"><code>vignettes/MHW_metric_trends.Rmd</code></a></small>
       <div class="d-none name"><code>MHW_metric_trends.Rmd</code></div>
@@ -102,8 +102,9 @@ Thoral</h4>
 and prepare OISST data</a> and how to <a href="https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html">detect
 MHWs in gridded data</a>. In this vignette we will use data subsetted
 around the New Zealand (NZ) Exclusive Economic Zone (EEZ) for our
-example to calculate trends and breakpoints for bioregions (from <span class="citation">Spalding et al. (2007)</span>) and seasons as shown in
-<span class="citation">Thoral et al. (2022)</span>.</p>
+example to calculate trends and breakpoints for bioregions (from <span class="citation"><span class="nocase">Spalding et al.</span>
+(2007)</span>) and seasons as shown in <span class="citation">Thoral et
+al. (2022)</span>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://robwschlegel.github.io/heatwaveR/">heatwaveR</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org" class="external-link">lubridate</a></span><span class="op">)</span></span>
@@ -113,7 +114,7 @@ example to calculate trends and breakpoints for bioregions (from <span class="ci
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sjmgarnier.github.io/viridis/" class="external-link">viridis</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">trend</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://haozhu233.github.io/kableExtra/" class="external-link">kableExtra</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://haozhu233.github.io/kableExtra/" class="external-link">kableExtra</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/rerddap/" class="external-link">rerddap</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -124,7 +125,8 @@ example to calculate trends and breakpoints for bioregions (from <span class="ci
 <a href="https://hub.arcgis.com/datasets/903c3ae05b264c00a3b5e58a4561b7e6/about" class="external-link">here</a>.
 Extract the contents of the download to a convenient location before use
 with the following code chunks. For more information on the MEOW please
-see <span class="citation">Spalding et al. (2007)</span>.</p>
+see <span class="citation"><span class="nocase">Spalding et al.</span>
+(2007)</span>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load and process the MEOW shapefile</span></span>
 <span><span class="co"># NB: Change your file path to where the files were unzipped</span></span>
@@ -304,7 +306,7 @@ polygons.</p>
 <span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">MHW_annual_summary_NZ</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">values</span>, col <span class="op">=</span> <span class="va">Metrics</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span>se <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://sjmgarnier.github.io/viridis/reference/scale_viridis.html" class="external-link">scale_colour_viridis</a></span><span class="op">(</span>begin <span class="op">=</span> <span class="fl">0</span>, end <span class="op">=</span> <span class="fl">0.75</span>, option <span class="op">=</span> <span class="st">"viridis"</span>, discrete <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">scale_colour_viridis</span><span class="op">(</span>begin <span class="op">=</span> <span class="fl">0</span>, end <span class="op">=</span> <span class="fl">0.75</span>, option <span class="op">=</span> <span class="st">"viridis"</span>, discrete <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="va">Metrics</span> <span class="op">~</span> <span class="va">.</span>, scales <span class="op">=</span> <span class="st">'free'</span>, labeller <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/as_labeller.html" class="external-link">as_labeller</a></span><span class="op">(</span><span class="va">metrics_labs</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Year"</span>, Y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -391,7 +393,7 @@ ecoregions.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">geom_smooth</a></span><span class="op">(</span>se <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Year"</span>, y <span class="op">=</span> <span class="st">"Number of MHW days"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://sjmgarnier.github.io/viridis/reference/scale_viridis.html" class="external-link">scale_colour_viridis</a></span><span class="op">(</span>begin <span class="op">=</span> <span class="fl">0</span>, end <span class="op">=</span> <span class="fl">0.75</span>, option <span class="op">=</span> <span class="st">"inferno"</span>, discrete <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_colour_viridis</span><span class="op">(</span>begin <span class="op">=</span> <span class="fl">0</span>, end <span class="op">=</span> <span class="fl">0.75</span>, option <span class="op">=</span> <span class="st">"inferno"</span>, discrete <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html" class="external-link">guide_legend</a></span><span class="op">(</span>override.aes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>shape <span class="op">=</span> <span class="fl">15</span>, size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="va">ECOREGION</span><span class="op">~</span><span class="va">.</span>, ncol <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -525,7 +527,7 @@ analyses are to 0 values, something to look into in the future.</p>
 <div class="section level2 unnumbered">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-sf" class="csl-entry">
 Pebesma, Edzer. 2018. <span>“<span class="nocase">Simple Features for R:
 Standardized Support for Spatial Vector Data</span>.”</span>
@@ -536,10 +538,10 @@ Pohlert, Thorsten. 2020. <em>Trend: Non-Parametric Trend Tests and
 Change-Point Detection</em>. <a href="https://CRAN.R-project.org/package=trend" class="external-link">https://CRAN.R-project.org/package=trend</a>.
 </div>
 <div id="ref-spalding2007" class="csl-entry">
-Spalding, Mark D, Helen E Fox, Gerald R Allen, Nick Davidson, Zach A
-Ferdaña, MAX Finlayson, Benjamin S Halpern, et al. 2007. <span>“Marine
-Ecoregions of the World: A Bioregionalization of Coastal and Shelf
-Areas.”</span> <em>BioScience</em> 57 (7): 573–83.
+<span class="nocase">Spalding, Mark D, Helen E Fox, Gerald R Allen, et
+al.</span> 2007. <span>“Marine Ecoregions of the World: A
+Bioregionalization of Coastal and Shelf Areas.”</span>
+<em>BioScience</em> 57 (7): 573–83.
 </div>
 <div id="ref-thoral2022" class="csl-entry">
 Thoral, François, Shinae Montie, Mads S Thomsen, Leigh W Tait, Matthew H

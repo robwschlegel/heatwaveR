@@ -13,7 +13,7 @@ used on non-temperature data as well.
 
 Useful links:
 
-- <https://robwschlegel.github.io/heatwaveR/index.html>
+- <https://robwschlegel.github.io/heatwaveR/>
 
 - <https://github.com/robwschlegel/heatwaveR>
 
@@ -25,6 +25,9 @@ Useful links:
 ([ORCID](https://orcid.org/0000-0002-0705-1287)) \[contributor\]
 
 Authors:
+
+- Robert W. Schlegel <robwschlegel@gmail.com>
+  ([ORCID](https://orcid.org/0000-0002-0705-1287)) \[contributor\]
 
 - Albertus J. Smit ([ORCID](https://orcid.org/0000-0002-3799-6126))
   \[contributor\]

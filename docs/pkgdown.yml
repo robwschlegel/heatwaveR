@@ -1,4 +1,4 @@
-pandoc: 3.6.3
+pandoc: 3.8.3
 pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
@@ -12,7 +12,7 @@ articles:
   MHW_metric_trends: MHW_metric_trends.html
   MHW_to_nc: MHW_to_nc.html
   OISST_preparation: OISST_preparation.html
-last_built: 2026-04-04T21:26Z
+last_built: 2026-07-27T13:19Z
 urls:
   reference: https://robwschlegel.github.io/heatwaveR/reference
   article: https://robwschlegel.github.io/heatwaveR/articles

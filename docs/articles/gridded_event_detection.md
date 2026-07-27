@@ -12,6 +12,7 @@ which has been created to apply **`heatwaveR`** code directly to gridded
 data files. It can return the results as CSV or NetCDF.
 
 ``` r
+
 library(dplyr) # For basic data manipulation
 library(ggplot2) # For visualising data
 library(heatwaveR) # For detecting MHWs
@@ -24,6 +25,7 @@ library(doParallel) # For parallel processing
 Because we saved our data as an `.Rds` file, loading it into R is easy.
 
 ``` r
+
 OISST <- readRDS("~/Desktop/OISST_vignette.Rds")
 ```
 
@@ -51,6 +53,7 @@ methods so we will combine the calculations we want to make into one
 wrapper function.
 
 ``` r
+
 event_only <- function(df){
   # First calculate the climatologies
   clim <- ts2clm(data = df, climatologyPeriod = c("1982-01-01", "2011-01-01"))
@@ -67,6 +70,7 @@ This method requires no special consideration and is performed just as
 any other friendly **`tidyverse`** code chunk would be.
 
 ``` r
+
 system.time(
 # First we start by choosing the 'OISST' dataframe
 MHW_dplyr <- OISST %>% 
@@ -90,6 +94,7 @@ This method requires that we first tell our machine how many of its
 processor cores to give us for our calculation.
 
 ``` r
+
 # NB: One should never use ALL available cores, save at least 1 for other essential tasks
 # The computer I'm writing this vignette on has 8 cores, so I use 7 here
 registerDoParallel(cores = 7)
@@ -134,6 +139,7 @@ function, which we will then call on a stack of files using the
 aforementioned stack of files.
 
 ``` r
+
 for(i in 1:length(unique(OISST$lon))){
   OISST_sub <- OISST %>% 
     filter(lon == unique(lon)[i])
@@ -151,6 +157,7 @@ easier. And as we see in the code chunk below it also (arguably) allows
 us to perform the most efficient calculations on our data.
 
 ``` r
+
 # The 'dplyr' wrapper function to pass to 'plyr'
 dplyr_wraper <- function(file_name){
   MHW_dplyr <- readRDS(file_name) %>% 
@@ -208,6 +215,7 @@ Up first we see how to calculate the number of events that occurred per
 pixel.
 
 ``` r
+
 # summarise the number of unique longitude, latitude and year combination:
 OISST_n <- MHW_result %>% 
   mutate(year = lubridate::year(date_start)) %>% 
@@ -222,6 +230,7 @@ head(OISST_n)
 Then we specify the particulars of the GLM we are going to use.
 
 ``` r
+
 lin_fun <- function(ev) {
   mod1 <- glm(n ~ year, family = poisson(link = "log"), data = ev)
   # extract slope coefficient and its p-value
@@ -234,6 +243,7 @@ lin_fun <- function(ev) {
 Lastly we make the calculations.
 
 ``` r
+
 OISST_nTrend <- plyr::ddply(OISST_n, c("lon", "lat"), lin_fun, .parallel = T)
 OISST_nTrend$pval <- cut(OISST_nTrend$p, breaks = c(0, 0.001, 0.01, 0.05, 1))
 head(OISST_nTrend)
@@ -246,6 +256,7 @@ annual occurrence of MHWs per pixel in the chosen study area. First we
 will grab the base global map from the **`maps`** package.
 
 ``` r
+
 # The base map
 map_base <- ggplot2::fortify(maps::map(fill = TRUE, plot = FALSE)) %>% 
   dplyr::rename(lon = long)
@@ -257,6 +268,7 @@ detected per year over time as shades of red, and the second map will
 show the significance (*p*-value) of these trends in shades of grey.
 
 ``` r
+
 map_slope <- ggplot(OISST_nTrend, aes(x = lon, y = lat)) +
   geom_rect(size = 0.2, fill = NA,
        aes(xmin = lon - 0.1, xmax = lon + 0.1, ymin = lat - 0.1, ymax = lat + 0.1,

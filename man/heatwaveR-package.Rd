@@ -11,7 +11,7 @@ The different methods for defining, detecting, and categorising the extreme even
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://robwschlegel.github.io/heatwaveR/index.html}
+  \item \url{https://robwschlegel.github.io/heatwaveR/}
   \item \url{https://github.com/robwschlegel/heatwaveR}
   \item Report bugs at \url{https://github.com/robwschlegel/heatwaveR/issues}
 }
@@ -22,6 +22,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Robert W. Schlegel \email{robwschlegel@gmail.com} (\href{https://orcid.org/0000-0002-0705-1287}{ORCID}) [contributor]
   \item Albertus J. Smit (\href{https://orcid.org/0000-0002-3799-6126}{ORCID}) [contributor]
 }
 

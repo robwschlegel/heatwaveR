@@ -5,9 +5,9 @@
 #'
 #' @import ggplot2
 #'
-#' @importFrom ggplot2 ggplot aes geom_polygon geom_line scale_colour_manual
-#' scale_fill_manual scale_x_date theme element_text
-#' element_blank element_rect element_line guides guide_legend coord_cartesian
+#' @importFrom ggplot2 ggplot aes geom_polygon geom_line scale_colour_manual 
+#' @importFrom ggplot2 scale_fill_manual scale_x_date theme element_text
+#' @importFrom ggplot2 element_blank element_rect element_line guides guide_legend coord_cartesian
 #'
 #' @param data The function receives the full (list) output from the
 #' \code{\link{detect_event}} function.
@@ -320,7 +320,7 @@ event_line <- function(data,
 #' Visualise a timeline of several possible event metrics as 'lollipop' graphs.
 #'
 #' @importFrom ggplot2 geom_segment geom_point scale_x_continuous
-#' element_rect element_line labs scale_y_continuous
+#' @importFrom ggplot2 element_rect element_line labs scale_y_continuous
 #'
 #' @param data Output from the \code{\link{detect_event}} function.
 #' @param xaxis The name of a column from the \code{event} data.frame in

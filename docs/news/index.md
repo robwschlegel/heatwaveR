@@ -1,10 +1,14 @@
 # Changelog
 
+## heatwaveR 0.5.5.9000 (2026-07-27)
+
+- User contribution to increase speed of internal variance calculations
+
 ## heatwaveR 0.5.5 (2026-04-04)
 
 - Updated package citations for 2025
-- Re-inserted link to interactive tutorial, now called ‘Demo’, which is
-  hosted on ShinyApps.io
+- Re-inserted access to interactive tutorial hosted on ShinyApps.io
+- Rather extensive rewrite and rework of website (no changes to code)
 
 ## heatwaveR 0.5.5 (2026-01-13)
 
@@ -643,7 +647,7 @@
 - Added S3 object `geom2trace.GeomFlame` that now allows
   [`geom_flame()`](https://robwschlegel.github.io/heatwaveR/reference/geom_flame.md)
   to be converted to an interactive plotly object via
-  [`plotly::ggplotly()`](https://rdrr.io/pkg/plotly/man/ggplotly.html)
+  `plotly::ggplotly()`
 
 ## heatwaveR 0.3.6 (2019-01-16)
 

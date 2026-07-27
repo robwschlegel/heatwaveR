@@ -16,6 +16,7 @@ expects is “YYYY-MM-DD”. For example, please see the top five rows of
 one of the datasets included with the **`heatwaveR`** package:
 
 ``` r
+
 head(heatwaveR::sst_WA)
 ```
 
@@ -53,6 +54,7 @@ function applied to the Western Australia test data included with this
 package (`sst_WA`), which are also discussed by Hobday et al. (2016):
 
 ``` r
+
 library(dplyr)
 library(ggplot2)
 library(heatwaveR)
@@ -90,6 +92,7 @@ in order to visualise MHWs. Here are the functions being used to
 visualise the massive Western Australian heatwave of 2011:
 
 ``` r
+
 event_line(mhw, spread = 180, metric = intensity_max, 
            start_date = "1982-01-01", end_date = "2014-12-31")
 ```
@@ -97,6 +100,7 @@ event_line(mhw, spread = 180, metric = intensity_max,
 ![](detection_and_visualisation_files/figure-html/fig-example1-1.png)
 
 ``` r
+
 lolli_plot(mhw, metric = intensity_max)
 ```
 
@@ -124,6 +128,7 @@ dataframes within the list that is produced by
 Here is how:
 
 ``` r
+
 # Select the region of the time series of interest
 mhw2 <- mhw$climatology %>% 
   slice(10580:10720)
@@ -136,6 +141,7 @@ ggplot(mhw2, aes(x = t, y = temp, y2 = thresh)) +
 ![](detection_and_visualisation_files/figure-html/fig-example2-1.png)
 
 ``` r
+
 ggplot(mhw$event, aes(x = date_start, y = intensity_max)) +
   geom_lolli(colour = "salmon", colour_n = "red", n = 3) +
   geom_text(colour = "black", aes(x = as.Date("2006-08-01"), y = 5,
@@ -153,6 +159,7 @@ example, if we were to choose to reproduce the format of the MHWs as
 seen in Hobday et al. (2016), the code would look something like this:
 
 ``` r
+
 # It is necessary to give geom_flame() at least one row on either side of 
 # the event in order to calculate the polygon corners smoothly
 mhw_top <- mhw2 %>% 
@@ -185,6 +192,7 @@ than our standard five day length, allowing for a two day gap, we want
 to use the arguments `n` and `n_gap` respectively.
 
 ``` r
+
 mhw3 <- mhw$climatology %>% 
   slice(850:950)
 
@@ -205,6 +213,7 @@ plot them with a colour other than the default, and use a different
 theme, it would look like this:
 
 ``` r
+
 ggplot(mhw$event, aes(x = date_peak, y = intensity_max)) +
   geom_lolli(colour = "firebrick") +
   labs(x = "Peak Date", 
@@ -227,6 +236,7 @@ are the top five cold-spells (cumulative intensity) detected in the
 OISST data for Western Australia:
 
 ``` r
+
 # First calculate the cold-spells
 ts_10th <- ts2clm(sst_WA, climatologyPeriod = c("1982-01-01", "2011-12-31"), pctile = 10)
 mcs <- detect_event(ts_10th, coldSpells = TRUE)
@@ -260,6 +270,7 @@ mcs$event %>%
 The default plots showing cold-spells look like this:
 
 ``` r
+
 event_line(mcs, spread = 200, metric = intensity_cumulative,
            start_date = "1982-01-01", end_date = "2014-12-31")
 ```
@@ -267,6 +278,7 @@ event_line(mcs, spread = 200, metric = intensity_cumulative,
 ![](detection_and_visualisation_files/figure-html/fig-example5-1.png)
 
 ``` r
+
 lolli_plot(mcs, metric = intensity_cumulative, xaxis = event_no)
 ```
 
@@ -280,6 +292,7 @@ the functions are able to understand this on their own.
 Cold spell figures may be created as `geoms` in **`ggplot2`**, too:
 
 ``` r
+
 # Select the region of the time series of interest
 mcs2 <- mcs$climatology %>% 
   slice(2900:3190)
@@ -292,6 +305,7 @@ ggplot(mcs2, aes(x = t, y = thresh, y2 = temp)) +
 ![](detection_and_visualisation_files/figure-html/fig-example6-1.png)
 
 ``` r
+
 ggplot(mcs$event, aes(x = date_start, y = intensity_max)) +
   geom_lolli(colour = "steelblue3", colour_n = "navy", n = 3) +
   labs(x = "Start Date",
@@ -309,6 +323,7 @@ and
 are simple **`ggplot2`** geoms, one can go completely bananas with them:
 
 ``` r
+
 mcs_top <- mcs2 %>% 
   slice(125:202)
 
@@ -329,6 +344,7 @@ ggplot(data = mcs2, aes(x = t)) +
 ![](detection_and_visualisation_files/figure-html/fig-example7-1.png)
 
 ``` r
+
 ggplot(mcs$event, aes(x = date_start, y = intensity_cumulative)) +
   geom_lolli(colour = "steelblue3", colour_n = "navy", n = 7) +
   labs( x = "Start Date", y = expression(paste("Cumulative intensity [days x ", degree, "C]")))
@@ -361,6 +377,7 @@ Note that the following code chunk is not run as it makes this vignette
 a bit too large.
 
 ``` r
+
 # Must load plotly library first
 library(plotly)
 

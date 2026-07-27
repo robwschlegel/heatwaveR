@@ -56,6 +56,7 @@ The first step with any analysis in R should be the loading of the
 packages to be used.
 
 ``` r
+
 library(dplyr)
 library(ggpubr)
 library(heatwaveR)
@@ -69,6 +70,7 @@ whatever data they would like. As long as the data have a date (`t`),
 `tMin`, and `tMax` column this code will function as designed.
 
 ``` r
+
 Algiers <- Algiers
 ```
 
@@ -83,6 +85,7 @@ bottom threshold as this is roughly the mean `tMin` for summer
 temperatures.
 
 ``` r
+
 # The tMax threshold
 # The current WMO standard climatology period is 1981-01-01 to 2010-12-31 and should be used when possible
 # We rather use 1961-01-01 to 1990-01-01 as this is the oldest 30 year period available in the data
@@ -102,6 +105,7 @@ function as usual, but provide the second threshold to the argument
 `threshClim2` that would normally lay dormant.
 
 ``` r
+
 # Note that because we calculated our 90th percentile threshold on a column named 'tMax' 
 # and not the default column name 'temp', we must specify this below with 'y = tMax'
 events <- detect_event(data = tMax_clim, y = tMax, # The 90th percentile threshold
@@ -131,6 +135,7 @@ used. This means that we may use the visualisation functions that come
 with **`heatwaveR`** without any extra fuss.
 
 ``` r
+
 # The code to create a bubble plot for the heatwave results
 bubble_plot <- ggplot(data = events$event, aes(x = date_peak, y = intensity_max)) +
   geom_point(aes(size = intensity_cumulative), shape = 21, fill = "salmon", alpha = 0.8) +
@@ -179,6 +184,7 @@ that whichever criteria is the most strict, in this case
 through which the event metrics are quantified.
 
 ``` r
+
 # Note that because we are not using the standard column name 'temp' we must
 # specify the chosen column name twice, once for ts2clm() and again for detect_event()
 
@@ -206,6 +212,7 @@ events_one_thresh <- detect_event(data = thresh_tMin, y = tMin, minDuration = 10
 Here are the differences in lolliplot format:
 
 ``` r
+
 ggarrange(lolli_plot(events_one_thresh), lolli_plot(events_two_thresh), labels = c("One threshold", "Two thresholds"))
 ```
 
@@ -214,6 +221,7 @@ ggarrange(lolli_plot(events_one_thresh), lolli_plot(events_two_thresh), labels =
 Here is a brief display of the top few events from each method:
 
 ``` r
+
 head(events_one_thresh$event)
 ```
 
@@ -249,6 +257,7 @@ head(events_one_thresh$event)
     ## 5            1.5737                    307.0     0.6559       1.2658
 
 ``` r
+
 head(events_two_thresh$event)
 ```
 
@@ -319,6 +328,7 @@ the list components of our results into dataframes for easier use down
 the line.
 
 ``` r
+
 # Pull out each data.frame as their own object for easier use
 events_one_event <- events_one_thresh$event
 events_one_climatology <- events_one_thresh$climatology
@@ -335,6 +345,7 @@ different dataframes that we are using as threshold/filtering guides to
 chose the events that meet all of our selection criteria.
 
 ``` r
+
 # Join the two threshold dataframes
 two_thresh <- left_join(events_one_climatology, thresh_tMax, by = c("t"))
 
@@ -348,6 +359,7 @@ With our filtering guide created, we may now apply it to
 `events_one_thresh` to get our filtered results.
 
 ``` r
+
 # Copy data with a new name
 events_one_thresh_filtered <- events_one_thresh
 
@@ -391,6 +403,7 @@ head(events_one_thresh_filtered$event)
     ## 5            1.5737                    307.0     0.6559       1.2658
 
 ``` r
+
 head(events_two_thresh$event)
 ```
 
@@ -438,6 +451,7 @@ To better understand how different the results from these two different
 techniques may be we will use lolliplots to visualise them.
 
 ``` r
+
 ggarrange(lolli_plot(events_two_thresh, metric = duration), 
           lolli_plot(events_one_thresh_filtered, metric = duration), 
           labels = c("Double threshold", "Filter threshold"))
@@ -451,6 +465,7 @@ Difference in duration (days) of events given different applications of
 thresholds. Note the difference in the y-axes.
 
 ``` r
+
 ggarrange(lolli_plot(events_two_thresh, metric = intensity_cumulative), 
           lolli_plot(events_one_thresh_filtered, metric = intensity_cumulative), 
           labels = c("Double threshold", "Filter threshold"))
