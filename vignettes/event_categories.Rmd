@@ -97,7 +97,7 @@ MHW_cat_ALL |>
 
 A quick and easy visualisation of the categories of a MHW may be accomplished with `event_line()` by setting the `category` argument to `TRUE`.
 
-```{r fig-example-1, echo = TRUE, eval = TRUE}
+```{r fig-example-1, echo = TRUE, eval = TRUE, fig.alt = "Category-coloured event_line plot of the 2011 Western Australia marine heatwave from October 2010 to July 2011, with temperature shaded by Hobday et al. (2018) category severity from Moderate to Extreme."}
 event_line(MHW, spread = 100, start_date = "2010-11-01", end_date = "2011-06-30", category = TRUE)
 ```
 <!-- ![](vignettes/fig-example-10-1.png) -->
@@ -106,7 +106,7 @@ event_line(MHW, spread = 100, start_date = "2010-11-01", end_date = "2011-06-30"
 
 Were one to want to visualise the categories of a MHW 'by hand', the following code will provide a good starting point.
 
-```{r fig-example-2, echo = TRUE, eval = TRUE}
+```{r fig-example-2, echo = TRUE, eval = TRUE, fig.alt = "Custom ggplot2 plot of the 2011 Western Australia marine heatwave showing temperature against four category thresholds, shaded from amber (Moderate) through orange and dark red to near-black (Extreme), with the climatology and threshold lines overlaid."}
 # Create category breaks and select slice of data.frame
 clim_cat <- MHW$clim %>%
   dplyr::mutate(diff = thresh - seas,
@@ -176,7 +176,7 @@ tail(MCS_cat)
 
 The `event_line()` function also works for visualising MCS categories. The function will automagically detect that it is being fed MCSs so we do not need to provide it with any new arguments. Note that the colour palette for MCS does have four colours, same as for MHWs, but none of the demo time series that come packaged with __`heatwaveR`__ have MCSs that intense so we are not able to demonstrate the full colour palette here.
 
-```{r fig-example-3, echo = TRUE, eval = TRUE}
+```{r fig-example-3, echo = TRUE, eval = TRUE, fig.alt = "Category-coloured event_line plot of a Western Australia marine cold-spell from January to October 1990, with temperature shaded by category severity using the cold-spell colour scale."}
 event_line(MCS, spread = 100, start_date = "1989-11-01", end_date = "1990-06-30", category = TRUE)
 ```
 
@@ -184,7 +184,7 @@ event_line(MCS, spread = 100, start_date = "1989-11-01", end_date = "1990-06-30"
 
 The following code chunk demonstrates how to manually create a figure showing the MCS categories.
 
-```{r fig-example-4, echo = TRUE, eval = TRUE}
+```{r fig-example-4, echo = TRUE, eval = TRUE, fig.alt = "Custom ggplot2 plot of a Western Australia marine cold-spell showing temperature against four category thresholds, shaded from pale blue (Moderate) through steel blue and slate blue to near-black (Extreme), with the climatology and threshold lines overlaid."}
 # Create category breaks and select slice of data.frame
 MCS_clim_cat <- MCS$clim %>%
   dplyr::mutate(diff = thresh - seas,
@@ -238,7 +238,7 @@ ggplot(data = MCS_clim_cat, aes(x = t, y = temp)) +
 
 For the sake of convenience the MHW and MCS colour palettes are provided below with a figure showing the direct comparison.
 
-```{r comp-fig}
+```{r comp-fig, fig.alt = "Tile grid comparing the four-step Hobday et al. (2018) category colour palettes for marine heatwaves (amber to near-black) and marine cold-spells (pale blue to near-black), arranged from Moderate to Extreme."}
 # The MCS colour palette
 MCS_colours <- c(
   "Moderate" = "#C7ECF2",

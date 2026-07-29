@@ -84,10 +84,9 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Calculating and Visualising Event Categories</h1>
-                        <h4 data-toc-skip class="author">Robert W
-Schlegel</h4>
+                        <h4 data-toc-skip class="author">Robert W Schlegel</h4>
             
-            <h4 data-toc-skip class="date">2026-07-27</h4>
+            <h4 data-toc-skip class="date">2026-07-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/event_categories.Rmd" class="external-link"><code>vignettes/event_categories.Rmd</code></a></small>
       <div class="d-none name"><code>event_categories.Rmd</code></div>
@@ -98,10 +97,7 @@ Schlegel</h4>
 <div class="section level2">
 <h2 id="categories">Categories<a class="anchor" aria-label="anchor" href="#categories"></a>
 </h2>
-<p>In Hobday et al. (2018) a naming convention for MHWs was proposed
-that divides them into four categories based on their maximum observed
-intensity. The naming convention and a brief description are as
-follows:</p>
+<p>In Hobday et al. (2018) a naming convention for MHWs was proposed that divides them into four categories based on their maximum observed intensity. The naming convention and a brief description are as follows:</p>
 <table class="table">
 <colgroup>
 <col width="12%">
@@ -114,30 +110,19 @@ follows:</p>
 <tbody>
 <tr class="odd">
 <td>I Moderate</td>
-<td>Events that have been detected, but with a maximum intensity that
-does not double the distance between the seasonal climatology and the
-threshold value. These are common and not terribly worrisome.</td>
+<td>Events that have been detected, but with a maximum intensity that does not double the distance between the seasonal climatology and the threshold value. These are common and not terribly worrisome.</td>
 </tr>
 <tr class="even">
 <td>II Strong</td>
-<td>Events with a maximum intensity that doubles the distance from the
-seasonal climatology to the threshold, but does not triple it. These are
-not uncommon, but have yet to be shown to cause any long term biological
-or ecological damage.</td>
+<td>Events with a maximum intensity that doubles the distance from the seasonal climatology to the threshold, but does not triple it. These are not uncommon, but have yet to be shown to cause any long term biological or ecological damage.</td>
 </tr>
 <tr class="odd">
 <td>III Severe</td>
-<td>Thankfully these are relatively uncommon as they have been linked to
-damaging events. The 2003 Mediterranean MHW was this category.</td>
+<td>Thankfully these are relatively uncommon as they have been linked to damaging events. The 2003 Mediterranean MHW was this category.</td>
 </tr>
 <tr class="even">
 <td>IV Extreme</td>
-<td>Events with a maximum intensity that is four times or greater than
-the aforementioned distance. These events are currently rare, but are
-projected to increase with frequency. This is troubling as events in
-this category are now well documented as causing widespread and lasting
-ecological damage. The 2011 Western Australia MHW was this category. It
-is also the logo of this package.</td>
+<td>Events with a maximum intensity that is four times or greater than the aforementioned distance. These events are currently rare, but are projected to increase with frequency. This is troubling as events in this category are now well documented as causing widespread and lasting ecological damage. The 2011 Western Australia MHW was this category. It is also the logo of this package.</td>
 </tr>
 </tbody>
 </table>
@@ -145,20 +130,13 @@ is also the logo of this package.</td>
 <div class="section level2">
 <h2 id="calculating-mhw-categories">Calculating MHW categories<a class="anchor" aria-label="anchor" href="#calculating-mhw-categories"></a>
 </h2>
-<p>The categories of MHWs under the Hobday et al. (2018) naming scheme
-may be calculated with the <strong><code>heatwaveR</code></strong>
-package using the <code><a href="../reference/category.html">category()</a></code> function on the output of the
-<code><a href="../reference/detect_event.html">detect_event()</a></code> function. By default this function will
-order events from most to least intense. Note that one may control the
-output for the names of the events by providing ones own character
-string for the <code>name</code> argument. Because we have calculated
-MHWs on the Western Australia data, we provide the name “WA” below:</p>
+<p>The categories of MHWs under the Hobday et al. (2018) naming scheme may be calculated with the <strong><code>heatwaveR</code></strong> package using the <code><a href="../reference/category.html">category()</a></code> function on the output of the <code><a href="../reference/detect_event.html">detect_event()</a></code> function. By default this function will order events from most to least intense. Note that one may control the output for the names of the events by providing ones own character string for the <code>name</code> argument. Because we have calculated MHWs on the Western Australia data, we provide the name “WA” below:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load libraries</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://robwschlegel.github.io/heatwaveR/">heatwaveR</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://robwschlegel.github.io/heatwaveR/index.html">heatwaveR</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Calculate events</span></span>
 <span><span class="va">ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span><span class="op">)</span><span class="op">)</span></span>
@@ -181,11 +159,7 @@ MHWs on the Western Australia data, we provide the name “WA” below:</p>
 <span><span class="co">## 88       43        0         0 Winter/Spring</span></span>
 <span><span class="co">## 89       23       17         0   Summer/Fall</span></span>
 <span><span class="co">## 90       27       11        10   Spring-Fall</span></span></code></pre>
-<p>Note that this functions expects the data to have been collected in
-the southern hemisphere, hence the argument <code>S = TRUE</code>. If
-they were not, one must set <code>S = FALSE</code> as seen in the
-example below. This ensures that the correct seasons are attributed to
-the event.</p>
+<p>Note that this functions expects the data to have been collected in the southern hemisphere, hence the argument <code>S = TRUE</code>. If they were not, one must set <code>S = FALSE</code> as seen in the example below. This ensures that the correct seasons are attributed to the event.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res_Med</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/detect_event.html">detect_event</a></span><span class="op">(</span><span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_Med</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">res_Med_cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/category.html">category</a></span><span class="op">(</span><span class="va">res_Med</span>, S <span class="op">=</span> <span class="cn">FALSE</span>, name <span class="op">=</span> <span class="st">"Med"</span><span class="op">)</span></span>
@@ -208,13 +182,7 @@ the event.</p>
 <div class="section level2">
 <h2 id="multiple-time-series">Multiple time series<a class="anchor" aria-label="anchor" href="#multiple-time-series"></a>
 </h2>
-<p>If however we may want to determine the categories of event within a
-set of time series that cross over the equator, we may set the argument
-<code>lat_col = TRUE</code> to allow <code><a href="../reference/category.html">category()</a></code> to
-automagically detect the latitude of the events by searching for columns
-named either ‘lat’ or ’latitude. See the vignette for <a href="https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html">detecting
-events in gridded data</a> for more examples of running
-<strong><code>heatwaveR</code></strong> code on gridded data.</p>
+<p>If however we may want to determine the categories of event within a set of time series that cross over the equator, we may set the argument <code>lat_col = TRUE</code> to allow <code><a href="../reference/category.html">category()</a></code> to automagically detect the latitude of the events by searching for columns named either ‘lat’ or ’latitude. See the vignette for <a href="https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html">detecting events in gridded data</a> for more examples of running <strong><code>heatwaveR</code></strong> code on gridded data.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Add lon/lat to the three default time series</span></span>
 <span><span class="va">ts_WA</span> <span class="op">&lt;-</span> <span class="va">sst_WA</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>site <span class="op">=</span> <span class="st">"WA"</span>, lon <span class="op">=</span> <span class="fl">112.625</span>, lat <span class="op">=</span> <span class="op">-</span><span class="fl">29.375</span><span class="op">)</span></span>
@@ -258,18 +226,15 @@ events in gridded data</a> for more examples of running
 <div class="section level3">
 <h3 id="default-mhw-category-visuals">Default MHW category visuals<a class="anchor" aria-label="anchor" href="#default-mhw-category-visuals"></a>
 </h3>
-<p>A quick and easy visualisation of the categories of a MHW may be
-accomplished with <code><a href="../reference/event_line.html">event_line()</a></code> by setting the
-<code>category</code> argument to <code>TRUE</code>.</p>
+<p>A quick and easy visualisation of the categories of a MHW may be accomplished with <code><a href="../reference/event_line.html">event_line()</a></code> by setting the <code>category</code> argument to <code>TRUE</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">MHW</span>, spread <span class="op">=</span> <span class="fl">100</span>, start_date <span class="op">=</span> <span class="st">"2010-11-01"</span>, end_date <span class="op">=</span> <span class="st">"2011-06-30"</span>, category <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="event_categories_files/figure-html/fig-example-1-1.png" class="r-plt" alt="" width="768"><!-- ![](vignettes/fig-example-10-1.png) --></p>
+<p><img src="event_categories_files/figure-html/fig-example-1-1.png" class="r-plt" alt="Category-coloured event_line plot of the 2011 Western Australia marine heatwave from November 2010 to June 2011, with temperature shaded by Hobday et al. (2018) category severity from Moderate to Extreme." width="768"><!-- ![](vignettes/fig-example-10-1.png) --></p>
 </div>
 <div class="section level3">
 <h3 id="custom-mhw-category-visuals">Custom MHW category visuals<a class="anchor" aria-label="anchor" href="#custom-mhw-category-visuals"></a>
 </h3>
-<p>Were one to want to visualise the categories of a MHW ‘by hand’, the
-following code will provide a good starting point.</p>
+<p>Were one to want to visualise the categories of a MHW ‘by hand,’ the following code will provide a good starting point.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create category breaks and select slice of data.frame</span></span>
 <span><span class="va">clim_cat</span> <span class="op">&lt;-</span> <span class="va">MHW</span><span class="op">$</span><span class="va">clim</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -317,16 +282,13 @@ following code will provide a good starting point.</p>
 <span>                                                                <span class="st">"dashed"</span>, <span class="st">"dotdash"</span>, <span class="st">"dotted"</span><span class="op">)</span>,</span>
 <span>                                                   size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Temperature [°C]"</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
-<p><img src="event_categories_files/figure-html/fig-example-2-1.png" class="r-plt" alt="" width="768"><!-- ![](vignettes/fig-example-11-1.png) --></p>
+<p><img src="event_categories_files/figure-html/fig-example-2-1.png" class="r-plt" alt="Custom ggplot2 plot of the 2011 Western Australia marine heatwave showing temperature against four category thresholds, shaded from amber (Moderate) through orange and dark red to near-black (Extreme), with the climatology and threshold lines overlaid." width="768"><!-- ![](vignettes/fig-example-11-1.png) --></p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="calculating-mcs-categories">Calculating MCS categories<a class="anchor" aria-label="anchor" href="#calculating-mcs-categories"></a>
 </h2>
-<p>MCSs are calculated the same as for MHWs. The <code><a href="../reference/category.html">category()</a></code>
-function will automagically detect if it has been fed MHWs or MCSs so no
-additional arguments are required. For the sake of clarity the following
-code chunks demonstrates how to calculate MCS categories.</p>
+<p>MCSs are calculated the same as for MHWs. The <code><a href="../reference/category.html">category()</a></code> function will automagically detect if it has been fed MHWs or MCSs so no additional arguments are required. For the sake of clarity the following code chunks demonstrates how to calculate MCS categories.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Calculate events</span></span>
 <span><span class="va">ts_MCS</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ts2clm.html">ts2clm</a></span><span class="op">(</span><span class="va">sst_WA</span>, climatologyPeriod <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1982-01-01"</span>, <span class="st">"2011-12-31"</span><span class="op">)</span>, pctile <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
@@ -356,22 +318,15 @@ code chunks demonstrates how to calculate MCS categories.</p>
 <div class="section level3">
 <h3 id="default-mcs-category-visuals">Default MCS category visuals<a class="anchor" aria-label="anchor" href="#default-mcs-category-visuals"></a>
 </h3>
-<p>The <code><a href="../reference/event_line.html">event_line()</a></code> function also works for visualising MCS
-categories. The function will automagically detect that it is being fed
-MCSs so we do not need to provide it with any new arguments. Note that
-the colour palette for MCS does have four colours, same as for MHWs, but
-none of the demo time series that come packaged with
-<strong><code>heatwaveR</code></strong> have MCSs that intense so we are
-not able to demonstrate the full colour palette here.</p>
+<p>The <code><a href="../reference/event_line.html">event_line()</a></code> function also works for visualising MCS categories. The function will automagically detect that it is being fed MCSs so we do not need to provide it with any new arguments. Note that the colour palette for MCS does have four colours, same as for MHWs, but none of the demo time series that come packaged with <strong><code>heatwaveR</code></strong> have MCSs that intense so we are not able to demonstrate the full colour palette here.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">MCS</span>, spread <span class="op">=</span> <span class="fl">100</span>, start_date <span class="op">=</span> <span class="st">"1989-11-01"</span>, end_date <span class="op">=</span> <span class="st">"1990-06-30"</span>, category <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="event_categories_files/figure-html/fig-example-3-1.png" class="r-plt" alt="" width="768"></p>
+<p><img src="event_categories_files/figure-html/fig-example-3-1.png" class="r-plt" alt="Category-coloured event_line plot of a 1989-1990 Western Australia marine cold-spell, with temperature shaded by category severity using the cold-spell colour scale." width="768"></p>
 </div>
 <div class="section level3">
 <h3 id="custom-mcs-category-visuals">Custom MCS category visuals<a class="anchor" aria-label="anchor" href="#custom-mcs-category-visuals"></a>
 </h3>
-<p>The following code chunk demonstrates how to manually create a figure
-showing the MCS categories.</p>
+<p>The following code chunk demonstrates how to manually create a figure showing the MCS categories.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create category breaks and select slice of data.frame</span></span>
 <span><span class="va">MCS_clim_cat</span> <span class="op">&lt;-</span> <span class="va">MCS</span><span class="op">$</span><span class="va">clim</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -420,14 +375,13 @@ showing the MCS categories.</p>
 <span>                                                                <span class="st">"dashed"</span>, <span class="st">"dotdash"</span>, <span class="st">"dotted"</span><span class="op">)</span>,</span>
 <span>                                                   size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Temperature [°C]"</span>, x <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
-<p><img src="event_categories_files/figure-html/fig-example-4-1.png" class="r-plt" alt="" width="768"></p>
+<p><img src="event_categories_files/figure-html/fig-example-4-1.png" class="r-plt" alt="Custom ggplot2 plot of a Western Australia marine cold-spell showing temperature against four category thresholds, shaded from pale blue (Moderate) through steel blue and slate blue to near-black (Extreme), with the climatology and threshold lines overlaid." width="768"></p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="category-colour-palettes">Category colour palettes<a class="anchor" aria-label="anchor" href="#category-colour-palettes"></a>
 </h2>
-<p>For the sake of convenience the MHW and MCS colour palettes are
-provided below with a figure showing the direct comparison.</p>
+<p>For the sake of convenience the MHW and MCS colour palettes are provided below with a figure showing the direct comparison.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># The MCS colour palette</span></span>
 <span><span class="va">MCS_colours</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
@@ -457,7 +411,7 @@ provided below with a figure showing the direct comparison.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html" class="external-link">geom_tile</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">colour_palette</span><span class="op">$</span><span class="va">colour</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span>expand <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
-<p><img src="event_categories_files/figure-html/comp-fig-1.png" class="r-plt" alt="" width="768"></p>
+<p><img src="event_categories_files/figure-html/comp-fig-1.png" class="r-plt" alt="Tile grid comparing the four-step Hobday et al. (2018) category colour palettes for marine heatwaves (amber to near-black) and marine cold-spells (pale blue to near-black), arranged from Moderate to Extreme." width="768"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -470,7 +424,7 @@ provided below with a figure showing the direct comparison.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

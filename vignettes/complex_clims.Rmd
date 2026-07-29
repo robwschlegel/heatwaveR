@@ -78,7 +78,7 @@ Please note that even though the use of the second threshold does allow for the 
 
 Even though we have used two thresholds to calculate our events, the results are output the same as though only one threshold (default) were used. This means that we may use the visualisation functions that come with __`heatwaveR`__ without any extra fuss.
 
-```{r visuals, fig.height=6}
+```{r visuals, fig.height=6, fig.alt = "Four-panel figure comparing methods of visualising Algiers atmospheric heatwaves detected with a tMin exceedance as a second threshold: a standard event_line plot, a category-coloured event_line plot, a lollipop plot of maximum intensity, and a bubble plot of maximum versus cumulative intensity."}
 # The code to create a bubble plot for the heatwave results
 bubble_plot <- ggplot(data = events$event, aes(x = date_peak, y = intensity_max)) +
   geom_point(aes(size = intensity_cumulative), shape = 21, fill = "salmon", alpha = 0.8) +
@@ -130,7 +130,7 @@ events_one_thresh <- detect_event(data = thresh_tMin, y = tMin, minDuration = 10
 
 Here are the differences in lolliplot format:
 
-```{r alt-two-thresh-lollis}
+```{r alt-two-thresh-lollis, fig.alt = "Side-by-side lollipop plots comparing detected Algiers heatwave events using one threshold versus two combined thresholds (tMin and tMax), labelled 'One threshold' and 'Two thresholds'."}
 ggarrange(lolli_plot(events_one_thresh), lolli_plot(events_two_thresh), labels = c("One threshold", "Two thresholds"))
 ```
 

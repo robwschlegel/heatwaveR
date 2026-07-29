@@ -58,7 +58,7 @@ mhw$event %>%
 
 One may use `event_line()` and `lolli_plot()` directly on the output of `detect_event()` in order to visualise MHWs. Here are the functions being used to visualise the massive Western Australian heatwave of 2011:
 
-```{r fig-example1, echo = TRUE, eval = TRUE}
+```{r fig-example1, echo = TRUE, eval = TRUE, fig.alt = c("Line plot of Western Australia sea surface temperature from mid-2010 to late 2011, showing the climatological mean, the 90th-percentile threshold, and the 2011 marine heatwave shaded in red with its peak intensity marked.", "Lollipop plot of all detected Western Australia marine heatwave events by start date, with each event's maximum intensity shown as a stem and the 2011 event highlighted as the most extreme.")}
 event_line(mhw, spread = 180, metric = intensity_max, 
            start_date = "1982-01-01", end_date = "2014-12-31")
 
@@ -71,7 +71,7 @@ lolli_plot(mhw, metric = intensity_max)
 
 The `event_line()` and `lolli_plot()` functions were designed to work directly on the list returned by `detect_event()`. If more control over the figures is required, it may be useful to create them in **`ggplot2`** by stacking `geoms`. We specifically created two new **`ggplot2`** `geoms` to reproduce the functionality of `event_line()` and `lolli_plot()`. These functions are more general in their functionality and can be used outside of the **`heatwaveR`** package, too. To apply them to MHWs and MCSs first requires that we access the `climatology` or `event` dataframes within the list that is produced by `detect_event()`. Here is how:
 
-```{r fig-example2, echo = TRUE, eval = TRUE}
+```{r fig-example2, echo = TRUE, eval = TRUE, fig.alt = c("Custom ggplot2 geom_flame plot of temperature against the seasonal threshold during the 2011 Western Australia marine heatwave, with the exceedance area shaded as a flame shape and labelled 'the Destroyer of Kelps'.", "Custom ggplot2 geom_lolli plot of marine heatwave maximum intensity by start date, with the three most intense events highlighted in red and a label noting that marine heatwave intensities tend to be left-skewed.")}
 # Select the region of the time series of interest
 mhw2 <- mhw$climatology %>% 
   slice(10580:10720)
@@ -93,7 +93,7 @@ ggplot(mhw$event, aes(x = date_start, y = intensity_max)) +
 
 The default output of these function may not be to your liking. If so, not to worry. As **`ggplot2`** `geoms`, they are highly malleable. For example, if we were to choose to reproduce the format of the MHWs as seen in Hobday et al. (2016), the code would look something like this:
 
-```{r fig-example3, echo = TRUE, eval = TRUE}
+```{r fig-example3, echo = TRUE, eval = TRUE, fig.alt = "Reproduction of the Hobday et al. (2016) style marine heatwave figure, showing temperature, the seasonal climatology, and the 90th-percentile threshold as lines, with the full heatwave event shaded in salmon and its most intense portion shaded in red, each with a colour legend."}
 # It is necessary to give geom_flame() at least one row on either side of 
 # the event in order to calculate the polygon corners smoothly
 mhw_top <- mhw2 %>% 
@@ -120,7 +120,7 @@ ggplot(data = mhw2, aes(x = t)) +
 
 It is also worth pointing out that when we use `geom_flame()` directly like this, but we don't want to highlight events greater less than our standard five day length, allowing for a two day gap, we want to use the arguments `n` and `n_gap` respectively.
 
-```{r flame_gaps}
+```{r flame_gaps, fig.alt = "Comparison plot of geom_flame() event detection with default settings shaded in black versus a 5-day minimum duration allowing a 2-day gap shaded in red, illustrating how gap-joining connects a short temperature spike into a single event."}
 mhw3 <- mhw$climatology %>% 
   slice(850:950)
 
@@ -135,7 +135,7 @@ ggplot(mhw3, aes(x = t, y = temp, y2 = thresh)) +
 
 Should we not wish to highlight any events with `geom_lolli()`, plot them with a colour other than the default, and use a different theme, it would look like this:
 
-```{r fig-example4, echo = TRUE, eval = TRUE}
+```{r fig-example4, echo = TRUE, eval = TRUE, fig.alt = "Lollipop plot of marine heatwave maximum intensity by peak date, styled in firebrick red on a line-drawing ggplot2 theme, with no events specially highlighted."}
 ggplot(mhw$event, aes(x = date_peak, y = intensity_max)) +
   geom_lolli(colour = "firebrick") +
   labs(x = "Peak Date", 
@@ -170,7 +170,7 @@ mcs$event %>%
 
 The default plots showing cold-spells look like this:
 
-```{r fig-example5, echo = TRUE, eval = TRUE}
+```{r fig-example5, echo = TRUE, eval = TRUE, fig.alt = c("Line plot of Western Australia sea surface temperature from late 1989 to early 1991 showing the climatology, the 10th-percentile threshold, and the most cumulatively intense marine cold-spell shaded in blue.", "Lollipop plot of all detected Western Australia marine cold-spell events ordered by event number, with each event's cumulative intensity shown as a stem.")}
 event_line(mcs, spread = 200, metric = intensity_cumulative,
            start_date = "1982-01-01", end_date = "2014-12-31")
 
@@ -185,7 +185,7 @@ Note that one does not need to specify that MCSs are to be visualised, the funct
 
 Cold spell figures may be created as `geoms` in **`ggplot2`**, too:
 
-```{r fig-example6, echo = TRUE, eval = TRUE}
+```{r fig-example6, echo = TRUE, eval = TRUE, fig.alt = c("Custom ggplot2 geom_flame plot of temperature below the 10th-percentile threshold during a Western Australia marine cold-spell, shaded in steel blue.", "Custom ggplot2 geom_lolli plot of marine cold-spell maximum intensity by start date, with the three most intense cold-spells highlighted in navy.")}
 # Select the region of the time series of interest
 mcs2 <- mcs$climatology %>% 
   slice(2900:3190)
@@ -204,7 +204,7 @@ ggplot(mcs$event, aes(x = date_start, y = intensity_max)) +
 
 Again, because `geom_flame()` and `geom_lolli()` are simple **`ggplot2`** geoms, one can go completely bananas with them:
 
-```{r fig-example7, echo = TRUE, eval = TRUE}
+```{r fig-example7, echo = TRUE, eval = TRUE, fig.alt = c("Fully custom ggplot2 reproduction of a marine cold-spell figure, showing temperature, the seasonal climatology, and the 10th-percentile threshold as lines, with the full cold-spell event shaded in steel blue and its most intense portion shaded in navy, each with a colour legend.", "Lollipop plot of marine cold-spell cumulative intensity by start date, with the seven most intense cold-spells highlighted in navy.")}
 mcs_top <- mcs2 %>% 
   slice(125:202)
 

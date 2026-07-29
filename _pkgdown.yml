@@ -89,7 +89,7 @@ template:
     bg: "#F4FBFC"
     fg: "#14303A"
     primary: "#0B7285"
-    secondary: "#5F7E88"
+    secondary: "#546F78"
     success: "#2C7A5B"
     info: "#2B8CBE"
     warning: "#D97706"

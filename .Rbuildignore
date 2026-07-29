@@ -22,3 +22,7 @@
 package_development.R
 ^doc$
 ^Meta$
+^CLAUDE\.md$
+^PRODUCT\.md$
+^DESIGN\.md$
+^\.impeccable$
