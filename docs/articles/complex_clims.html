@@ -86,7 +86,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Alternative Thresholds</h1>
                         <h4 data-toc-skip class="author">Robert W Schlegel</h4>
             
-            <h4 data-toc-skip class="date">2026-07-29</h4>
+            <h4 data-toc-skip class="date">2026-07-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/complex_clims.Rmd" class="external-link"><code>vignettes/complex_clims.Rmd</code></a></small>
       <div class="d-none name"><code>complex_clims.Rmd</code></div>
@@ -111,6 +111,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rpkgs.datanovia.com/ggpubr/" class="external-link">ggpubr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com" class="external-link">patchwork</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://robwschlegel.github.io/heatwaveR/index.html">heatwaveR</a></span><span class="op">)</span></span></code></pre></div>
 <p>With our libraries loaded, we will now go about explicitly calling the <code>Algiers</code> data into our environment. These data are automatically loaded for us when we load the <code>heatwaveR</code> library, but we perform this step here just for clarity. Anyone following along should feel free to use whatever data they would like. As long as the data have a date (<code>t</code>), <code>tMin</code>, and <code>tMax</code> column this code will function as designed.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -158,11 +159,23 @@
 <span>        legend.box.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Don't forget to set 'event_line(y = tMax)'</span></span>
-<span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html" class="external-link">ggarrange</a></span><span class="op">(</span><span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">events</span>, y <span class="op">=</span> <span class="va">tMax</span>, metric <span class="op">=</span> <span class="va">intensity_max</span><span class="op">)</span>,</span>
-<span>          <span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">events</span>, y <span class="op">=</span> <span class="va">tMax</span>, metric <span class="op">=</span> <span class="va">intensity_max</span>, category <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,</span>
-<span>          <span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events</span><span class="op">)</span>,</span>
-<span>          <span class="va">bubble_plot</span>,</span>
-<span>          ncol <span class="op">=</span> <span class="fl">2</span>, nrow <span class="op">=</span> <span class="fl">2</span>, align <span class="op">=</span> <span class="st">"hv"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># The legends for these two event_line() plots are moved inside the panel</span></span>
+<span><span class="co"># (rather than the default position beside it) to save horizontal space in this grid</span></span>
+<span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">events</span>, y <span class="op">=</span> <span class="va">tMax</span>, metric <span class="op">=</span> <span class="va">intensity_max</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"inside"</span>, legend.position.inside <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.13</span>, <span class="fl">0.05</span><span class="op">)</span>,</span>
+<span>        legend.direction <span class="op">=</span> <span class="st">"vertical"</span>,</span>
+<span>        legend.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, colour <span class="op">=</span> <span class="st">"grey50"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/event_line.html">event_line</a></span><span class="op">(</span><span class="va">events</span>, y <span class="op">=</span> <span class="va">tMax</span>, metric <span class="op">=</span> <span class="va">intensity_max</span>, category <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"inside"</span>, legend.position.inside <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.13</span>, <span class="fl">0.02</span><span class="op">)</span>,</span>
+<span>        legend.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"white"</span>, colour <span class="op">=</span> <span class="st">"grey50"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Note: this 2x2 grid uses patchwork rather than ggpubr::ggarrange() because</span></span>
+<span><span class="co"># ggarrange()/cowplot currently mis-renders multi-panel grids under ggplot2 &gt;= 4.0</span></span>
+<span><span class="co"># (see https://github.com/wilkelab/cowplot/issues/215); ggarrange() is still used</span></span>
+<span><span class="co"># for the simpler side-by-side comparisons later in this vignette, which are unaffected.</span></span>
+<span><span class="op">(</span><span class="va">p1</span> <span class="op">|</span> <span class="va">p2</span><span class="op">)</span> <span class="op">/</span></span>
+<span>  <span class="op">(</span><span class="fu"><a href="../reference/lolli_plot.html">lolli_plot</a></span><span class="op">(</span><span class="va">events</span><span class="op">)</span> <span class="op">|</span> <span class="va">bubble_plot</span><span class="op">)</span></span></code></pre></div>
 <p><img src="complex_clims_files/figure-html/visuals-1.png" class="r-plt" alt="Four-panel figure comparing methods of visualising Algiers atmospheric heatwaves detected with a tMin exceedance as a second threshold: a standard event_line plot, a category-coloured event_line plot, a lollipop plot of maximum intensity, and a bubble plot of maximum versus cumulative intensity." width="768"></p>
 </div>
 <div class="section level3">

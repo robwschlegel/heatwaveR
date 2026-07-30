@@ -28,6 +28,7 @@ Suggests:
     knitr,
     lubridate,
     ncdf4,
+    patchwork,
     plyr,
     rerddap,
     rmarkdown,

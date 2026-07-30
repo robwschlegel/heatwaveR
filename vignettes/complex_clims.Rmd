@@ -36,6 +36,7 @@ The first step with any analysis in R should be the loading of the packages to b
 ```{r load-libs}
 library(dplyr)
 library(ggpubr)
+library(patchwork)
 library(heatwaveR)
 ```
 
@@ -90,11 +91,23 @@ bubble_plot <- ggplot(data = events$event, aes(x = date_peak, y = intensity_max)
         legend.box.background = element_rect(colour = "black"))
 
 # Don't forget to set 'event_line(y = tMax)'
-ggarrange(event_line(events, y = tMax, metric = intensity_max),
-          event_line(events, y = tMax, metric = intensity_max, category = T),
-          lolli_plot(events),
-          bubble_plot,
-          ncol = 2, nrow = 2, align = "hv")
+# The legends for these two event_line() plots are moved inside the panel
+# (rather than the default position beside it) to save horizontal space in this grid
+p1 <- event_line(events, y = tMax, metric = intensity_max) +
+  theme(legend.position = "inside", legend.position.inside = c(0.13, 0.05),
+        legend.direction = "vertical",
+        legend.background = element_rect(fill = "white", colour = "grey50"))
+
+p2 <- event_line(events, y = tMax, metric = intensity_max, category = T) +
+  theme(legend.position = "inside", legend.position.inside = c(0.13, 0.02),
+        legend.background = element_rect(fill = "white", colour = "grey50"))
+
+# Note: this 2x2 grid uses patchwork rather than ggpubr::ggarrange() because
+# ggarrange()/cowplot currently mis-renders multi-panel grids under ggplot2 >= 4.0
+# (see https://github.com/wilkelab/cowplot/issues/215); ggarrange() is still used
+# for the simpler side-by-side comparisons later in this vignette, which are unaffected.
+(p1 | p2) /
+  (lolli_plot(events) | bubble_plot)
 ```
 
 ### Alternative second thresholds
