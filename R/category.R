@@ -206,17 +206,10 @@ category <- function(data,
                           duration = data$event$duration,
                           season = NA)
 
-    ss <- as.POSIXlt(data$event$date_start)
-    ss$day <- 1
-    ss$mo <- ss$mo + 1
-
-    sp <- as.POSIXlt(data$event$date_peak)
-    sp$day <- 1
-    sp$mo <- sp$mo + 1
-
-    se <- as.POSIXlt(data$event$date_end)
-    se$day <- 1
-    se$mo <- se$mo + 1
+    # Quarters of meteorological seasons: Dec-Feb = 1, Mar-May = 2, Jun-Aug = 3, Sep-Nov = 4
+    ss <- (as.integer(format(data$event$date_start, "%m")) %% 12) %/% 3 + 1
+    sp <- (as.integer(format(data$event$date_peak, "%m")) %% 12) %/% 3 + 1
+    se <- (as.integer(format(data$event$date_end, "%m")) %% 12) %/% 3 + 1
 
     ts_lat_col <- start_season <- peak_season <- end_season <- NULL
 
@@ -241,18 +234,18 @@ category <- function(data,
     }
 
     if (S) {
-      seasons$start_season <- factor(quarters(ss, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
+      seasons$start_season <- factor(ss, levels = 1:4,
                                      labels = c("Summer", "Fall", "Winter", "Spring"))
-      seasons$peak_season <- factor(quarters(sp, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
+      seasons$peak_season <- factor(sp, levels = 1:4,
                                      labels = c("Summer", "Fall", "Winter", "Spring"))
-      seasons$end_season <- factor(quarters(se, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
+      seasons$end_season <- factor(se, levels = 1:4,
                                     labels = c("Summer", "Fall", "Winter", "Spring"))
     } else {
-      seasons$start_season <- factor(quarters(ss, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
+      seasons$start_season <- factor(ss, levels = 1:4,
                                      labels = c("Winter", "Spring", "Summer", "Fall"))
-      seasons$peak_season <- factor(quarters(sp, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
+      seasons$peak_season <- factor(sp, levels = 1:4,
                                      labels = c("Winter", "Spring", "Summer", "Fall"))
-      seasons$end_season <- factor(quarters(se, abbreviate = F), levels = c("Q1", "Q2", "Q3", "Q4"),
+      seasons$end_season <- factor(se, levels = 1:4,
                                     labels = c("Winter", "Spring", "Summer", "Fall"))
       }
 

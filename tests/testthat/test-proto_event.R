@@ -57,3 +57,12 @@ test_that("no error when only one event lasts for the entire timeframe", {
   expect_equal(nrow(res), 14975)
   expect_equal(sum(is.na(res$event_no)), 0)
 })
+
+test_that("a short gap at the end of the series is not joined into the last event", {
+  ts_xy <- data.frame(ts_x = seq(as.Date("2000-01-01"), by = 1, length.out = 20))
+  crit <- c(rep(FALSE, 10), rep(TRUE, 8), FALSE, FALSE)
+  res <- heatwaveR:::proto_event(ts_xy, joinAcrossGaps = TRUE,
+                                 criterion_column = crit,
+                                 minDuration = 5, maxGap = 2)
+  expect_equal(res$event, c(rep(FALSE, 10), rep(TRUE, 8), FALSE, FALSE))
+})

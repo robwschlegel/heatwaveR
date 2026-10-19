@@ -51,3 +51,12 @@ test_that("no detected events returns columns that all say FALSE/NA and not an e
   expect_equal(sum(is.na(res$event_no)), 14975)
 })
 
+
+test_that("a short gap at the end of the series is not joined into the last event", {
+  ts_xy <- data.table::data.table(ts_x = seq(as.Date("2000-01-01"), by = 1, length.out = 20))
+  crit <- c(rep(FALSE, 10), rep(TRUE, 8), FALSE, FALSE)
+  res <- heatwaveR:::proto_event3(ts_xy, joinAcrossGaps = TRUE,
+                                  criterion_column = crit,
+                                  minDuration = 5, maxGap = 2)
+  expect_equal(res$event, c(rep(FALSE, 10), rep(TRUE, 8), FALSE, FALSE))
+})

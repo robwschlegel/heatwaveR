@@ -68,7 +68,8 @@ proto_event3 <- function(p_series,
       p_series[durationCriterion == FALSE, list(index_start = min(.I), index_end = max(.I)), by = rleid][, duration := index_end - index_start + 1]
     p_series[, rleid := NULL]
     proto_gaps <-
-      proto_gaps[index_end > proto_events$index_start[1]][, rleid := NULL]
+      proto_gaps[index_end > proto_events$index_start[1] &
+                   index_start < proto_events$index_end[nrow(proto_events)]][, rleid := NULL]
 
     if (any(proto_gaps$duration >= 1 &
             proto_gaps$duration <= maxGap)) {

@@ -73,7 +73,8 @@ proto_event <- function(t_series,
     if(length(proto_gaps) == 1 & is.na(proto_gaps$duration[1])){
       proto_gaps <- proto_gaps
     } else {
-      proto_gaps <- proto_gaps[proto_gaps$index_end > proto_events$index_start[1], ]
+      proto_gaps <- proto_gaps[proto_gaps$index_end > proto_events$index_start[1] &
+                                 proto_gaps$index_start < proto_events$index_end[nrow(proto_events)], ]
     }
 
     if (any(proto_gaps$duration >= 1 & proto_gaps$duration <= maxGap)) {

@@ -1,3 +1,10 @@
+# heatwaveR 1.0.0 (2026-10-19)
+
+- Final release: heatwaveR is now frozen, and active development continues in [heatwave3](https://robwschlegel.github.io/heatwave3/)
+- Bug fix: with `joinAcrossGaps = TRUE`, `detect_event()`, `detect_event3()`, and `exceedance()` no longer join up to `maxGap` non-exceeding days at the end of a time series into the last event; such an event now ends on its last day above the threshold. This changes the `date_end`, `duration`, intensity metrics, and `rate_decline` (now calculated rather than `NA`) of affected events
+- Bug fix: the seasons in `category()` now follow the meteorological seasons as documented (December to February is boreal winter and austral summer). Previously calendar quarters were used, so events that started, peaked, or ended in March, June, September, or December were labelled with the preceding season
+- Both fixes make the events and categories identical to those of heatwave3
+
 # heatwaveR 0.5.5.9000 (2026-07-27)
 
 - User contribution to increase speed of internal variance calculations

@@ -103,8 +103,8 @@ test_that("roundRes argument functions correctly", {
 test_that("only one event with NA for rate_onset or rate_decline returns NA and not error", {
   res_clim <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   res_onset <- detect_event3(res_clim[885:892,])
-  res_decline <- detect_event3(res_clim[882:890,])
-  res_both <- detect_event3(res_clim[885:891,])
+  res_decline <- detect_event3(res_clim[882:889,])
+  res_both <- detect_event3(res_clim[885:889,])
   expect_equal(res_onset$event$rate_onset, as.numeric(NA))
   expect_equal(res_decline$event$rate_decline, as.numeric(NA))
   expect_equal(res_both$event$rate_onset, as.numeric(NA))
@@ -138,4 +138,14 @@ test_that("useful error is returned when incorrect columns, types, or names exis
   # But it does correctly recognise name changes
   expect_s3_class(detect_event3(ts_name1, x = banana)$event, "data.table")
   expect_s3_class(detect_event3(ts_name2, y = mango)$event, "data.table")
+})
+
+test_that("an event is not extended across a short gap at the end of the series", {
+  ts <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  n <- nrow(ts)
+  ts$temp[(n - 9):(n - 2)] <- ts$thresh[(n - 9):(n - 2)] + 1
+  ts$temp[(n - 1):n] <- ts$seas[(n - 1):n]
+  res <- detect_event3(ts)
+  expect_equal(res$event$date_end[nrow(res$event)], ts$t[n - 2])
+  expect_false(any(res$climatology$event[(n - 1):n]))
 })

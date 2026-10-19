@@ -13,8 +13,8 @@ test_that("The seasons by hemisphere come out correctly", {
   res <- detect_event(ts)
   cat_res_south <- category(res, S = T)
   cat_res_north <- category(res, S = F)
-  expect_equal(cat_res_south$season[1], "Fall")
-  expect_equal(cat_res_north$season[1], "Spring")
+  expect_equal(cat_res_south$season[1], "Winter")
+  expect_equal(cat_res_north$season[1], "Summer")
 })
 
 test_that("latitude columns are detected for seasons instead of S = T/F", {
@@ -33,11 +33,11 @@ test_that("latitude columns are detected for seasons instead of S = T/F", {
   cat_WA_N <- category(detect_event(ts_WA_N), lat_col = T)
   cat_NW_Atl_1 <- category(detect_event(ts_NW_Atl_1), lat_col = T)
   cat_NW_Atl_2 <- category(detect_event(ts_NW_Atl_2), lat_col = T)
-  expect_equal(cat_Med$season[1], "Spring")
-  expect_equal(cat_WA$season[1], "Fall")
-  expect_equal(cat_WA_N$season[1], "Spring")
-  expect_equal(cat_NW_Atl_1$season[1], "Summer")
-  expect_equal(cat_NW_Atl_2$season[1], "Winter")
+  expect_equal(cat_Med$season[1], "Summer")
+  expect_equal(cat_WA$season[1], "Winter")
+  expect_equal(cat_WA_N$season[1], "Summer")
+  expect_equal(cat_NW_Atl_1$season[1], "Fall")
+  expect_equal(cat_NW_Atl_2$season[1], "Spring")
 })
 
 test_that("latitude column error trapping", {
@@ -77,11 +77,11 @@ test_that("season splits work under all circumstances", {
   res <- detect_event(ts)
   cat_res <- category(res, S = F)
   expect_equal(cat_res$season[110], "Year-round")
-  expect_equal(cat_res$season[88], "Summer/Fall")
-  expect_equal(cat_res$season[95], "Winter/Spring")
-  expect_equal(cat_res$season[97], "Spring/Summer")
-  expect_equal(cat_res$season[105], "Summer-Winter")
-  expect_equal(cat_res$season[111], "Fall-Spring")
+  expect_equal(cat_res$season[88], "Fall")
+  expect_equal(cat_res$season[95], "Spring")
+  expect_equal(cat_res$season[97], "Summer")
+  expect_equal(cat_res$season[105], "Fall/Winter")
+  expect_equal(cat_res$season[111], "Winter-Summer")
 })
 
 test_that("climatology = T causes a list output with the time series category data", {
@@ -143,10 +143,10 @@ test_that("The presence of only I Moderate events is responded to correctly", {
 test_that("the different `season` option function as expected", {
   ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   res <- detect_event(ts)
-  expect_equal(category(res, season = "range")$season[9], "Fall/Winter")
-  expect_equal(category(res, season = "start")$season[9], "Fall")
-  expect_equal(category(res, season = "peak")$season[9], "Fall")
-  expect_equal(category(res, season = "end")$season[9], "Winter")
+  expect_equal(category(res, season = "range")$season[30], "Fall/Winter")
+  expect_equal(category(res, season = "start")$season[30], "Fall")
+  expect_equal(category(res, season = "peak")$season[30], "Fall")
+  expect_equal(category(res, season = "end")$season[30], "Winter")
   expect_error(category(res, season = "banana"),
                "Please provide one of the following to the `season` argument: 'range', 'start', 'peak', 'end'.")
 })
@@ -192,4 +192,20 @@ test_that("MCSice creates a 'V Ice' category only for MCS", {
   expect_equal(as.numeric(table(cat_ice$event$category)[5]), 13)
   expect_equal(as.numeric(table(cat_ice$climatology$category)[5]), 89)
   expect_equal(length(table(cat_no_ice$climatology$category)), 4)
+})
+
+test_that("seasons follow meteorological months (December to February = northern winter)", {
+  res <- detect_event(ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31")))
+  peak_mo <- as.integer(format(res$event$date_peak, "%m"))
+  north <- category(res, S = FALSE, season = "peak")
+  south <- category(res, S = TRUE, season = "peak")
+  north <- north$season[match(res$event$event_no, north$event_no)]
+  south <- south$season[match(res$event$event_no, south$event_no)]
+  expect_true(all(north[peak_mo %in% c(12, 1, 2)] == "Winter"))
+  expect_true(all(north[peak_mo %in% c(3, 4, 5)] == "Spring"))
+  expect_true(all(north[peak_mo %in% c(6, 7, 8)] == "Summer"))
+  expect_true(all(north[peak_mo %in% c(9, 10, 11)] == "Fall"))
+  expect_true(all(south[peak_mo %in% c(12, 1, 2)] == "Summer"))
+  expect_true(all(south[peak_mo %in% c(6, 7, 8)] == "Winter"))
+  expect_true(any(peak_mo %in% c(3, 6, 9, 12)))
 })

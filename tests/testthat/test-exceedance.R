@@ -134,3 +134,13 @@ test_that("hourly functions are acknowledged and used", {
   ts_Med_nonhourly$t[1] <- ts_Med_nonhourly$t[1]+61
   expect_error(exceedance(ts_Med_nonhourly, threshold = 20))
 })
+
+test_that("an exceedance is not extended across a short gap at the end of the series", {
+  sst_end <- sst_WA
+  n <- nrow(sst_end)
+  sst_end$temp[(n - 9):(n - 2)] <- 40
+  sst_end$temp[(n - 1):n] <- 0
+  res <- exceedance(sst_end, threshold = 30)
+  expect_equal(res$exceedance$date_end[nrow(res$exceedance)], sst_end$t[n - 2])
+  expect_false(any(res$threshold$exceedance[(n - 1):n]))
+})

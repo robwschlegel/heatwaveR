@@ -101,8 +101,8 @@ test_that("roundRes argument functions correctly", {
 test_that("only one event with NA for rate_onset or rate_decline returns NA and not error", {
   res_clim <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   res_onset <- detect_event(res_clim[885:892,])
-  res_decline <- detect_event(res_clim[882:890,])
-  res_both <- detect_event(res_clim[885:891,])
+  res_decline <- detect_event(res_clim[882:889,])
+  res_both <- detect_event(res_clim[885:889,])
   expect_equal(res_onset$event$rate_onset, NA)
   expect_equal(res_decline$event$rate_decline, NA)
   expect_equal(res_both$event$rate_onset, NA)
@@ -130,13 +130,13 @@ test_that("lat + latitude columns are passed to category internally", {
   ts$lat <- 10
   res_S <- detect_event(ts, categories = T)
   res_N <- detect_event(ts, categories = T, lat_col = T)
-  expect_equal(res_S$season[1], "Fall")
-  expect_equal(res_N$season[1], "Spring")
+  expect_equal(res_S$season[1], "Winter")
+  expect_equal(res_N$season[1], "Summer")
   colnames(ts)[6] <- "latitude"
   res_S <- detect_event(ts, categories = T)
   res_N <- detect_event(ts, categories = T, lat_col = T)
-  expect_equal(res_S$season[1], "Fall")
-  expect_equal(res_N$season[1], "Spring")
+  expect_equal(res_S$season[1], "Winter")
+  expect_equal(res_N$season[1], "Summer")
 })
 
 test_that("Other built in 'categories' argument works as expected", {
@@ -182,4 +182,14 @@ test_that("hourly functions are acknowledged and used", {
   res_MCS <- detect_event(ts_10, minDuration = 5*24, maxGap = 2*24, coldSpells = TRUE)
   expect_is(res_MCS$event, "data.frame")
   expect_equal(ncol(res_MCS$event), 22)
+})
+
+test_that("an event is not extended across a short gap at the end of the series", {
+  ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  n <- nrow(ts)
+  ts$temp[(n - 9):(n - 2)] <- ts$thresh[(n - 9):(n - 2)] + 1
+  ts$temp[(n - 1):n] <- ts$seas[(n - 1):n]
+  res <- detect_event(ts)
+  expect_equal(res$event$date_end[nrow(res$event)], ts$t[n - 2])
+  expect_false(any(res$climatology$event[(n - 1):n]))
 })
