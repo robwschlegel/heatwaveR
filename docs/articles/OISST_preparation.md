@@ -71,25 +71,23 @@ first install that package. Uncomment the line of code that would
 install the problem package and run it before trying to load the library
 again.
 
-``` r
-
-# The packages we will need
-# install.packages("dplyr")
-# install.packages("lubridate")
-# install.packages("ggplot2")
-# install.packages("tidync")
-# install.packages("doParallel")
-# install.packages("rerddap")
-# install.packages("plyr") # Note that this library should never be loaded, only installed
-
-# The packages we will use
-library(dplyr) # A staple for modern data management in R
-library(lubridate) # Useful functions for dealing with dates
-library(ggplot2) # The preferred library for data visualisation
-library(tidync) # For easily dealing with NetCDF data
-library(rerddap) # For easily downloading subsets of data
-library(doParallel) # For parallel processing
-```
+\
+`# The packages we will need`\
+`# install.packages("dplyr")`\
+`# install.packages("lubridate")`\
+`# install.packages("ggplot2")`\
+`# install.packages("tidync")`\
+`# install.packages("doParallel")`\
+`# install.packages("rerddap")`\
+`# install.packages("plyr") # Note that this library should never be loaded, only installed`\
+\
+`# The packages we will use`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`dplyr`](https://dplyr.tidyverse.org)`)`` ``# A staple for modern data management in R`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`lubridate`](https://lubridate.tidyverse.org)`)`` ``# Useful functions for dealing with dates`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`ggplot2`](https://ggplot2.tidyverse.org)`)`` ``# The preferred library for data visualisation`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`tidync`](https://docs.ropensci.org/tidync/)`)`` ``# For easily dealing with NetCDF data`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`rerddap`](https://docs.ropensci.org/rerddap/)`)`` ``# For easily downloading subsets of data`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`doParallel`](https://github.com/RevolutionAnalytics/doparallel)`)`` ``# For parallel processing`
 
 With our packages loaded we may now begin downloading and preparing our
 data for further use. Please use the table of contents on the right side
@@ -112,14 +110,12 @@ not be assumed that the current location will exist in perpetuity.
 Finding the server on which these data are located can be a cup game at
 times.
 
-``` r
-
-# The information for the NOAA OISST data
-rerddap::info(datasetid = "ncdcOisst21Agg_LonPM180", url = "https://coastwatch.pfeg.noaa.gov/erddap/")
-
-# Note that there is also a version with lon values from 0 yo 360
-rerddap::info(datasetid = "ncdcOisst21Agg", url = "https://coastwatch.pfeg.noaa.gov/erddap/")
-```
+\
+`# The information for the NOAA OISST data`\
+`rerddap``::`[`info`](https://docs.ropensci.org/rerddap/reference/info.html)`(``datasetid ``=`` ``"ncdcOisst21Agg_LonPM180"``, url ``=`` ``"https://coastwatch.pfeg.noaa.gov/erddap/"``)`\
+\
+`# Note that there is also a version with lon values from 0 yo 360`\
+`rerddap``::`[`info`](https://docs.ropensci.org/rerddap/reference/info.html)`(``datasetid ``=`` ``"ncdcOisst21Agg"``, url ``=`` ``"https://coastwatch.pfeg.noaa.gov/erddap/"``)`
 
 With our target dataset identified we may now begin the download with
 the
@@ -133,23 +129,21 @@ redundant coding we would otherwise need to do.
 
 ### Download function
 
-``` r
-
-# This function downloads and prepares data based on user provided start and end dates
-OISST_sub_dl <- function(time_df){
-  OISST_dat <- rerddap::griddap(datasetx = "ncdcOisst21Agg_LonPM180",
-                                url = "https://coastwatch.pfeg.noaa.gov/erddap/", 
-                                time = c(time_df$start, time_df$end), 
-                                zlev = c(0, 0),
-                                latitude = c(-40, -35),
-                                longitude = c(15, 21),
-                                fields = "sst")$data |> 
-    dplyr::mutate(time = base::as.Date(stringr::str_remove(time, "T12:00:00Z"))) |> 
-    dplyr::rename(t = time, temp = sst, lon = longitude, lat = latitude) |> 
-    dplyr::select(lon, lat, t, temp) |> 
-    stats::na.omit()
-}
-```
+\
+`# This function downloads and prepares data based on user provided start and end dates`\
+`OISST_sub_dl`` ``<-`` ``function``(``time_df``)``{`\
+`  ``OISST_dat`` ``<-`` ``rerddap``::`[`griddap`](https://docs.ropensci.org/rerddap/reference/griddap.html)`(``datasetx ``=`` ``"ncdcOisst21Agg_LonPM180"``,`\
+`                                url ``=`` ``"https://coastwatch.pfeg.noaa.gov/erddap/"``, `\
+`                                time ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``time_df``$``start``, ``time_df``$``end``)``, `\
+`                                zlev ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``0``, ``0``)``,`\
+`                                latitude ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``-``40``, ``-``35``)``,`\
+`                                longitude ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``15``, ``21``)``,`\
+`                                fields ``=`` ``"sst"``)``$``data`` ``|>`` `\
+`    ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``time ``=`` ``base``::`[`as.Date`](https://rdrr.io/r/base/as.Date.html)`(``stringr``::`[`str_remove`](https://stringr.tidyverse.org/reference/str_remove.html)`(``time``, ``"T12:00:00Z"``)``)``)`` ``|>`` `\
+`    ``dplyr``::`[`rename`](https://dplyr.tidyverse.org/reference/rename.html)`(``t ``=`` ``time``, temp ``=`` ``sst``, lon ``=`` ``longitude``, lat ``=`` ``latitude``)`` ``|>`` `\
+`    ``dplyr``::`[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``lon``, ``lat``, ``t``, ``temp``)`` ``|>`` `\
+`    ``stats``::`[`na.omit`](https://rdrr.io/r/stats/na.fail.html)`(``)`\
+`}`
 
 In the wrapper function above we see that we have chosen to download
 only the ‘sst’ data out of the several variables (‘fields’) available to
@@ -187,15 +181,13 @@ batches of data. To accomplish this we will create a dataframe of start
 and end dates that will allow us to automate the entire download while
 meeting the aforementioned criteria.
 
-``` r
-
-# Date download range by start and end dates per year
-dl_years <- data.frame(date_index = 1:5,
-                       start = c("1982-01-01", "1990-01-01", 
-                                 "1998-01-01", "2006-01-01", "2014-01-01"),
-                       end = c("1989-12-31", "1997-12-31", 
-                               "2005-12-31", "2013-12-31", "2019-12-31"))
-```
+\
+`# Date download range by start and end dates per year`\
+`dl_years`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``date_index ``=`` ``1``:``5``,`\
+`                       start ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"1982-01-01"``, ``"1990-01-01"``, `\
+`                                 ``"1998-01-01"``, ``"2006-01-01"``, ``"2014-01-01"``)``,`\
+`                       end ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"1989-12-31"``, ``"1997-12-31"``, `\
+`                               ``"2005-12-31"``, ``"2013-12-31"``, ``"2019-12-31"``)``)`
 
 ### Download/prep data
 
@@ -213,18 +205,16 @@ cached the data for you and sees that it may simply draw the data from
 there. No need to change anything or write a second script for loading
 data.
 
-``` r
-
-# Download all of the data with one nested request
-# The time this takes will vary greatly based on connection speed
-base::system.time(
-  OISST_data <- dl_years |> 
-    dplyr::group_by(date_index) |> 
-    dplyr::group_modify(~OISST_sub_dl(.x)) |> 
-    dplyr::ungroup() |> 
-    dplyr::select(lon, lat, t, temp)
-) # 518 seconds, ~100 seconds per batch
-```
+\
+`# Download all of the data with one nested request`\
+`# The time this takes will vary greatly based on connection speed`\
+`base``::`[`system.time`](https://rdrr.io/r/base/system.time.html)`(`\
+`  ``OISST_data`` ``<-`` ``dl_years`` ``|>`` `\
+`    ``dplyr``::`[`group_by`](https://dplyr.tidyverse.org/reference/group_by.html)`(``date_index``)`` ``|>`` `\
+`    ``dplyr``::`[`group_modify`](https://dplyr.tidyverse.org/reference/group_map.html)`(``~``OISST_sub_dl``(``.x``)``)`` ``|>`` `\
+`    ``dplyr``::`[`ungroup`](https://dplyr.tidyverse.org/reference/group_by.html)`(``)`` ``|>`` `\
+`    ``dplyr``::`[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``lon``, ``lat``, ``t``, ``temp``)`\
+`)`` ``# 518 seconds, ~100 seconds per batch`
 
 If the above code chunk is giving errors it is likely due to one’s
 Internet connection timing out. There are also rare instances where the
@@ -237,29 +227,25 @@ minutes, or by ensuring a stable connection.
 Before we save our data for later use it is good practice to visualise
 them.
 
-``` r
-
-OISST_data |> 
-  dplyr::filter(t == "2019-12-01") |> 
-  ggplot2::ggplot(aes(x = lon, y = lat)) +
-  ggplot2::geom_tile(aes(fill = temp)) +
-  # ggplot2::borders() + # Activate this line to see the global map
-  ggplot2::scale_fill_viridis_c() +
-  ggplot2::coord_quickmap(expand = F) +
-  ggplot2::labs(x = NULL, y = NULL, fill = "SST (°C)") +
-  ggplot2::theme(legend.position = "bottom")
-```
+\
+`OISST_data`` ``|>`` `\
+`  ``dplyr``::`[`filter`](https://dplyr.tidyverse.org/reference/filter.html)`(``t`` ``==`` ``"2019-12-01"``)`` ``|>`` `\
+`  ``ggplot2``::`[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``lon``, y ``=`` ``lat``)``)`` ``+`\
+`  ``ggplot2``::`[`geom_tile`](https://ggplot2.tidyverse.org/reference/geom_tile.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``fill ``=`` ``temp``)``)`` ``+`\
+`  ``# ggplot2::borders() + # Activate this line to see the global map`\
+`  ``ggplot2``::`[`scale_fill_viridis_c`](https://ggplot2.tidyverse.org/reference/scale_viridis.html)`(``)`` ``+`\
+`  ``ggplot2``::`[`coord_quickmap`](https://ggplot2.tidyverse.org/reference/coord_map.html)`(``expand ``=`` ``F``)`` ``+`\
+`  ``ggplot2``::`[`labs`](https://ggplot2.tidyverse.org/reference/labs.html)`(``x ``=`` ``NULL``, y ``=`` ``NULL``, fill ``=`` ``"SST (°C)"``)`` ``+`\
+`  ``ggplot2``::`[`theme`](https://ggplot2.tidyverse.org/reference/theme.html)`(``legend.position ``=`` ``"bottom"``)`
 
 ### Save data
 
 With the data downloaded and prepared for further use (and a test visual
 run), all that’s left to do is save them.
 
-``` r
-
-# Save the data as an .Rds file because it has a much better compression rate than .RData
-base::saveRDS(OISST_data, file = "~/Desktop/OISST_vignette.Rds")
-```
+\
+`# Save the data as an .Rds file because it has a much better compression rate than .RData`\
+`base``::`[`saveRDS`](https://rdrr.io/r/base/readRDS.html)`(``OISST_data``, file ``=`` ``"~/Desktop/OISST_vignette.Rds"``)`
 
 Note above that I have chosen to save the file to my desktop. This is
 not normally where one (hopefully!) would save such a file. Rather one
@@ -289,23 +275,21 @@ requires a couple of additional packages and we aim to keep this
 vignette as simple and direct as possible. For our purposes today we
 will manually create the URLs of the files we want to download.
 
-``` r
-
-# First we tell R where the data are on the interwebs
-OISST_base_url <- "https://www.ncei.noaa.gov/data/sea-surface-temperature-optimum-interpolation/v2.1/access/avhrr/"
-# Note that one may go to this URL in any web browser to manually inspect the files
-
-# Now we create a data.frame that contains all of the dates we want to download
-  # NB: In order to change the dates download changes the dates in the following line
-OISST_dates <- base::data.frame(t = seq(as.Date("2019-12-01"), as.Date("2019-12-31"), by = "day"))
-
-# To finish up this step we add some text to those dates so they match the OISST file names
-OISST_files <- OISST_dates |> 
-  dplyr::mutate(t_day = base::gsub("-", "", t),
-                t_month = base::substr(t_day, 1, 6),
-                t_year = lubridate::year(t),
-                file_name = base::paste0(OISST_base_url, t_month, "/", "oisst-avhrr-v02r01.", t_day ,".nc"))
-```
+\
+`# First we tell R where the data are on the interwebs`\
+`OISST_base_url`` ``<-`` ``"https://www.ncei.noaa.gov/data/sea-surface-temperature-optimum-interpolation/v2.1/access/avhrr/"`\
+`# Note that one may go to this URL in any web browser to manually inspect the files`\
+\
+`# Now we create a data.frame that contains all of the dates we want to download`\
+`  ``# NB: In order to change the dates download changes the dates in the following line`\
+`OISST_dates`` ``<-`` ``base``::`[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``t ``=`` `[`seq`](https://rdrr.io/r/base/seq.html)`(`[`as.Date`](https://rdrr.io/r/base/as.Date.html)`(``"2019-12-01"``)``, `[`as.Date`](https://rdrr.io/r/base/as.Date.html)`(``"2019-12-31"``)``, by ``=`` ``"day"``)``)`\
+\
+`# To finish up this step we add some text to those dates so they match the OISST file names`\
+`OISST_files`` ``<-`` ``OISST_dates`` ``|>`` `\
+`  ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``t_day ``=`` ``base``::`[`gsub`](https://rdrr.io/r/base/grep.html)`(``"-"``, ``""``, ``t``)``,`\
+`                t_month ``=`` ``base``::`[`substr`](https://rdrr.io/r/base/substr.html)`(``t_day``, ``1``, ``6``)``,`\
+`                t_year ``=`` ``lubridate``::`[`year`](https://lubridate.tidyverse.org/reference/year.html)`(``t``)``,`\
+`                file_name ``=`` ``base``::`[`paste0`](https://rdrr.io/r/base/paste.html)`(``OISST_base_url``, ``t_month``, ``"/"``, ``"oisst-avhrr-v02r01."``, ``t_day`` ,``".nc"``)``)`
 
 ### Download data
 
@@ -313,69 +297,65 @@ Now that we have a dataframe that contains all of the URLs for the files
 we want to download we’ll create a function that will crawl through
 those URLs and download the files for us.
 
-``` r
-
-# This function will go about downloading each day of data as a NetCDF file
-# Note that this will download files into a 'data/OISST' folder in the root directory
-  # If this folder does not exist it will create it
-  # If it does not automatically create the folder it will need to be done manually
-  # The folder that is created must be a new folder with no other files in it
-  # A possible bug with netCDF files in R is they won't load correctly from 
-  # existing folders with other file types in them
-# This function will also check if the file has been previously downloaded
-  # If it has it will not download it again
-OISST_url_daily_dl <- function(target_URL){
-  base::dir.create("~/data/OISST", showWarnings = F)
-  file_name <- base::paste0("~/data/OISST/",base::sapply(base::strsplit(target_URL, split = "/"), "[[", 10))
-  if(!base::file.exists(file_name)) utils::download.file(url = target_URL, method = "libcurl", destfile = file_name)
-}
-
-# The more cores used, the faster the data may be downloaded
-  # It is best practice to not use all of the cores on one's machine
-  # The laptop on which I am running this code has 8 cores, so I use 7 here
-doParallel::registerDoParallel(cores = 7)
-
-# And with that we are clear for take off
-base::system.time(plyr::l_ply(OISST_files$file_name, .fun = OISST_url_daily_dl, .parallel = T)) # ~15 seconds
-
-# In roughly 15 seconds a user may have a full month of global data downloaded
-# This scales well into years and decades, and is much faster with more cores
-# Download speeds will also depend on the speed of the users internet connection
-```
+\
+`# This function will go about downloading each day of data as a NetCDF file`\
+`# Note that this will download files into a 'data/OISST' folder in the root directory`\
+`  ``# If this folder does not exist it will create it`\
+`  ``# If it does not automatically create the folder it will need to be done manually`\
+`  ``# The folder that is created must be a new folder with no other files in it`\
+`  ``# A possible bug with netCDF files in R is they won't load correctly from `\
+`  ``# existing folders with other file types in them`\
+`# This function will also check if the file has been previously downloaded`\
+`  ``# If it has it will not download it again`\
+`OISST_url_daily_dl`` ``<-`` ``function``(``target_URL``)``{`\
+`  ``base``::`[`dir.create`](https://rdrr.io/r/base/files2.html)`(``"~/data/OISST"``, showWarnings ``=`` ``F``)`\
+`  ``file_name`` ``<-`` ``base``::`[`paste0`](https://rdrr.io/r/base/paste.html)`(``"~/data/OISST/"``,``base``::`[`sapply`](https://rdrr.io/r/base/lapply.html)`(``base``::`[`strsplit`](https://rdrr.io/r/base/strsplit.html)`(``target_URL``, split ``=`` ``"/"``)``, ``"[["``, ``10``)``)`\
+`  ``if``(``!``base``::`[`file.exists`](https://rdrr.io/r/base/files.html)`(``file_name``)``)`` ``utils``::`[`download.file`](https://rdrr.io/r/utils/download.file.html)`(``url ``=`` ``target_URL``, method ``=`` ``"libcurl"``, destfile ``=`` ``file_name``)`\
+`}`\
+\
+`# The more cores used, the faster the data may be downloaded`\
+`  ``# It is best practice to not use all of the cores on one's machine`\
+`  ``# The laptop on which I am running this code has 8 cores, so I use 7 here`\
+`doParallel``::`[`registerDoParallel`](https://rdrr.io/pkg/doParallel/man/registerDoParallel.html)`(``cores ``=`` ``7``)`\
+\
+`# And with that we are clear for take off`\
+`base``::`[`system.time`](https://rdrr.io/r/base/system.time.html)`(``plyr``::`[`l_ply`](https://rdrr.io/pkg/plyr/man/l_ply.html)`(``OISST_files``$``file_name``, .fun ``=`` ``OISST_url_daily_dl``, .parallel ``=`` ``T``)``)`` ``# ~15 seconds`\
+\
+`# In roughly 15 seconds a user may have a full month of global data downloaded`\
+`# This scales well into years and decades, and is much faster with more cores`\
+`# Download speeds will also depend on the speed of the users internet connection`
 
 ### Load data
 
 The following code chunk contains the function we may use to load and
 prepare our OISST data for further use in R.
 
-``` r
-
-# This function will load and subset daily data into one data.frame
-# Note that the subsetting by lon/lat is done before the data are loaded
-  # This means it will use much less RAM and is viable for use on most laptops
-  # Assuming one's study area is not too large
-OISST_load <- function(file_name, lon1, lon2, lat1, lat2){
-      OISST_dat <- tidync::tidync(file_name) |>
-        tidync::hyper_filter(lon = dplyr::between(lon, lon1, lon2),
-                             lat = dplyr::between(lat, lat1, lat2)) |> 
-        tidync::hyper_tibble(select_var = c("sst"), drop = FALSE) |> 
-        dplyr::select(lon, lat, time, sst) |> 
-        dplyr::rename(t = time, temp = sst) |> 
-        dplyr::mutate(t = as.Date(t),
-                      lon = as.numeric(lon),
-                      lat = as.numeric(lat))
-      return(OISST_dat)
-}
-
-# Locate the files that will be loaded
-OISST_files <- dir("~/data/OISST", full.names = T)
-
-# Load the data in parallel
-OISST_dat <- plyr::ldply(.data = OISST_files[1:365], .fun = OISST_load, .parallel = T,
-                         lon1 = 270, lon2 = 320, lat1 = 30, lat2 = 50)
-
-# It should only take a few seconds to load one month of data depending on the size of the lon/lat extent chosen
-```
+\
+`# This function will load and subset daily data into one data.frame`\
+`# Note that the subsetting by lon/lat is done before the data are loaded`\
+`  ``# This means it will use much less RAM and is viable for use on most laptops`\
+`  ``# Assuming one's study area is not too large`\
+`OISST_load`` ``<-`` ``function``(``file_name``, ``lon1``, ``lon2``, ``lat1``, ``lat2``)``{`\
+`      ``OISST_dat`` ``<-`` ``tidync``::`[`tidync`](https://docs.ropensci.org/tidync/reference/tidync.html)`(``file_name``)`` ``|>`\
+`        ``tidync``::`[`hyper_filter`](https://docs.ropensci.org/tidync/reference/hyper_filter.html)`(``lon ``=`` ``dplyr``::`[`between`](https://dplyr.tidyverse.org/reference/between.html)`(``lon``, ``lon1``, ``lon2``)``,`\
+`                             lat ``=`` ``dplyr``::`[`between`](https://dplyr.tidyverse.org/reference/between.html)`(``lat``, ``lat1``, ``lat2``)``)`` ``|>`` `\
+`        ``tidync``::`[`hyper_tibble`](https://docs.ropensci.org/tidync/reference/hyper_tibble.html)`(``select_var ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"sst"``)``, drop ``=`` ``FALSE``)`` ``|>`` `\
+`        ``dplyr``::`[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``lon``, ``lat``, ``time``, ``sst``)`` ``|>`` `\
+`        ``dplyr``::`[`rename`](https://dplyr.tidyverse.org/reference/rename.html)`(``t ``=`` ``time``, temp ``=`` ``sst``)`` ``|>`` `\
+`        ``dplyr``::`[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``t ``=`` `[`as.Date`](https://rdrr.io/r/base/as.Date.html)`(``t``)``,`\
+`                      lon ``=`` `[`as.numeric`](https://rdrr.io/r/base/numeric.html)`(``lon``)``,`\
+`                      lat ``=`` `[`as.numeric`](https://rdrr.io/r/base/numeric.html)`(``lat``)``)`\
+`      `[`return`](https://rdrr.io/r/base/function.html)`(``OISST_dat``)`\
+`}`\
+\
+`# Locate the files that will be loaded`\
+`OISST_files`` ``<-`` `[`dir`](https://rdrr.io/r/base/list.files.html)`(``"~/data/OISST"``, full.names ``=`` ``T``)`\
+\
+`# Load the data in parallel`\
+`OISST_dat`` ``<-`` ``plyr``::`[`ldply`](https://rdrr.io/pkg/plyr/man/ldply.html)`(``.data ``=`` ``OISST_files``[``1``:``365``]``, .fun ``=`` ``OISST_load``, .parallel ``=`` ``T``,`\
+`                         lon1 ``=`` ``270``, lon2 ``=`` ``320``, lat1 ``=`` ``30``, lat2 ``=`` ``50``)`\
+\
+`# It should only take a few seconds to load one month of data depending on the size of the lon/lat extent chosen`
 
 In the code chunk above I have chosen the spatial extent of longitude
 270 to 320 and latitude 30 to 50. This a window over the Atlantic Coast
@@ -396,17 +376,15 @@ It is always good to visualise data early and often in any workflow. The
 code pipeline below shows how we can visualise a day of data from those
 we’ve loaded.
 
-``` r
-
-OISST_dat |> 
-  dplyr::filter(t == "2019-12-01") |> 
-  ggplot2::ggplot(aes(x = lon, y = lat)) +
-  ggplot2::geom_tile(aes(fill = temp)) +
-  ggplot2::scale_fill_viridis_c() +
-  ggplot2::coord_quickmap(expand = F) +
-  ggplot2::labs(x = NULL, y = NULL, fill = "SST (°C)") +
-  ggplot2::theme(legend.position = "bottom")
-```
+\
+`OISST_dat`` ``|>`` `\
+`  ``dplyr``::`[`filter`](https://dplyr.tidyverse.org/reference/filter.html)`(``t`` ``==`` ``"2019-12-01"``)`` ``|>`` `\
+`  ``ggplot2``::`[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``lon``, y ``=`` ``lat``)``)`` ``+`\
+`  ``ggplot2``::`[`geom_tile`](https://ggplot2.tidyverse.org/reference/geom_tile.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``fill ``=`` ``temp``)``)`` ``+`\
+`  ``ggplot2``::`[`scale_fill_viridis_c`](https://ggplot2.tidyverse.org/reference/scale_viridis.html)`(``)`` ``+`\
+`  ``ggplot2``::`[`coord_quickmap`](https://ggplot2.tidyverse.org/reference/coord_map.html)`(``expand ``=`` ``F``)`` ``+`\
+`  ``ggplot2``::`[`labs`](https://ggplot2.tidyverse.org/reference/labs.html)`(``x ``=`` ``NULL``, y ``=`` ``NULL``, fill ``=`` ``"SST (°C)"``)`` ``+`\
+`  ``ggplot2``::`[`theme`](https://ggplot2.tidyverse.org/reference/theme.html)`(``legend.position ``=`` ``"bottom"``)`
 
 In the next vignette we will see how to [detect MHWs in gridded
 data](https://robwschlegel.github.io/heatwaveR/articles/gridded_event_detection.html).

@@ -15,10 +15,8 @@ all of the temperature values. Please note that the date format it
 expects is “YYYY-MM-DD”. For example, please see the top five rows of
 one of the datasets included with the **`heatwaveR`** package:
 
-``` r
-
-head(heatwaveR::sst_WA)
-```
+\
+[`head`](https://rdrr.io/r/utils/head.html)`(``heatwaveR``::`[`sst_WA`](https://robwschlegel.github.io/heatwaveR/reference/sst_WA.md)`)`
 
     ## # A tibble: 6 × 2
     ##   t           temp
@@ -53,23 +51,21 @@ and
 function applied to the Western Australia test data included with this
 package (`sst_WA`), which are also discussed by Hobday et al. (2016):
 
-``` r
-
-library(dplyr)
-library(ggplot2)
-library(heatwaveR)
-
-# Detect the events in a time series
-ts <- ts2clm(sst_WA, climatologyPeriod = c("1982-01-01", "2011-12-31"))
-mhw <- detect_event(ts)
-
-# View just a few metrics
-mhw$event %>% 
-  dplyr::ungroup() %>%
-  dplyr::select(event_no, duration, date_start, date_peak, intensity_max, intensity_cumulative) %>% 
-  dplyr::arrange(-intensity_max) %>% 
-  head(5)
-```
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`dplyr`](https://dplyr.tidyverse.org)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`ggplot2`](https://ggplot2.tidyverse.org)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`heatwaveR`](https://robwschlegel.github.io/heatwaveR/)`)`\
+\
+`# Detect the events in a time series`\
+`ts`` ``<-`` `[`ts2clm`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)`(``sst_WA``, climatologyPeriod ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"1982-01-01"``, ``"2011-12-31"``)``)`\
+`mhw`` ``<-`` `[`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)`(``ts``)`\
+\
+`# View just a few metrics`\
+`mhw``$``event`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `\
+`  ``dplyr``::`[`ungroup`](https://dplyr.tidyverse.org/reference/group_by.html)`(``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  ``dplyr``::`[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``event_no``, ``duration``, ``date_start``, ``date_peak``, ``intensity_max``, ``intensity_cumulative``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `\
+`  ``dplyr``::`[`arrange`](https://dplyr.tidyverse.org/reference/arrange.html)`(``-``intensity_max``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `\
+`  `[`head`](https://rdrr.io/r/utils/head.html)`(``5``)`
 
     ##   event_no duration date_start  date_peak intensity_max intensity_cumulative
     ## 1       52      105 2010-12-24 2011-02-28        6.5798             293.2107
@@ -91,20 +87,26 @@ directly on the output of
 in order to visualise MHWs. Here are the functions being used to
 visualise the massive Western Australian heatwave of 2011:
 
-``` r
+\
+[`event_line`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)`(``mhw``, spread ``=`` ``180``, metric ``=`` ``intensity_max``,`\
+`           start_date ``=`` ``"1982-01-01"``, end_date ``=`` ``"2014-12-31"``)`` ``+`\
+`  `[`theme`](https://ggplot2.tidyverse.org/reference/theme.html)`(``legend.position ``=`` ``"inside"``, legend.position.inside ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``0.14``, ``0.13``)``,`\
+`        legend.direction ``=`` ``"vertical"``,`\
+`        legend.background ``=`` `[`element_rect`](https://ggplot2.tidyverse.org/reference/element.html)`(``fill ``=`` ``"white"``, colour ``=`` ``"grey50"``)``)`
 
-event_line(mhw, spread = 180, metric = intensity_max, 
-           start_date = "1982-01-01", end_date = "2014-12-31")
-```
+![Line plot of Western Australia sea surface temperature from mid-2010
+to late 2011, showing the climatological mean, the 90th-percentile
+threshold, and the 2011 marine heatwave shaded in red with its peak
+intensity
+marked.](detection_and_visualisation_files/figure-html/fig-example1-1.png)
 
-![](detection_and_visualisation_files/figure-html/fig-example1-1.png)
+\
+[`lolli_plot`](https://robwschlegel.github.io/heatwaveR/reference/lolli_plot.md)`(``mhw``, metric ``=`` ``intensity_max``)`
 
-``` r
-
-lolli_plot(mhw, metric = intensity_max)
-```
-
-![](detection_and_visualisation_files/figure-html/fig-example1-2.png)
+![Lollipop plot of all detected Western Australia marine heatwave events
+by start date, with each event's maximum intensity shown as a stem and
+the 2011 event highlighted as the most
+extreme.](detection_and_visualisation_files/figure-html/fig-example1-2.png)
 
 ### Custom MHW visuals
 
@@ -127,29 +129,31 @@ dataframes within the list that is produced by
 [`detect_event()`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md).
 Here is how:
 
-``` r
+\
+`# Select the region of the time series of interest`\
+`mhw2`` ``<-`` ``mhw``$``climatology`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `\
+`  `[`slice`](https://dplyr.tidyverse.org/reference/slice.html)`(``10580``:``10720``)`\
+\
+[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``mhw2``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``t``, y ``=`` ``temp``, y2 ``=`` ``thresh``)``)`` ``+`\
+`  `[`geom_flame`](https://robwschlegel.github.io/heatwaveR/reference/geom_flame.md)`(``)`` ``+`\
+`  `[`geom_text`](https://ggplot2.tidyverse.org/reference/geom_text.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` `[`as.Date`](https://rdrr.io/r/base/as.Date.html)`(``"2011-02-25"``)``, y ``=`` ``25.8``, label ``=`` ``"the Destroyer\nof Kelps"``)``)`
 
-# Select the region of the time series of interest
-mhw2 <- mhw$climatology %>% 
-  slice(10580:10720)
+![Custom ggplot2 geom_flame plot of temperature against the seasonal
+threshold during the 2011 Western Australia marine heatwave, with the
+exceedance area shaded as a flame shape and labelled 'the Destroyer of
+Kelps'.](detection_and_visualisation_files/figure-html/fig-example2-1.png)
 
-ggplot(mhw2, aes(x = t, y = temp, y2 = thresh)) +
-  geom_flame() +
-  geom_text(aes(x = as.Date("2011-02-25"), y = 25.8, label = "the Destroyer\nof Kelps"))
-```
+\
+[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``mhw``$``event``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``date_start``, y ``=`` ``intensity_max``)``)`` ``+`\
+`  `[`geom_lolli`](https://robwschlegel.github.io/heatwaveR/reference/geom_lolli.md)`(``colour ``=`` ``"salmon"``, colour_n ``=`` ``"red"``, n ``=`` ``3``)`` ``+`\
+`  `[`geom_text`](https://ggplot2.tidyverse.org/reference/geom_text.html)`(``colour ``=`` ``"black"``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` `[`as.Date`](https://rdrr.io/r/base/as.Date.html)`(``"2006-08-01"``)``, y ``=`` ``5``,`\
+`                label ``=`` ``"The marine heatwaves\nTend to be left skewed in a\nGiven time series"``)``)`` ``+`\
+`  `[`labs`](https://ggplot2.tidyverse.org/reference/labs.html)`(``y ``=`` `[`expression`](https://rdrr.io/r/base/expression.html)`(`[`paste`](https://rdrr.io/r/base/paste.html)`(``"Max. intensity ["``, ``degree``, ``"C]"``)``)``, x ``=`` ``NULL``)`
 
-![](detection_and_visualisation_files/figure-html/fig-example2-1.png)
-
-``` r
-
-ggplot(mhw$event, aes(x = date_start, y = intensity_max)) +
-  geom_lolli(colour = "salmon", colour_n = "red", n = 3) +
-  geom_text(colour = "black", aes(x = as.Date("2006-08-01"), y = 5,
-                label = "The marine heatwaves\nTend to be left skewed in a\nGiven time series")) +
-  labs(y = expression(paste("Max. intensity [", degree, "C]")), x = NULL)
-```
-
-![](detection_and_visualisation_files/figure-html/fig-example2-2.png)
+![Custom ggplot2 geom_lolli plot of marine heatwave maximum intensity by
+start date, with the three most intense events highlighted in red and a
+label noting that marine heatwave intensities tend to be
+left-skewed.](detection_and_visualisation_files/figure-html/fig-example2-2.png)
 
 ### Spicy MHW visuals
 
@@ -158,32 +162,36 @@ not to worry. As **`ggplot2`** `geoms`, they are highly malleable. For
 example, if we were to choose to reproduce the format of the MHWs as
 seen in Hobday et al. (2016), the code would look something like this:
 
-``` r
+\
+`# It is necessary to give geom_flame() at least one row on either side of `\
+`# the event in order to calculate the polygon corners smoothly`\
+`mhw_top`` ``<-`` ``mhw2`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `\
+`  `[`slice`](https://dplyr.tidyverse.org/reference/slice.html)`(``5``:``111``)`\
+\
+[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``data ``=`` ``mhw2``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``t``)``)`` ``+`\
+`  `[`geom_flame`](https://robwschlegel.github.io/heatwaveR/reference/geom_flame.md)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``y ``=`` ``temp``, y2 ``=`` ``thresh``, fill ``=`` ``"all"``)``, show.legend ``=`` ``T``)`` ``+`\
+`  `[`geom_flame`](https://robwschlegel.github.io/heatwaveR/reference/geom_flame.md)`(``data ``=`` ``mhw_top``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``y ``=`` ``temp``, y2 ``=`` ``thresh``, fill ``=`` ``"top"``)``,  show.legend ``=`` ``T``)`` ``+`\
+`  `[`geom_line`](https://ggplot2.tidyverse.org/reference/geom_path.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``y ``=`` ``temp``, colour ``=`` ``"temp"``)``)`` ``+`\
+`  `[`geom_line`](https://ggplot2.tidyverse.org/reference/geom_path.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``y ``=`` ``thresh``, colour ``=`` ``"thresh"``)``, size ``=`` ``1.0``)`` ``+`\
+`  `[`geom_line`](https://ggplot2.tidyverse.org/reference/geom_path.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``y ``=`` ``seas``, colour ``=`` ``"seas"``)``, size ``=`` ``1.2``)`` ``+`\
+`  `[`scale_colour_manual`](https://ggplot2.tidyverse.org/reference/scale_manual.html)`(``name ``=`` ``"Line Colour"``,`\
+`                      values ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"temp"`` ``=`` ``"black"``, `\
+`                                 ``"thresh"`` ``=``  ``"forestgreen"``, `\
+`                                 ``"seas"`` ``=`` ``"grey80"``)``)`` ``+`\
+`  `[`scale_fill_manual`](https://ggplot2.tidyverse.org/reference/scale_manual.html)`(``name ``=`` ``"Event Colour"``,`\
+`                    values ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"all"`` ``=`` ``"salmon"``,`\
+`                               ``"top"`` ``=`` ``"red"``)``)`` ``+`\
+`  `[`scale_x_date`](https://ggplot2.tidyverse.org/reference/scale_date.html)`(``date_labels ``=`` ``"%b %Y"``)`` ``+`\
+`  `[`guides`](https://ggplot2.tidyverse.org/reference/guides.html)`(``colour ``=`` `[`guide_legend`](https://ggplot2.tidyverse.org/reference/guide_legend.html)`(``override.aes ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``fill ``=`` ``NA``)``)``)`` ``+`\
+`  `[`labs`](https://ggplot2.tidyverse.org/reference/labs.html)`(``y ``=`` `[`expression`](https://rdrr.io/r/base/expression.html)`(`[`paste`](https://rdrr.io/r/base/paste.html)`(``"Temperature ["``, ``degree``, ``"C]"``)``)``, x ``=`` ``NULL``)`` ``+`\
+`  `[`theme`](https://ggplot2.tidyverse.org/reference/theme.html)`(``legend.position ``=`` ``"inside"``, legend.position.inside ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``0.12``, ``0.55``)``,`\
+`        legend.background ``=`` `[`element_rect`](https://ggplot2.tidyverse.org/reference/element.html)`(``fill ``=`` ``"white"``, colour ``=`` ``"grey50"``)``)`
 
-# It is necessary to give geom_flame() at least one row on either side of 
-# the event in order to calculate the polygon corners smoothly
-mhw_top <- mhw2 %>% 
-  slice(5:111)
-
-ggplot(data = mhw2, aes(x = t)) +
-  geom_flame(aes(y = temp, y2 = thresh, fill = "all"), show.legend = T) +
-  geom_flame(data = mhw_top, aes(y = temp, y2 = thresh, fill = "top"),  show.legend = T) +
-  geom_line(aes(y = temp, colour = "temp")) +
-  geom_line(aes(y = thresh, colour = "thresh"), size = 1.0) +
-  geom_line(aes(y = seas, colour = "seas"), size = 1.2) +
-  scale_colour_manual(name = "Line Colour",
-                      values = c("temp" = "black", 
-                                 "thresh" =  "forestgreen", 
-                                 "seas" = "grey80")) +
-  scale_fill_manual(name = "Event Colour", 
-                    values = c("all" = "salmon", 
-                               "top" = "red")) +
-  scale_x_date(date_labels = "%b %Y") +
-  guides(colour = guide_legend(override.aes = list(fill = NA))) +
-  labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
-```
-
-![](detection_and_visualisation_files/figure-html/fig-example3-1.png)
+![Reproduction of the Hobday et al. (2016) style marine heatwave figure,
+showing temperature, the seasonal climatology, and the 90th-percentile
+threshold as lines, with the full heatwave event shaded in salmon and
+its most intense portion shaded in red, each with a colour
+legend.](detection_and_visualisation_files/figure-html/fig-example3-1.png)
 
 It is also worth pointing out that when we use
 [`geom_flame()`](https://robwschlegel.github.io/heatwaveR/reference/geom_flame.md)
@@ -191,37 +199,40 @@ directly like this, but we don’t want to highlight events greater less
 than our standard five day length, allowing for a two day gap, we want
 to use the arguments `n` and `n_gap` respectively.
 
-``` r
+\
+`mhw3`` ``<-`` ``mhw``$``climatology`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `\
+`  `[`slice`](https://dplyr.tidyverse.org/reference/slice.html)`(``850``:``950``)`\
+\
+[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``mhw3``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``t``, y ``=`` ``temp``, y2 ``=`` ``thresh``)``)`` ``+`\
+`  `[`geom_flame`](https://robwschlegel.github.io/heatwaveR/reference/geom_flame.md)`(``fill ``=`` ``"black"``, alpha ``=`` ``0.5``)`` ``+`\
+`  ``# Note the use of n = 5 and n_gap = 2 below`\
+`  `[`geom_flame`](https://robwschlegel.github.io/heatwaveR/reference/geom_flame.md)`(``n ``=`` ``5``, n_gap ``=`` ``2``, fill ``=`` ``"red"``, alpha ``=`` ``0.5``)`` ``+`\
+`  `[`ylim`](https://ggplot2.tidyverse.org/reference/lims.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``22``, ``25``)``)`` ``+`\
+`    `[`geom_text`](https://ggplot2.tidyverse.org/reference/geom_text.html)`(``colour ``=`` ``"black"``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` `[`as.Date`](https://rdrr.io/r/base/as.Date.html)`(``"1984-05-16"``)``, y ``=`` ``24.5``,`\
+`                label ``=`` ``"heat\n\n\n\n\nspike"``)``)`
 
-mhw3 <- mhw$climatology %>% 
-  slice(850:950)
-
-ggplot(mhw3, aes(x = t, y = temp, y2 = thresh)) +
-  geom_flame(fill = "black", alpha = 0.5) +
-  # Note the use of n = 5 and n_gap = 2 below
-  geom_flame(n = 5, n_gap = 2, fill = "red", alpha = 0.5) +
-  ylim(c(22, 25)) +
-    geom_text(colour = "black", aes(x = as.Date("1984-05-16"), y = 24.5,
-                label = "heat\n\n\n\n\nspike"))
-```
-
-![](detection_and_visualisation_files/figure-html/flame_gaps-1.png)
+![Comparison plot of geom_flame() event detection with default settings
+shaded in black versus a 5-day minimum duration allowing a 2-day gap
+shaded in red, illustrating how gap-joining connects a short temperature
+spike into a single
+event.](detection_and_visualisation_files/figure-html/flame_gaps-1.png)
 
 Should we not wish to highlight any events with
 [`geom_lolli()`](https://robwschlegel.github.io/heatwaveR/reference/geom_lolli.md),
 plot them with a colour other than the default, and use a different
 theme, it would look like this:
 
-``` r
+\
+[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``mhw``$``event``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``date_peak``, y ``=`` ``intensity_max``)``)`` ``+`\
+`  `[`geom_lolli`](https://robwschlegel.github.io/heatwaveR/reference/geom_lolli.md)`(``colour ``=`` ``"firebrick"``)`` ``+`\
+`  `[`labs`](https://ggplot2.tidyverse.org/reference/labs.html)`(``x ``=`` ``"Peak Date"``, `\
+`       y ``=`` `[`expression`](https://rdrr.io/r/base/expression.html)`(`[`paste`](https://rdrr.io/r/base/paste.html)`(``"Max. intensity ["``, ``degree``, ``"C]"``)``)``, x ``=`` ``NULL``)`` ``+`\
+`  `[`theme_linedraw`](https://ggplot2.tidyverse.org/reference/ggtheme.html)`(``)`
 
-ggplot(mhw$event, aes(x = date_peak, y = intensity_max)) +
-  geom_lolli(colour = "firebrick") +
-  labs(x = "Peak Date", 
-       y = expression(paste("Max. intensity [", degree, "C]")), x = NULL) +
-  theme_linedraw()
-```
-
-![](detection_and_visualisation_files/figure-html/fig-example4-1.png)
+![Lollipop plot of marine heatwave maximum intensity by peak date,
+styled in firebrick red on a line-drawing ggplot2 theme, with no events
+specially
+highlighted.](detection_and_visualisation_files/figure-html/fig-example4-1.png)
 
 Because these are simple **`ggplot2`** geoms possibilities are nearly
 infinite.
@@ -235,20 +246,18 @@ percentile threshold, rather than the 90th percentile threshold. Here
 are the top five cold-spells (cumulative intensity) detected in the
 OISST data for Western Australia:
 
-``` r
-
-# First calculate the cold-spells
-ts_10th <- ts2clm(sst_WA, climatologyPeriod = c("1982-01-01", "2011-12-31"), pctile = 10)
-mcs <- detect_event(ts_10th, coldSpells = TRUE)
-
-# Then look at the top few events
-mcs$event %>% 
-  dplyr::ungroup() %>%
-  dplyr::select(event_no, duration, date_start,
-                date_peak, intensity_mean, intensity_max, intensity_cumulative) %>%
-  dplyr::arrange(intensity_cumulative) %>% 
-  head(5)
-```
+\
+`# First calculate the cold-spells`\
+`ts_10th`` ``<-`` `[`ts2clm`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)`(``sst_WA``, climatologyPeriod ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"1982-01-01"``, ``"2011-12-31"``)``, pctile ``=`` ``10``)`\
+`mcs`` ``<-`` `[`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)`(``ts_10th``, coldSpells ``=`` ``TRUE``)`\
+\
+`# Then look at the top few events`\
+`mcs``$``event`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `\
+`  ``dplyr``::`[`ungroup`](https://dplyr.tidyverse.org/reference/group_by.html)`(``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  ``dplyr``::`[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``event_no``, ``duration``, ``date_start``,`\
+`                ``date_peak``, ``intensity_mean``, ``intensity_max``, ``intensity_cumulative``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  ``dplyr``::`[`arrange`](https://dplyr.tidyverse.org/reference/arrange.html)`(``intensity_cumulative``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `\
+`  `[`head`](https://rdrr.io/r/utils/head.html)`(``5``)`
 
     ##   event_no duration date_start  date_peak intensity_mean intensity_max
     ## 1       15       76 1990-04-13 1990-05-11        -2.5027       -3.1883
@@ -269,20 +278,25 @@ mcs$event %>%
 
 The default plots showing cold-spells look like this:
 
-``` r
+\
+[`event_line`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)`(``mcs``, spread ``=`` ``200``, metric ``=`` ``intensity_cumulative``,`\
+`           start_date ``=`` ``"1982-01-01"``, end_date ``=`` ``"2014-12-31"``)`` ``+`\
+`  `[`theme`](https://ggplot2.tidyverse.org/reference/theme.html)`(``legend.position ``=`` ``"inside"``, legend.position.inside ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``0.14``, ``0.13``)``,`\
+`        legend.direction ``=`` ``"vertical"``,`\
+`        legend.background ``=`` `[`element_rect`](https://ggplot2.tidyverse.org/reference/element.html)`(``fill ``=`` ``"white"``, colour ``=`` ``"grey50"``)``)`
 
-event_line(mcs, spread = 200, metric = intensity_cumulative,
-           start_date = "1982-01-01", end_date = "2014-12-31")
-```
+![Line plot of Western Australia sea surface temperature from late 1989
+to early 1991 showing the climatology, the 10th-percentile threshold,
+and the most cumulatively intense marine cold-spell shaded in
+blue.](detection_and_visualisation_files/figure-html/fig-example5-1.png)
 
-![](detection_and_visualisation_files/figure-html/fig-example5-1.png)
+\
+[`lolli_plot`](https://robwschlegel.github.io/heatwaveR/reference/lolli_plot.md)`(``mcs``, metric ``=`` ``intensity_cumulative``, xaxis ``=`` ``event_no``)`
 
-``` r
-
-lolli_plot(mcs, metric = intensity_cumulative, xaxis = event_no)
-```
-
-![](detection_and_visualisation_files/figure-html/fig-example5-2.png)
+![Lollipop plot of all detected Western Australia marine cold-spell
+events ordered by event number, with each event's cumulative intensity
+shown as a
+stem.](detection_and_visualisation_files/figure-html/fig-example5-2.png)
 
 Note that one does not need to specify that MCSs are to be visualised,
 the functions are able to understand this on their own.
@@ -291,28 +305,29 @@ the functions are able to understand this on their own.
 
 Cold spell figures may be created as `geoms` in **`ggplot2`**, too:
 
-``` r
+\
+`# Select the region of the time series of interest`\
+`mcs2`` ``<-`` ``mcs``$``climatology`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `\
+`  `[`slice`](https://dplyr.tidyverse.org/reference/slice.html)`(``2900``:``3190``)`\
+\
+`# Note that one must specify a colour other than the default 'salmon'`\
+[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``mcs2``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``t``, y ``=`` ``thresh``, y2 ``=`` ``temp``)``)`` ``+`\
+`  `[`geom_flame`](https://robwschlegel.github.io/heatwaveR/reference/geom_flame.md)`(``fill ``=`` ``"steelblue3"``)`
 
-# Select the region of the time series of interest
-mcs2 <- mcs$climatology %>% 
-  slice(2900:3190)
+![Custom ggplot2 geom_flame plot of temperature below the
+10th-percentile threshold during a Western Australia marine cold-spell,
+shaded in steel
+blue.](detection_and_visualisation_files/figure-html/fig-example6-1.png)
 
-# Note that one must specify a colour other than the default 'salmon'
-ggplot(mcs2, aes(x = t, y = thresh, y2 = temp)) +
-  geom_flame(fill = "steelblue3")
-```
+\
+[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``mcs``$``event``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``date_start``, y ``=`` ``intensity_max``)``)`` ``+`\
+`  `[`geom_lolli`](https://robwschlegel.github.io/heatwaveR/reference/geom_lolli.md)`(``colour ``=`` ``"steelblue3"``, colour_n ``=`` ``"navy"``, n ``=`` ``3``)`` ``+`\
+`  `[`labs`](https://ggplot2.tidyverse.org/reference/labs.html)`(``x ``=`` ``"Start Date"``,`\
+`       y ``=`` `[`expression`](https://rdrr.io/r/base/expression.html)`(`[`paste`](https://rdrr.io/r/base/paste.html)`(``"Max. intensity ["``, ``degree``, ``"C]"``)``)``)`
 
-![](detection_and_visualisation_files/figure-html/fig-example6-1.png)
-
-``` r
-
-ggplot(mcs$event, aes(x = date_start, y = intensity_max)) +
-  geom_lolli(colour = "steelblue3", colour_n = "navy", n = 3) +
-  labs(x = "Start Date",
-       y = expression(paste("Max. intensity [", degree, "C]")))
-```
-
-![](detection_and_visualisation_files/figure-html/fig-example6-2.png)
+![Custom ggplot2 geom_lolli plot of marine cold-spell maximum intensity
+by start date, with the three most intense cold-spells highlighted in
+navy.](detection_and_visualisation_files/figure-html/fig-example6-2.png)
 
 ### Minty MCS visuals
 
@@ -322,35 +337,39 @@ and
 [`geom_lolli()`](https://robwschlegel.github.io/heatwaveR/reference/geom_lolli.md)
 are simple **`ggplot2`** geoms, one can go completely bananas with them:
 
-``` r
+\
+`mcs_top`` ``<-`` ``mcs2`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `\
+`  `[`slice`](https://dplyr.tidyverse.org/reference/slice.html)`(``125``:``202``)`\
+\
+[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``data ``=`` ``mcs2``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``t``)``)`` ``+`\
+`  `[`geom_flame`](https://robwschlegel.github.io/heatwaveR/reference/geom_flame.md)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``y ``=`` ``thresh``, y2 ``=`` ``temp``, fill ``=`` ``"all"``)``, show.legend ``=`` ``T``)`` ``+`\
+`  `[`geom_flame`](https://robwschlegel.github.io/heatwaveR/reference/geom_flame.md)`(``data ``=`` ``mcs_top``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``y ``=`` ``thresh``, y2 ``=`` ``temp``, fill ``=`` ``"top"``)``, show.legend ``=`` ``T``)`` ``+`\
+`  `[`geom_line`](https://ggplot2.tidyverse.org/reference/geom_path.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``y ``=`` ``temp``, colour ``=`` ``"temp"``)``)`` ``+`\
+`  `[`geom_line`](https://ggplot2.tidyverse.org/reference/geom_path.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``y ``=`` ``thresh``, colour ``=`` ``"thresh"``)``, size ``=`` ``1.0``)`` ``+`\
+`  `[`geom_line`](https://ggplot2.tidyverse.org/reference/geom_path.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``y ``=`` ``seas``, colour ``=`` ``"seas"``)``, size ``=`` ``1.2``)`` ``+`\
+`  `[`scale_colour_manual`](https://ggplot2.tidyverse.org/reference/scale_manual.html)`(``name ``=`` ``"Line Colour"``,`\
+`                      values ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"temp"`` ``=`` ``"black"``, ``"thresh"`` ``=``  ``"forestgreen"``, ``"seas"`` ``=`` ``"grey80"``)``)`` ``+`\
+`  `[`scale_fill_manual`](https://ggplot2.tidyverse.org/reference/scale_manual.html)`(``name ``=`` ``"Event Colour"``, values ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"all"`` ``=`` ``"steelblue3"``, ``"top"`` ``=`` ``"navy"``)``)`` ``+`\
+`  `[`scale_x_date`](https://ggplot2.tidyverse.org/reference/scale_date.html)`(``date_labels ``=`` ``"%b %Y"``)`` ``+`\
+`  `[`guides`](https://ggplot2.tidyverse.org/reference/guides.html)`(``colour ``=`` `[`guide_legend`](https://ggplot2.tidyverse.org/reference/guide_legend.html)`(``override.aes ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``fill ``=`` ``NA``)``)``)`` ``+`\
+`  `[`labs`](https://ggplot2.tidyverse.org/reference/labs.html)`(``y ``=`` `[`expression`](https://rdrr.io/r/base/expression.html)`(`[`paste`](https://rdrr.io/r/base/paste.html)`(``"Temperature ["``, ``degree``, ``"C]"``)``)``, x ``=`` ``NULL``)`` ``+`\
+`  `[`theme`](https://ggplot2.tidyverse.org/reference/theme.html)`(``legend.position ``=`` ``"inside"``, legend.position.inside ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``0.12``, ``0.3``)``,`\
+`        legend.background ``=`` `[`element_rect`](https://ggplot2.tidyverse.org/reference/element.html)`(``fill ``=`` ``"white"``, colour ``=`` ``"grey50"``)``)`
 
-mcs_top <- mcs2 %>% 
-  slice(125:202)
+![Fully custom ggplot2 reproduction of a marine cold-spell figure,
+showing temperature, the seasonal climatology, and the 10th-percentile
+threshold as lines, with the full cold-spell event shaded in steel blue
+and its most intense portion shaded in navy, each with a colour
+legend.](detection_and_visualisation_files/figure-html/fig-example7-1.png)
 
-ggplot(data = mcs2, aes(x = t)) +
-  geom_flame(aes(y = thresh, y2 = temp, fill = "all"), show.legend = T) +
-  geom_flame(data = mcs_top, aes(y = thresh, y2 = temp, fill = "top"), show.legend = T) +
-  geom_line(aes(y = temp, colour = "temp")) +
-  geom_line(aes(y = thresh, colour = "thresh"), size = 1.0) +
-  geom_line(aes(y = seas, colour = "seas"), size = 1.2) +
-  scale_colour_manual(name = "Line Colour",
-                      values = c("temp" = "black", "thresh" =  "forestgreen", "seas" = "grey80")) +
-  scale_fill_manual(name = "Event Colour", values = c("all" = "steelblue3", "top" = "navy")) +
-  scale_x_date(date_labels = "%b %Y") +
-  guides(colour = guide_legend(override.aes = list(fill = NA))) +
-  labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
-```
+\
+[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``mcs``$``event``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``date_start``, y ``=`` ``intensity_cumulative``)``)`` ``+`\
+`  `[`geom_lolli`](https://robwschlegel.github.io/heatwaveR/reference/geom_lolli.md)`(``colour ``=`` ``"steelblue3"``, colour_n ``=`` ``"navy"``, n ``=`` ``7``)`` ``+`\
+`  `[`labs`](https://ggplot2.tidyverse.org/reference/labs.html)`(`` x ``=`` ``"Start Date"``, y ``=`` `[`expression`](https://rdrr.io/r/base/expression.html)`(`[`paste`](https://rdrr.io/r/base/paste.html)`(``"Cumulative intensity [days x "``, ``degree``, ``"C]"``)``)``)`
 
-![](detection_and_visualisation_files/figure-html/fig-example7-1.png)
-
-``` r
-
-ggplot(mcs$event, aes(x = date_start, y = intensity_cumulative)) +
-  geom_lolli(colour = "steelblue3", colour_n = "navy", n = 7) +
-  labs( x = "Start Date", y = expression(paste("Cumulative intensity [days x ", degree, "C]")))
-```
-
-![](detection_and_visualisation_files/figure-html/fig-example7-2.png)
+![Lollipop plot of marine cold-spell cumulative intensity by start date,
+with the seven most intense cold-spells highlighted in
+navy.](detection_and_visualisation_files/figure-html/fig-example7-2.png)
 
 ## Interactive visuals
 
@@ -376,113 +395,111 @@ respectively as these are already recognised by **`plotly`**.
 Note that the following code chunk is not run as it makes this vignette
 a bit too large.
 
-``` r
-
-# Must load plotly library first
-library(plotly)
-
-# Function needed for making geom_flame() work with plotly
-geom2trace.GeomFlame <- function (data,
-                                  params,
-                                  p) {
-  
-  x <- y <- y2 <- NULL
-  
-  # Create data.frame for ease of use
-  data1 <- data.frame(x = data[["x"]],
-                      y = data[["y"]],
-                      y2 = data[["y2"]])
-  
-  # Grab parameters
-  n <- params[["n"]]
-  n_gap <- params[["n_gap"]]
-  
-  # Find events that meet minimum length requirement
-  data_event <- heatwaveR::detect_event(data1, x = x, y = y,
-                                        seasClim = y,
-                                        threshClim = y2,
-                                        minDuration = n,
-                                        maxGap = n_gap,
-                                        protoEvents = T)
-  
-  # Detect spikes
-  data_event$screen <- base::ifelse(data_event$threshCriterion == FALSE, FALSE,
-                                    ifelse(data_event$event == FALSE, TRUE, FALSE))
-  
-  # Screen out spikes
-  data1 <- data1[data_event$screen != TRUE,]
-  
-  # Prepare to find the polygon corners
-  x1 <- data1$y
-  x2 <- data1$y2
-  
-  # # Find points where x1 is above x2.
-  above <- x1 > x2
-  above[above == TRUE] <- 1
-  above[is.na(above)] <- 0
-  
-  # Points always intersect when above=TRUE, then FALSE or reverse
-  intersect.points <- which(diff(above) != 0)
-  
-  # Find the slopes for each line segment.
-  x1.slopes <- x1[intersect.points + 1] - x1[intersect.points]
-  x2.slopes <- x2[intersect.points + 1] - x2[intersect.points]
-  
-  # # Find the intersection for each segment.
-  x.points <- intersect.points + ((x2[intersect.points] - x1[intersect.points]) / (x1.slopes - x2.slopes))
-  y.points <- x1[intersect.points] + (x1.slopes * (x.points - intersect.points))
-  
-  # Coerce x.points to the same scale as x
-  x_gap <- data1$x[2] - data1$x[1]
-  x.points <- data1$x[intersect.points] + (x_gap*(x.points - intersect.points))
-  
-  # Create new data frame and merge to introduce new rows of data
-  data2 <- data.frame(y = c(data1$y, y.points), x = c(data1$x, x.points))
-  data2 <- data2[order(data2$x),]
-  data3 <- base::merge(data1, data2, by = c("x","y"), all.y = T)
-  data3$y2[is.na(data3$y2)] <- data3$y[is.na(data3$y2)]
-  
-  # Remove missing values for better plotting
-  data3$y[data3$y < data3$y2] <- NA
-  missing_pos <- !stats::complete.cases(data3[c("x", "y", "y2")])
-  ids <- cumsum(missing_pos) + 1
-  ids[missing_pos] <- NA
-  
-  # Get the correct positions
-  positions <- data.frame(x = c(data3$x, rev(data3$x)),
-                          y = c(data3$y, rev(data3$y2)),
-                          ids = c(ids, rev(ids)))
-  
-  # Convert to a format geom2trace is happy with
-  positions <- plotly::group2NA(positions, groupNames = "ids")
-  positions <- positions[stats::complete.cases(positions$ids),]
-  positions <- dplyr::left_join(positions, data[,-c(2,3)], by = "x")
-  if(length(stats::complete.cases(positions$PANEL)) > 1) 
-    positions$PANEL <- positions$PANEL[stats::complete.cases(positions$PANEL)][1]
-  if(length(stats::complete.cases(positions$group)) > 1) 
-    positions$group <- positions$group[stats::complete.cases(positions$group)][1]
-  
-  # Run the plotly polygon code
-  if(length(unique(positions$PANEL)) == 1){
-    getFromNamespace("geom2trace.GeomPolygon", asNamespace("plotly"))(positions)
-  } else{
-    return()
-  }
-}
-
-# Time series
-ts_res <- heatwaveR::ts2clm(data = heatwaveR::sst_WA,
-                            climatologyPeriod = c("1982-01-01", "2011-12-31"))
-ts_res_sub <- ts_res[10500:10800,]
-
-# Flame Figure
-p <- ggplot(data = ts_res_sub, aes(x = t, y = temp)) +
-  heatwaveR::geom_flame(aes(y2 = thresh), n = 5, n_gap = 2) +
-  geom_line(aes(y = temp)) +
-  geom_line(aes(y = seas), colour = "green") +
-  geom_line(aes(y = thresh), colour = "red") +
-  labs(x = "", y = "Temperature (°C)")
-
-# Create interactive visuals
-ggplotly(p)
-```
+\
+`# Must load plotly library first`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`plotly`](https://plotly-r.com)`)`\
+\
+`# Function needed for making geom_flame() work with plotly`\
+`geom2trace.GeomFlame`` ``<-`` ``function`` ``(``data``,`\
+`                                  ``params``,`\
+`                                  ``p``)`` ``{`\
+`  `\
+`  ``x`` ``<-`` ``y`` ``<-`` ``y2`` ``<-`` ``NULL`\
+`  `\
+`  ``# Create data.frame for ease of use`\
+`  ``data1`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``x ``=`` ``data``[[``"x"``]``]``,`\
+`                      y ``=`` ``data``[[``"y"``]``]``,`\
+`                      y2 ``=`` ``data``[[``"y2"``]``]``)`\
+`  `\
+`  ``# Grab parameters`\
+`  ``n`` ``<-`` ``params``[[``"n"``]``]`\
+`  ``n_gap`` ``<-`` ``params``[[``"n_gap"``]``]`\
+`  `\
+`  ``# Find events that meet minimum length requirement`\
+`  ``data_event`` ``<-`` ``heatwaveR``::`[`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)`(``data1``, x ``=`` ``x``, y ``=`` ``y``,`\
+`                                        seasClim ``=`` ``y``,`\
+`                                        threshClim ``=`` ``y2``,`\
+`                                        minDuration ``=`` ``n``,`\
+`                                        maxGap ``=`` ``n_gap``,`\
+`                                        protoEvents ``=`` ``T``)`\
+`  `\
+`  ``# Detect spikes`\
+`  ``data_event``$``screen`` ``<-`` ``base``::`[`ifelse`](https://rdrr.io/r/base/ifelse.html)`(``data_event``$``threshCriterion`` ``==`` ``FALSE``, ``FALSE``,`\
+`                                    `[`ifelse`](https://rdrr.io/r/base/ifelse.html)`(``data_event``$``event`` ``==`` ``FALSE``, ``TRUE``, ``FALSE``)``)`\
+`  `\
+`  ``# Screen out spikes`\
+`  ``data1`` ``<-`` ``data1``[``data_event``$``screen`` ``!=`` ``TRUE``,``]`\
+`  `\
+`  ``# Prepare to find the polygon corners`\
+`  ``x1`` ``<-`` ``data1``$``y`\
+`  ``x2`` ``<-`` ``data1``$``y2`\
+`  `\
+`  ``# # Find points where x1 is above x2.`\
+`  ``above`` ``<-`` ``x1`` ``>`` ``x2`\
+`  ``above``[``above`` ``==`` ``TRUE``]`` ``<-`` ``1`\
+`  ``above``[`[`is.na`](https://rdrr.io/r/base/NA.html)`(``above``)``]`` ``<-`` ``0`\
+`  `\
+`  ``# Points always intersect when above=TRUE, then FALSE or reverse`\
+`  ``intersect.points`` ``<-`` `[`which`](https://rdrr.io/r/base/which.html)`(`[`diff`](https://rdrr.io/r/base/diff.html)`(``above``)`` ``!=`` ``0``)`\
+`  `\
+`  ``# Find the slopes for each line segment.`\
+`  ``x1.slopes`` ``<-`` ``x1``[``intersect.points`` ``+`` ``1``]`` ``-`` ``x1``[``intersect.points``]`\
+`  ``x2.slopes`` ``<-`` ``x2``[``intersect.points`` ``+`` ``1``]`` ``-`` ``x2``[``intersect.points``]`\
+`  `\
+`  ``# # Find the intersection for each segment.`\
+`  ``x.points`` ``<-`` ``intersect.points`` ``+`` ``(``(``x2``[``intersect.points``]`` ``-`` ``x1``[``intersect.points``]``)`` ``/`` ``(``x1.slopes`` ``-`` ``x2.slopes``)``)`\
+`  ``y.points`` ``<-`` ``x1``[``intersect.points``]`` ``+`` ``(``x1.slopes`` ``*`` ``(``x.points`` ``-`` ``intersect.points``)``)`\
+`  `\
+`  ``# Coerce x.points to the same scale as x`\
+`  ``x_gap`` ``<-`` ``data1``$``x``[``2``]`` ``-`` ``data1``$``x``[``1``]`\
+`  ``x.points`` ``<-`` ``data1``$``x``[``intersect.points``]`` ``+`` ``(``x_gap``*``(``x.points`` ``-`` ``intersect.points``)``)`\
+`  `\
+`  ``# Create new data frame and merge to introduce new rows of data`\
+`  ``data2`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``y ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``data1``$``y``, ``y.points``)``, x ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``data1``$``x``, ``x.points``)``)`\
+`  ``data2`` ``<-`` ``data2``[`[`order`](https://rdrr.io/r/base/order.html)`(``data2``$``x``)``,``]`\
+`  ``data3`` ``<-`` ``base``::`[`merge`](https://rdrr.io/r/base/merge.html)`(``data1``, ``data2``, by ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"x"``,``"y"``)``, all.y ``=`` ``T``)`\
+`  ``data3``$``y2``[`[`is.na`](https://rdrr.io/r/base/NA.html)`(``data3``$``y2``)``]`` ``<-`` ``data3``$``y``[`[`is.na`](https://rdrr.io/r/base/NA.html)`(``data3``$``y2``)``]`\
+`  `\
+`  ``# Remove missing values for better plotting`\
+`  ``data3``$``y``[``data3``$``y`` ``<`` ``data3``$``y2``]`` ``<-`` ``NA`\
+`  ``missing_pos`` ``<-`` ``!``stats``::`[`complete.cases`](https://rdrr.io/r/stats/complete.cases.html)`(``data3``[`[`c`](https://rdrr.io/r/base/c.html)`(``"x"``, ``"y"``, ``"y2"``)``]``)`\
+`  ``ids`` ``<-`` `[`cumsum`](https://rdrr.io/r/base/cumsum.html)`(``missing_pos``)`` ``+`` ``1`\
+`  ``ids``[``missing_pos``]`` ``<-`` ``NA`\
+`  `\
+`  ``# Get the correct positions`\
+`  ``positions`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``x ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``data3``$``x``, `[`rev`](https://rdrr.io/r/base/rev.html)`(``data3``$``x``)``)``,`\
+`                          y ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``data3``$``y``, `[`rev`](https://rdrr.io/r/base/rev.html)`(``data3``$``y2``)``)``,`\
+`                          ids ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``ids``, `[`rev`](https://rdrr.io/r/base/rev.html)`(``ids``)``)``)`\
+`  `\
+`  ``# Convert to a format geom2trace is happy with`\
+`  ``positions`` ``<-`` ``plotly``::``group2NA``(``positions``, groupNames ``=`` ``"ids"``)`\
+`  ``positions`` ``<-`` ``positions``[``stats``::`[`complete.cases`](https://rdrr.io/r/stats/complete.cases.html)`(``positions``$``ids``)``,``]`\
+`  ``positions`` ``<-`` ``dplyr``::`[`left_join`](https://dplyr.tidyverse.org/reference/mutate-joins.html)`(``positions``, ``data``[``,``-`[`c`](https://rdrr.io/r/base/c.html)`(``2``,``3``)``]``, by ``=`` ``"x"``)`\
+`  ``if``(`[`length`](https://rdrr.io/r/base/length.html)`(``stats``::`[`complete.cases`](https://rdrr.io/r/stats/complete.cases.html)`(``positions``$``PANEL``)``)`` ``>`` ``1``)`` `\
+`    ``positions``$``PANEL`` ``<-`` ``positions``$``PANEL``[``stats``::`[`complete.cases`](https://rdrr.io/r/stats/complete.cases.html)`(``positions``$``PANEL``)``]``[``1``]`\
+`  ``if``(`[`length`](https://rdrr.io/r/base/length.html)`(``stats``::`[`complete.cases`](https://rdrr.io/r/stats/complete.cases.html)`(``positions``$``group``)``)`` ``>`` ``1``)`` `\
+`    ``positions``$``group`` ``<-`` ``positions``$``group``[``stats``::`[`complete.cases`](https://rdrr.io/r/stats/complete.cases.html)`(``positions``$``group``)``]``[``1``]`\
+`  `\
+`  ``# Run the plotly polygon code`\
+`  ``if``(`[`length`](https://rdrr.io/r/base/length.html)`(`[`unique`](https://rdrr.io/r/base/unique.html)`(``positions``$``PANEL``)``)`` ``==`` ``1``)``{`\
+`    `[`getFromNamespace`](https://rdrr.io/r/utils/getFromNamespace.html)`(``"geom2trace.GeomPolygon"``, `[`asNamespace`](https://rdrr.io/r/base/ns-internal.html)`(``"plotly"``)``)``(``positions``)`\
+`  ``}`` ``else``{`\
+`    `[`return`](https://rdrr.io/r/base/function.html)`(``)`\
+`  ``}`\
+`}`\
+\
+`# Time series`\
+`ts_res`` ``<-`` ``heatwaveR``::`[`ts2clm`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)`(``data ``=`` ``heatwaveR``::`[`sst_WA`](https://robwschlegel.github.io/heatwaveR/reference/sst_WA.md)`,`\
+`                            climatologyPeriod ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"1982-01-01"``, ``"2011-12-31"``)``)`\
+`ts_res_sub`` ``<-`` ``ts_res``[``10500``:``10800``,``]`\
+\
+`# Flame Figure`\
+`p`` ``<-`` `[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``data ``=`` ``ts_res_sub``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``t``, y ``=`` ``temp``)``)`` ``+`\
+`  ``heatwaveR``::`[`geom_flame`](https://robwschlegel.github.io/heatwaveR/reference/geom_flame.md)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``y2 ``=`` ``thresh``)``, n ``=`` ``5``, n_gap ``=`` ``2``)`` ``+`\
+`  `[`geom_line`](https://ggplot2.tidyverse.org/reference/geom_path.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``y ``=`` ``temp``)``)`` ``+`\
+`  `[`geom_line`](https://ggplot2.tidyverse.org/reference/geom_path.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``y ``=`` ``seas``)``, colour ``=`` ``"green"``)`` ``+`\
+`  `[`geom_line`](https://ggplot2.tidyverse.org/reference/geom_path.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``y ``=`` ``thresh``)``, colour ``=`` ``"red"``)`` ``+`\
+`  `[`labs`](https://ggplot2.tidyverse.org/reference/labs.html)`(``x ``=`` ``""``, y ``=`` ``"Temperature (°C)"``)`\
+\
+`# Create interactive visuals`\
+`ggplotly``(``p``)`

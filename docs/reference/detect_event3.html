@@ -23,7 +23,7 @@ other means."><meta property="og:image" content="https://robwschlegel.github.io/
 
     <a class="navbar-brand me-2" href="../index.html">heatwaveR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.5.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -195,17 +195,13 @@ present (i.e. both <code>threshCriterion</code> and <code>durationCriterion</cod
 and a sequential number uniquely identifying the detected event(s). The second list
 component (<code>event</code>) will contain the heatwave event metrics. If <code>protoEvents = TRUE</code>
 then only the <code>climatology</code> will be reported. Note also that if <code>protoEvents = TRUE</code>
-it will ignore whatever the user provides to the <code>categories</code> argument and anything
-else passed to <code>...</code>.</p></dd>
+it will ignore anything else passed to <code>...</code>.</p></dd>
 
 
 <dt id="arg-categories">categories<a class="anchor" aria-label="anchor" href="#arg-categories"></a></dt>
-<dd><p>Boolean. Rather than using <code><a href="category.html">category</a></code> as a separate step to determine
-the categories of the detected MHWs, one may choose to set this argument to <code>TRUE</code>.
-One may pass the same arguments used in the <code><a href="category.html">category</a></code> function to this function
-to affect the output. Note that the default behaviour of <code><a href="category.html">category</a></code> is to
-return the event data only. To return the same list structure that <code>detect_event3</code>
-outputs by default, add the argument <code>climatology = TRUE</code>. By default <code>categories = FALSE</code>.</p></dd>
+<dd><p>Not used. Calculating categories inside <code>detect_event3</code> was too slow,
+so it has been disabled and this argument is ignored. Use <code><a href="category.html">category</a></code>
+on the output of <code><a href="detect_event.html">detect_event</a></code> instead.</p></dd>
 
 
 <dt id="arg-roundres">roundRes<a class="anchor" aria-label="anchor" href="#arg-roundres"></a></dt>
@@ -231,7 +227,7 @@ reflect that intended purpose. However, various other kinds of extreme
 events may be detected according to the specifications, and if that is the
 case, the appropriate units need to be determined by the user.</p>
 <p>Note that the exact content of the output depends on specific combinations
-of the arguments <code>protoEvents</code>, <code>categories</code>, and <code>climatology</code>:</p>
+of the argument <code>protoEvents</code>:</p>
 <dl><dt>threshCriterion</dt>
 <dd><p>Boolean indicating if <code>temp</code> exceeds
   <code>thresh</code>.</p></dd>
@@ -247,15 +243,6 @@ of the arguments <code>protoEvents</code>, <code>categories</code>, and <code>cl
   <dt>event_no</dt>
 <dd><p>A sequential number indicating the ID and order of
   occurrence of the events.</p></dd>
-
-  <dt>intensity</dt>
-<dd><p>The difference between <code>temp</code> (or the column provided
-  for <code>y</code>) and <code>seas</code>. Only added if <code>categories = TRUE</code>
-  and <code>climatology = TRUE</code>.</p></dd>
-
-  <dt>category</dt>
-<dd><p>The category classification per day. Only added
-  if <code>categories = TRUE</code> and <code>climatology = TRUE</code>.</p></dd>
 
 
 </dl><p>The <code>event</code> results are summarised using a range of event metrics:</p>
@@ -417,30 +404,30 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
 <span class="r-in"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">detect_event3</span><span class="op">(</span><span class="va">res_clim</span>, coldSpells <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># show a portion of the climatology:</span></span></span>
 <span class="r-in"><span><span class="va">out</span><span class="op">$</span><span class="va">climatology</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           ts_x   ts_y  ts_seas ts_thresh threshCriterion durationCriterion</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;Date&gt;  &lt;num&gt;    &lt;num&gt;     &lt;num&gt;          &lt;lgcl&gt;            &lt;lgcl&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: 1982-01-01 -20.94 -21.6080  -20.5471           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: 1982-01-02 -21.25 -21.6348  -20.5713           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: 1982-01-03 -21.38 -21.6621  -20.5961           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: 1982-01-04 -21.16 -21.6895  -20.6218           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: 1982-01-05 -21.26 -21.7169  -20.6499           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: 1982-01-06 -21.61 -21.7436  -20.6776           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: 1982-01-07 -21.74 -21.7699  -20.7053           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: 1982-01-08 -21.50 -21.7958  -20.7362           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: 1982-01-09 -21.40 -21.8217  -20.7655           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: 1982-01-10 -21.36 -21.8478  -20.7927           FALSE             FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      event event_no</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;lgcl&gt;    &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:  FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:  FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:  FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:  FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:  FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:  FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:  FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:  FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:  FALSE       NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:  FALSE       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           ts_x  ts_y ts_seas ts_thresh threshCriterion durationCriterion  event</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;Date&gt; &lt;num&gt;   &lt;num&gt;     &lt;num&gt;          &lt;lgcl&gt;            &lt;lgcl&gt; &lt;lgcl&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: 1982-01-01 20.94 21.6080   20.5471           FALSE             FALSE  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: 1982-01-02 21.25 21.6348   20.5713           FALSE             FALSE  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: 1982-01-03 21.38 21.6621   20.5961           FALSE             FALSE  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: 1982-01-04 21.16 21.6895   20.6218           FALSE             FALSE  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: 1982-01-05 21.26 21.7169   20.6499           FALSE             FALSE  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: 1982-01-06 21.61 21.7436   20.6776           FALSE             FALSE  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: 1982-01-07 21.74 21.7699   20.7053           FALSE             FALSE  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: 1982-01-08 21.50 21.7958   20.7362           FALSE             FALSE  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: 1982-01-09 21.40 21.8217   20.7655           FALSE             FALSE  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: 1982-01-10 21.36 21.8478   20.7927           FALSE             FALSE  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     event_no</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;int&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:       NA</span>
 <span class="r-in"><span><span class="co"># show some of the cold-spells:</span></span></span>
 <span class="r-in"><span><span class="va">out</span><span class="op">$</span><span class="va">event</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    event_no index_start index_peak index_end duration date_start  date_peak</span>
@@ -485,7 +472,7 @@ Progress in Oceanography, 151, pp. 189-205, doi:10.1016/j.pocean.2017.01.004</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

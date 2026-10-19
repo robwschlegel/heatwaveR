@@ -36,7 +36,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">heatwaveR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.5.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,7 +86,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>heatwaveR internal workflow</h1>
                         <h4 data-toc-skip class="author">AJ Smit</h4>
             
-            <h4 data-toc-skip class="date">2026-07-27</h4>
+            <h4 data-toc-skip class="date">2026-10-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/vignettes/internal_workflow.Rmd" class="external-link"><code>vignettes/internal_workflow.Rmd</code></a></small>
       <div class="d-none name"><code>internal_workflow.Rmd</code></div>
@@ -96,24 +96,24 @@
     
 <p>This document outlines the internal workflow of
 <strong>heatwaveR</strong>.</p>
-<pre class="mermaid"><code>flowchart TD
-    A(["ts2clm()"]) --&gt; B[/INPUT:&lt;br&gt;date, temperature/]
-    B --&gt; C{Checks?}
-    C --&gt; |Yes| D[/OUTPUT:&lt;br&gt;date, temperature/]
-    C --&gt; |No| E([End])
-    D --&gt; F(["make_whole_fast()"])
-    
-    G(["make_whole_fast()"]) --&gt; H[/INPUT:&lt;br&gt;date, temperature/]
-    H --&gt; I[/OUTPUT:&lt;br&gt;doy, date, temperature/]
-    I --&gt; J(["clim_spread()"])
-    
-    K(["clim_spread()"]) --&gt; L[/INPUT:&lt;br&gt;doy, date, temperature/]
-    L ---&gt; M[spread doy as rows&lt;br&gt;spread year as cols&lt;br&gt;grow doy by windowHalfWidth]
-    M --&gt; N[/OUTPUT:&lt;br&gt;temperature in&lt;br&gt;doy x year matrix/]
-    N --&gt; O(["clim_calc_cpp()"])
-    
-    P(["clim_calc_cpp()"]) --&gt; Q[/INPUT:&lt;br&gt;temperature in&lt;br&gt;doy x year matrix/]
-    Q --&gt; </code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode mermaid"><code class="sourceCode mermaid"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="kw">flowchart</span> <span class="cn">TD</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>    <span class="dt">A</span>([<span class="st">"ts2clm()"</span>]) <span class="pp">--&gt;</span> <span class="dt">B</span>[/<span class="vs">INPUT:</span><span class="sc">&lt;br&gt;</span><span class="vs">date, temperature</span>/]</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>    <span class="dt">B</span> <span class="pp">--&gt;</span> <span class="dt">C</span>{<span class="vs">Checks?</span>}</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>    <span class="dt">C</span> <span class="pp">--&gt;</span> <span class="vs">|Yes|</span> <span class="dt">D</span>[/<span class="vs">OUTPUT:</span><span class="sc">&lt;br&gt;</span><span class="vs">date, temperature</span>/]</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>    <span class="dt">C</span> <span class="pp">--&gt;</span> <span class="vs">|No|</span> <span class="dt">E</span>([<span class="vs">End</span>])</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>    <span class="dt">D</span> <span class="pp">--&gt;</span> <span class="dt">F</span>([<span class="st">"make_whole_fast()"</span>])</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>    </span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>    <span class="dt">G</span>([<span class="st">"make_whole_fast()"</span>]) <span class="pp">--&gt;</span> <span class="dt">H</span>[/<span class="vs">INPUT:</span><span class="sc">&lt;br&gt;</span><span class="vs">date, temperature</span>/]</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>    <span class="dt">H</span> <span class="pp">--&gt;</span> <span class="dt">I</span>[/<span class="vs">OUTPUT:</span><span class="sc">&lt;br&gt;</span><span class="vs">doy, date, temperature</span>/]</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>    <span class="dt">I</span> <span class="pp">--&gt;</span> <span class="dt">J</span>([<span class="st">"clim_spread()"</span>])</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>    </span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>    <span class="dt">K</span>([<span class="st">"clim_spread()"</span>]) <span class="pp">--&gt;</span> <span class="dt">L</span>[/<span class="vs">INPUT:</span><span class="sc">&lt;br&gt;</span><span class="vs">doy, date, temperature</span>/]</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>    <span class="dt">L</span> <span class="pp">---&gt;</span> <span class="dt">M</span>[<span class="vs">spread doy as rows</span><span class="sc">&lt;br&gt;</span><span class="vs">spread year as cols</span><span class="sc">&lt;br&gt;</span><span class="vs">grow doy by windowHalfWidth</span>]</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>    <span class="dt">M</span> <span class="pp">--&gt;</span> <span class="dt">N</span>[/<span class="vs">OUTPUT:</span><span class="sc">&lt;br&gt;</span><span class="vs">temperature in</span><span class="sc">&lt;br&gt;</span><span class="vs">doy x year matrix</span>/]</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>    <span class="dt">N</span> <span class="pp">--&gt;</span> <span class="dt">O</span>([<span class="st">"clim_calc_cpp()"</span>])</span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>    </span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>    <span class="dt">P</span>([<span class="st">"clim_calc_cpp()"</span>]) <span class="pp">--&gt;</span> <span class="dt">Q</span>[/<span class="vs">INPUT:</span><span class="sc">&lt;br&gt;</span><span class="vs">temperature in</span><span class="sc">&lt;br&gt;</span><span class="vs">doy x year matrix</span>/]</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>    <span class="dt">Q</span> <span class="pp">--&gt;</span> </span></code></pre></div>
 <div class="section level2">
 <h2 id="ts2clm">
 <code>ts2clm()</code><a class="anchor" aria-label="anchor" href="#ts2clm"></a>
@@ -347,7 +347,7 @@ the first and last dates of the input data.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

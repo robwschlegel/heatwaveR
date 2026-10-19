@@ -282,11 +282,11 @@ tail(cat_WA)
 #> 75       61    WA 2015 2015-10-02  II Strong 2.4257        7         57
 #> 76       42   WA 2011b 2011-02-28 IV Extreme 6.5060       60         47
 #>    p_strong p_severe p_extreme        season
-#> 71       27        0         0        Spring
-#> 72       29        3         0   Summer/Fall
+#> 71       27        0         0 Spring/Summer
+#> 72       29        3         0          Fall
 #> 73       41        0         0   Fall/Winter
-#> 74       42        0         0        Winter
-#> 75       43        0         0 Winter/Spring
+#> 74       42        0         0 Winter/Spring
+#> 75       43        0         0        Spring
 #> 76       32        8        13   Summer/Fall
 
 # If the data were collected in the northern hemisphere
@@ -302,13 +302,13 @@ tail(cat_Med)
 #> 117      119  Med 2022c 2022-11-03  II Strong 3.5117       74         46
 #> 118       44  Med 2007b 2007-04-25 III Severe 4.0220       19         42
 #> 119       88  Med 2018a 2018-04-28  II Strong 3.2901       10         20
-#>     p_strong p_severe p_extreme        season
-#> 114       44        0         0        Summer
-#> 115       44        0         0 Spring/Summer
-#> 116       50        0         0 Summer-Winter
-#> 117       53        0         0          Fall
-#> 118       53        5         0        Spring
-#> 119       80        0         0        Spring
+#>     p_strong p_severe p_extreme      season
+#> 114       44        0         0      Summer
+#> 115       44        0         0 Summer/Fall
+#> 116       50        0         0 Fall/Winter
+#> 117       53        0         0 Fall/Winter
+#> 118       53        5         0      Spring
+#> 119       80        0         0      Spring
 
 # One may also choose to have this function output the daily
 # category classifications as well by setting: climatology = TRUE

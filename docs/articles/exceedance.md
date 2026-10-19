@@ -26,23 +26,21 @@ and
 The calculation of exceedances may be done with only one function as
 seen here:
 
-``` r
-
-# Activate libraries
-library(dplyr)
-library(ggplot2)
-library(heatwaveR)
-
-# Calculate exceedence
-exc_25 <- exceedance(sst_WA, threshold = 25)
-
-# Look at a few metrics
-exc_25$exceedance %>%
-  ungroup() %>%
-  select(exceedance_no, duration, date_start, date_peak, intensity_max, intensity_cumulative) %>%
-  dplyr::arrange(-intensity_cumulative) %>%
-  head(5)
-```
+\
+`# Activate libraries`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`dplyr`](https://dplyr.tidyverse.org)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`ggplot2`](https://ggplot2.tidyverse.org)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`heatwaveR`](https://robwschlegel.github.io/heatwaveR/)`)`\
+\
+`# Calculate exceedence`\
+`exc_25`` ``<-`` `[`exceedance`](https://robwschlegel.github.io/heatwaveR/reference/exceedance.md)`(``sst_WA``, threshold ``=`` ``25``)`\
+\
+`# Look at a few metrics`\
+`exc_25``$``exceedance`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`ungroup`](https://dplyr.tidyverse.org/reference/group_by.html)`(``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``exceedance_no``, ``duration``, ``date_start``, ``date_peak``, ``intensity_max``, ``intensity_cumulative``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  ``dplyr``::`[`arrange`](https://dplyr.tidyverse.org/reference/arrange.html)`(``-``intensity_cumulative``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`head`](https://rdrr.io/r/utils/head.html)`(``5``)`
 
     ##   exceedance_no duration date_start  date_peak intensity_max
     ## 1             7       52 2011-02-08 2011-02-28          4.74
@@ -77,24 +75,26 @@ if we want to visualise the results of
 we will need to do so ‘by hand’ with **`ggplot2`**. The code below works
 as an example of how to do so:
 
-``` r
+\
+`exc_25_thresh`` ``<-`` ``exc_25``$``threshold`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `\
+`  `[`slice`](https://dplyr.tidyverse.org/reference/slice.html)`(``9500``:``9866``)`\
+\
+[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``data ``=`` ``exc_25_thresh``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``t``)``)`` ``+`\
+`  `[`geom_flame`](https://robwschlegel.github.io/heatwaveR/reference/geom_flame.md)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``y ``=`` ``temp``, y2 ``=`` ``thresh``, fill ``=`` ``"all"``)``, show.legend ``=`` ``F``)`` ``+`\
+`  `[`geom_line`](https://ggplot2.tidyverse.org/reference/geom_path.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``y ``=`` ``temp``, colour ``=`` ``"temp"``)``)`` ``+`\
+`  `[`geom_line`](https://ggplot2.tidyverse.org/reference/geom_path.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``y ``=`` ``thresh``, colour ``=`` ``"thresh"``)``, size ``=`` ``1.0``)`` ``+`\
+`  `[`scale_colour_manual`](https://ggplot2.tidyverse.org/reference/scale_manual.html)`(``name ``=`` ``"Line Colour"``,`\
+`                      values ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"temp"`` ``=`` ``"black"``, ``"thresh"`` ``=``  ``"forestgreen"``)``)`` ``+`\
+`  `[`scale_fill_manual`](https://ggplot2.tidyverse.org/reference/scale_manual.html)`(``name ``=`` ``"Event Colour"``, values ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"all"`` ``=`` ``"salmon"``)``)`` ``+`\
+`  `[`guides`](https://ggplot2.tidyverse.org/reference/guides.html)`(``colour ``=`` `[`guide_legend`](https://ggplot2.tidyverse.org/reference/guide_legend.html)`(``override.aes ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``fill ``=`` ``NA``)``)``)`` ``+`\
+`  `[`scale_x_date`](https://ggplot2.tidyverse.org/reference/scale_date.html)`(``date_labels ``=`` ``"%b %Y"``)`` ``+`\
+`  `[`labs`](https://ggplot2.tidyverse.org/reference/labs.html)`(``y ``=`` `[`expression`](https://rdrr.io/r/base/expression.html)`(`[`paste`](https://rdrr.io/r/base/paste.html)`(``"Temperature ["``, ``degree``, ``"C]"``)``)``, x ``=`` ``NULL``)`` ``+`\
+`  `[`theme`](https://ggplot2.tidyverse.org/reference/theme.html)`(``legend.position ``=`` ``"inside"``, legend.position.inside ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``0.1``, ``0.15``)``,`\
+`        legend.background ``=`` `[`element_rect`](https://ggplot2.tidyverse.org/reference/element.html)`(``fill ``=`` ``"white"``, colour ``=`` ``"grey50"``)``)`
 
-exc_25_thresh <- exc_25$threshold %>% 
-  slice(9500:9866)
-
-ggplot(data = exc_25_thresh, aes(x = t)) +
-  geom_flame(aes(y = temp, y2 = thresh, fill = "all"), show.legend = F) +
-  geom_line(aes(y = temp, colour = "temp")) +
-  geom_line(aes(y = thresh, colour = "thresh"), size = 1.0) +
-  scale_colour_manual(name = "Line Colour",
-                      values = c("temp" = "black", "thresh" =  "forestgreen")) +
-  scale_fill_manual(name = "Event Colour", values = c("all" = "salmon")) +
-  guides(colour = guide_legend(override.aes = list(fill = NA))) +
-  scale_x_date(date_labels = "%b %Y") +
-  labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
-```
-
-![](exceedance_files/figure-html/fig-example1-1.png)
+![Plot of Western Australia sea temperature against a static 25 degree
+Celsius threshold, with periods exceeding the threshold shaded in salmon
+as a flame polygon.](exceedance_files/figure-html/fig-example1-1.png)
 
 ## Calculating negative exceedances
 
@@ -108,15 +108,13 @@ The
 function may be used to calculate consecutive days below a threshold as
 seen here:
 
-``` r
-
-exc_19 <- exceedance(sst_WA, threshold = 19, below = TRUE)
-exc_19$exceedance %>%
-  dplyr::ungroup() %>%
-  dplyr::select(exceedance_no, duration, date_start, date_peak, intensity_mean, intensity_cumulative) %>%
-  dplyr::arrange(intensity_cumulative) %>%
-  head(5)
-```
+\
+`exc_19`` ``<-`` `[`exceedance`](https://robwschlegel.github.io/heatwaveR/reference/exceedance.md)`(``sst_WA``, threshold ``=`` ``19``, below ``=`` ``TRUE``)`\
+`exc_19``$``exceedance`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  ``dplyr``::`[`ungroup`](https://dplyr.tidyverse.org/reference/group_by.html)`(``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  ``dplyr``::`[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``exceedance_no``, ``duration``, ``date_start``, ``date_peak``, ``intensity_mean``, ``intensity_cumulative``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  ``dplyr``::`[`arrange`](https://dplyr.tidyverse.org/reference/arrange.html)`(``intensity_cumulative``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`head`](https://rdrr.io/r/utils/head.html)`(``5``)`
 
     ##   exceedance_no duration date_start  date_peak intensity_mean
     ## 1            28       61 2017-08-09 2017-08-20        -0.6092
@@ -136,20 +134,23 @@ exc_19$exceedance %>%
 Were one to desire a visualisation of these data it could be produced
 with the following code:
 
-``` r
+\
+`exc_19_thresh`` ``<-`` ``exc_19``$``threshold`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `\
+`  `[`slice`](https://dplyr.tidyverse.org/reference/slice.html)`(``1500``:``1866``)`\
+\
+[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``data ``=`` ``exc_19_thresh``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``t``)``)`` ``+`\
+`  `[`geom_flame`](https://robwschlegel.github.io/heatwaveR/reference/geom_flame.md)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``y ``=`` ``thresh``, y2 ``=`` ``temp``)``, fill ``=`` ``"steelblue3"``, show.legend ``=`` ``F``)`` ``+`\
+`  `[`geom_line`](https://ggplot2.tidyverse.org/reference/geom_path.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``y ``=`` ``temp``, colour ``=`` ``"temp"``)``)`` ``+`\
+`  `[`geom_line`](https://ggplot2.tidyverse.org/reference/geom_path.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``y ``=`` ``thresh``, colour ``=`` ``"thresh"``)``, size ``=`` ``1.0``)`` ``+`\
+`  `[`scale_colour_manual`](https://ggplot2.tidyverse.org/reference/scale_manual.html)`(``name ``=`` ``"Line Colour"``,`\
+`                      values ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"temp"`` ``=`` ``"black"``, ``"thresh"`` ``=``  ``"forestgreen"``)``)`` ``+`\
+`  `[`scale_y_continuous`](https://ggplot2.tidyverse.org/reference/scale_continuous.html)`(``limits ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``18``, ``23.5``)``)`` ``+`\
+`  `[`scale_x_date`](https://ggplot2.tidyverse.org/reference/scale_date.html)`(``date_labels ``=`` ``"%b %Y"``)`` ``+`\
+`  `[`labs`](https://ggplot2.tidyverse.org/reference/labs.html)`(``y ``=`` `[`expression`](https://rdrr.io/r/base/expression.html)`(`[`paste`](https://rdrr.io/r/base/paste.html)`(``"Temperature ["``, ``degree``, ``"C]"``)``)``, x ``=`` ``NULL``)`` ``+`\
+`  `[`theme`](https://ggplot2.tidyverse.org/reference/theme.html)`(``legend.position ``=`` ``"inside"``, legend.position.inside ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``0.1``, ``0.15``)``,`\
+`        legend.background ``=`` `[`element_rect`](https://ggplot2.tidyverse.org/reference/element.html)`(``fill ``=`` ``"white"``, colour ``=`` ``"grey50"``)``)`
 
-exc_19_thresh <- exc_19$threshold %>% 
-  slice(1500:1866)
-
-ggplot(data = exc_19_thresh, aes(x = t)) +
-  geom_flame(aes(y = thresh, y2 = temp), fill = "steelblue3", show.legend = F) +
-  geom_line(aes(y = temp, colour = "temp")) +
-  geom_line(aes(y = thresh, colour = "thresh"), size = 1.0) +
-  scale_colour_manual(name = "Line Colour",
-                      values = c("temp" = "black", "thresh" =  "forestgreen")) +
-  scale_y_continuous(limits = c(18, 23.5)) +
-  scale_x_date(date_labels = "%b %Y") +
-  labs(y = expression(paste("Temperature [", degree, "C]")), x = NULL)
-```
-
-![](exceedance_files/figure-html/fig-example2-1.png)
+![Plot of Western Australia sea temperature against a static 19 degree
+Celsius threshold, with periods falling below the threshold shaded in
+steel blue as a flame
+polygon.](exceedance_files/figure-html/fig-example2-1.png)

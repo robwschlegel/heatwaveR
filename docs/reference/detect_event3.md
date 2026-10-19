@@ -143,23 +143,16 @@ detect_event3(
   second list component (`event`) will contain the heatwave event
   metrics. If `protoEvents = TRUE` then only the `climatology` will be
   reported. Note also that if `protoEvents = TRUE` it will ignore
-  whatever the user provides to the `categories` argument and anything
-  else passed to `...`.
+  anything else passed to `...`.
 
 - categories:
 
-  Boolean. Rather than using
+  Not used. Calculating categories inside `detect_event3` was too slow,
+  so it has been disabled and this argument is ignored. Use
   [`category`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
-  as a separate step to determine the categories of the detected MHWs,
-  one may choose to set this argument to `TRUE`. One may pass the same
-  arguments used in the
-  [`category`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
-  function to this function to affect the output. Note that the default
-  behaviour of
-  [`category`](https://robwschlegel.github.io/heatwaveR/reference/category.md)
-  is to return the event data only. To return the same list structure
-  that `detect_event3` outputs by default, add the argument
-  `climatology = TRUE`. By default `categories = FALSE`.
+  on the output of
+  [`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)
+  instead.
 
 - roundRes:
 
@@ -186,8 +179,7 @@ that is the case, the appropriate units need to be determined by the
 user.
 
 Note that the exact content of the output depends on specific
-combinations of the arguments `protoEvents`, `categories`, and
-`climatology`:
+combinations of the argument `protoEvents`:
 
 - threshCriterion:
 
@@ -207,16 +199,6 @@ combinations of the arguments `protoEvents`, `categories`, and
 
   A sequential number indicating the ID and order of occurrence of the
   events.
-
-- intensity:
-
-  The difference between `temp` (or the column provided for `y`) and
-  `seas`. Only added if `categories = TRUE` and `climatology = TRUE`.
-
-- category:
-
-  The category classification per day. Only added if `categories = TRUE`
-  and `climatology = TRUE`.
 
 The `event` results are summarised using a range of event metrics:
 
@@ -401,30 +383,30 @@ res_clim <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
 out <- detect_event3(res_clim, coldSpells = TRUE)
 # show a portion of the climatology:
 out$climatology[1:10, ]
-#>           ts_x   ts_y  ts_seas ts_thresh threshCriterion durationCriterion
-#>         <Date>  <num>    <num>     <num>          <lgcl>            <lgcl>
-#>  1: 1982-01-01 -20.94 -21.6080  -20.5471           FALSE             FALSE
-#>  2: 1982-01-02 -21.25 -21.6348  -20.5713           FALSE             FALSE
-#>  3: 1982-01-03 -21.38 -21.6621  -20.5961           FALSE             FALSE
-#>  4: 1982-01-04 -21.16 -21.6895  -20.6218           FALSE             FALSE
-#>  5: 1982-01-05 -21.26 -21.7169  -20.6499           FALSE             FALSE
-#>  6: 1982-01-06 -21.61 -21.7436  -20.6776           FALSE             FALSE
-#>  7: 1982-01-07 -21.74 -21.7699  -20.7053           FALSE             FALSE
-#>  8: 1982-01-08 -21.50 -21.7958  -20.7362           FALSE             FALSE
-#>  9: 1982-01-09 -21.40 -21.8217  -20.7655           FALSE             FALSE
-#> 10: 1982-01-10 -21.36 -21.8478  -20.7927           FALSE             FALSE
-#>      event event_no
-#>     <lgcl>    <int>
-#>  1:  FALSE       NA
-#>  2:  FALSE       NA
-#>  3:  FALSE       NA
-#>  4:  FALSE       NA
-#>  5:  FALSE       NA
-#>  6:  FALSE       NA
-#>  7:  FALSE       NA
-#>  8:  FALSE       NA
-#>  9:  FALSE       NA
-#> 10:  FALSE       NA
+#>           ts_x  ts_y ts_seas ts_thresh threshCriterion durationCriterion  event
+#>         <Date> <num>   <num>     <num>          <lgcl>            <lgcl> <lgcl>
+#>  1: 1982-01-01 20.94 21.6080   20.5471           FALSE             FALSE  FALSE
+#>  2: 1982-01-02 21.25 21.6348   20.5713           FALSE             FALSE  FALSE
+#>  3: 1982-01-03 21.38 21.6621   20.5961           FALSE             FALSE  FALSE
+#>  4: 1982-01-04 21.16 21.6895   20.6218           FALSE             FALSE  FALSE
+#>  5: 1982-01-05 21.26 21.7169   20.6499           FALSE             FALSE  FALSE
+#>  6: 1982-01-06 21.61 21.7436   20.6776           FALSE             FALSE  FALSE
+#>  7: 1982-01-07 21.74 21.7699   20.7053           FALSE             FALSE  FALSE
+#>  8: 1982-01-08 21.50 21.7958   20.7362           FALSE             FALSE  FALSE
+#>  9: 1982-01-09 21.40 21.8217   20.7655           FALSE             FALSE  FALSE
+#> 10: 1982-01-10 21.36 21.8478   20.7927           FALSE             FALSE  FALSE
+#>     event_no
+#>        <int>
+#>  1:       NA
+#>  2:       NA
+#>  3:       NA
+#>  4:       NA
+#>  5:       NA
+#>  6:       NA
+#>  7:       NA
+#>  8:       NA
+#>  9:       NA
+#> 10:       NA
 # show some of the cold-spells:
 out$event[1:5, 1:10]
 #>    event_no index_start index_peak index_end duration date_start  date_peak

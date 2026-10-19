@@ -27,17 +27,13 @@ badge](https://joss.theoj.org/papers/10.21105/joss.00821/status.svg)](https://do
 
 Install the CRAN release:
 
-``` r
-
-install.packages("heatwaveR")
-```
+\
+[`install.packages`](https://rdrr.io/r/utils/install.packages.html)`(``"heatwaveR"``)`
 
 Install the development version:
 
-``` r
-
-remotes::install_github("robwschlegel/heatwaveR")
-```
+\
+`remotes``::``install_github``(``"robwschlegel/heatwaveR"``)`
 
 ## Start here
 
@@ -95,10 +91,8 @@ Software, 3(27), 821. <https://doi.org/10.21105/joss.00821>
 
 In R:
 
-``` r
-
-citation("heatwaveR")
-```
+\
+[`citation`](https://rdrr.io/r/utils/citation.html)`(``"heatwaveR"``)`
 
 ## Core functions
 

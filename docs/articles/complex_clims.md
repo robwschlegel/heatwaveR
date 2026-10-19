@@ -55,12 +55,11 @@ Mr. Haouari.
 The first step with any analysis in R should be the loading of the
 packages to be used.
 
-``` r
-
-library(dplyr)
-library(ggpubr)
-library(heatwaveR)
-```
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`dplyr`](https://dplyr.tidyverse.org)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`ggpubr`](https://rpkgs.datanovia.com/ggpubr/)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`patchwork`](https://patchwork.data-imaginist.com)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`heatwaveR`](https://robwschlegel.github.io/heatwaveR/)`)`
 
 With our libraries loaded, we will now go about explicitly calling the
 `Algiers` data into our environment. These data are automatically loaded
@@ -69,10 +68,8 @@ here just for clarity. Anyone following along should feel free to use
 whatever data they would like. As long as the data have a date (`t`),
 `tMin`, and `tMax` column this code will function as designed.
 
-``` r
-
-Algiers <- Algiers
-```
+\
+`Algiers`` ``<-`` ``Algiers`
 
 ### Calculating thresholds
 
@@ -84,18 +81,16 @@ on the `tMax` time series. The second is the flat exceedance of
 bottom threshold as this is roughly the mean `tMin` for summer
 temperatures.
 
-``` r
-
-# The tMax threshold
-# The current WMO standard climatology period is 1981-01-01 to 2010-12-31 and should be used when possible
-# We rather use 1961-01-01 to 1990-01-01 as this is the oldest 30 year period available in the data
-tMax_clim <- ts2clm(data = Algiers, y = tMax, climatologyPeriod = c("1961-01-01", "1990-12-31"), pctile = 90)
-
-# The tMin exceedance
-# Note the use here of 'minDuration = 3' and 'maxGap = 1' as the default atmospheric arguments
-# The default marine arguments are 'minDuration = 5' and 'maxGap = 2'
-tMin_exc <- exceedance(data = Algiers, y = tMin, threshold = 19, minDuration = 3, maxGap = 1)$threshold
-```
+\
+`# The tMax threshold`\
+`# The current WMO standard climatology period is 1981-01-01 to 2010-12-31 and should be used when possible`\
+`# We rather use 1961-01-01 to 1990-01-01 as this is the oldest 30 year period available in the data`\
+`tMax_clim`` ``<-`` `[`ts2clm`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)`(``data ``=`` ``Algiers``, y ``=`` ``tMax``, climatologyPeriod ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"1961-01-01"``, ``"1990-12-31"``)``, pctile ``=`` ``90``)`\
+\
+`# The tMin exceedance`\
+`# Note the use here of 'minDuration = 3' and 'maxGap = 1' as the default atmospheric arguments`\
+`# The default marine arguments are 'minDuration = 5' and 'maxGap = 2'`\
+`tMin_exc`` ``<-`` `[`exceedance`](https://robwschlegel.github.io/heatwaveR/reference/exceedance.md)`(``data ``=`` ``Algiers``, y ``=`` ``tMin``, threshold ``=`` ``19``, minDuration ``=`` ``3``, maxGap ``=`` ``1``)``$``threshold`
 
 ### Calculating events
 
@@ -104,13 +99,11 @@ Now that the two thresholds have been calculated we use the
 function as usual, but provide the second threshold to the argument
 `threshClim2` that would normally lay dormant.
 
-``` r
-
-# Note that because we calculated our 90th percentile threshold on a column named 'tMax' 
-# and not the default column name 'temp', we must specify this below with 'y = tMax'
-events <- detect_event(data = tMax_clim, y = tMax, # The 90th percentile threshold
-                       threshClim2 = tMin_exc$exceedance) # The flat exceedance threshold
-```
+\
+`# Note that because we calculated our 90th percentile threshold on a column named 'tMax' `\
+`# and not the default column name 'temp', we must specify this below with 'y = tMax'`\
+`events`` ``<-`` `[`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)`(``data ``=`` ``tMax_clim``, y ``=`` ``tMax``, ``# The 90th percentile threshold`\
+`                       threshClim2 ``=`` ``tMin_exc``$``exceedance``)`` ``# The flat exceedance threshold`
 
 Please note that even though the use of the second threshold does allow
 for the resultant event metrics to differ, the values themselves are
@@ -134,27 +127,41 @@ results are output the same as though only one threshold (default) were
 used. This means that we may use the visualisation functions that come
 with **`heatwaveR`** without any extra fuss.
 
-``` r
+\
+`# The code to create a bubble plot for the heatwave results`\
+`bubble_plot`` ``<-`` `[`ggplot`](https://ggplot2.tidyverse.org/reference/ggplot.html)`(``data ``=`` ``events``$``event``, `[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``x ``=`` ``date_peak``, y ``=`` ``intensity_max``)``)`` ``+`\
+`  `[`geom_point`](https://ggplot2.tidyverse.org/reference/geom_point.html)`(`[`aes`](https://ggplot2.tidyverse.org/reference/aes.html)`(``size ``=`` ``intensity_cumulative``)``, shape ``=`` ``21``, fill ``=`` ``"salmon"``, alpha ``=`` ``0.8``)`` ``+`\
+`  `[`labs`](https://ggplot2.tidyverse.org/reference/labs.html)`(``x ``=`` ``NULL``, y ``=`` ``"Maximum Intensity [°C] "``, size ``=`` ``"Cumulative Intensity [°C x days]"``)`` ``+`\
+`  `[`scale_size_continuous`](https://ggplot2.tidyverse.org/reference/scale_size.html)`(``range ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``10``)``, `\
+`                        guide ``=`` `[`guide_legend`](https://ggplot2.tidyverse.org/reference/guide_legend.html)`(``title.position ``=`` ``"top"``, direction ``=`` ``"horizontal"``)``)`` ``+`\
+`  `[`theme_bw`](https://ggplot2.tidyverse.org/reference/ggtheme.html)`(``)`` ``+`\
+`  `[`theme`](https://ggplot2.tidyverse.org/reference/theme.html)`(``legend.position ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``0.3``, ``0.12``)``,`\
+`        legend.box.background ``=`` `[`element_rect`](https://ggplot2.tidyverse.org/reference/element.html)`(``colour ``=`` ``"black"``)``)`\
+\
+`# Don't forget to set 'event_line(y = tMax)'`\
+`# The legends for these two event_line() plots are moved inside the panel`\
+`# (rather than the default position beside it) to save horizontal space in this grid`\
+`p1`` ``<-`` `[`event_line`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)`(``events``, y ``=`` ``tMax``, metric ``=`` ``intensity_max``)`` ``+`\
+`  `[`theme`](https://ggplot2.tidyverse.org/reference/theme.html)`(``legend.position ``=`` ``"inside"``, legend.position.inside ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``0.13``, ``0.05``)``,`\
+`        legend.direction ``=`` ``"vertical"``,`\
+`        legend.background ``=`` `[`element_rect`](https://ggplot2.tidyverse.org/reference/element.html)`(``fill ``=`` ``"white"``, colour ``=`` ``"grey50"``)``)`\
+\
+`p2`` ``<-`` `[`event_line`](https://robwschlegel.github.io/heatwaveR/reference/event_line.md)`(``events``, y ``=`` ``tMax``, metric ``=`` ``intensity_max``, category ``=`` ``T``)`` ``+`\
+`  `[`theme`](https://ggplot2.tidyverse.org/reference/theme.html)`(``legend.position ``=`` ``"inside"``, legend.position.inside ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``0.13``, ``0.02``)``,`\
+`        legend.background ``=`` `[`element_rect`](https://ggplot2.tidyverse.org/reference/element.html)`(``fill ``=`` ``"white"``, colour ``=`` ``"grey50"``)``)`\
+\
+`# Note: this 2x2 grid uses patchwork rather than ggpubr::ggarrange() because`\
+`# ggarrange()/cowplot currently mis-renders multi-panel grids under ggplot2 >= 4.0`\
+`# (see https://github.com/wilkelab/cowplot/issues/215); ggarrange() is still used`\
+`# for the simpler side-by-side comparisons later in this vignette, which are unaffected.`\
+`(``p1`` ``|`` ``p2``)`` ``/`\
+`  ``(`[`lolli_plot`](https://robwschlegel.github.io/heatwaveR/reference/lolli_plot.md)`(``events``)`` ``|`` ``bubble_plot``)`
 
-# The code to create a bubble plot for the heatwave results
-bubble_plot <- ggplot(data = events$event, aes(x = date_peak, y = intensity_max)) +
-  geom_point(aes(size = intensity_cumulative), shape = 21, fill = "salmon", alpha = 0.8) +
-  labs(x = NULL, y = "Maximum Intensity [°C] ", size = "Cumulative Intensity [°C x days]") +
-  scale_size_continuous(range = c(1, 10), 
-                        guide = guide_legend(title.position = "top", direction = "horizontal")) +
-  theme_bw() +
-  theme(legend.position = c(0.3, 0.12),
-        legend.box.background = element_rect(colour = "black"))
-
-# Don't forget to set 'event_line(y = tMax)'
-ggarrange(event_line(events, y = tMax, metric = intensity_max),
-          event_line(events, y = tMax, metric = intensity_max, category = T),
-          lolli_plot(events),
-          bubble_plot,
-          ncol = 2, nrow = 2, align = "hv")
-```
-
-![](complex_clims_files/figure-html/visuals-1.png)
+![Four-panel figure comparing methods of visualising Algiers atmospheric
+heatwaves detected with a tMin exceedance as a second threshold: a
+standard event_line plot, a category-coloured event_line plot, a
+lollipop plot of maximum intensity, and a bubble plot of maximum versus
+cumulative intensity.](complex_clims_files/figure-html/visuals-1.png)
 
 ### Alternative second thresholds
 
@@ -183,47 +190,44 @@ that whichever criteria is the most strict, in this case
 `minDuration = 3` and `maxGap = 0`, will be the predominant filter
 through which the event metrics are quantified.
 
-``` r
-
-# Note that because we are not using the standard column name 'temp' we must
-# specify the chosen column name twice, once for ts2clm() and again for detect_event()
-
-# First threshold based on tMin
-thresh_tMin <- ts2clm(data = Algiers, y = tMin, pctile = 80, 
-                      climatologyPeriod = c("1961-01-01", "1990-12-31"))
-
-# Second threshold based on tMax
-# Be careful here that you put the arguments within the correct brackets
-thresh_tMax <- detect_event(ts2clm(data = Algiers, y = tMax, pctile = 90, 
-                                   climatologyPeriod = c("1961-01-01", "1990-12-31")),
-                            # These arguments are passed to detect_event(), not ts2clm()
-                            minDuration = 3, maxGap = 0, y = tMax, protoEvents = T)
-
-# Detect/calculate events using the two precalculated thresholds
-# Because detect_event() is not able to deduce which arguments we used above,
-# we must again tell it explicitly here
-events_two_thresh <- detect_event(data = thresh_tMin, y = tMin, minDuration = 10, maxGap = 2,
-                                  threshClim2 = thresh_tMax$event, minDuration2 = 3, maxGap2 = 0)
-
-# Or to simply use one threshold
-events_one_thresh <- detect_event(data = thresh_tMin, y = tMin, minDuration = 10, maxGap = 2)
-```
+\
+`# Note that because we are not using the standard column name 'temp' we must`\
+`# specify the chosen column name twice, once for ts2clm() and again for detect_event()`\
+\
+`# First threshold based on tMin`\
+`thresh_tMin`` ``<-`` `[`ts2clm`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)`(``data ``=`` ``Algiers``, y ``=`` ``tMin``, pctile ``=`` ``80``, `\
+`                      climatologyPeriod ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"1961-01-01"``, ``"1990-12-31"``)``)`\
+\
+`# Second threshold based on tMax`\
+`# Be careful here that you put the arguments within the correct brackets`\
+`thresh_tMax`` ``<-`` `[`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)`(`[`ts2clm`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)`(``data ``=`` ``Algiers``, y ``=`` ``tMax``, pctile ``=`` ``90``, `\
+`                                   climatologyPeriod ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"1961-01-01"``, ``"1990-12-31"``)``)``,`\
+`                            ``# These arguments are passed to detect_event(), not ts2clm()`\
+`                            minDuration ``=`` ``3``, maxGap ``=`` ``0``, y ``=`` ``tMax``, protoEvents ``=`` ``T``)`\
+\
+`# Detect/calculate events using the two precalculated thresholds`\
+`# Because detect_event() is not able to deduce which arguments we used above,`\
+`# we must again tell it explicitly here`\
+`events_two_thresh`` ``<-`` `[`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)`(``data ``=`` ``thresh_tMin``, y ``=`` ``tMin``, minDuration ``=`` ``10``, maxGap ``=`` ``2``,`\
+`                                  threshClim2 ``=`` ``thresh_tMax``$``event``, minDuration2 ``=`` ``3``, maxGap2 ``=`` ``0``)`\
+\
+`# Or to simply use one threshold`\
+`events_one_thresh`` ``<-`` `[`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)`(``data ``=`` ``thresh_tMin``, y ``=`` ``tMin``, minDuration ``=`` ``10``, maxGap ``=`` ``2``)`
 
 Here are the differences in lolliplot format:
 
-``` r
+\
+[`ggarrange`](https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html)`(`[`lolli_plot`](https://robwschlegel.github.io/heatwaveR/reference/lolli_plot.md)`(``events_one_thresh``)``, `[`lolli_plot`](https://robwschlegel.github.io/heatwaveR/reference/lolli_plot.md)`(``events_two_thresh``)``, labels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"One threshold"``, ``"Two thresholds"``)``)`
 
-ggarrange(lolli_plot(events_one_thresh), lolli_plot(events_two_thresh), labels = c("One threshold", "Two thresholds"))
-```
-
-![](complex_clims_files/figure-html/alt-two-thresh-lollis-1.png)
+![Side-by-side lollipop plots comparing detected Algiers heatwave events
+using one threshold versus two combined thresholds (tMin and tMax),
+labelled 'One threshold' and 'Two
+thresholds'.](complex_clims_files/figure-html/alt-two-thresh-lollis-1.png)
 
 Here is a brief display of the top few events from each method:
 
-``` r
-
-head(events_one_thresh$event)
-```
+\
+[`head`](https://rdrr.io/r/utils/head.html)`(``events_one_thresh``$``event``)`
 
     ##   event_no index_start index_peak index_end duration date_start  date_peak
     ## 1        1        6135       6137      6144       10 1977-10-18 1977-10-20
@@ -256,10 +260,8 @@ head(events_one_thresh$event)
     ## 4            1.5284                    184.4     0.6922       3.4156
     ## 5            1.5737                    307.0     0.6559       1.2658
 
-``` r
-
-head(events_two_thresh$event)
-```
+\
+[`head`](https://rdrr.io/r/utils/head.html)`(``events_two_thresh``$``event``)`
 
     ##   event_no index_start index_peak index_end duration date_start  date_peak
     ## 1        1        6135       6137      6137        3 1977-10-18 1977-10-20
@@ -327,12 +329,10 @@ directly begin filtering the results. Before we do so, let’s pull out
 the list components of our results into dataframes for easier use down
 the line.
 
-``` r
-
-# Pull out each data.frame as their own object for easier use
-events_one_event <- events_one_thresh$event
-events_one_climatology <- events_one_thresh$climatology
-```
+\
+`# Pull out each data.frame as their own object for easier use`\
+`events_one_event`` ``<-`` ``events_one_thresh``$``event`\
+`events_one_climatology`` ``<-`` ``events_one_thresh``$``climatology`
 
 This is where things may get tricky for some users, and where the
 default use of the functions in the **`heatwaveR`** package ends. We are
@@ -344,32 +344,28 @@ In order to make the filtering of events easier, we will combine the two
 different dataframes that we are using as threshold/filtering guides to
 chose the events that meet all of our selection criteria.
 
-``` r
-
-# Join the two threshold dataframes
-two_thresh <- left_join(events_one_climatology, thresh_tMax, by = c("t"))
-
-# Remove all days that did not qualify as events in both thresholds
-two_thresh_filtered <- two_thresh %>%
-  filter(event.x == TRUE,
-         event.y == TRUE)
-```
+\
+`# Join the two threshold dataframes`\
+`two_thresh`` ``<-`` `[`left_join`](https://dplyr.tidyverse.org/reference/mutate-joins.html)`(``events_one_climatology``, ``thresh_tMax``, by ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"t"``)``)`\
+\
+`# Remove all days that did not qualify as events in both thresholds`\
+`two_thresh_filtered`` ``<-`` ``two_thresh`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`  `[`filter`](https://dplyr.tidyverse.org/reference/filter.html)`(``event.x`` ``==`` ``TRUE``,`\
+`         ``event.y`` ``==`` ``TRUE``)`
 
 With our filtering guide created, we may now apply it to
 `events_one_thresh` to get our filtered results.
 
-``` r
-
-# Copy data with a new name
-events_one_thresh_filtered <- events_one_thresh
-
-# Then filter
-events_one_thresh_filtered$event <- events_one_thresh_filtered$event %>% 
-  filter(event_no %in% two_thresh_filtered$event_no.x)
-
-# Compare results
-head(events_one_thresh_filtered$event)
-```
+\
+`# Copy data with a new name`\
+`events_one_thresh_filtered`` ``<-`` ``events_one_thresh`\
+\
+`# Then filter`\
+`events_one_thresh_filtered``$``event`` ``<-`` ``events_one_thresh_filtered``$``event`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)` `\
+`  `[`filter`](https://dplyr.tidyverse.org/reference/filter.html)`(``event_no`` `[`%in%`](https://rdrr.io/r/base/match.html)` ``two_thresh_filtered``$``event_no.x``)`\
+\
+`# Compare results`\
+[`head`](https://rdrr.io/r/utils/head.html)`(``events_one_thresh_filtered``$``event``)`
 
     ##   event_no index_start index_peak index_end duration date_start  date_peak
     ## 1        1        6135       6137      6144       10 1977-10-18 1977-10-20
@@ -402,10 +398,8 @@ head(events_one_thresh_filtered$event)
     ## 4            1.5284                    184.4     0.6922       3.4156
     ## 5            1.5737                    307.0     0.6559       1.2658
 
-``` r
-
-head(events_two_thresh$event)
-```
+\
+[`head`](https://rdrr.io/r/utils/head.html)`(``events_two_thresh``$``event``)`
 
     ##   event_no index_start index_peak index_end duration date_start  date_peak
     ## 1        1        6135       6137      6137        3 1977-10-18 1977-10-20
@@ -450,12 +444,10 @@ of the days that exceeded only the first threshold.
 To better understand how different the results from these two different
 techniques may be we will use lolliplots to visualise them.
 
-``` r
-
-ggarrange(lolli_plot(events_two_thresh, metric = duration), 
-          lolli_plot(events_one_thresh_filtered, metric = duration), 
-          labels = c("Double threshold", "Filter threshold"))
-```
+\
+[`ggarrange`](https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html)`(`[`lolli_plot`](https://robwschlegel.github.io/heatwaveR/reference/lolli_plot.md)`(``events_two_thresh``, metric ``=`` ``duration``)``, `\
+`          `[`lolli_plot`](https://robwschlegel.github.io/heatwaveR/reference/lolli_plot.md)`(``events_one_thresh_filtered``, metric ``=`` ``duration``)``, `\
+`          labels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"Double threshold"``, ``"Filter threshold"``)``)`
 
 ![Difference in duration (days) of events given different applications
 of thresholds. Note the difference in the
@@ -464,12 +456,10 @@ y-axes.](complex_clims_files/figure-html/lolliplot-duration-1.png)
 Difference in duration (days) of events given different applications of
 thresholds. Note the difference in the y-axes.
 
-``` r
-
-ggarrange(lolli_plot(events_two_thresh, metric = intensity_cumulative), 
-          lolli_plot(events_one_thresh_filtered, metric = intensity_cumulative), 
-          labels = c("Double threshold", "Filter threshold"))
-```
+\
+[`ggarrange`](https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html)`(`[`lolli_plot`](https://robwschlegel.github.io/heatwaveR/reference/lolli_plot.md)`(``events_two_thresh``, metric ``=`` ``intensity_cumulative``)``, `\
+`          `[`lolli_plot`](https://robwschlegel.github.io/heatwaveR/reference/lolli_plot.md)`(``events_one_thresh_filtered``, metric ``=`` ``intensity_cumulative``)``, `\
+`          labels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"Double threshold"``, ``"Filter threshold"``)``)`
 
 ![Difference in cumulative intensity (°C x days) of events given
 different applications of thresholds. Note the difference in the

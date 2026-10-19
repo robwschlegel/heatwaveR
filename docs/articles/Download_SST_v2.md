@@ -131,83 +131,79 @@ detect the events within each slice scales with the number of CPU cores.
 
 Here is a set of steps that does the job for me:
 
-``` r
+\
+`# Load packages -----------------------------------------------------------`\
+\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`tidyverse`](https://tidyverse.tidyverse.org)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`tidync`](https://docs.ropensci.org/tidync/)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`data.table`](https://r-datatable.com)`)`` ``# for the fast fwrite() function`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`heatwaveR`](https://robwschlegel.github.io/heatwaveR/)`)`\
+[`library`](https://rdrr.io/r/base/library.html)`(`[`doParallel`](https://github.com/RevolutionAnalytics/doparallel)`)`\
+[`registerDoParallel`](https://rdrr.io/pkg/doParallel/man/registerDoParallel.html)`(``cores ``=`` ``14``)`` ``# not using all 16`\
+\
+`# Define paths ------------------------------------------------------------`\
+\
+`datadir`` ``<-`` ``"/Volumes/OceanData"`\
+`oisst_file_dir`` ``<-`` `[`paste0`](https://rdrr.io/r/base/paste.html)`(``datadir``, ``"/test_files"``)`\
+`nc_file`` ``<-`` `[`paste0`](https://rdrr.io/r/base/paste.html)`(``oisst_file_dir``, ``"/OISST_combined.nc"``)`\
+`MHW_dir`` ``<-`` ``datadir`\
+\
+`# Define various functions ------------------------------------------------`\
+\
+`# A load and slice function for the combined netCDF`\
+`OISST_load`` ``<-`` ``function``(``file_name``, ``lon1``, ``lon2``)`` ``{`\
+`  ``OISST_dat`` ``<-`` `[`tidync`](https://docs.ropensci.org/tidync/reference/tidync.html)`(``file_name``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`    `[`hyper_filter`](https://docs.ropensci.org/tidync/reference/hyper_filter.html)`(``lon ``=`` `[`between`](https://rdrr.io/pkg/data.table/man/between.html)`(``lon``, ``lon1``, ``lon2``)``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`    `[`hyper_tibble`](https://docs.ropensci.org/tidync/reference/hyper_tibble.html)`(``select_var ``=`` ``"sst"``, force ``=`` ``TRUE``, drop ``=`` ``TRUE``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`    `[`select`](https://dplyr.tidyverse.org/reference/select.html)`(``-``zlev``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`    ``dplyr``::`[`rename`](https://dplyr.tidyverse.org/reference/rename.html)`(``t ``=`` ``time``, temp ``=`` ``sst``)`` `[`%>%`](https://magrittr.tidyverse.org/reference/pipe.html)\
+`    `[`mutate`](https://dplyr.tidyverse.org/reference/mutate.html)`(``t ``=`` `[`as.Date`](https://rdrr.io/r/base/as.Date.html)`(``t``, origin ``=`` ``"1978-01-01"``)``)`\
+`  `[`return`](https://rdrr.io/r/base/function.html)`(``OISST_dat``)`\
+`  `[`rm`](https://rdrr.io/r/base/rm.html)`(``OISST_dat``)`\
+`}`\
+\
+`# Rob's MHW detect function`\
+`event_only`` ``<-`` ``function``(``df``)`` ``{`\
+`  ``# first calculate the climatologies`\
+`  ``clim`` ``<-`` `[`ts2clm`](https://robwschlegel.github.io/heatwaveR/reference/ts2clm.md)`(``data ``=`` ``df``, climatologyPeriod ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"1991-01-01"``, ``"2020-12-31"``)``)`\
+`  ``# then the events`\
+`  ``event`` ``<-`` `[`detect_event`](https://robwschlegel.github.io/heatwaveR/reference/detect_event.md)`(``data ``=`` ``clim``)`\
+`  `[`rm`](https://rdrr.io/r/base/rm.html)`(``clim``)`\
+`  ``# return only the event metric dataframe of results`\
+`  `[`return`](https://rdrr.io/r/base/function.html)`(``event``$``event``)`\
+`  `[`rm`](https://rdrr.io/r/base/rm.html)`(``event``)`\
+`}`
 
-# Load packages -----------------------------------------------------------
-
-library(tidyverse)
-library(tidync)
-library(data.table) # for the fast fwrite() function
-library(heatwaveR)
-library(doParallel)
-registerDoParallel(cores = 14) # not using all 16
-
-# Define paths ------------------------------------------------------------
-
-datadir <- "/Volumes/OceanData"
-oisst_file_dir <- paste0(datadir, "/test_files")
-nc_file <- paste0(oisst_file_dir, "/OISST_combined.nc")
-MHW_dir <- datadir
-
-# Define various functions ------------------------------------------------
-
-# A load and slice function for the combined netCDF
-OISST_load <- function(file_name, lon1, lon2) {
-  OISST_dat <- tidync(file_name) %>%
-    hyper_filter(lon = between(lon, lon1, lon2)) %>%
-    hyper_tibble(select_var = "sst", force = TRUE, drop = TRUE) %>%
-    select(-zlev) %>%
-    dplyr::rename(t = time, temp = sst) %>%
-    mutate(t = as.Date(t, origin = "1978-01-01"))
-  return(OISST_dat)
-  rm(OISST_dat)
-}
-
-# Rob's MHW detect function
-event_only <- function(df) {
-  # first calculate the climatologies
-  clim <- ts2clm(data = df, climatologyPeriod = c("1991-01-01", "2020-12-31"))
-  # then the events
-  event <- detect_event(data = clim)
-  rm(clim)
-  # return only the event metric dataframe of results
-  return(event$event)
-  rm(event)
-}
-```
-
-``` r
-
-# Execute the code --------------------------------------------------------
-
-# Define the slices
-# 10° longitude slices seem to work fine on
-# my MacBook Pro with 64Gb RAM and 16 cores
-slice_df <- tibble(lon1 = seq(0, 350, 10),
-                   lon2 = seq(10, 360, 10))
-
-system.time(
-  # extract slices sequentially
-  for (i in 1:nrow(slice_df)) {
-    cat(noquote(paste("Processing slice", i, "of", nrow(slice_df),
-                      "-->", slice_df$lon1[i], "to", slice_df$lon2[i], "°E\n")))
-    cat(noquote("  > 1. loading and slicing NetCDF\n"))
-    sst <- OISST_load(nc_file, lon1 = slice_df$lon1[i], lon2 = slice_df$lon2[i])
-    # process each slice in parallel
-    cat(noquote("  > 2. detecting marine heatwaves\n"))
-    MHW <- plyr::ddply(.data = sst, .variables = c("lon", "lat"),
-                       .fun = event_only, .parallel = TRUE)
-    rm(sst)
-    # save results to disk
-    cat(noquote("  > 3. saving events to csv\n"))
-    fwrite(MHW, file = paste0(datadir, "/MHW_slice_", i, "_",
-                              slice_df$lon1[i], "-", slice_df$lon2[i], ".csv"))
-    rm(MHW)
-    cat(noquote("SLICE DONE!\n"))
-    cat(sep="\n\n")
-  }
-)
-```
+\
+`# Execute the code --------------------------------------------------------`\
+\
+`# Define the slices`\
+`# 10° longitude slices seem to work fine on`\
+`# my MacBook Pro with 64Gb RAM and 16 cores`\
+`slice_df`` ``<-`` `[`tibble`](https://tibble.tidyverse.org/reference/tibble.html)`(``lon1 ``=`` `[`seq`](https://rdrr.io/r/base/seq.html)`(``0``, ``350``, ``10``)``,`\
+`                   lon2 ``=`` `[`seq`](https://rdrr.io/r/base/seq.html)`(``10``, ``360``, ``10``)``)`\
+\
+[`system.time`](https://rdrr.io/r/base/system.time.html)`(`\
+`  ``# extract slices sequentially`\
+`  ``for`` ``(``i`` ``in`` ``1``:`[`nrow`](https://rdrr.io/r/base/nrow.html)`(``slice_df``)``)`` ``{`\
+`    `[`cat`](https://rdrr.io/r/base/cat.html)`(`[`noquote`](https://rdrr.io/r/base/noquote.html)`(`[`paste`](https://rdrr.io/r/base/paste.html)`(``"Processing slice"``, ``i``, ``"of"``, `[`nrow`](https://rdrr.io/r/base/nrow.html)`(``slice_df``)``,`\
+`                      ``"-->"``, ``slice_df``$``lon1``[``i``]``, ``"to"``, ``slice_df``$``lon2``[``i``]``, ``"°E\n"``)``)``)`\
+`    `[`cat`](https://rdrr.io/r/base/cat.html)`(`[`noquote`](https://rdrr.io/r/base/noquote.html)`(``"  > 1. loading and slicing NetCDF\n"``)``)`\
+`    ``sst`` ``<-`` ``OISST_load``(``nc_file``, lon1 ``=`` ``slice_df``$``lon1``[``i``]``, lon2 ``=`` ``slice_df``$``lon2``[``i``]``)`\
+`    ``# process each slice in parallel`\
+`    `[`cat`](https://rdrr.io/r/base/cat.html)`(`[`noquote`](https://rdrr.io/r/base/noquote.html)`(``"  > 2. detecting marine heatwaves\n"``)``)`\
+`    ``MHW`` ``<-`` ``plyr``::`[`ddply`](https://rdrr.io/pkg/plyr/man/ddply.html)`(``.data ``=`` ``sst``, .variables ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"lon"``, ``"lat"``)``,`\
+`                       .fun ``=`` ``event_only``, .parallel ``=`` ``TRUE``)`\
+`    `[`rm`](https://rdrr.io/r/base/rm.html)`(``sst``)`\
+`    ``# save results to disk`\
+`    `[`cat`](https://rdrr.io/r/base/cat.html)`(`[`noquote`](https://rdrr.io/r/base/noquote.html)`(``"  > 3. saving events to csv\n"``)``)`\
+`    `[`fwrite`](https://rdrr.io/pkg/data.table/man/fwrite.html)`(``MHW``, file ``=`` `[`paste0`](https://rdrr.io/r/base/paste.html)`(``datadir``, ``"/MHW_slice_"``, ``i``, ``"_"``,`\
+`                              ``slice_df``$``lon1``[``i``]``, ``"-"``, ``slice_df``$``lon2``[``i``]``, ``".csv"``)``)`\
+`    `[`rm`](https://rdrr.io/r/base/rm.html)`(``MHW``)`\
+`    `[`cat`](https://rdrr.io/r/base/cat.html)`(`[`noquote`](https://rdrr.io/r/base/noquote.html)`(``"SLICE DONE!\n"``)``)`\
+`    `[`cat`](https://rdrr.io/r/base/cat.html)`(``sep``=``"\n\n"``)`\
+`  ``}`\
+`)`
 
 Please let me know if there are issues with the scripts, or if you have
 suggesations about how to improve them.

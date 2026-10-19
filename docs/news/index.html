@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">heatwaveR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.5.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,6 +51,22 @@
       <small>Source: <a href="https://github.com/robwschlegel/heatwaveR/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.0" id="heatwaver-100-2026-10-19">heatwaveR 1.0.0 (2026-10-19)<a class="anchor" aria-label="anchor" href="#heatwaver-100-2026-10-19"></a></h2>
+<ul><li>Final release: heatwaveR is now frozen, and active development continues in <a href="https://robwschlegel.github.io/heatwave3/" class="external-link">heatwave3</a>
+</li>
+<li>Bug fix: with <code>joinAcrossGaps = TRUE</code>, <code><a href="../reference/detect_event.html">detect_event()</a></code>, <code><a href="../reference/detect_event3.html">detect_event3()</a></code>, and <code><a href="../reference/exceedance.html">exceedance()</a></code> no longer join the <code>maxGap</code> non-exceeding days at the end of a time series into the last event. These events now end on their last day above the threshold. This changes the <code>date_end</code>, <code>duration</code>, intensity metrics, and <code>rate_decline</code> of affected events</li>
+<li>Bug fix: the seasons in <code><a href="../reference/category.html">category()</a></code> now follow the meteorological seasons as documented (December to February is boreal winter and austral summer). Previously calendar quarters were used, so events that started, peaked, or ended in March, June, September, or December were labelled with the preceding season</li>
+<li>Both fixes make the events and categories identical to those of heatwave3</li>
+<li>Bug fix: <code>category(season = "range")</code> now labels each event by the number of seasons it touches, as documented (one season, “Winter/Spring” for two, “Winter-Summer” for three, “Year-round” for year-long+). The previous duration cut-offs returned <code>NA</code> for some events lasting roughly six to nine months</li>
+<li>Bug fix: <code>exceedance(below = TRUE)</code> now returns negative <code>rate_onset</code> and <code>rate_decline</code>, as `detect_event(coldSpells = TRUE)</li>
+<li>Bug fix: <code>exceedance(roundRes = FALSE)</code> no longer rounds the metrics to whole numbers</li>
+<li>Bug fix: <code>detect_event(categories = TRUE)</code> no longer fails or returns no events when <code>roundRes = FALSE</code> or is greater than 4 decimal places</li>
+<li>Bug fix: <code><a href="../reference/detect_event3.html">detect_event3()</a></code> now uses <code>minDuration2</code> and <code>maxGap2</code> with <code>threshClim2</code>, and its climatology output keeps the input <code>temp</code>, <code>seas</code>, and <code>thresh</code> (previously negated for cold-spells, with missing temperatures replaced by <code>seas</code>)</li>
+<li>Bug fix: <code>ts2clm3(var = TRUE)</code> now returns the same variance as <code><a href="../reference/ts2clm.html">ts2clm()</a></code>, and no longer fails with <code>smoothPercentile = FALSE</code>
+</li>
+<li>The unused <code>categories</code> argument of <code><a href="../reference/detect_event3.html">detect_event3()</a></code> is now documented as such</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.5.9000" id="heatwaver-0559000-2026-07-27">heatwaveR 0.5.5.9000 (2026-07-27)<a class="anchor" aria-label="anchor" href="#heatwaver-0559000-2026-07-27"></a></h2>
 <ul><li>User contribution to increase speed of internal variance calculations</li>
@@ -882,7 +898,7 @@
 <li>Fix error with smooth_percentile and smooth_percentile_width descriptions that were interchanged in <code><a href="https://purrr.tidyverse.org/reference/detect.html" class="external-link">detect()</a></code>
 </li>
 <li>Simplify initial lines of leap year calculations (remove redundant code)</li>
-<li>change from <code><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">raster::quantile()</a></code> to <code><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">stats::quantile()</a></code>
+<li>change from <code>raster::quantile()</code> to <code><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">stats::quantile()</a></code>
 </li>
 </ul></div>
     <div class="section level2">
@@ -931,7 +947,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>
