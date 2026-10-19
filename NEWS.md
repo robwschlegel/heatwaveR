@@ -4,6 +4,13 @@
 - Bug fix: with `joinAcrossGaps = TRUE`, `detect_event()`, `detect_event3()`, and `exceedance()` no longer join the `maxGap` non-exceeding days at the end of a time series into the last event. These events now end on their last day above the threshold. This changes the `date_end`, `duration`, intensity metrics, and `rate_decline` of affected events
 - Bug fix: the seasons in `category()` now follow the meteorological seasons as documented (December to February is boreal winter and austral summer). Previously calendar quarters were used, so events that started, peaked, or ended in March, June, September, or December were labelled with the preceding season
 - Both fixes make the events and categories identical to those of heatwave3
+- Bug fix: `category(season = "range")` now labels each event by the number of seasons it touches, as documented (one season, "Winter/Spring" for two, "Winter-Summer" for three, "Year-round" for year-long+). The previous duration cut-offs returned `NA` for some events lasting roughly six to nine months
+- Bug fix: `exceedance(below = TRUE)` now returns negative `rate_onset` and `rate_decline`, as `detect_event(coldSpells = TRUE)
+- Bug fix: `exceedance(roundRes = FALSE)` no longer rounds the metrics to whole numbers
+- Bug fix: `detect_event(categories = TRUE)` no longer fails or returns no events when `roundRes = FALSE` or is greater than 4 decimal places
+- Bug fix: `detect_event3()` now uses `minDuration2` and `maxGap2` with `threshClim2`, and its climatology output keeps the input `temp`, `seas`, and `thresh` (previously negated for cold-spells, with missing temperatures replaced by `seas`)
+- Bug fix: `ts2clm3(var = TRUE)` now returns the same variance as `ts2clm()`, and no longer fails with `smoothPercentile = FALSE`
+- The unused `categories` argument of `detect_event3()` is now documented as such
 
 # heatwaveR 0.5.5.9000 (2026-07-27)
 

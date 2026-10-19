@@ -209,3 +209,14 @@ test_that("seasons follow meteorological months (December to February = northern
   expect_true(all(south[peak_mo %in% c(6, 7, 8)] == "Winter"))
   expect_true(any(peak_mo %in% c(3, 6, 9, 12)))
 })
+
+test_that("season = 'range' counts the seasons that each event touches", {
+  starts <- as.Date(c("2001-06-01", "2001-04-01", "2001-02-01", "2001-03-01", "2001-12-10", "2001-11-20"))
+  ends <- as.Date(c("2001-11-29", "2001-12-15", "2001-09-05", "2001-11-30", "2002-02-20", "2001-12-05"))
+  ev <- data.frame(event_no = seq_along(starts), date_start = starts, date_peak = starts,
+                   date_end = ends, duration = as.integer(ends - starts) + 1, intensity_max = 1)
+  clim <- data.frame(t = starts, temp = 2, seas = 0, thresh = 1, event_no = seq_along(starts))
+  res <- category(list(climatology = clim, event = ev), S = FALSE)
+  res <- res$season[match(ev$event_no, res$event_no)]
+  expect_equal(res, c("Summer/Fall", "Year-round", "Year-round", "Spring-Fall", "Winter", "Fall/Winter"))
+})

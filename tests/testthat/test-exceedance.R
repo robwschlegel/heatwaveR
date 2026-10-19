@@ -144,3 +144,15 @@ test_that("an exceedance is not extended across a short gap at the end of the se
   expect_equal(res$exceedance$date_end[nrow(res$exceedance)], sst_end$t[n - 2])
   expect_false(any(res$threshold$exceedance[(n - 1):n]))
 })
+
+test_that("roundRes = FALSE does not round the exceedance metrics", {
+  res <- exceedance(sst_WA, threshold = 25, roundRes = FALSE)$exceedance
+  expect_false(all(res$intensity_mean == round(res$intensity_mean)))
+})
+
+test_that("below = TRUE returns negative rates, as for the intensities", {
+  res <- exceedance(sst_WA, threshold = 19, below = TRUE)$exceedance
+  expect_true(all(res$intensity_max < 0))
+  expect_true(all(res$rate_onset < 0, na.rm = TRUE))
+  expect_true(all(res$rate_decline < 0, na.rm = TRUE))
+})

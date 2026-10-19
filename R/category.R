@@ -250,19 +250,16 @@ category <- function(data,
       }
 
     if (season == "range") {
-      seasons$diff_season <- as.integer(seasons$start_season) - as.integer(seasons$end_season)
-      for (i in 1:nrow(seasons)) {
-        if (seasons$diff_season[i] == 0 & seasons$duration[i] < 100) {
-          seasons$season[i] <- paste0(seasons$start_season[i])
-        } else if (seasons$diff_season[i] %in% c(-1, 3) & seasons$duration[i] < 180) {
-          seasons$season[i] <- paste0(seasons$start_season[i], "/", seasons$end_season[i])
-        } else if (seasons$diff_season[i] %in% c(-3, -2, 2)) {
-          seasons$season[i] <- paste0(seasons$start_season[i], "-", seasons$end_season[i])
-        }
-        if (seasons$duration[i] > 270) {
-          seasons$season[i] <- "Year-round"
-        }
+      # Number of seasons the event touches, with December counted in the next year's winter
+      season_index <- function(d) {
+        m <- as.integer(format(d, "%m"))
+        (as.integer(format(d, "%Y")) + (m == 12)) * 4 + (m %% 12) %/% 3
       }
+      n_season <- season_index(seasons$date_end) - season_index(seasons$date_start) + 1
+      seasons$season <- ifelse(n_season == 1, as.character(seasons$start_season),
+                               ifelse(n_season == 2, paste0(seasons$start_season, "/", seasons$end_season),
+                                      ifelse(n_season == 3, paste0(seasons$start_season, "-", seasons$end_season),
+                                             "Year-round")))
     } else if (season == "start") {
       seasons$season <- as.character(seasons$start_season)
     } else if (season == "peak") {

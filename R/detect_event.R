@@ -499,6 +499,8 @@ detect_event <- function(data,
 
       if (is.data.frame(data_cat)) {
         colnames(data_cat)[c(3,5)] <- c("date_peak", "intensity_max")
+        # category() rounds i_max, so restore the exact merge key
+        data_cat$intensity_max <- events$intensity_max[match(data_cat$event_no, events$event_no)]
         data_res <- base::merge(x = events, y = data_cat,
                                 by = c("event_no", "duration", "intensity_max", "date_peak"))
         data_res <- data_res[order(data_res$event_no),]
@@ -507,6 +509,7 @@ detect_event <- function(data,
 
       } else {
         colnames(data_cat$event)[c(3,5)] <- c("date_peak", "intensity_max")
+        data_cat$event$intensity_max <- events$intensity_max[match(data_cat$event$event_no, events$event_no)]
         data_res <- list(climatology = base::merge(x = data_res$climatology, y = data_cat$climatology,
                                                    by = c("t", "event_no"), all.x = TRUE),
                          event = base::merge(x = data_res$event, y = data_cat$event,
@@ -526,14 +529,14 @@ detect_event <- function(data,
     }
 
     if (returnDF) {
-      if(base::class(data_res) == "list") {
+      if(!is.data.frame(data_res)) {
         data.table::setDF(data_res$climatology)
         data.table::setDF(data_res$event)
       } else {
         data.table::setDF(data_res)
       }
     } else {
-      if(base::class(data_res) == "list") {
+      if(!is.data.frame(data_res)) {
         data.table::setDT(data_res$climatology)
         data.table::setDT(data_res$event)
       } else {

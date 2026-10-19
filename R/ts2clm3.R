@@ -407,8 +407,8 @@ ts2clm3 <- function(data,
           na.rm = FALSE,
           align = "center"
         ),
-        thresh_var_roll = data.table::frollvar(
-          thresh,
+        thresh_var_roll = data.table::frollmean(
+          var,
           smoothPercentileWidth,
           na.rm = FALSE,
           align = "center"
@@ -429,7 +429,7 @@ ts2clm3 <- function(data,
     # END INSERT smooth_percentile <<<
 
   } else {
-    ts_clim <- ts_mat
+    ts_clim <- data.table::as.data.table(ts_mat)
   }
 
   if (is.numeric(roundClm)) {

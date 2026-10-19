@@ -266,6 +266,8 @@ exceedance <- function(data,
       exceedances$intensity_mean_abs <- -exceedances$intensity_mean_abs
       exceedances$intensity_max_abs <- -exceedances$intensity_max_abs
       exceedances$intensity_cum_abs <- -exceedances$intensity_cum_abs
+      exceedances$rate_onset <- -exceedances$rate_onset
+      exceedances$rate_decline <- -exceedances$rate_decline
     }
 
   } else {
@@ -276,7 +278,7 @@ exceedance <- function(data,
                               intensity_max_abs = NA, intensity_var_abs = NA,
                               intensity_cum_abs = NA, rate_onset = NA, rate_decline = NA)
   }
-  exceedances[,9:18] <- round(exceedances[,9:18], roundRes)
+  if (is.numeric(roundRes)) exceedances[,9:18] <- round(exceedances[,9:18], roundRes)
 
   if (below) {
     exceedances_clim$ts_y <- -exceedances_clim$ts_y

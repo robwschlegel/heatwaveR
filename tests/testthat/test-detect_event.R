@@ -193,3 +193,10 @@ test_that("an event is not extended across a short gap at the end of the series"
   expect_equal(res$event$date_end[nrow(res$event)], ts$t[n - 2])
   expect_false(any(res$climatology$event[(n - 1):n]))
 })
+
+test_that("categories = TRUE works with roundRes = FALSE", {
+  ts <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  n_events <- nrow(detect_event(ts)$event)
+  expect_equal(nrow(detect_event(ts, categories = TRUE, roundRes = FALSE)), n_events)
+  expect_equal(nrow(detect_event(ts, categories = TRUE, climatology = TRUE, roundRes = FALSE)$event), n_events)
+})

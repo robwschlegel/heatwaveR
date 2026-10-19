@@ -149,3 +149,21 @@ test_that("an event is not extended across a short gap at the end of the series"
   expect_equal(res$event$date_end[nrow(res$event)], ts$t[n - 2])
   expect_false(any(res$climatology$event[(n - 1):n]))
 })
+
+test_that("minDuration2 and maxGap2 are used with threshClim2", {
+  ts <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
+  th2 <- ts$temp > 25
+  res3 <- detect_event3(data.table::copy(ts), threshClim2 = th2, minDuration2 = 20)
+  res <- detect_event(as.data.frame(ts), threshClim2 = th2, minDuration2 = 20)
+  expect_equal(nrow(res3$event), nrow(res$event))
+})
+
+test_that("the climatology output keeps the input temperatures for cold-spells and NA days", {
+  ts <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), pctile = 10)
+  ts$temp[100:102] <- NA
+  res_cold <- detect_event3(data.table::copy(ts), coldSpells = TRUE)
+  expect_equal(res_cold$climatology[[2]], round(ts$temp, 4))
+  expect_equal(res_cold$climatology[[3]], ts$seas)
+  expect_equal(res_cold$climatology[[4]], ts$thresh)
+  expect_true(all(res_cold$event$intensity_max < 0))
+})

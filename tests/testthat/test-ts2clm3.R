@@ -132,3 +132,15 @@ test_that("additional columns in base data should be passed through the funciton
   expect_equal(ncol(res), 7)
   expect_equal(nrow(res), 14975)
 })
+
+test_that("var = TRUE gives the same variance as ts2clm()", {
+  res <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), var = TRUE, clmOnly = TRUE)
+  res3 <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), var = TRUE, clmOnly = TRUE)
+  expect_equal(res3$var, res$var, tolerance = 1e-4)
+})
+
+test_that("var = TRUE works with smoothPercentile = FALSE", {
+  res3 <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"),
+                  var = TRUE, smoothPercentile = FALSE, clmOnly = TRUE)
+  expect_true("var" %in% names(res3))
+})

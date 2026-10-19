@@ -97,15 +97,11 @@ present (i.e. both \code{threshCriterion} and \code{durationCriterion} are \code
 and a sequential number uniquely identifying the detected event(s). The second list
 component (\code{event}) will contain the heatwave event metrics. If \code{protoEvents = TRUE}
 then only the \code{climatology} will be reported. Note also that if \code{protoEvents = TRUE}
-it will ignore whatever the user provides to the \code{categories} argument and anything
-else passed to \code{...}.}
+it will ignore anything else passed to \code{...}.}
 
-\item{categories}{Boolean. Rather than using \code{\link{category}} as a separate step to determine
-the categories of the detected MHWs, one may choose to set this argument to \code{TRUE}.
-One may pass the same arguments used in the \code{\link{category}} function to this function
-to affect the output. Note that the default behaviour of \code{\link{category}} is to
-return the event data only. To return the same list structure that \code{\link{detect_event3}}
-outputs by default, add the argument \code{climatology = TRUE}. By default \code{categories = FALSE}.}
+\item{categories}{Not used. Calculating categories inside \code{detect_event3} was too slow,
+so it has been disabled and this argument is ignored. Use \code{\link{category}}
+on the output of \code{\link{detect_event}} instead.}
 
 \item{roundRes}{This argument allows the user to choose how many decimal places
 the MHW metric outputs will be rounded to. Default is 4. To
@@ -126,7 +122,7 @@ events may be detected according to the specifications, and if that is the
 case, the appropriate units need to be determined by the user.
 
 Note that the exact content of the output depends on specific combinations
-of the arguments \code{protoEvents}, \code{categories}, and \code{climatology}:
+of the argument \code{protoEvents}:
   \item{threshCriterion}{Boolean indicating if \code{temp} exceeds
   \code{thresh}.}
   \item{durationCriterion}{Boolean indicating whether periods of consecutive
@@ -135,11 +131,6 @@ of the arguments \code{protoEvents}, \code{categories}, and \code{climatology}:
   are met.}
   \item{event_no}{A sequential number indicating the ID and order of
   occurrence of the events.}
-  \item{intensity}{The difference between \code{temp} (or the column provided
-  for \code{y}) and \code{seas}. Only added if \code{categories = TRUE}
-  and \code{climatology = TRUE}.}
-  \item{category}{The category classification per day. Only added
-  if \code{categories = TRUE} and \code{climatology = TRUE}.}
 
 The \code{event} results are summarised using a range of event metrics:
   \item{event_no}{A sequential number indicating the ID and order of
