@@ -20,7 +20,9 @@ knitr::opts_chunk$set(fig.width = 4, fig.align = 'center',
 
 ## Overview
 
-In this vignette we shall look at retrieving and processing the Reynolds Optimally Interpolated Sea Surface Temperature (Reynolds et al. 2007; OISST), which is a global data set of Advanced Very High Resolution Radiometer (AVHRR) derived SSTs at a daily resolution, starting on 1 September 1981. The source of the data is the [Physical Oceanography Distributed Active Archive Centre (PODAAC)](https://podaac.jpl.nasa.gov/).
+In this vignette we shall look at retrieving and processing the Reynolds Optimally Interpolated Sea Surface Temperature (Reynolds et al. 2007; OISST), which is a global data set of Advanced Very High Resolution Radiometer (AVHRR) derived SSTs at a daily resolution, starting on 1 September 1981. The source of the data is the Physical Oceanography Distributed Active Archive Centre (PODAAC).
+
+> The authors of heatwaveR are not affiliated with NOAA/NASA and cannot verify that their resources are stable or available at any given time. This vignette has been left as is for backwards compatability, but users are advised to instead proceed directly to Copernicus Marine (CMEMS) for any SST products.
 
 Several steps are involved:
 
@@ -30,7 +32,7 @@ Several steps are involved:
 -   Creating longitude slices
 -   Detecting MHWs in each slice in parallel
 
-![**Figure 1.** OISST data plotted on a Gnomonic Cubed Sphere projection thanks to [Panoply](https://www.giss.nasa.gov/tools/panoply/)---the similarity with certain religious iconography is purely coincidental.](https://i.imgur.com/8idteKC.png){width="100%"}
+![**Figure 1.** OISST data plotted on a Gnomonic Cubed Sphere projection thanks to Panoply---the similarity with certain religious iconography is purely coincidental.](https://i.imgur.com/8idteKC.png){width="100%"}
 
 Each global, daily file is around 8.3Mb, so they add up to a large amount of data when a time series of at least 30 years duration is downloaded. A time series of at least 30 years is needed for heatwave detection. Currently I have 13,216 of these global files, and this amounts to \~108Gb of total disk space. Since not everyone will need all of these data, we shall subset the data using a python script prior to downloading them.
 
@@ -40,7 +42,7 @@ To do the subsetting and bring the data to your local computer/server, you will 
 
 Create a folder on your server where all the data will be received, below, for example, I use `/Users/ajsmit/spatial/test/netCDF`.
 
-Into this directory, copy the python script, `subset_dataset.py` ([link](https://podaac.jpl.nasa.gov/forum/viewtopic.php?f=5&t=219)). Remember to make the file executable by running `chmod +x subset_dataset.py`. I use MacOS X (or linux), so I'm not able to provide instructions if you use Windows. In a terminal, change to the directory that will receive the netCDF files, where the python script now lives. If python is in your system's path, you should be able to execute the following command on the terminal/command line at the prompt `>`:
+Into this directory, copy the python script, `subset_dataset.py`. Remember to make the file executable by running `chmod +x subset_dataset.py`. I use MacOS X (or linux), so I'm not able to provide instructions if you use Windows. In a terminal, change to the directory that will receive the netCDF files, where the python script now lives. If python is in your system's path, you should be able to execute the following command on the terminal/command line at the prompt `>`:
 
 `> ./subset_dataset.py -s 19810901 -f 20171014 -b 5 45 -50 -12 -x AVHRR_OI-NCEI-L4-GLOB-v2.0`
 
@@ -54,7 +56,7 @@ Encapsulated by the above command are the following parameters:
 -   end.date = 2022-02-28 (daily, new data are made available)
 -   short.name = AVHRR_OI-NCEI-L4-GLOB-v2.0
 
-The spatial extent is for a region around southern Africa that has both the Benguela and Agulhas Current in it; we select files starting in 1981-09-01 and going up to 2022-02-28. The short name is the name mentioned on the [Reynolds OISST data website](https://podaac.jpl.nasa.gov/dataset/AVHRR_OI-NCEI-L4-GLOB-v2.0)---substituting this name for any of the other SST datasets on that website *should* then permit the retrieval of other data sets (e.g. the [MUR data's](https://podaac.jpl.nasa.gov/dataset/MUR-JPL-L4-GLOB-v4.1) short name is MUR-JPL-L4-GLOB-v4.1). This website seems to be down frequently, so try a couple of times if it does not work the first time.
+The spatial extent is for a region around southern Africa that has both the Benguela and Agulhas Current in it; we select files starting in 1981-09-01 and going up to 2022-02-28. The short name is the name mentioned on the Reynolds OISST data website---substituting this name for any of the other SST datasets on that website *should* then permit the retrieval of other data sets (e.g. the MUR data's short name is MUR-JPL-L4-GLOB-v4.1). This website seems to be down frequently, so try a couple of times if it does not work the first time.
 
 Adjust any of these parameters to taste in order to define the spatial extent and the time period as required by your study.
 

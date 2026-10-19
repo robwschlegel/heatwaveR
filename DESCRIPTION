@@ -18,7 +18,6 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 ByteCompile: true
-RoxygenNote: 8.0.0
 Depends: R (>= 3.0.2)
 Suggests:
     covr,
@@ -50,3 +49,4 @@ NeedsCompilation: yes
 VignetteBuilder: knitr
 URL: https://robwschlegel.github.io/heatwaveR/, https://github.com/robwschlegel/heatwaveR
 BugReports: https://github.com/robwschlegel/heatwaveR/issues
+Config/roxygen2/version: 8.1.1

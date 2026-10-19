@@ -13,30 +13,34 @@ export(ts2clm)
 export(ts2clm3)
 import(Rcpp)
 import(ggplot2)
-importFrom(data.table,"%between%")
-importFrom(data.table,":=")
-importFrom(data.table,.I)
-importFrom(data.table,.N)
-importFrom(data.table,.SD)
-importFrom(data.table,data.table)
-importFrom(ggplot2,aes)
-importFrom(ggplot2,coord_cartesian)
-importFrom(ggplot2,element_blank)
-importFrom(ggplot2,element_line)
-importFrom(ggplot2,element_rect)
-importFrom(ggplot2,element_text)
-importFrom(ggplot2,geom_line)
-importFrom(ggplot2,geom_point)
-importFrom(ggplot2,geom_polygon)
-importFrom(ggplot2,geom_segment)
-importFrom(ggplot2,ggplot)
-importFrom(ggplot2,guide_legend)
-importFrom(ggplot2,guides)
-importFrom(ggplot2,labs)
-importFrom(ggplot2,scale_colour_manual)
-importFrom(ggplot2,scale_fill_manual)
-importFrom(ggplot2,scale_x_continuous)
-importFrom(ggplot2,scale_x_date)
-importFrom(ggplot2,scale_y_continuous)
-importFrom(ggplot2,theme)
+importFrom(data.table,
+  "%between%",
+  ":=",
+  .I,
+  .N,
+  .SD,
+  data.table
+)
+importFrom(ggplot2,
+  aes,
+  coord_cartesian,
+  element_blank,
+  element_line,
+  element_rect,
+  element_text,
+  geom_line,
+  geom_point,
+  geom_polygon,
+  geom_segment,
+  ggplot,
+  guide_legend,
+  guides,
+  labs,
+  scale_colour_manual,
+  scale_fill_manual,
+  scale_x_continuous,
+  scale_x_date,
+  scale_y_continuous,
+  theme
+)
 useDynLib(heatwaveR)
