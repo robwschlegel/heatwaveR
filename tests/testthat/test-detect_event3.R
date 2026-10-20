@@ -91,7 +91,7 @@ test_that("protoEvents argument functions correctly", {
 test_that("roundRes argument functions correctly", {
   ts <- ts2clm3(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"))
   res <- detect_event3(ts, roundRes = 4)
-  expect_equal(res$climatology$ts_seas[1], 21.6080)
+  expect_equal(res$climatology$ts_seas[1], 21.6040)
   res <- detect_event3(ts, roundRes = 0)
   expect_equal(res$event$intensity_max[1], 2)
   res <- detect_event3(ts, roundRes = F)

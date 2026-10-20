@@ -62,14 +62,6 @@ clim_spread <- function(data, clim_start, clim_end, windowHalfWidth) {
   }
   rm(ts_spread_filled)
 
-  begin_pad <- utils::tail(ts_spread, windowHalfWidth)
-  end_pad <- utils::head(ts_spread, windowHalfWidth)
-  l <- list(begin_pad, ts_spread, end_pad)
-  rm(list = c("begin_pad", "end_pad"))
-
-  ts_spread <- data.table::rbindlist(l)
-  rm(l)
-
   len_yr <- length(as.integer(substr(clim_start, 1, 4)):as.integer(substr(clim_end, 1, 4)))
 
   # clim_calc_cpp needs a matrix...
@@ -79,6 +71,10 @@ clim_spread <- function(data, clim_start, clim_end, windowHalfWidth) {
     plugs <- which(is.na(ts_mat), arr.ind = TRUE)
     ts_mat[plugs] <- rowMeans(ts_mat, na.rm = TRUE)[plugs[,1]]
   }
+
+  begin_pad <- cbind(NA, utils::tail(ts_mat, windowHalfWidth)[, -len_yr])
+  end_pad <- cbind(utils::head(ts_mat, windowHalfWidth)[, -1], NA)
+  ts_mat <- rbind(begin_pad, ts_mat, end_pad)
 
   return(ts_mat)
 }
