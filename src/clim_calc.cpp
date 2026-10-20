@@ -12,20 +12,9 @@ Rcpp::NumericMatrix clim_calc_cpp(arma::mat x, int windowHalfWidth, double pctil
   // number rows and columns
   int ydim = x.n_rows;
   int xdim = x.n_cols;
-  int window_vec = ((windowHalfWidth * 2) + 1) * xdim;
-
   // quantile setup
   int lo, hi;
   double hlo, hhi;
-  double index = (window_vec - 1) * (pctile / 100); // window_vec = n; the rank of the quantiles
-  lo = floor(index);
-  hi = lo + 1;
-  hhi = index - lo;
-  hlo = 1 - hhi;
-
-  // sequence of numbers for finding quantiles
-  arma::vec id(window_vec);
-  std::iota(id.begin(), id.end(), 0);
 
   // allocate receiving vectors
   arma::vec s_raw(ydim); // climatology
@@ -36,8 +25,19 @@ Rcpp::NumericMatrix clim_calc_cpp(arma::mat x, int windowHalfWidth, double pctil
     arma::vec v1 = vectorise(window);
     arma::vec v2 = v1.elem( find_finite(v1) ); // handle missing values
     arma::vec v3 = sort(v2);
+    int n = v3.n_elem; // the rank of the quantiles counts the finite values only
+    if (n == 0) {
+      s_raw[i] = datum::nan;
+      t_raw[i] = datum::nan;
+      continue;
+    }
+    double index = (n - 1) * (pctile / 100);
+    lo = floor(index);
+    hi = std::min(lo + 1, n - 1);
+    hhi = index - lo;
+    hlo = 1 - hhi;
     s_raw[i] = mean(v3);
-    t_raw[i] = hlo * v3[id[lo]] + hhi * v3[id[hi]];
+    t_raw[i] = hlo * v3[lo] + hhi * v3[hi];
   }
 
   // trim tops and bottoms (return 366 day climatology)

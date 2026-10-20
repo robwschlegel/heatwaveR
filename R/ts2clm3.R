@@ -322,25 +322,24 @@ ts2clm3 <- function(data,
   ts_spread[60, (names(ts_spread)) := ts_spread_filled[2, .SD, .SDcols = names(ts_spread)]]
   rm(ts_spread_filled)
 
-  l <- list(ts_spread[(.N - windowHalfWidth + 1):.N,],
-            ts_spread,
-            ts_spread[1:windowHalfWidth,])
-  ts_spread <- data.table::rbindlist(l)
-  rm(l)
-
   len_yr <-
     length(as.integer(substr(clim_start, 1, 4)):as.integer(substr(clim_end, 1, 4)))
 
   ts_mat <- as.matrix(ts_spread)[, 2:(len_yr + 1)]
+  rm(ts_spread)
 
   if (nrow(stats::na.omit(ts_mat)) < nrow(ts_mat)) {
     plugs <- which(is.na(ts_mat), arr.ind = TRUE)
     ts_mat[plugs] <- rowMeans(ts_mat, na.rm = TRUE)[plugs[, 1]]
   }
 
+  ts_mat <- clim_pad(ts_mat, windowHalfWidth)
+
   # END INSERT clim_spread <<<
 
-  if (nrow(stats::na.omit(ts_mat)) < nrow(ts_mat) | var) {
+  # The padding of the first and last years is NA by design (see clim_pad())
+  ts_inner <- ts_mat[(windowHalfWidth + 1):(nrow(ts_mat) - windowHalfWidth), ]
+  if (anyNA(ts_inner) | var) {
     ts_mat <- clim_calc(ts_mat, windowHalfWidth, pctile)
     ts_mat[is.nan(ts_mat)] <- NA
 

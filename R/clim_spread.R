@@ -62,23 +62,49 @@ clim_spread <- function(data, clim_start, clim_end, windowHalfWidth) {
   }
   rm(ts_spread_filled)
 
-  begin_pad <- utils::tail(ts_spread, windowHalfWidth)
-  end_pad <- utils::head(ts_spread, windowHalfWidth)
-  l <- list(begin_pad, ts_spread, end_pad)
-  rm(list = c("begin_pad", "end_pad"))
-
-  ts_spread <- data.table::rbindlist(l)
-  rm(l)
-
   len_yr <- length(as.integer(substr(clim_start, 1, 4)):as.integer(substr(clim_end, 1, 4)))
 
   # clim_calc_cpp needs a matrix...
   ts_mat <- as.matrix(ts_spread)[, 2:(len_yr + 1)]
+  rm(ts_spread)
 
   if (nrow(stats::na.omit(ts_mat)) < nrow(ts_mat)) {
     plugs <- which(is.na(ts_mat), arr.ind = TRUE)
     ts_mat[plugs] <- rowMeans(ts_mat, na.rm = TRUE)[plugs[,1]]
   }
 
+  ts_mat <- clim_pad(ts_mat, windowHalfWidth)
+
   return(ts_mat)
+}
+
+#' Pad a wide time series with the neighbouring days of the adjacent years.
+#'
+#' An internal function that adds \code{windowHalfWidth} rows before and after
+#' the wide time series created by \code{\link{clim_spread}}, so that the
+#' sliding window of \code{\link{clim_calc}} can be centred on the first and
+#' last days of the year. The rows before the first day of each year are the
+#' last days of the previous year, and the rows after the last day of each
+#' year are the first days of the next year, as they are in the time series.
+#' The first and last years of the climatology period have no such
+#' neighbours, and receive \code{NA}, which \code{\link{clim_calc}} skips.
+#'
+#' @keywords internal
+#'
+#' @param ts_mat The wide time series (a matrix, one column per year).
+#' @param windowHalfWidth The half width of the sliding window.
+#'
+#' @return The padded matrix, with \code{2 * windowHalfWidth} more rows.
+#'
+#' @author Schlegel, R. W.
+#'
+clim_pad <- function(ts_mat, windowHalfWidth) {
+  n_row <- nrow(ts_mat)
+  n_col <- ncol(ts_mat)
+  w <- seq_len(windowHalfWidth)
+  begin_pad <- cbind(NA, ts_mat[n_row - windowHalfWidth + w, -n_col, drop = FALSE])
+  end_pad <- cbind(ts_mat[w, -1, drop = FALSE], NA)
+  padded <- rbind(begin_pad, ts_mat, end_pad, deparse.level = 0)
+  dimnames(padded) <- list(NULL, colnames(ts_mat))
+  return(padded)
 }

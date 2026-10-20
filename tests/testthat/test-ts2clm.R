@@ -109,11 +109,11 @@ test_that("var argument functions correctly", {
 
 test_that("roundClm argument functions correctly", {
   res <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), roundClm = 4)
-  expect_equal(res$seas[1], 21.6080)
+  expect_equal(res$seas[1], 21.6040)
   res <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), roundClm = 0)
   expect_equal(res$seas[1], 22)
   res <- ts2clm(sst_WA, climatologyPeriod = c("1983-01-01", "2012-12-31"), roundClm = F)
-  expect_gt(res$seas[1], 21.60802)
+  expect_gt(res$seas[1], 21.60398)
 })
 
 test_that("Useful error is returned when incorrect column names exist", {

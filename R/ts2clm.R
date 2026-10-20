@@ -242,7 +242,9 @@ ts2clm <- function(data,
 
   ts_wide <- clim_spread(ts_whole, clim_start, clim_end, windowHalfWidth)
 
-  if (any(nrow(stats::na.omit(ts_wide)) < nrow(ts_wide) | var | nrow(ts_wide) > 400)) {
+  # The padding of the first and last years is NA by design (see clim_pad())
+  ts_inner <- ts_wide[(windowHalfWidth + 1):(nrow(ts_wide) - windowHalfWidth), ]
+  if (any(anyNA(ts_inner) | var | nrow(ts_wide) > 400)) {
     ts_mat <- clim_calc(ts_wide, windowHalfWidth, pctile)
     ts_mat[is.nan(ts_mat)] <- NA
   } else {
