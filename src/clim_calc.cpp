@@ -17,11 +17,6 @@ Rcpp::NumericMatrix clim_calc_cpp(arma::mat x, int windowHalfWidth, double pctil
   // quantile setup
   int lo, hi;
   double hlo, hhi;
-  double index = (window_vec - 1) * (pctile / 100); // window_vec = n; the rank of the quantiles
-  lo = floor(index);
-  hi = lo + 1;
-  hhi = index - lo;
-  hlo = 1 - hhi;
 
   // sequence of numbers for finding quantiles
   arma::vec id(window_vec);
@@ -36,6 +31,17 @@ Rcpp::NumericMatrix clim_calc_cpp(arma::mat x, int windowHalfWidth, double pctil
     arma::vec v1 = vectorise(window);
     arma::vec v2 = v1.elem( find_finite(v1) ); // handle missing values
     arma::vec v3 = sort(v2);
+    int n = v3.n_elem; // the number of finite values
+    if (n == 0) { // all missing
+      s_raw[i] = datum::nan;
+      t_raw[i] = datum::nan;
+      continue;
+    }
+    double index = (n - 1) * (pctile / 100); // the rank of the quantiles
+    lo = floor(index);
+    hi = std::min(lo + 1, n - 1); // lo + 1 is past the end when pctile = 100
+    hhi = index - lo;
+    hlo = 1 - hhi;
     s_raw[i] = mean(v3);
     t_raw[i] = hlo * v3[id[lo]] + hhi * v3[id[hi]];
   }
